@@ -1,0 +1,26 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "7b94e714-716d-4b9c-bac0-604f7b8672da": {
+      "ProjectGuid": "7b94e714-716d-4b9c-bac0-604f7b8672da",
+      "DisplayName": "Tasks.DAL",
+      "ColorIndex": 0
+    },
+    "46713603-b64a-4c54-9e0b-75edda478c67": {
+      "ProjectGuid": "46713603-b64a-4c54-9e0b-75edda478c67",
+      "DisplayName": "Tasks.BLL",
+      "ColorIndex": 1
+    },
+    "db8239c7-20fa-4563-a176-a5d43b429d4c": {
+      "ProjectGuid": "db8239c7-20fa-4563-a176-a5d43b429d4c",
+      "DisplayName": "Tasks.WebAPI",
+      "ColorIndex": 2
+    },
+    "982695d5-0c02-4b4a-8d26-dc29131beeab": {
+      "ProjectGuid": "982695d5-0c02-4b4a-8d26-dc29131beeab",
+      "DisplayName": "Tasks.Common",
+      "ColorIndex": 3
+    }
+  },
+  "NextColorIndex": 4
+}

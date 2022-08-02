@@ -1,0 +1,21 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "f2eb919c-3f83-42cb-8043-8248656ac45d": {
+      "ProjectGuid": "f2eb919c-3f83-42cb-8043-8248656ac45d",
+      "DisplayName": "Tasque.Core.Common",
+      "ColorIndex": 0
+    },
+    "7bf3dc7e-f572-43a1-8331-de5568a1f685": {
+      "ProjectGuid": "7bf3dc7e-f572-43a1-8331-de5568a1f685",
+      "DisplayName": "Tasque.Core.DAL",
+      "ColorIndex": 1
+    },
+    "91428618-e901-4077-a0df-d88cddaab084": {
+      "ProjectGuid": "91428618-e901-4077-a0df-d88cddaab084",
+      "DisplayName": "Tasque.Core.BLL",
+      "ColorIndex": 2
+    }
+  },
+  "NextColorIndex": 3
+}

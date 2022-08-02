@@ -1,0 +1,11 @@
+G:\BSA_Summer\Tasque\backend\Tasque.DAL\obj\Debug\net6.0\Tasque.Core.DAL.GeneratedMSBuildEditorConfig.editorconfig
+G:\BSA_Summer\Tasque\backend\Tasque.DAL\obj\Debug\net6.0\Tasque.Core.DAL.AssemblyInfoInputs.cache
+G:\BSA_Summer\Tasque\backend\Tasque.DAL\obj\Debug\net6.0\Tasque.Core.DAL.AssemblyInfo.cs
+G:\BSA_Summer\Tasque\backend\Tasque.DAL\obj\Debug\net6.0\Tasque.Core.DAL.csproj.CoreCompileInputs.cache
+G:\BSA_Summer\Tasque\backend\Tasque.DAL\bin\Debug\net6.0\Tasque.Core.DAL.deps.json
+G:\BSA_Summer\Tasque\backend\Tasque.DAL\bin\Debug\net6.0\Tasque.Core.DAL.dll
+G:\BSA_Summer\Tasque\backend\Tasque.DAL\bin\Debug\net6.0\ref\Tasque.Core.DAL.dll
+G:\BSA_Summer\Tasque\backend\Tasque.DAL\bin\Debug\net6.0\Tasque.Core.DAL.pdb
+G:\BSA_Summer\Tasque\backend\Tasque.DAL\obj\Debug\net6.0\Tasque.Core.DAL.dll
+G:\BSA_Summer\Tasque\backend\Tasque.DAL\obj\Debug\net6.0\ref\Tasque.Core.DAL.dll
+G:\BSA_Summer\Tasque\backend\Tasque.DAL\obj\Debug\net6.0\Tasque.Core.DAL.pdb

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "sFxOVJe6kOaYUegtZqMEZjqyyU9srEiotsrSbVwn6WesZ9bAFZLbCLsOdiFBYT+E5n1QoqGxgC2QMMLOEN8XOA==",
+  "success": true,
+  "projectFilePath": "G:\\BSA_Summer\\Tasque\\backend\\Tasque.TaskProcessor\\Tasque.Tasks.DAL\\Tasks.DAL.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ishmo\\.nuget\\packages\\awssdk.core\\3.7.12.16\\awssdk.core.3.7.12.16.nupkg.sha512",
+    "C:\\Users\\ishmo\\.nuget\\packages\\awssdk.dynamodbv2\\3.7.3.63\\awssdk.dynamodbv2.3.7.3.63.nupkg.sha512"
+  ],
+  "logs": []
+}

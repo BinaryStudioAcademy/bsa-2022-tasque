@@ -1,0 +1,11 @@
+G:\BSA_Summer\Tasque\backend\Tasque.BLL\obj\Debug\net6.0\Tasque.Core.BLL.GeneratedMSBuildEditorConfig.editorconfig
+G:\BSA_Summer\Tasque\backend\Tasque.BLL\obj\Debug\net6.0\Tasque.Core.BLL.AssemblyInfoInputs.cache
+G:\BSA_Summer\Tasque\backend\Tasque.BLL\obj\Debug\net6.0\Tasque.Core.BLL.AssemblyInfo.cs
+G:\BSA_Summer\Tasque\backend\Tasque.BLL\obj\Debug\net6.0\Tasque.Core.BLL.csproj.CoreCompileInputs.cache
+G:\BSA_Summer\Tasque\backend\Tasque.BLL\bin\Debug\net6.0\Tasque.Core.BLL.deps.json
+G:\BSA_Summer\Tasque\backend\Tasque.BLL\bin\Debug\net6.0\Tasque.Core.BLL.dll
+G:\BSA_Summer\Tasque\backend\Tasque.BLL\bin\Debug\net6.0\ref\Tasque.Core.BLL.dll
+G:\BSA_Summer\Tasque\backend\Tasque.BLL\bin\Debug\net6.0\Tasque.Core.BLL.pdb
+G:\BSA_Summer\Tasque\backend\Tasque.BLL\obj\Debug\net6.0\Tasque.Core.BLL.dll
+G:\BSA_Summer\Tasque\backend\Tasque.BLL\obj\Debug\net6.0\ref\Tasque.Core.BLL.dll
+G:\BSA_Summer\Tasque\backend\Tasque.BLL\obj\Debug\net6.0\Tasque.Core.BLL.pdb
