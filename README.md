@@ -12,7 +12,7 @@ Tasque is a task tracking system that unites all the good parts of the common ta
 
 - [NodeJS](https://nodejs.org/en/) (16.10.x);
 - [TypeScript](https://www.typescriptlang.org/) (4.8.x);
-- [RxJS] (https://rxjs.dev/) (7.4.x);
+- [RxJS](https://rxjs.dev/) (7.4.x);
 - [NPM](https://www.npmjs.com/) (8.x.x);
 - [PostgreSQL](https://www.postgresql.org/) (14.2)
       |4.6.x/4.8.x|6.6.x/7.4.x
