@@ -18,6 +18,6 @@ public class DataContext : DbContext
         modelBuilder.UseSerialColumns();
     }
 
-    public DbSet<User> Users { get; set; }
-    public DbSet<Project> Projects { get; set; }
+    public DbSet<User>? Users { get; set; }
+    public DbSet<Project>? Projects { get; set; }
 }
