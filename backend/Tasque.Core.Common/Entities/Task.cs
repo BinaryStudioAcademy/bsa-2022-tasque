@@ -14,7 +14,7 @@ public class Task : BaseEntity
     public TaskPriority Priority { get; set; }
 
     public DateTime Deadline { get; set; }
-    public DateTime FinishedAt { get; set; }
+    public DateTime? FinishedAt { get; set; }
 
     public int AuthorId { get; set; }
     public User Author { get; set; }
