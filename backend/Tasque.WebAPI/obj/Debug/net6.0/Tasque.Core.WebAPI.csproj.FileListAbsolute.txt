@@ -61,3 +61,16 @@ C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.WebAPI\bin\Debug\net6
 C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.WebAPI\obj\Debug\net6.0\Tasque.Core.WebAPI.csproj.CopyComplete
 C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.WebAPI\bin\Debug\net6.0\Tasque.Core.BLL.dll
 C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.WebAPI\bin\Debug\net6.0\Tasque.Core.BLL.pdb
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.WebAPI\bin\Debug\net6.0\nlog.config
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.WebAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.WebAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.WebAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.WebAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.WebAPI\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.WebAPI\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.WebAPI\bin\Debug\net6.0\NLog.dll
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.WebAPI\bin\Debug\net6.0\NLog.Extensions.Logging.dll
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.WebAPI\bin\Debug\net6.0\Npgsql.dll
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.WebAPI\bin\Debug\net6.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.WebAPI\bin\Debug\net6.0\Tasque.Core.DAL.dll
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.WebAPI\bin\Debug\net6.0\Tasque.Core.DAL.pdb

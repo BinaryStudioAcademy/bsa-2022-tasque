@@ -21,3 +21,6 @@ C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\obj\Debug\net6.0\
 C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\obj\Debug\net6.0\refint\Tasque.Core.DAL.dll
 C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\obj\Debug\net6.0\Tasque.Core.DAL.pdb
 C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\obj\Debug\net6.0\ref\Tasque.Core.DAL.dll
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\bin\Debug\net6.0\Tasque.Core.Common.dll
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\bin\Debug\net6.0\Tasque.Core.Common.pdb
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\obj\Debug\net6.0\Tasque.Core.DAL.csproj.CopyComplete
