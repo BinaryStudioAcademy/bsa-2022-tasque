@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Tasque.BLL\Tasque.Core.BLL.csproj" />
     <ProjectReference Include="..\Tasque.DAL\Tasque.Core.DAL.csproj" />
   </ItemGroup>
 
