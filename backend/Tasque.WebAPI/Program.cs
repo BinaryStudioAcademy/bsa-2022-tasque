@@ -1,8 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using Tasque.Core.DAL;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
+builder.Services.AddDbContext<DataContext>(
+    o => o.UseNpgsql(builder.Configuration.GetConnectionString("TasqueDb"), 
+        b => b.MigrationsAssembly("Tasque.Core.WebAPI")).EnableDetailedErrors());
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
