@@ -1,10 +1,15 @@
+using NLog.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+builder.Logging.AddNLog();
+
 // Add services to the container.
 builder.Services.AddRazorPages();
+
 builder.Services.AddDbContext<DataContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("TasqueDb"), 
         b => b.MigrationsAssembly(typeof(DataContext).Assembly.FullName))
