@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { MaterialModule } from 'src/app/material/material.module';
 import { LoadingComponent } from './components/loading-component/loading.component';
 
 @NgModule({
@@ -11,6 +12,7 @@ import { LoadingComponent } from './components/loading-component/loading.compone
         FormsModule,
         ReactiveFormsModule,
         RouterModule,
+        MaterialModule,
     ],
     declarations: [
         LoadingComponent,
@@ -22,6 +24,7 @@ import { LoadingComponent } from './components/loading-component/loading.compone
         ReactiveFormsModule,
         RouterModule,
         LoadingComponent,        
+        MaterialModule,
     ],
 })
 export class SharedModule { } 
