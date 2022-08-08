@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
+import {HttpClient, HttpResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -17,7 +17,7 @@ export class HttpService {
   }
 
   public getHeader(key: string): string  {
-    return this.headers.get(key)!;
+    return <string>this.headers.get(key);
   }
 
   public setHeader(key: string, value: string): void {
@@ -28,11 +28,11 @@ export class HttpService {
     this.headers.delete(key);
   }
 
-  public getRequest<T>(url: string, httpParams?: any): Observable<T> {
+  public getRequest<T>(url: string, httpParams?: HttpParams): Observable<T> {
     return this.http.get<T>(this.buildUrl(url), { headers: this.getHeaders(), params: httpParams });
   }
 
-  public getFullRequest<T>(url: string, httpParams?: any): Observable<HttpResponse<T>> {
+  public getFullRequest<T>(url: string, httpParams?: HttpParams): Observable<HttpResponse<T>> {
     return this.http.get<T>(this.buildUrl(url), { observe: 'response', headers: this.getHeaders(),
       params: httpParams });
   }
@@ -57,11 +57,11 @@ export class HttpService {
     return this.http.put<T>(this.buildUrl(url), payload, { headers: this.getHeaders(), observe: 'response' });
   }
 
-  public deleteRequest<T>(url: string, httpParams?: any): Observable<T> {
+  public deleteRequest<T>(url: string, httpParams?: HttpParams): Observable<T> {
     return this.http.delete<T>(this.buildUrl(url), { headers: this.getHeaders(), params: httpParams });
   }
 
-  public deleteFullRequest<T>(url: string, httpParams?: any): Observable<HttpResponse<T>> {
+  public deleteFullRequest<T>(url: string, httpParams?: HttpParams): Observable<HttpResponse<T>> {
     return this.http.delete<T>(this.buildUrl(url), { headers: this.getHeaders(), observe: 'response',
       params: httpParams });
   }
