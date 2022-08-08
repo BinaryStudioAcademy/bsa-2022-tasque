@@ -7,4 +7,13 @@
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tasque.BLL\Tasque.Core.BLL.csproj" />
+    <ProjectReference Include="..\Tasque.Core.Common\Tasque.Core.Common.csproj" />
+  </ItemGroup>
+
 </Project>

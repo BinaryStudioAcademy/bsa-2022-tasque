@@ -9,3 +9,15 @@ G:\BSA_Summer\Tasque\backend\Tasque.DAL\bin\Debug\net6.0\Tasque.Core.DAL.pdb
 G:\BSA_Summer\Tasque\backend\Tasque.DAL\obj\Debug\net6.0\Tasque.Core.DAL.dll
 G:\BSA_Summer\Tasque\backend\Tasque.DAL\obj\Debug\net6.0\ref\Tasque.Core.DAL.dll
 G:\BSA_Summer\Tasque\backend\Tasque.DAL\obj\Debug\net6.0\Tasque.Core.DAL.pdb
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\bin\Debug\net6.0\Tasque.Core.DAL.deps.json
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\bin\Debug\net6.0\Tasque.Core.DAL.dll
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\bin\Debug\net6.0\Tasque.Core.DAL.pdb
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\obj\Debug\net6.0\Tasque.Core.DAL.csproj.AssemblyReference.cache
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\obj\Debug\net6.0\Tasque.Core.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\obj\Debug\net6.0\Tasque.Core.DAL.AssemblyInfoInputs.cache
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\obj\Debug\net6.0\Tasque.Core.DAL.AssemblyInfo.cs
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\obj\Debug\net6.0\Tasque.Core.DAL.csproj.CoreCompileInputs.cache
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\obj\Debug\net6.0\Tasque.Core.DAL.dll
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\obj\Debug\net6.0\refint\Tasque.Core.DAL.dll
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\obj\Debug\net6.0\Tasque.Core.DAL.pdb
+C:\Users\38073\source\repos\bsa-2022-tasque\backend\Tasque.DAL\obj\Debug\net6.0\ref\Tasque.Core.DAL.dll

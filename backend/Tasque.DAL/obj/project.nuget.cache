@@ -1,8 +1,18 @@
 {
   "version": 2,
-  "dgSpecHash": "OqrlqmtP70+k5M5nJKt0DzUHZIAux8YAbB07l/hfhdP8O6X5lqXtWu+jOW18gvn8uxzc+nvJpfuuaNpgsu+8hQ==",
+  "dgSpecHash": "7IybyGW667WVUCJxo4ARNvZEIeXDmZbqAwpQROE8df64in7VdX88kCe6IcArnI7kxtj7o+smZT0tgSXCKwV2Mw==",
   "success": true,
-  "projectFilePath": "G:\\BSA_Summer\\Tasque\\backend\\Tasque.DAL\\Tasque.Core.DAL.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\38073\\source\\repos\\bsa-2022-tasque\\backend\\Tasque.DAL\\Tasque.Core.DAL.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\38073\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.7\\microsoft.aspnetcore.authentication.jwtbearer.6.0.7.nupkg.sha512",
+    "C:\\Users\\38073\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\38073\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\6.10.0\\microsoft.identitymodel.jsonwebtokens.6.10.0.nupkg.sha512",
+    "C:\\Users\\38073\\.nuget\\packages\\microsoft.identitymodel.logging\\6.10.0\\microsoft.identitymodel.logging.6.10.0.nupkg.sha512",
+    "C:\\Users\\38073\\.nuget\\packages\\microsoft.identitymodel.protocols\\6.10.0\\microsoft.identitymodel.protocols.6.10.0.nupkg.sha512",
+    "C:\\Users\\38073\\.nuget\\packages\\microsoft.identitymodel.protocols.openidconnect\\6.10.0\\microsoft.identitymodel.protocols.openidconnect.6.10.0.nupkg.sha512",
+    "C:\\Users\\38073\\.nuget\\packages\\microsoft.identitymodel.tokens\\6.10.0\\microsoft.identitymodel.tokens.6.10.0.nupkg.sha512",
+    "C:\\Users\\38073\\.nuget\\packages\\system.identitymodel.tokens.jwt\\6.10.0\\system.identitymodel.tokens.jwt.6.10.0.nupkg.sha512",
+    "C:\\Users\\38073\\.nuget\\packages\\system.security.cryptography.cng\\4.5.0\\system.security.cryptography.cng.4.5.0.nupkg.sha512"
+  ],
   "logs": []
 }
