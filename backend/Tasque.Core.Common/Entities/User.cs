@@ -1,15 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Tasque.Core.Common.Entities.Abstract;
 
 namespace Tasque.Core.Common.Entities;
 
-public class User
+public class User : BaseEntity
 {
-    public int Id { get; set; }
     [Required]
-    public string FirstName { get; set; } = "";
-    [Required]
-    public string LastName { get; set; } = "";
+    public string Name { get; set; } = "";
     public string Email { get; set; } = "";
-    public DateTime RegisteredAt { get; set; } = DateTime.Now;
-    public DateTime BirthDay { get; set; }
+    public string Password { get; set; } = "";
+    public string Salt { get; set; } = "";
 }
