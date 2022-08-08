@@ -33,7 +33,7 @@ namespace Tasque.Core.WebAPI.Middlewares
             HttpStatusCode statusCode = HttpStatusCode.InternalServerError,
             object? errorBody = null)
         {
-            _ = errorBody ?? new { error = "Unknown error has occured" };
+            errorBody ??= new { error = "Unknown error has occured" };
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)statusCode;
             await context.Response.WriteAsync(JsonConvert.SerializeObject(errorBody));
