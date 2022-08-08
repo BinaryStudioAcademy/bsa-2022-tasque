@@ -4,14 +4,14 @@
     "C:\\Users\\38073\\source\\repos\\bsa-2022-tasque\\backend\\Tasque.DAL\\Tasque.Core.DAL.csproj": {}
   },
   "projects": {
-    "C:\\Users\\38073\\source\\repos\\bsa-2022-tasque\\backend\\Tasque.DAL\\Tasque.Core.DAL.csproj": {
+    "C:\\Users\\38073\\source\\repos\\bsa-2022-tasque\\backend\\Tasque.Core.Common\\Tasque.Core.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\38073\\source\\repos\\bsa-2022-tasque\\backend\\Tasque.DAL\\Tasque.Core.DAL.csproj",
-        "projectName": "Tasque.Core.DAL",
-        "projectPath": "C:\\Users\\38073\\source\\repos\\bsa-2022-tasque\\backend\\Tasque.DAL\\Tasque.Core.DAL.csproj",
+        "projectUniqueName": "C:\\Users\\38073\\source\\repos\\bsa-2022-tasque\\backend\\Tasque.Core.Common\\Tasque.Core.Common.csproj",
+        "projectName": "Tasque.Core.Common",
+        "projectPath": "C:\\Users\\38073\\source\\repos\\bsa-2022-tasque\\backend\\Tasque.Core.Common\\Tasque.Core.Common.csproj",
         "packagesPath": "C:\\Users\\38073\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\38073\\source\\repos\\bsa-2022-tasque\\backend\\Tasque.DAL\\obj\\",
+        "outputPath": "C:\\Users\\38073\\source\\repos\\bsa-2022-tasque\\backend\\Tasque.Core.Common\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\38073\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -41,6 +41,74 @@
           "targetAlias": "net6.0",
           "dependencies": {
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.7, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\38073\\source\\repos\\bsa-2022-tasque\\backend\\Tasque.DAL\\Tasque.Core.DAL.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\38073\\source\\repos\\bsa-2022-tasque\\backend\\Tasque.DAL\\Tasque.Core.DAL.csproj",
+        "projectName": "Tasque.Core.DAL",
+        "projectPath": "C:\\Users\\38073\\source\\repos\\bsa-2022-tasque\\backend\\Tasque.DAL\\Tasque.Core.DAL.csproj",
+        "packagesPath": "C:\\Users\\38073\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\38073\\source\\repos\\bsa-2022-tasque\\backend\\Tasque.DAL\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\38073\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\38073\\source\\repos\\bsa-2022-tasque\\backend\\Tasque.Core.Common\\Tasque.Core.Common.csproj": {
+                "projectPath": "C:\\Users\\38073\\source\\repos\\bsa-2022-tasque\\backend\\Tasque.Core.Common\\Tasque.Core.Common.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.7, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.7, )"
             }

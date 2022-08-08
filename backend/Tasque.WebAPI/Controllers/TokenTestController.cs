@@ -55,7 +55,7 @@ namespace Tasque.Core.WebAPI.Controllers
             //// Here you should place linq request to get user entity from DbContext using User Login and Password
             //    if (entity != null) //Use this method to return User entity. Before this <<if>> place linq to get entity from DBContext by login and password
             //        return entity; //Also replace object which shoud get in this method with UserLoginModel, which has user Login and Password
-                return null; ////If user Entity not found it will return null, so you can throw excepption here, by the way GlobalErrorExceptionHandler should handle this exception.
+                return null; ////If user Entity not found it will return null, so you can throw excepption here(for example you can create custom NotFFoundException and throw it), by the way GlobalErrorExceptionHandler should handle this exception.
         }
     }
 }

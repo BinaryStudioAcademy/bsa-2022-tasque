@@ -1,12 +1,13 @@
-<<<<<<< HEAD
+//<<<<<<< HEAD
+using Tasque.Core.DAL;
 using Tasque.Core.WebAPI.AppConfigurationExtension;
-=======
+using Tasque.Core.WebAPI.Middlewares;
+//=======
 using Tasque.Core.WebAPI.Middlewares;
 using NLog.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.DAL;
->>>>>>> 2913fbabe3af70c09b3adb501f60c33335cfaa0b
-
+//>>>>>>> 2913fbabe3af70c09b3adb501f60c33335cfaa0b
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders();
