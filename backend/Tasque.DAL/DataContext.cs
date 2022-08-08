@@ -6,17 +6,23 @@ namespace Tasque.Core.DAL;
 
 public class DataContext : DbContext
 {
-    public DataContext()
-    {
-    }
-
-    public DataContext(DbContextOptions<DataContext> options) : base(options)
-    {
-
-    }
+    public DataContext(DbContextOptions<DataContext> options) : base(options) { }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseSerialColumns();
+
+        modelBuilder.Entity<Project>()
+            .HasOne(project => project.Author)
+            .WithMany(user => user.Projects)
+            .HasForeignKey(project => project.AuthorId);
+
+        modelBuilder.Entity<Task>()
+            .HasOne(task => task.Author)
+            .WithMany(user => user.Tasks)
+            .HasForeignKey(task => task.AuthorId);
+
+        modelBuilder.Entity<Task>()
+            .HasOne(task => task.LastUpdatedBy);
     }
 
     public DbSet<Organization>? Organizations { get; set; }
