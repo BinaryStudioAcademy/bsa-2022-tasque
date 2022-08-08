@@ -4,13 +4,17 @@ namespace Tasque.Core.Common.Entities;
 
 public class Project : BaseEntity
 {
-    public string Name { get; set; } = "";
+    public Project()
+    {
+        Users = new List<User>();
+    }
+    public string Name { get; set; } = null!;
 
     public int AuthorId { get; set; }
-    public User Author { get; set; }
+    public User Author { get; set; } = null!;
 
     public int OrganizationId { get; set; }
-    public Organization Organization { get; set; }
+    public Organization Organization { get; set; } = null!;
 
     public virtual ICollection<User> Users { get; set; }
 }

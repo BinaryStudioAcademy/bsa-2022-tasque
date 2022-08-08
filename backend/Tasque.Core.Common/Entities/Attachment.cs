@@ -4,7 +4,10 @@ namespace Tasque.Core.Common.Entities;
 
 public class Attachment : BaseEntity
 {
-    public string URL { get; set; } = "";
-
+    public Attachment()
+    {
+        Tasks = new List<Task>();
+    }
+    public string URL { get; set; } = null!;
     public virtual ICollection<Task> Tasks { get; set; }
 }

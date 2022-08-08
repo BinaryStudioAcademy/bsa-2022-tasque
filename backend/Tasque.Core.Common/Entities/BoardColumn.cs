@@ -4,8 +4,8 @@ namespace Tasque.Core.Common.Entities;
 
 public class BoardColumn : BaseEntity
 {
-    public string Name { get; set; } = "";
+    public string Name { get; set; } = null!;
 
     public int BoardId { get; set; }
-    public Board Board { get; set; }
+    public Board Board { get; set; } = null!;
 }

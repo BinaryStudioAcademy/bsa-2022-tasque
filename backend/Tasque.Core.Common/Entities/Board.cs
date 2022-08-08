@@ -4,8 +4,8 @@ namespace Tasque.Core.Common.Entities;
 
 public class Board : BaseEntity
 {
-    public string Name { get; set; } = "";
+    public string Name { get; set; } = null!;
 
     public int ProjectId { get; set; }
-    public Project Project { get; set; }
+    public Project Project { get; set; } = null!;
 }

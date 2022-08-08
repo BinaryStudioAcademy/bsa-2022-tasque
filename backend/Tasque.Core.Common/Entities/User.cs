@@ -4,10 +4,17 @@ namespace Tasque.Core.Common.Entities;
 
 public class User : BaseEntity
 {
-    public string Name { get; set; } = "";
-    public string Email { get; set; } = "";
-    public string Password { get; set; } = "";
-    public string Salt { get; set; } = "";
+    public User()
+    {
+        Tasks = new List<Task>();
+        Meetings = new List<Meeting>();
+        Projects = new List<Project>();
+        Roles = new List<Role>();
+    }
+    public string Name { get; set; } = null!;
+    public string Email { get; set; } = null!;
+    public string Password { get; set; } = null!;
+    public string Salt { get; set; } = null!;
 
     public virtual ICollection<Task> Tasks { get; set; }
     public virtual ICollection<Meeting> Meetings { get; set; }

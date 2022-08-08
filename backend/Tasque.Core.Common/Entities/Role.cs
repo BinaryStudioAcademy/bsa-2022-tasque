@@ -4,7 +4,11 @@ namespace Tasque.Core.Common.Entities;
 
 public class Role : BaseEntity
 {
-    public string Name { get; set; } = "";
+    public Role()
+    {
+        Users = new List<User>();
+    }
+    public string Name { get; set; } = null!;
 
     public virtual ICollection<User> Users { get; set; }
 }
