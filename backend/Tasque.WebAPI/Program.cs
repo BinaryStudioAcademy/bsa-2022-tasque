@@ -7,7 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<DataContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("TasqueDb"), 
-        b => b.MigrationsAssembly("Tasque.Core.Dal")).EnableDetailedErrors());
+        b => b.MigrationsAssembly(typeof(DataContext).Assembly.FullName))
+        .EnableDetailedErrors());
 var app = builder.Build();
 
 
