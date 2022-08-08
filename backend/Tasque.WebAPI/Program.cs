@@ -1,3 +1,4 @@
+using Tasque.Core.WebAPI.Middlewares;
 using NLog.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.DAL;
@@ -30,6 +31,7 @@ app.UseMigrationsEndPoint();
 
 
 app.UseHttpsRedirection();
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseStaticFiles();
 
 app.UseRouting();
