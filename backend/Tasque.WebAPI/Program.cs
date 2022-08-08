@@ -4,9 +4,11 @@ using Tasque.Core.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+builder.Logging.AddNLog();
+
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Logging.AddNLog();
 
 builder.Services.AddDbContext<DataContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("TasqueDb"), 
