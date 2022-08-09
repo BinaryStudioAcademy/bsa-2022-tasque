@@ -2,7 +2,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { HttpService } from 'src/core/services/http.service';
 import { OrganizationService } from 'src/core/services/organization-service';
 import { OrganizationModel } from 'src/entity-models/organization-model';
 import { UserModel } from 'src/entity-models/user-model';
@@ -15,16 +14,15 @@ import { ButtonComponent } from '../../button/button.component';
 })
 export class CreateOrganizationDialogComponent implements OnInit {
 
-  public createBtnName = "Create";
-  public btnClass = "mini";
-  public cancelBtnName = "Cancel";
+  public createBtnName = 'Create';
+  public btnClass = 'mini';
+  public cancelBtnName = 'Cancel';
 
   public unsubscribe$ = new Subject<void>();
 
   constructor(
     public buttonComponent:ButtonComponent,
     public organizationService: OrganizationService,
-    public httpService: HttpService,
     @Inject(MAT_DIALOG_DATA) public currentUser: UserModel) { }
 
   ngOnInit(): void {
@@ -35,15 +33,9 @@ export class CreateOrganizationDialogComponent implements OnInit {
       Name: name,
       AuthorId: this.currentUser.Id,
       Author: this.currentUser
-    }
-    console.log({Name: name, AuthorId: this.currentUser?.Id});
+    };
     this.organizationService.createOrganization(organization)
     .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((resp) =>{
-      console.log(resp.body);
-    },
-    (error) =>{
-      console.log(error);
-    });
+    .subscribe();
   }
 }
