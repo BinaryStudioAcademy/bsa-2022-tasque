@@ -14,7 +14,7 @@ namespace Tasque.Core.BLL.MappingProfiles
         public UserProfile()
         {
             CreateMap<UserRegisterDto, User>();
-            CreateMap<User, UserDto>();
+            CreateMap<User, UserDto>().ReverseMap();
         }
     }
 }
