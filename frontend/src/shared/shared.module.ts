@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/material/material.module';
+import { ButtonComponent } from './components/button/button.component';
+import { InputComponent } from './components/input/input.component';
 import { LoadingComponent } from './components/loading-component/loading.component';
 
 @NgModule({
@@ -16,6 +18,8 @@ import { LoadingComponent } from './components/loading-component/loading.compone
     ],
     declarations: [
         LoadingComponent,
+        ButtonComponent,
+        InputComponent
     ],
     exports: [
         CommonModule,
@@ -23,7 +27,9 @@ import { LoadingComponent } from './components/loading-component/loading.compone
         FormsModule,
         ReactiveFormsModule,
         RouterModule,
-        LoadingComponent,        
+        LoadingComponent,
+        ButtonComponent,
+        InputComponent,        
         MaterialModule,
     ],
 })
