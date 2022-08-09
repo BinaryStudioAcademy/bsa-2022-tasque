@@ -10,11 +10,11 @@ namespace Tasque.Core.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TokenTestController : ControllerBase
+    public class TokenController : ControllerBase
     {
         private readonly IConfiguration _config;
 
-        public TokenTestController(IConfiguration config)
+        public TokenController(IConfiguration config)
         {
             _config = config;
         }
