@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/material/material.module';
 import { LoadingComponent } from './components/loading-component/loading.component';
 import { CheckboxComponent } from './components/checkbox-component/checkbox.component';
+import { ConfirmationModalComponent } from './components/confirmation-modal-component/confirmation-modal.component';
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import { CheckboxComponent } from './components/checkbox-component/checkbox.comp
     ],
     declarations: [
         LoadingComponent,
-        CheckboxComponent
+        CheckboxComponent,
+        ConfirmationModalComponent
     ],
     exports: [
         CommonModule,
