@@ -1,3 +1,5 @@
+@import 'src/colors.sass'
+
 .btn
     text-align: center
     color: colorscheme(violet-200)
@@ -27,33 +29,33 @@
         color: colorscheme(white-100)
     &.disabled
         color: colorscheme(gray-400)
-        border-color:colorscheme(gray-400)
+        border-color: colorscheme(gray-400)
         background: none
         cursor: not-allowed
 
 .stroke
-    color: #EE2A64
+    color: colorscheme(pink-200)
     padding: 13px 20px
     gap: 10px
-    border: 2px solid #EE2A64
+    border: 2px solid colorscheme(pink-200)
     border-radius: 50px
     &:hover
-        background: #EE2A64
+        background: colorscheme(pink-200)
         color: colorscheme(white-100)
     &.disabled
         color: colorscheme(gray-400)
         border-color: colorscheme(gray-400)
         background: none
         cursor: not-allowed
-        
+
 .fill
     padding: 13px 20px
     gap: 10px
     color: colorscheme(white-100)
-    background: #EE2A64
+    background: colorscheme(pink-200)
     border-radius: 50px
     &:hover
-        background: #E30547
+        background: colorscheme(pink-300)
         color: colorscheme(white-100)
     &.disabled
         color: colorscheme(white-100)
