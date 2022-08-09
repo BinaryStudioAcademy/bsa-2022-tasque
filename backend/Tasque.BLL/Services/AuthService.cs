@@ -34,19 +34,25 @@ namespace Tasque.Core.BLL.Services
             _validator.ValidateAndThrow(userEntity);
 
             var salt = SecurityHelper.GetRandomBytes();
-
             userEntity.Salt = Convert.ToBase64String(salt);
             userEntity.Password = SecurityHelper.HashPassword(registerInfo.Password, salt);
-
+            
+            if (_context.Users.Any(x => x.Email == userEntity.Email))
+            {
+                throw new ValidationException("User with given email already exists");
+            }
             _context.Users.Add(userEntity);
             await _context.SaveChangesAsync();
 
             return _mapper.Map<UserDto>(userEntity);
         }
 
-        public string GetAccessToken(int id, string username, string email)
+        public AuthTokenDto GetAccessToken(int id, string username, string email)
         {
-            return _jwtFactory.GenerateToken(id, username, email);
+            return new()
+            {
+                AccessToken = _jwtFactory.GenerateToken(id, username, email)
+            };
         }
     }
 }

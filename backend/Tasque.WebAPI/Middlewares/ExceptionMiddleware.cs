@@ -30,9 +30,10 @@ namespace Tasque.Core.WebAPI.Middlewares
             }
             catch (ValidationException ex)
             {
-                var errors = ex.Errors.Aggregate("", (x, y) => x += $"{y}\n");
-                _logger.LogError(errors);
-                await CreateExceptionAsync(httpContext, HttpStatusCode.BadRequest, errors);
+                var message = ex.Errors.Any()
+                    ? ex.Errors.Aggregate("", (x, y) => x += $"{y.ErrorMessage}\n")
+                    : ex.Message;
+                await CreateExceptionAsync(httpContext, HttpStatusCode.BadRequest, message);
             }
             catch (Exception ex)
             {
