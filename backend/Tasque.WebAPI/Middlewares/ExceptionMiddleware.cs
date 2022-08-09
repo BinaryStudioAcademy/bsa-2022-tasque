@@ -7,9 +7,12 @@ namespace Tasque.Core.WebAPI.Middlewares
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
-        public ExceptionMiddleware(RequestDelegate next)
+        private readonly ILogger _logger;
+
+        public ExceptionMiddleware(RequestDelegate next, ILogger logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext httpContext)
@@ -20,11 +23,13 @@ namespace Tasque.Core.WebAPI.Middlewares
             }
             catch (HttpException ex)
             {
+                _logger.LogError("A new http exception has been thrown: {ex.StatusCode}| {ex.Message}", ex.StatusCode, ex.Message);
                 await CreateExceptionAsync(httpContext, ex.StatusCode, new { error = ex.Message });
                 return;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError("Something went wrong: {ex.Message}", ex.Message);
                 await CreateExceptionAsync(httpContext);
                 return;
             }
