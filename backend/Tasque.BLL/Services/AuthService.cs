@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Tasque.Core.BLL.JWT;
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.Entities;
@@ -12,12 +13,14 @@ namespace Tasque.Core.BLL.Services
         private DataContext _context;
         private IMapper _mapper;
         private JwtFactory _jwtFactory;
+        private IValidator<User> _validator;
 
-        public AuthService(DataContext context, IMapper mapper, JwtFactory jwtFactory)
+        public AuthService(DataContext context, IMapper mapper, JwtFactory jwtFactory, IValidator<User> validator)
         {
             _context = context;
             _mapper = mapper;
             _jwtFactory = jwtFactory;
+            _validator = validator;
         }
 
         public Task<string> Login(UserLoginDto loginInfo)
@@ -28,6 +31,8 @@ namespace Tasque.Core.BLL.Services
         public async Task<UserDto> Register(UserRegisterDto registerInfo)
         {
             var userEntity = _mapper.Map<User>(registerInfo);
+            _validator.ValidateAndThrow(userEntity);
+
             var salt = SecurityHelper.GetRandomBytes();
 
             userEntity.Salt = Convert.ToBase64String(salt);

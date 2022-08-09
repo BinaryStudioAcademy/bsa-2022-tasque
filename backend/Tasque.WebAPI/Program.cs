@@ -11,6 +11,7 @@ builder.Logging.ClearProviders();
 builder.Logging.AddNLog();
 
 builder.Services.ConfigureMapper();
+builder.Services.ConfigureValidator();
 
 // Add services to the container.
 
