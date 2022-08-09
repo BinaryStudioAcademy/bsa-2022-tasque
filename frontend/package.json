@@ -24,6 +24,7 @@
     "@angular/router": "^14.1.0",
     "@typescript-eslint/parser": "^5.32.0",
     "eslint": "^8.21.0",
+    "ngx-toastr": "^15.0.0",
     "postsass": "^1.0.0",
     "prettier": "^2.7.1",
     "rxjs": "~6.6.0",
