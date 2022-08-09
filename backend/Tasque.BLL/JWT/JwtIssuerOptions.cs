@@ -12,7 +12,7 @@ namespace Tasque.Core.BLL.JWT
 
         public string Audience { get; set; }
 
-        public string SecretKey { get; set; }
+        public string Key { get; set; }
 
         public int ValidFor { get; set; }
     }

@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using Tasque.Core.BLL.JWT;
 using Tasque.Core.BLL.MappingProfiles;
+using Tasque.Core.BLL.Services;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
 {
@@ -65,6 +66,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddScoped<JwtFactory>();
             services.AddMvc();
             services.AddControllers();
+
+            services.AddScoped<AuthService>();
         }
     }
 }

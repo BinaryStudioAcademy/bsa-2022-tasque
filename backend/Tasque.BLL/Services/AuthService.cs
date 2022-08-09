@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Tasque.Core.BLL.JWT;
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Security;
@@ -10,11 +11,13 @@ namespace Tasque.Core.BLL.Services
     {
         private DataContext _context;
         private IMapper _mapper;
+        private JwtFactory _jwtFactory;
 
-        public AuthService(DataContext context, IMapper mapper)
+        public AuthService(DataContext context, IMapper mapper, JwtFactory jwtFactory)
         {
             _context = context;
             _mapper = mapper;
+            _jwtFactory = jwtFactory;
         }
 
         public Task<string> Login(UserLoginDto loginInfo)
@@ -34,6 +37,11 @@ namespace Tasque.Core.BLL.Services
             await _context.SaveChangesAsync();
 
             return _mapper.Map<UserDto>(userEntity);
+        }
+
+        public string GetAccessToken(int id, string username, string email)
+        {
+            return _jwtFactory.GenerateToken(id, username, email);
         }
     }
 }
