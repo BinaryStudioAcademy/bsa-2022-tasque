@@ -23,13 +23,13 @@ namespace Tasque.Core.WebAPI.Middlewares
             }
             catch (HttpException ex)
             {
-                _logger.LogError("A new http exception has been thrown: {ex.StatusCode}| {ex.Message}", ex.StatusCode, ex.Message);
+                _logger.LogError("{ex.StatusCode}| {ex.Message}", ex.StatusCode, ex.Message);
                 await CreateExceptionAsync(httpContext, ex.StatusCode, new { error = ex.Message });
                 return;
             }
             catch (Exception ex)
             {
-                _logger.LogError("Something went wrong: {ex.Message}", ex.Message);
+                _logger.LogError("{ex.Message}", ex.Message);
                 await CreateExceptionAsync(httpContext);
                 return;
             }
