@@ -5,8 +5,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./checkbox.component.sass']
 })
 export class CheckboxComponent implements OnInit {
-  @Input() public Text = '';
-  @Input() public Checked = false;
+  @Input() public text = '';
+  @Input() public checked = false;
   @Output() public stateChanged = new EventEmitter<boolean>();
 
   constructor() { }
@@ -15,7 +15,7 @@ export class CheckboxComponent implements OnInit {
   }
 
   public toggleChecked(): void {
-    this.Checked = !this.Checked;
-    this.stateChanged.emit(this.Checked);
+    this.checked = !this.checked;
+    this.stateChanged.emit(this.checked);
   }
 }
