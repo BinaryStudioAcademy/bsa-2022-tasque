@@ -14,7 +14,7 @@ export class CheckboxComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public toggleChecked() {
+  public toggleChecked(): void {
     this.Checked = !this.Checked;
     this.stateChanged.emit(this.Checked);
   }
