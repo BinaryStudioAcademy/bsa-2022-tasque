@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 @Component({
-  selector: 'app-checkbox',
+  selector: 'tasque-checkbox',
   templateUrl: './checkbox.component.html',
   styleUrls: ['./checkbox.component.sass']
 })

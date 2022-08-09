@@ -3,10 +3,10 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/material/material.module';
-import { ButtonComponent } from './components/button/button.component';
-import { InputComponent } from './components/input/input.component';
-import { LoadingComponent } from './components/loading-component/loading.component';
-import { CheckboxComponent } from './components/checkbox-component/checkbox.component';
+import { ButtonComponent } from './components/tasque-button/button.component';
+import { LoadingComponent } from './components/tasque-loading/loading.component';
+import { CheckboxComponent } from './components/tasque-checkbox/checkbox.component';
+import { InputComponent } from './components/tasque-input/input.component';
 
 @NgModule({
     imports: [
