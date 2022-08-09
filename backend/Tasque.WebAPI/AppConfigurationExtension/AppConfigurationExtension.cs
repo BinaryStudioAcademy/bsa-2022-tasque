@@ -9,7 +9,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
     {
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
         {
-            var secretKey = configuration["SecretJWTKey"];
+            var secretKey = configuration["JWTIssuerOptions:Key"];
             var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
 
             var jwtOptions = configuration.GetSection("JwtIssuerOptions");
