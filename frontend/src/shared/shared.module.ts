@@ -6,6 +6,7 @@ import { MaterialModule } from 'src/app/material/material.module';
 import { ButtonComponent } from './components/button/button.component';
 import { InputComponent } from './components/input/input.component';
 import { LoadingComponent } from './components/loading-component/loading.component';
+import { CheckboxComponent } from './components/checkbox-component/checkbox.component';
 
 @NgModule({
     imports: [
@@ -19,7 +20,8 @@ import { LoadingComponent } from './components/loading-component/loading.compone
     declarations: [
         LoadingComponent,
         ButtonComponent,
-        InputComponent
+        InputComponent,
+        CheckboxComponent
     ],
     exports: [
         CommonModule,
@@ -30,6 +32,7 @@ import { LoadingComponent } from './components/loading-component/loading.compone
         LoadingComponent,
         ButtonComponent,
         InputComponent,        
+        CheckboxComponent,
         MaterialModule,
     ],
 })
