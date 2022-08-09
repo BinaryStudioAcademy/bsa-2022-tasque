@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Tasque.Core.BLL.JWT;
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.Entities;
@@ -23,9 +24,17 @@ namespace Tasque.Core.BLL.Services
             _validator = validator;
         }
 
-        public Task<string> Login(UserLoginDto loginInfo)
+        public async Task<UserDto> Login(UserLoginDto loginInfo)
         {
-            throw new NotImplementedException();
+            var userEntity = await _context.Users.FirstOrDefaultAsync(x => x.Email == loginInfo.Email)
+                ?? throw new ValidationException("No user with given email");
+
+            if (!SecurityHelper.ValidatePassword(loginInfo.Password, userEntity.Password, userEntity.Salt))
+            {
+                throw new ValidationException("Invalid password");
+            }
+
+            return _mapper.Map<UserDto>(userEntity);
         }
 
         public async Task<UserDto> Register(UserRegisterDto registerInfo)

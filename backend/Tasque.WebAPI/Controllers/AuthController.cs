@@ -20,9 +20,12 @@ namespace Tasque.Core.WebAPI.Controllers
             _service = service;
         }
 
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto loginInfo)
         {
-            return Ok(await _service.Login(loginInfo));
+            var user = await _service.Login(loginInfo);
+            var token = _service.GetAccessToken(user.Id, user.Name, user.Email);
+            return Ok(token);
         }
 
         [HttpPost("register")]
