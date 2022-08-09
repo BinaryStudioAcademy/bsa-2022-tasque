@@ -1,0 +1,50 @@
+@import 'src/colors.sass'
+
+*
+    padding: 0px
+    margin: 0px
+    box-sizing: border-box
+
+.checkbox-container
+    display: flex
+    align-items: center
+    position: relative
+    -webkit-user-select: none
+    -moz-user-select: none
+    -ms-user-select: none
+    user-select: none
+
+.checkbox-container > label
+    font-family: 'Nunito'
+    font-style: normal
+    font-weight: 400
+    font-size: 14px
+    color: colorscheme(black-100)
+
+input[type=checkbox]
+    position: absolute
+    opacity: 0
+    cursor: pointer
+    height: 20px
+    width: 20px
+    border-radius: 2px
+    &:checked ~ .checkbox
+        background: colorscheme(violet-200)
+    &:checked ~ .checkMark
+        opacity: 100
+
+.checkbox
+    height: 20px
+    width: 20px
+    border: 1px solid colorscheme(violet-200)
+    border-radius: 2px
+    margin-right: 10.1px
+    background: colorscheme(white-100)
+
+.checkMark
+    opacity: 0
+    position: absolute
+    left: 4.5px
+    top: 5px
+    pointer-events: none
+    
