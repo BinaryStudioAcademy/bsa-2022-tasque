@@ -2,10 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
 import { HttpService } from 'src/core/services/http.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateOrganizationDialogComponent } from './create-organization-dialog/create-organization-dialog.component';
-import { TestUserModel } from './user-test-model';
+import { UserModel } from 'src/entity-models/user-model';
 
 @Component({
   selector: 'app-create-organization',
@@ -14,7 +13,7 @@ import { TestUserModel } from './user-test-model';
 })
 export class CreateOrganizationComponent implements OnInit {
 
-  @Input() public currentUser: TestUserModel = {
+  @Input() public currentUser: UserModel = {
     Name: "Login1",
     Email: "testlogin@gmail.com",
     Id: 1,

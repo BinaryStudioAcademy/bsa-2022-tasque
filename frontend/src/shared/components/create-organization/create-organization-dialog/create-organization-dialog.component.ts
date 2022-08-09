@@ -1,10 +1,11 @@
-import { Component, Output, Input, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { HttpService } from 'src/core/services/http.service';
+import { OrganizationModel } from 'src/entity-models/organization-model';
+import { UserModel } from 'src/entity-models/user-model';
 import { ButtonComponent } from '../../button/button.component';
-import { TestUserModel } from '../user-test-model';
 
 @Component({
   selector: 'app-create-organization-dialog',
@@ -22,14 +23,19 @@ export class CreateOrganizationDialogComponent implements OnInit {
   constructor(
     public buttonComponent:ButtonComponent,
     public httpService: HttpService,
-    @Inject(MAT_DIALOG_DATA) public currentUser: TestUserModel ) { }
+    @Inject(MAT_DIALOG_DATA) public currentUser: UserModel) { }
 
   ngOnInit(): void {
   }
   
   createOrganization(name:string): void{
+    const organization: OrganizationModel = {
+      Name: name,
+      Author: this.currentUser,
+      AuthorId: this.currentUser.Id
+    }
     console.log({Name: name, AuthorId: this.currentUser?.Id});
-    this.httpService.postFullRequest("/api/organization/createOrganization", {Name: name, AuthorId: this.currentUser?.Id})
+    this.httpService.postFullRequest("/api/organization/createOrganization", {Name: name, AuthorId: this.currentUser?.Id, Author: this.currentUser})
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((resp) =>{
       console.log(resp.body);
