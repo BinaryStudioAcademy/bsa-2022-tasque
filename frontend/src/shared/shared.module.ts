@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/material/material.module';
 import { LoadingComponent } from './components/loading-component/loading.component';
+import { CheckboxComponent } from './components/checkbox-component/checkbox.component';
+import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.component';
 
 @NgModule({
     imports: [
@@ -16,6 +18,8 @@ import { LoadingComponent } from './components/loading-component/loading.compone
     ],
     declarations: [
         LoadingComponent,
+        CheckboxComponent,
+        LeftSidebarComponent,
     ],
     exports: [
         CommonModule,
@@ -23,8 +27,10 @@ import { LoadingComponent } from './components/loading-component/loading.compone
         FormsModule,
         ReactiveFormsModule,
         RouterModule,
-        LoadingComponent,        
+        LoadingComponent,
+        CheckboxComponent,
         MaterialModule,
+        LeftSidebarComponent,
     ],
 })
-export class SharedModule { } 
+export class SharedModule { }
