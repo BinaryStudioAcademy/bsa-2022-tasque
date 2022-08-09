@@ -31,11 +31,12 @@ export class CreateOrganizationDialogComponent implements OnInit {
   createOrganization(name:string): void{
     const organization: OrganizationModel = {
       Name: name,
-      AuthorId: this.currentUser.Id,
-      Author: this.currentUser
+      AuthorId: this.currentUser.Id
     };
     this.organizationService.createOrganization(organization)
     .pipe(takeUntil(this.unsubscribe$))
-    .subscribe();
+    .subscribe((resp) => {
+      console.log(resp.body);
+    });
   }
 }

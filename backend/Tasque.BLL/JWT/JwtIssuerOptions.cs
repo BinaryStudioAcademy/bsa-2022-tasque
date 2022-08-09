@@ -8,11 +8,11 @@ namespace Tasque.Core.BLL.JWT
 {
     public class JwtIssuerOptions
     {
-        public string Issuer { get; set; }
+        public string? Issuer { get; set; }
 
-        public string Audience { get; set; }
+        public string? Audience { get; set; }
 
-        public string SecretKey { get; set; }
+        public string? Key { get; set; }
 
         public int ValidFor { get; set; }
     }

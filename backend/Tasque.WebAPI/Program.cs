@@ -15,6 +15,7 @@ builder.Logging.AddNLog();
 AppConfigurationExtension.RegisterServices(builder.Services, builder.Configuration);
 
 builder.Services.AddRazorPages();
+builder.Services.AddCors();
 
 builder.Services.AddDbContext<DataContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("TasqueDb"), 
@@ -33,6 +34,13 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+app.UseCors(builder =>
+    builder
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowAnyOrigin());
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -42,6 +50,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMigrationsEndPoint();
+
+app.UseEndpoints(cfg =>
+{
+    cfg.MapControllers();
+});
 
 app.MapRazorPages();
 

@@ -21,8 +21,4 @@
     <ProjectReference Include="..\Tasque.DAL\Tasque.Core.DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>
