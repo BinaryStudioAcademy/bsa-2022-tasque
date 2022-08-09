@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { HttpService } from 'src/core/services/http.service';
+import { OrganizationService } from 'src/core/services/organization-service';
 import { OrganizationModel } from 'src/entity-models/organization-model';
 import { UserModel } from 'src/entity-models/user-model';
 import { ButtonComponent } from '../../button/button.component';
@@ -22,6 +23,7 @@ export class CreateOrganizationDialogComponent implements OnInit {
 
   constructor(
     public buttonComponent:ButtonComponent,
+    public organizationService: OrganizationService,
     public httpService: HttpService,
     @Inject(MAT_DIALOG_DATA) public currentUser: UserModel) { }
 
@@ -31,11 +33,11 @@ export class CreateOrganizationDialogComponent implements OnInit {
   createOrganization(name:string): void{
     const organization: OrganizationModel = {
       Name: name,
-      Author: this.currentUser,
-      AuthorId: this.currentUser.Id
+      AuthorId: this.currentUser.Id,
+      Author: this.currentUser
     }
     console.log({Name: name, AuthorId: this.currentUser?.Id});
-    this.httpService.postFullRequest("/api/organization/createOrganization", {Name: name, AuthorId: this.currentUser?.Id, Author: this.currentUser})
+    this.organizationService.createOrganization(organization)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((resp) =>{
       console.log(resp.body);

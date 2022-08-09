@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
-import { HttpService } from 'src/core/services/http.service';
 import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateOrganizationDialogComponent } from './create-organization-dialog/create-organization-dialog.component';
@@ -27,7 +26,6 @@ export class CreateOrganizationComponent implements OnInit {
 
   constructor(
     public buttonComponent:ButtonComponent,
-    public httpService: HttpService,
     public matDialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -35,6 +33,6 @@ export class CreateOrganizationComponent implements OnInit {
 
   openDialog(){
     const dialog = this.matDialog.open(CreateOrganizationDialogComponent, {data: this.currentUser});
-    dialog.afterClosed().subscribe((resp) => {console.log(`test, ${resp}`)});
+    dialog.afterClosed().subscribe((resp) => {console.log(resp)});
   }
 }
