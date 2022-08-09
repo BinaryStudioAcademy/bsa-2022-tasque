@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/material/material.module';
 import { LoadingComponent } from './components/loading-component/loading.component';
 import { CheckboxComponent } from './components/checkbox-component/checkbox.component';
-import { LeftSidebarComponent } from "./components/left-sidebar/left-sidebar.component";
+import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.component';
 
 @NgModule({
     imports: [
