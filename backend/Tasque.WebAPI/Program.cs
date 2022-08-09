@@ -6,6 +6,7 @@ using NLog.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
 builder.Logging.ClearProviders();
 builder.Logging.AddNLog();
 
@@ -13,27 +14,26 @@ builder.Logging.AddNLog();
 
 AppConfigurationExtension.RegisterServices(builder.Services, builder.Configuration);
 
+builder.Services.AddRazorPages();
+
 builder.Services.AddDbContext<DataContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("TasqueDb"), 
         b => b.MigrationsAssembly(typeof(DataContext).Assembly.FullName))
         .EnableDetailedErrors());
+
+
 var app = builder.Build();
 
-
 // Configure the HTTP request pipeline.
+app.UseMiddleware<ExceptionMiddleware>(app.Logger);
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
-
-app.UseMigrationsEndPoint();
-
-
 app.UseHttpsRedirection();
-app.UseMiddleware<ExceptionMiddleware>();
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -41,10 +41,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
+app.UseMigrationsEndPoint();
 
 app.MapRazorPages();
 
