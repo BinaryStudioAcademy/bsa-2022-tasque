@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NotificationServices } from './services/notificationServices';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'tasque';
+
+  public constructor(private notification: NotificationServices) {}
+
+  Notification() {
+    this.notification.Error("Test", "Title");
+    this.notification.Info("Test");
+    this.notification.Success("Test");
+    this.notification.Warning("Test");
+  }
 }
