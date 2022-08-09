@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Tasque.Core.BLL.JWT;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
 {
@@ -46,6 +47,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
         {
             services.AddRazorPages();
             services.ConfigureJwt(configuration);
+            services.AddScoped<JwtFactory>();
             services.AddMvc();
             services.AddControllers();
         }
