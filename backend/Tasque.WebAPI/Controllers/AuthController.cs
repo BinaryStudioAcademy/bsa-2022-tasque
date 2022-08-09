@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO;
 
 namespace Tasque.Core.WebAPI.Controllers
@@ -8,14 +9,21 @@ namespace Tasque.Core.WebAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        public Task<IActionResult> Login([FromBody] LoginDto loginInfo)
+        private AuthService _service;
+
+        public AuthController(AuthService service)
         {
-            throw new NotImplementedException();
+            _service = service;
         }
 
-        public Task<IActionResult> Register([FromBody] RegisterDto registerInfo)
+        public async Task<IActionResult> Login([FromBody] LoginDto loginInfo)
         {
-            throw new NotImplementedException();
+            return Ok(await _service.Login(loginInfo));
+        }
+
+        public async Task<IActionResult> Register([FromBody] RegisterDto registerInfo)
+        {
+            return Ok(await _service.Register(registerInfo));
         }
     }
 }
