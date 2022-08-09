@@ -11,31 +11,31 @@ namespace Tasque.Core.BLL.Services
             _db = db;
         }
 
-        public TEntity Create(TEntity entity)
+        public virtual TEntity Create(TEntity entity)
         {
             _db.Set<TEntity>().Add(entity);
             _db.SaveChanges();
             return entity;
         }
 
-        public TEntity? ReadOne(int id)
+        public virtual TEntity? ReadOne(int id)
         {
             var entity = _db.Set<TEntity>().FirstOrDefault(entity => entity.Id == id);
             return entity;
         }
 
-        public IEnumerable<TEntity> ReadAll()
+        public virtual IEnumerable<TEntity> ReadAll()
         {
             return _db.Set<TEntity>().ToList();
         }
 
-        public TEntity Update(TEntity entity)
+        public virtual TEntity Update(TEntity entity)
         {
             _db.Set<TEntity>().Update(entity);
             return entity;
         }
 
-        public bool Delete(int id)
+        public virtual bool Delete(int id)
         {
             var entityToDelete = ReadOne(id);
             if (entityToDelete is null)

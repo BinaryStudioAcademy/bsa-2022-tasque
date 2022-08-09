@@ -23,7 +23,7 @@ namespace Tasque.Core.WebAPI.Controllers
 
         [Route("readOne/{id}")]
         [HttpGet]
-        public async Task<IActionResult> ReadOne(int id)
+        public virtual IActionResult ReadOne(int id)
         {
             var entity = _service.ReadOne(id);
             if (entity is not null)
@@ -38,7 +38,7 @@ namespace Tasque.Core.WebAPI.Controllers
 
         [Route("readAll")]
         [HttpGet]
-        public IActionResult ReadAll()
+        public virtual IActionResult ReadAll()
         {
             var entities = _service.ReadAll();
             return Ok(entities);
@@ -46,7 +46,7 @@ namespace Tasque.Core.WebAPI.Controllers
 
         [Route("create")]
         [HttpPost]
-        public IActionResult Create([FromBody] TDto entityDTO)
+        public virtual IActionResult Create([FromBody] TDto entityDTO)
         {
             var entity = mapper.Map<TModel>(entityDTO);
             _service.Create(entity);
@@ -55,7 +55,7 @@ namespace Tasque.Core.WebAPI.Controllers
 
         [Route("update/{id}")]
         [HttpPut]
-        public IActionResult Update(int id, [FromBody] TDto entityDTO)
+        public virtual IActionResult Update(int id, [FromBody] TDto entityDTO)
         {
             var entity = mapper.Map<TModel>(entityDTO);
             entity.Id = id;
@@ -65,7 +65,7 @@ namespace Tasque.Core.WebAPI.Controllers
 
         [Route("delete/{id}")]
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public virtual IActionResult Delete(int id)
         {
             var deleted = _service.Delete(id);
             if (deleted)
