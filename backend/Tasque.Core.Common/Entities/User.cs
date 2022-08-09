@@ -1,4 +1,5 @@
-﻿using Tasque.Core.Common.Entities.Abstract;
+﻿using FluentValidation;
+using Tasque.Core.Common.Entities.Abstract;
 
 namespace Tasque.Core.Common.Entities;
 
@@ -20,4 +21,13 @@ public class User : BaseEntity
     public virtual ICollection<Meeting> Meetings { get; set; }
     public virtual ICollection<Project> Projects { get; set; }
     public virtual ICollection<Role> Roles { get; set; }
+}
+
+public class UserValidator : AbstractValidator<User>
+{
+    public UserValidator()
+    {
+        RuleFor(x => x.Email).EmailAddress();
+        RuleFor(x => x.Password).MinimumLength(8);
+    }
 }
