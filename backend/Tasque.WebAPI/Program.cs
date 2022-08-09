@@ -1,13 +1,9 @@
-//<<<<<<< HEAD
 using Tasque.Core.DAL;
 using Tasque.Core.WebAPI.AppConfigurationExtension;
 using Tasque.Core.WebAPI.Middlewares;
-//=======
-using Tasque.Core.WebAPI.Middlewares;
 using Microsoft.EntityFrameworkCore;
-using Tasque.Core.DAL;
 using NLog.Extensions.Logging;
-//>>>>>>> 2913fbabe3af70c09b3adb501f60c33335cfaa0b
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders();
@@ -25,10 +21,6 @@ var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
