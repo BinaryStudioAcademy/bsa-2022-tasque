@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 using System.Text;
 using Tasque.Core.BLL.JWT;
+using Tasque.Core.BLL.MappingProfiles;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
 {
@@ -42,6 +44,15 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                     };
                 });
         }
+
+        public static void ConfigureMapper(this IServiceCollection services)
+        {
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile<UserProfile>();
+            },
+            Assembly.GetExecutingAssembly());
+        } 
 
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
