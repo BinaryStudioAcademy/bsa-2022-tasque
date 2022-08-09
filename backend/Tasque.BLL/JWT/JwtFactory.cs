@@ -12,23 +12,22 @@ namespace Tasque.Core.BLL.JWT
 {
     public class JwtFactory
     {
-        public readonly IConfiguration _config;
+        public readonly JwtIssuerOptions _jwtOptions;
 
-        public JwtFactory(IConfiguration config)
+        public JwtFactory(JwtIssuerOptions jwtOptions)
         {
-            _config = config;
+            _jwtOptions = jwtOptions;
         }
 
         public string GenerateToken(object user)
         {
-            var jwtOptions = _config.GetSection("JwtIssuerOptions");
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("JWTIssuerOptions")["Key"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new Claim[] { };
 
-            var token = new JwtSecurityToken(jwtOptions["Issuer"],
-                jwtOptions["Audience"],
+            var token = new JwtSecurityToken(_jwtOptions.Issuer,
+                _jwtOptions.Audience,
                 claims,
                 expires: DateTime.Now.AddDays(1),
                 signingCredentials: credentials);

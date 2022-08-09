@@ -45,6 +45,10 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
 
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
+            var jwtIssuerOptions = new JwtIssuerOptions();
+            configuration.GetSection("JwtIssuerOptions").Bind(jwtIssuerOptions);
+
+            services.AddSingleton(jwtIssuerOptions);
             services.AddRazorPages();
             services.ConfigureJwt(configuration);
             services.AddScoped<JwtFactory>();
