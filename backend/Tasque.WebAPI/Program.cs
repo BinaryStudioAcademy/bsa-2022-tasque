@@ -1,13 +1,18 @@
-using Tasque.Core.WebAPI.Middlewares;
-using NLog.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 using Tasque.Core.DAL;
+using Tasque.Core.WebAPI.AppConfigurationExtension;
+using Tasque.Core.WebAPI.Middlewares;
+using Microsoft.EntityFrameworkCore;
+using NLog.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Logging.ClearProviders();
 builder.Logging.AddNLog();
+
+// Add services to the container.
+
+AppConfigurationExtension.RegisterServices(builder.Services, builder.Configuration);
 
 builder.Services.AddRazorPages();
 
@@ -33,6 +38,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMigrationsEndPoint();
