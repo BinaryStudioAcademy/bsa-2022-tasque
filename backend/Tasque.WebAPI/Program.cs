@@ -46,5 +46,6 @@ app.UseAuthorization();
 app.UseMigrationsEndPoint();
 
 app.MapRazorPages();
+app.MapControllers();
 
 app.Run();
