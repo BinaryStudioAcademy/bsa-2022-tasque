@@ -30,7 +30,7 @@ namespace Tasque.Core.BLL.JWT
             var token = new JwtSecurityToken(_jwtOptions.Issuer,
                 _jwtOptions.Audience,
                 claims,
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.Now.AddDays(_jwtOptions.ValidFor),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
