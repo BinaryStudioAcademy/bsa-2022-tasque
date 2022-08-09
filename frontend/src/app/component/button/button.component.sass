@@ -1,6 +1,6 @@
 .btn
     text-align: center
-    color: #4F00B5
+    color: colorscheme(violet-200)
     font-family: 'Nunito'
     font-style: 'normal'
     font-size: 16px
@@ -10,24 +10,24 @@
     background: none
     padding: 0px
     &:hover
-        color: #291965
+        color: colorscheme(violet-400)
     &.disabled
-        color: gray-400
+        color: colorscheme(gray-400)
         background: none
         cursor: not-allowed
 
 .mini
-    color: #4F00B5
+    color: colorscheme(violet-200)
     padding: 7px 15px
     gap: 10px
-    border: 2px solid #4F00B5
+    border: 2px solid colorscheme(violet-200)
     border-radius: 50px
     &:hover
-        background: #4F00B5
-        color: white
+        background: colorscheme(violet-200)
+        color: colorscheme(white-100)
     &.disabled
-        color: gray-400
-        border-color: gray-400
+        color: colorscheme(gray-400)
+        border-color:colorscheme(gray-400)
         background: none
         cursor: not-allowed
 
@@ -39,24 +39,24 @@
     border-radius: 50px
     &:hover
         background: #EE2A64
-        color: white
+        color: colorscheme(white-100)
     &.disabled
-        color: gray-400
-        border-color: gray-400
+        color: colorscheme(gray-400)
+        border-color: colorscheme(gray-400)
         background: none
         cursor: not-allowed
         
 .fill
     padding: 13px 20px
     gap: 10px
-    color: white
+    color: colorscheme(white-100)
     background: #EE2A64
     border-radius: 50px
     &:hover
         background: #E30547
-        color: white
+        color: colorscheme(white-100)
     &.disabled
-        color: white
+        color: colorscheme(white-100)
         background: none
-        background-color: gray-400
+        background-color: colorscheme(gray-400)
         cursor: not-allowed
