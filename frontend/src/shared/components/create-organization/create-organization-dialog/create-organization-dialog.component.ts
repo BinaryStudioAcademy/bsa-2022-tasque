@@ -5,7 +5,6 @@ import { takeUntil } from 'rxjs/operators';
 import { OrganizationService } from 'src/core/services/organization-service';
 import { OrganizationModel } from 'src/entity-models/organization-model';
 import { UserModel } from 'src/entity-models/user-model';
-import { ButtonComponent } from '../../button/button.component';
 
 @Component({
   selector: 'app-create-organization-dialog',
@@ -21,7 +20,6 @@ export class CreateOrganizationDialogComponent implements OnInit {
   public unsubscribe$ = new Subject<void>();
 
   constructor(
-    public buttonComponent:ButtonComponent,
     public organizationService: OrganizationService,
     @Inject(MAT_DIALOG_DATA) public currentUser: UserModel) { }
 
@@ -35,8 +33,6 @@ export class CreateOrganizationDialogComponent implements OnInit {
     };
     this.organizationService.createOrganization(organization)
     .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((resp) => {
-      console.log(resp.body);
-    });
+    .subscribe();
   }
 }
