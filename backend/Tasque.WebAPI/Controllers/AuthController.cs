@@ -47,21 +47,8 @@ namespace Tasque.Core.WebAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegisterDto registerInfo)
         {
-            var registeredUser = await _service.Register(registerInfo);
-            var token = _service.GetAccessToken(registeredUser.Id, registeredUser.Name, registeredUser.Email);
-            await SendConfirmationEmail(registeredUser);
-            return Ok(token);
-        }
-
-        public async Task SendConfirmationEmail(UserDto user)
-        {
-            var reciever = new EmailContact(user.Email, user.Name);
-            var email = new EmailMessage(reciever)
-            {
-                Subject = "Successful registration",
-                Content = "Thanks for choosing Tasque"
-            };
-            await _emailService.SendEmailAsync(email);
+            await _service.Register(registerInfo);
+            return Ok();
         }
     }
 }
