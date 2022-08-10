@@ -7,15 +7,15 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class DropdownComponent implements OnInit {
   @Input() public options: [color:string, title:string, id:number][] = [];
-  @Input() public label: string = "";
-  @Input() public width : string = "300px";
-  @Input() public placeholder : string = "";
-  @Input() public autoSelect : boolean = false;
+  @Input() public label = '';
+  @Input() public width = '300px';
+  @Input() public placeholder = '';
+  @Input() public autoSelect = false;
 
   @Output() onSelect = new EventEmitter<number>();
   
   public selectedOption : [color:string, title:string, id:number] | undefined = undefined;
-  public expanded : boolean = false;
+  public expanded = false;
   
   constructor() { 
   }
