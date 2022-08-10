@@ -23,9 +23,9 @@ namespace Tasque.Core.WebAPI.Controllers
 
         [Route("readOne/{id}")]
         [HttpGet]
-        public virtual IActionResult ReadOne(int id)
+        public virtual IActionResult GetOne(int id)
         {
-            var entity = _service.ReadOne(id);
+            var entity = _service.GetOne(id);
             if (entity is not null)
             {
                 return Ok(entity);
@@ -38,9 +38,9 @@ namespace Tasque.Core.WebAPI.Controllers
 
         [Route("readAll")]
         [HttpGet]
-        public virtual IActionResult ReadAll()
+        public virtual IActionResult GetAll()
         {
-            var entities = _service.ReadAll();
+            var entities = _service.GetAll();
             return Ok(entities);
         }
 

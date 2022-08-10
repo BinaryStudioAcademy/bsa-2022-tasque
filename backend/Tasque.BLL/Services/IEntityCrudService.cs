@@ -6,8 +6,8 @@ namespace Tasque.Core.BLL.Services
     {
         TEntity Create(TEntity entity);
         bool Delete(int id);
-        IEnumerable<TEntity> ReadAll();
-        TEntity? ReadOne(int id);
+        IEnumerable<TEntity> GetAll();
+        TEntity? GetOne(int id);
         TEntity Update(TEntity entity);
     }
 }
