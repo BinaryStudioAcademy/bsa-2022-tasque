@@ -58,7 +58,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 cfg.AddProfile<UserProfile>();
             },
             Assembly.GetExecutingAssembly());
-        } 
+        }
 
         public static void ConfigureValidator(this IServiceCollection services)
         {
@@ -67,6 +67,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
 
         public static void ConfigureEmailServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<EmailConfirmationOptions>(configuration.GetSection(nameof(EmailConfirmationOptions)));
+
             var options = new MailJetOptions();
             var section = configuration.GetSection(nameof(MailJetOptions));
             section.Bind(options);
