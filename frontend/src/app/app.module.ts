@@ -5,9 +5,10 @@ import { SharedModule } from 'src/shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ToastrModule } from 'ngx-toastr';
+import { RegisterPageComponent } from './register-page/register-page.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, RegisterPageComponent],
   imports: [
     BrowserModule,
     SharedModule,

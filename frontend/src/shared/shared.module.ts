@@ -10,6 +10,7 @@ import { InputComponent } from './components/tasque-input/input.component';
 import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
+import { RegisterPageComponent } from './components/register-page/register-page.component';
 
 @NgModule({
     imports: [
@@ -28,6 +29,7 @@ import { ConfirmationModalComponent } from './components/tasque-confirmation-mod
         CheckboxComponent,
         LeftSidebarComponent,
         ConfirmationModalComponent,
+        RegisterPageComponent,
     ],
     exports: [
         CommonModule,
