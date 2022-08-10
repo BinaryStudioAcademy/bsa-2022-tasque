@@ -27,7 +27,7 @@ export class ButtonComponent {
 
   @Output() btnClick = new EventEmitter();
 
-  constructor() {}
+  constructor() { }
 
   onClick(): void {
     this.btnClick.emit();

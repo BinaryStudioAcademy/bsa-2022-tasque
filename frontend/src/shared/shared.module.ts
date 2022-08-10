@@ -6,6 +6,7 @@ import { MaterialModule } from 'src/app/material/material.module';
 import { LoadingComponent } from './components/loading-component/loading.component';
 import { CheckboxComponent } from './components/checkbox-component/checkbox.component';
 import { ConfirmationModalComponent } from './components/confirmation-modal-component/confirmation-modal.component';
+import { ButtonComponent } from './components/button/button.component';
 
 @NgModule({
     imports: [
@@ -19,7 +20,8 @@ import { ConfirmationModalComponent } from './components/confirmation-modal-comp
     declarations: [
         LoadingComponent,
         CheckboxComponent,
-        ConfirmationModalComponent
+        ConfirmationModalComponent,
+        ButtonComponent
     ],
     exports: [
         CommonModule,
