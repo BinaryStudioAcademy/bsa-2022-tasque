@@ -14,7 +14,6 @@ namespace Tasque.Core.WebAPI.Controllers
     {
         private AuthService _service;
 
-
         public AuthController(AuthService service, JwtFactory jwtFactory)
         {
             _service = service;

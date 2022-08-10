@@ -72,6 +72,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddScoped<JwtFactory>();
             services.AddMvc();
             services.AddControllers();
+            services.AddCors();
 
             services.AddScoped<AuthService>();
         }

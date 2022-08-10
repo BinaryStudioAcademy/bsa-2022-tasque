@@ -36,6 +36,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseCors(builder => 
+    builder
+        .AllowAnyHeader()
+        .AllowAnyOrigin()
+        .AllowAnyMethod());
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
