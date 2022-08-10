@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using Tasque.Core.BLL.JWT;
 using Tasque.Core.BLL.MappingProfiles;
+using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.BLL.Services.Email.MailJet;

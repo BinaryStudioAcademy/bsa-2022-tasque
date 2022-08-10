@@ -1,5 +1,6 @@
 ﻿using Mailjet.Client;
 using Microsoft.Extensions.Options;
+using Tasque.Core.BLL.Options;
 using Tasque.Core.Common.Models.Email;
 
 namespace Tasque.Core.BLL.Services.Email.MailJet
