@@ -1,12 +1,15 @@
 <div class="dropdown_wrpr">
-    <label class="dropdown_label">label</label>
+    <label class="dropdown_label" *ngIf="label">{{label}}</label>
     <button class="dropdown_btn" (click)="dropdownOpen()">
-        <div class="selected_option">
-            <svg class="color_square">
-                <rect [ngStyle]="{'fill': selectedOption[0]}" />
-            </svg>
-            {{selectedOption[1]}}
-        </div>
+        <div class="selected_wrpr">
+            <span class="selected_option">
+                <svg class="color_square">
+                    <rect [ngStyle]="{'fill': selectedOption[0]}" />
+                </svg>
+                {{selectedOption[1]}}
+            </span>
+            <mat-icon class="dropdown_ico">expand_more</mat-icon>
+        </div>  
     </button>
     <div class="options_container" *ngIf="expanded">
         <div class="option" *ngFor="let option of options; index as i"

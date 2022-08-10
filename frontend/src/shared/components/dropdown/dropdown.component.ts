@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./dropdown.component.sass']
 })
 export class DropdownComponent implements OnInit {
-  @Input() public options: [color:string, title:string, id:number][] = [["red", "Bug", 0], ["blue", "Feature", 1]];
+  @Input() public options: [color:string, title:string, id:number][] = [["#F8A70B", "Development", 0], ["#F6F7F9", "Feature", 1]];
   @Input() public label: string = "";
 
  // @Output() dropdownSelect = new EventEmitter();

@@ -1,35 +1,52 @@
+@import 'src/colors.sass'
+    
 .dropdown_wrpr
+    font-family: Nunito
+    font-style: normal
+    color: colorscheme(black-100)
     display: flex
     flex-direction: column
     font-size: 14px
-    width: 150px
+    width: 325px
    
-
 .options_container
-    background-color: #FFFFFF
-    border: 2px solid #E0E4EC
+    margin-top: 2px
+    background-color: colorscheme(white-100)
+    border: 2px solid colorscheme(gray-300)
     border-radius: 10px
-    
 
+.dropdown_label 
+    font-size: 12px
+    line-height: 16.3px
+    
 .color_square
     border-radius: 3px
     width: 13px
     height: 13px
+    margin-right: 5px
 
 rect
     width: 13px
     height: 13px
 
 .dropdown_btn
+    padding: 0px
     border-radius: 10px
     border: none
     cursor: pointer
-    height: 30px 
+    height: 35px 
 
 .selected_option
     display: flex
     flex-direction: row
     justify-content: flex-start
+    align-items: center
+    padding: 5px
+    padding-left: 15px
+    font-family: Nunito
+    font-size: 14px
+    font-weight: 400
+    line-height: 19.1px
 
 .option
     display: flex
@@ -37,10 +54,23 @@ rect
     justify-content: flex-start
     align-items: center
     cursor: pointer
+    font-size: 14px
+    font-weight: 400
+    line-height: 19.1px
     &:hover
-        background-color: #E0E4EC
+        background-color: colorscheme(gray-100)
     &.active
-        background-color: #c9cbcf
+        background-color: colorscheme(gray-200)
+
+.dropdown_ico
+    font-size: 25px
+    margin-right: 15px
+
+.selected_wrpr
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    align-items: center
 
 
     
