@@ -28,8 +28,8 @@ export class CreateOrganizationDialogComponent implements OnInit {
   
   createOrganization(name:string): void{
     const organization: OrganizationModel = {
-      Name: name,
-      AuthorId: this.currentUser.Id
+      name: name,
+      authorId: this.currentUser.id
     };
     this.organizationService.createOrganization(organization)
     .pipe(takeUntil(this.unsubscribe$))

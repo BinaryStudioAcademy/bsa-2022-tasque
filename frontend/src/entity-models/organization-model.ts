@@ -1,9 +1,9 @@
 import { UserModel } from './user-model';
 
 export interface OrganizationModel{
-    Id?: number,
-    Name: string,
-    AuthorId: number,
-    Author?: UserModel
+    id?: number,
+    name: string,
+    authorId: number,
+    author?: UserModel
 }
 
