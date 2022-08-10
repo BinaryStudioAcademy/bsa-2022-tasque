@@ -13,7 +13,7 @@ export interface ConfirmationData {
   styleUrls: ['./confirmation-modal.component.sass']
 })
 export class ConfirmationModalComponent implements OnInit {
-  public type: string = 'default';
+  public type = 'default';
   public message: string;
   public title: string;
 
