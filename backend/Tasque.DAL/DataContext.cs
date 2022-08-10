@@ -25,18 +25,18 @@ public class DataContext : DbContext
             .HasOne(task => task.LastUpdatedBy);
     }
 
-    public DbSet<Organization>? Organizations { get; set; }
-    public DbSet<User>? Users { get; set; }
-    public DbSet<Project>? Projects { get; set; }
-    public DbSet<Task>? Tasks { get; set; }
-    public DbSet<Comment>? Comments { get; set; }
-    public DbSet<Attachment>? Attachments { get; set; }
-    public DbSet<Board>? Boards { get; set; }
-    public DbSet<BoardColumn>? BoardColumns { get; set; }
-    public DbSet<Calendar>? Calendars { get; set; }
-    public DbSet<Label>? Labels { get; set; }
-    public DbSet<Meeting>? Meetings { get; set; }
-    public DbSet<Notification>? Notifications { get; set; }
-    public DbSet<Role>? Roles { get; set; }
-    public DbSet<Sprint>? Sprints { get; set; }
+    public DbSet<Organization> Organizations { get; set; } = null!;
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Project> Projects { get; set; } = null!;
+    public DbSet<Task> Tasks { get; set; } = null!;
+    public DbSet<Comment> Comments { get; set; } = null!;
+    public DbSet<Attachment> Attachments { get; set; } = null!;
+    public DbSet<Board> Boards { get; set; } = null!;
+    public DbSet<BoardColumn> BoardColumns { get; set; } = null!;
+    public DbSet<Calendar> Calendars { get; set; } = null!;
+    public DbSet<Label> Labels { get; set; } = null!;
+    public DbSet<Meeting> Meetings { get; set; } = null!;
+    public DbSet<Notification> Notifications { get; set; } = null!;
+    public DbSet<Role> Roles { get; set; } = null!;
+    public DbSet<Sprint> Sprints { get; set; } = null!;
 }

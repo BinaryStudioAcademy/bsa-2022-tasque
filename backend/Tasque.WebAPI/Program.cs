@@ -12,6 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddNLog();
 
+builder.Services.ConfigureMapper();
+builder.Services.ConfigureValidator();
+
 // Add services to the container.
 
 AppConfigurationExtension.RegisterServices(builder.Services, builder.Configuration);
@@ -42,6 +45,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMigrationsEndPoint();
-
 
 app.Run();
