@@ -18,13 +18,13 @@ namespace Tasque.Core.BLL.Services
             return entity;
         }
 
-        public TEntity? ReadOne(int id)
+        public TEntity? GetOne(int id)
         {
             var entity = _db.Set<TEntity>().FirstOrDefault(entity => entity.Id == id);
             return entity;
         }
 
-        public IEnumerable<TEntity> ReadAll()
+        public IEnumerable<TEntity> GetAll()
         {
             return _db.Set<TEntity>().ToList();
         }
@@ -37,7 +37,7 @@ namespace Tasque.Core.BLL.Services
 
         public bool Delete(int id)
         {
-            var entityToDelete = ReadOne(id);
+            var entityToDelete = GetOne(id);
             if (entityToDelete is null)
             {
                 return false;
