@@ -1,3 +1,5 @@
+global using AutoMapper;
+global using FluentValidation;
 using Tasque.Core.DAL;
 using Tasque.Core.WebAPI.AppConfigurationExtension;
 using Tasque.Core.WebAPI.Middlewares;
@@ -13,8 +15,6 @@ builder.Logging.AddNLog();
 // Add services to the container.
 
 AppConfigurationExtension.RegisterServices(builder.Services, builder.Configuration);
-
-builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<DataContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("TasqueDb"), 
@@ -43,6 +43,5 @@ app.UseAuthorization();
 
 app.UseMigrationsEndPoint();
 
-app.MapRazorPages();
 
 app.Run();
