@@ -8,6 +8,8 @@ import { LoadingComponent } from './components/tasque-loading/loading.component'
 import { CheckboxComponent } from './components/tasque-checkbox/checkbox.component';
 import { InputComponent } from './components/tasque-input/input.component';
 import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
 
 @NgModule({
     imports: [
@@ -17,13 +19,15 @@ import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.com
         ReactiveFormsModule,
         RouterModule,
         MaterialModule,
+        BrowserAnimationsModule,
     ],
     declarations: [
         LoadingComponent,
         ButtonComponent,
         InputComponent,
         CheckboxComponent,
-        LeftSidebarComponent
+        LeftSidebarComponent,
+        ConfirmationModalComponent,
     ],
     exports: [
         CommonModule,
@@ -31,11 +35,13 @@ import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.com
         FormsModule,
         ReactiveFormsModule,
         RouterModule,
+        MaterialModule,
+        BrowserAnimationsModule,
         LoadingComponent,
         ButtonComponent,
-        InputComponent,        
+        InputComponent,
         CheckboxComponent,
-        MaterialModule,
+        ConfirmationModalComponent,
         LeftSidebarComponent,
     ],
 })
