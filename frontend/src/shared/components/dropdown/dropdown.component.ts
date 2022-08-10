@@ -10,7 +10,7 @@ export class DropdownComponent implements OnInit {
   @Input() public label: string = "";
   @Input() public width : string = "300px";
 
- // @Output() dropdownSelect = new EventEmitter();
+  @Output() onSelect = new EventEmitter<number>();
   
   public selectedOption : [string, string, number] = this.options[0];
   public expanded : boolean = false;
@@ -30,7 +30,11 @@ export class DropdownComponent implements OnInit {
 
   public select(option: [string, string, number]) : void
   {
-    this.selectedOption = option;
+    if (this.selectedOption != option)
+    {
+      this.selectedOption = option;
+      this.onSelect.emit(this.selectedOption[2]);
+    }
     this.expanded = false;
   }
 
