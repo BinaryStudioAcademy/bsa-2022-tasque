@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 using System.Text;
 using Tasque.Core.BLL.JWT;
+using Tasque.Core.BLL.MappingProfiles;
+using Tasque.Core.BLL.Services;
+using Tasque.Core.Common.Entities;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
 {
@@ -9,7 +14,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
     {
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
         {
-            var secretKey = configuration["SecretJWTKey"];
+            var secretKey = configuration["JWTIssuerOptions:Key"];
             var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
 
             var jwtOptions = configuration.GetSection("JwtIssuerOptions");
@@ -37,10 +42,24 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                                 context.Response.Headers.Add("Token-expired", "true");
 
-                            return Task.CompletedTask;
+                            return System.Threading.Tasks.Task.CompletedTask;
                         }
                     };
                 });
+        }
+
+        public static void ConfigureMapper(this IServiceCollection services)
+        {
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile<UserProfile>();
+            },
+            Assembly.GetExecutingAssembly());
+        } 
+
+        public static void ConfigureValidator(this IServiceCollection services)
+        {
+            services.AddValidatorsFromAssemblyContaining<UserValidator>();
         }
 
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
@@ -49,11 +68,12 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             configuration.GetSection("JwtIssuerOptions").Bind(jwtIssuerOptions);
 
             services.AddSingleton(jwtIssuerOptions);
-            services.AddRazorPages();
             services.ConfigureJwt(configuration);
             services.AddScoped<JwtFactory>();
             services.AddMvc();
             services.AddControllers();
+
+            services.AddScoped<AuthService>();
         }
     }
 }

@@ -1,12 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Tasque.Core.BLL.JWT
 {
@@ -19,17 +14,23 @@ namespace Tasque.Core.BLL.JWT
             _jwtOptions = jwtOptions;
         }
 
-        public string GenerateToken(object user)
+        public string GenerateToken(int id, string username, string email)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new Claim[] { };
+            var claims = new[]
+            {
+                 new Claim(JwtRegisteredClaimNames.Sub, username),
+                 new Claim(JwtRegisteredClaimNames.Email, email),
+                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                 new Claim("id", id.ToString())
+             };
 
             var token = new JwtSecurityToken(_jwtOptions.Issuer,
                 _jwtOptions.Audience,
                 claims,
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.Now.AddDays(_jwtOptions.ValidFor),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

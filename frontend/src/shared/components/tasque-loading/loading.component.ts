@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'loading-component',
+  selector: 'tasque-loading',
   templateUrl: './loading.component.html',
   styleUrls: ['./loading.component.sass'],
 })

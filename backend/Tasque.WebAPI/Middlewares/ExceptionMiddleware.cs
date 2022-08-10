@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FluentValidation;
+using Newtonsoft.Json;
 using System.Net;
 using Tasque.Core.BLL.Exeptions;
 
@@ -26,6 +27,13 @@ namespace Tasque.Core.WebAPI.Middlewares
                 _logger.LogError("{ex.StatusCode}| {ex.Message}", ex.StatusCode, ex.Message);
                 await CreateExceptionAsync(httpContext, ex.StatusCode, new { error = ex.Message });
                 return;
+            }
+            catch (ValidationException ex)
+            {
+                var message = ex.Errors.Any()
+                    ? ex.Errors.Aggregate("", (x, y) => x += $"{y.ErrorMessage}\n")
+                    : ex.Message;
+                await CreateExceptionAsync(httpContext, HttpStatusCode.BadRequest, message);
             }
             catch (Exception ex)
             {
