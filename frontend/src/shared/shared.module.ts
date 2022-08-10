@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/material/material.module';
 import { LoadingComponent } from './components/loading-component/loading.component';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
 
 @NgModule({
     imports: [
@@ -16,6 +17,7 @@ import { LoadingComponent } from './components/loading-component/loading.compone
     ],
     declarations: [
         LoadingComponent,
+        DropdownComponent,
     ],
     exports: [
         CommonModule,
@@ -25,6 +27,7 @@ import { LoadingComponent } from './components/loading-component/loading.compone
         RouterModule,
         LoadingComponent,        
         MaterialModule,
+        DropdownComponent,
     ],
 })
 export class SharedModule { } 
