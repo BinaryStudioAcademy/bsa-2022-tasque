@@ -41,7 +41,7 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok(token);
         }
 
-        public async Task SendConfirmationEmail(UserDto user)
+        private async Task SendConfirmationEmail(UserDto user)
         {
             var reciever = new EmailContact(user.Email, user.Name);
             var email = new EmailMessage(reciever)
