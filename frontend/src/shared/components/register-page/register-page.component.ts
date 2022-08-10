@@ -17,6 +17,9 @@ export class RegisterPageComponent implements OnInit {
   public inputEmail = 'email';
   public inputPassword = 'password';
   public inputClass = 'input';
+  public errorMailMessage = 'Invalid email';
+  public buttonClass = 'stroke';
+  public buttonText = 'Sign up';
 
   constructor() { }
 
