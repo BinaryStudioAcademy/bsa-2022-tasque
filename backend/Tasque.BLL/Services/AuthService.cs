@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Tasque.Core.BLL.JWT;
+using Tasque.Core.BLL.Options;
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Security;
@@ -15,13 +17,20 @@ namespace Tasque.Core.BLL.Services
         private IMapper _mapper;
         private JwtFactory _jwtFactory;
         private IValidator<User> _validator;
+        private EmailConfirmationOptions _emailOptions;
 
-        public AuthService(DataContext context, IMapper mapper, JwtFactory jwtFactory, IValidator<User> validator)
+        public AuthService(
+            DataContext context, 
+            IMapper mapper, 
+            JwtFactory jwtFactory, 
+            IValidator<User> validator, 
+            IOptions<EmailConfirmationOptions> emailOptions)
         {
             _context = context;
             _mapper = mapper;
             _jwtFactory = jwtFactory;
             _validator = validator;
+            _emailOptions = emailOptions.Value;
         }
 
         public async Task<UserDto> Login(UserLoginDto loginInfo)
@@ -35,6 +44,26 @@ namespace Tasque.Core.BLL.Services
             }
 
             return _mapper.Map<UserDto>(userEntity);
+        }
+
+        public async Task<UserDto> Login(Guid emailToken)
+        {
+            var confToken = await _context.EmailConfirmationTokens
+                .Include(x => x.User)
+                .FirstOrDefaultAsync(x => x.Token == emailToken)
+                ?? throw new ValidationException("Invalid confirmation token");
+
+            if (confToken.ExpiringAt < DateTime.Now)
+            {
+                _context.EmailConfirmationTokens.Remove(confToken);
+                await _context.SaveChangesAsync();
+                throw new ValidationException("Confirmation token expired");
+            }
+
+            confToken.User.IsEmailConfirmed = true;
+            _context.EmailConfirmationTokens.Remove(confToken);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<UserDto>(confToken.User);
         }
 
         public async Task<UserDto> Register(UserRegisterDto registerInfo)

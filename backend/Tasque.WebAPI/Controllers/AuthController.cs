@@ -28,6 +28,18 @@ namespace Tasque.Core.WebAPI.Controllers
         public async Task<IActionResult> Login([FromBody] UserLoginDto loginInfo)
         {
             var user = await _service.Login(loginInfo);
+            return Login(user);
+        }
+
+        [HttpGet("confirm")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] Guid key)
+        {
+            var user = await _service.Login(key);
+            return Login(user);
+        }
+
+        private IActionResult Login(UserDto user)
+        {
             var token = _service.GetAccessToken(user.Id, user.Name, user.Email);
             return Ok(token);
         }
