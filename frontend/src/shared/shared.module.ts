@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/material/material.module';
 import { LoadingComponent } from './components/loading-component/loading.component';
-import { DropdownComponent } from './components/dropdown/dropdown.component';
+import { DropdownComponent } from './components/tasque-dropdown/dropdown.component';
 
 @NgModule({
     imports: [
