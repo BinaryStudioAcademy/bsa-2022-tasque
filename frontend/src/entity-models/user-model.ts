@@ -5,3 +5,4 @@ export interface UserModel{
     Password: string,
     Salt: string
 }
+

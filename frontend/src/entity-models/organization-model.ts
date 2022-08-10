@@ -6,3 +6,4 @@ export interface OrganizationModel{
     AuthorId: number,
     Author?: UserModel
 }
+
