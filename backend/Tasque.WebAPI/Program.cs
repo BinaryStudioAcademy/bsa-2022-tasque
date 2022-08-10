@@ -1,3 +1,5 @@
+global using AutoMapper;
+global using FluentValidation;
 using Tasque.Core.DAL;
 using Tasque.Core.WebAPI.AppConfigurationExtension;
 using Tasque.Core.WebAPI.Middlewares;
@@ -14,7 +16,6 @@ builder.Logging.AddNLog();
 
 AppConfigurationExtension.RegisterServices(builder.Services, builder.Configuration);
 
-builder.Services.AddRazorPages();
 builder.Services.AddCors();
 
 builder.Services.AddDbContext<DataContext>(
@@ -56,6 +57,5 @@ app.UseEndpoints(cfg =>
     cfg.MapControllers();
 });
 
-app.MapRazorPages();
 
 app.Run();
