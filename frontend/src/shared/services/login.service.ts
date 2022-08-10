@@ -16,7 +16,7 @@ export class LoginService {
       backdropClass: 'fullscreen-dialog',      
       minWidth: '100%',
       minHeight: '100%'
-    })
+    });
   }
 
 }
