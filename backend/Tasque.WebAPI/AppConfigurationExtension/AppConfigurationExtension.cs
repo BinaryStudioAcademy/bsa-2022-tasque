@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+﻿using Mailjet.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -7,6 +7,8 @@ using System.Text;
 using Tasque.Core.BLL.JWT;
 using Tasque.Core.BLL.MappingProfiles;
 using Tasque.Core.BLL.Services;
+using Tasque.Core.BLL.Services.Email;
+using Tasque.Core.BLL.Services.Email.MailJet;
 using Tasque.Core.Common.Entities;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
@@ -63,6 +65,19 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddValidatorsFromAssemblyContaining<UserValidator>();
         }
 
+        public static void ConfigureEmailServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            var options = new MailJetOptions();
+            var section = configuration.GetSection(nameof(MailJetOptions));
+            section.Bind(options);
+            services.AddHttpClient<IMailjetClient, MailjetClient>(client =>
+            {
+                client.SetDefaultSettings();
+                client.UseBasicAuthentication(options.ApiKey, options.ApiSecret);
+            });
+            services.Configure<MailJetOptions>(section);
+        }
+
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
             var jwtIssuerOptions = new JwtIssuerOptions();
@@ -75,7 +90,9 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddControllers();
             services.AddCors();
 
-            services.AddScoped<AuthService>();
+            services
+                .AddScoped<AuthService>()
+                .AddScoped<IEmailService, MailJetService>();
         }
 
         public static void AddSwagger(this IServiceCollection services)
