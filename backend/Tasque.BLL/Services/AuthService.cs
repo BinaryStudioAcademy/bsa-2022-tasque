@@ -42,14 +42,15 @@ namespace Tasque.Core.BLL.Services
             var userEntity = _mapper.Map<User>(registerInfo);
             _validator.ValidateAndThrow(userEntity);
 
-            var salt = SecurityHelper.GetRandomBytes();
-            userEntity.Salt = Convert.ToBase64String(salt);
-            userEntity.Password = SecurityHelper.HashPassword(registerInfo.Password, salt);
-            
             if (_context.Users.Any(x => x.Email == userEntity.Email))
             {
                 throw new ValidationException("User with given email already exists");
             }
+
+            var salt = SecurityHelper.GetRandomBytes();
+            userEntity.Salt = Convert.ToBase64String(salt);
+            userEntity.Password = SecurityHelper.HashPassword(registerInfo.Password, salt);           
+            
             _context.Users.Add(userEntity);
             await _context.SaveChangesAsync();
 
