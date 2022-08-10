@@ -21,6 +21,8 @@ builder.Services.AddSwagger();
 
 AppConfigurationExtension.RegisterServices(builder.Services, builder.Configuration);
 
+builder.Services.AddCors();
+
 builder.Services.AddDbContext<DataContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("TasqueDb"), 
         b => b.MigrationsAssembly(typeof(DataContext).Assembly.FullName))
@@ -38,6 +40,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseCors(builder =>
+    builder
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowAnyOrigin());
+        
 app.UseSwagger();
 app.UseSwaggerUI();
 
@@ -51,5 +59,9 @@ app.UseAuthorization();
 
 app.UseMigrationsEndPoint();
 
-app.MapControllers();
+app.UseEndpoints(cfg =>
+{
+    cfg.MapControllers();
+});
+
 app.Run();
