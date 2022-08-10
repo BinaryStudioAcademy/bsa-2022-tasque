@@ -3,8 +3,10 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/material/material.module';
-import { LoadingComponent } from './components/loading-component/loading.component';
-import { CheckboxComponent } from './components/checkbox-component/checkbox.component';
+import { ButtonComponent } from './components/tasque-button/button.component';
+import { LoadingComponent } from './components/tasque-loading/loading.component';
+import { CheckboxComponent } from './components/tasque-checkbox/checkbox.component';
+import { InputComponent } from './components/tasque-input/input.component';
 import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.component';
 
 @NgModule({
@@ -18,8 +20,10 @@ import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.com
     ],
     declarations: [
         LoadingComponent,
+        ButtonComponent,
+        InputComponent,
         CheckboxComponent,
-        LeftSidebarComponent,
+        LeftSidebarComponent
     ],
     exports: [
         CommonModule,
@@ -28,6 +32,8 @@ import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.com
         ReactiveFormsModule,
         RouterModule,
         LoadingComponent,
+        ButtonComponent,
+        InputComponent,        
         CheckboxComponent,
         MaterialModule,
         LeftSidebarComponent,
