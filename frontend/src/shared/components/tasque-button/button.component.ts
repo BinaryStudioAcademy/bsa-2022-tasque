@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-button',
+  selector: 'tasque-button',
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.sass'],
 })
@@ -27,7 +27,7 @@ export class ButtonComponent {
 
   @Output() btnClick = new EventEmitter();
 
-  constructor() {}
+  constructor() { }
 
   onClick(): void {
     this.btnClick.emit();

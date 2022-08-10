@@ -1,7 +1,10 @@
-using Tasque.Core.WebAPI.Middlewares;
-using NLog.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
+global using AutoMapper;
+global using FluentValidation;
 using Tasque.Core.DAL;
+using Tasque.Core.WebAPI.AppConfigurationExtension;
+using Tasque.Core.WebAPI.Middlewares;
+using Microsoft.EntityFrameworkCore;
+using NLog.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +12,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddNLog();
 
-builder.Services.AddRazorPages();
+builder.Services.ConfigureMapper();
+builder.Services.ConfigureValidator();
+builder.Services.AddSwagger();
+
+// Add services to the container.
+
+AppConfigurationExtension.RegisterServices(builder.Services, builder.Configuration);
 
 builder.Services.AddDbContext<DataContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("TasqueDb"), 
@@ -28,15 +37,18 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSwagger();
+app.UseSwaggerUI();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMigrationsEndPoint();
 
-app.MapRazorPages();
-
+app.MapControllers();
 app.Run();

@@ -4,7 +4,7 @@ public abstract class BaseEntity
 {
     public BaseEntity()
     {
-        CreatedAt = UpdatedAt = DateTime.Now;
+        CreatedAt = UpdatedAt = DateTime.UtcNow;
     }
 
     public int Id { get; set; }
