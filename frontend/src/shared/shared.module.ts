@@ -8,6 +8,8 @@ import { LoadingComponent } from './components/tasque-loading/loading.component'
 import { CheckboxComponent } from './components/tasque-checkbox/checkbox.component';
 import { InputComponent } from './components/tasque-input/input.component';
 import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
 import { OrganizationsDropdownComponent } from './components/organizations-dropdown/organizations-dropdown.component';
 
 @NgModule({
@@ -18,6 +20,7 @@ import { OrganizationsDropdownComponent } from './components/organizations-dropd
         ReactiveFormsModule,
         RouterModule,
         MaterialModule,
+        BrowserAnimationsModule,
     ],
     declarations: [
         LoadingComponent,
@@ -25,6 +28,7 @@ import { OrganizationsDropdownComponent } from './components/organizations-dropd
         InputComponent,
         CheckboxComponent,
         LeftSidebarComponent,
+        ConfirmationModalComponent,
         OrganizationsDropdownComponent
     ],
     exports: [
@@ -33,11 +37,13 @@ import { OrganizationsDropdownComponent } from './components/organizations-dropd
         FormsModule,
         ReactiveFormsModule,
         RouterModule,
+        MaterialModule,
+        BrowserAnimationsModule,
         LoadingComponent,
         ButtonComponent,
         InputComponent,
         CheckboxComponent,
-        MaterialModule,
+        ConfirmationModalComponent,
         LeftSidebarComponent,
         OrganizationsDropdownComponent
     ],

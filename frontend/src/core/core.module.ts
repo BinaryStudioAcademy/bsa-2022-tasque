@@ -14,7 +14,7 @@ import { BaseComponent } from './base/base.component';
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     ],
     declarations: [
-      BaseComponent,
+        BaseComponent,
     ],
 })
 export class CoreModule { } 
