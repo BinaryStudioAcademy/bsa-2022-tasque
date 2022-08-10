@@ -8,9 +8,11 @@ import { AppComponent } from './app.component';
 import { ButtonComponent } from '../shared/components/button/button.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { SideBarComponent } from '../shared/components/sidebar/sidebar.component';
+import { SideBarService } from 'src/core/services/sideBar.service';
 
 @NgModule({
-  declarations: [AppComponent, ButtonComponent],
+  declarations: [AppComponent, ButtonComponent, SideBarComponent],
   imports: [
     BrowserModule,
     SharedModule,
@@ -19,7 +21,7 @@ import { ToastrModule } from 'ngx-toastr';
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
   ],
-  providers: [],
+  providers: [SideBarService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
