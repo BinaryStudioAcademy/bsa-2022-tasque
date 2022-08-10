@@ -68,11 +68,7 @@ namespace Tasque.Core.WebAPI.Controllers
         public virtual IActionResult Delete(int id)
         {
             var deleted = _service.Delete(id);
-            if (deleted)
-            {
-                return Ok();
-            }
-            return BadRequest();
+            return deleted ? Ok() : BadRequest();
         }
     }
 }

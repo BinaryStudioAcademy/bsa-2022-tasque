@@ -32,6 +32,7 @@ namespace Tasque.Core.BLL.Services
         public virtual TEntity Update(TEntity entity)
         {
             _db.Set<TEntity>().Update(entity);
+            _db.SaveChanges();
             return entity;
         }
 
@@ -43,6 +44,7 @@ namespace Tasque.Core.BLL.Services
                 return false;
             }
             _db.Set<TEntity>().Remove(entityToDelete);
+            _db.SaveChanges();
             return true;
         }
     }
