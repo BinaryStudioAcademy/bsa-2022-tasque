@@ -16,6 +16,11 @@ export class CreateOrganizationDialogComponent implements OnInit {
   public createBtnName = 'Create';
   public btnClass = 'mini';
   public cancelBtnName = 'Cancel';
+  public inputClass = 'input';
+  public placeholderText = 'Write organization name';
+  public inputType = 'text';
+  public inputLabel = 'Organization name';
+
 
   public unsubscribe$ = new Subject<void>();
 
