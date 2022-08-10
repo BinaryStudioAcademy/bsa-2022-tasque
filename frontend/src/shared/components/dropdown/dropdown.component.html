@@ -1,6 +1,6 @@
-<div class="dropdown_wrpr">
+<div class="dropdown_wrpr" [ngStyle]="{'width': width }">
     <label class="dropdown_label" *ngIf="label">{{label}}</label>
-    <button class="dropdown_btn" (click)="dropdownOpen()">
+    <button class="dropdown_btn" (click)="toggleDropdown()">
         <div class="selected_wrpr">
             <span class="selected_option">
                 <svg class="color_square">
