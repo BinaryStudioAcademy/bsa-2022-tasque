@@ -22,7 +22,7 @@ namespace Tasque.Core.WebAPI.Controllers
         public IActionResult CreateOrganization([FromBody] CreateOrganization organization)
         {
             //var entity = _organizationService.Create(organization);
-            return Created(organization.ToString(), organization);
+            return Created(organization.ToString()?? "", organization);
         }
     }
 }
