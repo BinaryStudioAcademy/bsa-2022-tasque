@@ -7,6 +7,8 @@ import { LoadingComponent } from './components/loading-component/loading.compone
 import { CheckboxComponent } from './components/checkbox-component/checkbox.component';
 import { ConfirmationModalComponent } from './components/confirmation-modal-component/confirmation-modal.component';
 import { ButtonComponent } from './components/button/button.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
     imports: [
@@ -16,6 +18,7 @@ import { ButtonComponent } from './components/button/button.component';
         ReactiveFormsModule,
         RouterModule,
         MaterialModule,
+        BrowserAnimationsModule,
     ],
     declarations: [
         LoadingComponent,
@@ -29,9 +32,11 @@ import { ButtonComponent } from './components/button/button.component';
         FormsModule,
         ReactiveFormsModule,
         RouterModule,
+        MaterialModule,
+        BrowserAnimationsModule,
         LoadingComponent,
         CheckboxComponent,
-        MaterialModule,
+        ConfirmationModalComponent,
     ],
 })
 export class SharedModule { } 
