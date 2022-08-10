@@ -29,7 +29,6 @@ import { RegisterPageComponent } from './components/register-page/register-page.
         CheckboxComponent,
         LeftSidebarComponent,
         ConfirmationModalComponent,
-        RegisterPageComponent,
     ],
     exports: [
         CommonModule,

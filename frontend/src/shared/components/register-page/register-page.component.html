@@ -1,1 +1,34 @@
-<p>register-page works!</p>
+<div class="register-page">
+    <div class="logo-container">
+        <div class="logo"></div>
+    </div>
+    <div class="data-container">
+        <tasque-input 
+            [class]="inputClass"
+            [width]="325"
+            [placeholder]="this.placeholderName"
+            [type]="this.inputText"
+            [borderRadius]="10"
+            [label]="labelName"
+            >
+        </tasque-input>
+        <tasque-input 
+            [class]="inputClass"
+            [width]="325"
+            [placeholder]="this.placeholderEmail"
+            [type]="this.inputEmail"
+            [borderRadius]="10"
+            [label]="labelEmail"
+            >
+        </tasque-input>
+        <tasque-input 
+            [class]="inputClass"
+            [width]="325"
+            [placeholder]="this.placeholderPassword"
+            [type]="this.inputPassword"
+            [borderRadius]="10"
+            [label]="labelPassword"
+            >
+        </tasque-input>
+    </div>
+</div>
