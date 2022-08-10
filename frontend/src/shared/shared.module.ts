@@ -13,6 +13,7 @@ import { CreateOrganizationDialogComponent } from './components/create-organizat
 import { CreateOrganizationComponent } from './components/create-organization/create-organization.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
+import { LoginPageComponent } from './components/login-page/login-page.component';
 
 @NgModule({
     imports: [
@@ -34,6 +35,7 @@ import { ConfirmationModalComponent } from './components/tasque-confirmation-mod
         LeftSidebarComponent,
         ConfirmationModalComponent,
         DropdownComponent,
+        LoginPageComponent,
     ],
     exports: [
         CommonModule,
@@ -50,6 +52,7 @@ import { ConfirmationModalComponent } from './components/tasque-confirmation-mod
         ConfirmationModalComponent,
         LeftSidebarComponent,
         DropdownComponent,
+        LoginPageComponent,
     ],
 })
 export class SharedModule { }
