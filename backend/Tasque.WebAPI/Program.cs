@@ -1,3 +1,5 @@
+global using AutoMapper;
+global using FluentValidation;
 using Tasque.Core.DAL;
 using Tasque.Core.WebAPI.AppConfigurationExtension;
 using Tasque.Core.WebAPI.Middlewares;
@@ -10,11 +12,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddNLog();
 
+builder.Services.ConfigureMapper();
+builder.Services.ConfigureValidator();
+builder.Services.ConfigureEmailServices(builder.Configuration);
+builder.Services.AddSwagger();
+
 // Add services to the container.
 
 AppConfigurationExtension.RegisterServices(builder.Services, builder.Configuration);
 
-builder.Services.AddRazorPages();
+builder.Services.AddCors();
 
 builder.Services.AddDbContext<DataContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("TasqueDb"), 
@@ -33,6 +40,15 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseCors(builder =>
+    builder
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowAnyOrigin());
+        
+app.UseSwagger();
+app.UseSwaggerUI();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -43,6 +59,9 @@ app.UseAuthorization();
 
 app.UseMigrationsEndPoint();
 
-app.MapRazorPages();
+app.UseEndpoints(cfg =>
+{
+    cfg.MapControllers();
+});
 
 app.Run();
