@@ -2,11 +2,14 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Runtime.CompilerServices;
 using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.BLL.JWT;
 using Tasque.Core.BLL.Options;
+using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.Entities;
+using Tasque.Core.Common.Models.Email;
 using Tasque.Core.Common.Security;
 using Tasque.Core.DAL;
 
@@ -14,16 +17,18 @@ namespace Tasque.Core.BLL.Services
 {
     public class AuthService
     {
-        private DataContext _context;
-        private IMapper _mapper;
+        private DataContext _context;        
         private JwtFactory _jwtFactory;
+        private IEmailService _emailService;
+        private IMapper _mapper;
         private IValidator<User> _validator;
         private EmailConfirmationOptions _emailOptions;
 
         public AuthService(
-            DataContext context, 
-            IMapper mapper, 
-            JwtFactory jwtFactory, 
+            DataContext context,            
+            JwtFactory jwtFactory,
+            IEmailService emailService,
+            IMapper mapper,
             IValidator<User> validator, 
             IOptions<EmailConfirmationOptions> emailOptions)
         {
@@ -32,6 +37,7 @@ namespace Tasque.Core.BLL.Services
             _jwtFactory = jwtFactory;
             _validator = validator;
             _emailOptions = emailOptions.Value;
+            _emailService = emailService;
         }
 
         public async Task<UserDto> Login(UserLoginDto loginInfo)
@@ -39,8 +45,15 @@ namespace Tasque.Core.BLL.Services
             var userEntity = await _context.Users.FirstOrDefaultAsync(x => x.Email == loginInfo.Email)
                 ?? throw new ValidationException("No user with given email");
 
-            if (!userEntity.IsEmailConfirmed)
+            if (!userEntity.IsEmailConfirmed) 
+            {
+                if (!_context.EmailConfirmationTokens.Any(x => x.UserId == userEntity.Id))
+                {
+                    var token = await CreateConfirmationToken(userEntity);
+                    await SendConfirmationEmail(token);
+                }
                 throw new EmailNotConfirmedException(userEntity.Email);
+            }                
 
             if (!SecurityHelper.ValidatePassword(loginInfo.Password, userEntity.Password, userEntity.Salt))
                 throw new ValidationException("Invalid password");
@@ -55,7 +68,7 @@ namespace Tasque.Core.BLL.Services
                 .FirstOrDefaultAsync(x => x.Token == emailToken)
                 ?? throw new ValidationException("Invalid confirmation token");
 
-            if (confToken.ExpiringAt < DateTime.Now)
+            if (confToken.ExpiringAt < DateTime.UtcNow)
             {
                 _context.EmailConfirmationTokens.Remove(confToken);
                 await _context.SaveChangesAsync();
@@ -81,10 +94,12 @@ namespace Tasque.Core.BLL.Services
             var salt = SecurityHelper.GetRandomBytes();
             userEntity.Salt = Convert.ToBase64String(salt);
             userEntity.Password = SecurityHelper.HashPassword(registerInfo.Password, salt);
-            
+
             _context.Users.Add(userEntity);
             await _context.SaveChangesAsync();
 
+            var token = await CreateConfirmationToken(userEntity);
+            await SendConfirmationEmail(token);
             return _mapper.Map<UserDto>(userEntity);
         }
 
@@ -94,6 +109,34 @@ namespace Tasque.Core.BLL.Services
             {
                 AccessToken = _jwtFactory.GenerateToken(id, username, email)
             };
+        }
+
+        private async Task<EmailConfirmationToken> CreateConfirmationToken(User user)
+        {
+            var confToken = new EmailConfirmationToken
+            {
+                User = user,
+                ExpiringAt = DateTime.UtcNow.AddSeconds(_emailOptions.TokenLifetime)
+            };
+            _context.EmailConfirmationTokens.Add(confToken);
+            await _context.SaveChangesAsync();
+            return confToken;
+        }
+
+        private Task<bool> SendConfirmationEmail(EmailConfirmationToken token)
+        {
+            var user = token.User;
+            var reciever = new EmailContact(user.Email, user.Name);
+            var email = new EmailMessage(reciever)
+            {
+                Subject = "Successful registration",
+                Content = 
+                    "<h3>Thanks for choosing Tasque</h3><br/>" +
+                    $"<a href=\"{_emailOptions.GetConfirmationPath(token)}\">" +
+                    "CLick here to confirm your email" +
+                    "</a>"
+            };
+            return _emailService.SendEmailAsync(email);
         }
     }
 }
