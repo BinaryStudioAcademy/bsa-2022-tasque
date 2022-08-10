@@ -68,7 +68,6 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             configuration.GetSection("JwtIssuerOptions").Bind(jwtIssuerOptions);
 
             services.AddSingleton(jwtIssuerOptions);
-            services.AddRazorPages();
             services.ConfigureJwt(configuration);
             services.AddScoped<JwtFactory>();
             services.AddMvc();
