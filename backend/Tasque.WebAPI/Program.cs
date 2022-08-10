@@ -40,11 +40,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.MapControllers();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMigrationsEndPoint();
 
+app.MapControllers();
 app.Run();
