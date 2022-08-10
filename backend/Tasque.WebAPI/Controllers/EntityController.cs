@@ -21,7 +21,7 @@ namespace Tasque.Core.WebAPI.Controllers
             mapper = new Mapper(config);
         }
 
-        [Route("readOne/{id}")]
+        [Route("getOne/{id}")]
         [HttpGet]
         public virtual IActionResult GetOne(int id)
         {
@@ -36,7 +36,7 @@ namespace Tasque.Core.WebAPI.Controllers
             }
         }
 
-        [Route("readAll")]
+        [Route("getAll")]
         [HttpGet]
         public virtual IActionResult GetAll()
         {
