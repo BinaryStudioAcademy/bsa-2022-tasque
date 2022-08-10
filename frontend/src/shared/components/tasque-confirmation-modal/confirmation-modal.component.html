@@ -6,11 +6,11 @@
 
 <mat-dialog-actions [ngSwitch]="type">
   <div class="buttons" *ngSwitchCase="'default'">
-    <app-button text="Cancel" class="btn fill grey" (btnClick)="onDismiss()"></app-button>
-    <app-button text="Ok" class="btn fill green" (btnClick)="onConfirm()"></app-button>
+    <tasque-button text="Cancel" class="btn fill grey" (btnClick)="onDismiss()"></tasque-button>
+    <tasque-button text="Ok" class="btn fill green" (btnClick)="onConfirm()"></tasque-button>
   </div>
   <div class="buttons" *ngSwitchCase="'deletion'">
-    <app-button text="Cancel" class="btn fill grey" (btnClick)="onDismiss()"></app-button>
-    <app-button text="Delete" class="btn fill red" (btnClick)="onConfirm()"></app-button>
+    <tasque-button text="Cancel" class="btn fill grey" (btnClick)="onDismiss()"></tasque-button>
+    <tasque-button text="Delete" class="btn fill red" (btnClick)="onConfirm()"></tasque-button>
   </div>
 </mat-dialog-actions>
