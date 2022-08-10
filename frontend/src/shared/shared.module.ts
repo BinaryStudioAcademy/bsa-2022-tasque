@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/material/material.module';
+import { DropdownComponent } from './components/tasque-dropdown/dropdown.component';
 import { ButtonComponent } from './components/tasque-button/button.component';
 import { LoadingComponent } from './components/tasque-loading/loading.component';
 import { CheckboxComponent } from './components/tasque-checkbox/checkbox.component';
@@ -32,6 +33,7 @@ import { ConfirmationModalComponent } from './components/tasque-confirmation-mod
         CreateOrganizationDialogComponent,
         LeftSidebarComponent,
         ConfirmationModalComponent,
+        DropdownComponent,
     ],
     exports: [
         CommonModule,
@@ -47,6 +49,7 @@ import { ConfirmationModalComponent } from './components/tasque-confirmation-mod
         CheckboxComponent,
         ConfirmationModalComponent,
         LeftSidebarComponent,
+        DropdownComponent,
     ],
 })
 export class SharedModule { }
