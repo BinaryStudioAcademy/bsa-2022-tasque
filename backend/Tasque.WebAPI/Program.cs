@@ -14,6 +14,7 @@ builder.Logging.AddNLog();
 
 builder.Services.ConfigureMapper();
 builder.Services.ConfigureValidator();
+builder.Services.ConfigureEmailServices(builder.Configuration);
 
 // Add services to the container.
 
