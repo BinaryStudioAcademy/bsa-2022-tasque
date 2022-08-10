@@ -8,6 +8,8 @@ import { LoadingComponent } from './components/tasque-loading/loading.component'
 import { CheckboxComponent } from './components/tasque-checkbox/checkbox.component';
 import { InputComponent } from './components/tasque-input/input.component';
 import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.component';
+import { CreateOrganizationDialogComponent } from './components/create-organization/create-organization-dialog/create-organization-dialog.component';
+import { CreateOrganizationComponent } from './components/create-organization/create-organization.component';
 
 @NgModule({
     imports: [
@@ -23,6 +25,8 @@ import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.com
         ButtonComponent,
         InputComponent,
         CheckboxComponent,
+        CreateOrganizationComponent, 
+        CreateOrganizationDialogComponent,
         LeftSidebarComponent
     ],
     exports: [

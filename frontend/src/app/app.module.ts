@@ -15,9 +15,6 @@ import { ButtonComponent } from 'src/shared/components/tasque-button/button.comp
 @NgModule({
   declarations: [
     AppComponent,
-    ButtonComponent,  
-    CreateOrganizationComponent, 
-    CreateOrganizationDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,7 +26,6 @@ import { ButtonComponent } from 'src/shared/components/tasque-button/button.comp
     ToastrModule.forRoot(),
   ],
   providers: [
-    ButtonComponent,
     BrowserAnimationsModule,
   ],
   bootstrap: [AppComponent],
