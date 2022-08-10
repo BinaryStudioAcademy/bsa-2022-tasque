@@ -8,6 +8,7 @@ import { LoadingComponent } from './components/tasque-loading/loading.component'
 import { CheckboxComponent } from './components/tasque-checkbox/checkbox.component';
 import { InputComponent } from './components/tasque-input/input.component';
 import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.component';
+import { OrganizationsDropdownComponent } from './components/organizations-dropdown/organizations-dropdown.component';
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.com
         ButtonComponent,
         InputComponent,
         CheckboxComponent,
-        LeftSidebarComponent
+        LeftSidebarComponent,
+        OrganizationsDropdownComponent
     ],
     exports: [
         CommonModule,
@@ -33,10 +35,11 @@ import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.com
         RouterModule,
         LoadingComponent,
         ButtonComponent,
-        InputComponent,        
+        InputComponent,
         CheckboxComponent,
         MaterialModule,
         LeftSidebarComponent,
+        OrganizationsDropdownComponent
     ],
 })
 export class SharedModule { }
