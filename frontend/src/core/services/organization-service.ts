@@ -15,7 +15,7 @@ export class OrganizationService {
     public httpService: HttpService
   ) { }
 
-  createOrganization(organization:OrganizationModel):Observable<HttpResponse<OrganizationModel>>{
+  createOrganization(organization:OrganizationModel):Observable<HttpResponse<OrganizationModel>> {
     return this.httpService.postFullRequest<OrganizationModel>(this.routePrefix + '/createOrganization', organization);
   }
 }
