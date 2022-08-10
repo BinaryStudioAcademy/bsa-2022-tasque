@@ -15,6 +15,7 @@ builder.Logging.AddNLog();
 builder.Services.ConfigureMapper();
 builder.Services.ConfigureValidator();
 builder.Services.ConfigureEmailServices(builder.Configuration);
+builder.Services.AddSwagger();
 
 // Add services to the container.
 
@@ -36,6 +37,9 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
