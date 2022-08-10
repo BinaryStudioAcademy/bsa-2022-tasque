@@ -21,7 +21,6 @@ export class CreateOrganizationDialogComponent implements OnInit {
   public inputType = 'text';
   public inputLabel = 'Organization name';
 
-
   public unsubscribe$ = new Subject<void>();
 
   constructor(
