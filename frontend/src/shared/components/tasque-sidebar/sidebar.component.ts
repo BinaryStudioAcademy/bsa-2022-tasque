@@ -1,8 +1,8 @@
 import { Component, HostBinding } from '@angular/core';
-import { SideBarService } from 'src/core/services/sideBar.service';
+import { SideBarService } from 'src/core/services/sidebar.service';
 
 @Component({
-  selector: 'app-sidebar',
+  selector: 'tasque-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.sass'],
 })
