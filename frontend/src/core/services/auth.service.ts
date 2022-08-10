@@ -14,11 +14,11 @@ export class AuthService {
     private httpService: HttpService
   ) { }
 
-  loginUser(email: string, password: string):Observable<HttpResponse<{ assessToken: string }>>{
+  loginUser(email: string, password: string):Observable<HttpResponse<{ assessToken: string }>> {
     return this.httpService.postFullRequest(this.routePrefix + '/login', { email: email, password: password });
   }
 
-  registerUser(email: string, password: string, name: string):Observable<HttpResponse<{ assessToken: string }>>{
+  registerUser(email: string, password: string, name: string):Observable<HttpResponse<{ assessToken: string }>> {
     return this.httpService.postFullRequest(this.routePrefix + '/register', { email: email, password: password, name: name });
   }
 }
