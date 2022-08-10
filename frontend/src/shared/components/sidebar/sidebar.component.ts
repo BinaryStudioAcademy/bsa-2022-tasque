@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { SideBarService } from 'src/core/services/sideBar.service';
 
 @Component({
@@ -12,13 +12,13 @@ export class SideBarComponent {
 
   constructor(private sideBarService: SideBarService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.sideBarService.change.subscribe((isOpen: boolean) => {
       this.isOpen = isOpen;
     });
   }
 
-  close() {
+  close(): void {
     this.sideBarService.toggle();
   }
 }
