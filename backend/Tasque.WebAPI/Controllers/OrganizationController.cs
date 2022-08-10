@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.Common.Entities;
-using Tasque.Core.Common.IncomeModels;
+using Tasque.Core.Common.PartialModels;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
