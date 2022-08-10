@@ -10,7 +10,7 @@ namespace Tasque.Core.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
+    [Authorize]
     public class OrganizationController : EntityController<Organization, OrganizationDto, OrganizationService>
     {
         public OrganizationController(OrganizationService service) : base(service) { }

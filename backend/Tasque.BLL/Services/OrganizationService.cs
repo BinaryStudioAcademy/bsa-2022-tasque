@@ -10,10 +10,6 @@ namespace Tasque.Core.BLL.Services
 {
     public class OrganizationService : EntityCrudService<Organization>
     {
-        public OrganizationService(DataContext db) : base(db)
-        {
-        }
-
-
+        public OrganizationService(DataContext db) : base(db) { }
     }
 }
