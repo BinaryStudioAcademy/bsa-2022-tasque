@@ -14,6 +14,7 @@ builder.Logging.AddNLog();
 
 builder.Services.ConfigureMapper();
 builder.Services.ConfigureValidator();
+builder.Services.AddSwagger();
 
 // Add services to the container.
 
@@ -41,6 +42,9 @@ app.UseCors(builder =>
         .AllowAnyHeader()
         .AllowAnyOrigin()
         .AllowAnyMethod());
+        
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
