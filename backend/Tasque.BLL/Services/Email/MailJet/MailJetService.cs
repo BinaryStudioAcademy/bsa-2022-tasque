@@ -23,7 +23,7 @@ namespace Tasque.Core.BLL.Services.Email.MailJet
         public Task<bool> SendEmailsAsync(EmailContact sender, IEnumerable<EmailContact> recievers, string subject, string content)
         {
             var emails = recievers.Select(x =>
-                new EmailMessage(sender, x)
+                new EmailMessage(x)
                 {
                     Subject = subject,
                     Content = content
@@ -41,10 +41,12 @@ namespace Tasque.Core.BLL.Services.Email.MailJet
             );
 
             var response = await _client.SendTransactionalEmailsAsync(emails, isSandboxMode: _options.IsSandboxMode);
-            if (response.Messages.Any(x => x.Errors.Any()))
+            var errors = response.Messages.Where(x => x.Errors != null);
+            if (errors.Any())
             {
-                var errors = response.Messages.SelectMany(x => x.Errors).Select(x => x.ErrorMessage);
+                var errorMessages = errors.SelectMany(x => x.Errors).Select(x => x.ErrorMessage);
                 var errorsStr = string.Join('\n', errors);
+                // Custom exception here?
                 throw new Exception(errorsStr);
             }
             return true;
