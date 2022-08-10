@@ -1,1 +1,16 @@
-<p>confirmation-modal works!</p>
+<h2 mat-dialog-title>{{ title }}</h2>
+
+<mat-dialog-content>
+  <p>{{ message }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions [ngSwitch]="type">
+  <div class="buttons" *ngSwitchCase="'default'">
+    <app-button text="Cancel" class="btn fill grey" (btnClick)="onDismiss()"></app-button>
+    <app-button text="Ok" class="btn fill green" (btnClick)="onConfirm()"></app-button>
+  </div>
+  <div class="buttons" *ngSwitchCase="'deletion'">
+    <app-button text="Cancel" class="btn fill grey" (btnClick)="onDismiss()"></app-button>
+    <app-button text="Delete" class="btn fill red" (btnClick)="onConfirm()"></app-button>
+  </div>
+</mat-dialog-actions>
