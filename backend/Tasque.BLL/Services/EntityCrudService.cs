@@ -18,7 +18,7 @@ namespace Tasque.Core.BLL.Services
             return entity;
         }
 
-        public TEntity? GetOne(int id)
+        public TEntity? GetById(int id)
         {
             var entity = _db.Set<TEntity>().FirstOrDefault(entity => entity.Id == id);
             return entity;
@@ -37,7 +37,7 @@ namespace Tasque.Core.BLL.Services
 
         public virtual bool Delete(int id)
         {
-            var entityToDelete = GetOne(id);
+            var entityToDelete = GetById(id);
             if (entityToDelete is null)
             {
                 return false;

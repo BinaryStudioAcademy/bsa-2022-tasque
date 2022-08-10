@@ -21,11 +21,11 @@ namespace Tasque.Core.WebAPI.Controllers
             mapper = new Mapper(config);
         }
 
-        [Route("getOne/{id}")]
+        [Route("getById/{id}")]
         [HttpGet]
-        public virtual IActionResult GetOne(int id)
+        public virtual IActionResult GetById(int id)
         {
-            var entity = _service.GetOne(id);
+            var entity = _service.GetById(id);
             if (entity is not null)
             {
                 return Ok(entity);
