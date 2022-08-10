@@ -1,6 +1,6 @@
 @use 'sass:map'
     
-$colorscheme: ( white-100: #FFF, black-100: #000, violet-100:  #EEEBFB, violet-200: #4F00B5, violet-400: #291965, gray-100: #F6F7F9, gray-200: #F0F3F9, gray-300: #E0E4EC, gray-400: #CBCDD3, gray-500: #83858A, pink-100: #FCE5EF, pink-200: #EE2A64, pink-300: #E30547, blue-100: #D9E6FD, blue-200: #28ABF5, yellow-100: #F8A70B)
+$colorscheme: ( white-100: #FFF, black-100: #000, violet-100:  #EEEBFB, violet-200: #4F00B5, violet-400: #291965, gray-100: #F6F7F9, gray-200: #F0F3F9, gray-300: #E0E4EC, gray-400: #CBCDD3, gray-500: #83858A, pink-100: #FCE5EF, pink-200: #EE2A64, pink-300: #E30547, blue-100: #D9E6FD, blue-200: #28ABF5, yellow-100: #F8A70B, red-100:#ff0000, red-200: #800000, green-100: #26bb01, green-200: #1c8801, dark-grey-100: #877e7e, dark-grey-200: #615a5a)
 
 @function colorscheme($color) 
     @if map-has-key($colorscheme, $color) 

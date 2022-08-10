@@ -10,6 +10,8 @@ import { InputComponent } from './components/tasque-input/input.component';
 import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.component';
 import { CreateOrganizationDialogComponent } from './components/create-organization/create-organization-dialog/create-organization-dialog.component';
 import { CreateOrganizationComponent } from './components/create-organization/create-organization.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
 
 @NgModule({
     imports: [
@@ -19,6 +21,7 @@ import { CreateOrganizationComponent } from './components/create-organization/cr
         ReactiveFormsModule,
         RouterModule,
         MaterialModule,
+        BrowserAnimationsModule,
     ],
     declarations: [
         LoadingComponent,
@@ -27,7 +30,8 @@ import { CreateOrganizationComponent } from './components/create-organization/cr
         CheckboxComponent,
         CreateOrganizationComponent, 
         CreateOrganizationDialogComponent,
-        LeftSidebarComponent
+        LeftSidebarComponent,
+        ConfirmationModalComponent,
     ],
     exports: [
         CommonModule,
@@ -35,11 +39,13 @@ import { CreateOrganizationComponent } from './components/create-organization/cr
         FormsModule,
         ReactiveFormsModule,
         RouterModule,
+        MaterialModule,
+        BrowserAnimationsModule,
         LoadingComponent,
         ButtonComponent,
-        InputComponent,        
+        InputComponent,
         CheckboxComponent,
-        MaterialModule,
+        ConfirmationModalComponent,
         LeftSidebarComponent,
     ],
 })
