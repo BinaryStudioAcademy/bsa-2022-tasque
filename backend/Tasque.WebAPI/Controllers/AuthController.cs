@@ -18,7 +18,7 @@ namespace Tasque.Core.WebAPI.Controllers
         private AuthService _service;
         private IEmailService _emailService;
 
-        public AuthController(AuthService service, IEmailService emailService, )
+        public AuthController(AuthService service, IEmailService emailService)
         {
             _service = service;
             _emailService = emailService;
