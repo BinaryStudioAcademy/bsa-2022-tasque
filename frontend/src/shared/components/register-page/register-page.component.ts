@@ -21,9 +21,17 @@ export class RegisterPageComponent implements OnInit {
   public buttonClass = 'stroke';
   public buttonText = 'Sign up';
 
+  public userName = 't';
+  public userEmail = 't';
+  public userPassword = 't';
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  sendForm(){
+    console.log(`data: ${this.userName} ${this.userEmail} ${this.userPassword}`);
   }
 
 }

@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ToastrModule } from 'ngx-toastr';
 import { RegisterPageComponent } from 'src/shared/components/register-page/register-page.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent,RegisterPageComponent],
@@ -14,6 +15,7 @@ import { RegisterPageComponent } from 'src/shared/components/register-page/regis
     SharedModule,
     AppRoutingModule,
     CoreModule,
+    FormsModule,
     ToastrModule.forRoot(),
   ],
   providers: [],

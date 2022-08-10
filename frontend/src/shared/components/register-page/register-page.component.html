@@ -3,9 +3,10 @@
         <div class="logo"></div>
     </div>
     <div class="data-container">
-        <div class="input-container">
+        <form ngSubmit="sendForm()" class="input-container">
             <tasque-input 
                 class="form-input"
+                (value)="this.userName"
                 [class]="inputClass"
                 [width]="325"
                 [placeholder]="this.placeholderName"
@@ -16,6 +17,7 @@
             </tasque-input>
             <tasque-input 
                 class="form-input"
+                (value)="this.userEmail"
                 [class]="inputClass"
                 [width]="325"
                 [placeholder]="this.placeholderEmail"
@@ -28,6 +30,7 @@
             </tasque-input>
             <tasque-input 
                 class="form-input"
+                (value)="this.userPassword"
                 [class]="inputClass"
                 [width]="325"
                 [placeholder]="this.placeholderPassword"
@@ -36,12 +39,28 @@
                 [label]="labelPassword"
                 >
             </tasque-input>
-        </div>
+        </form>
         <tasque-button 
             class="sign-up-btn"
             [text]="buttonText"
             [class]="buttonClass"
+            (btnClick)="sendForm()"
             >
         </tasque-button>
     </div>
 </div>
+
+
+<!-- [(ngModel)]="this.userPassword"
+name="userPassword"
+#userPassword="ngModel"
+
+
+[(ngModel)]="this.userEmail"
+name="userEmail"
+#userEmail="ngModel"
+
+
+[(ngModel)]="this.userName"
+name="userName"
+#userName="ngModel" -->
