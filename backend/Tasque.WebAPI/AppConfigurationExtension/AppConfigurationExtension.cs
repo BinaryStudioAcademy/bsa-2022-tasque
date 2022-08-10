@@ -6,6 +6,7 @@ using System.Text;
 using Tasque.Core.BLL.JWT;
 using Tasque.Core.BLL.MappingProfiles;
 using Tasque.Core.BLL.Services;
+using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.BLL.Services.Email.MailJet;
 using Tasque.Core.Common.Entities;
 
@@ -87,7 +88,9 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddMvc();
             services.AddControllers();
 
-            services.AddScoped<AuthService>();
+            services
+                .AddScoped<AuthService>()
+                .AddScoped<IEmailService, MailJetService>();
         }
     }
 }
