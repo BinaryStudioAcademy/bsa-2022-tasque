@@ -50,6 +50,8 @@ import { ConfirmationModalComponent } from './components/tasque-confirmation-mod
         ConfirmationModalComponent,
         LeftSidebarComponent,
         DropdownComponent,
+        CreateOrganizationComponent, 
+        CreateOrganizationDialogComponent,
     ],
 })
 export class SharedModule { }
