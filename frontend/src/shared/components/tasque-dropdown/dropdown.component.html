@@ -1,23 +1,23 @@
-<div class="dropdown_wrpr" [ngStyle]="{'width': width }">
-    <label class="dropdown_label" *ngIf="label">{{label}}</label>
-    <button class="dropdown_btn" (click)="toggleDropdown()">
-        <div class="selected_wrpr">
-            <span class="selected_option" *ngIf="selectedOption">
-                <svg class="color_square">
+<div class="dropdown-warapper" [ngStyle]="{'width': width }">
+    <label class="dropdown-label" *ngIf="label">{{label}}</label>
+    <button class="dropdown-button" (click)="toggleDropdown()">
+        <div class="selected-wrapper">
+            <span class="selected-option" *ngIf="selectedOption">
+                <svg class="color-square">
                     <rect [ngStyle]="{'fill': selectedOption[0]}" />
                 </svg>
                 {{selectedOption[1]}}
             </span>
-            <span class="selected_option" *ngIf="!selectedOption">
+            <span class="selected-option" *ngIf="!selectedOption">
                 {{placeholder}}
             </span> 
-            <mat-icon class="dropdown_ico">expand_more</mat-icon>
+            <mat-icon class="dropdown-icon">expand_more</mat-icon>
         </div> 
     </button>
-    <div class="options_container" *ngIf="expanded">
+    <div class="options-container" *ngIf="expanded">
         <div class="option" *ngFor="let option of options"
         (click)="select(option)">
-            <svg class="color_square">
+            <svg class="color-square">
                 <rect [ngStyle]="{'fill': option[0]}" />
             </svg>
             {{option[1]}}

@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./dropdown.component.sass']
 })
 export class DropdownComponent implements OnInit {
-  @Input() public options: [color:string, title:string, id:number][] = [];
+  @Input() public options: [color:string, title:string, id:number][] = [['red', 'Development', 0], ['#F6F7F9', 'Feature', 1]];
   @Input() public label = '';
   @Input() public width = '300px';
   @Input() public placeholder = '';
@@ -27,13 +27,11 @@ export class DropdownComponent implements OnInit {
     }   
   }
 
-  public toggleDropdown() : void
-  {
+  public toggleDropdown() : void {
     this.expanded = !this.expanded;
   }
 
-  public select(option: [string, string, number]) : void
-  {
+  public select(option: [string, string, number]) : void {
     if (this.selectedOption != option)
     {
       this.selectedOption = option;
@@ -41,5 +39,4 @@ export class DropdownComponent implements OnInit {
     }
     this.expanded = false;
   }
-
 }
