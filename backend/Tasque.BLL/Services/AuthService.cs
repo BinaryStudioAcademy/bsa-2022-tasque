@@ -2,6 +2,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.BLL.JWT;
 using Tasque.Core.BLL.Options;
 using Tasque.Core.Common.DTO;
@@ -38,10 +39,11 @@ namespace Tasque.Core.BLL.Services
             var userEntity = await _context.Users.FirstOrDefaultAsync(x => x.Email == loginInfo.Email)
                 ?? throw new ValidationException("No user with given email");
 
+            if (!userEntity.IsEmailConfirmed)
+                throw new EmailNotConfirmedException(userEntity.Email);
+
             if (!SecurityHelper.ValidatePassword(loginInfo.Password, userEntity.Password, userEntity.Salt))
-            {
                 throw new ValidationException("Invalid password");
-            }
 
             return _mapper.Map<UserDto>(userEntity);
         }
@@ -78,7 +80,7 @@ namespace Tasque.Core.BLL.Services
 
             var salt = SecurityHelper.GetRandomBytes();
             userEntity.Salt = Convert.ToBase64String(salt);
-            userEntity.Password = SecurityHelper.HashPassword(registerInfo.Password, salt);           
+            userEntity.Password = SecurityHelper.HashPassword(registerInfo.Password, salt);
             
             _context.Users.Add(userEntity);
             await _context.SaveChangesAsync();

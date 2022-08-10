@@ -32,12 +32,15 @@ namespace Tasque.Core.WebAPI.Middlewares
                     case ValidationException ex:
                         await HandleValidationException(httpContext, ex);
                         break;
+                    case EmailNotConfirmedException ex:
+                        await HandleEmailNotConfirmedException(httpContext, ex);
+                        break;
                     default:
                         await HandleGenericException(httpContext, exception);
                         break;
                 }
             }
-        }
+        }        
         private async Task CreateExceptionAsync(HttpContext context, 
             HttpStatusCode statusCode = HttpStatusCode.InternalServerError,
             object? errorBody = null)
@@ -65,6 +68,10 @@ namespace Tasque.Core.WebAPI.Middlewares
                     ? ex.Errors.Aggregate("", (x, y) => x += $"{y.ErrorMessage}\n")
                     : ex.Message;
             await CreateExceptionAsync(context, HttpStatusCode.BadRequest, message);
+        }
+        private async Task HandleEmailNotConfirmedException(HttpContext httpContext, EmailNotConfirmedException ex)
+        {
+            await CreateExceptionAsync(httpContext, HttpStatusCode.Forbidden, ex.Message);
         }
     }
 }
