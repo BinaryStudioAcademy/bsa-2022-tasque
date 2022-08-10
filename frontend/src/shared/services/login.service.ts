@@ -9,8 +9,8 @@ export class LoginService {
 
   constructor(private dialog: MatDialog) { }
 
-  public openLoginDialog() {
-    const dialog = this.dialog.open(LoginPageComponent, {
+  public openLoginDialog(): void {
+    this.dialog.open(LoginPageComponent, {
       data: {},
       panelClass: 'fullscreen-dialog',
       backdropClass: 'fullscreen-dialog',      

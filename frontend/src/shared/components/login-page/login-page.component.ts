@@ -44,20 +44,20 @@ export class LoginPageComponent implements OnInit {
     });
   }
 
-  generateFormControls() {
+  generateFormControls(): void {
     this.firstName = new FormControl(this.name, [
       Validators.required,
       Validators.minLength(4)
     ]);
   }
 
-  public close() {
+  public close(): void {
     this.dialogRef.close(false);
   }
 
-  public submitForm() {
-    console.log(this.emailControl.value);
-    console.log(this.passwordControl.value);
+  public submitForm(): void {
+    this.email = this.emailControl.value;
+    this.password = this.passwordControl.value;
     this.close();
   }
 
