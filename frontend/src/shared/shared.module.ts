@@ -13,6 +13,7 @@ import { CreateOrganizationDialogComponent } from './components/create-organizat
 import { CreateOrganizationComponent } from './components/create-organization/create-organization.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
+import { SideBarComponent } from './components/tasque-sidebar/sidebar.component';
 
 @NgModule({
     imports: [
@@ -33,7 +34,7 @@ import { ConfirmationModalComponent } from './components/tasque-confirmation-mod
         CreateOrganizationDialogComponent,
         LeftSidebarComponent,
         ConfirmationModalComponent,
-        DropdownComponent,
+        DropdownComponent
     ],
     exports: [
         CommonModule,

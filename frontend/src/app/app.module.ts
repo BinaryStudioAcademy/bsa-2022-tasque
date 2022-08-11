@@ -12,8 +12,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SideBarComponent } from '../shared/components/tasque-sidebar/sidebar.component';
 import { SideBarService } from 'src/core/services/sidebar.service';
 
+
 @NgModule({
-  declarations: [AppComponent,SideBarComponent],
+  declarations: [AppComponent, SideBarComponent],
 
   imports: [
     BrowserModule,
