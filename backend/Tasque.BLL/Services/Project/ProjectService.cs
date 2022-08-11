@@ -6,5 +6,6 @@ public class ProjectService : EntityCrudService<Common.Entities.Project>
 {
     public ProjectService(DataContext db) : base(db)
     {
+        
     }
 }

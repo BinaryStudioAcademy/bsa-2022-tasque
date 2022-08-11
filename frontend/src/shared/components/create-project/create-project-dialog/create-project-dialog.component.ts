@@ -3,10 +3,9 @@ import { Subject } from 'rxjs';
 import { ProjectService } from '../../../../core/services/project.service';
 import { NewProjectModel } from '../../../../core/models/project/new-project-model';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UserModel } from '../../../../core/models/user/user-model';
-import { OrganizationModel } from '../../../../core/models/organization/organization-model';
+
 import { takeUntil } from 'rxjs/operators';
-import {NewProjectCredentialsModel} from "../../../../core/models/project/new-project-credentials.model";
+import { NewProjectCredentialsModel } from '../../../../core/models/project/new-project-credentials.model';
 
 @Component({
   selector: 'app-create-project-dialog',

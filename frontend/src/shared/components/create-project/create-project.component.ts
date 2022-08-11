@@ -3,7 +3,7 @@ import { CreateProjectDialogComponent } from './create-project-dialog/create-pro
 import { MatDialog } from '@angular/material/dialog';
 import { UserModel } from '../../../core/models/user/user-model';
 import { OrganizationModel } from '../../../core/models/organization/organization-model';
-import {NewProjectCredentialsModel} from "../../../core/models/project/new-project-credentials.model";
+import { NewProjectCredentialsModel } from '../../../core/models/project/new-project-credentials.model';
 
 @Component({
   selector: 'app-create-project',
