@@ -56,5 +56,10 @@ namespace Tasque.Core.BLL.Services.Auth
 
             await _confirmationTokenService.SendConfirmationEmail(token);
         }
+
+        public MSTask ValidateToken(Guid token)
+        {
+            return _confirmationTokenService.ConfirmToken(token, TokenKind.PasswordReset); 
+        }
     }
 }
