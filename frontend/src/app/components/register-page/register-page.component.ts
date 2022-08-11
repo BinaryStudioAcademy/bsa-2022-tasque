@@ -81,6 +81,7 @@ export class RegisterPageComponent implements OnInit {
       this.authService.registerUser(this.userRegister)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((resp) => {
+        console.log(resp)
         //if ok - redirect to check email page
       },
       (error) => {
