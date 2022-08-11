@@ -1,54 +1,92 @@
-<div class="register-page">
+<div class="register-container">
     <div class="logo-container">
-        <div class="logo"></div>
+        <div class="logo-blur">
+            <div class="logo">
+                <p class="logo-text">Logo</p>                
+            </div>            
+        </div>        
     </div>
-    <div class="data-container">
-        <form ngSubmit="sendForm()" class="input-container">
-            <tasque-input 
-                class="form-input"
-                (outputValue)="recieveName($event)"
-                [class]="inputClass"
-                [width]="325"
-                [placeholder]="this.placeholderName"
-                [type]="this.inputText"
-                [borderRadius]="10"
-                [label]="labelName"
-                >
-            </tasque-input>
-            <tasque-input 
-                class="form-input"
-                (outputValue)="recieveEmail($event)"
-                [class]="inputClass"
-                [width]="325"
-                [placeholder]="this.placeholderEmail"
-                [type]="this.inputEmail"
-                [borderRadius]="10"
-                [label]="labelEmail"
-                [errorMessage]="errorMailMessage"
-                [isValid]="true"
-                >
-            </tasque-input>
-            <tasque-input 
-                class="form-input"
-                (outputValue)="recievePassword($event)"
-                [class]="inputClass"
-                [width]="325"
-                [placeholder]="this.placeholderPassword"
-                [type]="this.inputPassword"
-                [borderRadius]="10"
-                [label]="labelPassword"
-                >
-            </tasque-input>
-        </form>
-        <tasque-button 
-            class="sign-up-btn"
-            [text]="buttonText"
-            [class]="buttonClass"
-            (btnClick)="sendForm()"
-            >
-        </tasque-button>
+    <div class="form-container">
+        <div>
+            <div>
+                <form [formGroup]="registerForm" class="login-form">
+                    <h4 class="login-title">Sign Up</h4>
+                    <div class="input-container">
+                        <label>Name</label>
+                        <input class="input full-width" [ngClass]="{
+                          'error': (nameControl.invalid && (nameControl.dirty || nameControl.touched))
+                          }"
+                          type="text" 
+                          placeholder="Enter your name"
+                          formControlName="nameControl"
+                        />
+                        <span class="error" *ngIf="nameControl.errors?.['required'] && (nameControl.dirty || nameControl.touched)">Name is required.</span>
+                    </div>
+                    <div class="input-container">
+                        <label>Email</label>
+                        <input class="input full-width" [ngClass]="{
+                          'error': (emailControl.invalid && (emailControl.dirty || emailControl.touched))
+                          }"
+                          type="text"
+                          placeholder="Enter your email"
+                          formControlName="emailControl"
+                        />
+                        <span class="error" *ngIf="emailControl.errors?.['required'] && (emailControl.dirty || emailControl.touched)">Email is required.</span>
+                        <span class="error" *ngIf="emailControl.errors?.['email']">Incorrect email format</span>
+                    </div>
+                    <div class="input-container">
+                        <div class="label-container full-width">
+                            <label>Password</label>
+                        </div>                        
+                        <div class="password-container">
+                            <input class="input full-width" [ngClass]="{
+                                'error': (passwordControl.invalid && (passwordControl.dirty || passwordControl.touched))
+                                }"
+                                [type]="hidePass ? 'password' : 'text'" 
+                                placeholder="Write password"
+                                [value]="password"
+                                [(ngModel)]="password"
+                                (ngModelChange)="resetPasswordControl($event)"
+                                formControlName="passwordControl"
+                              />
+                              <mat-icon class="hide-icon" (click)="hidePass = !hidePass">{{hidePass ? 'visibility' : 'visibility_off'}}</mat-icon>
+                        </div>                        
+                        <span class="error" *ngIf="passwordControl.errors?.['required'] && (passwordControl.dirty || passwordControl.touched)">Password is required.</span>
+                        <span class="error" *ngIf="passwordControl.errors?.['minlength']">Must be at least 8 characters</span>
+                    </div>
+                    <div class="input-container">
+                        <div class="label-container full-width">
+                            <label>Repeat password</label>
+                        </div>                        
+                        <div class="password-repeat-container">
+                            <input class="input full-width" [ngClass]="{
+                                'error': (passwordRepeatControl.invalid && (passwordRepeatControl.dirty || passwordRepeatControl.touched))
+                                }"
+                                [(ngModel)]="passwordRepeat"
+                                [type]="hidePassRepeat ? 'password' : 'text'" 
+                                placeholder="Repeat password"
+                                formControlName="passwordRepeatControl"
+                              />
+                              <mat-icon class="hide-icon" (click)="hidePassRepeat = !hidePassRepeat">{{hidePassRepeat ? 'visibilityRepeat' : 'visibility_off'}}</mat-icon>
+                        </div>                        
+                        <span class="error" *ngIf="passwordRepeatControl.errors?.['required'] && (passwordRepeatControl.dirty || passwordRepeatControl.touched)">Password repeat is required.</span>
+                        <span class="error" *ngIf="passwordRepeatControl.errors?.['pattern'] && (passwordRepeatControl.dirty || passwordRepeatControl.touched)">Password not match.</span>
+                    </div>
+                </form>
+            </div>
+            <div class="button-container">
+                <tasque-button text="Sign up" class="btn fill full-width" (click)="submitForm()" ></tasque-button>        
+            </div>
+            <div class="button-container">
+                <tasque-button text="Sign up with Google" class="btn stroke full-width"></tasque-button>
+            </div>
+            <div class="button-container">
+                <tasque-button text="Sign up with Github" class="btn full-width"></tasque-button>
+            </div>
+        </div>        
     </div>
 </div>
+
 
 
 <!-- [(ngModel)]="this.userPassword"

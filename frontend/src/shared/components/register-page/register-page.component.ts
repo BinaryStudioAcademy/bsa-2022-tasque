@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register-page',
@@ -7,43 +8,65 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class RegisterPageComponent implements OnInit {
 
-  public placeholderName = 'Write your name';
-  public placeholderEmail = 'Write your email';
-  public placeholderPassword = 'Write your password';
-  public labelName = 'Name';
-  public labelEmail = 'Email';
-  public labelPassword = 'Password';
-  public inputText = 'text';
-  public inputEmail = 'email';
-  public inputPassword = 'password';
-  public inputClass = 'input';
-  public errorMailMessage = 'Invalid email';
-  public buttonClass = 'stroke';
-  public buttonText = 'Sign up';
+  
+  public name = '';
+  public email = '';
+  public password = '';
+  public passwordRepeat = '';
+  public hidePass = true;
+  public hidePassRepeat = true;
+  public registerForm: FormGroup =  new FormGroup({});
+  public nameControl: FormControl;
+  public emailControl: FormControl;
+  public passwordControl: FormControl;
+  public passwordRepeatControl: FormControl;
 
-  public userName = 't';
-  public userEmail = 't';
-  public userPassword = 't';
-
-  constructor() { }
+  constructor() { 
+    this.nameControl = new FormControl(this.name, [
+      Validators.required,
+    ]);
+    this.emailControl = new FormControl(this.email, [
+      Validators.email,
+      Validators.required,
+      Validators.minLength(8)
+    ]);
+    this.passwordControl = new FormControl(this.password, [
+      Validators.required,
+      Validators.minLength(8)
+    ]);
+    this.passwordRepeatControl = new FormControl(this.passwordRepeat, [
+      Validators.required,
+    ])
+  }
 
   ngOnInit(): void {
+    this.registerForm = new FormGroup({
+      nameControl: this.nameControl,
+      emailControl: this.emailControl,
+      passwordControl: this.passwordControl,
+      passwordRepeatControl: this.passwordRepeatControl
+    });
   }
 
-  sendForm(){
-    console.log(`data: ${this.userName} ${this.userEmail} ${this.userPassword}`);
+  resetPasswordControl(event:any): void {
+    console.log(this.passwordRepeat + ' / ' + this.password)
+    console.log('errors: ' + this.passwordRepeatControl.errors?.['pattern'])
+    this.passwordRepeatControl = new FormControl(this.passwordRepeat, [
+      Validators.required,
+      Validators.pattern(this.password)
+    ]);
+    this.registerForm = new FormGroup({
+      nameControl: this.nameControl,
+      emailControl: this.emailControl,
+      passwordControl: this.passwordControl,
+      passwordRepeatControl: this.passwordRepeatControl
+    })
   }
 
-  recieveName(name: any) {
-    this.userName = name;
+  public submitForm(): void {
+    this.email = this.emailControl.value;
+    this.password = this.passwordControl.value;
+    this.name = this.nameControl.value;
+    console.log(this.name + ' ' + this.email + " " + this.password);
   }
-
-  recieveEmail(email: any) {
-    this.userEmail = email;
-  }
-
-  recievePassword(password: any) {
-    this.userPassword = password;
-  }
-
 }
