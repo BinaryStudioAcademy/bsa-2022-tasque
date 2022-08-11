@@ -3,15 +3,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Tasque.Core.BLL.Options;
-using Tasque.Core.Common.DTO;
-using Tasque.Core.DAL;
 
 namespace Tasque.Core.BLL.JWT
 {
     public class JwtFactory
     {
         private readonly JwtIssuerOptions _jwtOptions;
-        private readonly DataContext _dbContext;
 
         public JwtFactory(JwtIssuerOptions jwtOptions)
         {
