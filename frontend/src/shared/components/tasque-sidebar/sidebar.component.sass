@@ -3,7 +3,7 @@
 \:host
   box-sizing: border-box
   display: none
-  position: absolute
+  position: fixed
   right: 0
   top: 0
   width: 100%
@@ -19,6 +19,7 @@
   height: 100%
   background: rgba(223, 223, 223, 0.25)
 
+
 .shadow
   width: 50%
   height: 100%
@@ -27,6 +28,10 @@
   width: 50%
   height: 100%
   background: colorscheme(white-100)
+  overflow: scroll
+  overflow-x: hidden
+  overflow-style: marquee,panner
+  
 
 .close-sidebar
   float: right
