@@ -37,6 +37,7 @@ import { LoginPageComponent } from './components/login-page/login-page.component
         ConfirmationModalComponent,
         DropdownComponent,
         LoginPageComponent,
+        RegisterPageComponent,
     ],
     exports: [
         CommonModule,

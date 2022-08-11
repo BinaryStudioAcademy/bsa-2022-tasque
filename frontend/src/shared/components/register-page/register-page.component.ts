@@ -8,7 +8,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class RegisterPageComponent implements OnInit {
 
-  
   public name = '';
   public email = '';
   public password = '';
@@ -36,7 +35,7 @@ export class RegisterPageComponent implements OnInit {
     ]);
     this.passwordRepeatControl = new FormControl(this.passwordRepeat, [
       Validators.required,
-    ])
+    ]);
   }
 
   ngOnInit(): void {
@@ -48,9 +47,7 @@ export class RegisterPageComponent implements OnInit {
     });
   }
 
-  resetPasswordControl(event:any): void {
-    console.log(this.passwordRepeat + ' / ' + this.password)
-    console.log('errors: ' + this.passwordRepeatControl.errors?.['pattern'])
+  resetPasswordControl(): void {
     this.passwordRepeatControl = new FormControl(this.passwordRepeat, [
       Validators.required,
       Validators.pattern(this.password)
@@ -60,13 +57,14 @@ export class RegisterPageComponent implements OnInit {
       emailControl: this.emailControl,
       passwordControl: this.passwordControl,
       passwordRepeatControl: this.passwordRepeatControl
-    })
+    });
   }
 
   public submitForm(): void {
+    if(!this.registerForm.valid)
+      return;
     this.email = this.emailControl.value;
     this.password = this.passwordControl.value;
     this.name = this.nameControl.value;
-    console.log(this.name + ' ' + this.email + " " + this.password);
   }
 }
