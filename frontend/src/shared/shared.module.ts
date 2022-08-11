@@ -12,11 +12,10 @@ import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.com
 import { CreateOrganizationDialogComponent } from './components/create-organization/create-organization-dialog/create-organization-dialog.component';
 import { CreateOrganizationComponent } from './components/create-organization/create-organization.component';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
-import {
-  CreateProjectDialogComponent
-} from './components/create-project/create-project-dialog/create-project-dialog.component';
+import { CreateProjectDialogComponent } from './components/create-project/create-project-dialog/create-project-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
+import { RegisterPageComponent } from './components/register-page/register-page.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.component';
@@ -45,7 +44,8 @@ import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.compon
         CreateProjectComponent,
         CreateProjectDialogComponent,
         LoginPageComponent,
-        TasqueLogoComponent
+        RegisterPageComponent,
+        TasqueLogoComponent,
     ],
     exports: [
         CommonModule,
@@ -68,6 +68,7 @@ import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.compon
         CreateOrganizationComponent,
         CreateOrganizationDialogComponent,
         LoginPageComponent,
+        RegisterPageComponent,
         FontAwesomeModule,
         TasqueLogoComponent,
     ],
