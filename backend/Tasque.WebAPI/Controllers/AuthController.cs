@@ -43,7 +43,7 @@ namespace Tasque.Core.WebAPI.Controllers
             var token = _service.GetAccessToken(user.Id, user.Name, user.Email);
             return Ok(token);
         }
-
+        
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegisterDto registerInfo)
         {
