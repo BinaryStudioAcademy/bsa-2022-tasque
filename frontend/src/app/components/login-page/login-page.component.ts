@@ -21,9 +21,7 @@ export class LoginPageComponent implements OnInit {
   public emailControl: FormControl;
   public passwordControl: FormControl;
 
-  constructor(
-    private dialogRef: MatDialogRef<LoginPageComponent>,
-  ) {
+  constructor() {
     this.firstName = new FormControl(this.name, [
       Validators.required,
       Validators.minLength(8)
@@ -55,7 +53,6 @@ export class LoginPageComponent implements OnInit {
   }
 
   public close(): void {
-    this.dialogRef.close(false);
   }
 
   public submitForm(): void {
