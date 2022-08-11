@@ -4,11 +4,9 @@ namespace Tasque.Core.BLL.Options
 {
     public class EmailConfirmationOptions
     {
-        public string ConfirmationHost { get; set; } = null!;
-        public string ConfirmationEndpoint { get; set; } = null!;
+        public string Host { get; set; } = "";
+        public string ConfirmationEndpoint { get; set; } = "";
+        public string PasswordResetEndpoint { get; set; } = "";
         public int TokenLifetime { get; set; }
-
-        public string GetConfirmationPath(ConfirmationToken token) => 
-            $"{ConfirmationHost}{ConfirmationEndpoint}?key={token.Token}";
     }
 }

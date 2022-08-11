@@ -60,13 +60,34 @@ namespace Tasque.Core.BLL.Services.Auth
             var email = new EmailMessage(reciever)
             {
                 Subject = "Successful registration",
-                Content =
-                    "<h3>Thanks for choosing Tasque</h3><br/>" +
-                    $"<a href=\"{_emailOptions.GetConfirmationPath(token)}\">" +
-                    "CLick here to confirm your email" +
-                    "</a>"
+                Content = GetEmailText(token)
+                    
             };
             return _emailService.SendEmailAsync(email);
+        }
+
+        private string GetEmailText(ConfirmationToken token)
+        {
+            string endpoint;
+            var host = _emailOptions.Host;
+            var key = token.Token;
+            
+            switch (token.Kind)
+            {
+                case TokenKind.EmailConfirmation:
+                    endpoint = _emailOptions.ConfirmationEndpoint;
+                    return "<h3>Thanks for choosing Tasque</h3><br/>" +
+                            $"<a href=\"{host}{endpoint}?key={key}\">" +
+                            "Click here to confirm your email" +
+                            "</a>";
+                case TokenKind.PasswordReset:
+                    endpoint = _emailOptions.PasswordResetEndpoint;
+                    return "<h3>Thanks for choosing Tasque</h3><br/>" +
+                            $"<a href=\"{host}{endpoint}?key={key}\">" +
+                            "Click here to reset your password" +
+                            "</a>";
+                default: return "";
+            }
         }
     }
 }
