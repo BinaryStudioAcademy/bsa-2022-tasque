@@ -5,14 +5,14 @@ import { BehaviorSubject } from 'rxjs';
 export class StorageService {
     constructor() { }
 
-    private currentOrganization$ = new BehaviorSubject<string>(this.currentOrganization);
+    public currentOrganizationId$ = new BehaviorSubject<number>(this.currentOrganizationId);
 
-    public set currentOrganization(value: string) {
-        this.currentOrganization$.next(value);
-        localStorage.setItem('selectedOrganization', value);
+    public set currentOrganizationId(value: number) {
+        this.currentOrganizationId$.next(value);
+        localStorage.setItem('selectedOrganization', value.toString());
     }
 
-    public get currentOrganization(): string {
-        return localStorage.getItem('selectedOrganization') ?? 'None';
+    public get currentOrganizationId(): number {
+        return +(localStorage.getItem('selectedOrganization') ?? '-1');
     }
 }
