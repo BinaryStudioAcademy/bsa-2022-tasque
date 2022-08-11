@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 @Component({
@@ -23,7 +24,9 @@ export class RegisterPageComponent implements OnInit {
   faGithub = faGithub;
   faGoogle = faGoogle;
 
-  constructor() { 
+  constructor(
+    private dialogRef: MatDialogRef<RegisterPageComponent>,
+    ) { 
     this.nameControl = new FormControl(this.name, [
       Validators.required,
     ]);
@@ -69,5 +72,10 @@ export class RegisterPageComponent implements OnInit {
     this.email = this.emailControl.value;
     this.password = this.passwordControl.value;
     this.name = this.nameControl.value;
+    this.dialogRef.close()
+  }
+  
+  public close(): void {
+    this.dialogRef.close(false);
   }
 }
