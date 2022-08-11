@@ -1,9 +1,7 @@
 <div class="register-container">
     <div class="logo-container">
         <div class="logo-blur">
-            <div class="logo">
-                <p class="logo-text">Logo</p>                
-            </div>            
+            <tasque-logo class="logo" [isLight]="true"></tasque-logo>
         </div>        
     </div>
     <div class="form-container">
@@ -68,9 +66,8 @@
                                 formControlName="passwordRepeatControl"
                               />
                               <mat-icon class="hide-icon" (click)="hidePassRepeat = !hidePassRepeat">{{hidePassRepeat ? 'visibilityRepeat' : 'visibility_off'}}</mat-icon>
-                        </div>                        
-                        <span class="error" *ngIf="passwordRepeatControl.errors?.['required'] && (passwordRepeatControl.dirty || passwordRepeatControl.touched)">Password repeat is required.</span>
-                        <span class="error" *ngIf="passwordRepeatControl.errors?.['pattern'] && (passwordRepeatControl.dirty || passwordRepeatControl.touched)">Password not match.</span>
+                        </div>
+                        <span class="error" *ngIf="passwordRepeatControl.errors?.['pattern'] && (passwordRepeatControl.dirty || passwordRepeatControl.touched)">Password do not match.</span>
                     </div>
                 </form>
             </div>
@@ -81,7 +78,7 @@
                 <tasque-button text="Sign up with Google" class="btn stroke full-width violet-stroke" [icon]="faGoogle"></tasque-button>
             </div>
             <div class="button-container">
-                <tasque-button text="Sign up with Github" class="btn full-width violet-stroke" [icon]="faGithub"></tasque-button>
+                <tasque-button text="Sign up with Github" class="btn stroke full-width violet-stroke" [icon]="faGithub"></tasque-button>
             </div>
         </div>        
     </div>
