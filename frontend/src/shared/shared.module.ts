@@ -11,10 +11,14 @@ import { InputComponent } from './components/tasque-input/input.component';
 import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.component';
 import { CreateOrganizationDialogComponent } from './components/create-organization/create-organization-dialog/create-organization-dialog.component';
 import { CreateOrganizationComponent } from './components/create-organization/create-organization.component';
+import { CreateProjectComponent } from './components/create-project/create-project.component';
+import {
+  CreateProjectDialogComponent
+} from './components/create-project/create-project-dialog/create-project-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
-import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
     imports: [
@@ -25,19 +29,21 @@ import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.compon
         RouterModule,
         MaterialModule,
         BrowserAnimationsModule,
+        FontAwesomeModule,
     ],
     declarations: [
         LoadingComponent,
         ButtonComponent,
         InputComponent,
         CheckboxComponent,
-        CreateOrganizationComponent, 
+        CreateOrganizationComponent,
         CreateOrganizationDialogComponent,
         LeftSidebarComponent,
         ConfirmationModalComponent,
         DropdownComponent,
+        CreateProjectComponent,
+        CreateProjectDialogComponent,
         LoginPageComponent,
-        TasqueLogoComponent,
     ],
     exports: [
         CommonModule,
@@ -53,11 +59,14 @@ import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.compon
         CheckboxComponent,
         ConfirmationModalComponent,
         LeftSidebarComponent,
-        DropdownComponent,        
-        CreateOrganizationComponent, 
+        DropdownComponent,
+        CreateProjectComponent,
+        CreateProjectDialogComponent,
+        DropdownComponent,
+        CreateOrganizationComponent,
         CreateOrganizationDialogComponent,
         LoginPageComponent,
-        TasqueLogoComponent,
+        FontAwesomeModule,
     ],
 })
-export class SharedModule { }
+export class SharedModule {}

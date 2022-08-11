@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 @Component({
   selector: 'app-login-page',
@@ -8,6 +9,8 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./login-page.component.sass']
 })
 export class LoginPageComponent implements OnInit {
+  faGithub = faGithub;
+  faGoogle = faGoogle;
 
   public name = '';
   public email = '';
@@ -20,7 +23,7 @@ export class LoginPageComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<LoginPageComponent>,
-  ) { 
+  ) {
     this.firstName = new FormControl(this.name, [
       Validators.required,
       Validators.minLength(8)

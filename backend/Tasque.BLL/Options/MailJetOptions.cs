@@ -1,6 +1,6 @@
 ﻿using Tasque.Core.Common.Models.Email;
 
-namespace Tasque.Core.BLL.Services.Email.MailJet
+namespace Tasque.Core.BLL.Options
 {
     public class MailJetOptions
     {

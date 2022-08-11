@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Tasque.Core.DAL;
@@ -11,9 +12,10 @@ using Tasque.Core.DAL;
 namespace Tasque.Core.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220811085754_RemovedUnknownForeignKeys")]
+    partial class RemovedUnknownForeignKeys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,28 +248,6 @@ namespace Tasque.Core.DAL.Migrations
                     b.HasIndex("TaskId");
 
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("Tasque.Core.Common.Entities.ConfirmationToken", b =>
-                {
-                    b.Property<Guid>("Token")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("ExpiringAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Kind")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Token");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ConfirmationTokens");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Label", b =>
@@ -556,9 +536,6 @@ namespace Tasque.Core.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsEmailConfirmed")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -719,17 +696,6 @@ namespace Tasque.Core.DAL.Migrations
                     b.Navigation("Author");
 
                     b.Navigation("Task");
-                });
-
-            modelBuilder.Entity("Tasque.Core.Common.Entities.ConfirmationToken", b =>
-                {
-                    b.HasOne("Tasque.Core.Common.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Label", b =>
