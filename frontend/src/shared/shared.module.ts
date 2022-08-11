@@ -14,6 +14,7 @@ import { CreateOrganizationComponent } from './components/create-organization/cr
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
+import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.component';
 
 @NgModule({
     imports: [
@@ -36,6 +37,7 @@ import { LoginPageComponent } from './components/login-page/login-page.component
         ConfirmationModalComponent,
         DropdownComponent,
         LoginPageComponent,
+        TasqueLogoComponent,
     ],
     exports: [
         CommonModule,
@@ -55,6 +57,7 @@ import { LoginPageComponent } from './components/login-page/login-page.component
         CreateOrganizationComponent, 
         CreateOrganizationDialogComponent,
         LoginPageComponent,
+        TasqueLogoComponent,
     ],
 })
 export class SharedModule { }
