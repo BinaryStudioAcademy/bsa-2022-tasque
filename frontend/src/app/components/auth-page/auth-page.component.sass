@@ -1,0 +1,37 @@
+@import 'src/colors.sass'
+
+.auth-container
+  height: 100vh
+  min-height: 100%
+  width: 100%
+  min-width: 100%
+  display: grid
+  grid-template-columns: 3fr 2fr
+  align-items: center
+  margin: -10px -10px -10px -10px
+
+.logo-container
+  height: 100%
+  background-position: center
+  background-repeat: no-repeat
+  background-size: cover
+  background-image: url('/assets/background.png')
+  cursor: pointer
+
+.logo-blur
+  height: 100%
+  width: 100%
+  display: flex
+  justify-content: center
+  align-items: center
+  background-color: rgba(colorscheme(violet-400), 0.85)
+  backdrop-filter: blur(8px)
+
+.logo-blur > div
+  text-align: center
+
+.logo
+  width: 60%
+  display: flex
+  align-items: center
+  justify-content: center
