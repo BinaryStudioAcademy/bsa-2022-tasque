@@ -12,8 +12,8 @@ namespace Tasque.Core.WebAPI.Controllers
         where TDto : class
         where TService : IEntityCrudService<TModel>
     {
-        private readonly TService _service;
-        private readonly Mapper mapper;
+        protected readonly TService _service;
+        protected readonly Mapper mapper;
         public EntityController(TService service)
         {
             _service = service;
