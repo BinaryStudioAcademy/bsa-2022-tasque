@@ -19,6 +19,7 @@ public class User : BaseEntity
     public string Email { get; set; } = null!;
     public string Password { get; set; } = null!;
     public string Salt { get; set; } = null!;
+    public bool IsEmailConfirmed { get; set; } = false;
 
     public virtual ICollection<Meeting> Meetings { get; set; }
     public virtual ICollection<Project> OwnedProjects { get; set; }

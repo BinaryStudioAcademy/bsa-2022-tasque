@@ -18,6 +18,7 @@ import { ConfirmationModalComponent } from './components/tasque-confirmation-mod
 import { OrganizationsDropdownComponent } from './components/organizations-dropdown/organizations-dropdown.component';
 import { MenuDropdownComponent } from './components/tasque-menu-dropdown/menu-dropdown.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
     imports: [
@@ -28,6 +29,7 @@ import { LoginPageComponent } from './components/login-page/login-page.component
         RouterModule,
         MaterialModule,
         BrowserAnimationsModule,
+        FontAwesomeModule,
     ],
     declarations: [
         LoadingComponent,
@@ -67,7 +69,8 @@ import { LoginPageComponent } from './components/login-page/login-page.component
         CreateOrganizationDialogComponent,
         LoginPageComponent,
         MenuDropdownComponent,
-        OrganizationsDropdownComponent
+        OrganizationsDropdownComponent,
+        FontAwesomeModule,
     ],
 })
 export class SharedModule { }

@@ -1,4 +1,4 @@
-﻿namespace Tasque.Core.BLL.JWT
+﻿namespace Tasque.Core.BLL.Options
 {
     public class JwtIssuerOptions
     {
