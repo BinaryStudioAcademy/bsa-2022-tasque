@@ -10,6 +10,7 @@ export class ButtonComponent {
   public buttonIcon?: IconProp = undefined;
   public buttonText = '';
   public buttonClass = 'btn';
+  public buttonType = 'button';
 
   @Input()
   set text(name: string) {
@@ -27,11 +28,18 @@ export class ButtonComponent {
     return this.buttonClass;
   }
 
+  set type(name: string) {
+    this.buttonType = name;
+  }
+  get type(): string {
+    return this.buttonType;
+  }
+  
   @Input()
   set icon(icon: IconProp) {
     this.buttonIcon = icon;
   }
-
+  
   @Output() btnClick = new EventEmitter();
 
   constructor() {}
