@@ -1,7 +1,7 @@
-<mat-menu #menu="matMenu">
+<mat-menu class="black-transparent" #menu="matMenu">
   <div *ngFor="let item of items">
     <button (click)="onClick(item)" mat-menu-item>
-      <span> {{ menuName }} </span>
+      <span> {{ item }} </span>
     </button>
   </div>
 </mat-menu>
