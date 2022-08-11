@@ -8,6 +8,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class ButtonComponent {
   public buttonText = '';
   public buttonClass = 'btn';
+  public buttonType = 'button';
 
   @Input()
   set text(name: string) {
@@ -23,6 +24,14 @@ export class ButtonComponent {
   }
   get class(): string {
     return this.buttonClass;
+  }
+
+  @Input()
+  set type(name: string) {
+    this.buttonType = name;
+  }
+  get type(): string {
+    return this.buttonType;
   }
 
   @Output() btnClick = new EventEmitter();
