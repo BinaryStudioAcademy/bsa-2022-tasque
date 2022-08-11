@@ -1,11 +1,11 @@
 <mat-menu #organizationsMenu="matMenu">
   <div *ngFor="let organization of availableOrganizations">
-    <button (click)="onClick(organization)" mat-menu-item>{{ organization }} Organization</button>
+    <button *ngIf="organization.id" (click)="onClick(organization.id)" mat-menu-item>{{ organization.name }} Organization</button>
   </div>
 </mat-menu>
 
 <button mat-button [matMenuTriggerFor]="organizationsMenu">
-  {{ selectedOrganization }} Organization
+  {{ currentOrganization.name }} Organization
   <svg width="11" height="7" viewBox="0 0 11 7" fill="" xmlns="http://www.w3.org/2000/svg">
     <path fill-rule="evenodd" clip-rule="evenodd" d="M9.773 0.158203L5.948 3.97487L2.123 0.158203L0.947998 1.3332L5.948 6.3332L10.948 1.3332L9.773 0.158203Z" fill="black" />
   </svg>

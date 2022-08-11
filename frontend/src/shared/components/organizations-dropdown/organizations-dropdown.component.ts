@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { StorageService } from 'src/core/services/storage.service';
+import { OrganizationModel } from 'src/entity-models/organization-model';
 
 @Component({
   selector: 'tasque-organizations-dropdown',
@@ -7,26 +8,33 @@ import { BehaviorSubject } from 'rxjs';
   styleUrls: ['./organizations-dropdown.component.sass']
 })
 export class OrganizationsDropdownComponent implements OnInit {
+  public currentOrganization: OrganizationModel = {
+    id: -1,
+    name: 'None',
+    authorId: -1
+  };
 
-  constructor() { }
+  constructor(private storageService: StorageService) {
+    // make request for current organization
+  }
 
   ngOnInit(): void {
+    this.storageService.currentOrganizationId$.subscribe(
+      (result) => {
+        const searchedOrganization = this.availableOrganizations.find((x) => x.id == result);
+        if (searchedOrganization) {
+          this.currentOrganization = searchedOrganization;
+        }
+        else {
+          // eslint-disable-next-line no-console
+          console.log('error');
+        }
+      });
   }
 
-  private selectedOrganization$ = new BehaviorSubject<string>(this.selectedOrganization);
+  @Input() public availableOrganizations: OrganizationModel[] = [];
 
-  set selectedOrganization(value: string) {
-    this.selectedOrganization$.next(value);
-    localStorage.setItem('selectedOrganization', value);
-  }
-
-  get selectedOrganization(): string {
-    return localStorage.getItem('selectedOrganization') ?? 'None';
-  }
-
-  @Input() public availableOrganizations: string[] = [];
-
-  onClick(organization: string): void {
-    this.selectedOrganization = organization;
+  onClick(organizationId: number): void {
+    this.storageService.currentOrganizationId = organizationId;
   }
 }
