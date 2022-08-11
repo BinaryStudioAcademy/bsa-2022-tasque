@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
 using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services.Email;
@@ -14,11 +15,14 @@ namespace Tasque.Core.BLL.Services.Auth
         private IEmailService _emailService;
         private EmailConfirmationOptions _emailOptions;
 
-        public ConfirmationTokenService(DataContext context, IEmailService emailService, EmailConfirmationOptions emailOptions)
+        public ConfirmationTokenService(
+            DataContext context, 
+            IEmailService emailService, 
+            IOptions<EmailConfirmationOptions> emailOptions)
         {
             _context = context;
             _emailService = emailService;
-            _emailOptions = emailOptions;
+            _emailOptions = emailOptions.Value;
         }
 
         public async Task<ConfirmationToken> CreateConfirmationToken(User user, TokenKind kind)
@@ -40,7 +44,7 @@ namespace Tasque.Core.BLL.Services.Auth
                 .FirstOrDefaultAsync(x => x.Token == key && x.Kind == kind)
                 ?? throw new ValidationException("Invalid confirmation token");
 
-            if (confToken.ExpiringAt < DateTime.UtcNow)
+            if (!confToken.IsValid)
             {
                 _context.ConfirmationTokens.Remove(confToken);
                 await _context.SaveChangesAsync();

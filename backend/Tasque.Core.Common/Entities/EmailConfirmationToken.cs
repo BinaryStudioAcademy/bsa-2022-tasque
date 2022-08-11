@@ -10,6 +10,7 @@ namespace Tasque.Core.Common.Entities
         public User User { get; set; } = null!;
         public DateTime ExpiringAt { get; set; }
         public TokenKind Kind{ get; set; }
+        public bool IsValid => DateTime.UtcNow < ExpiringAt;
     }
 
     public enum TokenKind

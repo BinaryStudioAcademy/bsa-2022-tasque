@@ -51,7 +51,7 @@ namespace Tasque.Core.BLL.Services.Auth
                 .FirstOrDefaultAsync(x =>
                     x.UserId == userEntity.Id
                     && x.Kind == TokenKind.PasswordReset
-                    && x.ExpiringAt > DateTime.UtcNow)
+                    && x.IsValid)
                 ?? await _confirmationTokenService.CreateConfirmationToken(userEntity, TokenKind.PasswordReset);
 
             await _confirmationTokenService.SendConfirmationEmail(token);

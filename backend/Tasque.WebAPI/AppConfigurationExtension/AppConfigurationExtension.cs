@@ -99,6 +99,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services
                 .AddScoped<AuthService>()
                 .AddScoped<ConfirmationTokenService>()
+                .AddScoped<PasswordResetService>()
                 .AddScoped<ProjectService>()
                 .AddScoped<IEmailService, MailJetService>()
                 .AddScoped<OrganizationService>();
