@@ -6,7 +6,7 @@
         <form ngSubmit="sendForm()" class="input-container">
             <tasque-input 
                 class="form-input"
-                (value)="this.userName"
+                (outputValue)="recieveName($event)"
                 [class]="inputClass"
                 [width]="325"
                 [placeholder]="this.placeholderName"
@@ -17,7 +17,7 @@
             </tasque-input>
             <tasque-input 
                 class="form-input"
-                (value)="this.userEmail"
+                (outputValue)="recieveEmail($event)"
                 [class]="inputClass"
                 [width]="325"
                 [placeholder]="this.placeholderEmail"
@@ -30,7 +30,7 @@
             </tasque-input>
             <tasque-input 
                 class="form-input"
-                (value)="this.userPassword"
+                (outputValue)="recievePassword($event)"
                 [class]="inputClass"
                 [width]="325"
                 [placeholder]="this.placeholderPassword"

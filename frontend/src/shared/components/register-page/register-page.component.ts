@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-register-page',
@@ -32,6 +32,18 @@ export class RegisterPageComponent implements OnInit {
 
   sendForm(){
     console.log(`data: ${this.userName} ${this.userEmail} ${this.userPassword}`);
+  }
+
+  recieveName(name: any) {
+    this.userName = name;
+  }
+
+  recieveEmail(email: any) {
+    this.userEmail = email;
+  }
+
+  recievePassword(password: any) {
+    this.userPassword = password;
   }
 
 }
