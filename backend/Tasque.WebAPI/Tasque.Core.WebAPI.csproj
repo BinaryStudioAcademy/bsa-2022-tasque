@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>preview</LangVersion>
-    <UserSecretsId>2819ebd4-311d-4b3e-8309-b29e75776c9a</UserSecretsId>
+    <UserSecretsId>9340adb4-33dd-4115-99b5-a02de5b7a137</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Identity\Tasque.Core.Identity.csproj" />
     <ProjectReference Include="..\Tasque.BLL\Tasque.Core.BLL.csproj" />
     <ProjectReference Include="..\Tasque.Core.Common\Tasque.Core.Common.csproj" />
     <ProjectReference Include="..\Tasque.DAL\Tasque.Core.DAL.csproj" />
