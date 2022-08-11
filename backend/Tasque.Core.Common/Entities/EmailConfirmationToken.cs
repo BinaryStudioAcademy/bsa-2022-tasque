@@ -14,6 +14,7 @@ namespace Tasque.Core.Common.Entities
 
     public enum TokenKind
     {
-        EmailConfirmation = 1
+        EmailConfirmation = 1,
+        PasswordReset = 2
     }
 }
