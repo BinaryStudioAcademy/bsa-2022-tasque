@@ -54,17 +54,13 @@ export class LoginPageComponent implements OnInit {
   }
 
   public submitForm(): void {
-    console.log(this.userLogin);
     this.authService.loginUser(this.userLogin)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((resp) => {
       if(resp.ok){
         const token = resp.body;
-        this.localStorage.setItem(this.localStorageKeys.token, token?.accessToken as string)
+        this.localStorage.setItem(this.localStorageKeys.token, token?.accessToken as string);
       }
-    },
-    (error) => {
-      //pop-up with error;
     });
     this.close();
   }

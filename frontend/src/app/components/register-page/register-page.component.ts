@@ -73,19 +73,12 @@ export class RegisterPageComponent implements OnInit {
   }
 
   public submitForm(): void {
-    console.log(this.userRegister);
     if(!this.registerForm.valid){
       //pop-up with error
       return;
-    };
+    }
       this.authService.registerUser(this.userRegister)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((resp) => {
-        console.log(resp)
-        //if ok - redirect to check email page
-      },
-      (error) => {
-        //pop up with error
-      })
+      .subscribe();
   }
 }

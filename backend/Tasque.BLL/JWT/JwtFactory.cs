@@ -3,12 +3,15 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Tasque.Core.BLL.Options;
+using Tasque.Core.Common.DTO;
+using Tasque.Core.DAL;
 
 namespace Tasque.Core.BLL.JWT
 {
     public class JwtFactory
     {
-        public readonly JwtIssuerOptions _jwtOptions;
+        private readonly JwtIssuerOptions _jwtOptions;
+        private readonly DataContext _dbContext;
 
         public JwtFactory(JwtIssuerOptions jwtOptions)
         {
@@ -35,11 +38,6 @@ namespace Tasque.Core.BLL.JWT
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        public object Authenticate(object credentials)
-        {
-            throw new NotImplementedException();
         }
     }
 }
