@@ -23,10 +23,9 @@ export class RegisterPageComponent implements OnInit {
   public passwordRepeatControl: FormControl;
   faGithub = faGithub;
   faGoogle = faGoogle;
+  public validationConstraints = ValidationConstraints;
 
-  constructor(
-    public validationConstraints = ValidationConstraints,
-  ) { 
+  constructor() { 
     this.nameControl = new FormControl(this.name, [
       Validators.required,
       Validators.minLength(this.validationConstraints.minLengthName)

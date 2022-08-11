@@ -21,10 +21,10 @@ export class LoginPageComponent implements OnInit {
   public firstName: FormControl;
   public emailControl: FormControl;
   public passwordControl: FormControl;
+  private validationConstraints = ValidationConstraints;
 
   constructor(
     private dialogRef: MatDialogRef<LoginPageComponent>,
-    private validationConstraints = ValidationConstraints,
   ) {
     this.firstName = new FormControl(this.name, [
       Validators.required,
