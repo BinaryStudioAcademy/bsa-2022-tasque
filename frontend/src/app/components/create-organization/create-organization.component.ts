@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateOrganizationDialogComponent } from './create-organization-dialog/create-organization-dialog.component';
 import { UserModel } from 'src/entity-models/user-model';
-import { ButtonComponent } from '../tasque-button/button.component';
+import { ButtonComponent } from 'src/shared/components/tasque-button/button.component';
 
 @Component({
   selector: 'app-create-organization',
