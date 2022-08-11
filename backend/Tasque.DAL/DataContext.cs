@@ -13,13 +13,21 @@ public class DataContext : DbContext
 
         modelBuilder.Entity<Project>()
             .HasOne(project => project.Author)
-            .WithMany(user => user.Projects)
+            .WithMany(user => user.OwnedProjects)
             .HasForeignKey(project => project.AuthorId);
 
         modelBuilder.Entity<Task>()
             .HasOne(task => task.Author)
-            .WithMany(user => user.Tasks)
+            .WithMany(user => user.OwnedTasks)
             .HasForeignKey(task => task.AuthorId);
+
+        modelBuilder.Entity<User>()
+            .HasMany(user => user.ParticipatedProjects)
+            .WithMany(project => project.Users);
+
+        modelBuilder.Entity<User>()
+            .HasMany(user => user.ParticipatedTasks)
+            .WithMany(task => task.Users);
 
         modelBuilder.Entity<Task>()
             .HasOne(task => task.LastUpdatedBy);
