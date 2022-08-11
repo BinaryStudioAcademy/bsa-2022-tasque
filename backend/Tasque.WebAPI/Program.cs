@@ -40,11 +40,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseCors(builder =>
+app.UseCors(builder => 
     builder
         .AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowAnyOrigin());
+        .AllowAnyOrigin()
+        .AllowAnyMethod());
         
 app.UseSwagger();
 app.UseSwaggerUI();
