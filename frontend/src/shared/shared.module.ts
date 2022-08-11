@@ -14,6 +14,7 @@ import { CreateOrganizationComponent } from './components/create-organization/cr
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
 import { OrganizationsDropdownComponent } from './components/organizations-dropdown/organizations-dropdown.component';
+import { MenuDropdownComponent } from './components/tasque-menu-dropdown/menu-dropdown.component';
 
 @NgModule({
         imports: [
@@ -35,7 +36,8 @@ import { OrganizationsDropdownComponent } from './components/organizations-dropd
                 LeftSidebarComponent,
                 ConfirmationModalComponent,
                 DropdownComponent,
-                OrganizationsDropdownComponent
+                OrganizationsDropdownComponent,
+                MenuDropdownComponent
         ],
         exports: [
                 CommonModule,
@@ -54,6 +56,7 @@ import { OrganizationsDropdownComponent } from './components/organizations-dropd
                 DropdownComponent,
                 CreateOrganizationComponent,
                 CreateOrganizationDialogComponent,
+                MenuDropdownComponent,
                 OrganizationsDropdownComponent
         ],
 })
