@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tasque.Core.DAL.Migrations
 {
-    public partial class EmailConfirmation : Migration
+    public partial class AddedConfirmationTokens : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,18 +17,19 @@ namespace Tasque.Core.DAL.Migrations
                 defaultValue: false);
 
             migrationBuilder.CreateTable(
-                name: "EmailConfirmationTokens",
+                name: "ConfirmationTokens",
                 columns: table => new
                 {
                     Token = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: false),
-                    ExpiringAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    ExpiringAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Kind = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmailConfirmationTokens", x => x.Token);
+                    table.PrimaryKey("PK_ConfirmationTokens", x => x.Token);
                     table.ForeignKey(
-                        name: "FK_EmailConfirmationTokens_Users_UserId",
+                        name: "FK_ConfirmationTokens_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -36,15 +37,15 @@ namespace Tasque.Core.DAL.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmailConfirmationTokens_UserId",
-                table: "EmailConfirmationTokens",
+                name: "IX_ConfirmationTokens_UserId",
+                table: "ConfirmationTokens",
                 column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EmailConfirmationTokens");
+                name: "ConfirmationTokens");
 
             migrationBuilder.DropColumn(
                 name: "IsEmailConfirmed",

@@ -12,8 +12,8 @@ using Tasque.Core.DAL;
 namespace Tasque.Core.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220810143810_EmailConfirmation")]
-    partial class EmailConfirmation
+    [Migration("20220811104844_AddedTokenType")]
+    partial class AddedConfirmationTokens
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,6 +69,21 @@ namespace Tasque.Core.DAL.Migrations
                     b.ToTable("MeetingUser");
                 });
 
+            modelBuilder.Entity("ProjectUser", b =>
+                {
+                    b.Property<int>("ParticipatedProjectsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ParticipatedProjectsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("ProjectUser");
+                });
+
             modelBuilder.Entity("RoleUser", b =>
                 {
                     b.Property<int>("RolesId")
@@ -82,6 +97,21 @@ namespace Tasque.Core.DAL.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("RoleUser");
+                });
+
+            modelBuilder.Entity("TaskUser", b =>
+                {
+                    b.Property<int>("ParticipatedTasksId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ParticipatedTasksId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("TaskUser");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Attachment", b =>
@@ -220,7 +250,7 @@ namespace Tasque.Core.DAL.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Tasque.Core.Common.Entities.EmailConfirmationToken", b =>
+            modelBuilder.Entity("Tasque.Core.Common.Entities.ConfirmationToken", b =>
                 {
                     b.Property<Guid>("Token")
                         .ValueGeneratedOnAdd()
@@ -229,6 +259,9 @@ namespace Tasque.Core.DAL.Migrations
                     b.Property<DateTime>("ExpiringAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("Kind")
+                        .HasColumnType("integer");
+
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
@@ -236,7 +269,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("EmailConfirmationTokens");
+                    b.ToTable("ConfirmationTokens");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Label", b =>
@@ -536,24 +569,14 @@ namespace Tasque.Core.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("ProjectId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Salt")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int?>("TaskId")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("TaskId");
 
                     b.ToTable("Users");
                 });
@@ -603,11 +626,41 @@ namespace Tasque.Core.DAL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ProjectUser", b =>
+                {
+                    b.HasOne("Tasque.Core.Common.Entities.Project", null)
+                        .WithMany()
+                        .HasForeignKey("ParticipatedProjectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Tasque.Core.Common.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("RoleUser", b =>
                 {
                     b.HasOne("Tasque.Core.Common.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Tasque.Core.Common.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TaskUser", b =>
+                {
+                    b.HasOne("Tasque.Core.Common.Entities.Task", null)
+                        .WithMany()
+                        .HasForeignKey("ParticipatedTasksId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -670,7 +723,7 @@ namespace Tasque.Core.DAL.Migrations
                     b.Navigation("Task");
                 });
 
-            modelBuilder.Entity("Tasque.Core.Common.Entities.EmailConfirmationToken", b =>
+            modelBuilder.Entity("Tasque.Core.Common.Entities.ConfirmationToken", b =>
                 {
                     b.HasOne("Tasque.Core.Common.Entities.User", "User")
                         .WithMany()
@@ -728,7 +781,7 @@ namespace Tasque.Core.DAL.Migrations
             modelBuilder.Entity("Tasque.Core.Common.Entities.Project", b =>
                 {
                     b.HasOne("Tasque.Core.Common.Entities.User", "Author")
-                        .WithMany("Projects")
+                        .WithMany("OwnedProjects")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -747,7 +800,7 @@ namespace Tasque.Core.DAL.Migrations
             modelBuilder.Entity("Tasque.Core.Common.Entities.Task", b =>
                 {
                     b.HasOne("Tasque.Core.Common.Entities.User", "Author")
-                        .WithMany("Tasks")
+                        .WithMany("OwnedTasks")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -789,30 +842,9 @@ namespace Tasque.Core.DAL.Migrations
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.User", b =>
                 {
-                    b.HasOne("Tasque.Core.Common.Entities.Project", null)
-                        .WithMany("Users")
-                        .HasForeignKey("ProjectId");
+                    b.Navigation("OwnedProjects");
 
-                    b.HasOne("Tasque.Core.Common.Entities.Task", null)
-                        .WithMany("Users")
-                        .HasForeignKey("TaskId");
-                });
-
-            modelBuilder.Entity("Tasque.Core.Common.Entities.Project", b =>
-                {
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("Tasque.Core.Common.Entities.Task", b =>
-                {
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("Tasque.Core.Common.Entities.User", b =>
-                {
-                    b.Navigation("Projects");
-
-                    b.Navigation("Tasks");
+                    b.Navigation("OwnedTasks");
                 });
 #pragma warning restore 612, 618
         }

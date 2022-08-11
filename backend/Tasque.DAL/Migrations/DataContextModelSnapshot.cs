@@ -248,7 +248,7 @@ namespace Tasque.Core.DAL.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Tasque.Core.Common.Entities.EmailConfirmationToken", b =>
+            modelBuilder.Entity("Tasque.Core.Common.Entities.ConfirmationToken", b =>
                 {
                     b.Property<Guid>("Token")
                         .ValueGeneratedOnAdd()
@@ -257,6 +257,9 @@ namespace Tasque.Core.DAL.Migrations
                     b.Property<DateTime>("ExpiringAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("Kind")
+                        .HasColumnType("integer");
+
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
@@ -264,7 +267,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("EmailConfirmationTokens");
+                    b.ToTable("ConfirmationTokens");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Label", b =>
@@ -718,7 +721,7 @@ namespace Tasque.Core.DAL.Migrations
                     b.Navigation("Task");
                 });
 
-            modelBuilder.Entity("Tasque.Core.Common.Entities.EmailConfirmationToken", b =>
+            modelBuilder.Entity("Tasque.Core.Common.Entities.ConfirmationToken", b =>
                 {
                     b.HasOne("Tasque.Core.Common.Entities.User", "User")
                         .WithMany()
