@@ -13,31 +13,28 @@ using Tasque.Core.Common.Models.Email;
 using Tasque.Core.Common.Security;
 using Tasque.Core.DAL;
 
-namespace Tasque.Core.BLL.Services
+namespace Tasque.Core.BLL.Services.Auth
 {
     public class AuthService
     {
-        private DataContext _context;        
-        private JwtFactory _jwtFactory;
-        private IEmailService _emailService;
+        private DataContext _context;
+        private JwtFactory _jwtFactory;        
         private IMapper _mapper;
         private IValidator<User> _validator;
-        private EmailConfirmationOptions _emailOptions;
+        private ConfirmationTokenService _tokenService;
 
         public AuthService(
-            DataContext context,            
+            DataContext context,
             JwtFactory jwtFactory,
-            IEmailService emailService,
             IMapper mapper,
-            IValidator<User> validator, 
-            IOptions<EmailConfirmationOptions> emailOptions)
+            IValidator<User> validator,
+            ConfirmationTokenService tokenService)
         {
             _context = context;
             _mapper = mapper;
             _jwtFactory = jwtFactory;
             _validator = validator;
-            _emailOptions = emailOptions.Value;
-            _emailService = emailService;
+            _tokenService = tokenService;
         }
 
         public async Task<UserDto> Login(UserLoginDto loginInfo)
@@ -45,15 +42,15 @@ namespace Tasque.Core.BLL.Services
             var userEntity = await _context.Users.FirstOrDefaultAsync(x => x.Email == loginInfo.Email)
                 ?? throw new ValidationException("No user with given email");
 
-            if (!userEntity.IsEmailConfirmed) 
+            if (!userEntity.IsEmailConfirmed)
             {
                 if (!_context.ConfirmationTokens.Any(x => x.UserId == userEntity.Id))
                 {
-                    var token = await CreateConfirmationToken(userEntity);
-                    await SendConfirmationEmail(token);
+                    var token = await _tokenService.CreateConfirmationToken(userEntity, TokenKind.EmailConfirmation);
+                    await _tokenService.SendConfirmationEmail(token);
                 }
                 throw new EmailNotConfirmedException(userEntity.Email);
-            }                
+            }
 
             if (!SecurityHelper.ValidatePassword(loginInfo.Password, userEntity.Password, userEntity.Salt))
                 throw new ValidationException("Invalid password");
@@ -98,8 +95,8 @@ namespace Tasque.Core.BLL.Services
             _context.Users.Add(userEntity);
             await _context.SaveChangesAsync();
 
-            var token = await CreateConfirmationToken(userEntity);
-            await SendConfirmationEmail(token);
+            var token = await _tokenService.CreateConfirmationToken(userEntity, TokenKind.EmailConfirmation);
+            await _tokenService.SendConfirmationEmail(token);
             return _mapper.Map<UserDto>(userEntity);
         }
 
@@ -109,35 +106,6 @@ namespace Tasque.Core.BLL.Services
             {
                 AccessToken = _jwtFactory.GenerateToken(id, username, email)
             };
-        }
-
-        private async Task<ConfirmationToken> CreateConfirmationToken(User user)
-        {
-            var confToken = new ConfirmationToken
-            {
-                User = user,
-                ExpiringAt = DateTime.UtcNow.AddSeconds(_emailOptions.TokenLifetime),
-                Kind = TokenKind.EmailConfirmation
-            };
-            _context.ConfirmationTokens.Add(confToken);
-            await _context.SaveChangesAsync();
-            return confToken;
-        }
-
-        private Task<bool> SendConfirmationEmail(ConfirmationToken token)
-        {
-            var user = token.User;
-            var reciever = new EmailContact(user.Email, user.Name);
-            var email = new EmailMessage(reciever)
-            {
-                Subject = "Successful registration",
-                Content = 
-                    "<h3>Thanks for choosing Tasque</h3><br/>" +
-                    $"<a href=\"{_emailOptions.GetConfirmationPath(token)}\">" +
-                    "CLick here to confirm your email" +
-                    "</a>"
-            };
-            return _emailService.SendEmailAsync(email);
-        }
+        }        
     }
 }

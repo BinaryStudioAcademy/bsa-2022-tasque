@@ -8,6 +8,7 @@ using Tasque.Core.BLL.JWT;
 using Tasque.Core.BLL.MappingProfiles;
 using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services;
+using Tasque.Core.BLL.Services.Auth;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.BLL.Services.Email.MailJet;
 using Tasque.Core.BLL.Services.Project;
@@ -97,6 +98,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
 
             services
                 .AddScoped<AuthService>()
+                .AddScoped<ConfirmationTokenService>()
                 .AddScoped<ProjectService>()
                 .AddScoped<IEmailService, MailJetService>()
                 .AddScoped<OrganizationService>();
