@@ -6,9 +6,11 @@ using System.Reflection;
 using System.Text;
 using Tasque.Core.BLL.JWT;
 using Tasque.Core.BLL.MappingProfiles;
+using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.BLL.Services.Email.MailJet;
+using Tasque.Core.BLL.Services.Project;
 using Tasque.Core.Common.Entities;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
@@ -56,9 +58,10 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<UserProfile>();
+                cfg.AddProfile<OrganizationProfile>();
             },
             Assembly.GetExecutingAssembly());
-        } 
+        }
 
         public static void ConfigureValidator(this IServiceCollection services)
         {
@@ -67,6 +70,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
 
         public static void ConfigureEmailServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<EmailConfirmationOptions>(configuration.GetSection(nameof(EmailConfirmationOptions)));
+
             var options = new MailJetOptions();
             var section = configuration.GetSection(nameof(MailJetOptions));
             section.Bind(options);
@@ -88,10 +93,13 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddScoped<JwtFactory>();
             services.AddMvc();
             services.AddControllers();
+            services.AddCors();
 
             services
                 .AddScoped<AuthService>()
-                .AddScoped<IEmailService, MailJetService>();
+                .AddScoped<ProjectService>()
+                .AddScoped<IEmailService, MailJetService>()
+                .AddScoped<OrganizationService>();
         }
 
         public static void AddSwagger(this IServiceCollection services)
