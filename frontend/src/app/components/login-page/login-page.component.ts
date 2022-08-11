@@ -32,7 +32,7 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<LoginPageComponent>,
     private authService: AuthService
-  ) {
+  ) {this.emailControl = new FormControl( this.userLogin.email, [
       Validators.email,
       Validators.required,
       Validators.minLength(this.validationConstants.minLengthEmail)
