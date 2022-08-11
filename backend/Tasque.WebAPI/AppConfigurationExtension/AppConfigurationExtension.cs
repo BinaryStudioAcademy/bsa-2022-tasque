@@ -56,6 +56,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<UserProfile>();
+                cfg.AddProfile<OrganizationProfile>();
             },
             Assembly.GetExecutingAssembly());
         } 
@@ -91,7 +92,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
 
             services
                 .AddScoped<AuthService>()
-                .AddScoped<IEmailService, MailJetService>();
+                .AddScoped<IEmailService, MailJetService>()
+                .AddScoped<OrganizationService>();
         }
 
         public static void AddSwagger(this IServiceCollection services)
