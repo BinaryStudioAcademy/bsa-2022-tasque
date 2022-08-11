@@ -1,10 +1,12 @@
 <mat-menu #menu="matMenu">
   <div *ngFor="let item of items">
-    <button (click)="onClick(item)" mat-menu-item>{{ item }}</button>
+    <button (click)="onClick(item)" mat-menu-item>
+      <span> {{ menuName }} </span>
+    </button>
   </div>
 </mat-menu>
 
 <button mat-button [matMenuTriggerFor]="menu">
-  {{ menuName }}
+  <span> {{ menuName }} </span>
   <img src="/src/assets/tick.png" alt="tick" />
 </button>

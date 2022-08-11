@@ -1,10 +1,12 @@
 <mat-menu #organizationsMenu="matMenu">
   <div *ngFor="let organization of availableOrganizations">
-    <button *ngIf="organization.id" (click)="onClick(organization.id)" mat-menu-item>{{ organization.name }} Organization</button>
+    <button *ngIf="organization.id" (click)="onClick(organization.id)" mat-menu-item>
+      <span> {{ organization.name }} Organization </span>
+    </button>
   </div>
 </mat-menu>
 
 <button mat-button [matMenuTriggerFor]="organizationsMenu">
-  {{ currentOrganization.name }} Organization
+  <span> {{ currentOrganization.name }} Organization </span>
   <img src="/src/assets/tick.png" alt="tick" />
 </button>
