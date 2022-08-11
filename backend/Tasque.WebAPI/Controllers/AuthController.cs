@@ -53,15 +53,15 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPost("restore")]
+        [HttpPost("restore/request")]
         public async Task<IActionResult> RequestPasswordRestore([FromQuery] string email)
         {
             await _passwordService.Request(email);
             return Ok();
         }
 
-        [HttpPost("restore")]
-        public async Task<IActionResult> RequestPasswordRestore([FromQuery] Guid token)
+        [HttpGet("restore")]
+        public async Task<IActionResult> ValidatePasswordRestoreToken([FromQuery] Guid token)
         {
             await _passwordService.ValidateToken(token);
             return Ok();
