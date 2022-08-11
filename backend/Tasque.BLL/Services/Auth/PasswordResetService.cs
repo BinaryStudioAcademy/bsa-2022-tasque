@@ -50,9 +50,10 @@ namespace Tasque.Core.BLL.Services.Auth
             var token = await _context.ConfirmationTokens
                 .FirstOrDefaultAsync(x =>
                     x.UserId == userEntity.Id
-                    && x.Kind == TokenKind.PasswordReset
-                    && x.IsValid)
-                ?? await _confirmationTokenService.CreateConfirmationToken(userEntity, TokenKind.PasswordReset);
+                    && x.Kind == TokenKind.PasswordReset);
+            
+            if (token == null || !token.IsValid)
+                token = await _confirmationTokenService.CreateConfirmationToken(userEntity, TokenKind.PasswordReset);
 
             await _confirmationTokenService.SendConfirmationEmail(token);
         }
