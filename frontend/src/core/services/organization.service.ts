@@ -18,4 +18,12 @@ export class OrganizationService {
   createOrganization(organization: OrganizationModel): Observable<HttpResponse<OrganizationModel>> {
     return this.httpService.postFullRequest<OrganizationModel>(this.routePrefix + '/create', organization);
   }
+
+  getOrganizations(): Observable<HttpResponse<OrganizationModel[]>> {
+    return this.httpService.getFullRequest<OrganizationModel[]>(this.routePrefix + '/getAll');
+  }
+
+  getOrganization(id: number): Observable<HttpResponse<OrganizationModel>> {
+    return this.httpService.getFullRequest<OrganizationModel>(this.routePrefix + `getById/${id}`);
+  }
 }
