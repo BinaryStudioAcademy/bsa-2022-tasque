@@ -47,5 +47,5 @@ public class DataContext : DbContext
     public DbSet<Notification> Notifications { get; set; } = null!;
     public DbSet<Role> Roles { get; set; } = null!;
     public DbSet<Sprint> Sprints { get; set; } = null!;
-    public DbSet<EmailConfirmationToken> EmailConfirmationTokens { get; set; } = null!;
+    public DbSet<ConfirmationToken> ConfirmationTokens { get; set; } = null!;
 }

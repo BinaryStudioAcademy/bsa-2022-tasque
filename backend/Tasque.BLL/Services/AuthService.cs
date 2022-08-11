@@ -47,7 +47,7 @@ namespace Tasque.Core.BLL.Services
 
             if (!userEntity.IsEmailConfirmed) 
             {
-                if (!_context.EmailConfirmationTokens.Any(x => x.UserId == userEntity.Id))
+                if (!_context.ConfirmationTokens.Any(x => x.UserId == userEntity.Id))
                 {
                     var token = await CreateConfirmationToken(userEntity);
                     await SendConfirmationEmail(token);
@@ -63,20 +63,20 @@ namespace Tasque.Core.BLL.Services
 
         public async Task<UserDto> Login(Guid emailToken)
         {
-            var confToken = await _context.EmailConfirmationTokens
+            var confToken = await _context.ConfirmationTokens
                 .Include(x => x.User)
-                .FirstOrDefaultAsync(x => x.Token == emailToken)
+                .FirstOrDefaultAsync(x => x.Token == emailToken && x.Kind == TokenKind.EmailConfirmation)
                 ?? throw new ValidationException("Invalid confirmation token");
 
             if (confToken.ExpiringAt < DateTime.UtcNow)
             {
-                _context.EmailConfirmationTokens.Remove(confToken);
+                _context.ConfirmationTokens.Remove(confToken);
                 await _context.SaveChangesAsync();
                 throw new ValidationException("Confirmation token expired");
             }
 
             confToken.User.IsEmailConfirmed = true;
-            _context.EmailConfirmationTokens.Remove(confToken);
+            _context.ConfirmationTokens.Remove(confToken);
             await _context.SaveChangesAsync();
             return _mapper.Map<UserDto>(confToken.User);
         }
@@ -111,19 +111,20 @@ namespace Tasque.Core.BLL.Services
             };
         }
 
-        private async Task<EmailConfirmationToken> CreateConfirmationToken(User user)
+        private async Task<ConfirmationToken> CreateConfirmationToken(User user)
         {
-            var confToken = new EmailConfirmationToken
+            var confToken = new ConfirmationToken
             {
                 User = user,
-                ExpiringAt = DateTime.UtcNow.AddSeconds(_emailOptions.TokenLifetime)
+                ExpiringAt = DateTime.UtcNow.AddSeconds(_emailOptions.TokenLifetime),
+                Kind = TokenKind.EmailConfirmation
             };
-            _context.EmailConfirmationTokens.Add(confToken);
+            _context.ConfirmationTokens.Add(confToken);
             await _context.SaveChangesAsync();
             return confToken;
         }
 
-        private Task<bool> SendConfirmationEmail(EmailConfirmationToken token)
+        private Task<bool> SendConfirmationEmail(ConfirmationToken token)
         {
             var user = token.User;
             var reciever = new EmailContact(user.Email, user.Name);

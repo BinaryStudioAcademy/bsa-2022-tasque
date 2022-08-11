@@ -8,7 +8,7 @@ namespace Tasque.Core.BLL.Options
         public string ConfirmationEndpoint { get; set; } = null!;
         public int TokenLifetime { get; set; }
 
-        public string GetConfirmationPath(EmailConfirmationToken token) => 
+        public string GetConfirmationPath(ConfirmationToken token) => 
             $"{ConfirmationHost}{ConfirmationEndpoint}?key={token.Token}";
     }
 }
