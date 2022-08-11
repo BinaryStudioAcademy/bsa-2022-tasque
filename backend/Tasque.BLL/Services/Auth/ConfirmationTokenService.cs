@@ -1,4 +1,6 @@
-﻿using Tasque.Core.BLL.Options;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Models.Email;
@@ -31,7 +33,22 @@ namespace Tasque.Core.BLL.Services.Auth
             await _context.SaveChangesAsync();
             return confToken;
         }
+        public async Task<ConfirmationToken> ConfirmToken(Guid key, TokenKind kind)
+        {
+            var confToken = await _context.ConfirmationTokens
+                .Include(x => x.User)
+                .FirstOrDefaultAsync(x => x.Token == key && x.Kind == kind)
+                ?? throw new ValidationException("Invalid confirmation token");
 
+            if (confToken.ExpiringAt < DateTime.UtcNow)
+            {
+                _context.ConfirmationTokens.Remove(confToken);
+                await _context.SaveChangesAsync();
+                throw new ValidationException("Confirmation token expired");
+            }
+
+            return confToken;
+        }
         public Task<bool> SendConfirmationEmail(ConfirmationToken token)
         {
             var user = token.User;

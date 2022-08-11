@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System.Runtime.CompilerServices;
 using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.BLL.JWT;
-using Tasque.Core.BLL.Options;
-using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.Entities;
-using Tasque.Core.Common.Models.Email;
 using Tasque.Core.Common.Security;
 using Tasque.Core.DAL;
 
@@ -60,18 +55,7 @@ namespace Tasque.Core.BLL.Services.Auth
 
         public async Task<UserDto> Login(Guid emailToken)
         {
-            var confToken = await _context.ConfirmationTokens
-                .Include(x => x.User)
-                .FirstOrDefaultAsync(x => x.Token == emailToken && x.Kind == TokenKind.EmailConfirmation)
-                ?? throw new ValidationException("Invalid confirmation token");
-
-            if (confToken.ExpiringAt < DateTime.UtcNow)
-            {
-                _context.ConfirmationTokens.Remove(confToken);
-                await _context.SaveChangesAsync();
-                throw new ValidationException("Confirmation token expired");
-            }
-
+            var confToken = await _tokenService.ConfirmToken(emailToken, TokenKind.EmailConfirmation);
             confToken.User.IsEmailConfirmed = true;
             _context.ConfirmationTokens.Remove(confToken);
             await _context.SaveChangesAsync();
