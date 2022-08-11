@@ -18,6 +18,7 @@ import { ConfirmationModalComponent } from './components/tasque-confirmation-mod
 import { RegisterPageComponent } from './components/register-page/register-page.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.component';
 
 @NgModule({
     imports: [
@@ -44,6 +45,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         CreateProjectDialogComponent,
         LoginPageComponent,
         RegisterPageComponent,
+        TasqueLogoComponent,
     ],
     exports: [
         CommonModule,
@@ -66,6 +68,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         CreateOrganizationComponent,
         CreateOrganizationDialogComponent,
         LoginPageComponent,
+        FontAwesomeModule,
+        TasqueLogoComponent,
     ],
 })
 export class SharedModule {}
