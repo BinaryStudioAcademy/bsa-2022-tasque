@@ -19,6 +19,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SideBarComponent } from './components/tasque-sidebar/sidebar.component';
+import { SideBarService } from 'src/core/services/sidebar.service';
 
 @NgModule({
     imports: [
@@ -29,7 +31,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         RouterModule,
         MaterialModule,
         BrowserAnimationsModule,
-        FontAwesomeModule
+        FontAwesomeModule,
+       
     ],
     declarations: [
         LoadingComponent,
@@ -44,6 +47,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         CreateProjectComponent,
         CreateProjectDialogComponent,
         LoginPageComponent,
+        SideBarComponent
     ],
     exports: [
         CommonModule,
@@ -66,7 +70,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         CreateOrganizationComponent,
         CreateOrganizationDialogComponent,
         LoginPageComponent,
-        FontAwesomeModule
+        FontAwesomeModule,
+        SideBarComponent
     ],
+    providers:[SideBarService]
 })
 export class SharedModule {}

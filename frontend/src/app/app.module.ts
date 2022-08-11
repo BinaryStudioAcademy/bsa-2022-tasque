@@ -9,11 +9,8 @@ import { AppComponent } from './app.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { SideBarComponent } from '../shared/components/tasque-sidebar/sidebar.component';
-import { SideBarService } from 'src/core/services/sidebar.service';
-
 @NgModule({
-  declarations: [AppComponent, SideBarComponent],
+  declarations: [AppComponent],
 
   imports: [
     BrowserModule,
@@ -26,8 +23,7 @@ import { SideBarService } from 'src/core/services/sidebar.service';
   ],
 
   providers: [
-    BrowserAnimationsModule,
-    SideBarService
+    BrowserAnimationsModule
   ],
 
   bootstrap: [AppComponent],
