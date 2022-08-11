@@ -27,7 +27,7 @@ export class CreateProjectComponent implements OnInit {
     updatedAt: new Date(2001,1,1),
   };
 
-  public btnText = 'Create organization';
+  public btnText = 'Create project';
   public btnClass = 'mini';
   constructor(
     public matDialog: MatDialog
