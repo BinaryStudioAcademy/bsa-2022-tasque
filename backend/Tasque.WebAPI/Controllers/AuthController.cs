@@ -61,9 +61,9 @@ namespace Tasque.Core.WebAPI.Controllers
         }
 
         [HttpPost("restore")]
-        public async Task<IActionResult> RequestPasswordRestore([FromQuery] Guid key)
+        public async Task<IActionResult> RequestPasswordRestore(PasswordChangeDto body)
         {
-            string token = await _passwordService.Confirm(key);
+            string token = await _passwordService.Confirm(body);
             return Ok(token);
         }
     }
