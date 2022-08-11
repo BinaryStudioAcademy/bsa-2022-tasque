@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/core/services/auth.service';
 import { LocalStorageKeys } from 'src/entity-models/local-storage-keys';
 import { UserLoginModel } from 'src/entity-models/user-login-model';
+import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
 
 @Component({
   selector: 'app-login-page',
@@ -26,19 +27,19 @@ export class LoginPageComponent implements OnInit {
   public unsubscribe$ = new Subject<void>(); 
   public localStorage = window.localStorage;
   public localStorageKeys = LocalStorageKeys;
+  private validationConstants = ValidationConstants;
 
   constructor(
     private dialogRef: MatDialogRef<LoginPageComponent>,
     private authService: AuthService
   ) {
-    this.emailControl = new FormControl(this.userLogin.email, [
       Validators.email,
       Validators.required,
-      Validators.minLength(8)
+      Validators.minLength(this.validationConstants.minLengthEmail)
     ]);
     this.passwordControl = new FormControl(this.userLogin.password, [
       Validators.required,
-      Validators.minLength(8)
+      Validators.minLength(this.validationConstants.minLengthPassword)
     ]);
   }
 
@@ -48,7 +49,6 @@ export class LoginPageComponent implements OnInit {
       passwordControl: this.passwordControl
     });
   }
-
   public close(): void {
     this.dialogRef.close(false);
   }
