@@ -10,6 +10,7 @@ using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.BLL.Services.Email.MailJet;
+using Tasque.Core.BLL.Services.Project;
 using Tasque.Core.Common.Entities;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
@@ -57,6 +58,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<UserProfile>();
+                cfg.AddProfile<OrganizationProfile>();
             },
             Assembly.GetExecutingAssembly());
         }
@@ -91,10 +93,13 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddScoped<JwtFactory>();
             services.AddMvc();
             services.AddControllers();
+            services.AddCors();
 
             services
                 .AddScoped<AuthService>()
-                .AddScoped<IEmailService, MailJetService>();
+                .AddScoped<ProjectService>()
+                .AddScoped<IEmailService, MailJetService>()
+                .AddScoped<OrganizationService>();
         }
 
         public static void AddSwagger(this IServiceCollection services)

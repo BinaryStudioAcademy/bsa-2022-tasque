@@ -8,9 +8,11 @@ public class User : BaseEntity
 {
     public User()
     {
-        Tasks = new List<Task>();
         Meetings = new List<Meeting>();
-        Projects = new List<Project>();
+        OwnedProjects = new List<Project>();
+        ParticipatedProjects = new List<Project>();
+        OwnedTasks = new List<Task>();
+        ParticipatedTasks = new List<Task>();
         Roles = new List<Role>();
     }
     public string Name { get; set; } = null!;
@@ -19,9 +21,11 @@ public class User : BaseEntity
     public string Salt { get; set; } = null!;
     public bool IsEmailConfirmed { get; set; } = false;
 
-    public virtual ICollection<Task> Tasks { get; set; }
     public virtual ICollection<Meeting> Meetings { get; set; }
-    public virtual ICollection<Project> Projects { get; set; }
+    public virtual ICollection<Project> OwnedProjects { get; set; }
+    public virtual ICollection<Project> ParticipatedProjects { get; set; }
+    public virtual ICollection<Task> OwnedTasks { get; set; }
+    public virtual ICollection<Task> ParticipatedTasks { get; set; }
     public virtual ICollection<Role> Roles { get; set; }
 }
 

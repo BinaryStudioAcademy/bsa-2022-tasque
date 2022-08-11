@@ -1,0 +1,58 @@
+<div class="login-container">
+    <div class="logo-container">
+        <div class="logo-blur" (click)="close()">
+            <div class="logo">
+                <p class="logo-text">Logo</p>                
+            </div>            
+        </div>        
+    </div>
+    <div class="form-container">
+        <div>
+            <div>
+                <form [formGroup]="loginForm" class="login-form">
+                    <h4 class="login-title">Log In</h4>
+                    <div class="input-container">
+                        <label>Email</label>
+                        <input class="input full-width" [ngClass]="{
+                          'error': (emailControl.invalid && (emailControl.dirty || emailControl.touched))
+                          }"
+                          type="text" 
+                          placeholder="Enter your email"
+                          formControlName="emailControl"
+                        />
+                        <span class="error" *ngIf="emailControl.errors?.['required'] && (emailControl.dirty || emailControl.touched)">Email is required.</span>
+                        <span class="error" *ngIf="emailControl.errors?.['email']">Incorrect email format</span>
+                    </div>
+                    <div class="input-container">
+                        <div class="label-container full-width">
+                            <label>Password</label>
+                            <a class="forget-pass" href="/">Forget password</a>
+                        </div>                        
+                        <div class="password-container">
+                            <input class="input full-width" [ngClass]="{
+                                'error': (passwordControl.invalid && (passwordControl.dirty || passwordControl.touched))
+                                }"
+                                [type]="hidePass ? 'password' : 'text'" 
+                                placeholder="Password"
+                                [value]="password"
+                                formControlName="passwordControl"
+                              />
+                              <mat-icon class="hide-icon" (click)="hidePass = !hidePass">{{hidePass ? 'visibility' : 'visibility_off'}}</mat-icon>
+                        </div>                        
+                        <span class="error" *ngIf="passwordControl.errors?.['required'] && (passwordControl.dirty || passwordControl.touched)">Password is required.</span>
+                        <span class="error" *ngIf="passwordControl.errors?.['minlength']">Must be at least 8 characters</span>
+                    </div>
+                </form>
+            </div>
+            <div class="button-container">
+                <tasque-button text="Log In" class="btn fill full-width" (click)="submitForm()" ></tasque-button>        
+            </div>
+            <div class="button-container">
+                <tasque-button text="Log In with Google" class="btn stroke full-width"></tasque-button>
+            </div>
+            <div class="button-container">
+                <tasque-button text="Log In with Github" class="btn full-width"></tasque-button>
+            </div>
+        </div>        
+    </div>
+</div>
