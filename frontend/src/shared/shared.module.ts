@@ -18,7 +18,6 @@ import {
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
     imports: [
@@ -28,8 +27,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         ReactiveFormsModule,
         RouterModule,
         MaterialModule,
-        BrowserAnimationsModule,
-        FontAwesomeModule,
+        BrowserAnimationsModule
     ],
     declarations: [
         LoadingComponent,
@@ -66,7 +64,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         CreateOrganizationComponent,
         CreateOrganizationDialogComponent,
         LoginPageComponent,
-        FontAwesomeModule,
     ],
 })
 export class SharedModule {}
