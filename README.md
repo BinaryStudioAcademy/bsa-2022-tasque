@@ -53,6 +53,7 @@ erDiagram
         salt string
         created_at datetime 
         updated_at datetime
+	isEmailConfirmed boolean
     }
       Task }o--|| User : authorId_id
       Task }o--|| Project : projectId_id
@@ -190,4 +191,11 @@ erDiagram
 	      updated_at datetime
 	      calendar_id int
     }
+
+		EmailConfirmationToken ||--o{ User : token_userId
+		EmailConfirmationToken {
+			token uuid PK
+			user_id int FK
+			expiring_at datetime
+		}
 ```

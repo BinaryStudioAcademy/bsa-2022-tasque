@@ -3,14 +3,14 @@
 .btn
     text-align: center
     color: colorscheme(violet-200)
-    font-family: 'Nunito'
-    font-style: 'normal'
+    font-family: 'Nunito', sans-serif
+    font-style: normal
     font-size: 16px
     line-height: 22px
     font-weight: 700
     border: none
     background: none
-    padding: 0px
+    padding: 0
     &:hover
         color: colorscheme(violet-400)
     &.disabled
@@ -53,6 +53,7 @@
     gap: 10px
     color: colorscheme(white-100)
     background: colorscheme(pink-200)
+    border: 1px solid colorscheme(pink-200)
     border-radius: 50px
     &:hover
         background: colorscheme(pink-300)
@@ -62,6 +63,25 @@
         background: none
         background-color: colorscheme(gray-400)
         cursor: not-allowed
+        border: none
+
+.gray
+  background: colorscheme(gray-200)
+  color: colorscheme(black-100)
+  border: none
+  &:hover
+    background: colorscheme(gray-400)
+
+.violet-stroke
+    color: colorscheme(violet-200)
+    border-color: colorscheme(violet-200)
+    &:hover
+      background-color: colorscheme(violet-200)
+    &.disabled
+      color: colorscheme(gray-400)
+      background: none
+      cursor: not-allowed
+
 
 .red
     background: colorscheme(red-100)
@@ -77,3 +97,6 @@
     background: colorscheme(dark-grey-100)
     &:hover
          background: colorscheme(dark-grey-200)
+
+.icon-right
+    margin-left: 5px

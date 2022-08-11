@@ -28,28 +28,27 @@ namespace Tasque.Core.WebAPI.Controllers
         public async Task<IActionResult> Login([FromBody] UserLoginDto loginInfo)
         {
             var user = await _service.Login(loginInfo);
+            return Login(user);
+        }
+
+        [HttpGet("confirm")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] Guid key)
+        {
+            var user = await _service.Login(key);
+            return Login(user);
+        }
+
+        private IActionResult Login(UserDto user)
+        {
             var token = _service.GetAccessToken(user.Id, user.Name, user.Email);
             return Ok(token);
         }
-
+        
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegisterDto registerInfo)
         {
-            var registeredUser = await _service.Register(registerInfo);
-            var token = _service.GetAccessToken(registeredUser.Id, registeredUser.Name, registeredUser.Email);
-            await SendConfirmationEmail(registeredUser);
-            return Ok(token);
-        }
-
-        public async Task SendConfirmationEmail(UserDto user)
-        {
-            var reciever = new EmailContact(user.Email, user.Name);
-            var email = new EmailMessage(reciever)
-            {
-                Subject = "Successful registration",
-                Content = "Thanks for choosing Tasque"
-            };
-            await _emailService.SendEmailAsync(email);
+            await _service.Register(registerInfo);
+            return Ok();
         }
     }
 }
