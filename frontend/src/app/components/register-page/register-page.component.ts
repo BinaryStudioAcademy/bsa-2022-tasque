@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { ValidationConstraints } from 'src/entity-models/const-resources/validation-constraints';
+import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
 
 @Component({
   selector: 'app-register-page',
@@ -23,22 +23,22 @@ export class RegisterPageComponent implements OnInit {
   public passwordRepeatControl: FormControl;
   faGithub = faGithub;
   faGoogle = faGoogle;
-  public validationConstraints = ValidationConstraints;
+  public validationConstants = ValidationConstants;
 
   constructor() { 
     this.nameControl = new FormControl(this.name, [
       Validators.required,
-      Validators.minLength(this.validationConstraints.minLengthName)
+      Validators.minLength(this.validationConstants.minLengthName)
     ]);
     this.emailControl = new FormControl(this.email, [
       Validators.email,
       Validators.required,
-      Validators.minLength(this.validationConstraints.minLengthEmail),
-      Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')
+      Validators.minLength(this.validationConstants.minLengthEmail),
+      Validators.pattern(this.validationConstants.emailRegex)
     ]);
     this.passwordControl = new FormControl(this.password, [
       Validators.required,
-      Validators.minLength(this.validationConstraints.minLengthPassword)
+      Validators.minLength(this.validationConstants.minLengthPassword)
     ]);
     this.passwordRepeatControl = new FormControl(this.passwordRepeat, [
       Validators.required,
