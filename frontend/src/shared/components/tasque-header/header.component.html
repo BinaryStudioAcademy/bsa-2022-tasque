@@ -1,0 +1,41 @@
+<header>
+  <div class="navigation-panel">
+    <div>
+      <span>Your work</span>
+      <img src="..\..\assets\arrow_icon.svg">
+    </div>
+    <div>
+      <span>Project</span>
+      <img src="..\..\assets\arrow_icon.svg">
+    </div>
+    <div>
+      <span>Calendar</span>
+    </div>
+    <div>
+      <span>Create</span>
+    </div>
+  </div>
+  <div class="user-panel">
+    <div class="search-input">
+      <form [formGroup]="searchForm">
+        <tasque-input 
+          type="search" 
+          placeholder="Search..." 
+          [borderRadius]="20" 
+          [isValid]="!(searchForm.controls['search'].invalid && searchForm.controls['search'].touched)" 
+          [width]="250">
+        </tasque-input>
+      </form>
+    </div>
+    <div>
+      <img src="..\..\assets\bell_icon.svg">
+    </div>
+    <div>
+      <img src="..\..\assets\settings_icon.svg">  
+    </div>
+    <div>
+      <img src="..\..\assets\avatar.png" width="45px" height="45px">
+      <img src="..\..\assets\arrow_full_icon.svg">
+    </div>
+  </div>
+</header>

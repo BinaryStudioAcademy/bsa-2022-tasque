@@ -1,10 +1,10 @@
 <div class="input-container">
   <label>{{inputLabel}}</label>
   <input
-  [class]="inputClass"
-  [ngClass]="{
-    'error': inputValueisError, 
-    'search-border': inputType === 'search'}"
+    [class]="'input ' + inputClass"
+    [ngClass]="{
+      'error': inputValueisError, 
+      'search-border': inputType === 'search'}"
     [type]="inputType" 
     [placeholder]="inputPlaceholder"
     [value]="inputText"
