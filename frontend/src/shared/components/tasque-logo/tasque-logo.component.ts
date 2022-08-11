@@ -8,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class TasqueLogoComponent implements OnInit {
 
   public isDark = true;
-  public darkLogoSrc = "../../assets/tasque_logo_dark.svg";
+  public darkLogoSrc = '../../assets/tasque_logo_dark.svg';
   public lightLogosrc = '../../assets/tasque_logo.svg';
 
   @Input()
