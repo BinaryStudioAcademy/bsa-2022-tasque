@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { AuthService } from 'src/core/services/auth.service';
+import { UserRegisterModel } from 'src/entity-models/user-register-model';
 
 @Component({
   selector: 'app-register-page',
@@ -9,31 +13,35 @@ import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 })
 export class RegisterPageComponent implements OnInit {
 
-  public name = '';
-  public email = '';
-  public password = '';
   public passwordRepeat = '';
   public hidePass = true;
   public hidePassRepeat = true;
+
+  public userRegister: UserRegisterModel = {};
   public registerForm: FormGroup =  new FormGroup({});
   public nameControl: FormControl;
   public emailControl: FormControl;
   public passwordControl: FormControl;
   public passwordRepeatControl: FormControl;
+  public unsubscribe$ = new Subject<void>();
+
   faGithub = faGithub;
   faGoogle = faGoogle;
 
-  constructor() { 
-    this.nameControl = new FormControl(this.name, [
+  constructor(
+    private authService: AuthService
+  ) { 
+    this.nameControl = new FormControl(this.userRegister.name, [
       Validators.required,
+      Validators.minLength(4)
     ]);
-    this.emailControl = new FormControl(this.email, [
+    this.emailControl = new FormControl(this.userRegister.email, [
       Validators.email,
       Validators.required,
       Validators.minLength(8),
       Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')
     ]);
-    this.passwordControl = new FormControl(this.password, [
+    this.passwordControl = new FormControl(this.userRegister.password, [
       Validators.required,
       Validators.minLength(8)
     ]);
@@ -54,7 +62,7 @@ export class RegisterPageComponent implements OnInit {
   resetPasswordControl(): void {
     this.passwordRepeatControl = new FormControl(this.passwordRepeat, [
       Validators.required,
-      Validators.pattern(this.password)
+      Validators.pattern(this.userRegister.password as string)
     ]);
     this.registerForm = new FormGroup({
       nameControl: this.nameControl,
@@ -65,10 +73,18 @@ export class RegisterPageComponent implements OnInit {
   }
 
   public submitForm(): void {
-    if(!this.registerForm.valid)
+    console.log(this.userRegister);
+    if(!this.registerForm.valid){
+      //pop-up with error
       return;
-    this.email = this.emailControl.value;
-    this.password = this.passwordControl.value;
-    this.name = this.nameControl.value;
+    };
+      this.authService.registerUser(this.userRegister)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((resp) => {
+        //if ok - redirect to check email page
+      },
+      (error) => {
+        //pop up with error
+      })
   }
 }

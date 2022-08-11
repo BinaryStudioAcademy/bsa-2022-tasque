@@ -14,6 +14,7 @@
                         <input class="input full-width" [ngClass]="{
                           'error': (emailControl.invalid && (emailControl.dirty || emailControl.touched))
                           }"
+                          [(ngModel)]="userLogin.email"
                           type="text"
                           placeholder="Enter your email"
                           formControlName="emailControl"
@@ -30,9 +31,9 @@
                             <input class="input full-width" [ngClass]="{
                                 'error': (passwordControl.invalid && (passwordControl.dirty || passwordControl.touched))
                                 }"
+                                [(ngModel)]="userLogin.password"
                                 [type]="hidePass ? 'password' : 'text'"
                                 placeholder="Password"
-                                [value]="password"
                                 formControlName="passwordControl"
                               />
                               <mat-icon class="hide-icon" (click)="hidePass = !hidePass">{{hidePass ? 'visibility' : 'visibility_off'}}</mat-icon>
