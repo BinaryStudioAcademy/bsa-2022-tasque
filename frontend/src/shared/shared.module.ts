@@ -51,7 +51,9 @@ import { LoginPageComponent } from './components/login-page/login-page.component
         CheckboxComponent,
         ConfirmationModalComponent,
         LeftSidebarComponent,
-        DropdownComponent,
+        DropdownComponent,        
+        CreateOrganizationComponent, 
+        CreateOrganizationDialogComponent,
         LoginPageComponent,
     ],
 })
