@@ -24,16 +24,15 @@ export class RegisterPageComponent implements OnInit {
   faGithub = faGithub;
   faGoogle = faGoogle;
 
-  constructor(
-    private dialogRef: MatDialogRef<RegisterPageComponent>,
-    ) { 
+  constructor() { 
     this.nameControl = new FormControl(this.name, [
       Validators.required,
     ]);
     this.emailControl = new FormControl(this.email, [
       Validators.email,
       Validators.required,
-      Validators.minLength(8)
+      Validators.minLength(8),
+      Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')
     ]);
     this.passwordControl = new FormControl(this.password, [
       Validators.required,
@@ -72,10 +71,5 @@ export class RegisterPageComponent implements OnInit {
     this.email = this.emailControl.value;
     this.password = this.passwordControl.value;
     this.name = this.nameControl.value;
-    this.dialogRef.close()
-  }
-  
-  public close(): void {
-    this.dialogRef.close(false);
   }
 }

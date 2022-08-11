@@ -68,6 +68,7 @@ import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.compon
         CreateOrganizationComponent,
         CreateOrganizationDialogComponent,
         LoginPageComponent,
+        RegisterPageComponent,
         FontAwesomeModule,
         TasqueLogoComponent,
     ],
