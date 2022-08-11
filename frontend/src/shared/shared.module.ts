@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
 import { RegisterPageComponent } from './components/register-page/register-page.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
     imports: [
@@ -25,6 +26,7 @@ import { LoginPageComponent } from './components/login-page/login-page.component
         RouterModule,
         MaterialModule,
         BrowserAnimationsModule,
+        FontAwesomeModule,
     ],
     declarations: [
         LoadingComponent,
@@ -38,6 +40,7 @@ import { LoginPageComponent } from './components/login-page/login-page.component
         DropdownComponent,
         LoginPageComponent,
         RegisterPageComponent,
+        FontAwesomeModule,
     ],
     exports: [
         CommonModule,
