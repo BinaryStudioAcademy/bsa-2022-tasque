@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 @Component({
   selector: 'app-register-page',
@@ -19,6 +20,8 @@ export class RegisterPageComponent implements OnInit {
   public emailControl: FormControl;
   public passwordControl: FormControl;
   public passwordRepeatControl: FormControl;
+  faGithub = faGithub;
+  faGoogle = faGoogle;
 
   constructor() { 
     this.nameControl = new FormControl(this.name, [

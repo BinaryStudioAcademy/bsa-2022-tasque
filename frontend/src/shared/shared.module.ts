@@ -12,9 +12,7 @@ import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.com
 import { CreateOrganizationDialogComponent } from './components/create-organization/create-organization-dialog/create-organization-dialog.component';
 import { CreateOrganizationComponent } from './components/create-organization/create-organization.component';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
-import {
-  CreateProjectDialogComponent
-} from './components/create-project/create-project-dialog/create-project-dialog.component';
+import { CreateProjectDialogComponent } from './components/create-project/create-project-dialog/create-project-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
 import { RegisterPageComponent } from './components/register-page/register-page.component';
@@ -46,7 +44,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         CreateProjectDialogComponent,
         LoginPageComponent,
         RegisterPageComponent,
-        FontAwesomeModule,
     ],
     exports: [
         CommonModule,
@@ -69,7 +66,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         CreateOrganizationComponent,
         CreateOrganizationDialogComponent,
         LoginPageComponent,
-        FontAwesomeModule,
     ],
 })
 export class SharedModule {}
