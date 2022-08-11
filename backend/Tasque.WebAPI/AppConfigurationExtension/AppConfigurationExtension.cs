@@ -9,6 +9,7 @@ using Tasque.Core.BLL.MappingProfiles;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.BLL.Services.Email.MailJet;
+using Tasque.Core.BLL.Services.Project;
 using Tasque.Core.Common.Entities;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
@@ -93,6 +94,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
 
             services
                 .AddScoped<AuthService>()
+                .AddScoped<ProjectService>()
                 .AddScoped<IEmailService, MailJetService>()
                 .AddScoped<OrganizationService>();
         }
