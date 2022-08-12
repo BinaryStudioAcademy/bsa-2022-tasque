@@ -1,4 +1,4 @@
-<mat-menu class="black-transparent" #organizationsMenu="matMenu">
+<mat-menu class="violet-transparent" #organizationsMenu="matMenu">
   <div *ngFor="let organization of availableOrganizations">
     <button *ngIf="organization.id" (click)="onClick(organization.id)" mat-menu-item>
       <span> {{ organization.name }} Organization </span>
