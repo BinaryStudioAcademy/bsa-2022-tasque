@@ -17,6 +17,7 @@ import { CreateProjectDialogComponent } from './components/create-project/create
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { RegisterPageComponent } from './components/register-page/register-page.component';
 import { AuthPageComponent } from './components/auth-page/auth-page.component';
+import { TaskCreationComponent } from './components/task-creation/task-creation.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { AuthPageComponent } from './components/auth-page/auth-page.component';
     LoginPageComponent,
     RegisterPageComponent,
     AuthPageComponent,
+    TaskCreationComponent,
   ],
   imports: [
     BrowserModule,
