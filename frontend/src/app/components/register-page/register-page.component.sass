@@ -1,10 +1,14 @@
 @import 'src/colors.sass'
-    
-.login-container
-    height: 100%
+
+.register-container
+    height: 100vh
+    min-height: 100%
+    width: 100%
+    min-width: 100%
     display: flex
     justify-content: right
     align-items: center
+    margin: -10px -10px -10px -10px
 
 .logo-container
     width: 70%
@@ -50,8 +54,7 @@
     padding: 0
 
 .logo
-  background: colorscheme(gray-200)
-  border-radius: 30px
+  width: 75%
   display: flex
   align-items: center
   justify-content: center
@@ -90,6 +93,9 @@
 .password-container
     position: relative
 
+.password-repeat-container
+    position: relative
+
 .hide-icon
     position: absolute
     right: 15px
@@ -115,13 +121,6 @@
 
 .button-container
     margin-top: 20px
-
-.forget-pass, .forget-pass:visited
-    height: 17px
-    font-size: 12px
-    line-height: 16px
-    text-decoration: none
-    color: colorscheme(violet-400)
 
 .label-container
     display: flex
