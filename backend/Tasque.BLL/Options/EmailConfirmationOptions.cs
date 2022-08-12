@@ -8,5 +8,8 @@ namespace Tasque.Core.BLL.Options
         public string ConfirmationEndpoint { get; set; } = "";
         public string PasswordResetEndpoint { get; set; } = "";
         public int TokenLifetime { get; set; }
+
+        public string GetConfirmationPath(ConfirmationToken token) =>
+            $"{Host}{ConfirmationEndpoint}?key={token.Token}";
     }
 }
