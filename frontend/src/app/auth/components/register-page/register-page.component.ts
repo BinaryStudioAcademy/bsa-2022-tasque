@@ -86,12 +86,6 @@ export class RegisterPageComponent implements OnInit {
       (resp) => {
         if (resp.ok) {
           this.toastrService.success(resp.body as string);
-          /*
-          this.router.navigate(['..', 'login'], {
-      relativeTo: this.route,
-      queryParams: { registered: true },
-    });
-          */
         } else {
           this.toastrService.error(resp.body as string);
         }

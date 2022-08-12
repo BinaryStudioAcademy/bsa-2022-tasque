@@ -24,4 +24,8 @@ export class AuthService {
   registerUser(credentials: UserRegisterModel):Observable<HttpResponse<string>> {
     return this.httpService.postFullRequest(this.routePrefix + '/register', credentials);
   }
+
+  confirmResetKey(key: string): Observable<boolean> {
+    throw new Error('Not implemented');
+  }
 }
