@@ -44,8 +44,7 @@
             }"
             [type]="hidePass ? 'password' : 'text'"
             placeholder="Write password"
-            [value]="password"
-            [(ngModel)]="password"
+            [(ngModel)]="userRegister.password"
             (ngModelChange)="resetPasswordControl()"
             formControlName="passwordControl"
           />
