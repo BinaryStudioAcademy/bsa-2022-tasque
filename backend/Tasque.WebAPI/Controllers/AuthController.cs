@@ -1,12 +1,7 @@
-﻿using Mailjet.Client;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tasque.Core.BLL.JWT;
-using Tasque.Core.BLL.Services;
-using Tasque.Core.BLL.Services.Email;
+using Tasque.Core.BLL.Services.Auth;
 using Tasque.Core.Common.DTO;
-using Tasque.Core.Common.Models.Email;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
@@ -15,13 +10,11 @@ namespace Tasque.Core.WebAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private AuthService _service;
-        private IEmailService _emailService;
+        private AuthService _service;        
 
-        public AuthController(AuthService service, IEmailService emailService)
+        public AuthController(AuthService service)
         {
             _service = service;
-            _emailService = emailService;
         }
 
         [HttpPost("login")]
