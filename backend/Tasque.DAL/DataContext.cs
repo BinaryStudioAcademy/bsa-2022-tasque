@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tasque.Core.Common.Entities;
+using Tasque.Core.DAL.EntityConfiguration;
 using Task = Tasque.Core.Common.Entities.Task;
 
 namespace Tasque.Core.DAL;
@@ -11,26 +12,9 @@ public class DataContext : DbContext
     {
         modelBuilder.UseSerialColumns();
 
-        modelBuilder.Entity<Project>()
-            .HasOne(project => project.Author)
-            .WithMany(user => user.OwnedProjects)
-            .HasForeignKey(project => project.AuthorId);
-
-        modelBuilder.Entity<Task>()
-            .HasOne(task => task.Author)
-            .WithMany(user => user.OwnedTasks)
-            .HasForeignKey(task => task.AuthorId);
-
-        modelBuilder.Entity<User>()
-            .HasMany(user => user.ParticipatedProjects)
-            .WithMany(project => project.Users);
-
-        modelBuilder.Entity<User>()
-            .HasMany(user => user.ParticipatedTasks)
-            .WithMany(task => task.Users);
-
-        modelBuilder.Entity<Task>()
-            .HasOne(task => task.LastUpdatedBy);
+        modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new TaskConfiguration());
+        modelBuilder.ApplyConfiguration(new ProjectConfiguration());
     }
 
     public DbSet<Organization> Organizations { get; set; } = null!;
