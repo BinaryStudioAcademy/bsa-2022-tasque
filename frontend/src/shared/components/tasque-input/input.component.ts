@@ -1,20 +1,34 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, forwardRef, Input } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'tasque-input',
   templateUrl: './input.component.html',
-  styleUrls: ['./input.component.sass']
+  styleUrls: ['./input.component.sass'],
+  providers: [
+    { 
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: forwardRef(() => InputComponent)
+    }
+  ]
 })
-export class InputComponent implements OnInit {
-  public inputWidth = 100;
-  public inputBorderRadius = 5;
-  public inputClass = 'input';
+
+export class InputComponent implements ControlValueAccessor {
+
+  public inputWidth = 300;
+  public inputBorderRadius = 10;
+
+  public inputClass = '';
   public inputType = 'text';
-  public inputText = ''; 
+  public inputValue = ''; 
   public inputLabel = '';
   public inputPlaceholder = '';
+
   public inputErrorMessage = 'error';
   public inputValueisError = false;
+
+  @Input() value: string;
 
   @Input()
   set type(typeName: string) {
@@ -22,14 +36,6 @@ export class InputComponent implements OnInit {
   }
   get type(): string {
     return this.inputType;
-  }
-
-  @Input()
-  set value(text: string) {
-    this.inputText = text;
-  }
-  get value(): string {
-    return this.inputText;
   }
 
   @Input()
@@ -73,10 +79,10 @@ export class InputComponent implements OnInit {
   }
 
   @Input()
-  set isValid(hasError: boolean) {
-    this.inputValueisError = !hasError;
+  set invalid(hasError: boolean) {
+    this.inputValueisError = hasError;
   }
-  get isValid(): boolean {
+  get invalid(): boolean {
     return this.inputValueisError;
   }
 
@@ -84,13 +90,25 @@ export class InputComponent implements OnInit {
   set errorMessage(message: string) {
     this.inputErrorMessage = message;
   }
-  get(): string {
+  get errorMessage(): string {
     return this.inputErrorMessage;
   }
 
+  onChange: any = () => {};
+  onTouched: any = () => {};
+
   constructor() { }
 
-  ngOnInit(): void {
+  writeValue(value: string): void {
+    this.inputValue = value;
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
   }
 
 }

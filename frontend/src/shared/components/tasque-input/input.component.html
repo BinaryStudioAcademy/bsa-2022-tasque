@@ -1,13 +1,15 @@
 <div class="input-container">
   <label>{{inputLabel}}</label>
   <input
-  [class]="inputClass"
-  [ngClass]="{
-    'error': inputValueisError, 
-    'search-border': inputType === 'search'}"
+    [class]="inputClass + ' input'"
+    [(ngModel)]="inputValue"
+    (ngModelChange)="onChange($event)"
+    (blur)="onTouched()"
+    [ngClass]="{
+      'error': inputValueisError, 
+      'search-border': inputType === 'search'}"
     [type]="inputType" 
     [placeholder]="inputPlaceholder"
-    [value]="inputText"
     [style.width.px]="inputWidth"
     [style.border-radius.px]="inputBorderRadius"
   />
