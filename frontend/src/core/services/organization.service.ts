@@ -26,4 +26,8 @@ export class OrganizationService {
   getOrganization(id: number): Observable<HttpResponse<OrganizationModel>> {
     return this.httpService.getFullRequest<OrganizationModel>(this.routePrefix + `/getById/${id}`);
   }
+
+  getUserOrganizations(userId: number): Observable<HttpResponse<OrganizationModel[]>> {
+    return this.httpService.getFullRequest<OrganizationModel[]>(this.routePrefix + `/getUserOrganizationsById/${userId}`);
+  }
 }
