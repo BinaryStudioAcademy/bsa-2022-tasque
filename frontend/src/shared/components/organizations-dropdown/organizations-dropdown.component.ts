@@ -11,6 +11,8 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./organizations-dropdown.component.sass']
 })
 export class OrganizationsDropdownComponent implements OnInit {
+  @Input() public availableOrganizations: OrganizationModel[] = [];
+
   public currentOrganization: OrganizationModel = {
     id: -1,
     name: 'None',
@@ -62,8 +64,6 @@ export class OrganizationsDropdownComponent implements OnInit {
         }
       );
   }
-
-  @Input() public availableOrganizations: OrganizationModel[] = [];
 
   onClick(organizationId: number): void {
     this.storageService.currentOrganizationId = organizationId;

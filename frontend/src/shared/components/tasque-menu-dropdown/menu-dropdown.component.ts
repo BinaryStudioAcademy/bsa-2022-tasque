@@ -6,16 +6,15 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./menu-dropdown.component.sass']
 })
 export class MenuDropdownComponent implements OnInit {
+  @Input() public items: string[] = [];
+  @Input() public menuName = '';
+  @Output() public buttonClicked = new EventEmitter<string>();
 
   constructor() {
   }
 
   ngOnInit(): void {
   }
-
-  @Input() public items: string[] = [];
-  @Input() public menuName = '';
-  @Output() public buttonClicked = new EventEmitter<string>();
 
   onClick(item: string): void {
     this.buttonClicked.emit(item);
