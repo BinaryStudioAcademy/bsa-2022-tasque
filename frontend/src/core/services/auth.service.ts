@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AccessToken } from 'src/entity-models/access-token';
 import { UserLoginModel } from 'src/entity-models/user-login-model';
 import { UserRegisterModel } from 'src/entity-models/user-register-model';
+import { UserResetPasswordModel } from 'src/entity-models/user-reset-password-model';
 import { HttpService } from './http.service';
 
 @Injectable({
@@ -25,7 +26,15 @@ export class AuthService {
     return this.httpService.postFullRequest(this.routePrefix + '/register', credentials);
   }
 
-  confirmResetKey(key: string): Observable<boolean> {
-    throw new Error('Not implemented');
+  requestPasswordReset(email: string): Observable<HttpResponse<string>> {
+    return this.httpService.getFullRequest(this.routePrefix + `/restore/request?email=${email}`);
+  }
+
+  confirmResetKey(key: string): Observable<HttpResponse<string>> {
+    return this.httpService.getFullRequest(this.routePrefix + `/restore?token=${key}`);
+  }
+
+  resetPassword(credentials: UserResetPasswordModel): Observable<HttpResponse<AccessToken>> {
+    return this.httpService.postFullRequest(this.routePrefix + '/restore', credentials);
   }
 }
