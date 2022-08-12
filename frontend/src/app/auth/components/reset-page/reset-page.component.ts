@@ -31,7 +31,7 @@ export class ResetPageComponent implements OnInit, OnDestroy {
       const key = value['key'];
       if (!key) return;
       this.authService.confirmResetKey(key).subscribe((res) => {
-        this.isValidKey == res;
+        this.isValidKey = res.ok;
       });
     });
   }

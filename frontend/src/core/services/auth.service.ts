@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   requestPasswordReset(email: string): Observable<HttpResponse<string>> {
-    return this.httpService.getFullRequest(this.routePrefix + `/restore/request?email=${email}`);
+    return this.httpService.postFullRequest(this.routePrefix + `/restore/request?email=${email}`, {});
   }
 
   confirmResetKey(key: string): Observable<HttpResponse<string>> {
