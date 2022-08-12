@@ -33,7 +33,7 @@ export class RegisterPageComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private toastrService: ToastrService
-  ) { 
+  ) {
     this.nameControl = new FormControl(this.userRegister.name, [
       Validators.required,
       Validators.minLength(this.validationConstants.minLengthName)
@@ -88,7 +88,7 @@ export class RegisterPageComponent implements OnInit {
         else{
           this.toastrService.error(resp.body as string);
         }
-      }, 
+      },
       (error) => {
         this.toastrService.error(error);
       });
