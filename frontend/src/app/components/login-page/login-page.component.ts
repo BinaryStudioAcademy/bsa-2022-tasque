@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
 
@@ -23,9 +22,7 @@ export class LoginPageComponent implements OnInit {
   public passwordControl: FormControl;
   private validationConstants = ValidationConstants;
 
-  constructor(
-    private dialogRef: MatDialogRef<LoginPageComponent>,
-  ) {
+  constructor() {
     this.firstName = new FormControl(this.name, [
       Validators.required,
       Validators.minLength(this.validationConstants.minLengthName)
@@ -57,7 +54,6 @@ export class LoginPageComponent implements OnInit {
   }
 
   public close(): void {
-    this.dialogRef.close(false);
   }
 
   public submitForm(): void {

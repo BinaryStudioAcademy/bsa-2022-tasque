@@ -16,6 +16,7 @@ import { CreateOrganizationDialogComponent } from './components/create-organizat
 import { CreateProjectDialogComponent } from './components/create-project/create-project-dialog/create-project-dialog.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { RegisterPageComponent } from './components/register-page/register-page.component';
+import { AuthPageComponent } from './components/auth-page/auth-page.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { RegisterPageComponent } from './components/register-page/register-page.
     CreateProjectDialogComponent,
     LoginPageComponent,
     RegisterPageComponent,
+    AuthPageComponent,
   ],
   imports: [
     BrowserModule,
