@@ -32,9 +32,7 @@ export class RegisterPageComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private toastrService: ToastrService,
-    private router: Router,
-    private route: ActivatedRoute,
+    private toastrService: ToastrService
   ) {
     this.nameControl = new FormControl(this.userRegister.name, [
       Validators.required,
