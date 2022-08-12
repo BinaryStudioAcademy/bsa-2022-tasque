@@ -6,6 +6,8 @@ import { takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/core/services/auth.service';
 import { UserRegisterModel } from 'src/entity-models/user-register-model';
 import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
+import { ToastrService } from 'ngx-toastr';
+import { ErrorMessages } from 'src/entity-models/const-resources/error-messages';
 
 @Component({
   selector: 'app-register-page',
@@ -29,9 +31,11 @@ export class RegisterPageComponent implements OnInit {
   faGithub = faGithub;
   faGoogle = faGoogle;
   public validationConstants = ValidationConstants;
+  public errorMessages = ErrorMessages;
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private toastrService: ToastrService
   ) { 
     this.nameControl = new FormControl(this.userRegister.name, [
       Validators.required,
@@ -76,11 +80,21 @@ export class RegisterPageComponent implements OnInit {
 
   public submitForm(): void {
     if(!this.registerForm.valid){
-      //pop-up with error
+      this.toastrService.error('Invalid values');
       return;
     }
       this.authService.registerUser(this.userRegister)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe();
+      .subscribe((resp) => {
+        if(resp.ok){
+          this.toastrService.success(resp.body as string);
+        }
+        else{
+          this.toastrService.error(resp.body as string);
+        }
+      }, 
+      (error) => {
+        this.toastrService.error(error);
+      });
   }
 }

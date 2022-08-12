@@ -100,6 +100,7 @@ namespace Tasque.Core.BLL.Services
 
             var token = await CreateConfirmationToken(userEntity);
             await SendConfirmationEmail(token);
+
             return _mapper.Map<UserDto>(userEntity);
         }
 

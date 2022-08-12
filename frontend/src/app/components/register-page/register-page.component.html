@@ -50,9 +50,9 @@
                         </span>
                         <span 
                             class="error" 
-                            *ngIf="emailControl.errors?.['email']"
+                            *ngIf="emailControl.errors?.['pattern']"
                             >
-                            Incorrect email format
+                            {{ errorMessages.incorrectMailPattern }}
                         </span>
                     </div>
                     <div class="input-container">
@@ -79,13 +79,13 @@
                             class="error" 
                             *ngIf="passwordControl.errors?.['required'] && (passwordControl.dirty || passwordControl.touched)"
                             >
-                            Password is required.
+                            {{ errorMessages.passwordRequired }}
                         </span>
                         <span 
                             class="error" 
                             *ngIf="passwordControl.errors?.['minlength']"
                             >
-                            Must be at least 8 characters
+                            {{ errorMessages.passwordMinLength }}
                         </span>
                     </div>
                     <div class="input-container">
@@ -112,7 +112,7 @@
                             class="error" 
                             *ngIf="passwordRepeatControl.errors?.['pattern'] && (passwordRepeatControl.dirty || passwordRepeatControl.touched)"
                             >
-                            Password do not match.
+                            {{ errorMessages.passwordRepeatErrorMessage }}
                         </span>
                     </div>
                 </form>
