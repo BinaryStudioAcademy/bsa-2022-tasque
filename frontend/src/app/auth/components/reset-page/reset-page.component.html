@@ -1,7 +1,7 @@
 <div class="form-container">
   <div *ngIf="isValidKey">
     <div>
-      <form [formGroup]="loginForm" class="login-form">
+      <form [formGroup]="resetPasswordForm" class="login-form">
         <h4 class="login-title">Reset password</h4>
         <div class="text-container">
           <span>Enter new password</span>
@@ -11,26 +11,45 @@
             <label>Password</label>
           </div>
           <div class="password-container">
-            <input class="input full-width" />
+            <input
+              class="input full-width"
+              [ngClass]="{
+                'error': passwordControl.invalid && (passwordControl.dirty || passwordControl.touched)
+              }"
+              [type]="hidePass ? 'password' : 'text'"
+              placeholder="Write password"
+              [(ngModel)]="password"
+              (ngModelChange)="resetPasswordControl()"
+              formControlName="passwordControl"
+            />
             <mat-icon class="hide-icon" (click)="hidePass = !hidePass">{{ hidePass ? 'visibility' : 'visibility_off' }}</mat-icon>
           </div>
-          <!-- <span class="error" *ngIf="passwordControl.errors?.['required'] && (passwordControl.dirty || passwordControl.touched)">Password is required.</span> -->
-          <!-- <span class="error" *ngIf="passwordControl.errors?.['minlength']">Must be at least 8 characters</span> -->
+          <span class="error" *ngIf="passwordControl.errors?.['required'] && (passwordControl.dirty || passwordControl.touched)">Password is required.</span>
+          <span class="error" *ngIf="passwordControl.errors?.['minlength']">Must be at least 8 characters</span>
         </div>
         <div class="input-container">
           <div class="label-container full-width">
             <label>Repeat password</label>
           </div>
           <div class="password-container">
-            <input class="input full-width" />
+            <input
+              class="input full-width"
+              [ngClass]="{
+                'error': passwordRepeatControl.invalid && (passwordRepeatControl.dirty || passwordRepeatControl.touched)
+              }"
+              [(ngModel)]="passwordRepeat"
+              [type]="hidePassRepeat ? 'password' : 'text'"
+              placeholder="Repeat password"
+              formControlName="passwordRepeatControl"
+            />
             <mat-icon class="hide-icon" (click)="hidePassRepeat = !hidePassRepeat">{{ hidePassRepeat ? 'visibilityRepeat' : 'visibility_off' }}</mat-icon>
           </div>
-          <!-- <span class="error" *ngIf="passwordRepeatControl.errors?.['pattern'] && (passwordRepeatControl.dirty || passwordRepeatControl.touched)">Password do not match.</span> -->
+          <span class="error" *ngIf="passwordRepeatControl.errors?.['pattern'] && (passwordRepeatControl.dirty || passwordRepeatControl.touched)">Password do not match.</span>
         </div>
       </form>
     </div>
     <div class="button-container">
-      <tasque-button text="Reset password" class="btn fill full-width"></tasque-button>
+      <tasque-button text="Reset password" class="btn fill full-width" (btnClick)="submit()"></tasque-button>
     </div>
   </div>
   <div *ngIf="!isValidKey">
