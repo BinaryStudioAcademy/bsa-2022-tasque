@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
 
 @Component({
   selector: 'app-login-page',
@@ -20,22 +21,23 @@ export class LoginPageComponent implements OnInit {
   public firstName: FormControl;
   public emailControl: FormControl;
   public passwordControl: FormControl;
+  private validationConstants = ValidationConstants;
 
   constructor(
     private dialogRef: MatDialogRef<LoginPageComponent>,
   ) {
     this.firstName = new FormControl(this.name, [
       Validators.required,
-      Validators.minLength(8)
+      Validators.minLength(this.validationConstants.minLengthName)
     ]);
     this.emailControl = new FormControl(this.email, [
       Validators.email,
       Validators.required,
-      Validators.minLength(8)
+      Validators.minLength(this.validationConstants.minLengthEmail)
     ]);
     this.passwordControl = new FormControl(this.password, [
       Validators.required,
-      Validators.minLength(8)
+      Validators.minLength(this.validationConstants.minLengthPassword)
     ]);
   }
 
@@ -50,7 +52,7 @@ export class LoginPageComponent implements OnInit {
   generateFormControls(): void {
     this.firstName = new FormControl(this.name, [
       Validators.required,
-      Validators.minLength(4)
+      Validators.minLength(this.validationConstants.minLengthName)
     ]);
   }
 
