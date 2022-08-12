@@ -25,7 +25,7 @@ export class RegisterPageComponent implements OnInit {
   faGoogle = faGoogle;
   public validationConstants = ValidationConstants;
 
-  constructor() { 
+  constructor() {
     this.nameControl = new FormControl(this.name, [
       Validators.required,
       Validators.minLength(this.validationConstants.minLengthName)
