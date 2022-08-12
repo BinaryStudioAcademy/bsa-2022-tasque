@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { AuthService } from 'src/core/services/auth.service';
 import { UserRegisterModel } from 'src/entity-models/user-register-model';
