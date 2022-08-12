@@ -33,7 +33,7 @@ export class LoginPageComponent implements OnInit {
   ) {this.emailControl = new FormControl( this.userLogin.email, [
       Validators.email,
       Validators.required,
-      Validators.minLength(this.validationConstants.minLengthEmail)
+      Validators.pattern(this.validationConstants.emailRegex)
     ]);
     this.passwordControl = new FormControl(this.userLogin.password, [
       Validators.required,
