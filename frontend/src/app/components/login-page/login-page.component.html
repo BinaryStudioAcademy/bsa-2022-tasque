@@ -14,7 +14,7 @@
                   formControlName="emailControl"
                 />
                 <span class="error" *ngIf="emailControl.errors?.['required'] && (emailControl.dirty || emailControl.touched)">Email is required.</span>
-                <span class="error" *ngIf="emailControl.errors?.['email']">Incorrect email format</span>
+                <span class="error" *ngIf="emailControl.errors?.['pattern']">Incorrect email format</span>
             </div>
             <div class="input-container">
                 <div class="label-container full-width">
