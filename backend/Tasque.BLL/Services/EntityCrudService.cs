@@ -5,7 +5,7 @@ namespace Tasque.Core.BLL.Services
 {
     public abstract class EntityCrudService<TEntity> : IEntityCrudService<TEntity> where TEntity : BaseEntity
     {
-        private readonly DataContext _db;
+        protected readonly DataContext _db;
         public EntityCrudService(DataContext db)
         {
             _db = db;

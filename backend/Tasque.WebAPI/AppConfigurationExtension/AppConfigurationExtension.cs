@@ -11,7 +11,6 @@ using Tasque.Core.BLL.Services;
 using Tasque.Core.BLL.Services.Auth;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.BLL.Services.Email.MailJet;
-using Tasque.Core.BLL.Services.Project;
 using Tasque.Core.Common.Entities;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
