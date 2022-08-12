@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-
 @Component({
   selector: 'tasque-button',
   templateUrl: './button.component.html',
