@@ -18,8 +18,8 @@ namespace Tasque.Core.BLL.Services.Auth
         private ConfirmationTokenService _confirmationTokenService;
         private JwtFactory _jwtFactory;
         public PasswordResetService(
-            DataContext context, 
-            ConfirmationTokenService confirmationTokenService, 
+            DataContext context,
+            ConfirmationTokenService confirmationTokenService,
             JwtFactory jwtFactory)
         {
             _context = context;
@@ -27,7 +27,7 @@ namespace Tasque.Core.BLL.Services.Auth
             _jwtFactory = jwtFactory;
         }
 
-        public async Task<string> Confirm(PasswordChangeDto body)
+        public async Task<AuthTokenDto> Confirm(PasswordChangeDto body)
         {
             var key = body.Token;
             var password = body.Password;
@@ -39,7 +39,7 @@ namespace Tasque.Core.BLL.Services.Auth
             user.Salt = Convert.ToBase64String(salt);
             user.Password = SecurityHelper.HashPassword(password, salt);
             _context.SaveChanges();
-            return _jwtFactory.GenerateToken(user.Id, user.Name, user.Email);
+            return new() { AccessToken = _jwtFactory.GenerateToken(user.Id, user.Name, user.Email) };
         }
 
         public async MSTask Request(string email)
@@ -51,7 +51,7 @@ namespace Tasque.Core.BLL.Services.Auth
                 .FirstOrDefaultAsync(x =>
                     x.UserId == userEntity.Id
                     && x.Kind == TokenKind.PasswordReset);
-            
+
             if (token == null || !token.IsValid)
                 token = await _confirmationTokenService.CreateConfirmationToken(userEntity, TokenKind.PasswordReset);
 
@@ -60,7 +60,7 @@ namespace Tasque.Core.BLL.Services.Auth
 
         public MSTask ValidateToken(Guid token)
         {
-            return _confirmationTokenService.ConfirmToken(token, TokenKind.PasswordReset); 
+            return _confirmationTokenService.ConfirmToken(token, TokenKind.PasswordReset);
         }
     }
 }
