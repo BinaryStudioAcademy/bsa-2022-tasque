@@ -16,6 +16,8 @@ import { CreateOrganizationDialogComponent } from './components/create-organizat
 import { CreateProjectDialogComponent } from './components/create-project/create-project-dialog/create-project-dialog.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { RegisterPageComponent } from './components/register-page/register-page.component';
+import { ProjectListComponent } from './components/project-list/project-list.component';
+import { ProjectListItemComponent } from './components/project-list/project-list-item/project-list-item.component';
 import { AuthPageComponent } from './components/auth-page/auth-page.component';
 
 @NgModule({
@@ -27,6 +29,8 @@ import { AuthPageComponent } from './components/auth-page/auth-page.component';
     CreateProjectDialogComponent,
     LoginPageComponent,
     RegisterPageComponent,
+    ProjectListComponent,
+    ProjectListItemComponent,
     AuthPageComponent,
   ],
   imports: [

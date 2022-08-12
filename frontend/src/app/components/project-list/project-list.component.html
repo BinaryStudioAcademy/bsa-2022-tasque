@@ -1,0 +1,24 @@
+<div class="project-list">
+  <div class="cards-info">
+    <div class="cards-info-title">
+      <h3 class="title">Your organization projects</h3>
+    </div>
+    <div class="cards-info-actions">
+      <tasque-input
+        type="search"
+        placeholder="Search..."
+        [borderRadius]="50"
+        [width]="292"
+      >
+      </tasque-input>
+    </div>
+
+  </div>
+  <div class="cards">
+    <div class="cards-items">
+      <app-project-list-item *ngFor="let item of items;" [projectName]="item.name">
+
+      </app-project-list-item>
+    </div>
+  </div>
+</div>
