@@ -14,6 +14,7 @@ import { CreateProjectComponent } from './components/create-project/create-proje
 import { CreateOrganizationDialogComponent } from './components/create-organization/create-organization-dialog/create-organization-dialog.component';
 import { CreateProjectDialogComponent } from './components/create-project/create-project-dialog/create-project-dialog.component';
 import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { AuthModule } from './auth/auth.module';
     MatDialogModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    AuthModule
+    AuthModule,
+    UserModule,
   ],
   providers: [BrowserAnimationsModule],
   bootstrap: [AppComponent],
