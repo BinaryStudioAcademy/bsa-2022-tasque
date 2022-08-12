@@ -80,7 +80,7 @@ export class RegisterPageComponent implements OnInit {
       this.toastrService.error('Invalid values');
       return;
     }
-    this.toastrService.info('Check your mailbox')
+    this.toastrService.info('Check your mailbox');
       this.authService.registerUser(this.userRegister)
       .subscribe((resp) => {
         if(resp.ok){
