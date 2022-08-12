@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/core/services/auth.service';
 import { UserRegisterModel } from 'src/entity-models/user-register-model';
 import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
@@ -26,7 +24,6 @@ export class RegisterPageComponent implements OnInit {
   public emailControl: FormControl;
   public passwordControl: FormControl;
   public passwordRepeatControl: FormControl;
-  public unsubscribe$ = new Subject<void>();
 
   faGithub = faGithub;
   faGoogle = faGoogle;
@@ -83,8 +80,8 @@ export class RegisterPageComponent implements OnInit {
       this.toastrService.error('Invalid values');
       return;
     }
+    this.toastrService.info('Check your mailbox')
       this.authService.registerUser(this.userRegister)
-      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((resp) => {
         if(resp.ok){
           this.toastrService.success(resp.body as string);
