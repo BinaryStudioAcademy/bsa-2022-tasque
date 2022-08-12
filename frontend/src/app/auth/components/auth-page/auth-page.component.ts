@@ -11,7 +11,7 @@ export class AuthPageComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.route.snapshot.firstChild) {
-      this.router.navigate(['login'], { relativeTo: this.route });
+      this.router.navigate(['login'], { relativeTo: this.route, replaceUrl: true });
     }
   }
 }
