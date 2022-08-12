@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -30,7 +29,6 @@ export class LoginPageComponent implements OnInit {
   private validationConstants = ValidationConstants;
 
   constructor(
-    private dialogRef: MatDialogRef<LoginPageComponent>,
     private authService: AuthService
   ) {this.emailControl = new FormControl( this.userLogin.email, [
       Validators.email,
@@ -49,9 +47,6 @@ export class LoginPageComponent implements OnInit {
       passwordControl: this.passwordControl
     });
   }
-  public close(): void {
-    this.dialogRef.close(false);
-  }
 
   public submitForm(): void {
     this.authService.loginUser(this.userLogin)
@@ -62,7 +57,6 @@ export class LoginPageComponent implements OnInit {
         this.localStorage.setItem(this.localStorageKeys.token, token?.accessToken as string);
       }
     });
-    this.close();
   }
 
 }

@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.Entities.Abstract;
 
@@ -12,8 +10,8 @@ namespace Tasque.Core.WebAPI.Controllers
         where TDto : class
         where TService : IEntityCrudService<TModel>
     {
-        private readonly TService _service;
-        private readonly Mapper mapper;
+        protected readonly TService _service;
+        protected readonly Mapper mapper;
         public EntityController(TService service)
         {
             _service = service;

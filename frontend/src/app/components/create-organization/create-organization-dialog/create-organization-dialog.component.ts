@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { OrganizationService } from 'src/core/services/organization-service';
+import { OrganizationService } from 'src/core/services/organization.service';
 import { OrganizationModel } from 'src/entity-models/organization-model';
 import { UserModel } from 'src/entity-models/user-model';
 
@@ -29,14 +29,14 @@ export class CreateOrganizationDialogComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  
-  createOrganization(name:string): void{
+
+  createOrganization(name: string): void {
     const organization: OrganizationModel = {
       name: name,
       authorId: this.currentUser.id
     };
     this.organizationService.createOrganization(organization)
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe();
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe();
   }
 }

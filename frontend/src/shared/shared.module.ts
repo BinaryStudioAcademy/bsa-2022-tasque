@@ -11,48 +11,59 @@ import { InputComponent } from './components/tasque-input/input.component';
 import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
+import { OrganizationsDropdownComponent } from './components/organizations-dropdown/organizations-dropdown.component';
+import { MenuDropdownComponent } from './components/tasque-menu-dropdown/menu-dropdown.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.component';
+import { SideBarComponent } from './components/tasque-sidebar/sidebar.component';
+import { SideBarService } from 'src/core/services/sidebar.service';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        RouterModule,
-        FormsModule,
-        ReactiveFormsModule,
-        RouterModule,
-        MaterialModule,
-        BrowserAnimationsModule,
-        FontAwesomeModule,
-    ],
-    declarations: [
-        LoadingComponent,
-        ButtonComponent,
-        InputComponent,
-        CheckboxComponent,
-        LeftSidebarComponent,
-        ConfirmationModalComponent,
-        DropdownComponent,
-        TasqueLogoComponent,
-    ],
-    exports: [
-        CommonModule,
-        RouterModule,
-        FormsModule,
-        ReactiveFormsModule,
-        RouterModule,
-        MaterialModule,
-        BrowserAnimationsModule,
-        LoadingComponent,
-        ButtonComponent,
-        InputComponent,
-        CheckboxComponent,
-        ConfirmationModalComponent,
-        LeftSidebarComponent,
-        DropdownComponent,
-        DropdownComponent,
-        FontAwesomeModule,
-        TasqueLogoComponent,
-    ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    MaterialModule,
+    BrowserAnimationsModule,
+    FontAwesomeModule,
+  ],
+  declarations: [
+    LoadingComponent,
+    ButtonComponent,
+    InputComponent,
+    CheckboxComponent,
+    LeftSidebarComponent,
+    ConfirmationModalComponent,
+    DropdownComponent,
+    TasqueLogoComponent,
+    SideBarComponent,
+    OrganizationsDropdownComponent,
+    MenuDropdownComponent,
+  ],
+  exports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    MaterialModule,
+    BrowserAnimationsModule,
+    LoadingComponent,
+    ButtonComponent,
+    InputComponent,
+    CheckboxComponent,
+    ConfirmationModalComponent,
+    LeftSidebarComponent,
+    DropdownComponent,
+    DropdownComponent,
+    FontAwesomeModule,
+    TasqueLogoComponent,
+    SideBarComponent,
+    MenuDropdownComponent,
+    OrganizationsDropdownComponent,
+  ],
+  providers: [SideBarService],
 })
-export class SharedModule {}
+export class SharedModule { }
