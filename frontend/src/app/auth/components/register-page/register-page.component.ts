@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { AuthService } from 'src/core/services/auth.service';
+import { UserRegisterModel } from 'src/entity-models/user-register-model';
+import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
+import { ToastrService } from 'ngx-toastr';
+import { ErrorMessages } from 'src/entity-models/const-resources/error-messages';
 
 @Component({
   selector: 'app-register-page',
@@ -9,33 +14,38 @@ import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 })
 export class RegisterPageComponent implements OnInit {
 
-  public name = '';
-  public email = '';
-  public password = '';
   public passwordRepeat = '';
   public hidePass = true;
   public hidePassRepeat = true;
+
+  public userRegister: UserRegisterModel = {};
   public registerForm: FormGroup =  new FormGroup({});
   public nameControl: FormControl;
   public emailControl: FormControl;
   public passwordControl: FormControl;
   public passwordRepeatControl: FormControl;
+
   faGithub = faGithub;
   faGoogle = faGoogle;
+  public validationConstants = ValidationConstants;
+  public errorMessages = ErrorMessages;
 
-  constructor() { 
-    this.nameControl = new FormControl(this.name, [
+  constructor(
+    private authService: AuthService,
+    private toastrService: ToastrService
+  ) {
+    this.nameControl = new FormControl(this.userRegister.name, [
       Validators.required,
+      Validators.minLength(this.validationConstants.minLengthName)
     ]);
-    this.emailControl = new FormControl(this.email, [
+    this.emailControl = new FormControl(this.userRegister.email, [
       Validators.email,
       Validators.required,
-      Validators.minLength(8),
-      Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')
+      Validators.pattern(this.validationConstants.emailRegex)
     ]);
-    this.passwordControl = new FormControl(this.password, [
+    this.passwordControl = new FormControl(this.userRegister.password, [
       Validators.required,
-      Validators.minLength(8)
+      Validators.minLength(this.validationConstants.minLengthPassword)
     ]);
     this.passwordRepeatControl = new FormControl(this.passwordRepeat, [
       Validators.required,
@@ -54,7 +64,7 @@ export class RegisterPageComponent implements OnInit {
   resetPasswordControl(): void {
     this.passwordRepeatControl = new FormControl(this.passwordRepeat, [
       Validators.required,
-      Validators.pattern(this.password)
+      Validators.pattern(this.userRegister.password as string)
     ]);
     this.registerForm = new FormGroup({
       nameControl: this.nameControl,
@@ -65,10 +75,22 @@ export class RegisterPageComponent implements OnInit {
   }
 
   public submitForm(): void {
-    if(!this.registerForm.valid)
+    if(!this.registerForm.valid){
+      this.toastrService.error('Invalid values');
       return;
-    this.email = this.emailControl.value;
-    this.password = this.passwordControl.value;
-    this.name = this.nameControl.value;
+    }
+    this.toastrService.info('Check your mailbox');
+      this.authService.registerUser(this.userRegister)
+      .subscribe((resp) => {
+        if(resp.ok){
+          this.toastrService.success(resp.body as string);
+        }
+        else{
+          this.toastrService.error(resp.body as string);
+        }
+      },
+      (error) => {
+        this.toastrService.error(error);
+      });
   }
 }

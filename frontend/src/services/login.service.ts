@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { LoginPageComponent } from 'src/app/components/login-page/login-page.component';
+import { LoginPageComponent } from 'src/app/auth/components/login-page/login-page.component';
 
 @Injectable({
   providedIn: 'root'
