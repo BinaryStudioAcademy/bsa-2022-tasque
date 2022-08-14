@@ -10,7 +10,6 @@ export enum BoardType {
 }
 
 export interface IUserCard {
-	id: number,
 	email: string,
 	username: string,
 	profileURL: string,
