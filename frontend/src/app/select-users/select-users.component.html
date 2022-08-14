@@ -1,23 +1,23 @@
-<div class="wrapper select-user">
+<div layout-sm class="wrapper select-user">
   <h3 class="text-center">Select Users</h3>
   <div class="users-table">
-    <mat-grid-list cols="5" rowHeight="60px">
+    <mat-grid-list cols="5" rowHeight="84px">
       <mat-grid-tile [colspan]="4" [rowspan]="1" class="left">
-        <tasque-input type="email" placeholder="example@tasque.com" [width]="560" label="email"></tasque-input>
+        <tasque-input type="email" placeholder="example@tasque.com" [width]="517" label="email"></tasque-input>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1" class="right">
         <button class="mat-button-primary" mat-flat-button color="primary">Add User</button>
       </mat-grid-tile>
-      <mat-grid-tile class="list" [colspan]="5" [rowspan]="1">
+      <mat-grid-tile class="list" [colspan]="5" [rowspan]="2">
         <mat-list role="list">
           <mat-divider></mat-divider>
           <mat-list-item role="listitem">
             <div class="user-data">
-              <img src="https://www.w3schools.com/howto/img_avatar.png" alt="user's avatar" class="avatar">
-              <span class="username">Item 1</span>
+              <img src="https://www.w3schools.com/howto/img_avatar.png" alt="user's avatar" class="avatar" />
+              <span class="username">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span>
             </div>
             <div class="user-actions">
-              <mat-form-field appearance="fill">
+              <mat-form-field class="role-input" appearance="fill">
                 <mat-label>Role</mat-label>
                 <mat-select>
                   <mat-option *ngFor="let role of roles" [value]="role">
@@ -31,14 +31,25 @@
             </div>
           </mat-list-item>
           <mat-divider></mat-divider>
-          <!-- <mat-list-item role="listitem">Item 2</mat-list-item>
-          <mat-divider></mat-divider>
-          <mat-list-item role="listitem">Item 3</mat-list-item>
-          <mat-divider></mat-divider>
-          <mat-list-item role="listitem">Item 4</mat-list-item>
-          <mat-divider></mat-divider>
-          <mat-list-item role="listitem">Item 5</mat-list-item>
-          <mat-divider></mat-divider> -->
+          <mat-list-item role="listitem">
+            <div class="user-data">
+              <img src="https://www.w3schools.com/howto/img_avatar.png" alt="user's avatar" class="avatar" />
+              <span class="username">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span>
+            </div>
+            <div class="user-actions">
+              <mat-form-field class="role-input" appearance="fill">
+                <mat-label>Role</mat-label>
+                <mat-select>
+                  <mat-option *ngFor="let role of roles" [value]="role">
+                    {{ role }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-mini-fab color="primary" class="mat-button-action" aria-label="Example icon button with a plus one icon">
+                <mat-icon>clear</mat-icon>
+              </button>
+            </div>
+          </mat-list-item>
         </mat-list>
       </mat-grid-tile>
     </mat-grid-list>
