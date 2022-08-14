@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class SelectUsersComponent implements OnInit {
 
   public inputWidth = 683;
+  public roles: string[] = ["Participant", "Admin", "Organizer"]
 
   constructor() { }
 

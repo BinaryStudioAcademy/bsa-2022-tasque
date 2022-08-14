@@ -1,20 +1,56 @@
-mat-list
-	width: 100%
+$width: 700px
+$padding: 15px
 
 h3
 	text-align: center
 
-tasque-input
-	width: 700px
+mat-grid-list
+	width: $width
 
-.mat-grid-tile-content
-	justify-content: start
+	mat-grid-tile
+		padding: 12px
 
-mat-grid-tile
-	padding: 8px
-	
-	.list
-		justify-content: space-between
+		mat-form-field
+			border-radius: 10px
 
-	tasque-button
-		padding-top: 17px
+			&.email-input
+				min-width: 150px
+				width: 100%
+
+		.mat-button-primary
+			margin-top: 17px
+
+		mat-list
+			width: $width
+
+			mat-list-item
+				display: flex
+				align-items: center
+				height: 60px
+				font-size: 14px
+
+				.user-data
+					.avatar 
+						vertical-align: middle
+						width: 40px
+						height: 40px
+						border-radius: 50%
+						margin: 10px 15px
+					
+				.user-actions
+					display: flex
+					align-items: center
+
+					.mat-button-action
+						margin: 10px 15px
+
+				::ng-deep .mat-list-item-content
+					padding: 0px
+					width: $width
+					justify-content: space-between
+
+				::ng-deep .mat-form-field-underline
+					position: static
+
+				::ng-deep .mat-form-field-wrapper
+					padding-bottom: 0px
