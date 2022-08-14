@@ -20,11 +20,10 @@ export class BoardService {
     return new Observable(observer => { observer.next(board.users); observer.complete() });
   }
 
-  public addUser(email: string, board: IBoard): void {
+  public addUser(email: string, board: IBoard): Observable<any> {
 
     // change to HttpClient.getOne
     let user: IUserCard | null = {
-      id: Math.random() * Number.MAX_SAFE_INTEGER,
       email: email,
       username: email,
       profileURL: "something",
@@ -43,15 +42,17 @@ export class BoardService {
 
     // change to HttpClient.put
     localStorage.setItem(key, JSON.stringify(board));
+    return new Observable(observer => { observer.next("done"); observer.complete() });
   }
 
-  public removeUser(board: IBoard, user: IUserCard): void {
-    board.users = board.users.filter(u => u.id != user.id);
+  public deleteUser(board: IBoard, email: string): Observable<any> {
+    board.users = board.users.filter(u => u.email != email);
 
     let key = this.createKey(board);
 
     // change to HttpClient.delete
     localStorage.setItem(key, JSON.stringify(board));
+    return new Observable(observer => { observer.next("done"); observer.complete() });
   }
 
   private createKey(board: IBoard): string {
