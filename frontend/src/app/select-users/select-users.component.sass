@@ -8,7 +8,7 @@ h3
 	margin: 15px 0px
 
 .wrapper
-	width: $width
+	// width: $width
 
 .users-table
 	border: solid
@@ -44,8 +44,10 @@ mat-grid-tile
 		margin-top: 17px
 
 	mat-list
-		width: $width
+		width: 100%
 		padding-top: 2px
+		overflow: auto
+		height: 168px
 
 		mat-list-item
 			display: flex
@@ -54,7 +56,7 @@ mat-grid-tile
 			font-size: 14px
 
 			.user-data
-				max-width: calc($width * 0.65)
+				max-width: 65%
 				display: inline-block
 				overflow: hidden
 				white-space: nowrap
@@ -68,15 +70,17 @@ mat-grid-tile
 					margin: 10px 15px
 				
 			.user-actions
-				display: flex
+				display: inline-flex
 				align-items: center
 
 				.mat-button-action
 					margin: 10px 15px
 
 			::ng-deep .mat-list-item-content
-				padding: 0px
-				width: $width
+				display: inline-flex
+				width: 100%
+				padding: auto
+				// width: $width
 				justify-content: space-between
 
 			::ng-deep .mat-form-field-underline

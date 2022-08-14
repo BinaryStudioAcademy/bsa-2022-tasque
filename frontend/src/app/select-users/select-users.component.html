@@ -50,6 +50,26 @@
               </button>
             </div>
           </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item role="listitem">
+            <div class="user-data">
+              <img src="https://www.w3schools.com/howto/img_avatar.png" alt="user's avatar" class="avatar" />
+              <span class="username">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span>
+            </div>
+            <div class="user-actions">
+              <mat-form-field class="role-input" appearance="fill">
+                <mat-label>Role</mat-label>
+                <mat-select>
+                  <mat-option *ngFor="let role of roles" [value]="role">
+                    {{ role }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-mini-fab color="primary" class="mat-button-action" aria-label="Example icon button with a plus one icon">
+                <mat-icon>clear</mat-icon>
+              </button>
+            </div>
+          </mat-list-item>
         </mat-list>
       </mat-grid-tile>
     </mat-grid-list>
