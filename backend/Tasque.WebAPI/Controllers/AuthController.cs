@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Tasque.Core.BLL.JWT;
-using Tasque.Core.BLL.Services;
+using Tasque.Core.BLL.Services.Auth;
 using Tasque.Core.Common.DTO;
 
 namespace Tasque.Core.WebAPI.Controllers
@@ -12,10 +10,9 @@ namespace Tasque.Core.WebAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private AuthService _service;
+        private AuthService _service;        
 
-
-        public AuthController(AuthService service, JwtFactory jwtFactory)
+        public AuthController(AuthService service)
         {
             _service = service;
         }
@@ -24,16 +21,27 @@ namespace Tasque.Core.WebAPI.Controllers
         public async Task<IActionResult> Login([FromBody] UserLoginDto loginInfo)
         {
             var user = await _service.Login(loginInfo);
+            return Login(user);
+        }
+
+        [HttpGet("confirm")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] Guid key)
+        {
+            var user = await _service.Login(key);
+            return Login(user);
+        }
+
+        private IActionResult Login(UserDto user)
+        {
             var token = _service.GetAccessToken(user.Id, user.Name, user.Email);
             return Ok(token);
         }
-
+        
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegisterDto registerInfo)
         {
-            var registeredUser = await _service.Register(registerInfo);
-            var token = _service.GetAccessToken(registeredUser.Id, registeredUser.Name, registeredUser.Email);
-            return Ok(token);
+            await _service.Register(registerInfo);
+            return Ok();
         }
     }
 }

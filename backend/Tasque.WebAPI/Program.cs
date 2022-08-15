@@ -14,10 +14,14 @@ builder.Logging.AddNLog();
 
 builder.Services.ConfigureMapper();
 builder.Services.ConfigureValidator();
+builder.Services.ConfigureEmailServices(builder.Configuration);
+builder.Services.AddSwagger();
 
 // Add services to the container.
 
 AppConfigurationExtension.RegisterServices(builder.Services, builder.Configuration);
+
+builder.Services.AddCors();
 
 builder.Services.AddDbContext<DataContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("TasqueDb"), 
@@ -36,6 +40,15 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseCors(builder => 
+    builder
+        .AllowAnyHeader()
+        .AllowAnyOrigin()
+        .AllowAnyMethod());
+        
+app.UseSwagger();
+app.UseSwaggerUI();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -46,5 +59,9 @@ app.UseAuthorization();
 
 app.UseMigrationsEndPoint();
 
-app.MapControllers();
+app.UseEndpoints(cfg =>
+{
+    cfg.MapControllers();
+});
+
 app.Run();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tasque.Core.Common.Entities;
+using Tasque.Core.DAL.EntityConfiguration;
 using Task = Tasque.Core.Common.Entities.Task;
 
 namespace Tasque.Core.DAL;
@@ -11,18 +12,9 @@ public class DataContext : DbContext
     {
         modelBuilder.UseSerialColumns();
 
-        modelBuilder.Entity<Project>()
-            .HasOne(project => project.Author)
-            .WithMany(user => user.Projects)
-            .HasForeignKey(project => project.AuthorId);
-
-        modelBuilder.Entity<Task>()
-            .HasOne(task => task.Author)
-            .WithMany(user => user.Tasks)
-            .HasForeignKey(task => task.AuthorId);
-
-        modelBuilder.Entity<Task>()
-            .HasOne(task => task.LastUpdatedBy);
+        modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new TaskConfiguration());
+        modelBuilder.ApplyConfiguration(new ProjectConfiguration());
     }
 
     public DbSet<Organization> Organizations { get; set; } = null!;
@@ -39,4 +31,5 @@ public class DataContext : DbContext
     public DbSet<Notification> Notifications { get; set; } = null!;
     public DbSet<Role> Roles { get; set; } = null!;
     public DbSet<Sprint> Sprints { get; set; } = null!;
+    public DbSet<ConfirmationToken> ConfirmationTokens { get; set; } = null!;
 }

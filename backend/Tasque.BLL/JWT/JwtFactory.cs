@@ -2,12 +2,13 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Tasque.Core.BLL.Options;
 
 namespace Tasque.Core.BLL.JWT
 {
     public class JwtFactory
     {
-        public readonly JwtIssuerOptions _jwtOptions;
+        private readonly JwtIssuerOptions _jwtOptions;
 
         public JwtFactory(JwtIssuerOptions jwtOptions)
         {
@@ -34,11 +35,6 @@ namespace Tasque.Core.BLL.JWT
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        public object Authenticate(object credentials)
-        {
-            throw new NotImplementedException();
         }
     }
 }
