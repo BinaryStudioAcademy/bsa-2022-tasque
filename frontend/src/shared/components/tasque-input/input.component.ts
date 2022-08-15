@@ -100,5 +100,5 @@ export class InputComponent implements ControlValueAccessor {
   registerOnTouched(fn: (value: Event) => void): void {
     this.onTouched = fn;
   }
-  
+
 }

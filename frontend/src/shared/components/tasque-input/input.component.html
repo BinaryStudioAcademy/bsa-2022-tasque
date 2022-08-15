@@ -10,10 +10,10 @@
       'search-border': inputType === 'search'}"
     [type]="inputType"
     [placeholder]="inputPlaceholder"
-    style="width: 100%"
+    [value]="inputText"
+    [style.width.px]="inputWidth"
     [style.border-radius.px]="inputBorderRadius"
   />
   <img src="..\..\assets\search_icon.svg" *ngIf="inputType === 'search'" class="search-icon">
-
   <span class="error" *ngIf="inputValueIsError">{{inputErrorMessage}}</span>
 </div>
