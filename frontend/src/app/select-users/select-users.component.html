@@ -1,71 +1,30 @@
 <div layout-sm class="wrapper select-user">
   <h3 class="text-center">Select Users</h3>
   <div class="users-table">
-    <mat-grid-list cols="5" rowHeight="84px">
-      <mat-grid-tile [colspan]="4" [rowspan]="1" class="left">
-        <tasque-input type="email" placeholder="example@tasque.com" [width]="517" label="email"></tasque-input>
+    <mat-grid-list rowHeight="84px" cols="1">
+      <mat-grid-tile [rowspan]="1" class="left">
+        <div class="container w-65 left">
+          <button class="mat-button-primary right" mat-flat-button color="primary" (click)="add()">Add User</button>
+        </div>
       </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1" class="right">
-        <button class="mat-button-primary" mat-flat-button color="primary">Add User</button>
-      </mat-grid-tile>
-      <mat-grid-tile class="list" [colspan]="5" [rowspan]="2">
+      <mat-grid-tile class="list" [rowspan]="rowspan">
         <mat-list role="list">
           <mat-divider></mat-divider>
-          <mat-list-item role="listitem">
+          <mat-list-item role="listitem" *ngFor="let user of users$ | async">
             <div class="user-data">
-              <img src="https://www.w3schools.com/howto/img_avatar.png" alt="user's avatar" class="avatar" />
-              <span class="username">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span>
+              <img [src]="user.avatarURL" alt="user's avatar" class="avatar" />
+              <span class="username">{{ user.username }}</span>
             </div>
             <div class="user-actions">
-              <mat-form-field class="role-input" appearance="fill">
+              <mat-form-field class="role-input" appearance="fill" *ngIf="board.hasRoles">
                 <mat-label>Role</mat-label>
                 <mat-select>
-                  <mat-option *ngFor="let role of roles" [value]="role">
-                    {{ role }}
+                  <mat-option *ngFor="let role of roles" [value]="role.id">
+                    {{ user.role }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <button mat-mini-fab color="primary" class="mat-button-action" aria-label="Example icon button with a plus one icon">
-                <mat-icon>clear</mat-icon>
-              </button>
-            </div>
-          </mat-list-item>
-          <mat-divider></mat-divider>
-          <mat-list-item role="listitem">
-            <div class="user-data">
-              <img src="https://www.w3schools.com/howto/img_avatar.png" alt="user's avatar" class="avatar" />
-              <span class="username">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span>
-            </div>
-            <div class="user-actions">
-              <mat-form-field class="role-input" appearance="fill">
-                <mat-label>Role</mat-label>
-                <mat-select>
-                  <mat-option *ngFor="let role of roles" [value]="role">
-                    {{ role }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <button mat-mini-fab color="primary" class="mat-button-action" aria-label="Example icon button with a plus one icon">
-                <mat-icon>clear</mat-icon>
-              </button>
-            </div>
-          </mat-list-item>
-          <mat-divider></mat-divider>
-          <mat-list-item role="listitem">
-            <div class="user-data">
-              <img src="https://www.w3schools.com/howto/img_avatar.png" alt="user's avatar" class="avatar" />
-              <span class="username">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span>
-            </div>
-            <div class="user-actions">
-              <mat-form-field class="role-input" appearance="fill">
-                <mat-label>Role</mat-label>
-                <mat-select>
-                  <mat-option *ngFor="let role of roles" [value]="role">
-                    {{ role }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <button mat-mini-fab color="primary" class="mat-button-action" aria-label="Example icon button with a plus one icon">
+              <button mat-mini-fab color="primary" class="mat-button-action" (click) = "delete(user.email)">
                 <mat-icon>clear</mat-icon>
               </button>
             </div>
