@@ -1,16 +1,18 @@
 <div class="input-container">
   <label>{{inputLabel}}</label>
   <input
-  [class]="inputClass"
-  [ngClass]="{
-    'error': inputValueisError, 
-    'search-border': inputType === 'search'}"
-    [type]="inputType" 
+    [class]="inputClass + ' input'"
+    [(ngModel)]="inputValue"
+    (ngModelChange)="onChange($event)"
+    (blur)="onTouched($event)"
+    [ngClass]="{
+      'error': inputValueIsError,
+      'search-border': inputType === 'search'}"
+    [type]="inputType"
     [placeholder]="inputPlaceholder"
-    [value]="inputText"
-    [style.width.px]="inputWidth"
+    style="width: 100%"
     [style.border-radius.px]="inputBorderRadius"
   />
-  <img src="..\..\assets\search_icon.svg" *ngIf="inputType === 'search'" class="search-icon">  
-  <span class="error" *ngIf="inputValueisError">{{inputErrorMessage}}</span>
+  <img src="..\..\assets\search_icon.svg" *ngIf="inputType === 'search'" class="search-icon">
+  <span class="error" *ngIf="inputValueIsError">{{inputErrorMessage}}</span>
 </div>
