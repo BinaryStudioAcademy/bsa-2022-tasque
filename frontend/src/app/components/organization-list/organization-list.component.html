@@ -8,7 +8,7 @@
   </div>
   <div class="organization-list-cards">
     <div class="organization-card" *ngFor="let item of itemsShow">
-      <app-organization-list-item [organization]="item"></app-organization-list-item>
+      <app-organization-list-item [organization]="item" [currentUser]="currentUser"></app-organization-list-item>
     </div>
   </div>
 </div>
