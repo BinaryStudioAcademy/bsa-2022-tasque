@@ -36,14 +36,6 @@ export class InputComponent implements ControlValueAccessor {
     return this.inputType;
   }
 
-  // @Input()
-  // set width(width: number){
-  //   this.inputWidth = width;
-  // }
-  // get width(): number{
-  //   return this.inputWidth;
-  // }
-
   @Input()
   set borderRadius(radius: number){
     this.inputBorderRadius = radius;
