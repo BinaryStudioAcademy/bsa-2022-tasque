@@ -9,6 +9,7 @@
         <label>Name</label>
         <input
           class="input full-width"
+          [(ngModel)]="userRegister.name"
           [ngClass]="{
             'error': nameControl.invalid && (nameControl.dirty || nameControl.touched)
           }"
@@ -22,6 +23,7 @@
         <label>Email</label>
         <input
           class="input full-width"
+          [(ngModel)]="userRegister.email"
           [ngClass]="{
             'error': emailControl.invalid && (emailControl.dirty || emailControl.touched)
           }"
