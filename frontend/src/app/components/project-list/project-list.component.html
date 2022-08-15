@@ -8,7 +8,8 @@
         type="search"
         placeholder="Search..."
         [borderRadius]="50"
-        [width]="292"
+        [(ngModel)]="inputSearch"
+        (ngModelChange)="filterItems()"
       >
       </tasque-input>
     </div>
@@ -16,7 +17,7 @@
   </div>
   <div class="cards">
     <div class="cards-items">
-      <app-project-list-item *ngFor="let item of items;" [projectName]="item.name">
+      <app-project-list-item *ngFor="let item of itemsShow;" [projectName]="item.name">
 
       </app-project-list-item>
     </div>

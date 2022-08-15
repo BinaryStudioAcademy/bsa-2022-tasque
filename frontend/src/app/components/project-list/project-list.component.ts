@@ -8,6 +8,8 @@ import { ProjectModel } from '../../../core/models/project/project-model';
 })
 export class ProjectListComponent implements OnInit {
 
+  public inputSearch = '';
+
   public items:ProjectModel[] = [
     {
       id: 1,
@@ -82,9 +84,18 @@ export class ProjectListComponent implements OnInit {
       updatedAt: new Date(Date.now()),
     },
   ] ;
+
+  public itemsShow = this.items;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  filterItems(): void{
+    this.itemsShow = this.items.filter((item) => {
+      return item.name.includes(this.inputSearch);
+    });
   }
 
 }
