@@ -14,6 +14,8 @@ import { CreateProjectComponent } from './components/create-project/create-proje
 import { CreateOrganizationDialogComponent } from './components/create-organization/create-organization-dialog/create-organization-dialog.component';
 import { CreateProjectDialogComponent } from './components/create-project/create-project-dialog/create-project-dialog.component';
 import { AuthModule } from './auth/auth.module';
+import { OrganizationListComponent } from './components/organization-list/organization-list.component';
+import { OrganizationListItemComponent } from './components/organization-list/organization-list-item/organization-list-item.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { AuthModule } from './auth/auth.module';
     CreateOrganizationDialogComponent,
     CreateProjectComponent,
     CreateProjectDialogComponent,
+    OrganizationListComponent,
+    OrganizationListItemComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,4 +41,4 @@ import { AuthModule } from './auth/auth.module';
   providers: [BrowserAnimationsModule],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
