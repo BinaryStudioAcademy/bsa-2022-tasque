@@ -10,16 +10,37 @@
     background: colorscheme(gray-100)
     font-family: 'Nunito'
 
-.task-creation-header, .task-creation-footer
+.task-creation-header,
+.task-creation-footer
     height: 145px
     background: colorscheme(white-100)
+    display: flex
+    align-items: center
 
-.header-wrapper
-    padding: 51px
+.task-creation-header
+    padding: 0 51px
 
 .header-wrapper
     p,h5
         margin: 0px
+
+.task-creation-header-title
+    font-family: 'Nunito'
+    font-style: normal
+    font-weight: 700
+    font-size: 24px
+    line-height: 114%
+
+.task-creation-header-button
+    margin-left: auto
+    >.btn
+        margin-left: 15px
+
+.task-creation-footer-button
+    padding: 0 51px
+    margin-left: auto
+    >.btn
+        margin-left: 15px
 
 .forget-pass
     transform: rotate(40deg)

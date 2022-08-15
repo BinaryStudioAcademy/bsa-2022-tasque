@@ -1,8 +1,19 @@
 <tasque-button class="fill" (click)="openSidebar()" text="Open Sidebar"></tasque-button>
 <tasque-sidebar>
   <div class="task-creation-conteiner">
-    <div class="task-creation-header"></div>
+    <div class="task-creation-header">
+      <h4 class="task-creation-header-title">Create issue</h4>
+      <div class="task-creation-header-button">
+        <tasque-button class="btn mini disabled" text="Import issues" (click)="importIssues()"> </tasque-button>
+        <tasque-button class="btn" [icon]="faExpeditedssl"> </tasque-button>
+      </div>
+    </div>
     <div class="task-creation-body"></div>
-    <div class="task-creation-footer"></div>
+    <div class="task-creation-footer">
+      <div class="task-creation-footer-button">
+        <tasque-button class="btn stroke" text="Cancel" (click)="cancel()"> </tasque-button>
+        <tasque-button class="btn fill" text="Create" (click)="create()"> </tasque-button>
+      </div>
+    </div>
   </div>
 </tasque-sidebar>

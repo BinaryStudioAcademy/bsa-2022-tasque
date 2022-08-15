@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SideBarService } from 'src/core/services/sidebar.service';
-import {
-  faLink,
-  faPaperclip,
-  faCheckToSlot,
-  faShareNodes,
-} from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-task-creation',
@@ -13,14 +8,24 @@ import {
   styleUrls: ['./task-creation.component.sass'],
 })
 export class TaskCreationComponent implements OnInit {
-  faLink = faLink;
-  faPaperclip = faPaperclip;
-  faCheckToSlot = faCheckToSlot;
-  faShareNodes = faShareNodes;
+  faExpeditedssl = faEllipsisVertical;
   constructor(private sideBarService: SideBarService) {}
 
   openSidebar(): void {
     this.sideBarService.toggle();
   }
+
+  create(): void {
+    console.log('create');
+  }
+
+  cancel(): void {
+    console.log('cancel');
+  }
+
+  importIssues(): void {
+    console.log('ImportIssues');
+  }
+
   ngOnInit(): void {}
 }
