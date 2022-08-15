@@ -1,4 +1,10 @@
-import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  Output,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
@@ -12,11 +18,11 @@ type IconPosition = 'right' | 'left';
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: forwardRef(() => InputComponent)
-    }
-  ]
+      useExisting: forwardRef(() => InputComponent),
+    },
+  ],
 })
-export class InputComponent implements ControlValueAccessor, OnInit  {
+export class InputComponent implements ControlValueAccessor {
   public inputBorderRadius = 10;
   public inputClass = '';
   public inputType = 'text';
@@ -26,7 +32,7 @@ export class InputComponent implements ControlValueAccessor, OnInit  {
   public inputErrorMessage = 'error';
   public inputValueIsError = false;
 
-  public iconClass: string;
+  public iconPos: IconPosition;
   public inputIcon?: IconProp = undefined;
 
   @Input() value: string;
@@ -40,10 +46,10 @@ export class InputComponent implements ControlValueAccessor, OnInit  {
   }
 
   @Input()
-  set borderRadius(radius: number){
+  set borderRadius(radius: number) {
     this.inputBorderRadius = radius;
   }
-  get borderRadius(): number{
+  get borderRadius(): number {
     return this.inputBorderRadius;
   }
 
@@ -89,12 +95,20 @@ export class InputComponent implements ControlValueAccessor, OnInit  {
 
   @Input()
   set iconPosition(position: IconPosition) {
-    this.iconClass = position;
+    this.iconPos = position;
   }
 
   @Input()
   set icon(icon: IconProp) {
     this.inputIcon = icon;
+  }
+
+  get iconClass(): string {
+    let res = this.iconPos as string;
+    if (this.iconClick.observers.length) {
+      res += ' btn';
+    }
+    return res;
   }
 
   @Output() iconClick = new EventEmitter<MouseEvent>();
@@ -107,13 +121,7 @@ export class InputComponent implements ControlValueAccessor, OnInit  {
 
   onTouched: (value: Event) => void = () => {};
 
-  constructor() { }
-
-  ngOnInit(): void {
-    if (this.iconClick.observers.length) {
-      this.iconClass += ' btn';
-    }
-  }
+  constructor() {}
 
   writeValue(value: string): void {
     this.inputValue = value;
@@ -126,5 +134,4 @@ export class InputComponent implements ControlValueAccessor, OnInit  {
   registerOnTouched(fn: (value: Event) => void): void {
     this.onTouched = fn;
   }
-
 }
