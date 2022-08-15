@@ -6,7 +6,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.sass'],
   providers: [
-    { 
+    {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
       useExisting: forwardRef(() => InputComponent)
@@ -21,12 +21,12 @@ export class InputComponent implements ControlValueAccessor {
 
   public inputClass = '';
   public inputType = 'text';
-  public inputValue = ''; 
+  public inputValue = '';
   public inputLabel = '';
   public inputPlaceholder = '';
 
   public inputErrorMessage = 'error';
-  public inputValueisError = false;
+  public inputValueIsError = false;
 
   @Input() value: string;
 
@@ -47,8 +47,8 @@ export class InputComponent implements ControlValueAccessor {
   }
 
   @Input()
-  set borderRadius(raduis: number){
-    this.inputBorderRadius = raduis;
+  set borderRadius(radius: number){
+    this.inputBorderRadius = radius;
   }
   get borderRadius(): number{
     return this.inputBorderRadius;
@@ -80,10 +80,10 @@ export class InputComponent implements ControlValueAccessor {
 
   @Input()
   set invalid(hasError: boolean) {
-    this.inputValueisError = hasError;
+    this.inputValueIsError = hasError;
   }
   get invalid(): boolean {
-    return this.inputValueisError;
+    return this.inputValueIsError;
   }
 
   @Input()
@@ -94,8 +94,8 @@ export class InputComponent implements ControlValueAccessor {
     return this.inputErrorMessage;
   }
 
-  onChange: any = () => {};
-  onTouched: any = () => {};
+  onChange: (value: Event) => void = () => {};
+  onTouched: (value: Event) => void = () => {};
 
   constructor() { }
 
@@ -103,11 +103,11 @@ export class InputComponent implements ControlValueAccessor {
     this.inputValue = value;
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: Event) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: (value: Event) => void): void {
     this.onTouched = fn;
   }
   
