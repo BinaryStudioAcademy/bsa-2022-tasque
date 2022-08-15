@@ -14,5 +14,6 @@
     [style.border-radius.px]="inputBorderRadius"
   />
   <img src="..\..\assets\search_icon.svg" *ngIf="inputType === 'search'" class="search-icon">
+
   <span class="error" *ngIf="inputValueIsError">{{inputErrorMessage}}</span>
 </div>
