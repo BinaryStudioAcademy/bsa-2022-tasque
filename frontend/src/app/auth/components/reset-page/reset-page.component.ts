@@ -81,10 +81,8 @@ export class ResetPageComponent implements OnInit, OnDestroy {
       .subscribe((resp) => {
         if (resp.ok) {
           const token = resp.body;
-          this.localStorage.setItem(
-            this.localStorageKeys.token,
-            token?.accessToken as string,
-          );
+          if (!token) return;
+          this.authService.setAuthToken(token);
           // redirect into app here
         }
       });

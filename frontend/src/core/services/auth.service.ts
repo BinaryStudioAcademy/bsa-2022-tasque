@@ -6,6 +6,7 @@ import { UserLoginModel } from 'src/entity-models/user-login-model';
 import { UserRegisterModel } from 'src/entity-models/user-register-model';
 import { UserResetPasswordModel } from 'src/entity-models/user-reset-password-model';
 import { HttpService } from './http.service';
+import { LocalStorageKeys } from 'src/entity-models/local-storage-keys';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +37,9 @@ export class AuthService {
 
   resetPassword(credentials: UserResetPasswordModel): Observable<HttpResponse<AccessToken>> {
     return this.httpService.postFullRequest(this.routePrefix + '/restore', credentials);
+  }
+
+  setAuthToken(token: AccessToken): void {
+    localStorage.setItem(LocalStorageKeys.token, token.accessToken);
   }
 }
