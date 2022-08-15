@@ -1,7 +1,7 @@
 <div class="input-container">
   <label>{{ inputLabel }}</label>
   <div class="input-wrp">
-    <div [ngClass]="'icon ' + iconClass">
+    <div [ngClass]="'icon ' + iconClass" (click)="emitClick($event)">
       <fa-icon *ngIf="inputIcon && iconClass" [icon]="inputIcon" size="lg"></fa-icon>
     </div>
     <input
