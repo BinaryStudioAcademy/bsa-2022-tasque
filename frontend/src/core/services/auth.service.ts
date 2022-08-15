@@ -1,4 +1,4 @@
-import { HttpResponse } from '@angular/common/http';
+import { HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AccessToken } from 'src/entity-models/access-token';
@@ -25,6 +25,10 @@ export class AuthService {
 
   registerUser(credentials: UserRegisterModel):Observable<HttpResponse<string>> {
     return this.httpService.postFullRequest(this.routePrefix + '/register', credentials);
+  }
+
+  confirmEmail(token: string): Observable<HttpResponse<AccessToken>> {
+    return this.httpService.getFullRequest(this.routePrefix + '/confirm', new HttpParams().set('key', token));
   }
 
   requestPasswordReset(email: string): Observable<HttpResponse<string>> {
