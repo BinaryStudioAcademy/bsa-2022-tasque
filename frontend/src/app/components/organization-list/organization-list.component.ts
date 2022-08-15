@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
+import { UserModel } from 'src/entity-models/user-model';
+import { CreateOrganizationDialogComponent } from '../create-organization/create-organization-dialog/create-organization-dialog.component';
 
 @Component({
   selector: 'app-organization-list',
@@ -7,6 +10,14 @@ import { OrganizationModel } from 'src/core/models/organization/organization-mod
   styleUrls: ['./organization-list.component.sass']
 })
 export class OrganizationListComponent implements OnInit {
+  @Input() public currentUser: UserModel = {
+    name: 'Login1',
+    email: 'testlogin@gmail.com',
+    id: 1,
+    salt: 'Salt',
+    password: 'Password'
+  };
+
   public items: OrganizationModel[] = [
     {
       id: 1,
@@ -34,7 +45,7 @@ export class OrganizationListComponent implements OnInit {
   public inputSearch = '';
   public itemsShow = this.items;
 
-  constructor() { }
+  constructor(public matDialog: MatDialog) { }
 
   ngOnInit(): void { }
 
@@ -47,5 +58,13 @@ export class OrganizationListComponent implements OnInit {
     else {
       this.itemsShow = this.items;
     }
+  }
+
+  openDialog(): void {
+    const dialog = this.matDialog.open(CreateOrganizationDialogComponent, {
+      data: this.currentUser,
+      height: '400px',
+    });
+    dialog.afterClosed().subscribe();
   }
 }
