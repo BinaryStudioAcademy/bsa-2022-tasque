@@ -10,16 +10,15 @@ import { ErrorMessages } from 'src/entity-models/const-resources/error-messages'
 @Component({
   selector: 'app-register-page',
   templateUrl: './register-page.component.html',
-  styleUrls: ['./register-page.component.sass']
+  styleUrls: ['./register-page.component.sass'],
 })
 export class RegisterPageComponent implements OnInit {
-
   public passwordRepeat = '';
   public hidePass = true;
   public hidePassRepeat = true;
 
   public userRegister: UserRegisterModel = {};
-  public registerForm: FormGroup =  new FormGroup({});
+  public registerForm: FormGroup = new FormGroup({});
   public nameControl: FormControl;
   public emailControl: FormControl;
   public passwordControl: FormControl;
@@ -36,16 +35,16 @@ export class RegisterPageComponent implements OnInit {
   ) {
     this.nameControl = new FormControl(this.userRegister.name, [
       Validators.required,
-      Validators.minLength(this.validationConstants.minLengthName)
+      Validators.minLength(this.validationConstants.minLengthName),
     ]);
     this.emailControl = new FormControl(this.userRegister.email, [
       Validators.email,
       Validators.required,
-      Validators.pattern(this.validationConstants.emailRegex)
+      Validators.pattern(this.validationConstants.emailRegex),
     ]);
     this.passwordControl = new FormControl(this.userRegister.password, [
       Validators.required,
-      Validators.minLength(this.validationConstants.minLengthPassword)
+      Validators.minLength(this.validationConstants.minLengthPassword),
     ]);
     this.passwordRepeatControl = new FormControl(this.passwordRepeat, [
       Validators.required,
@@ -57,40 +56,40 @@ export class RegisterPageComponent implements OnInit {
       nameControl: this.nameControl,
       emailControl: this.emailControl,
       passwordControl: this.passwordControl,
-      passwordRepeatControl: this.passwordRepeatControl
+      passwordRepeatControl: this.passwordRepeatControl,
     });
   }
 
   resetPasswordControl(): void {
     this.passwordRepeatControl = new FormControl(this.passwordRepeat, [
       Validators.required,
-      Validators.pattern(this.userRegister.password as string)
+      Validators.pattern(this.userRegister.password as string),
     ]);
     this.registerForm = new FormGroup({
       nameControl: this.nameControl,
       emailControl: this.emailControl,
       passwordControl: this.passwordControl,
-      passwordRepeatControl: this.passwordRepeatControl
+      passwordRepeatControl: this.passwordRepeatControl,
     });
   }
 
   public submitForm(): void {
-    if(!this.registerForm.valid){
+    if (!this.registerForm.valid) {
       this.toastrService.error('Invalid values');
       return;
     }
     this.toastrService.info('Check your mailbox');
-      this.authService.registerUser(this.userRegister)
-      .subscribe((resp) => {
-        if(resp.ok){
+    this.authService.registerUser(this.userRegister).subscribe(
+      (resp) => {
+        if (resp.ok) {
           this.toastrService.success(resp.body as string);
-        }
-        else{
+        } else {
           this.toastrService.error(resp.body as string);
         }
       },
       (error) => {
         this.toastrService.error(error);
-      });
+      },
+    );
   }
 }
