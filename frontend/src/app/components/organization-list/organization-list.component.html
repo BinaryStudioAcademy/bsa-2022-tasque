@@ -1,4 +1,4 @@
-<div class="project-list">
+<div class="organization-list">
   <div class="header">
     <h4>My Organizations</h4>
     <tasque-button class="fill red" text="Create Organization"></tasque-button>
@@ -6,8 +6,8 @@
   <div class="search">
     <tasque-input type="search" placeholder="Search..." [borderRadius]="50" [(ngModel)]="inputSearch" (ngModelChange)="filterItems()"> </tasque-input>
   </div>
-  <div class="organizations-list">
-    <div class="organization-card" *ngFor="let item of itemsShow">
+  <div class="organization-list-cards">
+    <div class="organization-card" *ngFor="let item of items">
       <app-organization-list-item [organization]="item"></app-organization-list-item>
     </div>
   </div>
