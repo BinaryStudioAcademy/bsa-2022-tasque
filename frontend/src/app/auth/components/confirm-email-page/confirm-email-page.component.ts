@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/core/services/auth.service';
 
 @Component({
@@ -12,6 +13,7 @@ export class ConfirmEmailPageComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
+    private notifService: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -27,6 +29,9 @@ export class ConfirmEmailPageComponent implements OnInit {
         const token = resp.body;
         if (!token) return;
         this.authService.setAuthToken(resp.body);
+        this.notifService.success(
+          'Email confirmed. You will be redirected to your profile',
+        );
       });
     });
   }
