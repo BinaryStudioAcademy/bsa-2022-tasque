@@ -13,7 +13,7 @@ export class OrganizationListComponent implements OnInit {
   @Input() public currentUser: UserModel = {
     name: 'Login1',
     email: 'testlogin@gmail.com',
-    id: 1,
+    id: 2,
     salt: 'Salt',
     password: 'Password'
   };
@@ -22,6 +22,48 @@ export class OrganizationListComponent implements OnInit {
     {
       id: 1,
       name: 'Organization 1',
+      authorId: 2,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: 1,
+      name: 'Organization 2',
+      authorId: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: 1,
+      name: 'Organization 3',
+      authorId: 2,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: 1,
+      name: 'Organization 2',
+      authorId: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: 1,
+      name: 'Organization 3',
+      authorId: 2,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: 1,
+      name: 'Organization 2',
+      authorId: 2,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: 1,
+      name: 'Organization 3',
       authorId: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
