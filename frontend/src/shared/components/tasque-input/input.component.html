@@ -1,18 +1,23 @@
 <div class="input-container">
-  <label>{{inputLabel}}</label>
-  <input
-    [class]="inputClass + ' input'"
-    [(ngModel)]="inputValue"
-    (ngModelChange)="onChange($event)"
-    (blur)="onTouched($event)"
-    [ngClass]="{
-      'error': inputValueIsError,
-      'search-border': inputType === 'search'}"
-    [type]="inputType"
-    [placeholder]="inputPlaceholder"
-    style="width: 100%"
-    [style.border-radius.px]="inputBorderRadius"
-  />
-  <img src="..\..\assets\search_icon.svg" *ngIf="inputType === 'search'" class="search-icon">
-  <span class="error" *ngIf="inputValueIsError">{{inputErrorMessage}}</span>
+  <label>{{ inputLabel }}</label>
+  <div class="input-wrp">
+    <div [ngClass]="'icon ' + iconClass">
+      <fa-icon *ngIf="inputIcon && iconClass" [icon]="inputIcon" size="lg"></fa-icon>
+    </div>
+    <input
+      [class]="inputClass + ' input'"
+      [(ngModel)]="inputValue"
+      (ngModelChange)="onChange($event)"
+      (blur)="onTouched($event)"
+      [ngClass]="{
+        'error': inputValueIsError,
+        'search-border': inputType === 'search'
+      }"
+      [type]="inputType"
+      [placeholder]="inputPlaceholder"
+      style="width: 100%"
+      [style.border-radius.px]="inputBorderRadius"
+    />
+    <!-- <img src="..\..\assets\search_icon.svg" *ngIf="true" class="search-icon"> -->
+  </div>
 </div>

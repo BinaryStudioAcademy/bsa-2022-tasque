@@ -1,5 +1,8 @@
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+
+type IconPosition = 'right' | 'left';
 
 @Component({
   selector: 'tasque-input',
@@ -22,6 +25,9 @@ export class InputComponent implements ControlValueAccessor  {
   public inputPlaceholder = '';
   public inputErrorMessage = 'error';
   public inputValueIsError = false;
+
+  public iconClass: IconPosition;
+  public inputIcon?: IconProp = undefined;
 
   @Input() value: string;
 
@@ -79,6 +85,16 @@ export class InputComponent implements ControlValueAccessor  {
   }
   get errorMessage(): string {
     return this.inputErrorMessage;
+  }
+
+  @Input()
+  set iconPosition(position: IconPosition) {
+    this.iconClass = position;
+  }
+
+  @Input()
+  set icon(icon: IconProp) {
+    this.inputIcon = icon;
   }
 
   onChange: (value: Event) => void = () => {};
