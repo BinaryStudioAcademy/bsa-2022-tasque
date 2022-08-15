@@ -1,13 +1,13 @@
 <div class="organization-list">
-  <div class="header">
+  <div class="organizations-header">
     <h4>My Organizations</h4>
-    <tasque-button class="btn fill red" text="Create Organization"></tasque-button>
+    <tasque-button class="btn fill red" text="Create Organization" (btnClick)="openDialog()"></tasque-button>
   </div>
-  <div class="search">
+  <div class="organizations-search">
     <tasque-input type="search" placeholder="Search..." [borderRadius]="50" [(ngModel)]="inputSearch" (ngModelChange)="filterItems()"> </tasque-input>
   </div>
   <div class="organization-list-cards">
-    <div class="organization-card" *ngFor="let item of items">
+    <div class="organization-card" *ngFor="let item of itemsShow">
       <app-organization-list-item [organization]="item"></app-organization-list-item>
     </div>
   </div>
