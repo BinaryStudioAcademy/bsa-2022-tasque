@@ -1,5 +1,5 @@
 <div class="input-container">
-  <label>{{inputLabel}}</label>
+  <label *ngIf="inputLabel">{{ inputLabel }}</label>
   <input
     [class]="inputClass + ' input'"
     [(ngModel)]="inputValue"
@@ -7,12 +7,13 @@
     (blur)="onTouched($event)"
     [ngClass]="{
       'error': inputValueIsError,
-      'search-border': inputType === 'search'}"
+      'search-border': inputType === 'search'
+    }"
     [type]="inputType"
     [placeholder]="inputPlaceholder"
     style="width: 100%"
     [style.border-radius.px]="inputBorderRadius"
   />
-  <img src="..\..\assets\search_icon.svg" *ngIf="inputType === 'search'" class="search-icon">
-  <span class="error" *ngIf="inputValueIsError">{{inputErrorMessage}}</span>
+  <img src="..\..\assets\search_icon.svg" *ngIf="inputType === 'search'" class="search-icon" />
+  <span class="error" *ngIf="inputValueIsError">{{ inputErrorMessage }}</span>
 </div>
