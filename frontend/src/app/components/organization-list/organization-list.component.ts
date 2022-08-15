@@ -32,14 +32,20 @@ export class OrganizationListComponent implements OnInit {
   ];
 
   public inputSearch = '';
+  public itemsShow = this.items;
 
   constructor() { }
 
   ngOnInit(): void { }
 
   filterItems(): void {
-    this.items = this.items.filter((item) => {
-      return item.name.includes(this.inputSearch);
-    });
+    if (this.inputSearch) {
+      this.itemsShow = this.items.filter((item) => {
+        return item.name.toLowerCase().includes(this.inputSearch.toLowerCase());
+      });
+    }
+    else {
+      this.itemsShow = this.items;
+    }
   }
 }
