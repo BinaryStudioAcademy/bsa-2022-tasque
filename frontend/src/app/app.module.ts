@@ -14,6 +14,8 @@ import { CreateProjectComponent } from './components/create-project/create-proje
 import { CreateOrganizationDialogComponent } from './components/create-organization/create-organization-dialog/create-organization-dialog.component';
 import { CreateProjectDialogComponent } from './components/create-project/create-project-dialog/create-project-dialog.component';
 import { AuthModule } from './auth/auth.module';
+import { ProjectListComponent } from './components/project-list/project-list.component';
+import { ProjectListItemComponent } from './components/project-list/project-list-item/project-list-item.component';
 import { OrganizationListComponent } from './components/organization-list/organization-list.component';
 import { OrganizationListItemComponent } from './components/organization-list/organization-list-item/organization-list-item.component';
 
@@ -24,6 +26,8 @@ import { OrganizationListItemComponent } from './components/organization-list/or
     CreateOrganizationDialogComponent,
     CreateProjectComponent,
     CreateProjectDialogComponent,
+    ProjectListComponent,
+    ProjectListItemComponent,
     OrganizationListComponent,
     OrganizationListItemComponent,
   ],
