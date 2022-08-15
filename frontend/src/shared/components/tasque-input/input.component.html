@@ -10,7 +10,7 @@
       'search-border': inputType === 'search'}"
     [type]="inputType"
     [placeholder]="inputPlaceholder"
-    [style.width.px]="inputWidth"
+    style="width: 100%"
     [style.border-radius.px]="inputBorderRadius"
   />
   <img src="..\..\assets\search_icon.svg" *ngIf="inputType === 'search'" class="search-icon">

@@ -15,8 +15,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 
 export class InputComponent implements ControlValueAccessor {
-
-  public inputWidth = 300;
   public inputBorderRadius = 10;
 
   public inputClass = '';
@@ -38,13 +36,13 @@ export class InputComponent implements ControlValueAccessor {
     return this.inputType;
   }
 
-  @Input()
-  set width(width: number){
-    this.inputWidth = width;
-  }
-  get width(): number{
-    return this.inputWidth;
-  }
+  // @Input()
+  // set width(width: number){
+  //   this.inputWidth = width;
+  // }
+  // get width(): number{
+  //   return this.inputWidth;
+  // }
 
   @Input()
   set borderRadius(radius: number){
