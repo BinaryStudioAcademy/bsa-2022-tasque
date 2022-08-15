@@ -1,8 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
+import { OrganizationService } from 'src/core/services/organization.service';
 import { UserModel } from 'src/entity-models/user-model';
 import { CreateOrganizationDialogComponent } from '../create-organization/create-organization-dialog/create-organization-dialog.component';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-organization-list',
@@ -85,11 +88,25 @@ export class OrganizationListComponent implements OnInit {
   ];
 
   public inputSearch = '';
-  public itemsShow = this.items;
+  public itemsShow: OrganizationModel[] = this.items;
+  public unsubscribe$ = new Subject<void>();
 
-  constructor(public matDialog: MatDialog) { }
+  constructor(
+    private matDialog: MatDialog,
+    private organizationService: OrganizationService) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.organizationService.getUserOrganizations(this.currentUser.id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (result) => {
+          if (result.body) {
+            this.items = result.body;
+            this.itemsShow = this.items;
+          }
+        }
+      );
+  }
 
   filterItems(): void {
     if (this.inputSearch) {
@@ -105,7 +122,6 @@ export class OrganizationListComponent implements OnInit {
   openDialog(): void {
     const dialog = this.matDialog.open(CreateOrganizationDialogComponent, {
       data: this.currentUser,
-      height: '400px',
     });
     dialog.afterClosed().subscribe();
   }
