@@ -3,5 +3,6 @@
   name: string,
   email: string,
   password: string,
-  salt: string
+  salt: string,
+  avatar?: string
 }

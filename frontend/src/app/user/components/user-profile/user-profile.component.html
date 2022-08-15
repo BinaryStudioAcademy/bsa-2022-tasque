@@ -1,1 +1,113 @@
-<p>user-profile works!</p>
+<div class="half-container">
+    <mat-card class="main-content align-center">
+        <div class="upper">
+            <div class="avatar-container" (click)="file.click()">
+                <input hidden class="file-hide" #file accept="image/*" type="file" (change)="handleFileInput($event.target)">
+                <img class="avatar avatar-style" src="{{profileChanges.avatar}}" alt="Here should be an avatar">
+                <div class="img-text">
+                    Upload
+                </div>
+                
+            </div>
+            <div class="name-container">
+                <h4 class="login-title">Username</h4>
+            </div>
+        </div>
+        <div class="block-divider full-width">
+            <mat-divider></mat-divider>
+            <p>Edit profile</p>
+            <mat-divider></mat-divider>
+        </div>
+        <div class="form-container full-width">
+            <form [formGroup]="profileForm" class="full-width">                
+                <div class="input-container">
+                    <label class="thirty-percent">Name</label>
+                    <div class="password-container half-width">
+                        <input
+                            class="input full-width"
+                            [ngClass]="{
+                            'error': userNameControl.invalid && (userNameControl.dirty || userNameControl.touched)
+                            }"
+                            [(ngModel)]="profileChanges.name"
+                            type="text"
+                            placeholder="Enter your name"
+                            formControlName="userNameControl"
+                        />
+                        <span class="error" *ngIf="userNameControl.errors?.['required'] && (userNameControl.dirty || userNameControl.touched)">Email is required.</span>
+                        <span class="error" *ngIf="userNameControl.errors?.['minlength']">Must be at least 4 characters</span>
+                    </div>                    
+                </div>
+                <div class="input-container">
+                    <label class="thirty-percent">Email</label>
+                    <div class="password-container half-width">
+                        <input
+                            class="input full-width"
+                            [ngClass]="{
+                            'error': emailControl.invalid && (emailControl.dirty || emailControl.touched)
+                            }"
+                            [(ngModel)]="profileChanges.email"
+                            type="text"
+                            placeholder="Enter your email"
+                            formControlName="emailControl"
+                        />
+                        <span class="error" *ngIf="emailControl.errors?.['required'] && (emailControl.dirty || emailControl.touched)">Email is required.</span>
+                        <span class="error" *ngIf="emailControl.errors?.['pattern']">Incorrect email format</span>
+                    </div>
+                </div>                  
+            </form>
+        </div>
+        <div class="button-container">
+            <tasque-button text="Save changes" class="btn stroke" (click)="saveNewInfo()" 
+            [class]="userNameControl.invalid || emailControl.invalid ? 'disabled' : ''"></tasque-button>
+        </div>
+        <div class="block-divider full-width">
+            <mat-divider></mat-divider>
+            <p>Change password</p>
+            <mat-divider></mat-divider>
+        </div>        
+        <div class="form-container full-width">
+            <form [formGroup]="changePassForm" class="full-width">
+                <div class="input-container">
+                    <label class="thirty-percent">Current password</label>
+                    <div class="password-container half-width">
+                      <input
+                        class="input full-width"
+                        [ngClass]="{
+                          'error': prevPasswordControl.invalid && (prevPasswordControl.dirty || prevPasswordControl.touched)
+                        }"
+                        [(ngModel)]="passwordChanches.previousPassword"
+                        [type]="hidePass ? 'password' : 'text'"
+                        placeholder="Password"
+                        formControlName="prevPasswordControl"
+                      />
+                      <mat-icon class="hide-icon" (click)="hidePass = !hidePass">{{ hidePass ? 'visibility' : 'visibility_off' }}</mat-icon>
+                      <span class="error" *ngIf="prevPasswordControl.errors?.['required'] && (prevPasswordControl.dirty || prevPasswordControl.touched)">Password is required.</span>
+                      <span class="error" *ngIf="prevPasswordControl.errors?.['minlength']">Must be at least 8 characters</span>
+                    </div>                    
+                  </div>
+                  <div class="input-container">
+                    <label class="thirty-percent">New password</label>
+                    <div class="password-container half-width">
+                      <input
+                        class="input full-width"
+                        [ngClass]="{
+                          'error': newPasswordControl.invalid && (newPasswordControl.dirty || newPasswordControl.touched)
+                        }"
+                        [(ngModel)]="passwordChanches.newPassword"
+                        [type]="hidePass ? 'password' : 'text'"
+                        placeholder="Password"
+                        formControlName="newPasswordControl"
+                      />
+                      <mat-icon class="hide-icon" (click)="hidePass = !hidePass">{{ hidePass ? 'visibility' : 'visibility_off' }}</mat-icon>
+                      <span class="error" *ngIf="newPasswordControl.errors?.['required'] && (newPasswordControl.dirty || newPasswordControl.touched)">Password is required.</span>
+                      <span class="error" *ngIf="newPasswordControl.errors?.['minlength']">Must be at least 8 characters</span>
+                    </div>                    
+                  </div>
+            </form>
+        </div>        
+        <div class="button-container">
+            <tasque-button text="Save password" class="btn stroke" (click)="saveNewPassword()" 
+                [class]="prevPasswordControl.invalid || newPasswordControl.invalid ? 'disabled' : ''"></tasque-button>
+        </div>
+    </mat-card>
+</div>
