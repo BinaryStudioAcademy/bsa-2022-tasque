@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UserModel } from 'src/core/models/user/user-model';
-import { OrganizationModel } from 'src/entity-models/organization-model';
+import { OrganizationModel } from 'src/core/models/organization/organization-model';
 
 @Component({
   selector: 'app-organization-list-item',
