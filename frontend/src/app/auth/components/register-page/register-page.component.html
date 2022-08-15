@@ -1,11 +1,10 @@
-<div class="form-container">
-  <div>
-    <form [formGroup]="registerForm" class="login-form" onSubmit="submitForm()">
-      <h4 class="login-title">Sign Up</h4>
-      <div class="text-container">
-        <span>Already have an account? <a class="link" routerLink="../login">Log In</a></span>
-      </div>
-      <div class="input-container">
+<form [formGroup]="registerForm" class="form-container" onSubmit="submitForm()">
+  <div class="text-container">
+    <h4 class="login-title">Sign Up</h4>
+    <span class="label-14">Already have an account? <a routerLink="../login">Log In</a></span>
+  </div>
+  <tasque-input label="Name" placeholder="Enter your name"></tasque-input>
+  <!-- <div class="input-container">
         <label>Name</label>
         <input
           class="input full-width"
@@ -18,8 +17,9 @@
           formControlName="nameControl"
         />
         <span class="error" *ngIf="nameControl.errors?.['required'] && (nameControl.dirty || nameControl.touched)">Name is required.</span>
-      </div>
-      <div class="input-container">
+      </div> -->
+  <tasque-input label="Email" placeholder="Enter your email"></tasque-input>
+  <!-- <div class="input-container">
         <label>Email</label>
         <input
           class="input full-width"
@@ -33,8 +33,9 @@
         />
         <span class="error" *ngIf="emailControl.errors?.['required'] && (emailControl.dirty || emailControl.touched)">Email is required.</span>
         <span class="error" *ngIf="emailControl.errors?.['email']">Incorrect email format</span>
-      </div>
-      <div class="input-container">
+      </div> -->
+  <tasque-input label="Password" placeholder="Enter your password" type="password"></tasque-input>
+  <!-- <div class="input-container">
         <div class="label-container full-width">
           <label>Password</label>
         </div>
@@ -54,8 +55,9 @@
         </div>
         <span class="error" *ngIf="passwordControl.errors?.['required'] && (passwordControl.dirty || passwordControl.touched)">Password is required.</span>
         <span class="error" *ngIf="passwordControl.errors?.['minlength']">Must be at least 8 characters</span>
-      </div>
-      <div class="input-container">
+      </div> -->
+  <tasque-input label="Repeat password" placeholder="Repeat your password"></tasque-input>
+  <!-- <div class="input-container">
         <div class="label-container full-width">
           <label>Repeat password</label>
         </div>
@@ -73,9 +75,7 @@
           <mat-icon class="hide-icon" (click)="hidePassRepeat = !hidePassRepeat">{{ hidePassRepeat ? 'visibilityRepeat' : 'visibility_off' }}</mat-icon>
         </div>
         <span class="error" *ngIf="passwordRepeatControl.errors?.['pattern'] && (passwordRepeatControl.dirty || passwordRepeatControl.touched)">Password do not match.</span>
-      </div>
-    </form>
-  </div>
+      </div> -->
   <div class="button-container">
     <tasque-button text="Sign up" class="btn fill full-width" (btnClick)="submitForm()"></tasque-button>
   </div>
@@ -85,4 +85,4 @@
   <div class="button-container">
     <tasque-button text="Sign up with Github" class="btn stroke full-width violet-stroke" [icon]="faGithub"></tasque-button>
   </div>
-</div>
+</form>
