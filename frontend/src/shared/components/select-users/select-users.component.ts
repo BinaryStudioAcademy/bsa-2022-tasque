@@ -43,7 +43,7 @@ export class SelectUsersComponent implements OnInit {
 
     // board should be passed as a parameter
     // ================================
-    let boardName = prompt('Please, enter a board name (supported values - "WithRoles", "WithoutRoles")') as string;
+    const boardName = prompt('Please, enter a board name (supported values - "WithRoles", "WithoutRoles")') as string;
     const getBoard = (): IBoard => {
       switch (boardName) {
         case 'WithRoles':
