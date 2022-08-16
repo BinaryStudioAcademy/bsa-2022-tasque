@@ -1,4 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import {
   faEllipsisVertical,
   faBold,
@@ -44,18 +51,22 @@ export class RichTextEditorComponent implements OnInit {
   faSortDown = faSortDown;
   faUpLong = faUpLong;
   faDownLong = faDownLong;
+
   constructor() {}
+  description: string = '';
+  @ViewChild('editor') editor: any;
+
+  @Input() value: any;
+  @Output() valueChange = new EventEmitter();
 
   ngOnInit(): void {}
 
-  @ViewChild('editor') editor: any;
-  description: string = '';
-  setStyle(style: string) {
-    let bool = document.execCommand(style, false);
+  onInput(newValue: string) {
+    this.valueChange.emit(newValue);
   }
 
-  onChange() {
-    console.log(this.editor.nativeElement['innerHTML']);
+  setStyle(style: string) {
+    document.execCommand(style, false);
   }
 
   public undo(): void {

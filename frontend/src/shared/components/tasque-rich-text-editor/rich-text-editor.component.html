@@ -1,5 +1,5 @@
 <div class="rich-text-editor-wrapper" tabindex="0">
-  <div #editor class="editor" [innerHtml]="description" (input)="onChange()" contenteditable></div>
+  <div #editor class="editor" [innerHtml]="description" (input)="onInput($event.target.innerHTML)" contenteditable></div>
   <hr />
   <div class="editControls" onmousedown="return false">
     <div class="btn-group">
