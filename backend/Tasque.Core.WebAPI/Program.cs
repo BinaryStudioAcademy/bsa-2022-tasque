@@ -24,33 +24,35 @@ AppConfigurationExtension.RegisterServices(builder.Services, builder.Configurati
 builder.Services.AddCors();
 
 builder.Services.AddDbContext<DataContext>(
-    o => o.UseNpgsql(builder.Configuration.GetConnectionString("TasqueDb"), 
+    o => o.UseNpgsql(builder.Configuration.GetConnectionString("TasqueDb"),
         b => b.MigrationsAssembly(typeof(DataContext).Assembly.FullName))
         .EnableDetailedErrors());
 
+builder.WebHost.UseUrls("http://*:5000");
 
 var app = builder.Build();
+
+// Apply pending migrations
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<DataContext>();
+    if (db.Database.GetPendingMigrations().Any())
+    {
+        db.Database.Migrate();
+    }
+}
 
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>(app.Logger);
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-    app.UseHsts();
-}
-
-app.UseCors(builder => 
+app.UseCors(builder =>
     builder
         .AllowAnyHeader()
         .AllowAnyOrigin()
         .AllowAnyMethod());
-        
+
 app.UseSwagger();
 app.UseSwaggerUI();
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
 
 app.UseRouting();
 
