@@ -3,6 +3,8 @@ import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { BoardService } from 'src/services/board.service';
 import { BoardType, BusinessRole, EnumToArrayElement, IBoard, IUserCard } from './Models';
+import { FormControl, Validators } from '@angular/forms';
+import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
 
 @Component({
   selector: 'tasque-select-users',
@@ -11,24 +13,30 @@ import { BoardType, BusinessRole, EnumToArrayElement, IBoard, IUserCard } from '
 })
 export class SelectUsersComponent implements OnInit {
   users$!: Observable<IUserCard[]>
-  users: IUserCard[];
+  users: IUserCard[] = [];
   roles: EnumToArrayElement[];
-  isLoading = false;
-
-  userEmail = '';
-  rowspan = 0;
+  isLoading = true;
+  public userEmail = '';
+  public rowspan = 0;
+  public validationConstants = ValidationConstants;
+  public emailControl: FormControl;
 
   @Input()
-  public board: IBoard
+  public board: IBoard;
+
+  @Input()
+  public hasScroller: boolean = true;
 
   constructor(private service: BoardService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
+    this.isLoading = true;
+    console.log(this.hasScroller);
 
     // board should be passed as a parameter
     // ================================
     // var boardName = prompt('Please, enter a board name (supported values - "WithRoles", "WithoutRoles")') as string;
-    var boardName = "WithRoles";
+    var boardName = "WithoutRoles";
     let getBoard = (): IBoard => {
       switch (boardName) {
         case "WithRoles":
@@ -53,10 +61,12 @@ export class SelectUsersComponent implements OnInit {
     let key = this.service.createKey(board);
 
     if (localStorage.getItem(key)) {
+      console.log('if');
       this.board = JSON.parse(localStorage.getItem(key) as string);
     }
     else {
       this.board = board;
+      console.log(this.board);
     }
 
     // ================================
@@ -64,6 +74,12 @@ export class SelectUsersComponent implements OnInit {
     if (!this.board) {
       throw new TypeError("Board is required");
     }
+
+    this.emailControl = new FormControl(this.userEmail, [
+      Validators.email,
+      Validators.required,
+      Validators.pattern(this.validationConstants.emailRegex),
+    ]);
 
     this.roles = Object.keys(BusinessRole)
     .filter((v) => isNaN(Number(v)))
@@ -73,14 +89,13 @@ export class SelectUsersComponent implements OnInit {
         name,
       };
       });
-    
-    console.log(this.roles);
 
     this.refreshList();
   }
 
   add() {
-    console.log(this.userEmail);
+    if (!this.userEmail)
+      return
     this.isLoading = true;
     this.service.addUser(this.userEmail, this.board)
       .subscribe(
@@ -99,6 +114,7 @@ export class SelectUsersComponent implements OnInit {
   delete(email: string) {
     this.isLoading = true;
     this.service.deleteUser(this.board, email).subscribe(res => {
+      this.toastr.success(`${this.users.filter(u => u.email == email)[0].username} was deleted successfully !`);
       this.refreshList();
     })
   }
@@ -106,11 +122,13 @@ export class SelectUsersComponent implements OnInit {
   update(user: IUserCard) {
     this.isLoading = true;
     this.service.updateUser(this.board, user).subscribe(res => {
+      this.toastr.success(`${user.username} was updated successfully !`);
       this.refreshList();
     })
   }
 
   private refreshList(): void {
+    console.log(this.board);
     this.users$ = this.service.getUsers(this.board);
     this.service.getUsers(this.board).subscribe(data => {
       console.log(data);

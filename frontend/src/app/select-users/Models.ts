@@ -9,6 +9,11 @@ export enum BoardType {
 	Board = 2
 }
 
+export interface EnumToArrayElement {
+	id: number,
+	name: string
+}
+
 export interface IUserCard {
 	email: string,
 	username: string,

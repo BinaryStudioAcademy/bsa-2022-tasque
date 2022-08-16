@@ -17,7 +17,8 @@ export class BoardService {
 
     // change to Http.getAll
     board = JSON.parse(localStorage.getItem(key) as string);
-    return new Observable(observer => { observer.next(board.users); observer.complete() });
+    let users: IUserCard[] = board ? board.users : []
+    return new Observable(observer => { observer.next(users); observer.complete() });
   }
 
   public addUser(email: string, board: IBoard): Observable<any> {
