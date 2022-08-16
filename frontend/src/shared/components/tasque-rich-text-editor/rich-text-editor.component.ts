@@ -1,4 +1,24 @@
 import { Component, OnInit } from '@angular/core';
+import {
+  faEllipsisVertical,
+  faBold,
+  faItalic,
+  faUnderline,
+  faFont,
+  faAlignRight,
+  faAlignLeft,
+  faAlignCenter,
+  faAlignJustify,
+  faList,
+  faList12,
+  faIndent,
+  faOutdent,
+  faReply,
+  faShare,
+  faSortDown,
+  faUpLong,
+  faDownLong,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'tasque-rich-text-editor',
@@ -6,6 +26,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./rich-text-editor.component.sass'],
 })
 export class RichTextEditorComponent implements OnInit {
+  faExpeditedssl = faEllipsisVertical;
+  faBold = faBold;
+  faItalic = faItalic;
+  faFont = faFont;
+  faAlignRight = faAlignRight;
+  faAlignLeft = faAlignLeft;
+  faAlignCenter = faAlignCenter;
+  faAlignJustify = faAlignJustify;
+  faList = faList;
+  faList12 = faList12;
+  faIndent = faIndent;
+  faOutdent = faOutdent;
+  faReply = faReply;
+  faShare = faShare;
+  faUnderline = faUnderline;
+  faSortDown = faSortDown;
+  faUpLong = faUpLong;
+  faDownLong = faDownLong;
   constructor() {}
 
   ngOnInit(): void {}
