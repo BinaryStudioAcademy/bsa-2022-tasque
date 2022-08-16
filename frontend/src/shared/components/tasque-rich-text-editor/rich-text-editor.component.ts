@@ -1,7 +1,7 @@
 import {
   Component,
+  ElementRef,
   EventEmitter,
-  Input,
   OnInit,
   Output,
   ViewChild,
@@ -54,17 +54,17 @@ export class RichTextEditorComponent implements OnInit {
 
   constructor() {}
   description: string = '';
-  @ViewChild('editor') editor: any;
+  @ViewChild('editor') editor: ElementRef<HTMLElement>;
 
   @Output() valueChange = new EventEmitter();
 
   ngOnInit(): void {}
 
-  onInput() {
+  onInput(): void {
     this.valueChange.emit(this.editor.nativeElement['innerHTML']);
   }
 
-  setStyle(style: string) {
+  setStyle(style: string): void {
     document.execCommand(style, false);
   }
 
