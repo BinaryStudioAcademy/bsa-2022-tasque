@@ -16,6 +16,7 @@ import { CreateProjectDialogComponent } from './components/create-project/create
 import { AuthModule } from './auth/auth.module';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProjectListItemComponent } from './components/project-list/project-list-item/project-list-item.component';
+import { RichTextEditorComponent } from '../shared/components/tasque-rich-text-editor/rich-text-editor.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ProjectListItemComponent } from './components/project-list/project-list
     CreateProjectDialogComponent,
     ProjectListComponent,
     ProjectListItemComponent,
+    RichTextEditorComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +38,7 @@ import { ProjectListItemComponent } from './components/project-list/project-list
     MatDialogModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    AuthModule
+    AuthModule,
   ],
   providers: [BrowserAnimationsModule],
   bootstrap: [AppComponent],
