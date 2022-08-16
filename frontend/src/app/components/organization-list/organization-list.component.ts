@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { OrganizationService } from 'src/core/services/organization.service';
-import { UserModel } from 'src/entity-models/user-model';
+import { UserModel } from 'src/core/models/user/user-model';
 import { CreateOrganizationDialogComponent } from '../create-organization/create-organization-dialog/create-organization-dialog.component';
 import { takeUntil } from 'rxjs/operators';
 
@@ -17,8 +17,6 @@ export class OrganizationListComponent implements OnInit {
     name: 'Login1',
     email: 'testlogin@gmail.com',
     id: 2,
-    salt: 'Salt',
-    password: 'Password'
   };
 
   public items: OrganizationModel[] = [

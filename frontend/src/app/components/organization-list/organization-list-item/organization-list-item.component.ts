@@ -12,8 +12,6 @@ export class OrganizationListItemComponent implements OnInit {
     name: 'Login1',
     email: 'testlogin@gmail.com',
     id: 1,
-    salt: 'Salt',
-    password: 'Password'
   };
   @Input() public organization: OrganizationModel;
 
