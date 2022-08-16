@@ -2,139 +2,143 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { BoardService } from 'src/services/board.service';
-import { BoardType, BusinessRole, EnumToArrayElement, IBoard, IUserCard } from './Models';
-import { FormControl, Validators } from '@angular/forms';
+import {
+  BoardType,
+  BusinessRole,
+  EnumToArrayElement,
+  IBoard,
+  IUserCard,
+} from './Models';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
 
 @Component({
   selector: 'tasque-select-users',
   templateUrl: './select-users.component.html',
-  styleUrls: ['./select-users.component.sass']
+  styleUrls: ['./select-users.component.sass'],
 })
 export class SelectUsersComponent implements OnInit {
-  users$!: Observable<IUserCard[]>
-  users: IUserCard[] = [];
+  users$!: Observable<IUserCard[]>;
+  usersCount: number = 0;
   roles: EnumToArrayElement[];
   isLoading = true;
   public userEmail = '';
   public rowspan = 0;
   public validationConstants = ValidationConstants;
   public emailControl: FormControl;
+  public searchForm: FormGroup = new FormGroup({});
 
   @Input()
   public board: IBoard;
 
-  @Input()
-  public hasScroller: boolean = true;
-
-  constructor(private service: BoardService, private toastr: ToastrService) { }
-
-  ngOnInit(): void {
-    this.isLoading = true;
-    console.log(this.hasScroller);
+  constructor(private service: BoardService, private toastr: ToastrService) {
+    this.roles = Object.keys(BusinessRole)
+      .filter((v) => isNaN(Number(v)))
+      .map((name) => {
+        return {
+          id: BusinessRole[name as keyof typeof BusinessRole],
+          name,
+        };
+      });
 
     // board should be passed as a parameter
     // ================================
-    // var boardName = prompt('Please, enter a board name (supported values - "WithRoles", "WithoutRoles")') as string;
-    var boardName = "WithoutRoles";
+    var boardName = prompt('Please, enter a board name (supported values - "WithRoles", "WithoutRoles")') as string;
     let getBoard = (): IBoard => {
       switch (boardName) {
-        case "WithRoles":
+        case 'WithRoles':
           return {
             id: 1,
             type: BoardType.Organization,
             hasRoles: true,
-            users: []
+            users: [],
           };
-        case "WithoutRoles":
+        case 'WithoutRoles':
           return {
             id: 1,
             type: BoardType.Board,
             hasRoles: false,
-            users: []
-          }
+            users: [],
+          };
         default:
-          throw TypeError("Unknown name");
+          throw TypeError('Unknown name');
       }
-    }
+    };
     let board = getBoard();
     let key = this.service.createKey(board);
 
     if (localStorage.getItem(key)) {
-      console.log('if');
       this.board = JSON.parse(localStorage.getItem(key) as string);
-    }
-    else {
+    } else {
       this.board = board;
-      console.log(this.board);
     }
-
     // ================================
 
     if (!this.board) {
-      throw new TypeError("Board is required");
+      throw new TypeError('Board is required');
     }
+  }
 
+  ngOnInit(): void {
+    this.isLoading = true;
     this.emailControl = new FormControl(this.userEmail, [
       Validators.email,
       Validators.required,
       Validators.pattern(this.validationConstants.emailRegex),
     ]);
-
-    this.roles = Object.keys(BusinessRole)
-    .filter((v) => isNaN(Number(v)))
-      .map((name) => {
-      return {
-        id: BusinessRole[name as keyof typeof BusinessRole],
-        name,
-      };
-      });
-
+    this.searchForm = new FormGroup({ emailControl: this.emailControl });
     this.refreshList();
   }
 
-  add() {
-    if (!this.userEmail)
-      return
+  public add(): void {
+    if (!this.searchForm.valid) {
+      this.toastr.error('Invalid email');
+      return;
+    }
+
     this.isLoading = true;
-    this.service.addUser(this.userEmail, this.board)
-      .subscribe(
-        res => {
-          this.refreshList();
-          this.toastr.success(`${this.users.filter(u => u.email == this.userEmail)[0].username} was added successfully !`);
-        },
-        err => {
-          this.isLoading = false
-          this.toastr.error(`User with email ${this.userEmail} was not found !`);
-        });
-    
-    this.userEmail = '';
+    let username = this.userEmail;
+    this.service.addUser(username, this.board).subscribe(
+      (res) => {
+        this.refreshList();
+        this.emailControl = new FormControl(this.userEmail, [
+          Validators.email,
+          Validators.required,
+          Validators.pattern(this.validationConstants.emailRegex),
+        ]);
+        this.searchForm = new FormGroup({ emailControl: this.emailControl });
+        this.userEmail = '';
+        this.toastr.success(`${username} was added successfully !`);
+      },
+      (err) => {
+        this.isLoading = false;
+        this.toastr.error(`User with email ${username} was not found !`);
+      }
+    );
   }
 
-  delete(email: string) {
+  delete(email: string): void {
     this.isLoading = true;
-    this.service.deleteUser(this.board, email).subscribe(res => {
-      this.toastr.success(`${this.users.filter(u => u.email == email)[0].username} was deleted successfully !`);
+    this.service.deleteUser(this.board, email).subscribe((res) => {
+      this.toastr.success(`${this.userEmail} was deleted successfully !`);
       this.refreshList();
-    })
+    });
   }
 
-  update(user: IUserCard) {
+  update(user: IUserCard): void {
     this.isLoading = true;
-    this.service.updateUser(this.board, user).subscribe(res => {
+    this.service.updateUser(this.board, user).subscribe((res) => {
       this.toastr.success(`${user.username} was updated successfully !`);
       this.refreshList();
-    })
+    });
   }
 
   private refreshList(): void {
-    console.log(this.board);
     this.users$ = this.service.getUsers(this.board);
-    this.service.getUsers(this.board).subscribe(data => {
-      console.log(data);
-      this.users = data;
-      this.rowspan = Math.min(this.users.length, 5);
-      this.isLoading = false
+    this.service.getUsers(this.board).subscribe((data) => {
+      this.usersCount = data.length;
+      this.rowspan = Math.min(this.usersCount, 5);
+      this.isLoading = false;
     });
   }
 }
