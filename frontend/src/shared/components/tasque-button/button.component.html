@@ -1,4 +1,4 @@
-<button type="{{buttonType}}" (click)="onClick()" class="{{ buttonClass }}">
-  <span>{{ buttonText }}</span>
+<button type="{{ buttonType }}" (click)="onClick()" class="{{ buttonClass }}">
+  <span *ngIf="buttonText">{{ buttonText }}</span>
   <fa-icon *ngIf="buttonIcon" [icon]="buttonIcon" class="icon-right"></fa-icon>
 </button>
