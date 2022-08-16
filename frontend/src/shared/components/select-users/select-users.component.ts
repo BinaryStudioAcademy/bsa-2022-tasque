@@ -19,7 +19,7 @@ import { ValidationConstants } from 'src/entity-models/const-resources/validatio
 })
 export class SelectUsersComponent implements OnInit {
   users$!: Observable<IUserCard[]>;
-  usersCount: number = 0;
+  usersCount = 0;
   roles: EnumToArrayElement[];
   isLoading = true;
   public userEmail = '';
@@ -43,8 +43,8 @@ export class SelectUsersComponent implements OnInit {
 
     // board should be passed as a parameter
     // ================================
-    var boardName = prompt('Please, enter a board name (supported values - "WithRoles", "WithoutRoles")') as string;
-    let getBoard = (): IBoard => {
+    let boardName = prompt('Please, enter a board name (supported values - "WithRoles", "WithoutRoles")') as string;
+    const getBoard = (): IBoard => {
       switch (boardName) {
         case 'WithRoles':
           return {
@@ -64,8 +64,8 @@ export class SelectUsersComponent implements OnInit {
           throw TypeError('Unknown name');
       }
     };
-    let board = getBoard();
-    let key = this.service.createKey(board);
+    const board = getBoard();
+    const key = this.service.createKey(board);
 
     if (localStorage.getItem(key)) {
       this.board = JSON.parse(localStorage.getItem(key) as string);
@@ -97,9 +97,9 @@ export class SelectUsersComponent implements OnInit {
     }
 
     this.isLoading = true;
-    let username = this.userEmail;
+    const username = this.userEmail;
     this.service.addUser(username, this.board).subscribe(
-      (res) => {
+      () => {
         this.refreshList();
         this.emailControl = new FormControl(this.userEmail, [
           Validators.email,
@@ -110,7 +110,7 @@ export class SelectUsersComponent implements OnInit {
         this.userEmail = '';
         this.toastr.success(`${username} was added successfully !`);
       },
-      (err) => {
+      () => {
         this.isLoading = false;
         this.toastr.error(`User with email ${username} was not found !`);
       }
@@ -119,7 +119,7 @@ export class SelectUsersComponent implements OnInit {
 
   delete(email: string): void {
     this.isLoading = true;
-    this.service.deleteUser(this.board, email).subscribe((res) => {
+    this.service.deleteUser(this.board, email).subscribe(() => {
       this.toastr.success(`${this.userEmail} was deleted successfully !`);
       this.refreshList();
     });
@@ -127,7 +127,7 @@ export class SelectUsersComponent implements OnInit {
 
   update(user: IUserCard): void {
     this.isLoading = true;
-    this.service.updateUser(this.board, user).subscribe((res) => {
+    this.service.updateUser(this.board, user).subscribe(() => {
       this.toastr.success(`${user.username} was updated successfully !`);
       this.refreshList();
     });
