@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   faEllipsisVertical,
   faBold,
@@ -47,6 +47,12 @@ export class RichTextEditorComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  @ViewChild('editor') editor: any;
+  description: string = '';
+  setStyle(style: string) {
+    let bool = document.execCommand(style, false);
+  }
 
   public undo(): void {
     document.execCommand('undo');
