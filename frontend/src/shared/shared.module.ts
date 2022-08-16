@@ -17,6 +17,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.component';
 import { SideBarComponent } from './components/tasque-sidebar/sidebar.component';
 import { SideBarService } from 'src/core/services/sidebar.service';
+import { HeaderComponent } from './components/tasque-header/tasque-header.component';
 
 @NgModule({
   imports: [
@@ -41,6 +42,7 @@ import { SideBarService } from 'src/core/services/sidebar.service';
     SideBarComponent,
     OrganizationsDropdownComponent,
     MenuDropdownComponent,
+    HeaderComponent
   ],
   exports: [
     CommonModule,
@@ -63,6 +65,7 @@ import { SideBarService } from 'src/core/services/sidebar.service';
     SideBarComponent,
     MenuDropdownComponent,
     OrganizationsDropdownComponent,
+    HeaderComponent
   ],
   providers: [SideBarService],
 })

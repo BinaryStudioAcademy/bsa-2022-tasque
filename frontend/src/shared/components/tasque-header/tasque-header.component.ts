@@ -8,12 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class HeaderComponent implements OnInit {
 
-  searchForm: FormGroup;
-
-  constructor(formBuilder: FormBuilder) {
-    this.searchForm = formBuilder.group({
-      'search': ['', [Validators.required]]
-    });
+  constructor() {
    }
 
   ngOnInit() {
