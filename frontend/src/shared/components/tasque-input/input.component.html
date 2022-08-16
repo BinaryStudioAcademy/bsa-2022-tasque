@@ -10,7 +10,7 @@
       (ngModelChange)="onChange($event)"
       (blur)="onTouched($event)"
       [ngClass]="{
-        'error': inputValueIsError,
+        'error': inputValueIsError || errorMessage,
         'search-border': inputType === 'search'
       }"
       [type]="inputType"
@@ -19,4 +19,5 @@
       [style.border-radius.px]="inputBorderRadius"
     />
   </div>
+  <span class="error" *ngIf="errorMessage">{{errorMessage}}</span>
 </div>
