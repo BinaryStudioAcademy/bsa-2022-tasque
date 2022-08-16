@@ -79,7 +79,7 @@ export class InputComponent implements ControlValueAccessor {
 
   @Input()
   set invalid(hasError: boolean) {
-    this.inputValueIsError = !hasError;
+    this.inputValueIsError = hasError;
   }
   get invalid(): boolean {
     return this.inputValueIsError;
