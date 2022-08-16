@@ -73,7 +73,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   }
 
   public submitForm(): void {
-    if (!this.loginForm.valid) {
+    if (!this.loginForm.valid || !this.loginForm.dirty) {
       this.toastrService.error('Invalid values');
       return;
     }
