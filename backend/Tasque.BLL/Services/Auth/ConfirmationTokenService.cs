@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System.ComponentModel.DataAnnotations;
 using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.Common.Entities;

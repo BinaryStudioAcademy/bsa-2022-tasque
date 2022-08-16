@@ -1,20 +1,41 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  Output,
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+
+type IconPosition = 'right' | 'left';
 
 @Component({
   selector: 'tasque-input',
   templateUrl: './input.component.html',
-  styleUrls: ['./input.component.sass']
+  styleUrls: ['./input.component.sass'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: forwardRef(() => InputComponent),
+    },
+  ],
 })
-export class InputComponent implements OnInit {
-  public inputWidth = 100;
-  public inputBorderRadius = 5;
-  public inputClass = 'input';
+export class InputComponent implements ControlValueAccessor {
+  public inputBorderRadius = 10;
+  public inputClass = '';
   public inputType = 'text';
-  public inputText = ''; 
+  public inputValue = '';
   public inputLabel = '';
   public inputPlaceholder = '';
   public inputErrorMessage = 'error';
-  public inputValueisError = false;
+  public inputValueIsError = false;
+
+  public iconPos: IconPosition;
+  public inputIcon?: IconProp = undefined;
+
+  @Input() value: string;
 
   @Input()
   set type(typeName: string) {
@@ -25,26 +46,10 @@ export class InputComponent implements OnInit {
   }
 
   @Input()
-  set value(text: string) {
-    this.inputText = text;
+  set borderRadius(radius: number) {
+    this.inputBorderRadius = radius;
   }
-  get value(): string {
-    return this.inputText;
-  }
-
-  @Input()
-  set width(width: number){
-    this.inputWidth = width;
-  }
-  get width(): number{
-    return this.inputWidth;
-  }
-
-  @Input()
-  set borderRadius(raduis: number){
-    this.inputBorderRadius = raduis;
-  }
-  get borderRadius(): number{
+  get borderRadius(): number {
     return this.inputBorderRadius;
   }
 
@@ -73,24 +78,60 @@ export class InputComponent implements OnInit {
   }
 
   @Input()
-  set isValid(hasError: boolean) {
-    this.inputValueisError = !hasError;
+  set invalid(hasError: boolean) {
+    this.inputValueIsError = hasError;
   }
-  get isValid(): boolean {
-    return this.inputValueisError;
+  get invalid(): boolean {
+    return this.inputValueIsError;
   }
 
   @Input()
   set errorMessage(message: string) {
     this.inputErrorMessage = message;
   }
-  get(): string {
+  get errorMessage(): string {
     return this.inputErrorMessage;
   }
 
-  constructor() { }
-
-  ngOnInit(): void {
+  @Input()
+  set iconPosition(position: IconPosition) {
+    this.iconPos = position;
   }
-  
+
+  @Input()
+  set icon(icon: IconProp) {
+    this.inputIcon = icon;
+  }
+
+  get iconClass(): string {
+    let res = this.iconPos as string;
+    if (this.iconClick.observers.length) {
+      res += ' btn';
+    }
+    return res;
+  }
+
+  @Output() iconClick = new EventEmitter<MouseEvent>();
+
+  emitClick(args: MouseEvent): void {
+    this.iconClick.emit(args);
+  }
+
+  onChange: (value: Event) => void = () => {};
+
+  onTouched: (value: Event) => void = () => {};
+
+  constructor() {}
+
+  writeValue(value: string): void {
+    this.inputValue = value;
+  }
+
+  registerOnChange(fn: (value: Event) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: (value: Event) => void): void {
+    this.onTouched = fn;
+  }
 }

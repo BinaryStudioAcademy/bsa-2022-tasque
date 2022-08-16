@@ -31,7 +31,7 @@ namespace Tasque.Core.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> RequestPasswordRestore(PasswordChangeDto body)
         {
-            string token = await _passwordService.Confirm(body);
+            var token = await _passwordService.Confirm(body);
             return Ok(token);
         }
     }
