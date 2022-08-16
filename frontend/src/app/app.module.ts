@@ -16,6 +16,7 @@ import { CreateProjectDialogComponent } from './components/create-project/create
 import { AuthModule } from './auth/auth.module';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProjectListItemComponent } from './components/project-list/project-list-item/project-list-item.component';
+import { EditTaskDialogComponent } from './components/edit-task-dialog/edit-task-dialog.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ProjectListItemComponent } from './components/project-list/project-list
     CreateProjectDialogComponent,
     ProjectListComponent,
     ProjectListItemComponent,
+    EditTaskDialogComponent,
   ],
   imports: [
     BrowserModule,
