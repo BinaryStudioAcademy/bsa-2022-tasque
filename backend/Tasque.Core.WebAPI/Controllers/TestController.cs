@@ -24,10 +24,10 @@ namespace Tasque.Core.WebAPI.Controllers
             return "pong";
         }
 
-        [HttpGet("test")]
-        public List<User> Test()
-         {
-            return _context.Users.ToList();
-        }
+        // [HttpGet("test")]
+        // public List<User> Test()
+        //  {
+        //     return _context.Users.ToList();
+        // }
     }
 }
