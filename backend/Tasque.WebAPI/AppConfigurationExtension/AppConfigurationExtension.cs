@@ -12,6 +12,7 @@ using Tasque.Core.BLL.Services.Auth;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.BLL.Services.Email.MailJet;
 using Tasque.Core.Common.Entities;
+using Amazon.S3;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
 {
@@ -101,7 +102,9 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<PasswordResetService>()
                 .AddScoped<ProjectService>()
                 .AddScoped<IEmailService, MailJetService>()
-                .AddScoped<OrganizationService>();
+                .AddScoped<OrganizationService>()
+                .AddDefaultAWSOptions(configuration.GetAWSOptions())
+                .AddAWSService<IAmazonS3>();
         }
 
         public static void AddSwagger(this IServiceCollection services)
