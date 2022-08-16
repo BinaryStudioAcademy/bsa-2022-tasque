@@ -35,14 +35,6 @@ builder.Services.RegisterIdentity();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-    AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-    AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
-    dbContext.Database.EnsureCreated();
-}
-
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>(app.Logger);
 
