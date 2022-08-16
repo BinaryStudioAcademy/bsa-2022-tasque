@@ -117,12 +117,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       .loginUser(this.userLogin)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((resp) => {
-        if (resp.ok) {
-          const token = resp.body;
-          this.localStorage.setItem(
-            this.localStorageKeys.token,
-            token?.accessToken as string,
-          );
+        if (resp.body) {
+          this.authService.setAuthToken(resp.body);
         }
       });
   }
