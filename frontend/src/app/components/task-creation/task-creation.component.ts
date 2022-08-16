@@ -1,25 +1,5 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { SideBarService } from 'src/core/services/sidebar.service';
-import {
-  faEllipsisVertical,
-  faBold,
-  faItalic,
-  faUnderline,
-  faFont,
-  faAlignRight,
-  faAlignLeft,
-  faAlignCenter,
-  faAlignJustify,
-  faList,
-  faList12,
-  faIndent,
-  faOutdent,
-  faReply,
-  faShare,
-  faSortDown,
-  faUpLong,
-  faDownLong,
-} from '@fortawesome/free-solid-svg-icons';
 import { DOCUMENT } from '@angular/common';
 
 @Component({
@@ -28,25 +8,6 @@ import { DOCUMENT } from '@angular/common';
   styleUrls: ['./task-creation.component.sass'],
 })
 export class TaskCreationComponent implements OnInit {
-  faExpeditedssl = faEllipsisVertical;
-  faBold = faBold;
-  faItalic = faItalic;
-  faFont = faFont;
-  faAlignRight = faAlignRight;
-  faAlignLeft = faAlignLeft;
-  faAlignCenter = faAlignCenter;
-  faAlignJustify = faAlignJustify;
-  faList = faList;
-  faList12 = faList12;
-  faIndent = faIndent;
-  faOutdent = faOutdent;
-  faReply = faReply;
-  faShare = faShare;
-  faUnderline = faUnderline;
-  faSortDown = faSortDown;
-  faUpLong = faUpLong;
-  faDownLong = faDownLong;
-
   constructor(
     private sideBarService: SideBarService,
     @Inject(DOCUMENT) private document: Document,

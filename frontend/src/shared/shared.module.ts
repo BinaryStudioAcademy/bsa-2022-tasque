@@ -17,6 +17,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.component';
 import { SideBarComponent } from './components/tasque-sidebar/sidebar.component';
 import { SideBarService } from 'src/core/services/sidebar.service';
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 
 @NgModule({
   imports: [
@@ -28,6 +29,8 @@ import { SideBarService } from 'src/core/services/sidebar.service';
     MaterialModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
+    FroalaEditorModule.forRoot(),
+    FroalaViewModule.forRoot(),
   ],
   declarations: [
     LoadingComponent,
@@ -63,7 +66,9 @@ import { SideBarService } from 'src/core/services/sidebar.service';
     SideBarComponent,
     MenuDropdownComponent,
     OrganizationsDropdownComponent,
+    FroalaEditorModule,
+    FroalaViewModule,
   ],
   providers: [SideBarService],
 })
-export class SharedModule { }
+export class SharedModule {}

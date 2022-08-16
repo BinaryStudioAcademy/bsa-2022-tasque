@@ -28,6 +28,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@typescript-eslint/parser": "^5.32.0",
+    "angular-froala-wysiwyg": "^4.0.13",
     "eslint": "^8.21.0",
     "ngx-toastr": "^15.0.0",
     "postsass": "^1.0.0",

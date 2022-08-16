@@ -20,66 +20,9 @@
           <div class="input-wrapper">
             <tasque-input label="Summary" id="summary" type="text" name="summary"> </tasque-input>
           </div>
-
-          <div class="rich-text-editor-wrapper" tabindex="0">
-            <div #editor class="editor" [innerHtml]="description" (input)="onChange()" contenteditable></div>
-            <hr />
-            <div class="editControls" onmousedown="return false">
-              <div class="btn-group">
-                <tasque-button type="button" [icon]="faReply" class="btn" (click)="undo()">
-                  <b>undo</b>
-                </tasque-button>
-                <tasque-button type="button" [icon]="faShare" class="btn" (click)="redo()">
-                  <b>redo</b>
-                </tasque-button>
-                <tasque-button type="button" [icon]="faBold" class="btn" (click)="setStyle('bold')"></tasque-button>
-                <tasque-button type="button" [icon]="faItalic" class="btn" (click)="setStyle('italic')"></tasque-button>
-                <tasque-button type="button" class="btn" [icon]="faUnderline" (click)="setStyle('underline')"> </tasque-button>
-                <div class="dropdown">
-                  <tasque-button type="button" class="btn" [icon]="faFont" (click)="setStyle('underline')"> </tasque-button>
-                  <div class="dropdown-content">
-                    <p onmousedown="return false" (click)="setfontSize('1')">1</p>
-                    <p onmousedown="return false" (click)="setfontSize('2')">2</p>
-                    <p onmousedown="return false" (click)="setfontSize('3')">3</p>
-                    <p onmousedown="return false" (click)="setfontSize('4')">4</p>
-                    <p onmousedown="return false" (click)="setfontSize('5')">5</p>
-                    <p onmousedown="return false" (click)="setfontSize('6')">6</p>
-                    <p onmousedown="return false" (click)="setfontSize('7')">7</p>
-                  </div>
-                </div>
-              </div>
-              <div class="btn-group">
-                <tasque-button type="button" [icon]="faAlignLeft" class="btn" (click)="setStyle('justifyLeft')">
-                  <i class="icon-align-left"></i>
-                </tasque-button>
-                <tasque-button type="button" [icon]="faAlignCenter" class="btn" (click)="setStyle('justifyCenter')">
-                  <i class="icon-align-center"></i>
-                </tasque-button>
-                <tasque-button type="button" [icon]="faAlignRight" class="btn" (click)="setStyle('justifyRight')">
-                  <i class="icon-align-right"></i>
-                </tasque-button>
-                <tasque-button type="button" [icon]="faAlignJustify" class="btn" (click)="setStyle('justifyFull')">
-                  <i class="icon-align-justify"></i>
-                </tasque-button>
-              </div>
-              <div class="btn-group">
-                <tasque-button type="button" [icon]="faIndent" class="btn" (click)="setStyle('indent')">
-                  <i class="icon-indent-right"></i>
-                </tasque-button>
-                <tasque-button type="button" [icon]="faOutdent" class="btn" (click)="setStyle('outdent')">
-                  <i class="icon-indent-left"></i>
-                </tasque-button>
-              </div>
-
-              <div class="btn-group">
-                <tasque-button type="button" [icon]="faList12" class="btn" (click)="setList('insertOrderedList')">
-                  <i class="icon-indent-right"></i>
-                </tasque-button>
-                <tasque-button type="button" [icon]="faList" class="btn" (click)="setList('InsertUnorderedList')">
-                  <i class="icon-indent-left"></i>
-                </tasque-button>
-              </div>
-            </div>
+          <div class="froalaEditor-wrapper">
+            <label> Description</label>
+            <div class="test" [froalaEditor]>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada odio scelerisque nibh non ac duis in sed suscipit. Vel mi ac, tempus ridiculus. Consectetur sodales orn</div>
           </div>
         </form>
       </div>
