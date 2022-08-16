@@ -16,15 +16,13 @@ export class CreateProjectComponent implements OnInit {
     name: 'Login1',
     email: 'testlogin@gmail.com',
     id: 1,
-    salt: 'Salt',
-    password: 'Password'
   };
   public currentOrganization: OrganizationModel = {
     id: 1,
     name: 'Organization1',
     authorId: 1,
-    createdAt: new Date(2000,1,1),
-    updatedAt: new Date(2001,1,1),
+    createdAt: new Date(2000, 1, 1),
+    updatedAt: new Date(2001, 1, 1),
   };
 
   public btnText = 'Create project';
@@ -36,9 +34,9 @@ export class CreateProjectComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  openDialog():void {
+  openDialog(): void {
     const newProjectCredential: NewProjectCredentialsModel = {
-      authorId : this.currentUser.id,
+      authorId: this.currentUser.id,
       organizationId: this.currentOrganization.id,
     };
     const dialog = this.matDialog.open(CreateProjectDialogComponent, { data: newProjectCredential });
