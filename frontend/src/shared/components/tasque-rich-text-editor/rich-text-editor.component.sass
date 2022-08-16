@@ -1,0 +1,69 @@
+.rich-text-editor-wrapper
+    border: none
+    background: colorscheme(white-100)
+    border: 1px solid colorscheme(white-100) !important
+    padding: 10px
+    border-radius: 5px
+    min-height: 100px
+    &:hover
+        border: 1px solid colorscheme(violet-200) !important
+        caret-color: colorscheme(violet-200)
+
+.editor
+    width: 100%
+    height: 100%
+    min-height: 100px
+    &:focus
+        outline: none
+
+.editControls
+    display: flex
+
+tasque-button 
+    ::ng-deep
+        button
+            color: colorscheme(black-100) !important
+            &:hover
+                opacity: 1
+.btn-group
+    display: flex
+
+.btn
+    padding-right: 15px
+    opacity: .6
+    &:hover
+        opacity: 1
+
+.button-font-wrapper
+    padding-right: 15px
+    &:hover
+        .btn
+            opacity: 1
+    .btn
+        padding: 0px
+
+.dropdown
+    display: inline-block
+    &-content
+        display: none
+        position: absolute
+        background-color: colorscheme(gray-200)
+        min-width: 50px
+        z-index: 1
+        border-radius: 5px
+
+    &-content p
+        width: 100%
+        color: colorscheme(black-100)
+        text-decoration: none
+        text-align: center
+        display: block
+        margin: 0px
+
+    &-content p:hover
+        background-color: colorscheme(gray-300)
+
+    &:hover .dropdown-content
+        display: flex
+        flex-direction: column
+        align-items: center
