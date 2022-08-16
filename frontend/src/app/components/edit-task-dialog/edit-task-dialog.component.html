@@ -1,13 +1,43 @@
 <div class="edit-task-dialog">
-  <mat-dialog-actions>
+  <div class="button-panel" align="end">
     <tasque-button
       class="btn icon"
       [icon]="buttonIcon"
       [mat-dialog-close]="true"
     ></tasque-button>
-  </mat-dialog-actions>
+  </div>
 
-  <mat-dialog-content>
-    <tasque-dropdown></tasque-dropdown>
-  </mat-dialog-content>
+  <div class="dialog-content">
+    <div class="item-wrapper">
+      <span class="item-label">Project</span>
+      <tasque-dropdown width="150px"></tasque-dropdown>
+    </div>
+    <div class="item-wrapper">
+      <span class="item-label">Status</span>
+      <tasque-dropdown width="150px"></tasque-dropdown>
+    </div>
+    <div class="item-wrapper">
+      <span class="item-label">Priority</span>
+      <tasque-dropdown width="150px"></tasque-dropdown>
+    </div>
+    <div class="item-wrapper">
+      <span class="item-label">Sprint</span>
+      <tasque-dropdown width="60px"></tasque-dropdown>
+    </div>
+    <div class="item-wrapper">
+      <span class="item-label">Assignee</span>
+      <span>User Select</span>
+    </div>
+    <div class="item-wrapper">
+      <span class="item-label">Reporter</span>
+      <span>Some User Info</span>
+    </div>
+    <div class="item-wrapper">
+      <span class="item-label">Description</span>
+      <span class="item-text"
+        >Some very long text line i don't know what to write. Some very long
+        text line i don't know what to writetext line i don't know what to write
+      </span>
+    </div>
+  </div>
 </div>
