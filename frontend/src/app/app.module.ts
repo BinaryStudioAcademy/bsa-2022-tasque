@@ -18,6 +18,7 @@ import { ProjectListComponent } from './components/project-list/project-list.com
 import { ProjectListItemComponent } from './components/project-list/project-list-item/project-list-item.component';
 import { OrganizationListComponent } from './components/organization-list/organization-list.component';
 import { OrganizationListItemComponent } from './components/organization-list/organization-list-item/organization-list-item.component';
+import { SelectUsersComponent } from '../shared/components/select-users/select-users.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { OrganizationListItemComponent } from './components/organization-list/or
     ProjectListItemComponent,
     OrganizationListComponent,
     OrganizationListItemComponent,
+    SelectUsersComponent
   ],
   imports: [
     BrowserModule,
