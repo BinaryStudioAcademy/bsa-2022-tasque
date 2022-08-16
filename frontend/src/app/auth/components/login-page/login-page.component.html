@@ -3,48 +3,13 @@
     <h4 class="login-title">Log In</h4>
     <span class="label-14 link">New to Tasque? <a routerLink="../register">Sign up</a></span>
   </div>
-  <tasque-input label="Email" placeholder="Enter your email"></tasque-input>
-  <!-- <div class="input-container">
-      <label>Email</label>
-      <input
-        class="input full-width"
-        [ngClass]="{
-          'error': emailControl.invalid && (emailControl.dirty || emailControl.touched)
-        }"
-        [(ngModel)]="userLogin.email"
-        type="text"
-        placeholder="Enter your email"
-        formControlName="emailControl"
-      />
-      <span class="error" *ngIf="emailControl.errors?.['required'] && (emailControl.dirty || emailControl.touched)">Email is required.</span>
-      <span class="error" *ngIf="emailControl.errors?.['pattern']">Incorrect email format</span>
-    </div> -->
+  <tasque-input label="Email" placeholder="Enter your email" [errorMessage]="emailErrorMessage" [invalid]="!emailControl.valid" formControlName="emailControl"></tasque-input>
   <div class="password-container">
-    <tasque-input label="Password" placeholder="Enter your password" type="password"> </tasque-input>
+    <tasque-input label="Password" placeholder="Enter your password" type="password" [icon]="faHide" iconPosition="right" #passwordInput (iconClick)="flipPasswordVisible()" formControlName="passwordControl" [errorMessage]="passwordErrorMessage" [invalid]="!passwordControl.valid"></tasque-input>
     <span class="password-restore-button label-12 link">
       <a routerLink="../restore">Forgot password?</a>
     </span>
   </div>
-
-  <!-- <div class="input-container">
-            <div class="label-container full-width">
-                <label>Password</label>
-
-            </div>
-            <div class="password-container">
-                <input class="input full-width" [ngClass]="{
-                    'error': (passwordControl.invalid && (passwordControl.dirty || passwordControl.touched))
-                    }"
-                    [(ngModel)]="userLogin.password"
-                    [type]="hidePass ? 'password' : 'text'"
-                    placeholder="Password"
-                    formControlName="passwordControl"
-                  />
-                  <mat-icon class="hide-icon" (click)="hidePass = !hidePass">{{hidePass ? 'visibility' : 'visibility_off'}}</mat-icon>
-            </div>
-            <span class="error" *ngIf="passwordControl.errors?.['required'] && (passwordControl.dirty || passwordControl.touched)">Password is required.</span>
-            <span class="error" *ngIf="passwordControl.errors?.['minlength']">Must be at least 8 characters</span>
-        </div> -->
   <div class="button-container">
     <tasque-button text="Log In" class="btn fill full-width" (click)="submitForm()"></tasque-button>
   </div>
