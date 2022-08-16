@@ -4,7 +4,7 @@
     <tasque-button class="btn fill" text="Create Organization" (btnClick)="openDialog()"></tasque-button>
   </div>
   <div class="organizations-search">
-    <tasque-input [icon]="faMagnifyingGlass" type="search" placeholder="Search..." [borderRadius]="50" [(ngModel)]="inputSearch" (ngModelChange)="filterItems()"> </tasque-input>
+    <tasque-input [icon]="faMagnifyingGlass" iconPosition="left" type="search" placeholder="Search..." [borderRadius]="50" [(ngModel)]="inputSearch" (ngModelChange)="filterItems()"> </tasque-input>
   </div>
   <div class="organization-list-cards">
     <div class="organization-card" *ngFor="let item of itemsShow">
