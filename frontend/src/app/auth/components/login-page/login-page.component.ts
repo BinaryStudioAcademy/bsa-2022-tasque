@@ -51,7 +51,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   get passwordErrorMessage(): string {
     const ctrl = this.passwordControl;
     if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
-      return 'Email is required';
+      return 'Password is required';
     }
     if (ctrl.errors?.['minlength']) {
       return 'Password must be at least 8 characters';
