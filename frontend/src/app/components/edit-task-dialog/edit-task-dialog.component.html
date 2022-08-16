@@ -1,1 +1,13 @@
-<p>edit-task-dialog works!</p>
+<div class="edit-task-dialog">
+  <mat-dialog-actions>
+    <tasque-button
+      class="btn"
+      [icon]="buttonIcon"
+      [mat-dialog-close]="true"
+    ></tasque-button>
+  </mat-dialog-actions>
+
+  <mat-dialog-content>
+    <tasque-dropdown></tasque-dropdown>
+  </mat-dialog-content>
+</div>
