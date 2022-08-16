@@ -53,7 +53,8 @@ export class RichTextEditorComponent implements OnInit {
   faDownLong = faDownLong;
 
   constructor() {}
-  description: string = '';
+
+  description = '';
   @ViewChild('editor') editor: ElementRef<HTMLElement>;
 
   @Output() valueChange = new EventEmitter();
