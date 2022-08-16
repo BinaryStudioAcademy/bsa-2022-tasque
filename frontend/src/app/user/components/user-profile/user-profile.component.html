@@ -10,7 +10,7 @@
                 
             </div>
             <div class="name-container">
-                <h4 class="login-title">Username</h4>
+                <h4 class="login-title">{{originalUser.name}}</h4>
             </div>
         </div>
         <div class="block-divider full-width">
@@ -32,6 +32,7 @@
                             type="text"
                             placeholder="Enter your name"
                             formControlName="userNameControl"
+                            (input)="checkProfileChanged($event)"
                         />
                         <span class="error" *ngIf="userNameControl.errors?.['required'] && (userNameControl.dirty || userNameControl.touched)">Email is required.</span>
                         <span class="error" *ngIf="userNameControl.errors?.['minlength']">Must be at least 4 characters</span>
@@ -49,6 +50,7 @@
                             type="text"
                             placeholder="Enter your email"
                             formControlName="emailControl"
+                            (input)="checkProfileChanged($event)"
                         />
                         <span class="error" *ngIf="emailControl.errors?.['required'] && (emailControl.dirty || emailControl.touched)">Email is required.</span>
                         <span class="error" *ngIf="emailControl.errors?.['pattern']">Incorrect email format</span>
@@ -58,7 +60,7 @@
         </div>
         <div class="button-container">
             <tasque-button text="Save changes" class="btn stroke" (click)="saveNewInfo()" 
-            [class]="userNameControl.invalid || emailControl.invalid ? 'disabled' : ''"></tasque-button>
+            [class]="!isProfileChanged || userNameControl.invalid || emailControl.invalid ? 'disabled' : ''"></tasque-button>
         </div>
         <div class="block-divider full-width">
             <mat-divider></mat-divider>

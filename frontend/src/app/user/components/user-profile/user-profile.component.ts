@@ -7,6 +7,7 @@ import { ValidationConstants } from 'src/entity-models/const-resources/validatio
 import { LocalStorageKeys } from 'src/entity-models/local-storage-keys';
 import { PasswordChangesDTO } from '../../dto/password-changes-dto';
 import { ProfileChangesDTO } from '../../dto/profile-changes-dto';
+import { UserService } from '../../services/user.service';
 
 
 @Component({
@@ -19,7 +20,8 @@ export class UserProfileComponent implements OnInit {
   public imageFile: File;
   private defaultUserAvatarUrl: string = '../../assets/default_avatar.svg';
   public allowedFileTypes = ['image/png', 'image/jpeg', 'image/gif'];
-  public profileChanges: ProfileChangesDTO;
+  public originalUser: ProfileChangesDTO;
+  public profileChanges: ProfileChangesDTO = {} as ProfileChangesDTO;
   public passwordChanches: PasswordChangesDTO;
   public hidePass = true;
   public profileForm: FormGroup =  new FormGroup({});
@@ -32,16 +34,15 @@ export class UserProfileComponent implements OnInit {
   public localStorage = window.localStorage;
   public localStorageKeys = LocalStorageKeys;
   private validationConstants = ValidationConstants;
+  public isProfileChanged: boolean = false;
 
-  constructor(private notificationService: NotificationService) {
+  constructor(private notificationService: NotificationService, private userService: UserService) {
     
-   }
+   }  
 
   ngOnInit(): void {
-    this.profileChanges = this.getUser();
-    if (this.profileChanges.avatar == undefined) {
-      this.profileChanges.avatar = this.defaultUserAvatarUrl;
-    }
+    this.getUser();
+    
     this.passwordChanches = {} as PasswordChangesDTO;
     this.passwordChanches.newPassword = "";
     this.passwordChanches.previousPassword = "";
@@ -95,14 +96,27 @@ export class UserProfileComponent implements OnInit {
     const reader = new FileReader();
     reader.addEventListener('load', () => (this.profileChanges.avatar = reader.result as string));
     reader.readAsDataURL(this.imageFile);
+    //adding file to cloud will be here
+    this.checkProfileChanged(target);
   }
 
-  private getUser(): ProfileChangesDTO {
-    let user = {} as ProfileChangesDTO;
-    user.id = 1;
-    user.name = 'User1';
-    user.email = 'user@domain.com';
-    return user;
+  private getUser(): void {
+    this.userService.getCurrentUser().subscribe(
+      (resp) => {
+        if (resp.ok && resp.body != null) {
+          this.profileChanges = resp.body;
+          if (this.profileChanges.avatar == undefined || this.profileChanges.avatar == null) {
+            this.profileChanges.avatar = this.defaultUserAvatarUrl;
+          }
+          this.originalUser = Object.assign({}, resp.body);
+        } else {
+          this.notificationService.error("Something went wrong");
+        }
+      },
+      (error) => {
+        this.notificationService.error(error);
+      },
+    );
   }
 
   public saveNewInfo(): void {
@@ -111,6 +125,10 @@ export class UserProfileComponent implements OnInit {
 
   public saveNewPassword(): void {
     
+  }
+
+  public checkProfileChanged(event: any): void {
+    this.isProfileChanged = JSON.stringify(this.profileChanges) != JSON.stringify(this.originalUser);
   }
 
 }

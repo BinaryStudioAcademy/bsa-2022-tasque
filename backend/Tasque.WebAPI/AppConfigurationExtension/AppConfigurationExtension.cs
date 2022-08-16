@@ -101,7 +101,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<PasswordResetService>()
                 .AddScoped<ProjectService>()
                 .AddScoped<IEmailService, MailJetService>()
-                .AddScoped<OrganizationService>();
+                .AddScoped<OrganizationService>()
+                .AddScoped<UserService>();
         }
 
         public static void AddSwagger(this IServiceCollection services)
