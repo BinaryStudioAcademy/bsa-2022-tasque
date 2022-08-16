@@ -1,5 +1,5 @@
 <div class="rich-text-editor-wrapper" tabindex="0">
-  <div #editor class="editor" [innerHtml]="description" (input)="onInput($event.target.innerHTML)" contenteditable></div>
+  <div #editor class="editor" [innerHtml]="description" (input)="onInput()" contenteditable></div>
   <hr />
   <div class="editControls" onmousedown="return false">
     <div class="btn-group">
@@ -27,9 +27,9 @@
     <tasque-button type="button" [icon]="faAlignCenter" class="btn" (click)="setStyle('justifyCenter')"> </tasque-button>
     <tasque-button type="button" [icon]="faAlignRight" class="btn" (click)="setStyle('justifyRight')"> </tasque-button>
     <tasque-button type="button" [icon]="faAlignJustify" class="btn" (click)="setStyle('justifyFull')"> </tasque-button>
-    <tasque-button type="button" [icon]="faIndent" class="btn" (click)="setStyle('indent')"> </tasque-button>
-    <tasque-button type="button" [icon]="faOutdent" class="btn" (click)="setStyle('outdent')"> </tasque-button>
     <tasque-button type="button" [icon]="faList12" class="btn" (click)="setList('insertOrderedList')"> </tasque-button>
     <tasque-button type="button" [icon]="faList" class="btn" (click)="setList('InsertUnorderedList')"> </tasque-button>
+    <tasque-button type="button" [icon]="faIndent" class="btn" (click)="setStyle('indent')"> </tasque-button>
+    <tasque-button type="button" [icon]="faOutdent" class="btn" (click)="setStyle('outdent')"> </tasque-button>
   </div>
 </div>

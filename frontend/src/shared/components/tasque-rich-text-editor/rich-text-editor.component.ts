@@ -56,13 +56,12 @@ export class RichTextEditorComponent implements OnInit {
   description: string = '';
   @ViewChild('editor') editor: any;
 
-  @Input() value: any;
   @Output() valueChange = new EventEmitter();
 
   ngOnInit(): void {}
 
-  onInput(newValue: string) {
-    this.valueChange.emit(newValue);
+  onInput() {
+    this.valueChange.emit(this.editor.nativeElement['innerHTML']);
   }
 
   setStyle(style: string) {
