@@ -18,7 +18,7 @@ import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.compon
 import { SideBarComponent } from './components/tasque-sidebar/sidebar.component';
 import { SideBarService } from 'src/core/services/sidebar.service';
 import { HeaderComponent } from './components/tasque-header/tasque-header.component';
-import {TasqueTeamSelectComponent} from "./components/tasque-team-select/tasque-team-select.component";
+import { TasqueTeamSelectComponent } from './components/tasque-team-select/tasque-team-select.component';
 
 @NgModule({
   imports: [
