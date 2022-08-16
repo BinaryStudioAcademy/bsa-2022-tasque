@@ -11,7 +11,7 @@ import { InputComponent } from './components/tasque-input/input.component';
 import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
-import { OrganizationsDropdownComponent } from './components/organizations-dropdown/organizations-dropdown.component';
+import { OrganizationsDropdownComponent } from './components/tasque-header/organizations-dropdown/organizations-dropdown.component';
 import { MenuDropdownComponent } from './components/tasque-menu-dropdown/menu-dropdown.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.component';
