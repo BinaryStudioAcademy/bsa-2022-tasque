@@ -3,8 +3,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { OrganizationService } from 'src/core/services/organization.service';
-import { OrganizationModel } from 'src/entity-models/organization-model';
 import { UserModel } from 'src/entity-models/user-model';
+import { NewOrganizationModel } from 'src/core/models/organization/new-organization-model';
 
 @Component({
   selector: 'app-create-organization-dialog',
@@ -31,7 +31,7 @@ export class CreateOrganizationDialogComponent implements OnInit {
   }
 
   createOrganization(name: string): void {
-    const organization: OrganizationModel = {
+    const organization: NewOrganizationModel = {
       name: name,
       authorId: this.currentUser.id
     };

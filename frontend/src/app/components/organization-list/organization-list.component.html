@@ -1,0 +1,14 @@
+<div class="organization-list">
+  <div class="organizations-header">
+    <h4>My Organizations</h4>
+    <tasque-button class="btn fill" text="Create Organization" (btnClick)="openDialog()"></tasque-button>
+  </div>
+  <div class="organizations-search">
+    <tasque-input [icon]="faMagnifyingGlass" iconPosition="left" type="search" placeholder="Search..." [borderRadius]="50" [(ngModel)]="inputSearch" (ngModelChange)="filterItems()"> </tasque-input>
+  </div>
+  <div class="organization-list-cards">
+    <div class="organization-card" *ngFor="let item of itemsShow">
+      <app-organization-list-item [organization]="item" [currentUser]="currentUser"></app-organization-list-item>
+    </div>
+  </div>
+</div>

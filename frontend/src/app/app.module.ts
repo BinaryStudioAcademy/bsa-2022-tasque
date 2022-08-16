@@ -16,6 +16,8 @@ import { CreateProjectDialogComponent } from './components/create-project/create
 import { AuthModule } from './auth/auth.module';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProjectListItemComponent } from './components/project-list/project-list-item/project-list-item.component';
+import { OrganizationListComponent } from './components/organization-list/organization-list.component';
+import { OrganizationListItemComponent } from './components/organization-list/organization-list-item/organization-list-item.component';
 import { EditTaskDialogComponent } from './components/edit-task-dialog/edit-task-dialog.component';
 
 @NgModule({
@@ -27,6 +29,8 @@ import { EditTaskDialogComponent } from './components/edit-task-dialog/edit-task
     CreateProjectDialogComponent,
     ProjectListComponent,
     ProjectListItemComponent,
+    OrganizationListComponent,
+    OrganizationListItemComponent,
     EditTaskDialogComponent,
   ],
   imports: [
@@ -43,4 +47,4 @@ import { EditTaskDialogComponent } from './components/edit-task-dialog/edit-task
   providers: [BrowserAnimationsModule],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
