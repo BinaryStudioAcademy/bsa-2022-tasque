@@ -16,6 +16,8 @@ import { CreateProjectDialogComponent } from './components/create-project/create
 import { AuthModule } from './auth/auth.module';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProjectListItemComponent } from './components/project-list/project-list-item/project-list-item.component';
+import { OrganizationListComponent } from './components/organization-list/organization-list.component';
+import { OrganizationListItemComponent } from './components/organization-list/organization-list-item/organization-list-item.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { ProjectListItemComponent } from './components/project-list/project-list
     CreateProjectDialogComponent,
     ProjectListComponent,
     ProjectListItemComponent,
+    OrganizationListComponent,
+    OrganizationListItemComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,4 +45,4 @@ import { ProjectListItemComponent } from './components/project-list/project-list
   providers: [BrowserAnimationsModule],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
