@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'tasque-header',
@@ -11,10 +10,7 @@ export class HeaderComponent implements OnInit {
   constructor() {
    }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
-  LogOut() {
-    
-  }
 }
