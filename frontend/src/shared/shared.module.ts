@@ -18,6 +18,7 @@ import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.compon
 import { SideBarComponent } from './components/tasque-sidebar/sidebar.component';
 import { SideBarService } from 'src/core/services/sidebar.service';
 import { HeaderComponent } from './components/tasque-header/tasque-header.component';
+import { RichTextEditorComponent } from './components/tasque-rich-text-editor/rich-text-editor.component';
 
 @NgModule({
   imports: [
@@ -42,7 +43,8 @@ import { HeaderComponent } from './components/tasque-header/tasque-header.compon
     SideBarComponent,
     OrganizationsDropdownComponent,
     MenuDropdownComponent,
-    HeaderComponent
+    HeaderComponent,
+    RichTextEditorComponent,
   ],
   exports: [
     CommonModule,
@@ -65,8 +67,9 @@ import { HeaderComponent } from './components/tasque-header/tasque-header.compon
     SideBarComponent,
     MenuDropdownComponent,
     OrganizationsDropdownComponent,
-    HeaderComponent
+    HeaderComponent,
+    RichTextEditorComponent,
   ],
   providers: [SideBarService],
 })
-export class SharedModule { }
+export class SharedModule {}

@@ -54,6 +54,10 @@ export class RichTextEditorComponent implements OnInit {
     let bool = document.execCommand(style, false);
   }
 
+  onChange() {
+    console.log(this.editor.nativeElement['innerHTML']);
+  }
+
   public undo(): void {
     document.execCommand('undo');
   }
