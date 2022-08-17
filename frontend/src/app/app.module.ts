@@ -31,7 +31,6 @@ import { TaskCreationComponent } from './components/task-creation/task-creation.
     ProjectListItemComponent,
     OrganizationListComponent,
     OrganizationListItemComponent,
-    TaskCreationComponent,
   ],
   imports: [
     BrowserModule,

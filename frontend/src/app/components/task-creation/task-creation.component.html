@@ -4,25 +4,25 @@
     <div class="task-creation-header">
       <h4 class="task-creation-header-title">Create issue</h4>
       <div class="task-creation-header-button">
-        <tasque-button class="btn mini disabled" text="Import issues" (click)="importIssues()"> </tasque-button>
+        <tasque-button class="btn mini disabled" text="Import issues"> </tasque-button>
         <tasque-button class="btn" [icon]="faExpeditedssl"> </tasque-button>
       </div>
     </div>
     <div class="task-creation-body">
       <div class="task-creation-body-wrapper">
-        <form [formGroup]="taskCreateForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="taskCreateForm">
           <div class="input-wrapper">
-            <tasque-dropdown [options]="options" label="Project" type="text" formControlName="project"> </tasque-dropdown>
+            <tasque-dropdown label="Project" type="text" formControlName="projectControl"> </tasque-dropdown>
           </div>
           <div class="input-wrapper">
-            <tasque-dropdown label="Issue type" formControlName="issueType" ngDefaultControl> </tasque-dropdown>
+            <tasque-dropdown label="Issue type" formControlName="issueTypeControl"> </tasque-dropdown>
           </div>
           <div class="input-wrapper">
-            <tasque-input label="Summary" id="summary" type="text" name="summary" formControlName="summary" ngDefaultControl> </tasque-input>
+            <tasque-input label="Summary" [formControl]="summaryControl" [errorMessage]="summaryErrorMessage" [invalid]="!summaryControl.valid" ngDefaultControl> </tasque-input>
           </div>
           <div class="froalaEditor-wrapper">
             <label>Description</label>
-            <div [froalaEditor] class="description" formControlName="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada odio scelerisque nibh non ac duis in sed suscipit. Vel mi ac, tempus ridiculus. Consectetur sodales orn</div>
+            <angular-editor formControlName="descriptionControl"> </angular-editor>
           </div>
           <p>Form Value: {{ taskCreateForm.value | json }}</p>
           <p>Form Status: {{ taskCreateForm.status }}</p>
@@ -35,8 +35,8 @@
     </div>
     <div class="task-creation-footer">
       <div class="task-creation-footer-button">
-        <tasque-button type="submit" class="btn stroke" text="Cancel" (click)="cancel()"> </tasque-button>
-        <tasque-button type="submit" class="btn fill" text="Create" (click)="create()"> </tasque-button>
+        <tasque-button type="submit" class="btn stroke" text="Cancel"> </tasque-button>
+        <tasque-button type="submit" class="btn fill" text="Create" (click)="submitForm()"> </tasque-button>
       </div>
     </div>
   </div>

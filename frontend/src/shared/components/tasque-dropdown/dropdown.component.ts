@@ -49,8 +49,8 @@ export class DropdownComponent implements OnInit, ControlValueAccessor {
   }
 
   registerOnTouched(fn: any): void {
-    this.selectedOption = fn;
-    this.onChange(fn);
+    //this.selectedOption = fn;
+    //  this.onChange(fn);
   }
 
   ngOnInit(): void {
