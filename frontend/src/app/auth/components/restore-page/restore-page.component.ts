@@ -19,6 +19,18 @@ export class RestorePageComponent implements OnInit {
   public emailControl: FormControl;
   public unsubscribe$ = new Subject<void>();
 
+  get emailErrorMessage(): string {
+    const ctrl = this.emailControl;
+    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Email is required';
+    }
+    if (ctrl.errors?.['pattern']) {
+      return 'Incorrect email format';
+    }
+
+    return '';
+  }
+
   constructor(
     private authService: AuthService,
     private toastrService: ToastrService,
