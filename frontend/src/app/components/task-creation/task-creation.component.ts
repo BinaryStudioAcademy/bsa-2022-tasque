@@ -12,6 +12,20 @@ export class TaskCreationComponent implements OnInit {
   faExpeditedssl = faEllipsisVertical;
   taskCreateForm: FormGroup;
 
+  options: [color: string, title: string, id: number][] = [
+    ['red', 'test', 0],
+    ['#F6F7F9', 'Feature', 1],
+  ];
+
+  ngOnInit(): void {
+    this.taskCreateForm = new FormGroup({
+      project: new FormControl(''),
+      issueType: new FormControl(''),
+      summary: new FormControl('', Validators.required),
+      description: new FormControl(''),
+    });
+  }
+
   constructor(private sideBarService: SideBarService) {}
 
   openSidebar(): void {
@@ -29,15 +43,6 @@ export class TaskCreationComponent implements OnInit {
 
   onSubmit() {
     console.log(this.taskCreateForm.value);
-  }
-
-  ngOnInit(): void {
-    this.taskCreateForm = new FormGroup({
-      project: new FormControl(''),
-      issueType: new FormControl(''),
-      summary: new FormControl('', Validators.required),
-      description: new FormControl(''),
-    });
   }
 
   importIssues(): void {}

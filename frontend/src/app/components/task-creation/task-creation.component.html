@@ -12,7 +12,7 @@
       <div class="task-creation-body-wrapper">
         <form [formGroup]="taskCreateForm" (ngSubmit)="onSubmit()">
           <div class="input-wrapper">
-            <tasque-dropdown label="Project" type="text" formControlName="project" ngDefaultControl> </tasque-dropdown>
+            <tasque-dropdown [options]="options" label="Project" type="text" formControlName="project"> </tasque-dropdown>
           </div>
           <div class="input-wrapper">
             <tasque-dropdown label="Issue type" formControlName="issueType" ngDefaultControl> </tasque-dropdown>
