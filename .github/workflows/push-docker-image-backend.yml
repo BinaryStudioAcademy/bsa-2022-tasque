@@ -1,7 +1,7 @@
 name: CD
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "dev", "deploy-2" ]
 
 # Env variable
 env:
@@ -25,6 +25,8 @@ jobs:
       run: echo "::set-output name=date::$(date +'%Y-%m-%d--%M-%S')"
     - name: Build the Docker image # push The image to the docker hub
       run: docker build ./backend --tag $DOCKER_USER/$REPO_NAME_BACKEND:${{ steps.date.outputs.date }}
+    - name: Tag the Docker image # push The image to the docker hub
+      run: docker tag $DOCKER_USER/$REPO_NAME_BACKEND:${{ steps.date.outputs.date }} $DOCKER_USER/$REPO_NAME_BACKEND:latest
     - name: Docker Push
       run: docker push $DOCKER_USER/$REPO_NAME_BACKEND:${{ steps.date.outputs.date }}
 
@@ -40,6 +42,8 @@ jobs:
       run: echo "::set-output name=date::$(date +'%Y-%m-%d--%M-%S')"
     - name: Build the Docker image # push The image to the docker hub
       run: docker build ./frontend --tag $DOCKER_USER/$REPO_NAME_FRONTEND:${{ steps.date.outputs.date }}
+    - name: Tag the Docker image # push The image to the docker hub
+      run: docker tag $DOCKER_USER/$REPO_NAME_FRONTEND:${{ steps.date.outputs.date }} $DOCKER_USER/$REPO_NAME_FRONTEND:latest
     - name: Docker Push
       run: docker push $DOCKER_USER/$REPO_NAME_FRONTEND:${{ steps.date.outputs.date }}
 
