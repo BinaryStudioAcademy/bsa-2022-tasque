@@ -1,0 +1,22 @@
+<form [formGroup]="loginForm" class="form-container">
+  <div class="text-container">
+    <h4 class="login-title">Log In</h4>
+    <span class="label-14 link">New to Tasque? <a routerLink="../register">Sign up</a></span>
+  </div>
+  <tasque-input label="Email" placeholder="Enter your email" [errorMessage]="emailErrorMessage" [invalid]="!emailControl.valid" formControlName="emailControl"></tasque-input>
+  <div class="password-container">
+    <tasque-input label="Password" placeholder="Enter your password" type="password" [icon]="faHide" iconPosition="right" #passwordInput (iconClick)="flipPasswordVisible()" formControlName="passwordControl" [errorMessage]="passwordErrorMessage" [invalid]="!passwordControl.valid"></tasque-input>
+    <span class="password-restore-button label-12 link">
+      <a routerLink="../restore">Forgot password?</a>
+    </span>
+  </div>
+  <div class="button-container">
+    <tasque-button text="Log In" class="btn fill full-width" (click)="submitForm()"></tasque-button>
+  </div>
+  <div class="button-container">
+    <tasque-button text="Log In with Google" class="btn stroke full-width violet-stroke" [icon]="faGoogle"></tasque-button>
+  </div>
+  <div class="button-container">
+    <tasque-button text="Log In with Github" class="btn stroke full-width violet-stroke" [icon]="faGithub"></tasque-button>
+  </div>
+</form>

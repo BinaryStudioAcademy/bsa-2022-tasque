@@ -9,14 +9,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CreateOrganizationComponent } from './components/create-organization/create-organization.component';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
 import { CreateOrganizationDialogComponent } from './components/create-organization/create-organization-dialog/create-organization-dialog.component';
 import { CreateProjectDialogComponent } from './components/create-project/create-project-dialog/create-project-dialog.component';
-import { LoginPageComponent } from './components/login-page/login-page.component';
-import { RegisterPageComponent } from './components/register-page/register-page.component';
-import { AuthPageComponent } from './components/auth-page/auth-page.component';
+import { AuthModule } from './auth/auth.module';
+import { ProjectListComponent } from './components/project-list/project-list.component';
+import { ProjectListItemComponent } from './components/project-list/project-list-item/project-list-item.component';
+import { OrganizationListComponent } from './components/organization-list/organization-list.component';
+import { OrganizationListItemComponent } from './components/organization-list/organization-list-item/organization-list-item.component';
 import { TaskCreationComponent } from './components/task-creation/task-creation.component';
 
 @NgModule({
@@ -26,9 +27,10 @@ import { TaskCreationComponent } from './components/task-creation/task-creation.
     CreateOrganizationDialogComponent,
     CreateProjectComponent,
     CreateProjectDialogComponent,
-    LoginPageComponent,
-    RegisterPageComponent,
-    AuthPageComponent,
+    ProjectListComponent,
+    ProjectListItemComponent,
+    OrganizationListComponent,
+    OrganizationListItemComponent,
     TaskCreationComponent,
   ],
   imports: [
@@ -40,7 +42,7 @@ import { TaskCreationComponent } from './components/task-creation/task-creation.
     MatDialogModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    FontAwesomeModule,
+    AuthModule,
   ],
   providers: [BrowserAnimationsModule],
   bootstrap: [AppComponent],
