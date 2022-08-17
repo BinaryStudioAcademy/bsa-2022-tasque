@@ -35,6 +35,9 @@ namespace Tasque.Core.WebAPI.Middlewares
                     case EmailNotConfirmedException ex:
                         await HandleEmailNotConfirmedException(httpContext, ex);
                         break;
+                    case AwsException ex:
+                        await HandleAwsException(httpContext, ex);
+                        break;
                     default:
                         await HandleGenericException(httpContext, exception);
                         break;
@@ -72,6 +75,12 @@ namespace Tasque.Core.WebAPI.Middlewares
         private async Task HandleEmailNotConfirmedException(HttpContext httpContext, EmailNotConfirmedException ex)
         {
             await CreateExceptionAsync(httpContext, HttpStatusCode.Forbidden, ex.Message);
+        }
+
+        private async Task HandleAwsException(HttpContext context, AwsException ex)
+        {
+            _logger.LogError($"{ex} - {ex.Message}");
+            await CreateExceptionAsync(context, HttpStatusCode.Conflict, ex.Message);
         }
     }
 }

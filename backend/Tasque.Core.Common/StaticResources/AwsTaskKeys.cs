@@ -12,6 +12,8 @@ namespace Tasque.Core.Common.StaticResources
 
         public const string Id = "Id";
 
+        public const string ProjectId = "ProjectId";
+
         public const string DateFields = "CustomDateFields";
 
         public const string TimeFields = "CustomTimeFields";

@@ -12,7 +12,10 @@ using Tasque.Core.BLL.Services.Auth;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.BLL.Services.Email.MailJet;
 using Tasque.Core.Common.Entities;
-using Amazon.S3;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
+using Tasque.Core.BLL.Interfaces;
+using Tasque.Core.BLL.Services.AWS;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
 {
@@ -60,6 +63,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             {
                 cfg.AddProfile<UserProfile>();
                 cfg.AddProfile<OrganizationProfile>();
+                cfg.AddProfile<TaskProfile>();
             },
             Assembly.GetExecutingAssembly());
         }
@@ -89,6 +93,9 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             var jwtIssuerOptions = new JwtIssuerOptions();
             configuration.GetSection("JwtIssuerOptions").Bind(jwtIssuerOptions);
 
+            var x = configuration.GetAWSOptions();
+            services.AddDefaultAWSOptions(configuration.GetAWSOptions());
+
             services.AddSingleton(jwtIssuerOptions);
             services.ConfigureJwt(configuration);
             services.AddScoped<JwtFactory>();
@@ -103,8 +110,10 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<ProjectService>()
                 .AddScoped<IEmailService, MailJetService>()
                 .AddScoped<OrganizationService>()
-                .AddDefaultAWSOptions(configuration.GetAWSOptions())
-                .AddAWSService<IAmazonS3>();
+                .AddAWSService<IAmazonDynamoDB>()
+                .AddScoped<IDynamoDBContext, DynamoDBContext>()
+                .AddScoped<IAwsTaskService, AwsTaskService>()
+                .AddScoped<ITaskService, TaskService>();
         }
 
         public static void AddSwagger(this IServiceCollection services)

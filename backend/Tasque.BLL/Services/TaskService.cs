@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,9 +14,11 @@ namespace Tasque.Core.BLL.Services
     public class TaskService : EntityCrudService<Common.Entities.Task>, ITaskService
     {
         private readonly IAwsTaskService _awsTaskService;
-        public TaskService(IAwsTaskService awsTaskService, DataContext dataContext) : base(dataContext)
+        private readonly IMapper _mapper;
+        public TaskService(IAwsTaskService awsTaskService, DataContext dataContext, IMapper mapper) : base(dataContext)
         {
             _awsTaskService = awsTaskService;
+            _mapper = mapper;
         }
 
         public Task<TaskDto> CreateTask(CreateTask model)
@@ -30,10 +33,10 @@ namespace Tasque.Core.BLL.Services
 
         public async Task<List<TaskDto>> GetAllTasks()
         {
-            var tasks = _db.Tasks.ToList();
-            var customAttributes = await _awsTaskService.GetAllTasks();
+            var tasks = _mapper.Map<List<TaskDto>>(_db.Tasks.ToList());
+            var customAttributes = await _awsTaskService.GetAllTasks(tasks);
 
-            var taskList = tasks.Join(customAttributes, t => t.Id, ca => ca.TaskId, (t, ca) => new TaskDto()
+            var taskList = tasks.Join(customAttributes, t => t.Id, ca => ca.Id, (t, ca) => new TaskDto()
             {
                 Id = t.Id,
                 Name = t.Name,
@@ -54,7 +57,7 @@ namespace Tasque.Core.BLL.Services
                 LastUpdatedById = t.LastUpdatedById,
                 ParentTaskId = t.ParentTaskId,
 
-                CustomFields = ca,
+                //CustomFields = ca,
             }).ToList();
 
             return taskList;
@@ -62,10 +65,10 @@ namespace Tasque.Core.BLL.Services
 
         public async Task<List<TaskDto>> GetAllProjectTask(int projectId)
         {
-            var tasks = _db.Tasks.Where(t => t.ProjectId == projectId);
-            var customAttributes = await _awsTaskService.GetAllTasks();
+            var tasks = _mapper.Map<List<TaskDto>>(_db.Tasks.Where(t => t.ProjectId == projectId));
+            var customAttributes = await _awsTaskService.GetAllTasks(tasks);
 
-            var taskList = tasks.Join(customAttributes, t => t.Id, ca => ca.TaskId, (t, ca) => new TaskDto()
+            var taskList = tasks.Join(customAttributes, t => t.Id, ca => ca.Id, (t, ca) => new TaskDto()
             {
                 Id = t.Id,
                 Name = t.Name,
@@ -86,7 +89,7 @@ namespace Tasque.Core.BLL.Services
                 LastUpdatedById = t.LastUpdatedById,
                 ParentTaskId = t.ParentTaskId,
 
-                CustomFields = ca,
+                //CustomFields = ca,
             }).ToList();
 
             return taskList;
