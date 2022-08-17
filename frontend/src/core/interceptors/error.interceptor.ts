@@ -20,14 +20,17 @@ export class ErrorInterceptor implements HttpInterceptor {
         return throwError(new Error(error.message ?? 'Something went wrong'));
     }
     intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+
         return new Observable((observer) => {
           next.handle(req).subscribe(
             (res: HttpEvent<unknown>) => {
               observer.next(res);
             },
+
             (err: HttpErrorResponse) => {
               this.notificationService.error(err.message);
             },
+
           );
         });
     }
