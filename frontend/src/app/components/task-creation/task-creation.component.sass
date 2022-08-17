@@ -55,29 +55,40 @@
 tasque-input
     ::ng-deep
         .input-container
-            display: flex
-            align-items: center
+            display: grid
+            grid-template-columns: min-content
+        .input-wrp
+            width: 100%
+            grid-column: 2
         .input
             width: 100% !important
             height: 50px
             background: colorscheme(gray-300)
             border-radius: 15px !important
         label
+            grid-column: 1
             margin-right: 16px !important
             width: 100px !important
-            min-width: 100px
             font-weight: 400
             font-size: 14px !important
             line-height: 19px !important
+            margin: auto
+        .error
+            grid-column: 2
+            margin: auto
 
 tasque-dropdown
     ::ng-deep
         .dropdown-warapper
-            display: grid
+            width: 100% !important
+            display: flex
             flex-direction: row
             align-items: center
+            .btn-wrapper
+                display: flex
+                flex-direction: column
+                align-items: center
             button
-                grid-column: 2 / 3
                 width: 172px
                 background: colorscheme(gray-300)
             label
@@ -86,9 +97,6 @@ tasque-dropdown
                 font-weight: 400
                 font-size: 14px
                 line-height: 19px
-            span
-                grid-column: 2/3
-                margin: auto
 
 .froalaEditor-wrapper
     display: flex
