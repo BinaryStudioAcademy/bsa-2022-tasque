@@ -8,7 +8,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-type IconPosition = 'right' | 'left';
+export type IconPosition = 'right' | 'left';
 
 @Component({
   selector: 'tasque-input',
@@ -118,11 +118,11 @@ export class InputComponent implements ControlValueAccessor {
     this.iconClick.emit(args);
   }
 
-  onChange: (value: Event) => void = () => {};
+  onChange: (value: Event) => void = () => { };
 
-  onTouched: (value: Event) => void = () => {};
+  onTouched: (value: Event) => void = () => { };
 
-  constructor() {}
+  constructor() { }
 
   writeValue(value: string): void {
     this.inputValue = value;

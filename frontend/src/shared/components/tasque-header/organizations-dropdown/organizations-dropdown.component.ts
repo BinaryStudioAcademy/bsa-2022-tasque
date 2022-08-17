@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { StorageService } from 'src/core/services/storage.service';
-import { OrganizationModel } from 'src/entity-models/organization-model';
+import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -16,7 +16,9 @@ export class OrganizationsDropdownComponent implements OnInit {
   public currentOrganization: OrganizationModel = {
     id: -1,
     name: 'None',
-    authorId: -1
+    authorId: -1,
+    createdAt: new Date(),
+    updatedAt: new Date()
   };
 
   public unsubscribe$ = new Subject<void>();

@@ -16,7 +16,8 @@ import { CreateProjectDialogComponent } from './components/create-project/create
 import { AuthModule } from './auth/auth.module';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProjectListItemComponent } from './components/project-list/project-list-item/project-list-item.component';
-import { TasqueBoardComponent } from './components/tasque-board/tasque-board.component';
+import { OrganizationListComponent } from './components/organization-list/organization-list.component';
+import { OrganizationListItemComponent } from './components/organization-list/organization-list-item/organization-list-item.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { TasqueBoardComponent } from './components/tasque-board/tasque-board.com
     CreateProjectDialogComponent,
     ProjectListComponent,
     ProjectListItemComponent,
-    TasqueBoardComponent
+    OrganizationListComponent,
+    OrganizationListItemComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,4 +45,4 @@ import { TasqueBoardComponent } from './components/tasque-board/tasque-board.com
   providers: [BrowserAnimationsModule],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
