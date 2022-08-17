@@ -80,23 +80,23 @@ tasque-input
 tasque-dropdown
     ::ng-deep
         .dropdown-warapper
-            width: 100% !important
-            display: flex
-            flex-direction: row
-            align-items: center
-            .btn-wrapper
-                display: flex
-                flex-direction: column
-                align-items: center
-            button
+            display: grid
+            grid-template-columns: min-content
+            .dropdown-button
                 width: 172px
                 background: colorscheme(gray-300)
-            label
+                grid-column: 2
+            .error
+                grid-column: 2
+                margin: auto
+            .dropdown-label
                 padding-right: 16px
                 width: 100px
                 font-weight: 400
                 font-size: 14px
                 line-height: 19px
+                grid-column: 1
+                margin: auto
 
 .froalaEditor-wrapper
     display: flex
