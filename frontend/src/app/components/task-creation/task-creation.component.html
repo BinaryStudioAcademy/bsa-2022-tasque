@@ -4,7 +4,7 @@
     <div class="task-creation-header">
       <h4 class="task-creation-header-title">Create issue</h4>
       <div class="task-creation-header-button">
-        <tasque-button class="btn mini disabled" text="Import issues"> </tasque-button>
+        <tasque-button class="btn fill disabled" text="Import issues"> </tasque-button>
         <tasque-button class="btn" [icon]="faExpeditedssl"> </tasque-button>
       </div>
     </div>
@@ -20,7 +20,7 @@
           <div class="input-wrapper">
             <tasque-input label="Summary" [formControl]="summaryControl" [errorMessage]="summaryErrorMessage" [invalid]="!summaryControl.valid" ngDefaultControl> </tasque-input>
           </div>
-          <div class="froalaEditor-wrapper">
+          <div class="editor-wrapper">
             <label>Description</label>
             <angular-editor [config]="editorConfig" formControlName="descriptionControl"> </angular-editor>
           </div>

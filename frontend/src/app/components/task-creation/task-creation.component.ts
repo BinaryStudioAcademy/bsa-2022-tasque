@@ -103,10 +103,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     this.sideBarService.toggle();
   }
 
-  onSubmit() {
-    console.log(this.taskCreateForm.value);
-  }
-
   public submitForm(): void {
     if (!this.taskCreateForm.valid || !this.taskCreateForm.dirty) {
       if (!this.summaryControl.valid)
@@ -121,8 +117,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       summary: this.taskCreateForm.get('summaryControl')?.value,
       description: this.taskCreateForm.get('descriptionControl')?.value,
     };
-
-    console.log(this.task);
   }
 
   public clearForm(): void {

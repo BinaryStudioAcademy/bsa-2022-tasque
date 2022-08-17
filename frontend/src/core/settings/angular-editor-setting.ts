@@ -3,11 +3,11 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 export const EditorConfig: AngularEditorConfig = {
   editable: true,
   spellcheck: true,
-  height: 'auto',
-  minHeight: '150px',
+  height: '100px',
+  minHeight: '100px',
   maxHeight: '150px',
-  width: 'auto',
-  minWidth: '0',
+  width: '100%',
+  minWidth: '100%',
   translate: 'yes',
   enableToolbar: true,
   showToolbar: true,
@@ -52,6 +52,7 @@ export const EditorConfig: AngularEditorConfig = {
       'insertHorizontalRule',
       'removeFormat',
       'toggleEditorMode',
+      'fontName',
     ],
   ],
 };
