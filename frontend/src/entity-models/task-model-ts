@@ -1,0 +1,6 @@
+export interface TaskModel {
+  project: string;
+  issueType: string;
+  summary: string;
+  description: string;
+}

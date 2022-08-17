@@ -103,14 +103,10 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   }
 
   public submitForm(): void {
-    if (this.taskCreateForm.invalid) {
-      for (const control of Object.keys(this.taskCreateForm.controls)) {
-        console.log(this.taskCreateForm.controls[control].valid);
-        this.taskCreateForm.controls[control].markAsTouched();
-      }
-      return;
-    }
     if (!this.taskCreateForm.valid || !this.taskCreateForm.dirty) {
+      if (!this.summaryControl.valid)
+        this.notification.error('Issue name is required');
+
       this.notification.error(
         this.summaryControl.valid + 'Invalid values' + this.summaryErrorMessage,
       );
