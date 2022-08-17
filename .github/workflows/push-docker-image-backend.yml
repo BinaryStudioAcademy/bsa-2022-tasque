@@ -45,7 +45,7 @@ jobs:
 
   redeploy_images:
     runs-on: ubuntu-latest
-    needs: [run_push_backend, run_push_frontend]
+    needs: [build_push_backend, build_push_frontend]
     steps:
       - uses: actions/checkout@v2
       - name: Update PROD images
