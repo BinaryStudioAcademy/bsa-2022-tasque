@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
@@ -9,6 +9,8 @@ import { LocalStorageKeys } from 'src/entity-models/local-storage-keys';
 import { UserLoginModel } from 'src/entity-models/user-login-model';
 import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
 import { ToastrService } from 'ngx-toastr';
+import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -19,6 +21,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class LoginPageComponent implements OnInit, OnDestroy {
   faGithub = faGithub;
   faGoogle = faGoogle;
+  faHide = faEye;
+  faShow = faEyeSlash;
 
   public userLogin: UserLoginModel = {};
   public hidePass = true;
@@ -30,6 +34,32 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   public localStorage = window.localStorage;
   public localStorageKeys = LocalStorageKeys;
   private validationConstants = ValidationConstants;
+
+  @ViewChild('passwordInput') passwordInput: InputComponent;
+
+  get emailErrorMessage(): string {
+    const ctrl = this.emailControl;
+    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Email is required';
+    }
+    if (ctrl.errors?.['pattern']) {
+      return 'Incorrect email format';
+    }
+
+    return '';
+  }
+
+  get passwordErrorMessage(): string {
+    const ctrl = this.passwordControl;
+    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Password is required';
+    }
+    if (ctrl.errors?.['minlength']) {
+      return 'Password must be at least 8 characters';
+    }
+
+    return '';
+  }
 
   constructor(
     private router: Router,
@@ -79,23 +109,25 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       this.toastrService.error('Invalid values');
       return;
     }
+
+    this.userLogin = {
+      email: this.loginForm.get('emailControl')?.value,
+      password: this.loginForm.get('passwordControl')?.value,
+    };
+
     this.authService
       .loginUser(this.userLogin)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (resp) => {
-          if (resp.ok) {
-            const token = resp.body;
-            this.localStorage.setItem(
-              this.localStorageKeys.token,
-              token?.accessToken as string,
-            );
+          if (resp.body) {
+            this.authService.setAuthToken(resp.body);
           }
         },
         (error: HttpErrorResponse) => {
           let errMsg = error.error;
           if (error.status == 403) {
-              errMsg = 'Email is not confirmed';
+            errMsg = 'Email is not confirmed';
           }
           this.toastrService.error(errMsg);
         },
