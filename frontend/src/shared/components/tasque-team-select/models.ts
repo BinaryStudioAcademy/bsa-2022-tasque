@@ -2,5 +2,5 @@
   email: string,
   username: string,
   profileURL: string,
-  avatarURL: string | null,
+  avatarURL: string,
 }
