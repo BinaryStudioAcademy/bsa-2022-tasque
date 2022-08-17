@@ -22,7 +22,7 @@
           </div>
           <div class="froalaEditor-wrapper">
             <label>Description</label>
-            <angular-editor formControlName="descriptionControl"> </angular-editor>
+            <angular-editor [config]="editorConfig" formControlName="descriptionControl"> </angular-editor>
           </div>
           <p>Form Value: {{ taskCreateForm.value | json }}</p>
           <p>Form Status: {{ taskCreateForm.status }}</p>

@@ -4,6 +4,8 @@ import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from 'src/core/services/notification.service';
 import { Subject } from 'rxjs';
+import { TaskModel } from 'src/core/models/task-model';
+import { EditorConfig } from 'src/core/settings/angular-editor-setting';
 
 @Component({
   selector: 'app-task-creation',
@@ -13,13 +15,14 @@ import { Subject } from 'rxjs';
 export class TaskCreationComponent implements OnInit, OnDestroy {
   faExpeditedssl = faEllipsisVertical;
 
+  public task: TaskModel = {};
   public taskCreateForm: FormGroup = new FormGroup({});
   public projectControl: FormControl;
   public issueTypeControl: FormControl;
   public summaryControl: FormControl;
   public descriptionControl: FormControl;
   public unsubscribe$ = new Subject<void>();
-  issueTypeControltest = '';
+  public editorConfig = EditorConfig;
 
   get projectErrorMessage(): string {
     const ctrl = this.projectControl;
@@ -66,18 +69,20 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     private sideBarService: SideBarService,
     private notification: NotificationService,
   ) {
-    this.projectControl = new FormControl(this.issueTypeControltest, [
+    this.projectControl = new FormControl(this.task.project, [
       Validators.required,
     ]);
-    this.issueTypeControl = new FormControl(this.issueTypeControltest, [
+    this.issueTypeControl = new FormControl(this.task.issueType, [
       Validators.required,
     ]);
-    this.summaryControl = new FormControl('', [
+    this.summaryControl = new FormControl(this.task.summary, [
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(80),
     ]);
-    this.descriptionControl = new FormControl('', [Validators.maxLength(5000)]);
+    this.descriptionControl = new FormControl(this.task.description, [
+      Validators.maxLength(5000),
+    ]);
   }
 
   ngOnInit(): void {
@@ -106,14 +111,17 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     if (!this.taskCreateForm.valid || !this.taskCreateForm.dirty) {
       if (!this.summaryControl.valid)
         this.notification.error('Issue name is required');
-
-      this.notification.error(
-        this.summaryControl.valid + 'Invalid values' + this.summaryErrorMessage,
-      );
-
-      console.log('Invalid values');
+      else this.notification.error('Invalid values');
       return;
     }
-    console.log('valid values');
+
+    this.task = {
+      project: this.taskCreateForm.get('projectControl')?.value,
+      issueType: this.taskCreateForm.get('issueTypeControl')?.value,
+      summary: this.taskCreateForm.get('summaryControl')?.value,
+      description: this.taskCreateForm.get('descriptionControl')?.value,
+    };
+
+    console.log(this.task);
   }
 }

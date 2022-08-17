@@ -59,7 +59,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
     return '';
   }
-  test: true;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
