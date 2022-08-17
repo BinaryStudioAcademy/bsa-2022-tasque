@@ -1,6 +1,5 @@
 @import 'src/colors.sass'
 
-
 .container
   display: flex
   width: 265px
@@ -24,20 +23,7 @@
 
 
 .user-avatar-img
-  height: 100%
-  border-radius: 100%
-  aspect-ratio: 1 / 1
-  object-fit: cover
-  position: relative
-  align-items: center
-  text-align: center
-  justify-content: center
-  opacity: 1
-
-  &:hover
-    opacity: 0.8
-
-.user-no-avatar
+  font-weight: 700
   height: 100%
   border-radius: 100%
   aspect-ratio: 1 / 1
@@ -47,9 +33,8 @@
   align-items: center
   text-align: center
   justify-content: center
-  opacity: 1
   color: colorscheme(white-100)
-  font-weight: 700
+  opacity: 1
   &:hover
     opacity: 0.8
 
@@ -120,6 +105,4 @@
   .user-avatar
     height: 50px
   .user-avatar-img
-    height: 50px
-  .user-no-avatar
     height: 50px
