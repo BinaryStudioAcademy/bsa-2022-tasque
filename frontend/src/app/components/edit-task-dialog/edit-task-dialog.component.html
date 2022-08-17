@@ -1,43 +1,100 @@
-<div class="edit-task-dialog">
+<form class="edit-task-dialog" [formGroup]="editTaskForm">
   <div class="button-panel" align="end">
-    <tasque-button
-      class="btn icon"
-      [icon]="buttonIcon"
-      [mat-dialog-close]="true"
-    ></tasque-button>
+    <tasque-button class="btn icon" [icon]="buttonIcon" [mat-dialog-close]="true"></tasque-button>
   </div>
 
-  <div class="dialog-content">
+  <div class="task-summary-container">
+    <span class="item-label">Project-ID</span>
+    <h5>
+      {{ task.summary }}
+      <div class="task-summary-buttons">
+        <span>paper clip </span>
+        <span>smile </span>
+        <span>threedots </span>
+      </div>
+    </h5>
+  </div>
+
+  <div class="task-info-container">
     <div class="item-wrapper">
       <span class="item-label">Project</span>
-      <tasque-dropdown width="150px"></tasque-dropdown>
+      <tasque-dropdown
+        width="200px"
+        [options]="projectOptions"
+        formControlName="taskProject"
+      ></tasque-dropdown>
     </div>
     <div class="item-wrapper">
       <span class="item-label">Status</span>
-      <tasque-dropdown width="150px"></tasque-dropdown>
+      <tasque-dropdown
+        width="200px"
+        [options]="taskStatusOptions"
+        formControlName="taskStatus"
+      ></tasque-dropdown>
     </div>
     <div class="item-wrapper">
       <span class="item-label">Priority</span>
-      <tasque-dropdown width="150px"></tasque-dropdown>
+      <tasque-dropdown
+        width="200px"
+        [options]="taskPriorityOptions"
+        formControlName="taskPriority"
+      ></tasque-dropdown>
     </div>
     <div class="item-wrapper">
       <span class="item-label">Sprint</span>
-      <tasque-dropdown width="60px"></tasque-dropdown>
+      <tasque-dropdown
+        width="80px"
+        [options]="taskSprintOptions"
+        formControlName="taskSprint"
+      ></tasque-dropdown>
     </div>
     <div class="item-wrapper">
       <span class="item-label">Assignee</span>
-      <span>User Select</span>
+      <span formControlName="taskAssignees">User Select Button</span>
     </div>
     <div class="item-wrapper">
       <span class="item-label">Reporter</span>
-      <span>Some User Info</span>
+      <span formControlName="taskReporter">Some User Info</span>
     </div>
     <div class="item-wrapper">
       <span class="item-label">Description</span>
-      <span class="item-text"
-        >Some very long text line i don't know what to write. Some very long
-        text line i don't know what to writetext line i don't know what to write
-      </span>
+
+      <div class="item-text {{ editorDescriptionItemClass }}" (click)="spanClick()">
+        <span *ngIf="task.description">
+          {{ task.description }}
+        </span>
+        <span *ngIf="!task.description">-</span>
+      </div>
+
+      <angular-editor
+        id="editorDescription"
+        formControlName="editorDescription"
+        [config]="editorConfig"
+        placeholder="Type some text..."
+        class="editor {{ editorDescriptionClass }}"
+      >
+      </angular-editor>
     </div>
   </div>
-</div>
+
+  <div class="subtask-container">
+    <h5>Subtask</h5>
+    <tasque-button class="btn mini" text="+ Add issues"></tasque-button>
+  </div>
+
+  <div class="comments-container">
+    <h5>Comments</h5>
+  </div>
+
+  <div class="user-comment-container">
+    <span>avatar</span>
+    <div class="input-wrapper">
+      <tasque-input placeholder="Type a comment"></tasque-input>
+    </div>
+    <div class="user-comment-buttons">
+      <span>paper clip</span>
+      <span>smile </span>
+      <span>threedots </span>
+    </div>
+  </div>
+</form>

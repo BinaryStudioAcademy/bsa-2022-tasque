@@ -1,11 +1,18 @@
 @import 'src/colors.sass'
 
-.mat-dialog-actions
-    min-height: 20px
+tasque-button ::ngdeep
+    button
+        color: colorscheme(gray-500)
 
 .edit-task-dialog
+    display: flex
+    flex-direction: column
     height: 100%
-    
+    padding-top: 20px
+    padding-left: 45px
+    padding-right: 30px
+    padding-bottom: 45px
+
 .item-wrapper
     display: flex
     align-items: center
@@ -19,7 +26,41 @@
         width: calc( 100% - 85px )
         word-wrap: break-word
 
-.edit-task-dialog
-    padding-top: 15px
-    padding-left: 45px
-    padding-right: 30px
+.editor
+    width: calc( 100% - 85px )
+
+.item-text
+    cursor: pointer
+
+.invisible
+    display: none
+
+.user-comment-container
+    display: flex
+    margin-top: auto
+    align-items: center
+
+.input-wrapper
+    width: 100%
+
+.subtask-container
+    margin-bottom: 15px
+    h5
+        margin-bottom: 10px
+
+.comments-container
+    margin-bottom: 15px
+
+.task-summary-container
+    display: flex
+    flex-direction: column
+    margin-bottom: 60px
+    display: flex
+    flex-direction: column
+    gap: 15px
+    .item-label
+        font-size: 15px
+        color: colorscheme(gray-500)
+    h5
+        display: flex
+        justify-content: space-between
