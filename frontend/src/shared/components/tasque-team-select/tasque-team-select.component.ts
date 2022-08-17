@@ -12,7 +12,7 @@ export class TasqueTeamSelectComponent implements OnInit {
 
   public showPopUp = false;
 
-  public avatars: UserCircle[] = [
+  public avatars: UserCircle[] = [ // remove when integrated in component with data
     {
       email: 'petroporoshenko@gmail.com',
       username: 'Petro Poroshenko',
