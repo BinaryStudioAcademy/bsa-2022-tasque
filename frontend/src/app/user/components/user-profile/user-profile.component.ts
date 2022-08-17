@@ -106,6 +106,7 @@ export class UserProfileComponent implements OnInit {
         if (resp.ok && resp.body != null) {
           this.profileChanges = resp.body;
           this.originalUser = Object.assign({}, resp.body);
+          this.passwordChanches.id = this.originalUser.id;
         } else {
           this.notificationService.error("Something went wrong");
         }
@@ -139,7 +140,24 @@ export class UserProfileComponent implements OnInit {
   }
 
   public saveNewPassword(): void {
-    
+    if (this.prevPasswordControl.invalid || this.newPasswordControl.invalid) {
+      this.notificationService.error("Password can not be changed");
+      return;
+    }
+
+    this.userService.editPassword(this.passwordChanches).subscribe(
+      (resp) => {
+        if (resp.ok && resp.body != null) {
+          this.changePassForm.reset();
+          this.notificationService.success("Password was successfully changed");
+        } else {
+          this.notificationService.error("Something went wrong");
+        }
+      },
+      (error) => {
+        this.notificationService.error(error);
+      },
+    );
   }
 
   public checkProfileChanged(event: any): void {

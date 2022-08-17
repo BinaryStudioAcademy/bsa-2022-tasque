@@ -49,5 +49,19 @@ namespace Tasque.Core.BLL.Services
             await _context.SaveChangesAsync();
             return _mapper.Map<UserDto>(userEntity);
         }
+
+        public async Task<PasswordEditDto> EditPassword(PasswordEditDto dto)
+        {
+            var userEntity = await _context.Users.FirstOrDefaultAsync(u => u.Id == dto.Id)
+                ?? throw new ValidationException("User not found");
+            if (!SecurityHelper.ValidatePassword(dto.PreviousPassword, userEntity.Password, userEntity.Salt))
+                throw new ValidationException("Invalid password");
+            userEntity.Password = SecurityHelper.HashPassword(dto.NewPassword, userEntity.Salt);
+            _validator.ValidateAndThrow(userEntity);
+
+            _context.Users.Update(userEntity);
+            await _context.SaveChangesAsync();
+            return new PasswordEditDto { Id = dto.Id };
+        }
     }
 }
