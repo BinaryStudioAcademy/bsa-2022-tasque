@@ -22,6 +22,7 @@ type IconPosition = 'right' | 'left';
     },
   ],
 })
+
 export class InputComponent implements ControlValueAccessor {
   public inputBorderRadius = 10;
   public inputClass = '';
