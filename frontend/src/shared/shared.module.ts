@@ -18,6 +18,7 @@ import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.compon
 import { SideBarComponent } from './components/tasque-sidebar/sidebar.component';
 import { SideBarService } from 'src/core/services/sidebar.service';
 import { HeaderComponent } from './components/tasque-header/tasque-header.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { HeaderComponent } from './components/tasque-header/tasque-header.compon
     MaterialModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
+    AngularEditorModule,
   ],
   declarations: [
     LoadingComponent,
@@ -65,7 +67,8 @@ import { HeaderComponent } from './components/tasque-header/tasque-header.compon
     SideBarComponent,
     MenuDropdownComponent,
     OrganizationsDropdownComponent,
-    HeaderComponent
+    HeaderComponent,
+    AngularEditorModule,
   ],
   providers: [SideBarService],
 })
