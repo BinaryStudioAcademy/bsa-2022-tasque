@@ -1,0 +1,35 @@
+version: "3.9"  # optional since v1.27.0
+
+services:
+  webapi:
+    image: mendasium/tasque_backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./.env/backend.env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    # volumes:
+      # - .:/ log volume!
+      
+  frontend:
+    image: mendasium/tasque_frontend
+    container_name: frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file:
+      - ./.env/frontend.env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    # volumes:
+      # - .:/ log volume!
+
+# volumes:
+#   logvolume01: {}
