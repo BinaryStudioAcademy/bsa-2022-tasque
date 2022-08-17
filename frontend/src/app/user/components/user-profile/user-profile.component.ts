@@ -105,9 +105,6 @@ export class UserProfileComponent implements OnInit {
       (resp) => {
         if (resp.ok && resp.body != null) {
           this.profileChanges = resp.body;
-          // if (this.profileChanges.avatar == undefined || this.profileChanges.avatar == null) {
-          //   this.profileChanges.avatar = this.defaultUserAvatarUrl;
-          // }
           this.originalUser = Object.assign({}, resp.body);
         } else {
           this.notificationService.error("Something went wrong");
@@ -120,7 +117,25 @@ export class UserProfileComponent implements OnInit {
   }
 
   public saveNewInfo(): void {
-
+    if (!this.isProfileChanged) {
+      this.notificationService.error("Profile was not changed");
+      return;
+    }
+    this.userService.editUserProfile(this.profileChanges).subscribe(
+      (resp) => {
+        if (resp.ok && resp.body != null) {
+          this.profileChanges = resp.body;
+          this.originalUser = Object.assign({}, resp.body);
+          this.isProfileChanged = false;
+          this.notificationService.success("Profile was successfully changed");
+        } else {
+          this.notificationService.error("Something went wrong");
+        }
+      },
+      (error) => {
+        this.notificationService.error(error);
+      },
+    );
   }
 
   public saveNewPassword(): void {

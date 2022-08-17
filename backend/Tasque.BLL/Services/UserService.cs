@@ -35,5 +35,19 @@ namespace Tasque.Core.BLL.Services
             var userEntity = await _context.Users.FirstAsync(u => u.Id == id);
             return _mapper.Map<UserDto>(userEntity);
         }
+
+        public async Task<UserDto> EditUserProfile(UserDto dto)
+        {
+            var userEntity = await _context.Users.FirstOrDefaultAsync(u => u.Id == dto.Id)
+                ?? throw new ValidationException("User not found");
+            userEntity.Name = dto.Name;
+            userEntity.Email = dto.Email;
+            userEntity.AvatarURL = dto.AvatarURL;
+            _validator.ValidateAndThrow(userEntity);
+
+            _context.Users.Update(userEntity);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<UserDto>(userEntity);
+        }
     }
 }

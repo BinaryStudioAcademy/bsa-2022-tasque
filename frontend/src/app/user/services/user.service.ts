@@ -16,4 +16,8 @@ export class UserService {
   getCurrentUser(): Observable<HttpResponse<ProfileChangesDTO>> {
     return this.httpService.getFullRequest(this.routePrefix + '/current');
   }
+
+  editUserProfile(user: ProfileChangesDTO): Observable<HttpResponse<ProfileChangesDTO>> {
+    return this.httpService.putFullRequest(this.routePrefix + '/edit', user);
+  }
 }
