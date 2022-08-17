@@ -24,6 +24,6 @@ namespace Tasque.Core.Common.DTO.PartialModels
         public int? LastUpdatedById { get; set; }
         public int? ParentTaskId { get; set; }
 
-        public CustomTaskAttributes? CustomFields { get; set; }
+        public CustomAwsTaskAttributes? CustomFields { get; set; }
     }
 }

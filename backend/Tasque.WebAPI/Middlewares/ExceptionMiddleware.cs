@@ -38,6 +38,9 @@ namespace Tasque.Core.WebAPI.Middlewares
                     case AwsException ex:
                         await HandleAwsException(httpContext, ex);
                         break;
+                    case NotFoundException ex:
+                        await HandleNotFoundException(httpContext, ex);
+                        break;
                     default:
                         await HandleGenericException(httpContext, exception);
                         break;
@@ -81,6 +84,12 @@ namespace Tasque.Core.WebAPI.Middlewares
         {
             _logger.LogError($"{ex} - {ex.Message}");
             await CreateExceptionAsync(context, HttpStatusCode.Conflict, ex.Message);
+        }
+
+        private async Task HandleNotFoundException(HttpContext context, NotFoundException ex)
+        {
+            _logger.LogError($"{ex} - {ex.Message}");
+            await CreateExceptionAsync(context, HttpStatusCode.NotFound, ex.Message);
         }
     }
 }

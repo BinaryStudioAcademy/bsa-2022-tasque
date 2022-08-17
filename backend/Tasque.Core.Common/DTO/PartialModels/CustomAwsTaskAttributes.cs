@@ -5,7 +5,7 @@ using Tasque.Core.Common.StaticResources;
 namespace Tasque.Core.Common.DTO.PartialModels
 {
     [DynamoDBTable(AwsTaskKeys.TableName)]
-    public class CustomTaskAttributes
+    public class CustomAwsTaskAttributes
     {
         [DynamoDBHashKey(AwsTaskKeys.Id)]
         public int Id { get; set; }

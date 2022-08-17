@@ -11,7 +11,7 @@ namespace Tasque.Core.BLL.Interfaces
 
         public Task<CustomAwsTaskAttributes> GetTaskById(int taskId, int projectId);
 
-        public Task<CustomAwsTaskAttributes> CreateTask(CreateTask model);
+        public Task<CustomAwsTaskAttributes> CreateTask(CustomAwsTaskAttributes model);
 
         public Task<CustomAwsTaskAttributes> UpdateTask(UpdateTask task);
 

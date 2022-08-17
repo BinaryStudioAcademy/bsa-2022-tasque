@@ -93,7 +93,6 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             var jwtIssuerOptions = new JwtIssuerOptions();
             configuration.GetSection("JwtIssuerOptions").Bind(jwtIssuerOptions);
 
-            var x = configuration.GetAWSOptions();
             services.AddDefaultAWSOptions(configuration.GetAWSOptions());
 
             services.AddSingleton(jwtIssuerOptions);

@@ -1,7 +1,5 @@
 ﻿using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
-using Amazon.DynamoDBv2.DocumentModel;
-using Amazon.DynamoDBv2.Model;
 using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO;
@@ -15,13 +13,13 @@ namespace Tasque.Core.BLL.Services.AWS
         private readonly IAmazonDynamoDB _dbClient;
         private readonly IDynamoDBContext _db;
 
-        public AwsTaskService(AmazonDynamoDBClient dynamoDb, IDynamoDBContext db)
+        public AwsTaskService(IAmazonDynamoDB dynamoDb, IDynamoDBContext db)
         {
             _dbClient = dynamoDb;
             _db = db;
         }
 
-        public async Task<CustomAwsTaskAttributes> CreateTask(CreateTask model)
+        public async Task<CustomAwsTaskAttributes> CreateTask(CustomAwsTaskAttributes model)
         {
             throw new NotImplementedException();
         }
@@ -33,8 +31,7 @@ namespace Tasque.Core.BLL.Services.AWS
 
         public async Task<List<CustomAwsTaskAttributes>> GetAllTasks(List<TaskDto> tasks)
         {
-            var scanResponse = await _dbClient.ScanAsync(new ScanRequest(
-                AwsTaskKeys.TableName));
+            var scanResponse = await _dbClient.ScanAsync(new(AwsTaskKeys.TableName));
 
             var customFields = new List<CustomAwsTaskAttributes>();
 

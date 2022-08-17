@@ -13,9 +13,9 @@ namespace Tasque.Core.Common.DTO.PartialModels
         public List<TimeOnly>? CustomTimeFields { get; set; }
         public List<string>? CustomTextFields { get; set; }
         public List<string>? CustomParagraphFilds { get; set; }
-        public List<int>? CustomNumberFields { get; set; }
-        public List<Label>? CustomLabelFields { get; set; }
-        public List<User>? CustomUserFields { get; set; }
+        public List<string>? CustomNumberFields { get; set; }
+        public List<CustomTaskLabel>? CustomLabelFields { get; set; }
+        public List<UserDto>? CustomUserFields { get; set; }
         public List<string>? CustomCheckboxFields { get; set; } // Check 
         public List<string>? CustomDropdownFields { get; set; } // if
         public List<string>? CustomDropdownDependenciesFields { get; set; } // correct
