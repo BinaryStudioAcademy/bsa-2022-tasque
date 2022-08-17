@@ -133,4 +133,10 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         },
       );
   }
+
+  flipPasswordVisible(): void {
+    this.hidePass = !this.hidePass;
+    this.passwordInput.type = this.hidePass ? 'password' : 'text';
+    this.passwordInput.icon = this.hidePass ? this.faHide : this.faShow;
+  }
 }
