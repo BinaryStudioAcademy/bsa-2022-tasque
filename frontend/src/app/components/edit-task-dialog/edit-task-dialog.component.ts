@@ -20,6 +20,40 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
   public task: TaskModel;
   public currentUser: UserModel;
   public buttonIcon = faXmark;
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '0',
+    minHeight: '35px',
+    maxHeight: '150px',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'no',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Enter text here...',
+    sanitize: true,
+    toolbarPosition: 'top',
+    toolbarHiddenButtons: [
+      [
+        'subscript',
+        'superscript',
+        'justifyLeft',
+        'justifyCenter',
+        'justifyRight',
+        'justifyFull',
+        'indent',
+        'outdent',
+        'heading',
+        'fontName',
+        'backgroundColor',
+        'customClasses',
+        'insertImage',
+        'insertVideo',
+        'toggleEditorMode'
+      ]
+    ]
+  };
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: EditTaskDialogData) {
     super();
