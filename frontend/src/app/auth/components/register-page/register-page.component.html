@@ -1,81 +1,12 @@
-<div class="form-container">
-  <div>
-    <form [formGroup]="registerForm" class="login-form" onSubmit="submitForm()">
-      <h4 class="login-title">Sign Up</h4>
-      <div class="text-container">
-        <span>Already have an account? <a class="link" routerLink="../login">Log In</a></span>
-      </div>
-      <div class="input-container">
-        <label>Name</label>
-        <input
-          class="input full-width"
-          [(ngModel)]="userRegister.name"
-          [ngClass]="{
-            'error': nameControl.invalid && (nameControl.dirty || nameControl.touched)
-          }"
-          type="text"
-          placeholder="Enter your name"
-          formControlName="nameControl"
-        />
-        <span class="error" *ngIf="nameControl.errors?.['required'] && (nameControl.dirty || nameControl.touched)">Name is required.</span>
-      </div>
-      <div class="input-container">
-        <label>Email</label>
-        <input
-          class="input full-width"
-          [(ngModel)]="userRegister.email"
-          [ngClass]="{
-            'error': emailControl.invalid && (emailControl.dirty || emailControl.touched)
-          }"
-          type="text"
-          placeholder="Enter your email"
-          formControlName="emailControl"
-        />
-        <span class="error" *ngIf="emailControl.errors?.['required'] && (emailControl.dirty || emailControl.touched)">Email is required.</span>
-        <span class="error" *ngIf="emailControl.errors?.['email']">Incorrect email format</span>
-      </div>
-      <div class="input-container">
-        <div class="label-container full-width">
-          <label>Password</label>
-        </div>
-        <div class="password-container">
-          <input
-            class="input full-width"
-            [ngClass]="{
-              'error': passwordControl.invalid && (passwordControl.dirty || passwordControl.touched)
-            }"
-            [type]="hidePass ? 'password' : 'text'"
-            placeholder="Write password"
-            [(ngModel)]="userRegister.password"
-            (ngModelChange)="resetPasswordControl()"
-            formControlName="passwordControl"
-          />
-          <mat-icon class="hide-icon" (click)="hidePass = !hidePass">{{ hidePass ? 'visibility' : 'visibility_off' }}</mat-icon>
-        </div>
-        <span class="error" *ngIf="passwordControl.errors?.['required'] && (passwordControl.dirty || passwordControl.touched)">Password is required.</span>
-        <span class="error" *ngIf="passwordControl.errors?.['minlength']">Must be at least 8 characters</span>
-      </div>
-      <div class="input-container">
-        <div class="label-container full-width">
-          <label>Repeat password</label>
-        </div>
-        <div class="password-container">
-          <input
-            class="input full-width"
-            [ngClass]="{
-              'error': passwordRepeatControl.invalid && (passwordRepeatControl.dirty || passwordRepeatControl.touched)
-            }"
-            [(ngModel)]="passwordRepeat"
-            [type]="hidePassRepeat ? 'password' : 'text'"
-            placeholder="Repeat password"
-            formControlName="passwordRepeatControl"
-          />
-          <mat-icon class="hide-icon" (click)="hidePassRepeat = !hidePassRepeat">{{ hidePassRepeat ? 'visibilityRepeat' : 'visibility_off' }}</mat-icon>
-        </div>
-        <span class="error" *ngIf="passwordRepeatControl.errors?.['pattern'] && (passwordRepeatControl.dirty || passwordRepeatControl.touched)">Password do not match.</span>
-      </div>
-    </form>
+<form [formGroup]="registerForm" class="form-container" onSubmit="submitForm()">
+  <div class="text-container">
+    <h4 class="login-title">Sign Up</h4>
+    <span class="label-14">Already have an account? <a routerLink="../login">Log In</a></span>
   </div>
+  <tasque-input label="Name" placeholder="Enter your name" [formControl]="nameControl" [invalid]="!nameControl.valid" [errorMessage]="nameErrorMessage"></tasque-input>
+  <tasque-input label="Email" placeholder="Enter your email" [formControl]="emailControl" [errorMessage]="emailErrorMessage" [invalid]="!emailControl.valid"></tasque-input>
+  <tasque-input label="Password" placeholder="Enter your password" type="password" [formControl]="passwordControl" [errorMessage]="passwordErrorMessage" [invalid]="!passwordControl.valid" [icon]="faShow" iconPosition="right" #passwordInput (iconClick)="flipPassword(passwordInput)"></tasque-input>
+  <tasque-input label="Repeat password" placeholder="Repeat your password" type="password" (ngModelChange)="resetPasswordControl()" [formControl]="passwordRepeatControl" [errorMessage]="passwordRepeatErrorMessage" [invalid]="!passwordRepeatControl.valid" [icon]="faShow" iconPosition="right" #passwordRepeatInput (iconClick)="flipPassword(passwordRepeatInput)"></tasque-input>
   <div class="button-container">
     <tasque-button text="Sign up" class="btn fill full-width" (btnClick)="submitForm()"></tasque-button>
   </div>
@@ -85,4 +16,4 @@
   <div class="button-container">
     <tasque-button text="Sign up with Github" class="btn stroke full-width violet-stroke" [icon]="faGithub"></tasque-button>
   </div>
-</div>
+</form>

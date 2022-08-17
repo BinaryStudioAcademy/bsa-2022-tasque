@@ -27,6 +27,12 @@ namespace Tasque.Core.BLL.Services.Auth
 
         public async Task<ConfirmationToken> CreateConfirmationToken(User user, TokenKind kind)
         {
+            var existingTokens = _context.ConfirmationTokens
+                .Where(x => x.UserId == user.Id && x.Kind == kind)
+                .ToList()
+                .Where(x => !x.IsValid);
+            _context.ConfirmationTokens.RemoveRange(existingTokens);
+
             var confToken = new ConfirmationToken
             {
                 User = user,

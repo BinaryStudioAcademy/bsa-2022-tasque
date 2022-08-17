@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+	<UserSecretsId>2819ebd4-311d-4b3e-8309-b29e75776c9a</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+	<PackageReference Include="FluentValidation.AspNetCore" Version="11.2.1" />
+	<PackageReference Include="AutoMapper" Version="11.0.1" />
+	<PackageReference Include="FluentValidation" Version="11.2.0" />
+	<PackageReference Include="Mailjet.Api" Version="3.0.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
+	<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.7" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.7">
+		<PrivateAssets>all</PrivateAssets>
+		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
+	<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	<PackageReference Include="NLog" Version="5.0.1" />
+	<PackageReference Include="NLog.Extensions.Logging" Version="5.0.1" />
+	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+	
+    <ItemGroup>
+	    <ProjectReference Include="..\Tasque.BLL\Tasque.Core.BLL.csproj" />
+	    <ProjectReference Include="..\Tasque.Core.Common\Tasque.Core.Common.csproj" />
+	    <ProjectReference Include="..\Tasque.Core.Identity\Tasque.Core.Identity.csproj" />
+	    <ProjectReference Include="..\Tasque.DAL\Tasque.Core.DAL.csproj" />
+    </ItemGroup>
+
+</Project>

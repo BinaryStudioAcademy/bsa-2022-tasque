@@ -1,28 +1,11 @@
-<div class="form-container">
-  <div>
-    <tasque-button [icon]="faArrow" class="btn icon back-button" routerLink="../login"></tasque-button>
-    <form [formGroup]="loginForm" class="login-form">
-      <h4 class="login-title">Forgot password</h4>
-      <div class="text-container">
-        <span>Enter your email and we'll send you a link to reset your password</span>
-      </div>
-      <div class="input-container">
-        <label>Email</label>
-        <input
-          class="input full-width"
-          [ngClass]="{
-            'error': emailControl.invalid && (emailControl.dirty || emailControl.touched)
-          }"
-          type="text"
-          placeholder="Enter your email"
-          formControlName="emailControl"
-        />
-        <span class="error" *ngIf="emailControl.errors?.['required'] && (emailControl.dirty || emailControl.touched)">Email is required.</span>
-        <span class="error" *ngIf="emailControl.errors?.['pattern']">Incorrect email format</span>
-      </div>
-    </form>
+<tasque-button [icon]="faArrow" class="btn icon back-button" routerLink="../login"></tasque-button>
+<form [formGroup]="loginForm" class="login-form" class="form-container">
+  <div class="text-container">
+    <h4 class="login-title">Forgot password</h4>
+    <span class="label-14">Enter your email and we'll send you a link to reset your password</span>
   </div>
+  <tasque-input label="Email" placeholder="Enter your email" [errorMessage]="emailErrorMessage" [invalid]="!emailControl.valid" formControlName="emailControl"></tasque-input>
   <div class="button-container">
     <tasque-button text="Send email" class="btn fill full-width" (btnClick)="submit()"></tasque-button>
   </div>
-</div>
+</form>
