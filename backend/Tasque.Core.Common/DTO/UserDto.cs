@@ -6,6 +6,6 @@
         public string Name { get; set; } = null!;
         public string Email { get; set; } = null!;
         public bool IsEmailConfirmed { get; set; }
-        public string? Avatar { get; set; }
+        public string? AvatarURL { get; set; }
     }
 }

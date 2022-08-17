@@ -18,9 +18,9 @@ import { UserService } from '../../services/user.service';
 export class UserProfileComponent implements OnInit {
 
   public imageFile: File;
-  private defaultUserAvatarUrl: string = '../../assets/default_avatar.svg';
+  public defaultUserAvatarUrl: string = '../../assets/default_avatar.svg';
   public allowedFileTypes = ['image/png', 'image/jpeg', 'image/gif'];
-  public originalUser: ProfileChangesDTO;
+  public originalUser: ProfileChangesDTO = {} as ProfileChangesDTO;
   public profileChanges: ProfileChangesDTO = {} as ProfileChangesDTO;
   public passwordChanches: PasswordChangesDTO;
   public hidePass = true;
@@ -94,7 +94,7 @@ export class UserProfileComponent implements OnInit {
     }
 
     const reader = new FileReader();
-    reader.addEventListener('load', () => (this.profileChanges.avatar = reader.result as string));
+    reader.addEventListener('load', () => (this.profileChanges.avatarURL = reader.result as string));
     reader.readAsDataURL(this.imageFile);
     //adding file to cloud will be here
     this.checkProfileChanged(target);
@@ -105,9 +105,9 @@ export class UserProfileComponent implements OnInit {
       (resp) => {
         if (resp.ok && resp.body != null) {
           this.profileChanges = resp.body;
-          if (this.profileChanges.avatar == undefined || this.profileChanges.avatar == null) {
-            this.profileChanges.avatar = this.defaultUserAvatarUrl;
-          }
+          // if (this.profileChanges.avatar == undefined || this.profileChanges.avatar == null) {
+          //   this.profileChanges.avatar = this.defaultUserAvatarUrl;
+          // }
           this.originalUser = Object.assign({}, resp.body);
         } else {
           this.notificationService.error("Something went wrong");

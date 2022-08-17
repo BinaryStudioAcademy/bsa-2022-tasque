@@ -3,7 +3,8 @@
         <div class="upper">
             <div class="avatar-container" (click)="file.click()">
                 <input hidden class="file-hide" #file accept="image/*" type="file" (change)="handleFileInput($event.target)">
-                <img class="avatar avatar-style" src="{{profileChanges.avatar}}" alt="Here should be an avatar">
+                <img *ngIf="profileChanges.avatarURL" class="avatar avatar-style" src="{{profileChanges.avatarURL}}" alt="Here should be an avatar">
+                <img *ngIf="!profileChanges.avatarURL" class="avatar avatar-style" src="{{defaultUserAvatarUrl}}" alt="Here should be an avatar">
                 <div class="img-text">
                     Upload
                 </div>
