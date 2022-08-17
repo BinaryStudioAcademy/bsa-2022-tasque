@@ -1,7 +1,7 @@
 name: CD
 on:
   push:
-    branches: [ "dev", "deploy-2" ]
+    branches: [ "dev" ]
 
 # Env variable
 env:
