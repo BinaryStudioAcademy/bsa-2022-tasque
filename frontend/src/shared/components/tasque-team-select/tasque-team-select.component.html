@@ -17,9 +17,6 @@
       <div class="user-overflow" *ngIf="i==6" (click)="showPopUp = !showPopUp">+{{avatars.length-7}}</div>
     </a>
   </div>
-<!--  <div class="add-users">-->
-<!--    <button type="button" (click)="addUser()">+</button>-->
-<!--  </div>-->
 </div>
 <div [hidden]="!showPopUp" class="pop-up">
   <div class="user-list-container">
