@@ -125,11 +125,11 @@ export class LoginPageComponent implements OnInit, OnDestroy {
           }
         },
         (error: HttpErrorResponse) => {
-          let errMsg = error.error;
           if (error.status == 403) {
-            errMsg = 'Email is not confirmed';
+            this.showEmailNotConfirmedError();
+            return;
           }
-          this.toastrService.error(errMsg);
+          this.toastrService.error(error.error);
         },
       );
   }
@@ -138,5 +138,25 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     this.hidePass = !this.hidePass;
     this.passwordInput.type = this.hidePass ? 'password' : 'text';
     this.passwordInput.icon = this.hidePass ? this.faHide : this.faShow;
+  }
+
+  private showEmailNotConfirmedError(): void {
+    const toast = this.toastrService.error(
+      'Click this notification to send confirmation link again',
+      'Email is not confirmed',
+      { disableTimeOut: true },
+    );
+    toast.onTap.subscribe(() => this.resendConfirmationEmail());
+  }
+
+  private resendConfirmationEmail(): void {
+    const ctrl = this.emailControl;
+    if (ctrl.invalid) return;
+    this.authService
+      .resendEmailConfirmation(ctrl.value)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.toastrService.success('Check your inbox');
+      });
   }
 }
