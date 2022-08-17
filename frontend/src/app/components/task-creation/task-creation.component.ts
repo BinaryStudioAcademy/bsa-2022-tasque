@@ -1,7 +1,7 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SideBarService } from 'src/core/services/sidebar.service';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
-import { DOCUMENT } from '@angular/common';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-task-creation',
@@ -10,11 +10,9 @@ import { DOCUMENT } from '@angular/common';
 })
 export class TaskCreationComponent implements OnInit {
   faExpeditedssl = faEllipsisVertical;
+  taskCreateForm: FormGroup;
 
-  constructor(
-    private sideBarService: SideBarService,
-    @Inject(DOCUMENT) private document: Document,
-  ) {}
+  constructor(private sideBarService: SideBarService) {}
 
   openSidebar(): void {
     this.sideBarService.toggle();
@@ -22,41 +20,27 @@ export class TaskCreationComponent implements OnInit {
 
   create(): void {
     console.log('create');
+    console.warn(this.taskCreateForm.value);
   }
 
   cancel(): void {
     console.log('cancel');
   }
 
-  importIssues(): void {
-    console.log(this.description);
+  onSubmit() {
+    console.log(this.taskCreateForm.value);
   }
 
-  @ViewChild('editor') editor: any;
-  description: string = '';
-  setStyle(style: string) {
-    let bool = document.execCommand(style, false);
+  ngOnInit(): void {
+    this.taskCreateForm = new FormGroup({
+      project: new FormControl(''),
+      issueType: new FormControl(''),
+      summary: new FormControl('', Validators.required),
+      description: new FormControl(''),
+    });
   }
 
-  onChange() {
-    console.log(this.editor.nativeElement['innerHTML']);
-  }
+  importIssues(): void {}
 
-  public undo(): void {
-    document.execCommand('undo');
-  }
-
-  public redo(): void {
-    document.execCommand('redo');
-  }
-
-  public setList(style: string): void {
-    document.execCommand(style, false, 'NewUL');
-  }
-
-  public setfontSize(value: string): void {
-    document.execCommand('fontSize', true, value);
-  }
-
-  ngOnInit(): void {}
+  onChange() {}
 }

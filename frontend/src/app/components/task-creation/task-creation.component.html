@@ -10,27 +10,33 @@
     </div>
     <div class="task-creation-body">
       <div class="task-creation-body-wrapper">
-        <form action="" method="post">
+        <form [formGroup]="taskCreateForm" (ngSubmit)="onSubmit()">
           <div class="input-wrapper">
-            <tasque-dropdown label="Project"></tasque-dropdown>
+            <tasque-dropdown label="Project" type="text" formControlName="project" ngDefaultControl> </tasque-dropdown>
           </div>
           <div class="input-wrapper">
-            <tasque-dropdown label="Issue type"></tasque-dropdown>
+            <tasque-dropdown label="Issue type" formControlName="issueType" ngDefaultControl> </tasque-dropdown>
           </div>
           <div class="input-wrapper">
-            <tasque-input label="Summary" id="summary" type="text" name="summary"> </tasque-input>
+            <tasque-input label="Summary" id="summary" type="text" name="summary" formControlName="summary" ngDefaultControl> </tasque-input>
           </div>
           <div class="froalaEditor-wrapper">
-            <label> Description</label>
-            <div class="test" [froalaEditor]>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada odio scelerisque nibh non ac duis in sed suscipit. Vel mi ac, tempus ridiculus. Consectetur sodales orn</div>
+            <label>Description</label>
+            <div [froalaEditor] class="description" formControlName="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada odio scelerisque nibh non ac duis in sed suscipit. Vel mi ac, tempus ridiculus. Consectetur sodales orn</div>
+          </div>
+          <p>Form Value: {{ taskCreateForm.value | json }}</p>
+          <p>Form Status: {{ taskCreateForm.status }}</p>
+
+          <div class="button-wrapper">
+            <tasque-button class="btn stroke" text="+ Add issues"> </tasque-button>
           </div>
         </form>
       </div>
     </div>
     <div class="task-creation-footer">
       <div class="task-creation-footer-button">
-        <tasque-button class="btn stroke" text="Cancel" (click)="cancel()"> </tasque-button>
-        <tasque-button class="btn fill" text="Create" (click)="create()"> </tasque-button>
+        <tasque-button type="submit" class="btn stroke" text="Cancel" (click)="cancel()"> </tasque-button>
+        <tasque-button type="submit" class="btn fill" text="Create" (click)="create()"> </tasque-button>
       </div>
     </div>
   </div>

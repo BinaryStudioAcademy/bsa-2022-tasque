@@ -3,14 +3,14 @@ import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'tasque-input',
   templateUrl: './input.component.html',
-  styleUrls: ['./input.component.sass']
+  styleUrls: ['./input.component.sass'],
 })
 export class InputComponent implements OnInit {
   public inputWidth = 100;
   public inputBorderRadius = 5;
   public inputClass = 'input';
   public inputType = 'text';
-  public inputText = ''; 
+  public inputText = '';
   public inputLabel = '';
   public inputPlaceholder = '';
   public inputErrorMessage = 'error';
@@ -33,18 +33,18 @@ export class InputComponent implements OnInit {
   }
 
   @Input()
-  set width(width: number){
+  set width(width: number) {
     this.inputWidth = width;
   }
-  get width(): number{
+  get width(): number {
     return this.inputWidth;
   }
 
   @Input()
-  set borderRadius(raduis: number){
+  set borderRadius(raduis: number) {
     this.inputBorderRadius = raduis;
   }
-  get borderRadius(): number{
+  get borderRadius(): number {
     return this.inputBorderRadius;
   }
 
@@ -88,9 +88,7 @@ export class InputComponent implements OnInit {
     return this.inputErrorMessage;
   }
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-  
+  ngOnInit(): void {}
 }
