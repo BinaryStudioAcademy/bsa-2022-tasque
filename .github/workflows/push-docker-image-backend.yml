@@ -1,4 +1,4 @@
-name: CI
+name: CD
 on:
   push:
     branches: [ "dev", "deploy" ]
@@ -13,7 +13,7 @@ env:
   SSH_USERNAME: ${{secrets.SSH_USERNAME}}
   SSH_KEY: ${{secrets.SSH_KEY}}
 jobs:
-  run_push_backend:  # job name
+  build_push_backend:  # job name
     runs-on: ubuntu-latest  # runner name : (ubuntu latest version) 
     steps:
     - uses: actions/checkout@v2 # first action : checkout source code
@@ -28,7 +28,7 @@ jobs:
     - name: Docker Push
       run: docker push $DOCKER_USER/$REPO_NAME_BACKEND:${{ steps.date.outputs.date }}
 
-  run_push_frontend:  # job name
+  build_push_frontend:  # job name
     runs-on: ubuntu-latest  # runner name : (ubuntu latest version) 
     steps:
     - uses: actions/checkout@v2 # first action : checkout source code
@@ -55,4 +55,4 @@ jobs:
           username: $SSH_USERNAME
           key: $SSH_KEY
           script: |
-            /usr/bin/env restart.sh
+            /usr/bin/env ~/restart.sh
