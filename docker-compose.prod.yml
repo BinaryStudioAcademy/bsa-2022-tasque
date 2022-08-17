@@ -2,7 +2,7 @@ version: "3.9"  # optional since v1.27.0
 
 services:
   webapi:
-    image: mendasium/tasque_backend
+    image: mendasium/tasque-backend
     ports:
       - "5000:5000"
     env_file:
@@ -16,7 +16,7 @@ services:
       # - .:/ log volume!
       
   frontend:
-    image: mendasium/tasque_frontend
+    image: mendasium/tasque-frontend
     container_name: frontend
     ports:
       - "80:80"
