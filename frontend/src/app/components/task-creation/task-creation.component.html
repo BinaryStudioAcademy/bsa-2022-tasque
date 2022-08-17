@@ -12,10 +12,10 @@
       <div class="task-creation-body-wrapper">
         <form [formGroup]="taskCreateForm">
           <div class="input-wrapper">
-            <tasque-dropdown label="Project" type="text" formControlName="projectControl"> </tasque-dropdown>
+            <tasque-dropdown label="Project" formControlName="projectControl" [errorMessage]="projectErrorMessage" [invalid]="!projectControl.valid"> </tasque-dropdown>
           </div>
           <div class="input-wrapper">
-            <tasque-dropdown label="Issue type" formControlName="issueTypeControl"> </tasque-dropdown>
+            <tasque-dropdown label="Issue type" [formControl]="issueTypeControl" [errorMessage]="issueTypeErrorMessage" [invalid]="!issueTypeControl.valid"> </tasque-dropdown>
           </div>
           <div class="input-wrapper">
             <tasque-input label="Summary" [formControl]="summaryControl" [errorMessage]="summaryErrorMessage" [invalid]="!summaryControl.valid" ngDefaultControl> </tasque-input>

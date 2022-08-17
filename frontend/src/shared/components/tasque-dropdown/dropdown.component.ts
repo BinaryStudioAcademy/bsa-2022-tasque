@@ -21,6 +21,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class DropdownComponent implements OnInit, ControlValueAccessor {
+  public dropdownErrorMessage = 'error';
+  public dropdownValueIsError = false;
   @Input() public options: [color: string, title: string, id: number][] = [
     ['red', 'Development', 0],
     ['#F6F7F9', 'Feature', 1],
@@ -30,6 +32,18 @@ export class DropdownComponent implements OnInit, ControlValueAccessor {
   @Input() public placeholder = '';
   @Input() public autoSelect = false;
 
+  @Input()
+  set invalid(hasError: boolean) {
+    this.dropdownValueIsError = hasError;
+  }
+  get invalid(): boolean {
+    return this.dropdownValueIsError;
+  }
+
+  @Input()
+  set errorMessage(message: string) {
+    this.dropdownErrorMessage = message;
+  }
   @Output() onSelect = new EventEmitter<number>();
   onChange: (_: any) => {};
 

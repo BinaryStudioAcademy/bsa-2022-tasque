@@ -59,14 +59,15 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
     return '';
   }
-
+  test: true;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
 
     private authService: AuthService,
-    private toastrService: ToastrService
-  ) {this.emailControl = new FormControl( this.userLogin.email, [
+    private toastrService: ToastrService,
+  ) {
+    this.emailControl = new FormControl(this.userLogin.email, [
       Validators.email,
       Validators.required,
       Validators.pattern(this.validationConstants.emailRegex),

@@ -25,16 +25,16 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     const ctrl = this.projectControl;
 
     if (ctrl.errors?.['required']) {
-      return 'Summary must be at least 2 characters';
+      return 'Project is required';
     }
     return '';
   }
 
-  get issueErrorTypeMessage(): string {
+  get issueTypeErrorMessage(): string {
     const ctrl = this.issueTypeControl;
 
     if (ctrl.errors?.['required']) {
-      return 'Summary must be at least 2 characters';
+      return 'Issue type is required';
     }
     return '';
   }
@@ -66,7 +66,9 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     private sideBarService: SideBarService,
     private notification: NotificationService,
   ) {
-    this.projectControl = new FormControl('', Validators.required);
+    this.projectControl = new FormControl(this.issueTypeControltest, [
+      Validators.required,
+    ]);
     this.issueTypeControl = new FormControl(this.issueTypeControltest, [
       Validators.required,
     ]);
