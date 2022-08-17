@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { SideBarService } from 'src/core/services/sidebar.service';
+import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { DOCUMENT } from '@angular/common';
 
 @Component({
@@ -8,6 +9,8 @@ import { DOCUMENT } from '@angular/common';
   styleUrls: ['./task-creation.component.sass'],
 })
 export class TaskCreationComponent implements OnInit {
+  faExpeditedssl = faEllipsisVertical;
+
   constructor(
     private sideBarService: SideBarService,
     @Inject(DOCUMENT) private document: Document,
