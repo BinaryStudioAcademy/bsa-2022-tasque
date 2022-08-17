@@ -9,6 +9,7 @@ import { LocalStorageKeys } from 'src/entity-models/local-storage-keys';
 import { UserLoginModel } from 'src/entity-models/user-login-model';
 import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
 import { ToastrService } from 'ngx-toastr';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login-page',
@@ -81,14 +82,23 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     this.authService
       .loginUser(this.userLogin)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((resp) => {
-        if (resp.ok) {
-          const token = resp.body;
-          this.localStorage.setItem(
-            this.localStorageKeys.token,
-            token?.accessToken as string,
-          );
-        }
-      });
+      .subscribe(
+        (resp) => {
+          if (resp.ok) {
+            const token = resp.body;
+            this.localStorage.setItem(
+              this.localStorageKeys.token,
+              token?.accessToken as string,
+            );
+          }
+        },
+        (error: HttpErrorResponse) => {
+          let errMsg = error.error;
+          if (error.status == 403) {
+              errMsg = 'Email is not confirmed';
+          }
+          this.toastrService.error(errMsg);
+        },
+      );
   }
 }
