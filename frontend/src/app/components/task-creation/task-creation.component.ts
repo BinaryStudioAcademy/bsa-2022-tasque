@@ -124,4 +124,9 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
     console.log(this.task);
   }
+
+  public clearForm(): void {
+    this.taskCreateForm.reset();
+    this.sideBarService.toggle();
+  }
 }

@@ -24,9 +24,6 @@
             <label>Description</label>
             <angular-editor [config]="editorConfig" formControlName="descriptionControl"> </angular-editor>
           </div>
-          <p>Form Value: {{ taskCreateForm.value | json }}</p>
-          <p>Form Status: {{ taskCreateForm.status }}</p>
-
           <div class="button-wrapper">
             <tasque-button class="btn stroke" text="+ Add issues"> </tasque-button>
           </div>
@@ -35,7 +32,7 @@
     </div>
     <div class="task-creation-footer">
       <div class="task-creation-footer-button">
-        <tasque-button type="submit" class="btn stroke" text="Cancel"> </tasque-button>
+        <tasque-button type="submit" class="btn stroke" text="Cancel" (click)="clearForm()"> </tasque-button>
         <tasque-button type="submit" class="btn fill" text="Create" (click)="submitForm()"> </tasque-button>
       </div>
     </div>
