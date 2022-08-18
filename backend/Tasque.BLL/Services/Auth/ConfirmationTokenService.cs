@@ -66,8 +66,8 @@ namespace Tasque.Core.BLL.Services.Auth
             var email = new EmailMessage(reciever)
             {
                 Subject = "Successful registration",
-                Content = GetEmailText(token)
-                    
+                Content = GetEmailText(token),
+                Sender = new EmailContact(_emailOptions.SenderEmail, _emailOptions.SenderName)
             };
             return _emailService.SendEmailAsync(email);
         }
