@@ -43,7 +43,7 @@
               <span>{{task.avatarUrl}}</span>
           </div>
         </div>
-        <div class="create-column" (mouseleave)="onClickedOutside($event)">
+        <div class="create-column" (mouseleave)="onClickedOutside()">
           <span *ngIf="!isCreateColumn" (click)="OpenAddColumn()">+ Add Section</span>
           <div *ngIf="isCreateColumn">
             <form [formGroup]="createColumnForm" (ngSubmit)="AddColumn()">

@@ -12,15 +12,15 @@ export class TasqueBoardComponent implements OnInit {
 
   public searchIcon = faMagnifyingGlass;
   public plusIcon = faPlus;
-  public isCreateColumn: boolean = false;
+  public isCreateColumn: boolean;
   public createColumnForm: FormGroup;
   private newBoard: BoardModel;
 
   public board: BoardModel[] = [
-    {columName: 'To Do', tasks: []}, 
-    {columName: 'In Progress', tasks: []}, 
-    {columName: 'Code Review', tasks: [{name: 'sdsd', avatarUrl: 'sdsdsd'},{name: 'sdsd', avatarUrl: 'sdsdsd'},{name: 'sdsd', avatarUrl: 'sdsdsd'},{name: 'sdsd', avatarUrl: 'sdsdsd'},{name: 'sdsd', avatarUrl: 'sdsdsd'},{name: 'sdsd', avatarUrl: 'sdsdsd'},{name: 'sdsd', avatarUrl: 'sdsdsd'}]}, 
-    {columName: 'Done', tasks: []},
+    { columName: 'To Do', tasks: [] }, 
+    { columName: 'In Progress', tasks: [] }, 
+    { columName: 'Code Review', tasks: [] }, 
+    { columName: 'Done', tasks: [] },
   ];
 
   constructor(formBuilder: FormBuilder) { 
@@ -29,23 +29,24 @@ export class TasqueBoardComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
-  OpenAddColumn() {
+  OpenAddColumn(): void {
     this.isCreateColumn = true;
   }
 
-  AddColumn() {
+  AddColumn(): void {
     if(this.createColumnForm.valid) {
-      this.newBoard = {columName: this.createColumnForm.get('columnName')?.value, tasks: []};
+      this.newBoard = { columName: this.createColumnForm.get('columnName')?.value, tasks: [] };
       this.board.push(this.newBoard);
       this.createColumnForm.reset();
       this.isCreateColumn = false;  
     }
   }
 
-  onClickedOutside(e: Event) {
+  onClickedOutside(): void {
     this.isCreateColumn = false;
+    this.createColumnForm.reset();
   }
 }
