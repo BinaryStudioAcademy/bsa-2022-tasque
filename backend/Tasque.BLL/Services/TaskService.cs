@@ -127,7 +127,7 @@ namespace Tasque.Core.BLL.Services
 
         public async Task<TaskDto> GetTasksById(int id)
         {
-            var task = _mapper.Map<TaskDto>(_db.Tasks.Where(t => t.Id == id));
+            var task = _mapper.Map<TaskDto>(_db.Tasks.FirstOrDefault(t => t.Id == id));
 
             if (task == null)
                 throw new NotFoundException("task");
