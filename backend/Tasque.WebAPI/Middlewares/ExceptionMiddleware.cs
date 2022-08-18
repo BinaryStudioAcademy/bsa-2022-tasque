@@ -60,6 +60,8 @@ namespace Tasque.Core.WebAPI.Middlewares
         private async Task HandleGenericException(HttpContext context, Exception ex)
         {
             _logger.LogError("{ex.Message}", ex.Message);
+            if (ex.InnerException != null)
+                _logger.LogError(ex.InnerException.Message);
             await CreateExceptionAsync(context);
         }
         private async Task HandleHttpException(HttpContext context, HttpException ex)

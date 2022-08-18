@@ -3,6 +3,7 @@ using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.DTO.PartialModels;
+using Tasque.Core.Common.Entities.Abstract;
 using Tasque.Core.DAL;
 
 namespace Tasque.Core.BLL.Services
@@ -17,14 +18,23 @@ namespace Tasque.Core.BLL.Services
             _mapper = mapper;
         }
 
-        public Task<TaskDto> CreateTask(CreateTask model)
+        public async Task<TaskDto> CreateTask(CreateTask model)
         {
-            throw new NotImplementedException();
+            var entity = _mapper.Map<Common.Entities.Task>(model);
+            await _awsTaskService.CreateTask(_mapper.Map<CustomAwsTaskAttributes>(model.CustomFields));
+
+            _db.Add(entity);
+            SaveChanges(entity);
+
+            return _mapper.Map<TaskDto>(entity);
         }
 
-        public Task DeleteTask(int id)
+        public async Task DeleteTask(int id)
         {
-            throw new NotImplementedException();
+            var task = _db.Tasks.FirstOrDefault(t => t.Id == id);
+            _db.Tasks.Remove(task);
+            await _awsTaskService.DeleteTask(task.Id, task.ProjectId);
+            _db.SaveChanges();
         }
 
         public async Task<List<TaskDto>> GetAllTasks()
@@ -34,7 +44,7 @@ namespace Tasque.Core.BLL.Services
             if (tasks == null)
                 throw new NotFoundException("task");
 
-            var customAttributes = await _awsTaskService.GetAllTasks(tasks);
+            var customAttributes = await _awsTaskService.GetAllTasks();
 
             var taskList = tasks.Join(customAttributes, t => t.Id, ca => ca.Id, (t, ca) => new TaskDto()
             {
@@ -77,7 +87,7 @@ namespace Tasque.Core.BLL.Services
         public async Task<List<TaskDto>> GetAllProjectTask(int projectId)
         {
             var tasks = _mapper.Map<List<TaskDto>>(_db.Tasks.Where(t => t.ProjectId == projectId));
-            var customAwsAttributes = await _awsTaskService.GetAllTasks(tasks);
+            var customAwsAttributes = await _awsTaskService.GetAllTasks();
 
             var taskList = tasks.Join(customAwsAttributes, t => t.Id, ca => ca.Id, (t, ca) => new TaskDto()
             {
@@ -157,9 +167,29 @@ namespace Tasque.Core.BLL.Services
             return task;
         }
 
-        public Task<TaskDto> UpdateTask(TaskDto task)
+        public async Task<TaskDto> UpdateTask(UpdateTask model)
         {
-            throw new NotImplementedException();
+            var task = _db.Tasks.FirstOrDefault(t => t.Id == model.Id);
+
+            if (task == null)
+                throw new NotFoundException("task");
+
+            //var customAttributes = _awsTaskService.UpdateTask(_mapper.Map<CustomAwsTaskAttributes>(model.CustomFields));
+            var customAttributes = _awsTaskService.UpdateTask(model?.CustomFields);
+
+            task.Labels = model.Labels;
+            task.SprintId = model.SprintId;
+            task.Attachments = model.Attachments;
+            task.BoardColumnId = model.BoardColumnId;
+            task.Description = model.Description;
+            task.Deadline = model.Deadline;
+            task.LastUpdatedById = model.LastUpdatedById;
+
+            await _awsTaskService.UpdateTask(_mapper.Map<CustomAwsTaskAttributes>(model.CustomFields));
+
+            SaveChanges(task);
+
+            return _mapper.Map<TaskDto>(task);
         }
 
         private static double TryParseToDouble(string num)
@@ -171,6 +201,19 @@ namespace Tasque.Core.BLL.Services
             catch(Exception ex)
             {
                 throw new AwsException("Invalid field data: " + ex.Message);
+            }
+        }
+
+        private void SaveChanges<T>(T entity) 
+            where T : BaseEntity
+        {
+            try
+            {
+                _db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                _db.Entry(entity);
             }
         }
     }

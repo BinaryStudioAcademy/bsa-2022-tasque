@@ -16,6 +16,13 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.BLL.Services.AWS;
+using Task = System.Threading.Tasks.Task;
+using Amazon.SecurityToken;
+using Amazon.Extensions.NETCore.Setup;
+using Amazon.Runtime;
+using Amazon.S3;
+using Amazon;
+using Tasque.Core.WebAPI.AppConfigurationExtension.ConstResources;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
 {
@@ -91,9 +98,20 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
             var jwtIssuerOptions = new JwtIssuerOptions();
-            configuration.GetSection("JwtIssuerOptions").Bind(jwtIssuerOptions);
+            configuration.GetSection(nameof(JwtIssuerOptions)).Bind(jwtIssuerOptions);
 
             services.AddDefaultAWSOptions(configuration.GetAWSOptions());
+
+            var credentials = new BasicAWSCredentials(AWSKeys.AccessKey, AWSKeys.SecretKey);
+
+            var awsOptions = new AWSOptions()
+            {
+                Region = RegionEndpoint.USEast1,
+                Profile = AWSKeys.AWSProfile,
+                Credentials = credentials,
+            };
+
+            services.AddDefaultAWSOptions(awsOptions);
 
             services.AddSingleton(jwtIssuerOptions);
             services.ConfigureJwt(configuration);

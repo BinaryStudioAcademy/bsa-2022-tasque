@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services.Auth;
 using Tasque.Core.Common.DTO;
+using Tasque.Core.DAL;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
@@ -10,7 +11,7 @@ namespace Tasque.Core.WebAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private AuthService _service;        
+        private AuthService _service;
 
         public AuthController(AuthService service)
         {

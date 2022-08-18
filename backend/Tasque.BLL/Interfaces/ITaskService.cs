@@ -18,7 +18,7 @@ namespace Tasque.Core.BLL.Interfaces
 
         public Task<TaskDto> CreateTask(CreateTask model);
 
-        public Task<TaskDto> UpdateTask(TaskDto task);
+        public Task<TaskDto> UpdateTask(UpdateTask task);
 
         public Task DeleteTask(int id);
     }
