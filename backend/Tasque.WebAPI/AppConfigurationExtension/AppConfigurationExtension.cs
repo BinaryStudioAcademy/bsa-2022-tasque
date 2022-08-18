@@ -83,6 +83,16 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.Configure<MailJetOptions>(section);
         }
 
+        public static void ConfigureS3Services(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<AmazonS3Options>(configuration.GetSection(nameof(AmazonS3Options)));
+
+            var amazonS3Options = new AmazonS3Options();
+            configuration.GetSection("AmazonS3Options").Bind(amazonS3Options);
+
+            services.AddSingleton(amazonS3Options);
+        }
+
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
             var jwtIssuerOptions = new JwtIssuerOptions();
@@ -91,6 +101,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddSingleton(jwtIssuerOptions);
             services.ConfigureJwt(configuration);
             services.AddScoped<JwtFactory>();
+            services.ConfigureS3Services(configuration);
             services.AddMvc();
             services.AddControllers();
             services.AddCors();
@@ -102,7 +113,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<ProjectService>()
                 .AddScoped<IEmailService, MailJetService>()
                 .AddScoped<OrganizationService>()
-                .AddScoped<UserService>();
+                .AddScoped<UserService>()
+                .AddScoped<FileUploadService>();
         }
 
         public static void AddSwagger(this IServiceCollection services)

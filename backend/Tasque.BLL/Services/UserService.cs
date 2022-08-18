@@ -15,15 +15,18 @@ namespace Tasque.Core.BLL.Services
         private DataContext _context;
         private IMapper _mapper;
         private IValidator<User> _validator;
+        private FileUploadService _fileUploadService;
 
         public UserService(
             DataContext context,
             IMapper mapper,
-            IValidator<User> validator)
+            IValidator<User> validator,
+            FileUploadService fileUploadService)
         {
             _context = context;
             _mapper = mapper;
             _validator = validator;
+            _fileUploadService = fileUploadService;
         }
 
         public async Task<UserDto> GetUserById(int id)
@@ -41,7 +44,15 @@ namespace Tasque.Core.BLL.Services
             var userEntity = await _context.Users.FirstOrDefaultAsync(u => u.Id == dto.Id)
                 ?? throw new ValidationException("User not found");
             userEntity.Name = dto.Name;
-            userEntity.AvatarURL = dto.AvatarURL;
+            if(string.IsNullOrEmpty(dto.AvatarURL) || dto.AvatarURL.StartsWith("http"))
+            {
+                userEntity.AvatarURL = dto.AvatarURL;
+            }
+            else
+            {
+                userEntity.AvatarURL = await _fileUploadService.UploadFileAsync(dto.AvatarURL, "avatars");
+            }
+                
             _validator.ValidateAndThrow(userEntity);
 
             _context.Users.Update(userEntity);
