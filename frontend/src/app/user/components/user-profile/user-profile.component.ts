@@ -73,7 +73,7 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  public handleFileInput(target: any) {
+  public handleFileInput(target: any): void {
     this.imageFile = target.files[0];
 
     if (!this.imageFile) {
@@ -94,10 +94,12 @@ export class UserProfileComponent implements OnInit {
     }
 
     const reader = new FileReader();
-    reader.addEventListener('load', () => (this.profileChanges.avatarURL = reader.result as string));
+    reader.addEventListener('load', () => {
+      this.profileChanges.avatarURL = reader.result as string;
+      this.checkProfileChanged(target);
+    });
     reader.readAsDataURL(this.imageFile);
-    //adding file to cloud will be here
-    this.checkProfileChanged(target);
+    this.notificationService.success("Uploaded successfully");
   }
 
   private getUser(): void {
@@ -161,7 +163,22 @@ export class UserProfileComponent implements OnInit {
   }
 
   public checkProfileChanged(event: any): void {
-    this.isProfileChanged = JSON.stringify(this.profileChanges) != JSON.stringify(this.originalUser);
+    this.checkChanged();
+  }
+
+  public checkChanged(): void {
+    this.isProfileChanged = this.profileChanges.avatarURL !=  this.originalUser.avatarURL ||
+      this.profileChanges.name !=  this.originalUser.name;
+  }
+
+  public deleteAvatar(fileInput: HTMLInputElement): void {    
+    if (this.profileChanges.avatarURL != undefined && this.profileChanges.avatarURL != null)
+    {
+      fileInput.value = '';
+      this.profileChanges.avatarURL = undefined;
+      this.checkChanged();
+      this.notificationService.success("Deleted successfully");
+    }    
   }
 
 }
