@@ -1,27 +1,26 @@
-<div class="dropdown-warapper" [ngStyle]="{'width': width }">
-    <label class="dropdown-label" *ngIf="label">{{label}}</label>
-    <button class="dropdown-button" (click)="toggleDropdown()">
-        <div class="selected-wrapper">
-            <span class="selected-option" *ngIf="selectedOption">
-                <svg class="color-square">
-                    <rect [ngStyle]="{'fill': selectedOption[0]}" />
-                </svg>
-                {{selectedOption[1]}}
-            </span>
-            <span class="selected-option" *ngIf="!selectedOption">
-                {{placeholder}}
-            </span> 
-            <mat-icon class="dropdown-icon">expand_more</mat-icon>
-        </div> 
-    </button>
-    <div class="options-container" *ngIf="expanded">
-        <div class="option" *ngFor="let option of options"
-        (click)="select(option)">
-            <svg class="color-square">
-                <rect [ngStyle]="{'fill': option[0]}" />
-            </svg>
-            {{option[1]}}
-        </div>
+<div class="dropdown-warapper" [ngStyle]="{ 'width': width }">
+  <label class="dropdown-label" *ngIf="label">{{ label }}</label>
+  <button class="dropdown-button" (click)="toggleDropdown()">
+    <div class="selected-wrapper">
+      <span class="selected-option" *ngIf="selectedOption">
+        <svg class="color-square">
+          <rect [ngStyle]="{ 'fill': selectedOption[0] }" />
+        </svg>
+        {{ selectedOption[1] }}
+      </span>
+      <span class="selected-option" *ngIf="!selectedOption">
+        {{ placeholder }}
+      </span>
+      <mat-icon class="dropdown-icon">expand_more</mat-icon>
     </div>
+  </button>
+  <span class="error" *ngIf="dropdownValueIsError">{{ dropdownErrorMessage }}</span>
+  <div class="options-container" *ngIf="expanded">
+    <div class="option" *ngFor="let option of options" (click)="select(option)">
+      <svg class="color-square">
+        <rect [ngStyle]="{ 'fill': option[0] }" />
+      </svg>
+      {{ option[1] }}
+    </div>
+  </div>
 </div>
-  

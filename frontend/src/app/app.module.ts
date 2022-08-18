@@ -40,9 +40,9 @@ import { OrganizationListItemComponent } from './components/organization-list/or
     MatDialogModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    AuthModule
+    AuthModule,
   ],
   providers: [BrowserAnimationsModule],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

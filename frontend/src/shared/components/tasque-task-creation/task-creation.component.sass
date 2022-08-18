@@ -1,0 +1,139 @@
+@import 'src/colors.sass'
+
+.task-creation-conteiner
+    height: 100vh
+    min-height: 100%
+    width: 100%
+    min-width: 100%
+    display: flex
+    flex-direction: column
+    background: colorscheme(gray-100)
+    font-family: 'Nunito'
+
+.task-creation-header,
+.task-creation-footer
+    height: 145px
+    background: colorscheme(white-100)
+    display: flex
+    align-items: center
+
+.task-creation-header
+    padding: 0 51px
+
+.header-wrapper
+    p,h5
+        margin: 0px
+
+.task-creation-header-title
+    font-family: 'Nunito'
+    font-style: normal
+    font-weight: 700
+    font-size: 24px
+    line-height: 114%
+
+.task-creation-header-button
+    margin-left: auto
+    >.btn
+        margin-left: 15px
+
+.task-creation-footer-button
+    padding: 0 51px
+    margin-left: auto
+    >.btn
+        margin-left: 15px
+
+.task-creation-body
+    max-height: 100%
+    flex-grow: 3
+
+.task-creation-body-wrapper
+    padding: 0px 50px
+
+.input-wrapper
+    width: 100%
+    padding: 15px 0 0px 0px
+
+tasque-input
+    ::ng-deep
+        .input-container
+            display: grid
+            grid-template-columns: min-content
+        .input-wrp
+            width: 100%
+            grid-column: 2
+        .input
+            width: 100% !important
+            height: 50px
+            background: colorscheme(gray-300)
+            border-radius: 15px !important
+        label
+            grid-column: 1
+            margin-right: 16px !important
+            width: 100px !important
+            font-weight: 400
+            font-size: 14px !important
+            line-height: 19px !important
+            margin: auto
+        .error
+            grid-column: 2
+            margin: auto
+
+tasque-dropdown
+    ::ng-deep
+        .dropdown-warapper
+            display: grid
+            grid-template-columns: min-content
+            .dropdown-button
+                width: 172px
+                background: colorscheme(gray-300)
+                grid-column: 2
+            .error
+                grid-column: 2
+                margin: auto
+            .dropdown-label
+                padding-right: 16px
+                width: 100px
+                font-weight: 400
+                font-size: 14px
+                line-height: 19px
+                grid-column: 1
+                margin: auto
+
+.editor-wrapper
+    display: flex
+    flex-direction: row
+    align-items: center
+    padding: 15px 0 0px 0px
+    label
+        margin-right: 16px !important
+        width: 100px !important
+        min-width: 100px
+        font-weight: 400
+        font-size: 14px !important
+        line-height: 19px !important
+    .editor-conteiner
+        flex: 1 0 33.333%
+        min-width: 200px
+
+angular-editor
+        width: 100% !important
+
+angular-editor
+    ::ng-deep
+        .angular-editor-textarea
+            margin-top: 0px !important
+            border-top: none !important
+
+.button-wrapper
+    padding: 20px 0px
+
+.description
+    width: 100%
+    ::ng-deep .fr-second-toolbar
+        ::ng-deep a
+            display: none
+
+.error
+    color: colorscheme(pink-300)
+    display: block
+    text-align: center
