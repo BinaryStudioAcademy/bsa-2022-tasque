@@ -46,7 +46,7 @@ namespace Tasque.Core.BLL.Services.Email.MailJet
             if (errors.Any())
             {
                 var errorMessages = errors.SelectMany(x => x.Errors).Select(x => x.ErrorMessage);
-                var errorsStr = string.Join('\n', errors);
+                var errorsStr = string.Join('\n', errorMessages);
                 // Custom exception here?
                 throw new Exception(errorsStr);
             }
