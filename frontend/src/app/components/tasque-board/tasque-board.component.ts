@@ -12,15 +12,15 @@ export class TasqueBoardComponent implements OnInit {
 
   public searchIcon = faMagnifyingGlass;
   public plusIcon = faPlus;
-  public isCreateColumn: boolean;
+  public isOpenColumnAddDialog: boolean;
   public createColumnForm: FormGroup;
   private newBoard: BoardModel;
 
   public board: BoardModel[] = [
-    { columName: 'To Do', tasks: [] }, 
-    { columName: 'In Progress', tasks: [] }, 
-    { columName: 'Code Review', tasks: [] }, 
-    { columName: 'Done', tasks: [] },
+    { columnName: 'To Do', tasks: [] }, 
+    { columnName: 'In Progress', tasks: [] }, 
+    { columnName: 'Code Review', tasks: [] }, 
+    { columnName: 'Done', tasks: [] },
   ];
 
   constructor(formBuilder: FormBuilder) { 
@@ -33,20 +33,20 @@ export class TasqueBoardComponent implements OnInit {
   }
 
   OpenAddColumn(): void {
-    this.isCreateColumn = true;
+    this.isOpenColumnAddDialog = true;
   }
 
   AddColumn(): void {
     if(this.createColumnForm.valid) {
-      this.newBoard = { columName: this.createColumnForm.get('columnName')?.value, tasks: [] };
+      this.newBoard = { columnName: this.createColumnForm.get('columnName')?.value, tasks: [] };
       this.board.push(this.newBoard);
       this.createColumnForm.reset();
-      this.isCreateColumn = false;  
+      this.isOpenColumnAddDialog = false;  
     }
   }
 
   onClickedOutside(): void {
-    this.isCreateColumn = false;
+    this.isOpenColumnAddDialog = false;
     this.createColumnForm.reset();
   }
 }

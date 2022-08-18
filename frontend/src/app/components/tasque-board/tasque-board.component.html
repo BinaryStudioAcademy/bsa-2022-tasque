@@ -1,15 +1,15 @@
 <div class="board">
     <div class="board-info">
       <div class="board-title">
-        <span class="what-project">Project / TestProject</span>
+        <span class="project-name">Project / TestProject</span>
         <span class="board-name">TP Board</span>
       </div>
       <div class="board-tools">
-        <img src="../../../assets/board/lightning.svg">
-        <img src="../../../assets/board/star.svg">
-        <tasque-button text="Complate sprint"></tasque-button>
-        <img src="../../../assets/board/share.svg">
-        <img src="../../../assets/board/menu.svg">
+        <img src="assets/board/lightning.svg">
+        <img src="assets/board/star.svg">
+        <tasque-button text="Complete sprint"></tasque-button>
+        <img src="assets/board/share.svg">
+        <img src="assets/board/menu.svg">
       </div>
     </div>
     <div class="board-panel">
@@ -23,19 +23,19 @@
           </div>
         </div>
         <div class="filter">
-          <img src="../../../assets/board/filter.svg">           
+          <img src="assets/board/filter.svg">           
         </div>
       </div>
       <div class="board-columns">
         <div *ngFor="let item of board">
           <div class="column-title">
             <div>
-              <span class="column-name">{{item.columName}}</span>
+              <span class="column-name">{{item.columnName}}</span>
               <span class="column-element-count"> ({{item.tasks.length}})</span>
             </div>
             <div class="column-tools">
               <span>+</span>
-              <img src="../../../assets/board/column_menu.svg"> 
+              <img src="assets/board/column_menu.svg"> 
             </div>  
           </div>
           <div class="column" *ngFor="let task of item.tasks">
@@ -44,8 +44,8 @@
           </div>
         </div>
         <div class="create-column" (mouseleave)="onClickedOutside()">
-          <span *ngIf="!isCreateColumn" (click)="OpenAddColumn()">+ Add Section</span>
-          <div *ngIf="isCreateColumn">
+          <span *ngIf="!isOpenColumnAddDialog" (click)="OpenAddColumn()">+ Add Section</span>
+          <div *ngIf="isOpenColumnAddDialog">
             <form [formGroup]="createColumnForm" (ngSubmit)="AddColumn()">
               <tasque-input type="text" placeholder="Type name" [borderRadius]="25" formControlName="columnName" [invalid]="!createColumnForm.valid && createColumnForm.touched" errorMessage="required" [icon]="plusIcon" iconPosition="right" (iconClick)="AddColumn()"></tasque-input>
             </form>
