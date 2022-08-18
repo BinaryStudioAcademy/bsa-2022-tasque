@@ -23,7 +23,9 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   public descriptionControl: FormControl;
   public unsubscribe$ = new Subject<void>();
   public editorConfig = EditorConfig;
+  public editorContent = '';
 
+  test: false;
   get projectErrorMessage(): string {
     const ctrl = this.projectControl;
 
@@ -60,6 +62,16 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
     if (ctrl.errors?.['maxlength']) {
       return 'Description must be at less  80 characters';
+    }
+
+    return '';
+  }
+
+  get editorErrorMessage(): string {
+    const ctrl = this.descriptionControl;
+
+    if (ctrl.errors?.['maxlength']) {
+      return 'Description must be at less 5000 characters';
     }
 
     return '';

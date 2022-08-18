@@ -111,9 +111,18 @@ tasque-dropdown
         font-weight: 400
         font-size: 14px !important
         line-height: 19px !important
+    .editor-conteiner
+        flex: 1 0 33.333%
+        min-width: 200px
 
 angular-editor
-        width: 100%
+        width: 100% !important
+
+angular-editor
+    ::ng-deep
+        .angular-editor-textarea
+            margin-top: 0px !important
+            border-top: none !important
 
 .button-wrapper
     padding: 20px 0px
@@ -123,3 +132,8 @@ angular-editor
     ::ng-deep .fr-second-toolbar
         ::ng-deep a
             display: none
+
+.error
+    color: colorscheme(pink-300)
+    display: block
+    text-align: center

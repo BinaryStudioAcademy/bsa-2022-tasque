@@ -3,8 +3,8 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 export const EditorConfig: AngularEditorConfig = {
   editable: true,
   spellcheck: true,
-
-  minHeight: '50px',
+  height: 'auto',
+  minHeight: '100px',
   maxHeight: '150px',
   width: '100%',
   minWidth: '100%',
@@ -14,7 +14,7 @@ export const EditorConfig: AngularEditorConfig = {
   placeholder: 'Enter text here...',
   defaultParagraphSeparator: '',
   defaultFontName: '',
-  defaultFontSize: 'h1',
+  defaultFontSize: '',
   fonts: [
     { class: 'arial', name: 'Arial' },
     { class: 'times-new-roman', name: 'Times New Roman' },
@@ -41,7 +41,7 @@ export const EditorConfig: AngularEditorConfig = {
       'strikeThrough',
       'subscript',
       'superscript',
-      'fontSize',
+
       'textColor',
       'backgroundColor',
       'customClasses',
@@ -53,6 +53,7 @@ export const EditorConfig: AngularEditorConfig = {
       'removeFormat',
       'toggleEditorMode',
       'fontName',
+      'heading',
     ],
   ],
 };
