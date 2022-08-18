@@ -11,6 +11,7 @@ import { ValidationConstants } from 'src/entity-models/const-resources/validatio
 import { ToastrService } from 'ngx-toastr';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login-page',
@@ -117,16 +118,46 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     this.authService
       .loginUser(this.userLogin)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((resp) => {
-        if (resp.body) {
-          this.authService.setAuthToken(resp.body);
-        }
-      });
+      .subscribe(
+        (resp) => {
+          if (resp.body) {
+            this.authService.setAuthToken(resp.body);
+          }
+        },
+        (error: HttpErrorResponse) => {
+          // this code is unreachable because of interceptor handling every error response
+          if (error.status == 403) {
+            this.showEmailNotConfirmedError();
+            return;
+          }
+          this.toastrService.error(error.error);
+        },
+      );
   }
 
   flipPasswordVisible(): void {
     this.hidePass = !this.hidePass;
     this.passwordInput.type = this.hidePass ? 'password' : 'text';
     this.passwordInput.icon = this.hidePass ? this.faHide : this.faShow;
+  }
+
+  private showEmailNotConfirmedError(): void {
+    const toast = this.toastrService.error(
+      'Click this notification to send confirmation link again',
+      'Email is not confirmed',
+      { disableTimeOut: true },
+    );
+    toast.onTap.subscribe(() => this.resendConfirmationEmail());
+  }
+
+  private resendConfirmationEmail(): void {
+    const ctrl = this.emailControl;
+    if (ctrl.invalid) return;
+    this.authService
+      .resendEmailConfirmation(ctrl.value)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.toastrService.success('Check your inbox');
+      });
   }
 }
