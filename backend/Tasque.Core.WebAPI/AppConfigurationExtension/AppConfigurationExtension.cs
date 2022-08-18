@@ -1,7 +1,7 @@
-﻿using Mailjet.Client;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SendGrid.Extensions.DependencyInjection;
 using System.Reflection;
 using System.Text;
 using Tasque.Core.BLL.JWT;
@@ -10,9 +10,7 @@ using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.BLL.Services.Auth;
 using Tasque.Core.BLL.Services.Email;
-using Tasque.Core.BLL.Services.Email.MailJet;
 using Tasque.Core.Common.Entities;
-using SendGrid.Extensions.DependencyInjection;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
 {
@@ -118,7 +116,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<ConfirmationTokenService>()
                 .AddScoped<PasswordResetService>()
                 .AddScoped<ProjectService>()
-                .AddScoped<IEmailService, MailJetService>()
+                .AddScoped<IEmailService, SendGridService>()
                 .AddScoped<OrganizationService>();
         }
 
