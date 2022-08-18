@@ -125,6 +125,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
           }
         },
         (error: HttpErrorResponse) => {
+          // this code is unreachable because of interceptor handling every error response
           if (error.status == 403) {
             this.showEmailNotConfirmedError();
             return;
