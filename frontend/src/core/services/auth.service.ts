@@ -31,6 +31,10 @@ export class AuthService {
     return this.httpService.getFullRequest(this.routePrefix + '/confirm', new HttpParams().set('key', token));
   }
 
+  resendEmailConfirmation(email: string): Observable<HttpResponse<string>> {
+    return this.httpService.postFullRequest(this.routePrefix + '/confirm', { email: email });
+  }
+
   requestPasswordReset(email: string): Observable<HttpResponse<string>> {
     return this.httpService.postFullRequest(this.routePrefix + `/restore/request?email=${email}`, {});
   }

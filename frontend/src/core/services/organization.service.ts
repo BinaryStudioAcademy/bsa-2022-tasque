@@ -1,7 +1,8 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { OrganizationModel } from 'src/entity-models/organization-model';
+import { OrganizationModel } from '../models/organization/organization-model';
+import { NewOrganizationModel } from '../models/organization/new-organization-model';
 import { HttpService } from './http.service';
 
 @Injectable({
@@ -15,7 +16,7 @@ export class OrganizationService {
     public httpService: HttpService
   ) { }
 
-  createOrganization(organization: OrganizationModel): Observable<HttpResponse<OrganizationModel>> {
+  createOrganization(organization: NewOrganizationModel): Observable<HttpResponse<OrganizationModel>> {
     return this.httpService.postFullRequest<OrganizationModel>(this.routePrefix + '/create', organization);
   }
 

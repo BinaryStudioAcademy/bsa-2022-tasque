@@ -1,0 +1,58 @@
+name: CD
+on:
+  push:
+    branches: [ "dev" ]
+
+# Env variable
+env:
+  DOCKER_USER: ${{secrets.DOCKER_USER}}
+  DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+  REPO_NAME_BACKEND: ${{secrets.REPO_NAME_BACKEND}}
+  REPO_NAME_FRONTEND: ${{secrets.REPO_NAME_FRONTEND}}
+  SSH_HOST: ${{secrets.SSH_HOST}}
+  SSH_USERNAME: ${{secrets.SSH_USERNAME}}
+  SSH_KEY: ${{secrets.SSH_KEY}}
+jobs:
+  build_push_backend:  # job name
+    runs-on: ubuntu-latest  # runner name : (ubuntu latest version) 
+    steps:
+    - uses: actions/checkout@v2 # first action : checkout source code
+    - name: docker login
+      run: | # log into docker hub account
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  
+    - name: Get current date # get the date of the build
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d--%M-%S')"
+    - name: Build the Docker image # push The image to the docker hub
+      run: docker build ./backend --tag $DOCKER_USER/$REPO_NAME_BACKEND
+    - name: Docker Push
+      run: docker push $DOCKER_USER/$REPO_NAME_BACKEND
+
+  build_push_frontend:  # job name
+    runs-on: ubuntu-latest  # runner name : (ubuntu latest version) 
+    steps:
+    - uses: actions/checkout@v2 # first action : checkout source code
+    - name: docker login
+      run: | # log into docker hub account
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  
+    - name: Get current date # get the date of the build
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d--%M-%S')"
+    - name: Build the Docker image # push The image to the docker hub
+      run: docker build ./frontend --tag $DOCKER_USER/$REPO_NAME_FRONTEND
+    - name: Docker Push
+      run: docker push $DOCKER_USER/$REPO_NAME_FRONTEND
+
+  redeploy_images:
+    runs-on: ubuntu-latest
+    needs: [build_push_backend, build_push_frontend]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Update PROD images
+        uses: appleboy/ssh-action@master
+        with:
+          host: $SSH_HOST
+          username: $SSH_USERNAME
+          key: $SSH_KEY
+          script: |
+            /usr/bin/env ~/restart.sh

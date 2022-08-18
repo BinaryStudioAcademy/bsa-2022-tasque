@@ -1,0 +1,108 @@
+@import 'src/colors.sass'
+
+.container
+  display: flex
+  width: 265px
+  height: 45px
+  box-sizing: border-box
+  font-family: 'Nunito', sans-serif
+  font-style: normal
+
+.add-users
+  height: 100%
+  margin-left: 15px
+
+.user-avatar
+  aspect-ratio: 1 / 1
+  position: relative
+  cursor: pointer
+
+.users
+  display: flex
+  max-width: 207px
+
+
+.user-avatar-img
+  font-weight: 700
+  height: 100%
+  border-radius: 100%
+  aspect-ratio: 1 / 1
+  object-fit: cover
+  position: relative
+  display: flex
+  align-items: center
+  text-align: center
+  justify-content: center
+  color: colorscheme(white-100)
+  opacity: 1
+  &:hover
+    opacity: 0.8
+
+.user-overflow
+  height: 100%
+  border-radius: 100%
+  aspect-ratio: 1 / 1
+  object-fit: cover
+  position: absolute
+  top: 0
+  left: 0
+  background: rgba(29,29,29,0.4)
+  color: colorscheme(white-100)
+  display: flex
+  align-items: center
+  text-align: center
+  justify-content: center
+  font-weight: 700
+  z-index: 9
+  &:hover
+    opacity: 0.8
+
+.pop-up
+  box-sizing: border-box
+  font-family: 'Nunito', sans-serif
+  font-style: normal
+  position: absolute
+  margin-top: 10px
+  z-index: 20
+  margin-left: 174px
+  box-shadow: 0 8px 16px -4px #091e4240, 0 0 0 1px #091e4214
+
+.user-list-container
+  width: 240px
+  background-color: colorscheme(white-100)
+
+.container-title
+  margin-top: 5px
+  font-weight: 400
+  font-size: 14px
+  color: colorscheme(gray-400)
+  align-items: center
+  text-align: center
+  span
+    display: inline-block
+    vertical-align: middle
+
+.pop-up-close
+  float: right
+  cursor: pointer
+
+.divider
+  margin-left: 10px
+  margin-right: 10px
+
+.search-container
+  margin-left: 10px
+  margin-right: 10px
+
+.members-container
+  margin: 20px 12px 13px
+  align-items: center
+
+.avatars-container
+  display: flex
+  gap: 5px
+  flex-wrap: wrap
+  .user-avatar
+    height: 50px
+  .user-avatar-img
+    height: 50px

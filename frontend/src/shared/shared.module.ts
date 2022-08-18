@@ -11,12 +11,17 @@ import { InputComponent } from './components/tasque-input/input.component';
 import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
-import { OrganizationsDropdownComponent } from './components/organizations-dropdown/organizations-dropdown.component';
+import { OrganizationsDropdownComponent } from './components/tasque-header/organizations-dropdown/organizations-dropdown.component';
 import { MenuDropdownComponent } from './components/tasque-menu-dropdown/menu-dropdown.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.component';
 import { SideBarComponent } from './components/tasque-sidebar/sidebar.component';
 import { SideBarService } from 'src/core/services/sidebar.service';
+import { HeaderComponent } from './components/tasque-header/tasque-header.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { TasqueTeamSelectComponent } from './components/tasque-team-select/tasque-team-select.component';
+import { TaskCreationComponent } from 'src/shared/components/tasque-task-creation/task-creation.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   imports: [
@@ -28,6 +33,8 @@ import { SideBarService } from 'src/core/services/sidebar.service';
     MaterialModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
+    LayoutModule,
+    AngularEditorModule,
   ],
   declarations: [
     LoadingComponent,
@@ -41,6 +48,9 @@ import { SideBarService } from 'src/core/services/sidebar.service';
     SideBarComponent,
     OrganizationsDropdownComponent,
     MenuDropdownComponent,
+    HeaderComponent,
+    TasqueTeamSelectComponent,
+    TaskCreationComponent,
   ],
   exports: [
     CommonModule,
@@ -63,7 +73,10 @@ import { SideBarService } from 'src/core/services/sidebar.service';
     SideBarComponent,
     MenuDropdownComponent,
     OrganizationsDropdownComponent,
+    HeaderComponent,
+    TasqueTeamSelectComponent,
+    TaskCreationComponent,
   ],
   providers: [SideBarService],
 })
-export class SharedModule { }
+export class SharedModule {}

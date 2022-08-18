@@ -8,7 +8,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-type IconPosition = 'right' | 'left';
+export type IconPosition = 'right' | 'left';
 
 @Component({
   selector: 'tasque-input',
@@ -79,7 +79,7 @@ export class InputComponent implements ControlValueAccessor {
 
   @Input()
   set invalid(hasError: boolean) {
-    this.inputValueIsError = !hasError;
+    this.inputValueIsError = hasError;
   }
   get invalid(): boolean {
     return this.inputValueIsError;

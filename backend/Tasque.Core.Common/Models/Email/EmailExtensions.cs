@@ -1,4 +1,5 @@
 ﻿using Mailjet.Client.TransactionalEmails;
+using SendGrid.Helpers.Mail;
 
 namespace Tasque.Core.Common.Models.Email
 {
@@ -12,6 +13,18 @@ namespace Tasque.Core.Common.Models.Email
                 .WithSubject(message.Subject)
                 .WithHtmlPart(message.Content)
                 .Build();
+        }
+
+        public static SendGridMessage ConvertForSendGrid(this EmailMessage message)
+        {
+            var msg = new SendGridMessage()
+            {
+                From = new EmailAddress(message.Sender?.Email, message.Sender?.Name),
+                Subject = message.Subject,
+                HtmlContent = message.Content,
+            };
+            msg.AddTo(message.Reciever.Email, message.Reciever.Name);
+            return msg;
         }
     }
 }
