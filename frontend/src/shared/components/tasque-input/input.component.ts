@@ -117,11 +117,11 @@ export class InputComponent implements ControlValueAccessor {
     this.iconClick.emit(args);
   }
 
-  onChange: (value: Event) => void = () => { };
+  onChange: (value: Event) => void = () => {};
 
-  onTouched: (value: Event) => void = () => { };
+  onTouched: (value: Event) => void = () => {};
 
-  constructor() { }
+  constructor() {}
 
   writeValue(value: string): void {
     this.inputValue = value;

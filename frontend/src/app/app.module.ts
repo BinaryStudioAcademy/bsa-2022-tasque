@@ -42,9 +42,9 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     MatDialogModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    AuthModule
+    AuthModule,
   ],
   providers: [BrowserAnimationsModule],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
