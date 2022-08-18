@@ -9,10 +9,12 @@ namespace Tasque.Core.BLL.Services.Email.MailJet
     {
         private readonly IMailjetClient _client;
         private readonly MailJetOptions _options;
-        public MailJetService(IMailjetClient client, IOptions<MailJetOptions> options)
+        private readonly EmailContact _sender;
+        public MailJetService(IMailjetClient client, IOptions<MailJetOptions> options, IOptions<EmailConfirmationOptions> emailOptions)
         {
             _client = client;
             _options = options.Value;
+            _sender = new EmailContact(emailOptions.Value.SenderEmail, emailOptions.Value.SenderName);
         }
 
         public Task<bool> SendEmailAsync(EmailMessage message)
@@ -36,7 +38,7 @@ namespace Tasque.Core.BLL.Services.Email.MailJet
         {
             var emails = messages.Select(x =>
                 {
-                    x.Sender = _options.Sender;
+                    x.Sender = _sender;
                     return x.ConvertForMailJet();
                 }
             );

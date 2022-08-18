@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ErrorMessages } from 'src/entity-models/const-resources/error-messages';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-register-page',
@@ -136,13 +137,15 @@ export class RegisterPageComponent implements OnInit {
       password: this.passwordControl.value,
     } as UserRegisterModel;
 
-    this.authService.registerUser(model).subscribe(
-      () => {
+    this.authService
+      .registerUser(model)
+      .pipe(
+        switchMap(() =>
+          this.authService.resendEmailConfirmation(model.email ?? ''),
+        ),
+      )
+      .subscribe(() => {
         this.toastrService.info('Check your mailbox');
-      },
-      (error) => {
-        this.toastrService.error(error);
-      },
-    );
+      });
   }
 }
