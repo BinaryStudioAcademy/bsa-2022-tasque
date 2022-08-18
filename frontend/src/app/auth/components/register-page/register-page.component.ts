@@ -6,6 +6,9 @@ import { UserRegisterModel } from 'src/entity-models/user-register-model';
 import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorMessages } from 'src/entity-models/const-resources/error-messages';
+import { InputComponent } from 'src/shared/components/tasque-input/input.component';
+import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-register-page',
@@ -26,12 +29,52 @@ export class RegisterPageComponent implements OnInit {
 
   faGithub = faGithub;
   faGoogle = faGoogle;
+  faShow = faEye;
+  faHide = faEyeSlash;
   public validationConstants = ValidationConstants;
   public errorMessages = ErrorMessages;
 
+  get nameErrorMessage(): string {
+    const ctrl = this.nameControl;
+    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Name is required';
+    }
+    return '';
+  }
+
+  get emailErrorMessage(): string {
+    const ctrl = this.emailControl;
+    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Email is required';
+    }
+    if (ctrl.errors?.['pattern']) {
+      return 'Invalid email format';
+    }
+    return '';
+  }
+
+  get passwordErrorMessage(): string {
+    const ctrl = this.passwordControl;
+    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Password is required';
+    }
+    if (ctrl.errors?.['minlength']) {
+      return 'Password must be at least 8 characters';
+    }
+    return '';
+  }
+
+  get passwordRepeatErrorMessage(): string {
+    const ctrl = this.passwordRepeatControl;
+    if (ctrl.errors?.['pattern']) {
+      return 'Passwords do not match';
+    }
+    return '';
+  }
+
   constructor(
     private authService: AuthService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
   ) {
     this.nameControl = new FormControl(this.userRegister.name, [
       Validators.required,
@@ -60,11 +103,20 @@ export class RegisterPageComponent implements OnInit {
     });
   }
 
+  flipPassword(input: InputComponent): void {
+    const show = input.type == 'password';
+    input.type = show ? 'text' : 'password';
+    input.icon = show ? this.faHide : this.faShow;
+  }
+
   resetPasswordControl(): void {
-    this.passwordRepeatControl = new FormControl(this.passwordRepeat, [
-      Validators.required,
-      Validators.pattern(this.userRegister.password as string),
-    ]);
+    this.passwordRepeatControl = new FormControl(
+      this.passwordRepeatControl.value,
+      [
+        Validators.required,
+        Validators.pattern(this.passwordControl.value as string),
+      ],
+    );
     this.registerForm = new FormGroup({
       nameControl: this.nameControl,
       emailControl: this.emailControl,
@@ -78,18 +130,22 @@ export class RegisterPageComponent implements OnInit {
       this.toastrService.error('Invalid values');
       return;
     }
-    this.toastrService.info('Check your mailbox');
-    this.authService.registerUser(this.userRegister).subscribe(
-      (resp) => {
-        if (resp.ok) {
-          this.toastrService.success(resp.body as string);
-        } else {
-          this.toastrService.error(resp.body as string);
-        }
-      },
-      (error) => {
-        this.toastrService.error(error);
-      },
-    );
+
+    const model = {
+      name: this.nameControl.value,
+      email: this.emailControl.value,
+      password: this.passwordControl.value,
+    } as UserRegisterModel;
+
+    this.authService
+      .registerUser(model)
+      .pipe(
+        switchMap(() =>
+          this.authService.resendEmailConfirmation(model.email ?? ''),
+        ),
+      )
+      .subscribe(() => {
+        this.toastrService.info('Check your mailbox');
+      });
   }
 }

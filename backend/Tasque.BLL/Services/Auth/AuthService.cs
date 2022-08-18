@@ -13,7 +13,7 @@ namespace Tasque.Core.BLL.Services.Auth
     public class AuthService
     {
         private DataContext _context;
-        private JwtFactory _jwtFactory;        
+        private JwtFactory _jwtFactory;
         private IMapper _mapper;
         private IValidator<User> _validator;
         private ConfirmationTokenService _tokenService;
@@ -78,10 +78,22 @@ namespace Tasque.Core.BLL.Services.Auth
 
             _context.Users.Add(userEntity);
             await _context.SaveChangesAsync();
-
-            var token = await _tokenService.CreateConfirmationToken(userEntity, TokenKind.EmailConfirmation);
-            await _tokenService.SendConfirmationEmail(token);
             return _mapper.Map<UserDto>(userEntity);
+        }
+
+        public Task<bool> RequestEmailConfirmation(string email)
+        {
+            string errMsg = string.Empty;
+            var entity = _context.Users.FirstOrDefault(x => x.Email == email);
+
+            if (entity == null)
+                errMsg = "No user with given email";
+            else if (entity.IsEmailConfirmed)
+                errMsg = "Email already confirmed";
+
+            if (!string.IsNullOrEmpty(errMsg))
+                throw new ValidationException(errMsg);
+            return SendEmailConfirmation(entity!);
         }
 
         public AuthTokenDto GetAccessToken(int id, string username, string email)
@@ -90,6 +102,13 @@ namespace Tasque.Core.BLL.Services.Auth
             {
                 AccessToken = _jwtFactory.GenerateToken(id, username, email)
             };
-        }        
+        }
+
+        private async Task<bool> SendEmailConfirmation(User userEntity)
+        {
+            var token = await _tokenService.CreateConfirmationToken(userEntity, TokenKind.EmailConfirmation);
+            await _tokenService.SendConfirmationEmail(token);
+            return true;
+        }
     }
 }
