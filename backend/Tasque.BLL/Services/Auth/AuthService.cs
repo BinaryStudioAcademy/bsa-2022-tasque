@@ -78,9 +78,6 @@ namespace Tasque.Core.BLL.Services.Auth
 
             _context.Users.Add(userEntity);
             await _context.SaveChangesAsync();
-
-            var token = await _tokenService.CreateConfirmationToken(userEntity, TokenKind.EmailConfirmation);
-            await _tokenService.SendConfirmationEmail(token);
             return _mapper.Map<UserDto>(userEntity);
         }
 
