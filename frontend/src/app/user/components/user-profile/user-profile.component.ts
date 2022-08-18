@@ -42,8 +42,8 @@ export class UserProfileComponent implements OnInit {
     this.getUser();
     
     this.passwordChanches = {} as PasswordChangesDTO;
-    this.passwordChanches.newPassword = "";
-    this.passwordChanches.previousPassword = "";
+    this.passwordChanches.newPassword = '';
+    this.passwordChanches.previousPassword = '';
     this.emailControl = new FormControl( this.profileChanges.email, [
       Validators.email,
       Validators.required,
@@ -86,7 +86,7 @@ export class UserProfileComponent implements OnInit {
     }
 
     if (this.imageFile.size / 1000000 > 5) {
-        this.notificationService.warning(`Image can't be heavier than ~5MB`);
+        this.notificationService.warning('Image cannot be heavier than ~5MB');
         target.value = '';
         return;
     }
