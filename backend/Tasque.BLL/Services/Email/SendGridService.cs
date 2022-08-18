@@ -1,22 +1,46 @@
-﻿using Tasque.Core.Common.Models.Email;
+﻿using SendGrid;
+using Tasque.Core.Common.Models.Email;
 
 namespace Tasque.Core.BLL.Services.Email
 {
     public class SendGridService : IEmailService
     {
-        public Task<bool> SendEmailAsync(EmailMessage message)
+        private readonly ISendGridClient _client;
+
+        public SendGridService(ISendGridClient client)
         {
-            throw new NotImplementedException();
+            _client = client;
         }
 
-        public Task<bool> SendEmailsAsync(IEnumerable<EmailMessage> messages)
+        public async Task<bool> SendEmailAsync(EmailMessage message)
         {
-            throw new NotImplementedException();
+            var response = await _client.SendEmailAsync(message.ConvertForSendGrid());
+            if (!response.IsSuccessStatusCode)
+            {
+                var body = await response.DeserializeResponseBodyAsync();
+                var errmsg = body.Select(x => $"{x.Key}: {x.Value}");
+                throw new Exception(string.Join('\n', errmsg));
+            }
+            return true;
+        }
+
+        public async Task<bool> SendEmailsAsync(IEnumerable<EmailMessage> messages)
+        {
+            foreach (var message in messages)
+                await SendEmailAsync(message);
+            return true;
         }
 
         public Task<bool> SendEmailsAsync(EmailContact sender, IEnumerable<EmailContact> recievers, string subject, string content)
         {
-            throw new NotImplementedException();
+            var emails = recievers.Select(x =>
+                new EmailMessage(x)
+                {
+                    Sender = sender,
+                    Subject = subject,
+                    Content = content
+                });
+            return SendEmailsAsync(emails);
         }
     }
 }
