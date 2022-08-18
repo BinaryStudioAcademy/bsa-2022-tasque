@@ -31,6 +31,13 @@ namespace Tasque.Core.WebAPI.Controllers
             return Login(user);
         }
 
+        [HttpPost("confirm")]
+        public async Task<IActionResult> RequestEmailConfirmation([FromBody] EmailDto dto)
+        {
+            await _service.RequestEmailConfirmation(dto.Email);
+            return Ok();
+        }
+
         private IActionResult Login(UserDto user)
         {
             var token = _service.GetAccessToken(user.Id, user.Name, user.Email);
