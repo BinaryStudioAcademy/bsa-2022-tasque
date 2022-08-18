@@ -43,8 +43,9 @@ import { UserModule } from './user/user.module';
     ToastrModule.forRoot(),
     AuthModule,
     UserModule,
+
   ],
   providers: [BrowserAnimationsModule],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
