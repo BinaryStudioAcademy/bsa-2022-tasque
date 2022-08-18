@@ -18,6 +18,8 @@ import { ProjectListComponent } from './components/project-list/project-list.com
 import { ProjectListItemComponent } from './components/project-list/project-list-item/project-list-item.component';
 import { OrganizationListComponent } from './components/organization-list/organization-list.component';
 import { OrganizationListItemComponent } from './components/organization-list/organization-list-item/organization-list-item.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from '../core/interceptors/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { OrganizationListItemComponent } from './components/organization-list/or
     ToastrModule.forRoot(),
     AuthModule,
   ],
-  providers: [BrowserAnimationsModule],
+  providers: [BrowserAnimationsModule,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
