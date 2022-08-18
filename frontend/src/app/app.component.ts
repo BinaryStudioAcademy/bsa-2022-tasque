@@ -12,6 +12,4 @@ export class AppComponent {
     ['red', 'test', 0],
     ['#F6F7F9', 'Feature', 1],
   ];
-
-  userId = 223232;
 }

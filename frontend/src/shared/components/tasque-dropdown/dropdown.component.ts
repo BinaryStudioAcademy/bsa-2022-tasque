@@ -45,7 +45,9 @@ export class DropdownComponent implements OnInit, ControlValueAccessor {
     this.dropdownErrorMessage = message;
   }
   @Output() onSelect = new EventEmitter<number>();
-  onChange: (_: any) => {};
+
+  onChange: (value: [string, string, number]) => void = () => {};
+  onTouched: (value: [string, string, number]) => void = () => {};
 
   public selectedOption:
     | [color: string, title: string, id: number]
@@ -58,13 +60,12 @@ export class DropdownComponent implements OnInit, ControlValueAccessor {
     this.selectedOption = option;
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: [string, string, number]) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
-    //this.selectedOption = fn;
-    //  this.onChange(fn);
+  registerOnTouched(fn: (value: [string, string, number]) => void): void {
+    this.onTouched = fn;
   }
 
   ngOnInit(): void {

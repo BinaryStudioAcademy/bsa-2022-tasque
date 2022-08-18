@@ -8,7 +8,7 @@ import { TaskModel } from 'src/core/models/task/task-model';
 import { EditorConfig } from 'src/core/settings/angular-editor-setting';
 
 @Component({
-  selector: 'app-task-creation',
+  selector: 'tasque-task-creation',
   templateUrl: './task-creation.component.html',
   styleUrls: ['./task-creation.component.sass'],
 })
@@ -133,8 +133,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       summary: this.taskCreateForm.get('summaryControl')?.value,
       description: this.taskCreateForm.get('descriptionControl')?.value,
     };
-
-    console.log(this.task);
   }
 
   public clearForm(): void {
