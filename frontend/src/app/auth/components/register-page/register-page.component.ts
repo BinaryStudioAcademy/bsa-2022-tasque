@@ -73,7 +73,7 @@ export class RegisterPageComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
   ) {
     this.nameControl = new FormControl(this.userRegister.name, [
       Validators.required,
@@ -109,10 +109,13 @@ export class RegisterPageComponent implements OnInit {
   }
 
   resetPasswordControl(): void {
-    this.passwordRepeatControl = new FormControl(this.passwordRepeatControl.value, [
-      Validators.required,
-      Validators.pattern(this.passwordControl.value as string),
-    ]);
+    this.passwordRepeatControl = new FormControl(
+      this.passwordRepeatControl.value,
+      [
+        Validators.required,
+        Validators.pattern(this.passwordControl.value as string),
+      ],
+    );
     this.registerForm = new FormGroup({
       nameControl: this.nameControl,
       emailControl: this.emailControl,
@@ -126,14 +129,16 @@ export class RegisterPageComponent implements OnInit {
       this.toastrService.error('Invalid values');
       return;
     }
-    this.toastrService.info('Check your mailbox');
-    this.authService.registerUser(this.userRegister).subscribe(
-      (resp) => {
-        if (resp.ok) {
-          this.toastrService.success(resp.body as string);
-        } else {
-          this.toastrService.error(resp.body as string);
-        }
+
+    const model = {
+      name: this.nameControl.value,
+      email: this.emailControl.value,
+      password: this.passwordControl.value,
+    } as UserRegisterModel;
+
+    this.authService.registerUser(model).subscribe(
+      () => {
+        this.toastrService.info('Check your mailbox');
       },
       (error) => {
         this.toastrService.error(error);
