@@ -30,7 +30,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         },
 
         (err: HttpErrorResponse) => {
-          this.notificationService.error(err.error);
+          this.notificationService.error(err.status + ': ' + err.statusText);
         },
       );
     });
