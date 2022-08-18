@@ -24,7 +24,7 @@ builder.Services.AddDbContext<DataContext>(
         b => b.MigrationsAssembly(typeof(DataContext).Assembly.FullName))
         .EnableDetailedErrors());
 
-builder.WebHost.UseUrls("http://*:5000");
+builder.WebHost.UseUrls("https://*:5000");
 
 var app = builder.Build();
 

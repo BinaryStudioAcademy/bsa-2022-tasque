@@ -21,7 +21,8 @@ namespace Tasque.Core.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTask([FromBody] CreateTask task)
         {
-            return Ok(await _taskService.CreateTask(task));
+            var entity = await _taskService.CreateTask(task);
+            return Created(entity.ToString()?? "", entity);
         }
 
         [HttpGet("getAll")]
@@ -30,14 +31,14 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok(await _taskService.GetAllTasks());
         }
 
-        [HttpGet("getById")]
+        [HttpGet("getById/{id}")]
         public async Task<IActionResult> GetTaskById(int id)
         {
             var task = await _taskService.GetTasksById(id);
             return Ok(task);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTask(int id)
         {
             await _taskService.DeleteTask(id);
