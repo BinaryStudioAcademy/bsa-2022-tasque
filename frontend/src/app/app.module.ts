@@ -18,7 +18,6 @@ import { ProjectListComponent } from './components/project-list/project-list.com
 import { ProjectListItemComponent } from './components/project-list/project-list-item/project-list-item.component';
 import { OrganizationListComponent } from './components/organization-list/organization-list.component';
 import { OrganizationListItemComponent } from './components/organization-list/organization-list-item/organization-list-item.component';
-import { TaskCreationComponent } from './components/task-creation/task-creation.component';
 
 @NgModule({
   declarations: [

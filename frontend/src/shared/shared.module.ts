@@ -19,7 +19,6 @@ import { SideBarComponent } from './components/tasque-sidebar/sidebar.component'
 import { SideBarService } from 'src/core/services/sidebar.service';
 import { HeaderComponent } from './components/tasque-header/tasque-header.component';
 import { TasqueTeamSelectComponent } from './components/tasque-team-select/tasque-team-select.component';
-import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { TaskCreationComponent } from 'src/app/components/task-creation/task-creation.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 
@@ -33,8 +32,6 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     MaterialModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
-    FroalaEditorModule.forRoot(),
-    FroalaViewModule.forRoot(),
     AngularEditorModule,
   ],
   declarations: [
@@ -76,8 +73,6 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     OrganizationsDropdownComponent,
     HeaderComponent,
     TasqueTeamSelectComponent,
-    FroalaEditorModule,
-    FroalaViewModule,
     TaskCreationComponent,
   ],
   providers: [SideBarService],
