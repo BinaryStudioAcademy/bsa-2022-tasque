@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'tasque';
+
+  options: [color: string, title: string, id: number][] = [
+    ['red', 'test', 0],
+    ['#F6F7F9', 'Feature', 1],
+  ];
+
+  userId = 223232;
 }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { SideBarService } from 'src/core/services/sidebar.service';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -25,7 +25,10 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   public editorConfig = EditorConfig;
   public editorContent = '';
 
-  test: false;
+  @Input() public currentUser: number;
+  @Input() public projects: [color: string, title: string, id: number][];
+  @Input() public issueTypes: [color: string, title: string, id: number][];
+
   get projectErrorMessage(): string {
     const ctrl = this.projectControl;
 
@@ -124,11 +127,14 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     }
 
     this.task = {
+      currentUser: this.currentUser,
       project: this.taskCreateForm.get('projectControl')?.value,
       issueType: this.taskCreateForm.get('issueTypeControl')?.value,
       summary: this.taskCreateForm.get('summaryControl')?.value,
       description: this.taskCreateForm.get('descriptionControl')?.value,
     };
+
+    console.log(this.task);
   }
 
   public clearForm(): void {
