@@ -4,7 +4,7 @@ import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from 'src/core/services/notification.service';
 import { Subject } from 'rxjs';
-import { TaskModel } from 'src/core/models/task-model';
+import { TaskModel } from 'src/core/models/task/task-model';
 import { EditorConfig } from 'src/core/settings/angular-editor-setting';
 
 @Component({

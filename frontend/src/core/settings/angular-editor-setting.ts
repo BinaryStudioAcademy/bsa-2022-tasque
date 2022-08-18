@@ -3,8 +3,8 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 export const EditorConfig: AngularEditorConfig = {
   editable: true,
   spellcheck: true,
-  height: '100px',
-  minHeight: '100px',
+
+  minHeight: '50px',
   maxHeight: '150px',
   width: '100%',
   minWidth: '100%',
