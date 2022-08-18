@@ -29,6 +29,8 @@ builder.Services.AddDbContext<DataContext>(
         b => b.MigrationsAssembly(typeof(DataContext).Assembly.FullName))
         .EnableDetailedErrors());
 
+builder.WebHost.UseUrls("http://*:5000");
+
 AppConfigurationExtension.RegisterServices(builder.Services, builder.Configuration);
 
 builder.Services.RegisterIdentity();
