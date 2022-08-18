@@ -17,7 +17,7 @@ namespace Tasque.Core.WebAPI.Controllers
         [HttpGet]
         public virtual IActionResult GetUserOrganizationsById(int userId)
         {
-            var organizations = _service.GetUserOrganizations(userId);
+            var organizations = _service.GetUserOrganizations(userId).Result;
             if (organizations is not null)
             {
                 return Ok(organizations);
