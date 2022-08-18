@@ -65,7 +65,7 @@ namespace Tasque.Core.BLL.Services.Auth
             var reciever = new EmailContact(user.Email, user.Name);
             var email = new EmailMessage(reciever)
             {
-                Subject = "Successful registration",
+                Subject = GetEmailSubject(token),
                 Content = GetEmailText(token),
                 Sender = new EmailContact(_emailOptions.SenderEmail, _emailOptions.SenderName)
             };
@@ -94,6 +94,16 @@ namespace Tasque.Core.BLL.Services.Auth
                             "</a>";
                 default: return "";
             }
+        }
+
+        private string GetEmailSubject(ConfirmationToken token)
+        {
+            return token.Kind switch
+            {
+                TokenKind.EmailConfirmation => "Email confirmation",
+                TokenKind.PasswordReset => "Password reset",
+                _ => ""
+            };
         }
     }
 }
