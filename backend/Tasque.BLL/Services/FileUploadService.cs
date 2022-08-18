@@ -27,8 +27,8 @@ namespace Tasque.Core.BLL.Services
 
         public async Task<string?> UploadFileAsync(byte[] bytes, string contentType,  string folder)
         {
-            var extention = GetExtention(contentType);
-            var fileName = CreateFileName(extention);
+            var extension = GetExtention(contentType);
+            var fileName = CreateFileName(extension);
             Stream stream = new MemoryStream(bytes);
 
             var request = new PutObjectRequest()
@@ -59,9 +59,9 @@ namespace Tasque.Core.BLL.Services
             return contentType.Split('/')[1];
         }
 
-        private string CreateFileName(string extettion)
+        private string CreateFileName(string extension)
         {
-            return DateTime.UtcNow.Ticks.ToString() + '.' + extettion;
+            return DateTime.UtcNow.Ticks.ToString() + '.' + extension;
         }
 
         private string GetBase64String(string fileData)
