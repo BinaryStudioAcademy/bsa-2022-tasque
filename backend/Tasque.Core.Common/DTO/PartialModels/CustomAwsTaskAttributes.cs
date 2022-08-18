@@ -14,7 +14,7 @@ namespace Tasque.Core.Common.DTO.PartialModels
         public int ProjectId { get; set; }
 
         [DynamoDBProperty(AwsTaskKeys.DateFields)]
-        public List<DateOnly>? CustomDateFields { get; set; }
+        public List<DateTime>? CustomDateFields { get; set; }
 
         [DynamoDBProperty(AwsTaskKeys.TimeFields)]
         public List<TimeOnly>? CustomTimeFields { get; set; }

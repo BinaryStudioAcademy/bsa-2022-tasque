@@ -23,6 +23,7 @@ using Amazon.Runtime;
 using Amazon.S3;
 using Amazon;
 using Tasque.Core.WebAPI.AppConfigurationExtension.ConstResources;
+using System.Text.Json;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
 {

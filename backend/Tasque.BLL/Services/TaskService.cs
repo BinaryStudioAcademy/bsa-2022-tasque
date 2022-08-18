@@ -24,7 +24,7 @@ namespace Tasque.Core.BLL.Services
             await _awsTaskService.CreateTask(_mapper.Map<CustomAwsTaskAttributes>(model.CustomFields));
 
             _db.Add(entity);
-            SaveChanges(entity);
+            _db.SaveChanges();
 
             return _mapper.Map<TaskDto>(entity);
         }
@@ -70,7 +70,6 @@ namespace Tasque.Core.BLL.Services
                 CustomFields = new()
                 {
                     CustomDateFields = ca?.CustomDateFields,
-                    CustomTimeFields = ca?.CustomTimeFields,
                     CustomTextFields = ca?.CustomTextFields,
                     CustomParagraphFilds = ca?.CustomParagraphFilds,
                     CustomNumberFields = ca?.CustomNumberFields,
@@ -113,7 +112,6 @@ namespace Tasque.Core.BLL.Services
                 CustomFields = new()
                 {
                     CustomDateFields = ca?.CustomDateFields,
-                    CustomTimeFields = ca?.CustomTimeFields,
                     CustomTextFields = ca?.CustomTextFields,
                     CustomParagraphFilds = ca?.CustomParagraphFilds,
                     CustomNumberFields = ca?.CustomNumberFields,
@@ -142,7 +140,6 @@ namespace Tasque.Core.BLL.Services
             var customFields = new CustomTaskAttributes()
             {
                 CustomDateFields = customAwsFields?.CustomDateFields,
-                CustomTimeFields = customAwsFields?.CustomTimeFields,
                 CustomTextFields = customAwsFields?.CustomTextFields,
                 CustomParagraphFilds = customAwsFields?.CustomParagraphFilds,
                 CustomNumberFields = customAwsFields?.CustomNumberFields,
@@ -174,8 +171,7 @@ namespace Tasque.Core.BLL.Services
             if (task == null)
                 throw new NotFoundException("task");
 
-            //var customAttributes = _awsTaskService.UpdateTask(_mapper.Map<CustomAwsTaskAttributes>(model.CustomFields));
-            var customAttributes = _awsTaskService.UpdateTask(model?.CustomFields);
+            var customAttributes = await _awsTaskService.UpdateTask(model?.CustomFields?? new());
 
             task.Labels = model.Labels;
             task.SprintId = model.SprintId;
@@ -185,23 +181,9 @@ namespace Tasque.Core.BLL.Services
             task.Deadline = model.Deadline;
             task.LastUpdatedById = model.LastUpdatedById;
 
-            await _awsTaskService.UpdateTask(_mapper.Map<CustomAwsTaskAttributes>(model.CustomFields));
-
             SaveChanges(task);
 
             return _mapper.Map<TaskDto>(task);
-        }
-
-        private static double TryParseToDouble(string num)
-        {
-            try
-            {
-                return double.Parse(num);
-            }
-            catch(Exception ex)
-            {
-                throw new AwsException("Invalid field data: " + ex.Message);
-            }
         }
 
         private void SaveChanges<T>(T entity) 

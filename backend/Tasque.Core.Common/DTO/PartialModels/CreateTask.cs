@@ -13,6 +13,7 @@ namespace Tasque.Core.Common.DTO.PartialModels
         public int? Id { get; set; }
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
+        public string? Summary { get; set; }
 
         public TaskState State { get; set; }
         public TaskType Type { get; set; }

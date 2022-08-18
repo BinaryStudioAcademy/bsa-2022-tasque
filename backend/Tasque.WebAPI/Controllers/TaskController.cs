@@ -32,36 +32,36 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok(await _taskService.GetAllTasks());
         }
 
-        [HttpGet("AwsGet")]
-        public async Task<IActionResult> GetAllAws()
-        {
-            var tasks = await _awsTaskService.GetAllTasks();
-            return Ok(tasks);
-        }
+        //[HttpGet("AwsGet")]
+        //public async Task<IActionResult> GetAllAws()
+        //{
+        //    var tasks = await _awsTaskService.GetAllTasks();
+        //    return Ok(tasks);
+        //}
 
-        [HttpPost("AwsPost")]
-        public async Task<IActionResult> CreateAws([FromBody] CustomAwsTaskAttributes model)
-        {
-            var task = await _awsTaskService.CreateTask(model);
-            return Created(task.ToString()?? "", task);
-        }
+        //[HttpPost("AwsPost")]
+        //public async Task<IActionResult> CreateAws([FromBody] CustomAwsTaskAttributes model)
+        //{
+        //    var task = await _awsTaskService.CreateTask(model);
+        //    return Created(task.ToString()?? "", task);
+        //}
 
-        [HttpDelete("AwsDelete")]
-        public async Task<IActionResult> DeleteAws(int id, int projectId)
-        {
-            await _awsTaskService.DeleteTask(id, projectId);
-            return NoContent();
-        }
-        [HttpPut("AwsPut")]
-        public async Task<IActionResult> UpdateAws([FromBody] CustomAwsTaskAttributes model)
-        {
-            return Ok(await _awsTaskService.UpdateTask(model));
-        }
-        [HttpGet("AwsGetById")]
-        public async Task<IActionResult> GetAwsById(int id, int projectId)
-        {
-            return Ok(await _awsTaskService.GetTaskById(id, projectId));
-        }
+        //[HttpDelete("AwsDelete")]
+        //public async Task<IActionResult> DeleteAws(int id, int projectId)
+        //{
+        //    await _awsTaskService.DeleteTask(id, projectId);
+        //    return NoContent();
+        //}
+        //[HttpPut("AwsPut")]
+        //public async Task<IActionResult> UpdateAws([FromBody] CustomAwsTaskAttributes model)
+        //{
+        //    return Ok(await _awsTaskService.UpdateTask(model));
+        //}
+        //[HttpGet("AwsGetById")]
+        //public async Task<IActionResult> GetAwsById(int id, int projectId)
+        //{
+        //    return Ok(await _awsTaskService.GetTaskById(id, projectId));
+        //}
 
         [HttpGet("getById")]
         public async Task<IActionResult> GetTaskById(int id)

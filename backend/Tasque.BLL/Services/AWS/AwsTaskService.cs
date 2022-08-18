@@ -3,7 +3,6 @@ using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
 using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.BLL.Interfaces;
-using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.DTO.PartialModels;
 using Tasque.Core.Common.StaticResources;
 
@@ -83,7 +82,6 @@ namespace Tasque.Core.BLL.Services.AWS
                 item.TryGetValue(AwsTaskKeys.Id, out var id);
                 item.TryGetValue(AwsTaskKeys.ProjectId, out var projectId);
                 item.TryGetValue(AwsTaskKeys.DateFields, out var customDates);
-                item.TryGetValue(AwsTaskKeys.TimeFields, out var customTime);
                 item.TryGetValue(AwsTaskKeys.TextFields, out var customText);
                 item.TryGetValue(AwsTaskKeys.ParagraphFields, out var customParagraph);
                 item.TryGetValue(AwsTaskKeys.NumberFields, out var customNumber);
@@ -108,17 +106,11 @@ namespace Tasque.Core.BLL.Services.AWS
                     CustomDropdownDependenciesFields = customDropownDependencies?.SS,
                 };
 
-                if (customTime != null)
-                {
-                    List<TimeOnly> timeOnlies = new();
-                    customTime?.SS?.ForEach(s => timeOnlies.Add(TimeOnly.Parse(s)));
-                    //data.CustomTimeFields = timeOnlies;
-                }
                 if (customDates != null)
                 {
-                    List<DateOnly> dateOnlies = new();
-                    customDates?.SS?.ForEach(s => dateOnlies.Add(DateOnly.Parse(s)));
-                    //data.CustomDateFields = dateOnlies;
+                    List<DateTime> dateOnlies = new();
+                    customDates?.SS?.ForEach(s => dateOnlies.Add(DateTime.Parse(s)));
+                    data.CustomDateFields = dateOnlies;
                 }
                 taskList.Add(data);
             }
