@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { UserModel } from 'src/core/models/user/user-model';
 import { NotificationService } from 'src/core/services/notification.service';
 import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
 import { LocalStorageKeys } from 'src/entity-models/local-storage-keys';
 import { PasswordChangesDTO } from '../../dto/password-changes-dto';
 import { ProfileChangesDTO } from '../../dto/profile-changes-dto';
 import { UserService } from '../../services/user.service';
-
 
 @Component({
   selector: 'app-user-profile',
@@ -18,7 +16,7 @@ import { UserService } from '../../services/user.service';
 export class UserProfileComponent implements OnInit {
 
   public imageFile: File;
-  public defaultUserAvatarUrl: string = '../../assets/default_avatar.svg';
+  public defaultUserAvatarUrl = '../../assets/default_avatar.svg';
   public allowedFileTypes = ['image/png', 'image/jpeg', 'image/gif'];
   public originalUser: ProfileChangesDTO = {} as ProfileChangesDTO;
   public profileChanges: ProfileChangesDTO = {} as ProfileChangesDTO;
@@ -34,7 +32,7 @@ export class UserProfileComponent implements OnInit {
   public localStorage = window.localStorage;
   public localStorageKeys = LocalStorageKeys;
   private validationConstants = ValidationConstants;
-  public isProfileChanged: boolean = false;
+  public isProfileChanged = false;
 
   constructor(private notificationService: NotificationService, private userService: UserService) {
     
@@ -96,10 +94,10 @@ export class UserProfileComponent implements OnInit {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
       this.profileChanges.avatarURL = reader.result as string;
-      this.checkProfileChanged(target);
+      this.checkChanged();
     });
     reader.readAsDataURL(this.imageFile);
-    this.notificationService.success("Uploaded successfully");
+    this.notificationService.success('Uploaded successfully');
   }
 
   private getUser(): void {
@@ -110,7 +108,7 @@ export class UserProfileComponent implements OnInit {
           this.originalUser = Object.assign({}, resp.body);
           this.passwordChanches.id = this.originalUser.id;
         } else {
-          this.notificationService.error("Something went wrong");
+          this.notificationService.error('Something went wrong');
         }
       },
       (error) => {
@@ -121,7 +119,7 @@ export class UserProfileComponent implements OnInit {
 
   public saveNewInfo(): void {
     if (!this.isProfileChanged) {
-      this.notificationService.error("Profile was not changed");
+      this.notificationService.error('Profile was not changed');
       return;
     }
     this.userService.editUserProfile(this.profileChanges).subscribe(
@@ -130,9 +128,9 @@ export class UserProfileComponent implements OnInit {
           this.profileChanges = resp.body;
           this.originalUser = Object.assign({}, resp.body);
           this.isProfileChanged = false;
-          this.notificationService.success("Profile was successfully changed");
+          this.notificationService.success('Profile was successfully changed');
         } else {
-          this.notificationService.error("Something went wrong");
+          this.notificationService.error('Something went wrong');
         }
       },
       (error) => {
@@ -143,7 +141,7 @@ export class UserProfileComponent implements OnInit {
 
   public saveNewPassword(): void {
     if (this.prevPasswordControl.invalid || this.newPasswordControl.invalid) {
-      this.notificationService.error("Password can not be changed");
+      this.notificationService.error('Password can not be changed');
       return;
     }
 
@@ -151,19 +149,15 @@ export class UserProfileComponent implements OnInit {
       (resp) => {
         if (resp.ok && resp.body != null) {
           this.changePassForm.reset();
-          this.notificationService.success("Password was successfully changed");
+          this.notificationService.success('Password was successfully changed');
         } else {
-          this.notificationService.error("Something went wrong");
+          this.notificationService.error('Something went wrong');
         }
       },
       (error) => {
         this.notificationService.error(error);
       },
     );
-  }
-
-  public checkProfileChanged(event: any): void {
-    this.checkChanged();
   }
 
   public checkChanged(): void {
@@ -177,7 +171,7 @@ export class UserProfileComponent implements OnInit {
       fileInput.value = '';
       this.profileChanges.avatarURL = undefined;
       this.checkChanged();
-      this.notificationService.success("Deleted successfully");
+      this.notificationService.success('Deleted successfully');
     }    
   }
 
