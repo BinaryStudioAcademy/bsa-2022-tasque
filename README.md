@@ -53,7 +53,8 @@ erDiagram
         salt string
         created_at datetime 
         updated_at datetime
-	isEmailConfirmed boolean
+	      isEmailConfirmed boolean
+        avatarURL string
     }
       Task }o--|| User : authorId_id
       Task }o--|| Project : projectId_id

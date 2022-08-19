@@ -20,6 +20,7 @@ import { OrganizationListComponent } from './components/organization-list/organi
 import { OrganizationListItemComponent } from './components/organization-list/organization-list-item/organization-list-item.component';
 import { TasqueBoardComponent } from './components/tasque-board/tasque-board.component';
 import { ToatsrConfig } from 'src/entity-models/const-resources/toastr-config';
+import { UserModule } from './user/user.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { ToatsrConfig } from 'src/entity-models/const-resources/toastr-config';
     ProjectListItemComponent,
     OrganizationListComponent,
     OrganizationListItemComponent,
-    TasqueBoardComponent
+    TasqueBoardComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,6 +45,7 @@ import { ToatsrConfig } from 'src/entity-models/const-resources/toastr-config';
     BrowserAnimationsModule,
     ToastrModule.forRoot(ToatsrConfig),
     AuthModule,
+    UserModule,
   ],
   providers: [BrowserAnimationsModule],
   bootstrap: [AppComponent],

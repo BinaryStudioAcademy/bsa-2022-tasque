@@ -17,6 +17,9 @@ namespace Tasque.Core.Common.Security
                     )
                 );
 
+        public static string HashPassword(string password, string salt)
+            => HashPassword(password, Convert.FromBase64String(salt));
+
         public static byte[] GetRandomBytes(int length = 32)
         {
             var salt = RandomNumberGenerator.GetBytes(length);

@@ -1,0 +1,175 @@
+@import 'src/colors.sass'
+    
+.avatar-style
+    height: 200px
+    width: 200px
+    border-radius: 50%
+    opacity: 1
+    display: block
+    transition: .5s ease
+    backface-visibility: hidden
+
+.main-content
+    display: flex
+    justify-content: center
+    flex-direction: column
+    width: 100%
+    margin: 10px 0    
+    position: relative
+
+.align-center
+    align-items: center
+
+.buttons
+    display: flex
+    width: 100%
+    justify-content: space-around
+    button
+        width: 100px
+
+.name-container
+    width: 50%
+    display: flex
+    justify-content: left
+    align-items: center
+ 
+.avatar-container
+    width: 50%
+    display: flex
+    justify-content: center
+    align-items: center
+    position: relative
+    &:hover
+        img
+            opacity: 0.3
+        .img-text
+            opacity: 1
+
+.img-text
+    transition: .5s ease
+    opacity: 0
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    -ms-transform: translate(-50%, -50%)
+    text-align: center
+    cursor: pointer
+    font-size: 24px
+    color: colorscheme(gray-500)
+
+.upload-button
+    margin-top: 10px
+    &:hover
+        color: colorscheme(gray-400)
+
+.half-container
+    width: 800px
+    max-width: 80%
+    margin: 0 auto
+
+.form-container
+  min-width: 40%
+  background-color: colorscheme(white-100)
+  height: 100%
+  display: flex
+  flex-flow: column
+  justify-content: center
+  align-items: center
+
+.login-title
+  color: colorscheme(violet-400)
+  font-family: 'Nunito'
+  font-style: normal
+  font-weight: 700
+  font-size: 24px
+  line-height: 114.88%
+  text-align: left
+  margin: 0
+  padding: 0
+
+.input-container
+  font-family: 'Nunito'
+  font-style: normal
+  font-weight: 400
+  color: colorscheme(black-100)
+  margin-top: 15px
+  width: 100%
+  display: flex
+  justify-content: center
+  align-items: center
+
+.input
+  box-sizing: border-box
+  border-radius: 10px
+  height: 45px
+  left: 0px
+  right: 0px
+  background: colorscheme(gray-200)
+  border: none
+  font-size: 14px
+  line-height: 19px
+  display: flex
+  align-items: center
+  padding-left: 15px
+  &:focus
+    outline: none
+    border: 2px solid colorscheme(violet-200)
+    caret-color: colorscheme(violet-200)
+
+.password-container
+  position: relative
+  display: block
+  height: 67px
+  span
+    display: block
+    width: 100%
+
+
+.hide-icon
+  position: absolute
+  right: 15px
+  top: 12px
+  cursor: pointer
+  color: colorscheme(gray-500)
+
+.input-container label
+  height: 17px
+  font-size: 16px
+  line-height: 16px
+  margin-bottom: 22px
+
+.error
+  color: colorscheme(pink-300)
+
+::placeholder
+  color: colorscheme(gray-400)
+
+.button-container
+  margin-top: 20px
+
+.label-container
+  display: flex
+  justify-content: space-between
+
+.upper
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 100%
+    position: relative
+
+.half-width
+    width: 50%
+
+.thirty-percent
+    width: 30%
+
+.block-divider
+    position: relative
+    color: colorscheme(gray-500)
+    text-transform: uppercase
+    font-family: "Nunito"
+    font-style: normal
+    font-weight: 400
+    margin-top: 20px
