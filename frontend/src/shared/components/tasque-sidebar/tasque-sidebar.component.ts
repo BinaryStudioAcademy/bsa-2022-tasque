@@ -19,7 +19,7 @@ export class TasqueSidebarComponent implements OnInit {
   }
   ngOnInit(): void {
     if (this.name === '') {
-      throw new Error("Attribute 'name' is required");
+      throw new Error('Attribute name is required');
     }
   }
 }
