@@ -11,6 +11,7 @@
     <PackageReference Include="Automapper" Version="11.0.1" />
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.3.69" />
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.2" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.9.40" />
     <PackageReference Include="Mailjet.Api" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.7" />
