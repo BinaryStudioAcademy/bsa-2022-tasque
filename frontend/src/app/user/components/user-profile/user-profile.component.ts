@@ -81,7 +81,7 @@ export class UserProfileComponent implements OnInit {
       return;
     }
 
-    let fileList: FileList | null = input.files;
+    const fileList: FileList | null = input.files;
     if(fileList == null){
       return;
     }
