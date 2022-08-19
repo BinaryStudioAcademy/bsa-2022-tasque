@@ -1,1 +1,10 @@
-<p>edit-organization-dialog works!</p>
+<h1 mat-dialog-title>Edit organization</h1>
+<div class="edit-org-dialog">
+  <mat-dialog-content class="dialog-content">
+    <tasque-input type="text" id="organizationName" #organizationName [class]="inputClass" [placeholder]="placeholderText" [type]="inputType" [borderRadius]="10" [label]="inputLabel"></tasque-input>
+  </mat-dialog-content>
+  <mat-dialog-actions class="dialog-options">
+    <tasque-button [mat-dialog-close]="false" [text]="this.cancelBtnName" [class]="this.btnClass"> </tasque-button>
+    <tasque-button [mat-dialog-close]="true" [text]="this.createBtnName" [class]="this.btnClass"> </tasque-button>
+  </mat-dialog-actions>
+</div>
