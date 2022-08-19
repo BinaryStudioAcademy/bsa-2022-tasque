@@ -14,7 +14,7 @@
       <mat-icon class="dropdown-icon">expand_more</mat-icon>
     </div>
   </button>
-  <div class="options-container" *ngIf="expanded">
+  <div class="options-container" *ngIf="expanded" [ngStyle]="{ 'width': optionsWidth }">
     <div class="option" *ngFor="let option of options" (click)="select(option)">
       <svg class="color-square">
         <rect [ngStyle]="{ 'fill': option[0] }" />
