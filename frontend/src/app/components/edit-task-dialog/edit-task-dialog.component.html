@@ -1,100 +1,125 @@
 <form class="edit-task-dialog" [formGroup]="editTaskForm">
-  <div class="button-panel" align="end">
-    <tasque-button class="btn icon" [icon]="buttonIcon" [mat-dialog-close]="true"></tasque-button>
+  <div class="button-container" align="end">
+    <tasque-button class="btn icon" [icon]="closeIcon" [mat-dialog-close]="true"></tasque-button>
   </div>
 
   <div class="task-summary-container">
-    <span class="item-label">Project-ID</span>
+    <span class="item-label"> Project-id-{{ taskProject.id }}</span>
     <h5>
-      {{ task.summary }}
+      <span class="item-text {{ taskSummaryItemClass }}" (click)="summaryClick()">
+        {{ task.summary }}
+      </span>
+
+      <angular-editor
+        id="taskSummaryEditor"
+        formControlName="taskSummary"
+        [config]="editorConfig"
+        placeholder="Type some text..."
+        class="editor {{ taskSummaryEditorClass }}"
+      >
+      </angular-editor>
+
       <div class="task-summary-buttons">
-        <span>paper clip </span>
-        <span>smile </span>
-        <span>threedots </span>
+        <tasque-button class="btn icon pink" [icon]="linkIcon"></tasque-button>
+        <tasque-button class="btn icon pink" [icon]="paperClipIcon"></tasque-button>
+        <tasque-button class="btn icon pink" [icon]="checkIcon"></tasque-button>
+        <tasque-button class="btn icon pink" [icon]="shareIcon"></tasque-button>
+        <tasque-button class="btn icon" [icon]="ellipsisIcon"></tasque-button>
       </div>
     </h5>
   </div>
 
-  <div class="task-info-container">
-    <div class="item-wrapper">
-      <span class="item-label">Project</span>
-      <tasque-dropdown
-        width="200px"
-        [options]="projectOptions"
-        formControlName="taskProject"
-      ></tasque-dropdown>
-    </div>
-    <div class="item-wrapper">
-      <span class="item-label">Status</span>
-      <tasque-dropdown
-        width="200px"
-        [options]="taskStatusOptions"
-        formControlName="taskStatus"
-      ></tasque-dropdown>
-    </div>
-    <div class="item-wrapper">
-      <span class="item-label">Priority</span>
-      <tasque-dropdown
-        width="200px"
-        [options]="taskPriorityOptions"
-        formControlName="taskPriority"
-      ></tasque-dropdown>
-    </div>
-    <div class="item-wrapper">
-      <span class="item-label">Sprint</span>
-      <tasque-dropdown
-        width="80px"
-        [options]="taskSprintOptions"
-        formControlName="taskSprint"
-      ></tasque-dropdown>
-    </div>
-    <div class="item-wrapper">
-      <span class="item-label">Assignee</span>
-      <span formControlName="taskAssignees">User Select Button</span>
-    </div>
-    <div class="item-wrapper">
-      <span class="item-label">Reporter</span>
-      <span formControlName="taskReporter">Some User Info</span>
-    </div>
-    <div class="item-wrapper">
-      <span class="item-label">Description</span>
-
-      <div class="item-text {{ editorDescriptionItemClass }}" (click)="spanClick()">
-        <span *ngIf="task.description">
-          {{ task.description }}
-        </span>
-        <span *ngIf="!task.description">-</span>
+  <div class="task-main-container">
+    <div class="task-info-container">
+      <div class="item-wrapper">
+        <span class="item-label">Project</span>
+        <tasque-dropdown
+          width="200px"
+          [options]="projectOptions"
+          formControlName="taskProject"
+        ></tasque-dropdown>
       </div>
 
-      <angular-editor
-        id="editorDescription"
-        formControlName="editorDescription"
-        [config]="editorConfig"
-        placeholder="Type some text..."
-        class="editor {{ editorDescriptionClass }}"
-      >
-      </angular-editor>
+      <div class="item-wrapper">
+        <span class="item-label">Status</span>
+        <tasque-dropdown
+          width="200px"
+          [options]="taskStatusOptions"
+          formControlName="taskStatus"
+        ></tasque-dropdown>
+      </div>
+
+      <div class="item-wrapper">
+        <span class="item-label">Priority</span>
+        <tasque-dropdown
+          width="200px"
+          [options]="taskPriorityOptions"
+          formControlName="taskPriority"
+        ></tasque-dropdown>
+      </div>
+
+      <div class="item-wrapper">
+        <span class="item-label">Sprint</span>
+        <tasque-dropdown
+          width="80px"
+          optionsWidth="max-content"
+          [options]="sprintOptions"
+          formControlName="taskSprint"
+        ></tasque-dropdown>
+      </div>
+
+      <div class="item-wrapper">
+        <span class="item-label">Assignee</span>
+        <span formControlName="taskAssignees" ngDefaultControl>User Select Button</span>
+      </div>
+      <div class="item-wrapper">
+        <span class="item-label">Reporter</span>
+        <span>avatar__</span>
+        <span> {{ taskUser.name }}</span>
+      </div>
+
+      <div class="item-wrapper">
+        <span class="item-label">Description</span>
+
+        <div class="item-text {{ taskDescriptionItemClass }}" (click)="descriptionClick()">
+          <span *ngIf="task.description">
+            {{ task.description }}
+          </span>
+          <span *ngIf="!task.description">-</span>
+        </div>
+
+        <angular-editor
+          id="taskDescriptionEditor"
+          formControlName="taskDescription"
+          [config]="editorConfig"
+          placeholder="Type some text..."
+          class="editor {{ taskDescriptionEditorClass }}"
+        >
+        </angular-editor>
+      </div>
     </div>
-  </div>
 
-  <div class="subtask-container">
-    <h5>Subtask</h5>
-    <tasque-button class="btn mini" text="+ Add issues"></tasque-button>
-  </div>
+    <div class="subtask-container">
+      <h5>Subtask</h5>
+      <tasque-button class="btn mini" text="+ Add issues"></tasque-button>
+    </div>
 
-  <div class="comments-container">
-    <h5>Comments</h5>
+    <div class="comments-container">
+      <h5>Comments</h5>
+    </div>
   </div>
 
   <div class="user-comment-container">
     <span>avatar</span>
+
     <div class="input-wrapper">
       <tasque-input placeholder="Type a comment"></tasque-input>
     </div>
+
     <div class="user-comment-buttons">
-      <span>paper clip</span>
-      <span>smile </span>
-      <span>threedots </span>
+      <tasque-button class="btn icon" [icon]="linkIcon"></tasque-button>
+      <tasque-button class="btn icon" [icon]="faceSmileIcon"></tasque-button>
+      <tasque-button class="btn icon" [icon]="ellipsisIcon"></tasque-button>
     </div>
   </div>
 </form>
