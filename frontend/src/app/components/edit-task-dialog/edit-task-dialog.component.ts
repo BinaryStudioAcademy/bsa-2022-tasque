@@ -33,6 +33,12 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
   public paperClipIcon = faPaperclip;
   public ellipsisIcon = faEllipsisVertical;
   public faceSmileIcon = faFaceSmile;
+
+  public taskDescriptionEditorClass = 'invisible';
+  public taskDescriptionItemClass = '';
+  public taskSummaryEditorClass = 'invisible';
+  public taskSummaryItemClass = '';
+
   public taskStatusOptions: [color: string, title: string, id: number][] = [
     ['white', 'To Do', TaskState.Todo],
     ['yellow', 'In Progress', TaskState.InProgress],
