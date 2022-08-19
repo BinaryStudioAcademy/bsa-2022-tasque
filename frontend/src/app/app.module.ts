@@ -20,6 +20,7 @@ import { OrganizationListComponent } from './components/organization-list/organi
 import { OrganizationListItemComponent } from './components/organization-list/organization-list-item/organization-list-item.component';
 import { TasqueBoardComponent } from './components/tasque-board/tasque-board.component';
 import { UserModule } from './user/user.module';
+import { SelectUsersComponent } from '../shared/components/select-users/select-users.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { UserModule } from './user/user.module';
     ProjectListItemComponent,
     OrganizationListComponent,
     OrganizationListItemComponent,
+    SelectUsersComponent,
     TasqueBoardComponent
   ],
   imports: [

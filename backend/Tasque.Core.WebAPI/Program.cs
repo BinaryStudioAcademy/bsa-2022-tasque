@@ -3,6 +3,7 @@ global using FluentValidation;
 using Tasque.Core.DAL;
 using Tasque.Core.WebAPI.AppConfigurationExtension;
 using Tasque.Core.WebAPI.Middlewares;
+using Tasque.Core.Identity;
 using Microsoft.EntityFrameworkCore;
 using NLog.Extensions.Logging;
 
@@ -25,11 +26,15 @@ AppConfigurationExtension.RegisterServices(builder.Services, builder.Configurati
 builder.Services.AddCors();
 
 builder.Services.AddDbContext<DataContext>(
-    o => o.UseNpgsql(builder.Configuration.GetConnectionString("TasqueDb"),
+    o => o.UseNpgsql(builder.Configuration["ConnectionStrings:TasqueDb"], 
         b => b.MigrationsAssembly(typeof(DataContext).Assembly.FullName))
         .EnableDetailedErrors());
 
 builder.WebHost.UseUrls("http://*:5000");
+
+AppConfigurationExtension.RegisterServices(builder.Services, builder.Configuration);
+
+builder.Services.RegisterIdentity();
 
 var app = builder.Build();
 
