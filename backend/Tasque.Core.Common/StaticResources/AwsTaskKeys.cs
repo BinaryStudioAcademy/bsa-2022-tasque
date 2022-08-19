@@ -14,24 +14,6 @@ namespace Tasque.Core.Common.StaticResources
 
         public const string ProjectId = "ProjectId";
 
-        public const string DateFields = "CustomDateFields";
-
-        public const string TimeFields = "CustomTimeFields";
-
-        public const string TextFields = "CustomTextFields";
-
-        public const string ParagraphFields = "CustomParagraphFields";
-
-        public const string NumberFields = "CustomNumberFields";
-
-        public const string UserFields = "CustomUserFields";
-
-        public const string LabelFields = "CustomLabelFields";
-
-        public const string CheckboxFields = "CustomCheckboxFields";
-
-        public const string DropdownFields = "CustomDropdownFields";
-
-        public const string DropdownDependenciesFields = "CustomDropdownDependenciesFields";
+        public const string CustomFields = "CustomFields";
     }
 }

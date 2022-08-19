@@ -43,7 +43,7 @@ namespace Tasque.Core.Common.DTO
             UsersId = new List<int>();
         }
 
-        public TaskDto(TaskDto t, CustomAwsTaskAttributes ca)
+        public TaskDto(TaskDto t, CustomAwsTaskAttributesWithKeys ca)
         {
             Id = t.Id;
             Name = t.Name;
@@ -68,17 +68,22 @@ namespace Tasque.Core.Common.DTO
             Labels = new List<Label>();
             UsersId = new List<int>();
 
-            CustomFields = new()
+            if (ca == null)
+                CustomFields = new();
+            else
             {
-                CustomDateFields = ca?.CustomDateFields,
-                CustomTextFields = ca?.CustomTextFields,
-                CustomParagraphFilds = ca?.CustomParagraphFilds,
-                CustomNumberFields = ca?.CustomNumberFields,
+                CustomFields = new()
+                {
+                    CustomDateFields = ca?.CustomFields?.CustomDateFields,
+                    CustomTextFields = ca?.CustomFields?.CustomTextFields,
+                    CustomParagraphFilds = ca?.CustomFields?.CustomParagraphFilds,
+                    CustomNumberFields = ca?.CustomFields?.CustomNumberFields,
 
-                CustomCheckboxFields = ca?.CustomCheckboxFields,
-                CustomDropdownFields = ca?.CustomDropdownFields,
-                CustomDropdownDependenciesFields = ca?.CustomDropdownDependenciesFields,
-            };
+                    CustomCheckboxFields = ca?.CustomFields?.CustomCheckboxFields,
+                    CustomDropdownFields = ca?.CustomFields?.CustomDropdownFields,
+                    CustomDropdownDependenciesFields = ca?.CustomFields?.CustomDropdownDependenciesFields,
+                };
+            }
         }
     }
 }

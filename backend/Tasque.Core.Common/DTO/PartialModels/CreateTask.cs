@@ -34,6 +34,6 @@ namespace Tasque.Core.Common.DTO.PartialModels
         public virtual ICollection<Label> Labels { get; set; }
         public virtual ICollection<User> Users { get; set; }
 
-        public CustomAwsTaskAttributes? CustomFields { get; set; }
+        public CustomAwsTaskAttributesWithKeys? CustomFields { get; set; }
     }
 }

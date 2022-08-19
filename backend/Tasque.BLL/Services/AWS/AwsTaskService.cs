@@ -21,7 +21,7 @@ namespace Tasque.Core.BLL.Services.AWS
             _db = db;
         }
 
-        public async Task<CustomAwsTaskAttributes> CreateTask(CustomAwsTaskAttributes model)
+        public async Task<CustomAwsTaskAttributesWithKeys> CreateTask(CustomAwsTaskAttributesWithKeys model)
         {
             await _db.SaveAsync(model);
             return model;
@@ -31,22 +31,22 @@ namespace Tasque.Core.BLL.Services.AWS
         {
             await _dbClient.DeleteItemAsync(AwsTaskKeys.TableName, new()
             {
-                { 
-                    AwsTaskKeys.Id, new() 
-                    { 
+                {
+                    AwsTaskKeys.Id, new()
+                    {
                         N = taskId.ToString(),
-                    } 
+                    }
                 },
-                { 
-                    AwsTaskKeys.ProjectId, new() 
+                {
+                    AwsTaskKeys.ProjectId, new()
                     {
                         N = projectId.ToString(),
-                    } 
+                    }
                 }
             });
         }
 
-        public async Task<List<CustomAwsTaskAttributes>> GetAllTasks()
+        public async Task<List<CustomAwsTaskAttributesWithKeys>> GetAllTasks()
         {
             var scanResponse = await _dbClient.ScanAsync(new(AwsTaskKeys.TableName));
 
@@ -55,29 +55,24 @@ namespace Tasque.Core.BLL.Services.AWS
             return new();
         }
 
-        public async Task<CustomAwsTaskAttributes> GetTaskById(int taskId, int projectId)
+        public async Task<CustomAwsTaskAttributesWithKeys> GetTaskById(int taskId, int projectId)
         {
             var response = await _dbClient.ScanAsync(new(AwsTaskKeys.TableName));
-            if(response != null && response.Items != null)
+            if (response != null && response.Items != null)
                 return ConvertScanResponseToAwsAttributes(response)
-                    .FirstOrDefault(t => t.Id == taskId && t.ProjectId == projectId)?? new();
+                    .FirstOrDefault(t => t.Id == taskId && t.ProjectId == projectId) ?? new();
             return new();
         }
 
-        public async Task<CustomAwsTaskAttributes> UpdateTask(CustomAwsTaskAttributes model)
+        public async Task<CustomAwsTaskAttributesWithKeys> UpdateTask(CustomAwsTaskAttributesWithKeys model)
         {
             await _db.SaveAsync(model);
             return model;
         }
 
-        public Task<List<CustomAwsTaskAttributes>> GetAllProjectTasks(int projectId)
+        private List<CustomAwsTaskAttributesWithKeys> ConvertScanResponseToAwsAttributes(ScanResponse scanResponse)
         {
-            throw new NotImplementedException();
-        }
-
-        private List<CustomAwsTaskAttributes> ConvertScanResponseToAwsAttributes(ScanResponse scanResponse)
-        {
-            var taskList = new List<CustomAwsTaskAttributes>();
+            var taskList = new List<CustomAwsTaskAttributesWithKeys>();
 
             foreach (var item in scanResponse.Items)
             {
@@ -104,12 +99,48 @@ namespace Tasque.Core.BLL.Services.AWS
                     else if (attribute?.L.Count != 0)
                         ca.Add(key, attribute?.L);
                     else if (attribute?.M != null)
-                        ca.Add(key, attribute?.M);
+                    {
+                        ca.Add(key, MapValues(attribute?.M));
+                    }
                 }
 
-                taskList.Add(JsonConvert.DeserializeObject<CustomAwsTaskAttributes>(
+                taskList.Add(JsonConvert.DeserializeObject<CustomAwsTaskAttributesWithKeys>(
                   JsonConvert.SerializeObject(ca)));
             }
             return taskList;
         }
+
+        private Dictionary<string, object> MapValues(Dictionary<string, AttributeValue> item)
+        {
+            var ca = new Dictionary<string, object>();
+
+            foreach (var key in item.Keys)
+            {
+                item.TryGetValue(key, out var attribute);
+
+                if (key == AwsTaskKeys.Id || key == AwsTaskKeys.ProjectId)
+                {
+                    ca.Add(key, int.Parse(attribute?.N));
+                    continue;
+                }
+
+                if (!string.IsNullOrEmpty(attribute?.S))
+                    ca.Add(key, attribute?.S);
+                else if (attribute.SS != null && attribute.SS.Count != 0)
+                    ca.Add(key, attribute?.SS);
+                else if (attribute?.N != null)
+                    ca.Add(key, attribute?.N);
+                else if (attribute?.NS.Count != 0)
+                    ca.Add(key, attribute?.NS);
+                else if (attribute?.L.Count != 0)
+                    ca.Add(key, attribute?.L);
+                else if (attribute?.M != null)
+                {
+                    ca.Add(key, MapValues(attribute?.M));
+                }
+            }
+
+            return ca;
+        }
+    }
 }

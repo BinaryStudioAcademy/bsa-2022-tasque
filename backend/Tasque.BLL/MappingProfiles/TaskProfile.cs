@@ -11,7 +11,7 @@ namespace Tasque.Core.BLL.MappingProfiles
         {
             CreateMap<Task, TaskDto>().ReverseMap();
             CreateMap<CreateTask, Task>().ReverseMap();
-            CreateMap<CustomTaskAttributes, CustomAwsTaskAttributes>();
+            CreateMap<CustomTaskAttributes, CustomAwsTaskAttributesWithKeys>();
         }
     }
 }

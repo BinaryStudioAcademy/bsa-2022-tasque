@@ -12,7 +12,10 @@ namespace Tasque.Core.BLL.Services
     {
         private readonly IAwsTaskService _awsTaskService;
         private readonly IMapper _mapper;
-        public TaskService(IAwsTaskService awsTaskService, DataContext dataContext, IMapper mapper) : base(dataContext)
+        public TaskService(
+            IAwsTaskService awsTaskService, 
+            DataContext dataContext, 
+            IMapper mapper) : base(dataContext)
         {
             _awsTaskService = awsTaskService;
             _mapper = mapper;
@@ -21,17 +24,22 @@ namespace Tasque.Core.BLL.Services
         public async Task<TaskDto> CreateTask(CreateTask model)
         {
             var entity = _mapper.Map<Common.Entities.Task>(model);
-            await _awsTaskService.CreateTask(_mapper.Map<CustomAwsTaskAttributes>(model.CustomFields));
+            var attributes = await _awsTaskService.CreateTask(_mapper.Map<CustomAwsTaskAttributesWithKeys>(model.CustomFields));
 
             _db.Add(entity);
             _db.SaveChanges();
 
-            return _mapper.Map<TaskDto>(entity);
+            return JoinTaskAttributesWithDto(
+                _mapper.Map<TaskDto>(entity), attributes?.CustomFields);
         }
 
         public async Task DeleteTask(int id)
         {
             var task = _db.Tasks.FirstOrDefault(t => t.Id == id);
+
+            if (task == null)
+                throw new NotFoundException(nameof(Common.Entities.Task));
+
             _db.Tasks.Remove(task);
             await _awsTaskService.DeleteTask(task.Id, task.ProjectId);
             _db.SaveChanges();
@@ -73,31 +81,7 @@ namespace Tasque.Core.BLL.Services
             if (customAwsFields == null)
                 return task;
 
-            var customFields = new CustomTaskAttributes()
-            {
-                CustomDateFields = customAwsFields?.CustomDateFields,
-                CustomTextFields = customAwsFields?.CustomTextFields,
-                CustomParagraphFilds = customAwsFields?.CustomParagraphFilds,
-                CustomNumberFields = customAwsFields?.CustomNumberFields,
-
-                CustomCheckboxFields = customAwsFields?.CustomCheckboxFields,
-                CustomDropdownFields = customAwsFields?.CustomDropdownFields,
-                CustomDropdownDependenciesFields = customAwsFields?.CustomDropdownDependenciesFields,
-            };
-
-            var userIdList = new List<int>();
-            customAwsFields?.CustomUserFields?.ForEach(s => userIdList.Add(int.Parse(s)));
-
-            var userFields = new List<UserDto>();
-            userIdList.ForEach(i => userFields.Add(
-                _mapper.Map<UserDto>(
-                    _db.Users.FirstOrDefault(u => u.Id == i))));
-
-            customFields.CustomUserFields = userFields;
-
-            task.CustomFields = customFields;
-
-            return task;
+            return JoinTaskAttributesWithDto(task, customAwsFields.CustomFields);
         }
 
         public async Task<TaskDto> UpdateTask(UpdateTask model)
@@ -119,7 +103,39 @@ namespace Tasque.Core.BLL.Services
 
             SaveChanges(task);
 
-            return _mapper.Map<TaskDto>(task);
+            return JoinTaskAttributesWithDto(
+                _mapper.Map<TaskDto>(task), customAttributes.CustomFields);
+        }
+
+        private TaskDto JoinTaskAttributesWithDto(TaskDto task, CustomAwsTaskAttributes? attributes)
+        {
+            if (attributes == null)
+                return task;
+
+            var customFields = new CustomTaskAttributes()
+            {
+                CustomDateFields = attributes.CustomDateFields,
+                CustomTextFields = attributes.CustomTextFields,
+                CustomParagraphFilds = attributes.CustomParagraphFilds,
+                CustomNumberFields = attributes.CustomNumberFields,
+
+                CustomCheckboxFields = attributes.CustomCheckboxFields,
+                CustomDropdownFields = attributes.CustomDropdownFields,
+                CustomDropdownDependenciesFields = attributes.CustomDropdownDependenciesFields,
+            };
+
+            var userIdList = new List<int>();
+            attributes.CustomUserFields?.ForEach(s => userIdList.Add(int.Parse(s)));
+
+            var userFields = new List<UserDto>();
+            userIdList.ForEach(i => userFields.Add(
+                _mapper.Map<UserDto>(
+                    _db.Users.FirstOrDefault(u => u.Id == i))));
+
+            customFields.CustomUserFields = userFields;
+
+            task.CustomFields = customFields;
+            return task;
         }
 
         private void SaveChanges<T>(T entity) 
