@@ -128,22 +128,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             var jwtIssuerOptions = new JwtIssuerOptions();
             configuration.GetSection(nameof(JwtIssuerOptions)).Bind(jwtIssuerOptions);
 
-            services.AddDefaultAWSOptions(configuration.GetAWSOptions());
-
-            var awsOpt = new AwsCustomOptions();
-            configuration.GetSection(nameof(AwsCustomOptions)).Bind(awsOpt);
-
-            var credentials = new BasicAWSCredentials(awsOpt.AccessKey, awsOpt.SecretKey);
-
-            var awsOptions = new AWSOptions()
-            {
-                Region = RegionEndpoint.USEast1,
-                Profile = awsOpt.AWSProfile,
-                Credentials = credentials,
-            };
-
-            services.AddDefaultAWSOptions(awsOptions);
-
+            services.ConfigureAwsDynamoDb(configuration);
             services.AddSingleton(jwtIssuerOptions);
             services.ConfigureJwt(configuration);
             services.AddScoped<JwtFactory>();
@@ -165,6 +150,25 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<ITaskService, TaskService>()
                 .AddScoped<UserService>()
                 .AddScoped<FileUploadService>();
+        }
+
+        private static void ConfigureAwsDynamoDb(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDefaultAWSOptions(configuration.GetAWSOptions());
+
+            var awsOpt = new AwsCustomOptions();
+            configuration.GetSection(nameof(AwsCustomOptions)).Bind(awsOpt);
+
+            var credentials = new BasicAWSCredentials(awsOpt.AccessKey, awsOpt.SecretKey);
+
+            var awsOptions = new AWSOptions()
+            {
+                Region = RegionEndpoint.USEast1,
+                Profile = awsOpt.AWSProfile,
+                Credentials = credentials,
+            };
+
+            services.AddDefaultAWSOptions(awsOptions);
         }
 
         public static void AddSwagger(this IServiceCollection services)
