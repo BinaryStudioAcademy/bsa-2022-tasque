@@ -42,48 +42,5 @@ namespace Tasque.Core.Common.DTO
             Labels = new List<Label>();
             UsersId = new List<int>();
         }
-
-        public TaskDto(TaskDto t, CustomAwsTaskAttributesWithKeys ca)
-        {
-            Id = t.Id;
-            Name = t.Name;
-            Description = t.Description;
-            Summary = t.Summary;
-
-            State = t.State;
-            Type = t.Type;
-            Priority = t.Priority;
-
-            Deadline = t.Deadline;
-            FinishedAt = t.FinishedAt;
-
-            AuthorId = t.AuthorId;
-            ProjectId = t.ProjectId;
-            BoardColumnId = t.BoardColumnId;
-            SprintId = t.SprintId;
-            LastUpdatedById = t.LastUpdatedById;
-            ParentTaskId = t.ParentTaskId;
-
-            Attachments = new List<Attachment>();
-            Labels = new List<Label>();
-            UsersId = new List<int>();
-
-            if (ca == null)
-                CustomFields = new();
-            else
-            {
-                CustomFields = new()
-                {
-                    CustomDateFields = ca?.CustomFields?.CustomDateFields,
-                    CustomTextFields = ca?.CustomFields?.CustomTextFields,
-                    CustomParagraphFilds = ca?.CustomFields?.CustomParagraphFilds,
-                    CustomNumberFields = ca?.CustomFields?.CustomNumberFields,
-
-                    CustomCheckboxFields = ca?.CustomFields?.CustomCheckboxFields,
-                    CustomDropdownFields = ca?.CustomFields?.CustomDropdownFields,
-                    CustomDropdownDependenciesFields = ca?.CustomFields?.CustomDropdownDependenciesFields,
-                };
-            }
-        }
     }
 }

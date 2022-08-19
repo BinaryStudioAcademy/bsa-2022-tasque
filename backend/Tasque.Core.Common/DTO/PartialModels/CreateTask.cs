@@ -30,9 +30,9 @@ namespace Tasque.Core.Common.DTO.PartialModels
         public int? LastUpdatedById { get; set; }
         public int? ParentTaskId { get; set; }
 
-        public virtual ICollection<Attachment> Attachments { get; set; }
-        public virtual ICollection<Label> Labels { get; set; }
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<Attachment>? Attachments { get; set; }
+        public virtual ICollection<Label>? Labels { get; set; }
+        public virtual ICollection<User>? Users { get; set; }
 
         public CustomAwsTaskAttributesWithKeys? CustomFields { get; set; }
     }

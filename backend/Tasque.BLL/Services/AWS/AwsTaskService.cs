@@ -99,18 +99,18 @@ namespace Tasque.Core.BLL.Services.AWS
                 }
 
                 if (!string.IsNullOrEmpty(attribute?.S))
-                    ca.Add(key, attribute?.S);
-                else if (attribute.SS != null && attribute.SS.Count != 0)
-                    ca.Add(key, attribute?.SS);
+                    ca.Add(key, attribute?.S?? string.Empty);
+                else if (attribute?.SS != null && attribute.SS.Count != 0)
+                    ca.Add(key, attribute?.SS?? new());
                 else if (attribute?.N != null)
-                    ca.Add(key, attribute?.N);
+                    ca.Add(key, attribute?.N?? string.Empty);
                 else if (attribute?.NS.Count != 0)
-                    ca.Add(key, attribute?.NS);
+                    ca.Add(key, attribute?.NS?? new());
                 else if (attribute?.L.Count != 0)
-                    ca.Add(key, attribute?.L);
+                    ca.Add(key, attribute?.L?? new());
                 else if (attribute?.M != null)
                 {
-                    ca.Add(key, MapValues(attribute?.M));
+                    ca.Add(key, MapValues(attribute?.M?? new()));
                 }
             }
 
