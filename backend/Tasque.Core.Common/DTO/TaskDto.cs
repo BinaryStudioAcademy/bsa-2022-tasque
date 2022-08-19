@@ -32,7 +32,7 @@ namespace Tasque.Core.Common.DTO
 
         public virtual ICollection<Attachment> Attachments { get; set; }
         public virtual ICollection<Label> Labels { get; set; }
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<int> UsersId { get; set; }
 
         public CustomTaskAttributes? CustomFields { get; set; }
 
@@ -40,7 +40,7 @@ namespace Tasque.Core.Common.DTO
         {
             Attachments = new List<Attachment>();
             Labels = new List<Label>();
-            Users = new List<User>();
+            UsersId = new List<int>();
         }
 
         public TaskDto(TaskDto t, CustomAwsTaskAttributes ca)
@@ -66,7 +66,7 @@ namespace Tasque.Core.Common.DTO
 
             Attachments = new List<Attachment>();
             Labels = new List<Label>();
-            Users = new List<User>();
+            UsersId = new List<int>();
 
             CustomFields = new()
             {
