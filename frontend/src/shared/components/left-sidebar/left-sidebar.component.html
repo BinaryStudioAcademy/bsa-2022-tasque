@@ -1,5 +1,5 @@
 <div class="left-sidebar" [style.width.px]="containerWidth" >
-  <a href="/board"><tasque-logo class="logo" [isLight]="sideBarMinimized"></tasque-logo></a>
+  <a href="project/board"><tasque-logo class="logo" [isLight]="sideBarMinimized"></tasque-logo></a>
   <div class="icon">
     <a (click)="minimize()">
       <img *ngIf="!sideBarMinimized" src="assets/burger_menu.svg" alt="">
@@ -10,7 +10,7 @@
     <ul>
       <li>
         <div class="menu-item">
-          <a href="/board">
+          <a href="project/board">
             <img src="assets/board_icon.svg" alt="">
             <span *ngIf="!sideBarMinimized" class="selected">Board</span>
           </a>
@@ -18,7 +18,7 @@
       </li>
       <li>
         <div class="menu-item">
-          <a href="/backlog">
+          <a href="project/backlog">
             <img src="assets/backlog_icon.svg" alt="">
             <span *ngIf="!sideBarMinimized">Backlog</span>
           </a>
@@ -26,7 +26,7 @@
       </li>
       <li>
         <div class="menu-item">
-          <a href="/team">
+          <a href="project/team">
             <img src="assets/team_icon.svg" alt="">
             <span *ngIf="!sideBarMinimized">Team</span>
           </a>
@@ -34,7 +34,7 @@
       </li>
       <li>
         <div class="menu-item">
-          <a href="/wiki">
+          <a href="project/wiki">
             <img src="assets/wiki_icon.svg" alt="">
             <span *ngIf="!sideBarMinimized">Project wiki</span>
           </a>
@@ -42,7 +42,7 @@
       </li>
       <li>
         <div class="menu-item">
-          <a href="/settings">
+          <a href="project/settings">
             <img src="assets/settings_icon_sidebarmenu.svg" alt="">
             <span *ngIf="!sideBarMinimized">Settings</span>
           </a>

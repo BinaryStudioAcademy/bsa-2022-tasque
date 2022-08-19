@@ -21,6 +21,10 @@ import { OrganizationListItemComponent } from './components/organization-list/or
 import { TasqueBoardComponent } from './components/tasque-board/tasque-board.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from '../core/interceptors/jwt.interceptor';
+import { PageWithoutSidebarComponent } from './components/page-without-sidebar/page-without-sidebar.component';
+import { PageWithSidebarComponent } from './components/page-with-sidebar/page-with-sidebar.component';
+import { TasqueTeamComponent } from './components/tasque-team/tasque-team.component';
+import { TasqueProjectSettingsComponent } from './components/tasque-project-settings/tasque-project-settings.component';
 import { UserModule } from './user/user.module';
 
 @NgModule({
@@ -34,7 +38,11 @@ import { UserModule } from './user/user.module';
     ProjectListItemComponent,
     OrganizationListComponent,
     OrganizationListItemComponent,
-    TasqueBoardComponent
+    PageWithoutSidebarComponent,
+    TasqueBoardComponent,
+    PageWithSidebarComponent,
+    TasqueTeamComponent,
+    TasqueProjectSettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -47,11 +55,13 @@ import { UserModule } from './user/user.module';
     ToastrModule.forRoot(),
     AuthModule,
     UserModule,
-
   ],
   providers: [BrowserAnimationsModule,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
+  exports: [
+    OrganizationListComponent
+  ]
 })
 export class AppModule {}

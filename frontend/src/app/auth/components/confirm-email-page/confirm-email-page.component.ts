@@ -32,6 +32,10 @@ export class ConfirmEmailPageComponent implements OnInit {
         this.notifService.success(
           'Email confirmed. You will be redirected to your profile',
         );
+        this.router.navigate(['../..', 'organizations'], {
+          replaceUrl: true,
+          relativeTo: this.route,
+        });
       });
     });
   }
