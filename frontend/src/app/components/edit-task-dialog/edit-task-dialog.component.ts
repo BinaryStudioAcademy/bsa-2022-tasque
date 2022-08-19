@@ -47,11 +47,73 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
 
   public projectOptions: [color: string, title: string, id: number][] = [];
   public sprintOptions: [color: string, title: string, id: number][] = [];
+
+  public projects: ProjectModel[] = [
+    {
+      id: 1,
+      name: 'project 1',
+      authorId: 0,
+      organizationId: 0,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 2,
+      name: 'project 2',
+      authorId: 0,
+      organizationId: 0,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 3,
+      name: 'project 3',
+      authorId: 0,
+      organizationId: 0,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
   ];
-  public taskSprintOptions: [color: string, title: string, id: number][] = [
-    ['white', '-', 0],
-    ['red', 'Sprint 1', 1],
-    ['yellow', 'Sprint 2', 2]
+
+  public sprints: SprintModel[] = [
+    {
+      id: 1,
+      name: 'spr1',
+      description: 'sprint desc',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 2,
+      name: 'spr2',
+      description: 'sprint desc',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 3,
+      name: 'spr3',
+      description: 'sprint desc',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+  ];
+  public users: UserModel[] = [
+    {
+      id: 1,
+      name: 'User1Name',
+      email: 'email'
+    },
+    {
+      id: 2,
+      name: 'User2Name',
+      email: 'email'
+    },
+    {
+      id: 3,
+      name: 'User3Name',
+      email: 'email'
+    }
   ];
 
   public editorConfig: AngularEditorConfig = {
