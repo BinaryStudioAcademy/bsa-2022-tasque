@@ -22,6 +22,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { TasqueTeamSelectComponent } from './components/tasque-team-select/tasque-team-select.component';
 import { TaskCreationComponent } from 'src/shared/components/tasque-task-creation/task-creation.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { NgClickOutsideDirective } from 'ng-click-outside2';
 
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     FontAwesomeModule,
     LayoutModule,
     AngularEditorModule,
+    NgClickOutsideDirective
   ],
   declarations: [
     LoadingComponent,
@@ -77,6 +79,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     TasqueTeamSelectComponent,
     TaskCreationComponent,
     AngularEditorModule,
+    NgClickOutsideDirective
   ],
   providers: [SideBarService],
 })

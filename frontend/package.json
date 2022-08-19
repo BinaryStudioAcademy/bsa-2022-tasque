@@ -30,6 +30,7 @@
     "@kolkov/angular-editor": "^3.0.0-beta.0",
     "@typescript-eslint/parser": "^5.32.0",
     "eslint": "^8.21.0",
+    "ng-click-outside2": "^11.1.0",
     "ngx-toastr": "^15.0.0",
     "postsass": "^1.0.0",
     "prettier": "^2.7.1",
