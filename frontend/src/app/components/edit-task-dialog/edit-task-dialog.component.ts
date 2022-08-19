@@ -44,8 +44,8 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
   public taskSummaryEditorShow = false;
 
   public taskStatusOptions: [color: string, title: string, id: number][] = [
-    ['white', 'To Do', TaskState.Todo],
-    ['yellow', 'In Progress', TaskState.InProgress],
+    ['yellow', 'To Do', TaskState.Todo],
+    ['orange', 'In Progress', TaskState.InProgress],
     ['green', 'Done', TaskState.Done],
     ['red', 'Canceled', TaskState.Done],
   ];

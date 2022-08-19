@@ -4,7 +4,7 @@
   </div>
 
   <div class="task-summary-container">
-    <span class="item-label"> Project-id-{{ taskProject.id }}</span>
+    <span class="item-label"> PR-{{ taskProject.id }}</span>
     <h5>
       <span *ngIf="!this.taskSummaryEditorShow" class="item-text" (click)="summaryClick()">
         {{ task.summary }}
