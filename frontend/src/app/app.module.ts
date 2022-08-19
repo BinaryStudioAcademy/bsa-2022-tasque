@@ -26,6 +26,7 @@ import { PageWithSidebarComponent } from './components/page-with-sidebar/page-wi
 import { TasqueTeamComponent } from './components/tasque-team/tasque-team.component';
 import { TasqueProjectSettingsComponent } from './components/tasque-project-settings/tasque-project-settings.component';
 import { UserModule } from './user/user.module';
+import { SelectUsersComponent } from '../shared/components/select-users/select-users.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,9 @@ import { UserModule } from './user/user.module';
     TasqueBoardComponent,
     PageWithSidebarComponent,
     TasqueTeamComponent,
-    TasqueProjectSettingsComponent
+    TasqueProjectSettingsComponent,
+    SelectUsersComponent,
+    TasqueBoardComponent,
   ],
   imports: [
     BrowserModule,

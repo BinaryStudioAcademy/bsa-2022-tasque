@@ -1,0 +1,140 @@
+@import '../../../colors'
+
+@for $i from 13 through 21 
+	.w-#{$i * 5} 
+		width: #{$i * 5%} !important
+
+@for $i from 3 through 8 
+	.wpx-#{$i * 30} 
+		width: #{$i * 30}px !important
+
+@for $i from 1 through 5
+	.pl-#{$i * 5}
+		padding-left: #{$i * 5}px
+
+	.pr-#{$i * 5}
+		padding-right: #{$i * 5}px
+	
+	.ml-#{$i * 5}
+		margin-left: #{$i * 5}px
+
+	.mr-#{$i * 5}
+		margin-right: #{$i * 5}px
+
+.b-b
+	border-bottom: solid
+	border-width: 1px
+	border-color: colorscheme(gray-400)
+
+.wrapper
+	h3
+		text-align: center
+		margin: 15px 0px
+
+	mat-grid-list
+		border: solid
+		border-width: 1px
+		border-color: colorscheme(gray-400)
+		border-radius: 10px
+
+		mat-grid-tile
+			min-height: 84px
+
+			::ng-deep .mat-grid-tile-content
+				justify-content: space-between
+
+				form
+					position: absolute
+					display: flex
+					align-items: center
+					height: 100%
+					width: 100%
+					justify-content: space-between
+
+					.mat-button-primary
+						margin-top: 17px
+						width: 100px
+
+				mat-list
+					width: 100%
+					height: 100%
+					padding-top: 2px
+					overflow-y: scroll
+
+					&::-webkit-scrollbar
+						width: .75rem
+
+					&::-webkit-scrollbar-track
+						border-bottom-right-radius: 10px
+						background: colorscheme('gray-200')
+						border-bottom: solid
+						border-color: colorscheme('gray-400')
+						border-width: 1px
+
+					&::-webkit-scrollbar-thumb
+						background: colorscheme('gray-400')
+						border-bottom-right-radius: 10px
+
+					mat-list-item
+						display: flex
+						align-items: center
+						height: 84px
+
+						::ng-deep .mat-list-item-content
+							display: inline-flex
+							width: 100%
+							padding: 0px
+							justify-content: space-between
+
+						.user-data
+							max-width: 65%
+							align-items: center
+							display: flex
+							overflow: hidden
+							white-space: nowrap
+
+							.avatar 
+								vertical-align: middle
+								width: 40px
+								height: 40px
+								border-radius: 50%
+								margin: 10px 15px
+
+							.mat-flat-button
+								&:hover
+									color: colorscheme("violet-200") !important
+									font-size: 16
+
+								&.username
+									overflow: hidden
+									white-space: nowrap
+									text-overflow: ellipsis
+									text-align: start
+									padding: 0px
+							
+						.user-actions
+							display: inline-flex
+							align-items: center
+
+							mat-form-field
+								border-radius: 10px
+								width: 140px
+
+								::ng-deep .mat-form-field-underline
+									visibility: hidden
+
+								::ng-deep .mat-form-field-flex
+									padding: 0.3em 0.3em 0em 0.3em
+									border: solid
+									border-radius: 10px
+									border-color: colorscheme('gray-400')
+									border-width: 1px
+								
+								::ng-deep .mat-form-field-infix
+									padding-bottom: 0.3em
+
+								::ng-deep .mat-form-field-wrapper
+									padding-bottom: 0px
+
+							.mat-button-action
+								margin: 10px 15px
