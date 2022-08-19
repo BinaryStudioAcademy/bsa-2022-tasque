@@ -55,13 +55,13 @@ namespace Tasque.Core.BLL.Services.AWS
             return new();
         }
 
-        public async Task<CustomAwsTaskAttributesWithKeys> GetTaskById(int taskId, int projectId)
+        public async Task<CustomAwsTaskAttributesWithKeys?> GetTaskById(int taskId, int projectId)
         {
             var response = await _dbClient.ScanAsync(new(AwsTaskKeys.TableName));
             if (response != null && response.Items != null)
                 return ConvertScanResponseToAwsAttributes(response)
-                    .FirstOrDefault(t => t.Id == taskId && t.ProjectId == projectId) ?? new();
-            return new();
+                    .FirstOrDefault(t => t.Id == taskId && t.ProjectId == projectId);
+            return null;
         }
 
         public async Task<CustomAwsTaskAttributesWithKeys> UpdateTask(CustomAwsTaskAttributesWithKeys model)

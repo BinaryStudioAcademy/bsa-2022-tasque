@@ -7,7 +7,7 @@ namespace Tasque.Core.BLL.Interfaces
     {
         Task<List<CustomAwsTaskAttributesWithKeys>> GetAllTasks();
 
-        Task<CustomAwsTaskAttributesWithKeys> GetTaskById(int taskId, int projectId);
+        Task<CustomAwsTaskAttributesWithKeys?> GetTaskById(int taskId, int projectId);
 
         Task<CustomAwsTaskAttributesWithKeys> CreateTask(CustomAwsTaskAttributesWithKeys model);
 
