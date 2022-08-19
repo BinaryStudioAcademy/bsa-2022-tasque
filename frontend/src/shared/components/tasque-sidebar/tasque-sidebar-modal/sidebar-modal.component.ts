@@ -3,19 +3,18 @@ import { SideBarService } from 'src/core/services/sidebar.service';
 
 @Component({
   selector: 'tasque-sidebar-modal',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.sass'],
+  templateUrl: './sidebar-modal.component.html',
+  styleUrls: ['./sidebar-modal.component.sass'],
 })
-export class SideBarComponent {
+export class TasqueSideBarModalComponent {
   @HostBinding('class.is-open')
   isOpen = false;
   @Input() public name = '';
   constructor(private sideBarService: SideBarService) {}
 
   ngOnInit(): void {
-    this.sideBarService.change.subscribe((isOpen: string) => {
-      console.log(isOpen);
-      if (isOpen == this.name) this.isOpen = !this.isOpen;
+    this.sideBarService.change.subscribe((name: string) => {
+      if (name == this.name) this.isOpen = !this.isOpen;
     });
   }
 
