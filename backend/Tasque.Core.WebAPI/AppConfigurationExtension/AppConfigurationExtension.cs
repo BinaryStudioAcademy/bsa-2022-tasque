@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using SendGrid.Extensions.DependencyInjection;
 using System.Reflection;
 using System.Text;
+using Tasque.Core.BLL.Helpers;
 using Tasque.Core.BLL.JWT;
 using Tasque.Core.BLL.MappingProfiles;
 using Tasque.Core.BLL.Options;
@@ -75,6 +76,11 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
         public static void ConfigureValidator(this IServiceCollection services)
         {
             services.AddValidatorsFromAssemblyContaining<UserValidator>();
+        }
+
+        public static void ConfigureCurrentUserParameters(this IServiceCollection services)
+        {
+            services.AddScoped(typeof(CurrentUserParameters));
         }
 
         public static void ConfigureEmailServices(this IServiceCollection services, IConfiguration configuration)
