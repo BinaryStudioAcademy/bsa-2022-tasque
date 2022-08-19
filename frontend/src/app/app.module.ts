@@ -19,6 +19,7 @@ import { ProjectListItemComponent } from './components/project-list/project-list
 import { OrganizationListComponent } from './components/organization-list/organization-list.component';
 import { OrganizationListItemComponent } from './components/organization-list/organization-list-item/organization-list-item.component';
 import { TasqueBoardComponent } from './components/tasque-board/tasque-board.component';
+import { ToastrConfig } from 'src/entity-models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
 import { SelectUsersComponent } from '../shared/components/select-users/select-users.component';
 
@@ -44,10 +45,9 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     FormsModule,
     MatDialogModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot(ToastrConfig),
     AuthModule,
     UserModule,
-
   ],
   providers: [BrowserAnimationsModule],
   bootstrap: [AppComponent],

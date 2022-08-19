@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/core/services/auth.service';
@@ -48,7 +49,11 @@ export class ResetPageComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  constructor(private route: ActivatedRoute, private authService: AuthService) {
+  constructor(
+    private route: ActivatedRoute,
+    private authService: AuthService,
+    private toastrService: ToastrService,
+  ) {
     this.passwordControl = new FormControl('', [
       Validators.required,
       Validators.minLength(ValidationConstants.minLengthPassword),
@@ -104,6 +109,11 @@ export class ResetPageComponent implements OnInit, OnDestroy {
           const token = resp.body;
           if (!token) return;
           this.authService.setAuthToken(token);
+          this.toastrService.success(
+            'You will be redirected to your profile',
+            'Password changed',
+            { disableTimeOut: true },
+          );
           // redirect into app here
         }
       });

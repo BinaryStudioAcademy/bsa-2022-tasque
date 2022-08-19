@@ -53,8 +53,8 @@ export class RestorePageComponent implements OnInit {
     this.authService
       .requestPasswordReset(email)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((resp) => {
-        this.toastrService.success(resp.body as string);
+      .subscribe(() => {
+        this.toastrService.info('Check your inbox');
       });
   }
 }
