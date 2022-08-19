@@ -206,10 +206,20 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
         return ['white', '-', 0];
     }
   }
+
+  private fillProjectOptions(projects: ProjectModel[]): void {
+    const projectOptions: [color: string, title: string, id: number][] = [];
+    projects.forEach((element) => {
+      projectOptions.push(this.chooseProject(element));
+    });
+    this.projectOptions = projectOptions;
   }
 
-  spanClick(): void {
-    this.editorDescriptionItemClass = 'invisible';
-    this.editorDescriptionClass = '';
+  private fillSprintOptions(sprints: SprintModel[]): void {
+    const sprintOptions: [color: string, title: string, id: number][] = [['white', '-', 0]];
+    sprints.forEach((element) => {
+      sprintOptions.push(this.chooseSprint(element));
+    });
+    this.sprintOptions = sprintOptions;
   }
 }
