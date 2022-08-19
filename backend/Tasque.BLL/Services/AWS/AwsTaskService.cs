@@ -112,40 +112,4 @@ namespace Tasque.Core.BLL.Services.AWS
             }
             return taskList;
         }
-
-        private List<Dictionary<string, string>> GetAttributes(ScanResponse scanResponse)
-        {
-            var attributeList = new List<Dictionary<string, string>>();
-
-            foreach (var item in scanResponse.Items)
-            {
-                var keyValuePair = new Dictionary<string, string>();
-
-                foreach (var key in item.Keys)
-                {
-                    item.TryGetValue(key, out var attributes);
-                    //if (attributes != null)
-                        keyValuePair.Add(key, attributes.S);
-                }
-
-                attributeList.Add(keyValuePair);
-            }
-
-            return attributeList;
-        }
-
-        private int? TryParseValue(string? num, out bool isSucced)
-        {
-            try
-            {
-                isSucced = true;
-                return int.Parse(num);
-            }
-            catch(Exception ex)
-            {
-                isSucced = false;
-                return null;
-            }
-        }
-    }
 }
