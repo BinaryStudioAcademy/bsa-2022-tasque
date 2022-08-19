@@ -5,16 +5,16 @@ namespace Tasque.Core.BLL.Interfaces
 {
     public interface IAwsTaskService
     {
-        public Task<List<CustomAwsTaskAttributes>> GetAllTasks();
+        Task<List<CustomAwsTaskAttributes>> GetAllTasks();
 
-        public Task<List<CustomAwsTaskAttributes>> GetAllProjectTasks(int projectId);
+        Task<List<CustomAwsTaskAttributes>> GetAllProjectTasks(int projectId);
 
-        public Task<CustomAwsTaskAttributes> GetTaskById(int taskId, int projectId);
+        Task<CustomAwsTaskAttributes> GetTaskById(int taskId, int projectId);
 
-        public Task<CustomAwsTaskAttributes> CreateTask(CustomAwsTaskAttributes model);
+        Task<CustomAwsTaskAttributes> CreateTask(CustomAwsTaskAttributes model);
 
-        public Task<CustomAwsTaskAttributes> UpdateTask(CustomAwsTaskAttributes model);
+        Task<CustomAwsTaskAttributes> UpdateTask(CustomAwsTaskAttributes model);
 
-        public Task DeleteTask(int taskId, int projectId); 
+        Task DeleteTask(int taskId, int projectId); 
     }
 }

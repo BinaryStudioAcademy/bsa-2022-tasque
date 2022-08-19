@@ -10,16 +10,16 @@ namespace Tasque.Core.BLL.Interfaces
 {
     public interface ITaskService
     {
-        public Task<List<TaskDto>> GetAllTasks();
+        Task<List<TaskDto>> GetAllTasks();
 
-        public Task<List<TaskDto>> GetAllProjectTask(int projectId);
+        Task<List<TaskDto>> GetAllProjectTask(int projectId);
 
-        public Task<TaskDto> GetTasksById(int id);
+        Task<TaskDto> GetTasksById(int id);
 
-        public Task<TaskDto> CreateTask(CreateTask model);
+        Task<TaskDto> CreateTask(CreateTask model);
 
-        public Task<TaskDto> UpdateTask(UpdateTask task);
+        Task<TaskDto> UpdateTask(UpdateTask task);
 
-        public Task DeleteTask(int id);
+        Task DeleteTask(int id);
     }
 }
