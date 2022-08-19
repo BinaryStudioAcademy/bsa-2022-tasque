@@ -28,6 +28,9 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
   public taskProject: ProjectModel;
   public taskUser: UserModel;
   public taskSprint: SprintModel;
+
+  public editTaskForm: FormGroup = {} as FormGroup;
+
   public closeIcon = faXmark;
   public linkIcon = faLink;
   public checkIcon = faCheckToSlot;
