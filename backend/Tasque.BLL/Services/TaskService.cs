@@ -46,39 +46,7 @@ namespace Tasque.Core.BLL.Services
 
             var customAttributes = await _awsTaskService.GetAllTasks();
 
-            var taskList = tasks.Join(customAttributes, t => t.Id, ca => ca.Id, (t, ca) => new TaskDto()
-            {
-                Id = t.Id,
-                Name = t.Name,
-                Description = t.Description,
-                Summary = t.Summary,
-
-                State = t.State,
-                Type = t.Type,
-                Priority = t.Priority,
-
-                Deadline = t.Deadline,
-                FinishedAt = t.FinishedAt,
-
-                AuthorId = t.AuthorId,
-                ProjectId = t.ProjectId,
-                BoardColumnId = t.BoardColumnId,
-                SprintId = t.SprintId,
-                LastUpdatedById = t.LastUpdatedById,
-                ParentTaskId = t.ParentTaskId,
-
-                CustomFields = new()
-                {
-                    CustomDateFields = ca?.CustomDateFields,
-                    CustomTextFields = ca?.CustomTextFields,
-                    CustomParagraphFilds = ca?.CustomParagraphFilds,
-                    CustomNumberFields = ca?.CustomNumberFields,
-
-                    CustomCheckboxFields = ca?.CustomCheckboxFields,
-                    CustomDropdownFields = ca?.CustomDropdownFields,
-                    CustomDropdownDependenciesFields = ca?.CustomDropdownDependenciesFields,
-                },
-            }).ToList();
+            var taskList = tasks.Join(customAttributes, t => t.Id, ca => ca.Id, (t, ca) => new TaskDto(t, ca)).ToList();
 
             return taskList;
         }
@@ -88,39 +56,7 @@ namespace Tasque.Core.BLL.Services
             var tasks = _mapper.Map<List<TaskDto>>(_db.Tasks.Where(t => t.ProjectId == projectId));
             var customAwsAttributes = await _awsTaskService.GetAllTasks();
 
-            var taskList = tasks.Join(customAwsAttributes, t => t.Id, ca => ca.Id, (t, ca) => new TaskDto()
-            {
-                Id = t.Id,
-                Name = t.Name,
-                Description = t.Description,
-                Summary = t.Summary,
-
-                State = t.State,
-                Type = t.Type,
-                Priority = t.Priority,
-
-                Deadline = t.Deadline,
-                FinishedAt = t.FinishedAt,
-
-                AuthorId = t.AuthorId,
-                ProjectId = t.ProjectId,
-                BoardColumnId = t.BoardColumnId,
-                SprintId = t.SprintId,
-                LastUpdatedById = t.LastUpdatedById,
-                ParentTaskId = t.ParentTaskId,
-
-                CustomFields = new()
-                {
-                    CustomDateFields = ca?.CustomDateFields,
-                    CustomTextFields = ca?.CustomTextFields,
-                    CustomParagraphFilds = ca?.CustomParagraphFilds,
-                    CustomNumberFields = ca?.CustomNumberFields,
-
-                    CustomCheckboxFields = ca?.CustomCheckboxFields,
-                    CustomDropdownFields = ca?.CustomDropdownFields,
-                    CustomDropdownDependenciesFields = ca?.CustomDropdownDependenciesFields,
-                },
-            }).ToList();
+            var taskList = tasks.Join(customAwsAttributes, t => t.Id, ca => ca.Id, (t, ca) => new TaskDto(t, ca)).ToList();
 
             return taskList;
         }

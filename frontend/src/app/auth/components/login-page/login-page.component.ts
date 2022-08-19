@@ -66,8 +66,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
 
     private authService: AuthService,
-    private toastrService: ToastrService
-  ) {this.emailControl = new FormControl( this.userLogin.email, [
+    private toastrService: ToastrService) {
+      this.emailControl = new FormControl( this.userLogin.email, [
       Validators.email,
       Validators.required,
       Validators.pattern(this.validationConstants.emailRegex),
@@ -108,14 +108,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       this.toastrService.error('Invalid values');
       return;
     }
-    this.authService.loginUser(this.userLogin)
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((resp) => {
-      if(resp.ok){
-        const token = resp.body;
-        this.localStorage.setItem(this.localStorageKeys.token, token?.accessToken as string);
-      }
-    });
 
     this.userLogin = {
       email: this.loginForm.get('emailControl')?.value,

@@ -14,7 +14,6 @@ using Tasque.Core.Common.Entities;
 using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
 using Amazon;
-using Tasque.Core.WebAPI.AppConfigurationExtension.ConstResources;
 using Tasque.Core.BLL.Services.Email.MailJet;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.BLL.Services.AWS;
@@ -116,12 +115,15 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
 
             services.AddDefaultAWSOptions(configuration.GetAWSOptions());
 
-            var credentials = new BasicAWSCredentials(AWSKeys.AccessKey, AWSKeys.SecretKey);
+            var awsOpt = new AwsCustomOptions();
+            configuration.GetSection(nameof(AwsCustomOptions)).Bind(awsOpt);
+
+            var credentials = new BasicAWSCredentials(awsOpt.AccessKey, awsOpt.SecretKey);
 
             var awsOptions = new AWSOptions()
             {
                 Region = RegionEndpoint.USEast1,
-                Profile = AWSKeys.AWSProfile,
+                Profile = awsOpt.AWSProfile,
                 Credentials = credentials,
             };
 

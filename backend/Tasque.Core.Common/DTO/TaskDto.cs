@@ -35,5 +35,50 @@ namespace Tasque.Core.Common.DTO
         public virtual ICollection<User> Users { get; set; }
 
         public CustomTaskAttributes? CustomFields { get; set; }
+
+        public TaskDto() 
+        {
+            Attachments = new List<Attachment>();
+            Labels = new List<Label>();
+            Users = new List<User>();
+        }
+
+        public TaskDto(TaskDto t, CustomAwsTaskAttributes ca)
+        {
+            Id = t.Id;
+            Name = t.Name;
+            Description = t.Description;
+            Summary = t.Summary;
+
+            State = t.State;
+            Type = t.Type;
+            Priority = t.Priority;
+
+            Deadline = t.Deadline;
+            FinishedAt = t.FinishedAt;
+
+            AuthorId = t.AuthorId;
+            ProjectId = t.ProjectId;
+            BoardColumnId = t.BoardColumnId;
+            SprintId = t.SprintId;
+            LastUpdatedById = t.LastUpdatedById;
+            ParentTaskId = t.ParentTaskId;
+
+            Attachments = new List<Attachment>();
+            Labels = new List<Label>();
+            Users = new List<User>();
+
+            CustomFields = new()
+            {
+                CustomDateFields = ca?.CustomDateFields,
+                CustomTextFields = ca?.CustomTextFields,
+                CustomParagraphFilds = ca?.CustomParagraphFilds,
+                CustomNumberFields = ca?.CustomNumberFields,
+
+                CustomCheckboxFields = ca?.CustomCheckboxFields,
+                CustomDropdownFields = ca?.CustomDropdownFields,
+                CustomDropdownDependenciesFields = ca?.CustomDropdownDependenciesFields,
+            };
+        }
     }
 }
