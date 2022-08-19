@@ -18,14 +18,14 @@ namespace Tasque.Core.BLL.Services
             _awsS3Client = new AmazonS3Client(_options.AwsAccessKey, _options.AwsSecretAccessKey, RegionEndpoint.GetBySystemName(_options.Region));
         }
 
-		public async Task<string?> UploadFileAsync(string fileData, string folder)
-		{
-            var contentType = GetContentType(fileData);            
+        public async Task<string?> UploadFileAsync(string fileData, string folder)
+        {
+            var contentType = GetContentType(fileData);
             byte[] bytes = Convert.FromBase64String(GetBase64String(fileData));
             return await UploadFileAsync(bytes, contentType, folder);
         }
 
-        public async Task<string?> UploadFileAsync(byte[] bytes, string contentType,  string folder)
+        public async Task<string?> UploadFileAsync(byte[] bytes, string contentType, string folder)
         {
             var extension = GetExtention(contentType);
             var fileName = CreateFileName(extension);
@@ -68,5 +68,5 @@ namespace Tasque.Core.BLL.Services
         {
             return fileData.Split(',')[1];
         }
-    }	
+    }
 }

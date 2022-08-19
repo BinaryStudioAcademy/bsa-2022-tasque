@@ -71,23 +71,37 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  public handleFileInput(target: any): void {
-    this.imageFile = target.files[0];
+  public handleFileInput(target: EventTarget | null): void {
+    if(target == null){
+      return;
+    }
+
+    const input = target as HTMLInputElement;
+    if(input == null){
+      return;
+    }
+
+    let fileList: FileList | null = input.files;
+    if(fileList == null){
+      return;
+    }
+
+    this.imageFile = fileList[0];
 
     if (!this.imageFile) {
-        target.value = '';
+      input.value = '';
         return;
     }
 
     if (!this.allowedFileTypes.includes(this.imageFile.type)) {
         this.notificationService.warning(`File type ${this.imageFile.type} not allowed`);
-        target.value = '';
+        input.value = '';
         return;
     }
 
     if (this.imageFile.size / 1000000 > 5) {
         this.notificationService.warning('Image cannot be heavier than ~5MB');
-        target.value = '';
+        input.value = '';
         return;
     }
 
