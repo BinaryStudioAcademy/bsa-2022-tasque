@@ -13,13 +13,13 @@ export class GlobalErrorHandler extends ErrorHandler {
   }
 
   handleError(error: any): void {
-    if (error instanceof HttpErrorResponse) {
-      const err = error as HttpErrorResponse;
-      let errMsg = err.status + ': ' + err.statusText;
-      if (err.status >= 400 && err.status < 500) {
-        errMsg = err.error;
-      }
-      this.toastrService.error(errMsg, '', { onActivateTick: true });
+    if (
+      error instanceof HttpErrorResponse &&
+      error.status >= 400 &&
+      error.status < 500 &&
+      typeof error.error === 'string'
+    ) {
+      this.toastrService.error(error.error, '');
     } else {
       this.toastrService.error('An unexpected error has occurred.', 'Error', {
         closeButton: true,
@@ -27,6 +27,8 @@ export class GlobalErrorHandler extends ErrorHandler {
         onActivateTick: true,
       });
     }
+
+    // TODO: Remove in prod
     super.handleError(error);
   }
 }
