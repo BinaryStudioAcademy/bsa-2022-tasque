@@ -8,6 +8,8 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TaskState } from 'src/core/models/enums/task-state';
 import { TaskPriority } from 'src/core/models/enums/task-priority';
+import { ProjectModel } from 'src/core/models/project/project-model';
+import { SprintModel } from 'src/core/models/sprint/sprint-model';
 
 export interface EditTaskDialogData {
   currentUser: UserModel,
