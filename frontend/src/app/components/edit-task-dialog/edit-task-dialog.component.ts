@@ -53,16 +53,7 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
     ['yellow', 'Sprint 2', 2]
   ];
 
-  public editTaskForm = new FormGroup({
-    taskProject: new FormControl(''),
-    taskSummary: new FormControl(''),
-    taskStatus: new FormControl(''),
-    taskPriority: new FormControl(''),
-    taskSprint: new FormControl(''),
-    taskDescription: new FormControl(''),
-  });
-
-  editorConfig: AngularEditorConfig = {
+  public editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
     height: '0',
@@ -75,7 +66,7 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
     showToolbar: true,
     placeholder: 'Enter text here...',
     sanitize: true,
-    toolbarPosition: 'top',
+    toolbarPosition: 'bottom',
     toolbarHiddenButtons: [
       [
         'subscript',
