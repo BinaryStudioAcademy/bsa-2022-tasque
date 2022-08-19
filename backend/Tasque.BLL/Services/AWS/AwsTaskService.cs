@@ -76,33 +76,7 @@ namespace Tasque.Core.BLL.Services.AWS
 
             foreach (var item in scanResponse.Items)
             {
-                var ca = new Dictionary<string, object>();
-
-                foreach (var key in item.Keys)
-                {
-                    item.TryGetValue(key, out var attribute);
-
-                    if (key == AwsTaskKeys.Id || key == AwsTaskKeys.ProjectId)
-                    {
-                        ca.Add(key, int.Parse(attribute?.N));
-                        continue;
-                    }
-
-                    if (!string.IsNullOrEmpty(attribute?.S))
-                        ca.Add(key, attribute?.S);
-                    else if (attribute.SS != null && attribute.SS.Count != 0)
-                        ca.Add(key, attribute?.SS);
-                    else if (attribute?.N != null)
-                        ca.Add(key, attribute?.N);
-                    else if (attribute?.NS.Count != 0)
-                        ca.Add(key, attribute?.NS);
-                    else if (attribute?.L.Count != 0)
-                        ca.Add(key, attribute?.L);
-                    else if (attribute?.M != null)
-                    {
-                        ca.Add(key, MapValues(attribute?.M));
-                    }
-                }
+                var ca = MapValues(item);
 
                 taskList.Add(JsonConvert.DeserializeObject<CustomAwsTaskAttributesWithKeys>(
                   JsonConvert.SerializeObject(ca)));

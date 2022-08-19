@@ -24,7 +24,7 @@ namespace Tasque.Core.BLL.Services
         public async Task<TaskDto> CreateTask(CreateTask model)
         {
             var entity = _mapper.Map<Common.Entities.Task>(model);
-            var attributes = await _awsTaskService.CreateTask(_mapper.Map<CustomAwsTaskAttributesWithKeys>(model.CustomFields));
+            var attributes = await _awsTaskService.CreateTask(model.CustomFields);
 
             _db.Add(entity);
             _db.SaveChanges();
@@ -64,7 +64,7 @@ namespace Tasque.Core.BLL.Services
             var tasks = _mapper.Map<List<TaskDto>>(_db.Tasks.Where(t => t.ProjectId == projectId));
             var customAwsAttributes = await _awsTaskService.GetAllTasks();
 
-            var taskList = tasks.Join(customAwsAttributes, t => t.Id, ca => ca.Id, (t, ca) => new TaskDto(t, ca)).ToList();
+            var taskList = tasks.Join(customAwsAttributes, t => t.Id, ca => ca.Id, (t, ca) => JoinTaskAttributesWithDto(t, ca.CustomFields)).ToList();
 
             return taskList;
         }
@@ -89,7 +89,7 @@ namespace Tasque.Core.BLL.Services
             var task = _db.Tasks.FirstOrDefault(t => t.Id == model.Id);
 
             if (task == null)
-                throw new NotFoundException("task");
+                throw new NotFoundException(nameof(Common.Entities.Task));
 
             var customAttributes = await _awsTaskService.UpdateTask(model?.CustomFields?? new());
 
