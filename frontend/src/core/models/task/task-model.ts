@@ -20,11 +20,3 @@ export interface TaskModel {
   deadLine: Date,
   finishedAt?: Date,
 }
-
-export interface TaskModel {
-  currentUser?: number;
-  project?: [string, string, number];
-  issueType?: [string, string, number];
-  summary?: string;
-  description?: string;
-}

@@ -4,8 +4,8 @@ import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from 'src/core/services/notification.service';
 import { Subject } from 'rxjs';
-import { TaskModel } from 'src/core/models/task/task-model';
 import { EditorConfig } from 'src/core/settings/angular-editor-setting';
+import { TaskCreateViewModel } from 'src/core/models/task/task-create-view-model';
 
 @Component({
   selector: 'tasque-task-creation',
@@ -15,7 +15,7 @@ import { EditorConfig } from 'src/core/settings/angular-editor-setting';
 export class TaskCreationComponent implements OnInit, OnDestroy {
   faExpeditedssl = faEllipsisVertical;
 
-  public task: TaskModel = {};
+  public task: TaskCreateViewModel = {};
   public taskCreateForm: FormGroup = new FormGroup({});
   public projectControl: FormControl;
   public issueTypeControl: FormControl;
