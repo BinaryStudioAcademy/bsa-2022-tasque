@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, forwardRef, HostListener, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'tasque-dropdown',
@@ -17,6 +17,21 @@ export class DropdownComponent implements OnInit {
   public selectedOption : [color:string, title:string, id:number] | undefined = undefined;
   public expanded = false;
   
+  private wasInside = false;
+
+  @HostListener('click')
+  clickInside(): void {
+    this.wasInside = true;
+  }
+
+  @HostListener('document:click')
+  clickOutside(): void {
+    if (!this.wasInside) {
+      this.expanded = false;
+    }
+    this.wasInside = false;
+  }
+
   constructor() { 
   }
 
