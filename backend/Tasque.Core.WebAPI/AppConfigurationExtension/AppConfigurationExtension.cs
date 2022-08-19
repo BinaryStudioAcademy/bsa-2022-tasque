@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using SendGrid.Extensions.DependencyInjection;
 using System.Reflection;
 using System.Text;
+using Tasque.Core.BLL.Helpers;
 using Tasque.Core.BLL.JWT;
 using Tasque.Core.BLL.MappingProfiles;
 using Tasque.Core.BLL.Options;
@@ -67,6 +68,11 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddValidatorsFromAssemblyContaining<UserValidator>();
         }
 
+        public static void ConfigureCurrentUserParameters(this IServiceCollection services)
+        {
+            services.AddScoped(typeof(CurrentUserParameters));
+        }
+
         public static void ConfigureEmailServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<EmailConfirmationOptions>(configuration.GetSection(nameof(EmailConfirmationOptions)));
@@ -99,6 +105,16 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             #endregion
         }
 
+        public static void ConfigureS3Services(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<AmazonS3Options>(configuration.GetSection(nameof(AmazonS3Options)));
+
+            var amazonS3Options = new AmazonS3Options();
+            configuration.GetSection("AmazonS3Options").Bind(amazonS3Options);
+
+            services.AddSingleton(amazonS3Options);
+        }
+
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
             var jwtIssuerOptions = new JwtIssuerOptions();
@@ -107,6 +123,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddSingleton(jwtIssuerOptions);
             services.ConfigureJwt(configuration);
             services.AddScoped<JwtFactory>();
+            services.ConfigureS3Services(configuration);
             services.AddMvc();
             services.AddControllers();
             services.AddCors();
@@ -117,7 +134,9 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<PasswordResetService>()
                 .AddScoped<ProjectService>()
                 .AddScoped<IEmailService, SendGridService>()
-                .AddScoped<OrganizationService>();
+                .AddScoped<OrganizationService>()
+                .AddScoped<UserService>()
+                .AddScoped<FileUploadService>();
         }
 
         public static void AddSwagger(this IServiceCollection services)

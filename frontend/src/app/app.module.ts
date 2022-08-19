@@ -18,6 +18,8 @@ import { ProjectListComponent } from './components/project-list/project-list.com
 import { ProjectListItemComponent } from './components/project-list/project-list-item/project-list-item.component';
 import { OrganizationListComponent } from './components/organization-list/organization-list.component';
 import { OrganizationListItemComponent } from './components/organization-list/organization-list-item/organization-list-item.component';
+import { TasqueBoardComponent } from './components/tasque-board/tasque-board.component';
+import { UserModule } from './user/user.module';
 import { SelectUsersComponent } from '../shared/components/select-users/select-users.component';
 
 @NgModule({
@@ -31,7 +33,8 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     ProjectListItemComponent,
     OrganizationListComponent,
     OrganizationListItemComponent,
-    SelectUsersComponent
+    SelectUsersComponent,
+    TasqueBoardComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +46,8 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     AuthModule,
+    UserModule,
+
   ],
   providers: [BrowserAnimationsModule],
   bootstrap: [AppComponent],

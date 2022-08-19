@@ -15,6 +15,7 @@ builder.Logging.AddNLog();
 
 builder.Services.ConfigureMapper();
 builder.Services.ConfigureValidator();
+builder.Services.ConfigureCurrentUserParameters();
 builder.Services.ConfigureEmailServices(builder.Configuration);
 builder.Services.AddSwagger();
 
@@ -64,6 +65,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseMiddleware<GetUserIdMiddleware>();
 app.UseMigrationsEndPoint();
 
 app.UseEndpoints(cfg =>
