@@ -1,6 +1,7 @@
 ﻿using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
+using Newtonsoft.Json;
 using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.PartialModels;
@@ -79,6 +80,10 @@ namespace Tasque.Core.BLL.Services.AWS
 
             foreach (var item in scanResponse.Items)
             {
+                item.TryGetValue("CustomAttributes", out var attributeValue);
+
+                //var json = JsonConvert.SerializeObject(attributeValue?.M);
+                //var data = JsonConvert.DeserializeObject<CustomAwsTaskAttributes>(json);
                 item.TryGetValue(AwsTaskKeys.Id, out var id);
                 item.TryGetValue(AwsTaskKeys.ProjectId, out var projectId);
                 item.TryGetValue(AwsTaskKeys.DateFields, out var customDates);
@@ -117,15 +122,36 @@ namespace Tasque.Core.BLL.Services.AWS
             return taskList;
         }
 
+        private List<Dictionary<string, string>> GetAttributes(ScanResponse scanResponse)
+        {
+            var attributeList = new List<Dictionary<string, string>>();
+
+            foreach (var item in scanResponse.Items)
+            {
+                var keyValuePair = new Dictionary<string, string>();
+
+                foreach (var key in item.Keys)
+                {
+                    item.TryGetValue(key, out var attributes);
+                    //if (attributes != null)
+                        keyValuePair.Add(key, attributes.S);
+                }
+
+                attributeList.Add(keyValuePair);
+            }
+
+            return attributeList;
+        }
+
         private int TryParseValue(string? num)
         {
             try
             {
-                return int.Parse(num?? throw new AwsException("Null"));
+                return int.Parse(num?? throw new AwsFieldPaseValueException("Null"));
             }
             catch(Exception ex)
             {
-                throw new AwsException(ex.Message);
+                throw new AwsFieldPaseValueException(ex.Message);
             }
         }
     }

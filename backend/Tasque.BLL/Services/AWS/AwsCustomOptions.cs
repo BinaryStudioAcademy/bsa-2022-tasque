@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tasque.Core.BLL.Services.AWS
 {
-    public class AwsOptions
+    public class AwsCustomOptions
     {
         public string? AccessKey { get; set; }
 
