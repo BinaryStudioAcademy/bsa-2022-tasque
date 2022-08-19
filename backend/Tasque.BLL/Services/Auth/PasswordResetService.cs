@@ -38,14 +38,18 @@ namespace Tasque.Core.BLL.Services.Auth
             var salt = SecurityHelper.GetRandomBytes();
             user.Salt = Convert.ToBase64String(salt);
             user.Password = SecurityHelper.HashPassword(password, salt);
+            _context.ConfirmationTokens.Remove(token);
             _context.SaveChanges();
             return new() { AccessToken = _jwtFactory.GenerateToken(user.Id, user.Name, user.Email) };
         }
 
         public async MSTask Request(string email)
         {
-            var userEntity = _context.Users.FirstOrDefault(x => x.Email == email && x.IsEmailConfirmed)
-                ?? throw new EmailNotConfirmedException(email);
+            var userEntity = _context.Users.FirstOrDefault(x => x.Email == email)
+                ?? throw new ValidationException("No user with requested email");
+            
+            if (!userEntity.IsEmailConfirmed)
+                throw new EmailNotConfirmedException(email);
 
             var token = await _context.ConfirmationTokens
                 .FirstOrDefaultAsync(x =>
