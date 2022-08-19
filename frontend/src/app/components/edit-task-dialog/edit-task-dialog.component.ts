@@ -169,6 +169,26 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.taskProject = this.projects.find((x) => x.id === this.task.projectId)!;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.taskUser = this.users.find((x) => x.id === this.task.authorId)!;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.taskSprint = this.sprints.find((x) => x.id === this.task.sprintId)!;
+
+    this.editTaskForm = new FormGroup({
+      taskProject: new FormControl(this.chooseProject(this.taskProject)),
+      taskSummary: new FormControl(this.task.summary),
+      taskStatus: new FormControl(this.chooseTaskStatus(this.task.taskState)),
+      taskPriority: new FormControl(this.chooseTaskPriority(this.task.taskPriority)),
+      taskSprint: new FormControl(this.chooseSprint(this.taskSprint)),
+      taskDescription: new FormControl(this.task.description),
+      taskAssignees: new FormControl(),
+    });
+
+    this.fillProjectOptions(this.projects);
+    this.fillSprintOptions(this.sprints);
+  }
 
   descriptionClick(): void {
     this.taskDescriptionItemClass = 'invisible';
