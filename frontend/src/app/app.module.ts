@@ -18,6 +18,7 @@ import { ProjectListComponent } from './components/project-list/project-list.com
 import { ProjectListItemComponent } from './components/project-list/project-list-item/project-list-item.component';
 import { OrganizationListComponent } from './components/organization-list/organization-list.component';
 import { OrganizationListItemComponent } from './components/organization-list/organization-list-item/organization-list-item.component';
+import { TasqueBoardComponent } from './components/tasque-board/tasque-board.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from '../core/interceptors/jwt.interceptor';
 
@@ -32,6 +33,7 @@ import { JwtInterceptor } from '../core/interceptors/jwt.interceptor';
     ProjectListItemComponent,
     OrganizationListComponent,
     OrganizationListItemComponent,
+    TasqueBoardComponent
   ],
   imports: [
     BrowserModule,
