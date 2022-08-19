@@ -169,6 +169,17 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+  descriptionClick(): void {
+    this.taskDescriptionItemClass = 'invisible';
+    this.taskDescriptionEditorClass = '';
+  }
+
+  summaryClick(): void {
+    this.taskSummaryItemClass = 'invisible';
+    this.taskSummaryEditorClass = '';
+  }
+
   private chooseTaskStatus(taskStatus: TaskState): [string, string, number] {
     return this.taskStatusOptions.find((x) => x[2] === taskStatus) ?? ['white', 'To Do', TaskState.Todo];
   }
