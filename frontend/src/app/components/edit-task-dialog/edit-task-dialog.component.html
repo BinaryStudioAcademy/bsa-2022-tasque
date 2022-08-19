@@ -19,6 +19,10 @@
       >
       </angular-editor>
 
+      <span class="error" *ngIf="!this.editTaskForm.value.taskSummary.valid">{{
+        summaryErrorMessage
+      }}</span>
+
       <div class="task-summary-buttons">
         <tasque-button class="btn icon pink" [icon]="linkIcon"></tasque-button>
         <tasque-button class="btn icon pink" [icon]="paperClipIcon"></tasque-button>
@@ -96,6 +100,10 @@
           class="editor {{ taskDescriptionEditorClass }}"
         >
         </angular-editor>
+
+        <span class="error" *ngIf="!this.editTaskForm.value.taskSummary.valid">{{
+          descriptionErrorMessage
+        }}</span>
       </div>
     </div>
 

@@ -5,11 +5,12 @@ import { UserModel } from 'src/core/models/user/user-model';
 import { faCheckToSlot, faXmark, faLink, faPaperclip, faShareNodes, faEllipsisVertical, faFaceSmile } from '@fortawesome/free-solid-svg-icons';
 import { BaseComponent } from 'src/core/base/base.component';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TaskState } from 'src/core/models/enums/task-state';
 import { TaskPriority } from 'src/core/models/enums/task-priority';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
+import { EditorConfig } from 'src/core/settings/angular-editor-setting';
 
 export interface EditTaskDialogData {
   currentUser: UserModel,
@@ -127,40 +128,7 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
     }
   ];
 
-  public editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '0',
-    minHeight: '35px',
-    maxHeight: '150px',
-    width: 'auto',
-    minWidth: '0',
-    translate: 'no',
-    enableToolbar: true,
-    showToolbar: true,
-    placeholder: 'Enter text here...',
-    sanitize: true,
-    toolbarPosition: 'bottom',
-    toolbarHiddenButtons: [
-      [
-        'subscript',
-        'superscript',
-        'justifyLeft',
-        'justifyCenter',
-        'justifyRight',
-        'justifyFull',
-        'indent',
-        'outdent',
-        'heading',
-        'fontName',
-        'backgroundColor',
-        'customClasses',
-        'insertImage',
-        'insertVideo',
-        'toggleEditorMode'
-      ]
-    ]
-  };
+  public editorConfig: AngularEditorConfig = EditorConfig;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: EditTaskDialogData) {
     super();
@@ -178,16 +146,45 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
 
     this.editTaskForm = new FormGroup({
       taskProject: new FormControl(this.chooseProject(this.taskProject)),
-      taskSummary: new FormControl(this.task.summary),
+      taskSummary: new FormControl(this.task.summary, [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(80)
+      ]),
       taskStatus: new FormControl(this.chooseTaskStatus(this.task.taskState)),
       taskPriority: new FormControl(this.chooseTaskPriority(this.task.taskPriority)),
       taskSprint: new FormControl(this.chooseSprint(this.taskSprint)),
-      taskDescription: new FormControl(this.task.description),
+      taskDescription: new FormControl(this.task.description, [
+        Validators.maxLength(5000)
+      ]),
       taskAssignees: new FormControl(),
     });
 
     this.fillProjectOptions(this.projects);
     this.fillSprintOptions(this.sprints);
+  }
+
+  get summaryErrorMessage(): string {
+    const ctrl = this.editTaskForm.value.taskSummary as FormControl;
+
+    if (ctrl.errors?.['minlength']) {
+      return 'Summary must be at least 2 characters';
+    }
+    if (ctrl.errors?.['maxlength']) {
+      return 'Summary must be at less  80 characters';
+    }
+
+    return '';
+  }
+
+  get descriptionErrorMessage(): string {
+    const ctrl = this.editTaskForm.value.taskDescription as FormControl;
+
+    if (ctrl.errors?.['maxlength']) {
+      return 'Description must be at less 5000 characters';
+    }
+
+    return '';
   }
 
   descriptionClick(): void {
