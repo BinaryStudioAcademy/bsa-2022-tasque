@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { UserModel } from 'src/core/models/user/user-model';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCheckToSlot, faXmark, faLink, faPaperclip, faShareNodes, faEllipsisVertical, faFaceSmile } from '@fortawesome/free-solid-svg-icons';
 import { BaseComponent } from 'src/core/base/base.component';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -23,9 +23,13 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
 
   public task: TaskModel;
   public currentUser: UserModel;
-  public buttonIcon = faXmark;
-  public editorDescriptionClass = 'invisible';
-  public editorDescriptionItemClass = '';
+  public closeIcon = faXmark;
+  public linkIcon = faLink;
+  public checkIcon = faCheckToSlot;
+  public shareIcon = faShareNodes;
+  public paperClipIcon = faPaperclip;
+  public ellipsisIcon = faEllipsisVertical;
+  public faceSmileIcon = faFaceSmile;
   public taskStatusOptions: [color: string, title: string, id: number][] = [
     ['white', 'To Do', TaskState.Todo],
     ['yellow', 'In Progress', TaskState.InProgress],
