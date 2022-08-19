@@ -40,10 +40,8 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
   public ellipsisIcon = faEllipsisVertical;
   public faceSmileIcon = faFaceSmile;
 
-  public taskDescriptionEditorClass = 'invisible';
-  public taskDescriptionItemClass = '';
-  public taskSummaryEditorClass = 'invisible';
-  public taskSummaryItemClass = '';
+  public taskDescriptionEditorShow = false;
+  public taskSummaryEditorShow = false;
 
   public taskStatusOptions: [color: string, title: string, id: number][] = [
     ['white', 'To Do', TaskState.Todo],
@@ -130,7 +128,9 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
 
   public editorConfig: AngularEditorConfig = EditorConfig;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: EditTaskDialogData) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: EditTaskDialogData,
+  ) {
     super();
     this.task = data.task;
     this.currentUser = data.currentUser;
@@ -164,6 +164,28 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
     this.fillSprintOptions(this.sprints);
   }
 
+  summaryClick(): void {
+    this.taskSummaryEditorShow = true;
+  }
+
+  summaryEditorOutsideClick(): void {
+    this.taskSummaryEditorShow = false;
+    if (this.editTaskForm.value.taskSummary !== this.task.summary && this.editTaskForm.valid) {
+      this.task.summary = this.editTaskForm.value.taskSummary;
+    }
+  }
+
+  descriptionClick(): void {
+    this.taskDescriptionEditorShow = true;
+  }
+
+  descriptionEditorOutsideClick(): void {
+    this.taskDescriptionEditorShow = false;
+    if (this.editTaskForm.value.taskDescription !== this.task.description && this.editTaskForm.valid) {
+      this.task.description = this.editTaskForm.value.taskDescription;
+    }
+  }
+
   get summaryErrorMessage(): string {
     const ctrl = this.editTaskForm.value.taskSummary as FormControl;
 
@@ -185,16 +207,6 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
     }
 
     return '';
-  }
-
-  descriptionClick(): void {
-    this.taskDescriptionItemClass = 'invisible';
-    this.taskDescriptionEditorClass = '';
-  }
-
-  summaryClick(): void {
-    this.taskSummaryItemClass = 'invisible';
-    this.taskSummaryEditorClass = '';
   }
 
   private chooseTaskStatus(taskStatus: TaskState): [string, string, number] {

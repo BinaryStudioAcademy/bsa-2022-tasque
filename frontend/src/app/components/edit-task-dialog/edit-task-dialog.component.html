@@ -6,16 +6,19 @@
   <div class="task-summary-container">
     <span class="item-label"> Project-id-{{ taskProject.id }}</span>
     <h5>
-      <span class="item-text {{ taskSummaryItemClass }}" (click)="summaryClick()">
+      <span *ngIf="!this.taskSummaryEditorShow" class="item-text" (click)="summaryClick()">
         {{ task.summary }}
       </span>
 
       <angular-editor
+        *ngIf="this.taskSummaryEditorShow"
+        [delayClickOutsideInit]="true"
         id="taskSummaryEditor"
         formControlName="taskSummary"
         [config]="editorConfig"
         placeholder="Type some text..."
-        class="editor {{ taskSummaryEditorClass }}"
+        class="editor"
+        (clickOutside)="summaryEditorOutsideClick()"
       >
       </angular-editor>
 
@@ -85,7 +88,7 @@
       <div class="item-wrapper">
         <span class="item-label">Description</span>
 
-        <div class="item-text {{ taskDescriptionItemClass }}" (click)="descriptionClick()">
+        <div *ngIf="!this.taskDescriptionEditorShow" class="item-text" (click)="descriptionClick()">
           <span *ngIf="task.description">
             {{ task.description }}
           </span>
@@ -93,11 +96,14 @@
         </div>
 
         <angular-editor
+          *ngIf="this.taskDescriptionEditorShow"
+          (clickOutside)="descriptionEditorOutsideClick()"
+          [delayClickOutsideInit]="true"
           id="taskDescriptionEditor"
           formControlName="taskDescription"
           [config]="editorConfig"
           placeholder="Type some text..."
-          class="editor {{ taskDescriptionEditorClass }}"
+          class="editor"
         >
         </angular-editor>
 
