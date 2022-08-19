@@ -19,6 +19,7 @@ import { ProjectListItemComponent } from './components/project-list/project-list
 import { OrganizationListComponent } from './components/organization-list/organization-list.component';
 import { OrganizationListItemComponent } from './components/organization-list/organization-list-item/organization-list-item.component';
 import { TasqueBoardComponent } from './components/tasque-board/tasque-board.component';
+import { UserModule } from './user/user.module';
 import { EditTaskDialogComponent } from './components/edit-task-dialog/edit-task-dialog.component';
 
 @NgModule({
@@ -45,6 +46,8 @@ import { EditTaskDialogComponent } from './components/edit-task-dialog/edit-task
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     AuthModule,
+    UserModule,
+
   ],
   providers: [BrowserAnimationsModule],
   bootstrap: [AppComponent],
