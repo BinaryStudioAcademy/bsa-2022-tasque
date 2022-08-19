@@ -169,11 +169,43 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.editTaskForm.value.taskProject = this.task.projectId.toString();
-    this.editTaskForm.value.taskStatus = this.task.taskState.toString();
-    this.editTaskForm.value.taskPriority = this.task.taskPriority.toString();
-    this.editTaskForm.value.taskSprint = this.task.sprintId.toString();
-    this.editTaskForm.value.taskSummary = this.task.summary;
+  private chooseTaskStatus(taskStatus: TaskState): [string, string, number] {
+    return this.taskStatusOptions.find((x) => x[2] === taskStatus) ?? ['white', 'To Do', TaskState.Todo];
+  }
+
+  private chooseTaskPriority(taskPriority: TaskPriority): [string, string, number] {
+    return this.taskStatusOptions.find((x) => x[2] === taskPriority) ?? ['green', 'Low', TaskPriority.Low];
+  }
+
+  private chooseProject(project: ProjectModel): [string, string, number] {
+    switch (project.id % 4) {
+      case 1:
+        return ['yellow', project.name, project.id];
+      case 2:
+        return ['green', project.name, project.id];
+      case 3:
+        return ['orange', project.name, project.id];
+      case 4:
+        return ['red', project.name, project.id];
+      default:
+        return ['white', '-', 0];
+    }
+  }
+
+  private chooseSprint(sprint: SprintModel): [string, string, number] {
+    switch (sprint.id % 4) {
+      case 1:
+        return ['yellow', sprint.name, sprint.id];
+      case 2:
+        return ['green', sprint.name, sprint.id];
+      case 3:
+        return ['orange', sprint.name, sprint.id];
+      case 4:
+        return ['red', sprint.name, sprint.id];
+      default:
+        return ['white', '-', 0];
+    }
+  }
   }
 
   spanClick(): void {
