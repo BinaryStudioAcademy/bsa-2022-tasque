@@ -4,10 +4,10 @@ import { Injectable, Output, EventEmitter } from '@angular/core';
 export class SideBarService {
   isOpen = false;
 
-  @Output() change: EventEmitter<boolean> = new EventEmitter();
+  @Output() change: EventEmitter<string> = new EventEmitter();
 
-  toggle(): void {
+  toggle(name: string): void {
     this.isOpen = !this.isOpen;
-    this.change.emit(this.isOpen);
+    this.change.emit(name);
   }
 }

@@ -21,6 +21,7 @@ import { OrganizationListItemComponent } from './components/organization-list/or
 import { TasqueBoardComponent } from './components/tasque-board/tasque-board.component';
 import { UserModule } from './user/user.module';
 import { SelectUsersComponent } from '../shared/components/select-users/select-users.component';
+import { TasqueSidebar1Component } from '../shared/components/tasque-sidebar1/tasque-sidebar1.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     OrganizationListComponent,
     OrganizationListItemComponent,
     SelectUsersComponent,
-    TasqueBoardComponent
+    TasqueBoardComponent,
+    TasqueSidebar1Component,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +49,6 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     ToastrModule.forRoot(),
     AuthModule,
     UserModule,
-
   ],
   providers: [BrowserAnimationsModule],
   bootstrap: [AppComponent],

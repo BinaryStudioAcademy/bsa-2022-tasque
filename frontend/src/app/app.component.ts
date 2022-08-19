@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SideBarService } from 'src/core/services/sidebar.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'tasque';
+
+  constructor(public sidebarService: SideBarService) {}
+
+  openSidebar(name: string): void {
+    this.sidebarService.toggle(name);
+  }
 }
