@@ -1,7 +1,7 @@
 <form [formGroup]="loginForm" class="form-container">
   <div class="text-container">
     <h4 class="login-title">Log In</h4>
-    <span class="label-14 link">New to Tasque? <a routerLink="../register">Sign up</a></span>
+    <span class="label-14 link">New to Tasque? <a routerLink="../register">Sign Up</a></span>
   </div>
   <tasque-input label="Email" placeholder="Enter your email" [errorMessage]="emailErrorMessage" [invalid]="!emailControl.valid" formControlName="emailControl"></tasque-input>
   <div class="password-container">
