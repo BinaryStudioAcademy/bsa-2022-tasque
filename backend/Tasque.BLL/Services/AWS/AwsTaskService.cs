@@ -1,6 +1,7 @@
 ﻿using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
+using AutoMapper;
 using Newtonsoft.Json;
 using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.BLL.Interfaces;
@@ -80,44 +81,34 @@ namespace Tasque.Core.BLL.Services.AWS
 
             foreach (var item in scanResponse.Items)
             {
-                item.TryGetValue("CustomAttributes", out var attributeValue);
+                var ca = new Dictionary<string, object>();
 
-                //var json = JsonConvert.SerializeObject(attributeValue?.M);
-                //var data = JsonConvert.DeserializeObject<CustomAwsTaskAttributes>(json);
-                item.TryGetValue(AwsTaskKeys.Id, out var id);
-                item.TryGetValue(AwsTaskKeys.ProjectId, out var projectId);
-                item.TryGetValue(AwsTaskKeys.DateFields, out var customDates);
-                item.TryGetValue(AwsTaskKeys.TextFields, out var customText);
-                item.TryGetValue(AwsTaskKeys.ParagraphFields, out var customParagraph);
-                item.TryGetValue(AwsTaskKeys.NumberFields, out var customNumber);
-                item.TryGetValue(AwsTaskKeys.LabelFields, out var customLabel);
-                item.TryGetValue(AwsTaskKeys.UserFields, out var customUser);
-                item.TryGetValue(AwsTaskKeys.CheckboxFields, out var customCheckbox);
-                item.TryGetValue(AwsTaskKeys.DropdownFields, out var customDropdown);
-                item.TryGetValue(AwsTaskKeys.DropdownDependenciesFields, out var customDropownDependencies);
-
-                var data = new CustomAwsTaskAttributes()
+                foreach (var key in item.Keys)
                 {
-                    Id = TryParseValue(id?.N),
-                    ProjectId = TryParseValue(projectId?.N),
-                    CustomTextFields = customText?.SS,
-                    CustomParagraphFilds = customParagraph?.SS,
-                    CustomNumberFields = customNumber?.NS,
+                    item.TryGetValue(key, out var attribute);
 
-                    CustomLabelFields = customLabel?.NS,
-                    CustomUserFields = customUser?.NS,
-                    CustomCheckboxFields = customCheckbox?.SS,
-                    CustomDropdownFields = customDropdown?.SS,
-                    CustomDropdownDependenciesFields = customDropownDependencies?.SS,
-                };
+                    if (key == AwsTaskKeys.Id || key == AwsTaskKeys.ProjectId)
+                    {
+                        ca.Add(key, int.Parse(attribute?.N));
+                        continue;
+                    }
 
-                if (customDates != null)
-                {
-                    List<DateTime> dateOnlies = new();
-                    customDates?.SS?.ForEach(s => dateOnlies.Add(DateTime.Parse(s)));
-                    data.CustomDateFields = dateOnlies;
+                    if (!string.IsNullOrEmpty(attribute?.S))
+                        ca.Add(key, attribute?.S);
+                    else if (attribute.SS != null && attribute.SS.Count != 0)
+                        ca.Add(key, attribute?.SS);
+                    else if (attribute?.N != null)
+                        ca.Add(key, attribute?.N);
+                    else if (attribute?.NS.Count != 0)
+                        ca.Add(key, attribute?.NS);
+                    else if (attribute?.L.Count != 0)
+                        ca.Add(key, attribute?.L);
+                    else if (attribute?.M != null)
+                        ca.Add(key, attribute?.M);
                 }
-                taskList.Add(data);
+
+                taskList.Add(JsonConvert.DeserializeObject<CustomAwsTaskAttributes>(
+                  JsonConvert.SerializeObject(ca)));
             }
             return taskList;
         }
@@ -143,15 +134,17 @@ namespace Tasque.Core.BLL.Services.AWS
             return attributeList;
         }
 
-        private int TryParseValue(string? num)
+        private int? TryParseValue(string? num, out bool isSucced)
         {
             try
             {
-                return int.Parse(num?? throw new AwsFieldPaseValueException("Null"));
+                isSucced = true;
+                return int.Parse(num);
             }
             catch(Exception ex)
             {
-                throw new AwsFieldPaseValueException(ex.Message);
+                isSucced = false;
+                return null;
             }
         }
     }

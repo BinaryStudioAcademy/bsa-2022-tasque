@@ -15,12 +15,10 @@ using Tasque.Core.Common.Entities;
 using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
 using Amazon;
-using Tasque.Core.BLL.Services.Email.MailJet;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.BLL.Services.AWS;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2;
-using Tasque.Core.Common.StaticResources;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
 {
