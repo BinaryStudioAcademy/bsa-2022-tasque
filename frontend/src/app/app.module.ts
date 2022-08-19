@@ -32,7 +32,7 @@ import { EditTaskDialogComponent } from './components/edit-task-dialog/edit-task
     ProjectListItemComponent,
     OrganizationListComponent,
     OrganizationListItemComponent,
-    TasqueBoardComponent
+    TasqueBoardComponent,
     EditTaskDialogComponent,
   ],
   imports: [
