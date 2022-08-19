@@ -14,9 +14,6 @@ namespace Tasque.Core.BLL.Services.Email
 
         public async Task<bool> SendEmailAsync(EmailMessage message)
         {
-            var logger = NLog.LogManager.GetCurrentClassLogger();
-            logger.Info(message.Content);
-
             var response = await _client.SendEmailAsync(message.ConvertForSendGrid());
             if (!response.IsSuccessStatusCode)
             {
