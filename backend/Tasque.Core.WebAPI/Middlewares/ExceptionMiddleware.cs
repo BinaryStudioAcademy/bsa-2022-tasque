@@ -35,7 +35,7 @@ namespace Tasque.Core.WebAPI.Middlewares
                     case EmailNotConfirmedException ex:
                         await HandleEmailNotConfirmedException(httpContext, ex);
                         break;
-                    case AwsFieldPaseValueException ex:
+                    case AwsFieldParseValueException ex:
                         await HandleAwsException(httpContext, ex);
                         break;
                     case NotFoundException ex:
@@ -82,7 +82,7 @@ namespace Tasque.Core.WebAPI.Middlewares
             await CreateExceptionAsync(httpContext, HttpStatusCode.Forbidden, ex.Message);
         }
 
-        private async Task HandleAwsException(HttpContext context, AwsFieldPaseValueException ex)
+        private async Task HandleAwsException(HttpContext context, AwsFieldParseValueException ex)
         {
             _logger.LogError($"{ex} - {ex.Message}");
             await CreateExceptionAsync(context, HttpStatusCode.Conflict, ex.Message);

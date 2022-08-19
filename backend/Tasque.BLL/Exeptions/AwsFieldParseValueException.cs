@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Tasque.Core.BLL.Exeptions
 {
-    public class AwsFieldPaseValueException : Exception
+    public class AwsFieldParseValueException : Exception
     {
-        public AwsFieldPaseValueException(string message) : base(message) { }
+        public AwsFieldParseValueException(string message) : base(message) { }
     }
 }
