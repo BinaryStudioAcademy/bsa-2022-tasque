@@ -20,6 +20,7 @@ import { SideBarService } from 'src/core/services/sidebar.service';
 import { HeaderComponent } from './components/tasque-header/tasque-header.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { TasqueTeamSelectComponent } from './components/tasque-team-select/tasque-team-select.component';
+import { TaskCreationComponent } from 'src/shared/components/tasque-task-creation/task-creation.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
@@ -49,6 +50,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     MenuDropdownComponent,
     HeaderComponent,
     TasqueTeamSelectComponent,
+    TaskCreationComponent,
   ],
   exports: [
     CommonModule,
@@ -73,6 +75,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     OrganizationsDropdownComponent,
     HeaderComponent,
     TasqueTeamSelectComponent,
+    TaskCreationComponent,
     AngularEditorModule,
   ],
   providers: [SideBarService],

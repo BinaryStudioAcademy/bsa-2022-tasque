@@ -1,7 +1,7 @@
-﻿using Mailjet.Client;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SendGrid.Extensions.DependencyInjection;
 using System.Reflection;
 using System.Text;
 using Tasque.Core.BLL.JWT;
@@ -10,7 +10,6 @@ using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.BLL.Services.Auth;
 using Tasque.Core.BLL.Services.Email;
-using Tasque.Core.BLL.Services.Email.MailJet;
 using Tasque.Core.Common.Entities;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
@@ -72,6 +71,9 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
         {
             services.Configure<EmailConfirmationOptions>(configuration.GetSection(nameof(EmailConfirmationOptions)));
 
+            #region MailJet Service
+
+            /*
             var options = new MailJetOptions();
             var section = configuration.GetSection(nameof(MailJetOptions));
             section.Bind(options);
@@ -81,6 +83,20 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 client.UseBasicAuthentication(options.ApiKey, options.ApiSecret);
             });
             services.Configure<MailJetOptions>(section);
+            */
+
+            #endregion
+
+            #region SendGrid Service
+
+            var options = new SendGridOptions();
+            configuration.GetSection(nameof(SendGridOptions)).Bind(options);
+            services.AddSendGrid(opt =>
+            {
+                opt.ApiKey = options.ApiKey;
+            });
+
+            #endregion
         }
 
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
@@ -100,7 +116,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<ConfirmationTokenService>()
                 .AddScoped<PasswordResetService>()
                 .AddScoped<ProjectService>()
-                .AddScoped<IEmailService, MailJetService>()
+                .AddScoped<IEmailService, SendGridService>()
                 .AddScoped<OrganizationService>();
         }
 

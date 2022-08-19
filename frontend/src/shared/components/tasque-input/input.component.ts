@@ -22,6 +22,7 @@ export type IconPosition = 'right' | 'left';
     },
   ],
 })
+
 export class InputComponent implements ControlValueAccessor {
   public inputBorderRadius = 10;
   public inputClass = '';
@@ -117,11 +118,11 @@ export class InputComponent implements ControlValueAccessor {
     this.iconClick.emit(args);
   }
 
-  onChange: (value: Event) => void = () => { };
+  onChange: (value: Event) => void = () => {};
 
-  onTouched: (value: Event) => void = () => { };
+  onTouched: (value: Event) => void = () => {};
 
-  constructor() { }
+  constructor() {}
 
   writeValue(value: string): void {
     this.inputValue = value;

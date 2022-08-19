@@ -14,6 +14,7 @@
       <mat-icon class="dropdown-icon">expand_more</mat-icon>
     </div>
   </button>
+  <span class="error" *ngIf="dropdownValueIsError">{{ dropdownErrorMessage }}</span>
   <div class="options-container" *ngIf="expanded" [ngStyle]="{ 'width': optionsWidth }">
     <div class="option" *ngFor="let option of options" (click)="select(option)">
       <svg class="color-square">

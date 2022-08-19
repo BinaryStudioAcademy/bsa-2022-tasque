@@ -1,0 +1,42 @@
+<tasque-button class="fill" (click)="openSidebar()" text="Create issue"></tasque-button>
+<tasque-sidebar>
+  <div class="task-creation-conteiner">
+    <div class="task-creation-header">
+      <h4 class="task-creation-header-title">Create issue</h4>
+      <div class="task-creation-header-button">
+        <tasque-button class="btn fill disabled" text="Import issues"> </tasque-button>
+        <tasque-button class="btn" [icon]="faExpeditedssl"> </tasque-button>
+      </div>
+    </div>
+    <div class="task-creation-body">
+      <div class="task-creation-body-wrapper">
+        <form [formGroup]="taskCreateForm">
+          <div class="input-wrapper">
+            <tasque-dropdown label="Project" [options]="projects" formControlName="projectControl" [errorMessage]="projectErrorMessage" [invalid]="!projectControl.valid"> </tasque-dropdown>
+          </div>
+          <div class="input-wrapper">
+            <tasque-dropdown label="Issue type" [options]="issueTypes" [formControl]="issueTypeControl" [errorMessage]="issueTypeErrorMessage" [invalid]="!issueTypeControl.valid"> </tasque-dropdown>
+          </div>
+          <div class="input-wrapper">
+            <tasque-input label="Summary" [formControl]="summaryControl" [errorMessage]="summaryErrorMessage" [invalid]="!summaryControl.valid" ngDefaultControl> </tasque-input>
+          </div>
+          <div class="editor-wrapper">
+            <label class="label">Description</label>
+            <angular-editor class="editor-conteiner" [(ngModel)]="editorContent" [config]="editorConfig" formControlName="descriptionControl"> </angular-editor>
+          </div>
+          <span class="error" *ngIf="!descriptionControl.valid">{{ editorErrorMessage }}</span>
+
+          <div class="button-wrapper">
+            <tasque-button class="btn stroke violet-stroke" text="+ Add issues"> </tasque-button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="task-creation-footer">
+      <div class="task-creation-footer-button">
+        <tasque-button type="submit" class="btn stroke" text="Cancel" (click)="clearForm()"> </tasque-button>
+        <tasque-button type="submit" class="btn fill" text="Create" (click)="submitForm()"> </tasque-button>
+      </div>
+    </div>
+  </div>
+</tasque-sidebar>
