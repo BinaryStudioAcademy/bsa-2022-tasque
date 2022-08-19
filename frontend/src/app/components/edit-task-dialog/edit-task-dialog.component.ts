@@ -45,10 +45,8 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
     ['orange', 'High', TaskPriority.High],
   ];
 
-  public projectOptions: [color: string, title: string, id: number][] = [
-    ['white', '-', 0],
-    ['red', 'Project 1', 1],
-    ['yellow', 'Project 2', 2]
+  public projectOptions: [color: string, title: string, id: number][] = [];
+  public sprintOptions: [color: string, title: string, id: number][] = [];
   ];
   public taskSprintOptions: [color: string, title: string, id: number][] = [
     ['white', '-', 0],
