@@ -21,6 +21,7 @@ import { OrganizationListItemComponent } from './components/organization-list/or
 import { TasqueBoardComponent } from './components/tasque-board/tasque-board.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from '../core/interceptors/jwt.interceptor';
+import { UserModule } from './user/user.module';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,8 @@ import { JwtInterceptor } from '../core/interceptors/jwt.interceptor';
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     AuthModule,
+    UserModule,
+
   ],
   providers: [BrowserAnimationsModule,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
