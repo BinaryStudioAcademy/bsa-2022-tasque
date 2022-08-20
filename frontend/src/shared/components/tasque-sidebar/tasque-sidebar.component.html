@@ -1,0 +1,5 @@
+<tasque-button [class]="btnClass" *ngIf="btnIcon" [icon]="btnIcon" [text]="btnText" (click)="openSidebar()"></tasque-button>
+<tasque-button [class]="btnClass" *ngIf="!btnIcon" [text]="btnText" (click)="openSidebar()"></tasque-button>
+<tasque-sidebar-modal [name]="name">
+  <ng-content></ng-content>
+</tasque-sidebar-modal>

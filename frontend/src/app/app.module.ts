@@ -35,7 +35,7 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     OrganizationListComponent,
     OrganizationListItemComponent,
     SelectUsersComponent,
-    TasqueBoardComponent
+    TasqueBoardComponent,
   ],
   imports: [
     BrowserModule,
