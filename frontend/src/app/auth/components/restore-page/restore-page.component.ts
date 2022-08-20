@@ -48,7 +48,10 @@ export class RestorePageComponent implements OnInit {
   }
 
   public submit(): void {
-    if (!this.loginForm.valid) return;
+    if (!this.loginForm.valid){
+      this.loginForm.markAllAsTouched();
+      return;
+    }
     const email = this.emailControl.value;
     this.authService
       .requestPasswordReset(email)
