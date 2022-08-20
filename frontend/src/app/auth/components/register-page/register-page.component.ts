@@ -119,7 +119,7 @@ export class RegisterPageComponent implements OnInit {
     this.passwordRepeatControl = new FormControl(
       this.passwordRepeatControl.value,
       [
-      Validators.required,
+        Validators.required,
         Validators.pattern(this.passwordControl.value as string),
       ],
     );
