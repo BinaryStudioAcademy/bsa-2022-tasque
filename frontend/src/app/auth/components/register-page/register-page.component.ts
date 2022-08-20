@@ -39,7 +39,7 @@ export class RegisterPageComponent implements OnInit {
     if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
       return 'Name is required';
     }
-    else if(ctrl.errors?.['minlength'] && (ctrl.dirty || ctrl.touched)) {
+    if(ctrl.errors?.['minlength'] && (ctrl.dirty || ctrl.touched)) {
       return 'Name minimum length is 4 characters';
     }
     return '';
@@ -72,7 +72,7 @@ export class RegisterPageComponent implements OnInit {
     if (ctrl.errors?.['pattern']) {
       return 'Passwords do not match';
     }
-    else if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)){
+    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)){
       return 'You need to repeat your password'
     }
     return '';
