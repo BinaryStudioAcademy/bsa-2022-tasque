@@ -39,6 +39,9 @@ export class RegisterPageComponent implements OnInit {
     if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
       return 'Name is required';
     }
+    else if(ctrl.errors?.['minlength'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Name minimum length is 4 characters';
+    }
     return '';
   }
 
@@ -68,6 +71,9 @@ export class RegisterPageComponent implements OnInit {
     const ctrl = this.passwordRepeatControl;
     if (ctrl.errors?.['pattern']) {
       return 'Passwords do not match';
+    }
+    else if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)){
+      return 'You need to repeat your password'
     }
     return '';
   }
@@ -113,7 +119,7 @@ export class RegisterPageComponent implements OnInit {
     this.passwordRepeatControl = new FormControl(
       this.passwordRepeatControl.value,
       [
-        Validators.required,
+      Validators.required,
         Validators.pattern(this.passwordControl.value as string),
       ],
     );
@@ -127,6 +133,8 @@ export class RegisterPageComponent implements OnInit {
 
   public submitForm(): void {
     if (!this.registerForm.valid) {
+      this.registerForm.markAllAsTouched();
+      this.passwordRepeatControl.markAllAsTouched();
       this.toastrService.error('Invalid values');
       return;
     }
@@ -145,7 +153,7 @@ export class RegisterPageComponent implements OnInit {
         ),
       )
       .subscribe(() => {
-        this.toastrService.info('Check your mailbox');
+    this.toastrService.info('Check your mailbox');
       });
   }
 }
