@@ -73,7 +73,7 @@ export class RegisterPageComponent implements OnInit {
       return 'Passwords do not match';
     }
     if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)){
-      return 'You need to repeat your password'
+      return 'You need to repeat your password';
     }
     return '';
   }
