@@ -24,6 +24,13 @@ namespace Tasque.Core.WebAPI.Controllers
             return Login(user);
         }
 
+        [HttpPost("test")]
+        public async Task<IActionResult> Test([FromForm] CredentilasDTO form)
+        {
+            Console.WriteLine(form);
+            return Ok(form);
+        }
+
         [HttpGet("confirm")]
         public async Task<IActionResult> ConfirmEmail([FromQuery] Guid key)
         {
