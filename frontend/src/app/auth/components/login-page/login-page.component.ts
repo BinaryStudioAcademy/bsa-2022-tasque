@@ -105,6 +105,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
   public submitForm(): void {
     if (!this.loginForm.valid || !this.loginForm.dirty) {
+      this.loginForm.markAllAsTouched();
       this.toastrService.error('Invalid values');
       return;
     }
