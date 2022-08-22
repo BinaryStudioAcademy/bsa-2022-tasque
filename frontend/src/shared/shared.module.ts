@@ -15,13 +15,14 @@ import { OrganizationsDropdownComponent } from './components/tasque-header/organ
 import { MenuDropdownComponent } from './components/tasque-menu-dropdown/menu-dropdown.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.component';
-import { SideBarComponent } from './components/tasque-sidebar/sidebar.component';
 import { SideBarService } from 'src/core/services/sidebar.service';
 import { HeaderComponent } from './components/tasque-header/tasque-header.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { TasqueTeamSelectComponent } from './components/tasque-team-select/tasque-team-select.component';
 import { TaskCreationComponent } from 'src/shared/components/tasque-task-creation/task-creation.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { TasqueSidebarComponent } from './components/tasque-sidebar/tasque-sidebar.component';
+import { TasqueSideBarModalComponent } from './components/tasque-sidebar/tasque-sidebar-modal/sidebar-modal.component';
 import { NgClickOutsideDirective } from 'ng-click-outside2';
 
 @NgModule({
@@ -47,12 +48,13 @@ import { NgClickOutsideDirective } from 'ng-click-outside2';
     ConfirmationModalComponent,
     DropdownComponent,
     TasqueLogoComponent,
-    SideBarComponent,
     OrganizationsDropdownComponent,
     MenuDropdownComponent,
     HeaderComponent,
     TasqueTeamSelectComponent,
     TaskCreationComponent,
+    TasqueSidebarComponent,
+    TasqueSideBarModalComponent,
   ],
   exports: [
     CommonModule,
@@ -72,7 +74,8 @@ import { NgClickOutsideDirective } from 'ng-click-outside2';
     DropdownComponent,
     FontAwesomeModule,
     TasqueLogoComponent,
-    SideBarComponent,
+    TasqueSidebarComponent,
+    TasqueSideBarModalComponent,
     MenuDropdownComponent,
     OrganizationsDropdownComponent,
     HeaderComponent,

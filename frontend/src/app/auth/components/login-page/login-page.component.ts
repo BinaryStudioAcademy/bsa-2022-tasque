@@ -64,7 +64,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-
     private authService: AuthService,
     private toastrService: ToastrService,
   ) {
@@ -106,6 +105,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
   public submitForm(): void {
     if (!this.loginForm.valid || !this.loginForm.dirty) {
+      this.loginForm.markAllAsTouched();
       this.toastrService.error('Invalid values');
       return;
     }
@@ -122,15 +122,28 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         (resp) => {
           if (resp.body) {
             this.authService.setAuthToken(resp.body);
+            this.toastrService.success(
+              'You will be redirected to your profile',
+              'Login successful',
+              { disableTimeOut: true },
+            );
+            this.router.navigate(['../..', 'organizations'], {
+              replaceUrl: true,
+              relativeTo: this.route,
+            });
           }
         },
         (error: HttpErrorResponse) => {
-          // this code is unreachable because of interceptor handling every error response
           if (error.status == 403) {
-            this.showEmailNotConfirmedError();
+            const toast = this.toastrService.error(
+              'Click this notification to send confirmation link again',
+              'Email is not confirmed',
+              { disableTimeOut: true, closeButton: true, timeOut: 10000 },
+            );
+            toast.onTap.subscribe(() => this.resendConfirmationEmail());
             return;
           }
-          this.toastrService.error(error.error);
+          throw error;
         },
       );
   }
@@ -139,15 +152,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     this.hidePass = !this.hidePass;
     this.passwordInput.type = this.hidePass ? 'password' : 'text';
     this.passwordInput.icon = this.hidePass ? this.faHide : this.faShow;
-  }
-
-  private showEmailNotConfirmedError(): void {
-    const toast = this.toastrService.error(
-      'Click this notification to send confirmation link again',
-      'Email is not confirmed',
-      { disableTimeOut: true },
-    );
-    toast.onTap.subscribe(() => this.resendConfirmationEmail());
   }
 
   private resendConfirmationEmail(): void {

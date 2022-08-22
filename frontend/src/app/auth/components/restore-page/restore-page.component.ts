@@ -48,13 +48,16 @@ export class RestorePageComponent implements OnInit {
   }
 
   public submit(): void {
-    if (!this.loginForm.valid) return;
+    if (!this.loginForm.valid){
+      this.loginForm.markAllAsTouched();
+      return;
+    }
     const email = this.emailControl.value;
     this.authService
       .requestPasswordReset(email)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((resp) => {
-        this.toastrService.success(resp.body as string);
+      .subscribe(() => {
+        this.toastrService.info('Check your inbox');
       });
   }
 }

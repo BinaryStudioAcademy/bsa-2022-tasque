@@ -12,20 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddNLog();
 
-builder.Services.ConfigureMapper();
-builder.Services.ConfigureValidator();
-builder.Services.ConfigureCurrentUserParameters();
-builder.Services.ConfigureEmailServices(builder.Configuration);
-builder.Services.AddSwagger();
-
 // Add services to the container.
 
 AppConfigurationExtension.RegisterServices(builder.Services, builder.Configuration);
 
-builder.Services.AddCors();
-
 builder.Services.AddDbContext<DataContext>(
-    o => o.UseNpgsql(builder.Configuration.GetConnectionString("TasqueDb"),
+    o => o.UseNpgsql(builder.Configuration["ConnectionStrings:TasqueDb"], 
         b => b.MigrationsAssembly(typeof(DataContext).Assembly.FullName))
         .EnableDetailedErrors());
 
