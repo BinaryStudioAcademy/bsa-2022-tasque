@@ -21,14 +21,12 @@ export class CreateProjectDialogComponent implements OnInit {
   public cancelBtnClass = 'fill gray';
 
   public inputNameClass = 'input';
-  public inputNameType = 'text';
   public inputNameId = 'projectName';
   public inputNamePlaceholder = 'Try a team name, project goal, milestone...';
   public inputNameLabel = 'Name';
   public inputNameRequired = true;
 
   public inputKeyClass = 'input';
-  public inputKeyType = 'text';
   public inputKeyId = 'projectKey';
   public inputKeyLabel = 'Key';
 

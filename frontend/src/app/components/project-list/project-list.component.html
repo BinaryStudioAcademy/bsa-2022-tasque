@@ -4,14 +4,7 @@
       <h3 class="title">Your organization projects</h3>
     </div>
     <div class="cards-info-actions">
-      <tasque-input
-        type="search"
-        placeholder="Search..."
-        [borderRadius]="50"
-        [(ngModel)]="inputSearch"
-        (ngModelChange)="filterItems()"
-      >
-      </tasque-input>
+      <tasque-input class="search-input" type="search" [icon]="searchIcon" iconPosition="search" placeholder="Search..." [(ngModel)]="inputSearch" (ngModelChange)="filterItems()"></tasque-input>
       <app-create-project></app-create-project>
     </div>
 

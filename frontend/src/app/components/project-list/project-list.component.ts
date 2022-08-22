@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { ProjectModel } from '../../../core/models/project/project-model';
 
 @Component({
@@ -9,6 +10,7 @@ import { ProjectModel } from '../../../core/models/project/project-model';
 export class ProjectListComponent implements OnInit {
 
   public inputSearch = '';
+  public searchIcon = faMagnifyingGlass;
 
   public items:ProjectModel[] = [
     {
