@@ -27,24 +27,6 @@
         <div class="form-container full-width">
             <form [formGroup]="profileForm" class="full-width">                
                 <div class="input-container">
-                    <label class="thirty-percent">Name</label>
-                    <div class="password-container half-width">
-                        <input
-                            class="input full-width"
-                            [ngClass]="{
-                            'error': userNameControl.invalid && (userNameControl.dirty || userNameControl.touched)
-                            }"
-                            [(ngModel)]="profileChanges.name"
-                            type="text"
-                            placeholder="Enter your name"
-                            formControlName="userNameControl"
-                            (input)="checkChanged()"
-                        />
-                        <span class="error" *ngIf="userNameControl.errors?.['required'] && (userNameControl.dirty || userNameControl.touched)">Name is required.</span>
-                        <span class="error" *ngIf="userNameControl.errors?.['minlength']">Must be at least 4 characters</span>
-                    </div>                    
-                </div>
-                <div class="input-container">
                     <label class="thirty-percent">Email</label>
                     <div class="password-container half-width">
                         <input
@@ -63,6 +45,24 @@
                         <span class="error" *ngIf="emailControl.errors?.['pattern']">Incorrect email format</span>
                     </div>
                 </div>                  
+                <div class="input-container">
+                    <label class="thirty-percent">Name</label>
+                    <div class="password-container half-width">
+                        <input
+                            class="input full-width"
+                            [ngClass]="{
+                            'error': userNameControl.invalid && (userNameControl.dirty || userNameControl.touched)
+                            }"
+                            [(ngModel)]="profileChanges.name"
+                            type="text"
+                            placeholder="Enter your name"
+                            formControlName="userNameControl"
+                            (input)="checkChanged()"
+                        />
+                        <span class="error" *ngIf="userNameControl.errors?.['required'] && (userNameControl.dirty || userNameControl.touched)">Name is required.</span>
+                        <span class="error" *ngIf="userNameControl.errors?.['minlength']">Must be at least 4 characters</span>
+                    </div>                    
+                </div>                
             </form>
         </div>
         <div class="button-container">
