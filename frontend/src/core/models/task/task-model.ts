@@ -1,6 +1,6 @@
-import { TaskPriority } from '../enums/task-priority';
-import { TaskState } from '../enums/task-state';
-import { TaskType } from '../enums/task-type';
+import { TaskPriority } from './task-priority';
+import { TaskState } from './task-state';
+import { TaskType } from './task-type';
 
 export interface TaskModel {
   id: number,
