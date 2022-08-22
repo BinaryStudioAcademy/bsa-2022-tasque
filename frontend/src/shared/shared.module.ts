@@ -36,7 +36,7 @@ import { NgClickOutsideDirective } from 'ng-click-outside2';
     FontAwesomeModule,
     LayoutModule,
     AngularEditorModule,
-    NgClickOutsideDirective
+    NgClickOutsideDirective,
   ],
   declarations: [
     LoadingComponent,
@@ -79,7 +79,7 @@ import { NgClickOutsideDirective } from 'ng-click-outside2';
     TasqueTeamSelectComponent,
     TaskCreationComponent,
     AngularEditorModule,
-    NgClickOutsideDirective
+    NgClickOutsideDirective,
   ],
   providers: [SideBarService],
 })
