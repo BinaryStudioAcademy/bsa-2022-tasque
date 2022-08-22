@@ -37,6 +37,7 @@ export class RestorePageComponent implements OnInit {
   ) {
     this.emailControl = new FormControl(this.email, [
       Validators.required,
+      Validators.email,
       Validators.pattern(ValidationConstants.emailRegex),
     ]);
   }

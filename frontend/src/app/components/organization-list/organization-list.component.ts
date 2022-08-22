@@ -17,7 +17,7 @@ export class OrganizationListComponent implements OnInit {
   @Input() public currentUser: UserModel = {
     name: 'Login1',
     email: 'testlogin@gmail.com',
-    id: 2,
+    id: 20,
   };
 
   public items: OrganizationModel[] = [

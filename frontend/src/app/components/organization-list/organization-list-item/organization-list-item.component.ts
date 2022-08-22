@@ -11,7 +11,7 @@ export class OrganizationListItemComponent implements OnInit {
   @Input() public currentUser: UserModel = {
     name: 'Login1',
     email: 'testlogin@gmail.com',
-    id: 1,
+    id: 20,
   };
   @Input() public organization: OrganizationModel;
 

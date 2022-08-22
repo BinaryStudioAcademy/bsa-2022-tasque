@@ -15,7 +15,7 @@ export class CreateOrganizationComponent implements OnInit {
   @Input() public currentUser: UserModel = {
     name: 'Login1',
     email: 'testlogin@gmail.com',
-    id: 1,
+    id: 20,
     salt: 'Salt',
     password: 'Password'
   };
