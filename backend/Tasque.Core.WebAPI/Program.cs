@@ -44,8 +44,15 @@ app.UseCors(builder =>
         .AllowAnyOrigin()
         .AllowAnyMethod());
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwagger(action =>
+{
+    action.RouteTemplate = "api/swagger/{documentName}/swagger.json";
+});
+app.UseSwaggerUI(action => 
+{
+    action.SwaggerEndpoint("v1/swagger.json", "Tasque API");
+    action.RoutePrefix = "api/swagger";
+});
 
 app.UseRouting();
 

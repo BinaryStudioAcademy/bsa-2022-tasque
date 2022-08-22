@@ -1,11 +1,11 @@
 <form [formGroup]="loginForm" class="form-container">
   <div class="text-container">
     <h4 class="login-title">Log In</h4>
-    <span class="label-14 link">New to Tasque? <a routerLink="../register">Sign up</a></span>
+    <span class="label-14 link">New to Tasque? <a routerLink="../register">Sign Up</a></span>
   </div>
-  <tasque-input label="Email" placeholder="Enter your email" [errorMessage]="emailErrorMessage" [invalid]="!emailControl.valid" formControlName="emailControl"></tasque-input>
+  <tasque-input #emailInput (focusout)="showError(emailInput)" (input)="hideError(emailInput)" label="Email" placeholder="Enter your email" formControlName="emailControl"></tasque-input>
   <div class="password-container">
-    <tasque-input label="Password" placeholder="Enter your password" type="password" [icon]="faHide" iconPosition="right" #passwordInput (iconClick)="flipPasswordVisible()" formControlName="passwordControl" [errorMessage]="passwordErrorMessage" [invalid]="!passwordControl.valid"></tasque-input>
+    <tasque-input #passwordInput (focusout)="showError(passwordInput)" (input)="hideError(passwordInput)" label="Password" placeholder="Enter your password" type="password" [icon]="faHide" iconPosition="right" (iconClick)="flipPasswordVisible()" formControlName="passwordControl"></tasque-input>
     <span class="password-restore-button label-12 link">
       <a routerLink="../restore">Forgot password?</a>
     </span>

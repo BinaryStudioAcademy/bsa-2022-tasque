@@ -62,6 +62,18 @@
 .error
   color: colorscheme(pink-300)
 
+::placeholder
+  color: colorscheme(gray-400)
+
+*
+  box-sizing: border-box
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration
+  display: none
+
 .input-wrp
   position: relative
   border-radius: 50px
@@ -91,7 +103,7 @@
     color: colorscheme(gray-500)
     transform: translate(0, -50%)
     & + .mini-search-input
-      padding-left: 38px  
+      padding-left: 38px
   &.btn:hover
     color: colorscheme(gray-400)
     cursor: pointer
@@ -101,7 +113,8 @@
   background: colorscheme(transparency)
 
 ::placeholder
-  color: colorscheme(gray-400)
+  color: colorscheme(gray-500)
+  font-family: 'Nunito'
 
 *
   box-sizing: border-box
