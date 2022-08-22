@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
@@ -53,6 +53,7 @@ export class ResetPageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private authService: AuthService,
     private toastrService: ToastrService,
+    private router: Router,
   ) {
     this.passwordControl = new FormControl('', [
       Validators.required,
@@ -114,7 +115,10 @@ export class ResetPageComponent implements OnInit, OnDestroy {
             'Password changed',
             { disableTimeOut: true },
           );
-          // redirect into app here
+          this.router.navigate(['../..', 'organizations'], {
+            replaceUrl: true,
+            relativeTo: this.route,
+          });
         }
       });
   }

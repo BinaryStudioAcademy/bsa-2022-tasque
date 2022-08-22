@@ -126,6 +126,10 @@ export class LoginPageComponent implements OnInit, OnDestroy {
               'Login successful',
               { disableTimeOut: true },
             );
+            this.router.navigate(['../..', 'organizations'], {
+              replaceUrl: true,
+              relativeTo: this.route,
+            });
           }
         },
         (error: HttpErrorResponse) => {
