@@ -5,18 +5,15 @@
       <fa-icon [icon]="inputIcon" size="lg"></fa-icon>
     </div>
     <input
-      [class]="inputClass + ' input'"
       [(ngModel)]="inputValue"
       (ngModelChange)="onChange($event)"
       (blur)="onTouched($event)"
-      [ngClass]="{
-        'error': inputValueIsError,
-        'search-border': inputType === 'search'
-      }"
       [type]="inputType"
       [placeholder]="inputPlaceholder"
-      style="width: 100%"
-      [style.border-radius.px]="inputBorderRadius"
+      [class]="inputClass"
+      [ngClass]="{
+        'error': inputValueIsError
+      }"
     />
   </div>
   <span class="error" *ngIf="inputValueIsError">{{ inputErrorMessage }}</span>
