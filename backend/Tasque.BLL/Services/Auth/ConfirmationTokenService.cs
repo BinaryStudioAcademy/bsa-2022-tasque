@@ -89,7 +89,7 @@ namespace Tasque.Core.BLL.Services.Auth
                 case TokenKind.PasswordReset:
                     endpoint = _emailOptions.PasswordResetEndpoint;
                     return "<h3>Thanks for choosing Tasque</h3><br/>" +
-                            $"<a href=\"{host}{endpoint}/{key}\">" +
+                            $"<a href=\"{host}{endpoint}?key={key}\">" +
                             "Click here to reset your password" +
                             "</a>";
                 default: return "";
