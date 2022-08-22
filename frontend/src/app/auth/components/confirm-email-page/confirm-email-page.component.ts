@@ -30,8 +30,14 @@ export class ConfirmEmailPageComponent implements OnInit {
         if (!token) return;
         this.authService.setAuthToken(resp.body);
         this.notifService.success(
-          'Email confirmed. You will be redirected to your profile',
+          'You will be redirected to your profile',
+          'Email confirmed',
+          { disableTimeOut: true },
         );
+        this.router.navigate(['../..', 'organizations'], {
+          replaceUrl: true,
+          relativeTo: this.route,
+        });
       });
     });
   }

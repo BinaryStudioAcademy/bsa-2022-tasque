@@ -19,6 +19,13 @@ import { ProjectListItemComponent } from './components/project-list/project-list
 import { OrganizationListComponent } from './components/organization-list/organization-list.component';
 import { OrganizationListItemComponent } from './components/organization-list/organization-list-item/organization-list-item.component';
 import { TasqueBoardComponent } from './components/tasque-board/tasque-board.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from '../core/interceptors/jwt.interceptor';
+import { PageWithoutSidebarComponent } from './components/page-without-sidebar/page-without-sidebar.component';
+import { PageWithSidebarComponent } from './components/page-with-sidebar/page-with-sidebar.component';
+import { TasqueTeamComponent } from './components/tasque-team/tasque-team.component';
+import { TasqueProjectSettingsComponent } from './components/tasque-project-settings/tasque-project-settings.component';
+import { ToastrConfig } from 'src/entity-models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
 import { SelectUsersComponent } from '../shared/components/select-users/select-users.component';
 
@@ -34,7 +41,15 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     OrganizationListComponent,
     OrganizationListItemComponent,
     SelectUsersComponent,
-    TasqueBoardComponent
+    TasqueBoardComponent,
+    PageWithoutSidebarComponent,
+    TasqueBoardComponent,
+    PageWithSidebarComponent,
+    TasqueTeamComponent,
+    TasqueProjectSettingsComponent,
+    SelectUsersComponent,
+    TasqueBoardComponent,
+    TasqueProjectSettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -44,12 +59,16 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     FormsModule,
     MatDialogModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot(ToastrConfig),
     AuthModule,
     UserModule,
-
   ],
-  providers: [BrowserAnimationsModule],
+  providers: [BrowserAnimationsModule,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
+  exports: [
+    OrganizationListComponent
+  ]
 })
 export class AppModule {}
