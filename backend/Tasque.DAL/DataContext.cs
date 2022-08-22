@@ -33,6 +33,7 @@ public class DataContext : DbContext
     public DbSet<TaskPriority> TaskPriorities { get; set; } = null!;
     public DbSet<TaskState> TaskStates { get; set; } = null!;
     public DbSet<TaskType> TaskTypes { get; set; } = null!;
+    public DbSet<UserProjectRole> UserProjectRoles { get; set; } = null!;
     public DbSet<Sprint> Sprints { get; set; } = null!;
     public DbSet<ConfirmationToken> ConfirmationTokens { get; set; } = null!;
 }
