@@ -52,7 +52,6 @@ export class AuthService {
   }
 
   areTokensExist(): boolean {
-    return localStorage.getItem('accessToken') !== null &&
-      localStorage.getItem('refreshToken') !== null;
+    return localStorage.getItem('token') !== null;
   }
 }

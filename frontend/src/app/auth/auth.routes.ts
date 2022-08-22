@@ -14,9 +14,9 @@ export const AuthRoutes: Routes = [
     path: 'auth',
     component: AuthPageComponent,
     children: [
-      { path: 'login', component: LoginPageComponent, canDeactivate: [LoginGuard] },
-      { path: 'register', component: RegisterPageComponent, canDeactivate: [RegisterGuard] },
-      { path: 'restore', component: RestorePageComponent, canDeactivate: [RestoreGuard] },
+      { path: 'login', component: LoginPageComponent, canActivate: [LoginGuard], canDeactivate: [LoginGuard] },
+      { path: 'register', component: RegisterPageComponent, canActivate: [RegisterGuard], canDeactivate: [RegisterGuard] },
+      { path: 'restore', component: RestorePageComponent, canActivate: [RestoreGuard], canDeactivate: [RestoreGuard] },
       { path: 'restore/:key', component: ResetPageComponent },
       { path: 'confirm', component: ConfirmEmailPageComponent },
     ],
