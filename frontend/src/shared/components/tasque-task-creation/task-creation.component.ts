@@ -115,7 +115,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   }
 
   openSidebar(): void {
-    this.sideBarService.toggle();
+    this.sideBarService.toggle('');
   }
 
   public submitForm(): void {
@@ -137,6 +137,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   public clearForm(): void {
     this.taskCreateForm.reset();
-    this.sideBarService.toggle();
+    this.sideBarService.toggle('');
   }
 }

@@ -25,7 +25,9 @@ import { PageWithoutSidebarComponent } from './components/page-without-sidebar/p
 import { PageWithSidebarComponent } from './components/page-with-sidebar/page-with-sidebar.component';
 import { TasqueTeamComponent } from './components/tasque-team/tasque-team.component';
 import { TasqueProjectSettingsComponent } from './components/tasque-project-settings/tasque-project-settings.component';
+import { ToastrConfig } from 'src/entity-models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
+import { SelectUsersComponent } from '../shared/components/select-users/select-users.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { UserModule } from './user/user.module';
     ProjectListItemComponent,
     OrganizationListComponent,
     OrganizationListItemComponent,
+    SelectUsersComponent,
+    TasqueBoardComponent,
     PageWithoutSidebarComponent,
     TasqueBoardComponent,
     PageWithSidebarComponent,
@@ -52,7 +56,7 @@ import { UserModule } from './user/user.module';
     FormsModule,
     MatDialogModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot(ToastrConfig),
     AuthModule,
     UserModule,
   ],
