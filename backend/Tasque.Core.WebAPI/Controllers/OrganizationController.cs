@@ -15,9 +15,9 @@ namespace Tasque.Core.WebAPI.Controllers
 
         [Route("getUserOrganizationsById/{id}")]
         [HttpGet]
-        public virtual IActionResult GetUserOrganizationsById(int userId)
+        public async virtual Task<IActionResult> GetUserOrganizationsById(int userId)
         {
-            var organizations = _service.GetUserOrganizations(userId);
+            var organizations = await _service.GetUserOrganizations(userId);
             if (organizations is not null)
             {
                 return Ok(organizations);

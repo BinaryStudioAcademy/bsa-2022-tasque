@@ -105,6 +105,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
   public submitForm(): void {
     if (!this.loginForm.valid || !this.loginForm.dirty) {
+      this.loginForm.markAllAsTouched();
       this.toastrService.error('Invalid values');
       return;
     }
@@ -126,6 +127,10 @@ export class LoginPageComponent implements OnInit, OnDestroy {
               'Login successful',
               { disableTimeOut: true },
             );
+            this.router.navigate(['../..', 'organizations'], {
+              replaceUrl: true,
+              relativeTo: this.route,
+            });
           }
         },
         (error: HttpErrorResponse) => {
