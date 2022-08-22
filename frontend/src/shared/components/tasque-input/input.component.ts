@@ -22,7 +22,6 @@ export type IconPosition = 'right' | 'left';
     },
   ],
 })
-
 export class InputComponent implements ControlValueAccessor {
   public inputBorderRadius = 10;
   public inputClass = '';
@@ -36,7 +35,13 @@ export class InputComponent implements ControlValueAccessor {
   public iconPos: IconPosition;
   public inputIcon?: IconProp = undefined;
 
-  @Input() value: string;
+  @Input()
+  set value(inputValue: string) {
+    this.inputValue = inputValue;
+  }
+  get value(): string {
+    return this.inputValue;
+  }
 
   @Input()
   set type(typeName: string) {

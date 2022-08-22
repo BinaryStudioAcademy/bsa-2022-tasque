@@ -1,21 +1,21 @@
-<tasque-sidebar name="edit-organization" btnText="Edit organization" btnClass="btn stroke">
+<tasque-sidebar name="edit-organization" btnText="Edit" btnClass="btn stroke">
   <div class="task-creation-conteiner">
-    <div class="task-creation-header">
-      <tasque-input placeholder="Write organization name"> </tasque-input>
-      <div class="task-creation-header-button"></div>
-    </div>
-    <div class="task-creation-body">
-      <div class="task-creation-body-wrapper">
-        <form>
+    <form [formGroup]="editOrganization">
+      <div class="task-creation-header">
+        <tasque-input placeholder="Write organization name" [value]="organization.name" [formControl]="organizationNameControl" [errorMessage]="organizationNameErrorMessage" [invalid]="!organizationNameControl.valid"> </tasque-input>
+        <div class="task-creation-header-button"></div>
+      </div>
+      <div class="task-creation-body">
+        <div class="task-creation-body-wrapper">
           <tasque-select-users [board]="board"></tasque-select-users>
-        </form>
+        </div>
       </div>
-    </div>
-    <div class="task-creation-footer">
-      <div class="task-creation-footer-button">
-        <tasque-button type="submit" class="btn stroke violet-stroke" text="Cancel"> </tasque-button>
-        <tasque-button type="submit" class="btn stroke violet-stroke" text="Edit"> </tasque-button>
+      <div class="task-creation-footer">
+        <div class="task-creation-footer-button">
+          <tasque-button type="submit" class="btn stroke violet-stroke" text="Cancel"> </tasque-button>
+          <tasque-button type="submit" class="btn stroke violet-stroke" text="Edit" (click)="save()"> </tasque-button>
+        </div>
       </div>
-    </div>
+    </form>
   </div>
 </tasque-sidebar>
