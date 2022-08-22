@@ -34,6 +34,10 @@ export class ConfirmEmailPageComponent implements OnInit {
           'Email confirmed',
           { disableTimeOut: true },
         );
+        this.router.navigate(['../..', 'organizations'], {
+          replaceUrl: true,
+          relativeTo: this.route,
+        });
       });
     });
   }
