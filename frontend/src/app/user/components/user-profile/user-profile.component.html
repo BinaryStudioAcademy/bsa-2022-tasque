@@ -1,19 +1,20 @@
 <div class="half-container">
     <mat-card class="main-content align-center">
         <div class="upper">
-            <div class="avatar-container" >
-                
-                <img *ngIf="profileChanges.avatarURL" class="avatar avatar-style" src="{{profileChanges.avatarURL}}" alt="Here should be an avatar">
-                <img *ngIf="!profileChanges.avatarURL" class="avatar avatar-style" src="{{defaultUserAvatarUrl}}" alt="Here should be an avatar">
-                <div class="img-text">
-                    <div class="upload-button" (click)="file.click()">
-                        <input hidden class="file-hide" #file accept="image/*" type="file" (change)="handleFileInput($event.target)">
-                        <fa-icon [icon]="pencilIcon" class="icon-right"></fa-icon>
-                    </div>                    
+            <div class="avatar-container half-width" >
+                <div class="avatar-square">
+                    <img *ngIf="profileChanges.avatarURL" class="avatar avatar-style" src="{{profileChanges.avatarURL}}" alt="Here should be an avatar">
+                    <img *ngIf="!profileChanges.avatarURL" class="avatar avatar-style" src="{{defaultUserAvatarUrl}}" alt="Here should be an avatar">
+                    <div class="img-text">
+                        <div class="upload-button" (click)="file.click()">
+                            <input hidden class="file-hide" #file accept="image/*" type="file" (change)="handleFileInput($event.target)">
+                            <fa-icon [icon]="pencilIcon" class="icon-right"></fa-icon>
+                        </div>                    
+                    </div>                
                 </div>                
             </div>
-            <div class="name-container">
-                <h4 class="login-title">{{originalUser.name}}</h4>
+            <div class="name-container half-width">
+                <h4 class="login-title">Bulka Cat{{originalUser.name}}</h4>
             </div>
         </div>
         <div class="block-divider full-width">
@@ -24,7 +25,7 @@
         <div class="form-container full-width">
             <form [formGroup]="profileForm" class="full-width">                
                 <div class="input-container">
-                    <label class="thirty-percent">Email</label>
+                    <label class="half-width">Email</label>
                     <div class="password-container half-width">
                         <input
                             class="input full-width"
@@ -43,7 +44,7 @@
                     </div>
                 </div>                  
                 <div class="input-container">
-                    <label class="thirty-percent">Name</label>
+                    <label class="half-width">Name</label>
                     <div class="password-container half-width">
                         <input
                             class="input full-width"
@@ -62,10 +63,13 @@
                 </div>                
             </form>
         </div>
-        <div class="button-container">
-            <tasque-button text="Save changes" class="btn stroke" (click)="saveNewInfo()" 
-            [class]="!isProfileChanged || userNameControl.invalid || emailControl.invalid ? 'disabled' : ''"></tasque-button>
+        <div class="button-row full-width">
+            <div class="button-container">
+                <tasque-button text="Save changes" class="btn stroke" (click)="saveNewInfo()" 
+                [class]="!isProfileChanged || userNameControl.invalid || emailControl.invalid ? 'disabled' : ''"></tasque-button>
+            </div>
         </div>
+        
         <div class="block-divider full-width">
             <mat-divider></mat-divider>
             <p>Change password</p>
@@ -74,7 +78,7 @@
         <div class="form-container full-width">
             <form [formGroup]="changePassForm" class="full-width">
                 <div class="input-container">
-                    <label class="thirty-percent">Current password</label>
+                    <label class="half-width">Current password</label>
                     <div class="password-container half-width">
                       <input
                         class="input full-width"
@@ -92,7 +96,7 @@
                     </div>                    
                   </div>
                   <div class="input-container">
-                    <label class="thirty-percent">New password</label>
+                    <label class="half-width">New password</label>
                     <div class="password-container half-width">
                       <input
                         class="input full-width"
@@ -111,9 +115,11 @@
                   </div>
             </form>
         </div>        
-        <div class="button-container">
-            <tasque-button text="Save password" class="btn stroke" (click)="saveNewPassword()" 
-                [class]="prevPasswordControl.invalid || newPasswordControl.invalid ? 'disabled' : ''"></tasque-button>
-        </div>
+        <div class="button-row full-width">
+            <div class="button-container">
+                <tasque-button text="Save password" class="btn stroke" (click)="saveNewPassword()" 
+                    [class]="prevPasswordControl.invalid || newPasswordControl.invalid ? 'disabled' : ''"></tasque-button>
+            </div>
+        </div>        
     </mat-card>
 </div>

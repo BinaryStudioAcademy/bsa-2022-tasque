@@ -28,14 +28,16 @@
 .name-container
     width: 50%
     display: flex
-    justify-content: left
+    justify-content: center
     align-items: center
  
 .avatar-container
-    width: 200
     display: flex
     justify-content: center
     align-items: center
+
+.avatar-square
+    width: 200px
     position: relative
 
 .img-text
@@ -55,7 +57,7 @@
         color: colorscheme(gray-500)
 
 .half-container
-    width: 800px
+    width: 600px
     max-width: 80%
     margin: 0 auto
 
@@ -129,6 +131,7 @@
   font-size: 16px
   line-height: 16px
   margin-bottom: 22px
+  text-align: center
 
 .error
   color: colorscheme(pink-300)
@@ -136,8 +139,13 @@
 ::placeholder
   color: colorscheme(gray-400)
 
+
+.button-row
+  display: flex
+  justify-content: right
+
 .button-container
-  margin-top: 20px
+  text-align: center
 
 .label-container
   display: flex
@@ -164,3 +172,6 @@
     font-style: normal
     font-weight: 400
     margin-top: 20px
+
+    p
+      margin: 10px
