@@ -179,14 +179,4 @@ export class UserProfileComponent implements OnInit {
       this.profileChanges.name !=  this.originalUser.name;
   }
 
-  public deleteAvatar(fileInput: HTMLInputElement): void {    
-    if (this.profileChanges.avatarURL != undefined && this.profileChanges.avatarURL != null)
-    {
-      fileInput.value = '';
-      this.profileChanges.avatarURL = undefined;
-      this.checkChanged();
-      this.notificationService.success('Deleted successfully');
-    }    
-  }
-
 }
