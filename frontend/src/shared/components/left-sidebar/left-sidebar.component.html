@@ -1,5 +1,5 @@
 <div class="left-sidebar" [style.width.px]="containerWidth" >
-  <a href="project/board"><tasque-logo class="logo" [isLight]="sideBarMinimized"></tasque-logo></a>
+  <a routerLink="./board"><tasque-logo class="logo" [isLight]="sideBarMinimized"></tasque-logo></a>
   <div class="icon">
     <a (click)="minimize()">
       <img *ngIf="!sideBarMinimized" src="assets/burger_menu.svg" alt="">
@@ -10,41 +10,41 @@
     <ul>
       <li>
         <div class="menu-item">
-          <a href="project/board">
+          <a routerLink="./board" >
             <img src="assets/board_icon.svg" alt="">
-            <span *ngIf="!sideBarMinimized" class="selected">Board</span>
+            <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Board</span>
           </a>
         </div>
       </li>
       <li>
         <div class="menu-item">
-          <a href="project/backlog">
+          <a routerLink="./backlog">
             <img src="assets/backlog_icon.svg" alt="">
-            <span *ngIf="!sideBarMinimized">Backlog</span>
+            <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Backlog</span>
           </a>
         </div>
       </li>
       <li>
         <div class="menu-item">
-          <a href="project/team">
+          <a routerLink="./team">
             <img src="assets/team_icon.svg" alt="">
-            <span *ngIf="!sideBarMinimized">Team</span>
+            <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Team</span>
           </a>
         </div>
       </li>
       <li>
         <div class="menu-item">
-          <a href="project/wiki">
+          <a routerLink="./wiki">
             <img src="assets/wiki_icon.svg" alt="">
-            <span *ngIf="!sideBarMinimized">Project wiki</span>
+            <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Project wiki</span>
           </a>
         </div>
       </li>
       <li>
         <div class="menu-item">
-          <a href="project/settings">
+          <a routerLink="./settings">
             <img src="assets/settings_icon_sidebarmenu.svg" alt="">
-            <span *ngIf="!sideBarMinimized">Settings</span>
+            <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Settings</span>
           </a>
         </div>
       </li>
