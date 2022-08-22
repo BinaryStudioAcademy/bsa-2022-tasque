@@ -1,5 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { faCheckToSlot, faXmark, faLink, faPaperclip, faShareNodes, faEllipsisVertical, faFaceSmile, faPen } from '@fortawesome/free-solid-svg-icons';
@@ -12,6 +11,7 @@ import { ProjectModel } from 'src/core/models/project/project-model';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import { EditorConfig } from 'src/core/settings/angular-editor-setting';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { TaskType } from 'src/core/models/enums/task-type';
 
 export interface EditTaskDialogData {
   currentUser: UserModel,
@@ -131,12 +131,28 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public editorConfig: AngularEditorConfig = EditorConfig;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: EditTaskDialogData,
     private sanitizer: DomSanitizer
   ) {
     super();
-    this.task = data.task;
-    this.currentUser = data.currentUser;
+
+    this.task = {
+      id: 1,
+      name: 'Hi',
+      summary: 'Maaaaan',
+      description: 'qweqwe',
+      taskState: TaskState.Todo,
+      taskType: TaskType.Bug,
+      taskPriority: TaskPriority.High,
+      authorId: 1,
+      projectId: 2,
+      sprintId: 3,
+      lastUpdatedById: 4,
+      parentTaskId: 5,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      deadLine: new Date()
+    };
+    this.currentUser = this.users[1];
   }
 
   ngOnInit(): void {
