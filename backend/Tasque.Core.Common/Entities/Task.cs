@@ -1,5 +1,4 @@
 ﻿using Tasque.Core.Common.Entities.Abstract;
-using Tasque.Core.Common.Enums;
 
 namespace Tasque.Core.Common.Entities;
 
@@ -14,9 +13,9 @@ public class Task : BaseEntity
     public string Summary { get; set; } = null!;
     public string? Description { get; set; }
 
-    public TaskState State { get; set; }
-    public TaskType Type { get; set; }
-    public TaskPriority Priority { get; set; }
+    public TaskState State { get; set; } = null!;
+    public TaskType Type { get; set; } = null!;
+    public TaskPriority Priority { get; set; } = null!;
 
     public DateTime Deadline { get; set; }
     public DateTime? FinishedAt { get; set; }
