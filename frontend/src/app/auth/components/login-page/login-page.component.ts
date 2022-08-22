@@ -35,6 +35,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   public localStorageKeys = LocalStorageKeys;
   private validationConstants = ValidationConstants;
 
+  private errMsg?: string;
+
   @ViewChild('passwordInput') passwordInput: InputComponent;
 
   get emailErrorMessage(): string {
@@ -67,6 +69,9 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private toastrService: ToastrService,
   ) {
+    const nav = this.router.getCurrentNavigation();
+    this.errMsg = nav?.extras.state?.['error'];
+
     this.emailControl = new FormControl(this.userLogin.email, [
       Validators.email,
       Validators.required,
@@ -79,23 +84,14 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    if (this.errMsg) {
+      this.toastrService.error(this.errMsg);
+    }
+
     this.loginForm = new FormGroup({
       emailControl: this.emailControl,
       passwordControl: this.passwordControl,
     });
-
-    this.route.queryParams
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((params) => {
-        if (Object.keys(params).length == 0) return;
-        if (params['registered']) {
-          // place pop-up notifications here
-        }
-        this.router.navigate(['../login'], {
-          replaceUrl: true,
-          relativeTo: this.route,
-        });
-      });
   }
 
   ngOnDestroy(): void {
