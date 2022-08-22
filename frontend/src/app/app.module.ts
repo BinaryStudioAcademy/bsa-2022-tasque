@@ -28,7 +28,6 @@ import { TasqueProjectSettingsComponent } from './components/tasque-project-sett
 import { ToastrConfig } from 'src/entity-models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
 import { SelectUsersComponent } from '../shared/components/select-users/select-users.component';
-import { EditTaskDialogComponent } from './components/edit-task-dialog/edit-task-dialog.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +50,6 @@ import { EditTaskDialogComponent } from './components/edit-task-dialog/edit-task
     SelectUsersComponent,
     TasqueBoardComponent,
     TasqueProjectSettingsComponent,
-    EditTaskDialogComponent,
   ],
   imports: [
     BrowserModule,

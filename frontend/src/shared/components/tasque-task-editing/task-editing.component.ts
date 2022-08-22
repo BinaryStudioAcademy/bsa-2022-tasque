@@ -19,11 +19,11 @@ export interface EditTaskDialogData {
 }
 
 @Component({
-  selector: 'app-edit-task-dialog',
-  templateUrl: './edit-task-dialog.component.html',
-  styleUrls: ['./edit-task-dialog.component.sass']
+  selector: 'tasque-task-editing',
+  templateUrl: './task-editing.component.html',
+  styleUrls: ['./task-editing.component.sass']
 })
-export class EditTaskDialogComponent extends BaseComponent implements OnInit {
+export class TaskEditingComponent extends BaseComponent implements OnInit {
 
   public task: TaskModel;
   public currentUser: UserModel;

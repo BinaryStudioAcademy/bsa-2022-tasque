@@ -22,11 +22,11 @@ $task-summary-buttons-width: 161px
   flex-direction: row
   align-items: center
   margin-bottom: 15px
-  .item-label
-    font-size: 14px
-    color: colorscheme(gray-500)
-    width: $item-label-width
-    word-wrap: break-word
+.item-label
+  font-size: 14px
+  color: colorscheme(gray-500)
+  width: $item-label-width
+  word-wrap: break-word
 
 .description-text-wrapper
   width: calc( 100% - $icon-edit-width )
@@ -64,8 +64,8 @@ $task-summary-buttons-width: 161px
 
 .subtask-container
   margin-bottom: 15px
-  h5
-    margin-bottom: 10px
+h5
+  margin-bottom: 10px
 
 .comments-container
   margin-bottom: 15px
@@ -78,17 +78,17 @@ $task-summary-buttons-width: 161px
   padding-top: 30px
   padding-left: 45px
   padding-right: 30px
-  .item-label
-    font-size: 15px
-    color: colorscheme(gray-500)
-  h5
-    display: flex
-    flex-direction: row
-    justify-content: space-between
-    align-items: center
+.item-label
+  font-size: 15px
+  color: colorscheme(gray-500)
+h5
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+  align-items: center
+  width: 100%
+  .input-wrapper
     width: 100%
-    .input-wrapper
-      width: 100%
 
 .summary-text-wrapper
   width: calc( 100% - $task-summary-buttons-width - $icon-edit-width )
@@ -114,8 +114,8 @@ $task-summary-buttons-width: 161px
   ::ng-deep tasque-button.pink button
     color: colorscheme(pink-200)
     font-size: 23px
-    &:hover
-      color: colorscheme(pink-100)
+  &:hover
+    color: colorscheme(pink-100)
 
 .task-main-container
   display: flex
