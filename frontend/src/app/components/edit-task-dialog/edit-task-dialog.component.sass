@@ -1,5 +1,9 @@
 @import 'src/colors.sass'
 
+$icon-edit-width: 10px
+$item-label-width: 85px
+$task-summary-buttons-width: 161px
+
 .button-container
   padding-top: 30px
   padding-left: 45px
@@ -15,19 +19,30 @@
 
 .item-wrapper
   display: flex
+  flex-direction: row
   align-items: center
   margin-bottom: 15px
   .item-label
     font-size: 14px
     color: colorscheme(gray-500)
-    width: 85px
+    width: $item-label-width
     word-wrap: break-word
-    .item-text
-      width: calc( 100% - 85px )
-      word-wrap: break-word
 
-.editor
-  width: calc( 100% - 85px )
+.description-text-wrapper
+  width: calc( 100% - $icon-edit-width )
+  display: flex
+  gap: 10px
+  align-items: center
+  ::ng-deep tasque-button button
+    font-size: 20px
+
+.description-text
+  max-height: 250px
+  word-wrap: break-word
+  overflow-y: auto
+
+.description-editor
+  width: calc( 100% - $icon-edit-width )
 
 .item-text
   cursor: pointer
@@ -71,6 +86,22 @@
     flex-direction: row
     justify-content: space-between
     align-items: center
+    width: 100%
+    .input-wrapper
+      width: 100%
+
+.summary-text-wrapper
+  width: calc( 100% - $task-summary-buttons-width - $icon-edit-width )
+  display: flex
+  gap: 10px
+  align-items: center
+  ::ng-deep tasque-button button
+    font-size: 20px
+
+.summary-text
+  max-height: 250px
+  word-wrap: break-word
+  overflow-y: auto
 
 .task-summary-buttons
   display: flex
@@ -87,6 +118,8 @@
       color: colorscheme(pink-100)
 
 .task-main-container
+  display: flex
+  flex-direction: column
   background: colorscheme(gray-100)
   padding-top: 30px
   padding-left: 45px
@@ -110,5 +143,12 @@
 
 .error
   color: colorscheme(pink-300)
-  display: block
-  text-align: center
+
+.task-info-container
+  width: 100%
+
+.fill-description-width
+  width: calc( 100% - $item-label-width )
+  display: flex
+  flex-direction: column
+  row-gap: 15px

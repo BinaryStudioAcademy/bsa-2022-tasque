@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { UserModel } from 'src/core/models/user/user-model';
-import { faCheckToSlot, faXmark, faLink, faPaperclip, faShareNodes, faEllipsisVertical, faFaceSmile } from '@fortawesome/free-solid-svg-icons';
+import { faCheckToSlot, faXmark, faLink, faPaperclip, faShareNodes, faEllipsisVertical, faFaceSmile, faPen } from '@fortawesome/free-solid-svg-icons';
 import { BaseComponent } from 'src/core/base/base.component';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -11,6 +11,7 @@ import { TaskPriority } from 'src/core/models/enums/task-priority';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import { EditorConfig } from 'src/core/settings/angular-editor-setting';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 export interface EditTaskDialogData {
   currentUser: UserModel,
@@ -39,9 +40,10 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
   public paperClipIcon = faPaperclip;
   public ellipsisIcon = faEllipsisVertical;
   public faceSmileIcon = faFaceSmile;
+  public editIcon = faPen;
 
   public taskDescriptionEditorShow = false;
-  public taskSummaryEditorShow = false;
+  public taskSummaryInputShow = false;
 
   public taskStatusOptions: [color: string, title: string, id: number][] = [
     ['yellow', 'To Do', TaskState.Todo],
@@ -130,6 +132,7 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: EditTaskDialogData,
+    private sanitizer: DomSanitizer
   ) {
     super();
     this.task = data.task;
@@ -154,7 +157,7 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
       taskStatus: new FormControl(this.chooseTaskStatus(this.task.taskState)),
       taskPriority: new FormControl(this.chooseTaskPriority(this.task.taskPriority)),
       taskSprint: new FormControl(this.chooseSprint(this.taskSprint)),
-      taskDescription: new FormControl(this.task.description, [
+      taskDescription: new FormControl<SafeHtml | undefined>(this.task.description, [
         Validators.maxLength(5000)
       ]),
       taskAssignees: new FormControl(),
@@ -164,13 +167,17 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
     this.fillSprintOptions(this.sprints);
   }
 
-  summaryClick(): void {
-    this.taskSummaryEditorShow = true;
+  public safeHTML(unsafe: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(unsafe);
   }
 
-  summaryEditorOutsideClick(): void {
-    this.taskSummaryEditorShow = false;
-    if (this.editTaskForm.value.taskSummary !== this.task.summary && this.editTaskForm.valid) {
+  summaryClick(): void {
+    this.taskSummaryInputShow = true;
+  }
+
+  summaryInputOutsideClick(): void {
+    this.taskSummaryInputShow = false;
+    if (this.editTaskForm.value.taskSummary !== this.task.summary) {
       this.task.summary = this.editTaskForm.value.taskSummary;
     }
   }
@@ -181,13 +188,13 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
 
   descriptionEditorOutsideClick(): void {
     this.taskDescriptionEditorShow = false;
-    if (this.editTaskForm.value.taskDescription !== this.task.description && this.editTaskForm.valid) {
+    if (this.editTaskForm.value.taskDescription !== this.task.description) {
       this.task.description = this.editTaskForm.value.taskDescription;
     }
   }
 
   get summaryErrorMessage(): string {
-    const ctrl = this.editTaskForm.value.taskSummary as FormControl;
+    const ctrl = this.editTaskForm.controls.taskSummary;
 
     if (ctrl.errors?.['minlength']) {
       return 'Summary must be at least 2 characters';
@@ -200,7 +207,7 @@ export class EditTaskDialogComponent extends BaseComponent implements OnInit {
   }
 
   get descriptionErrorMessage(): string {
-    const ctrl = this.editTaskForm.value.taskDescription as FormControl;
+    const ctrl = this.editTaskForm.controls.taskDescription;
 
     if (ctrl.errors?.['maxlength']) {
       return 'Description must be at less 5000 characters';

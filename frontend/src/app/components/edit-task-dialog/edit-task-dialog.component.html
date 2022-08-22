@@ -6,25 +6,29 @@
   <div class="task-summary-container">
     <span class="item-label"> PR-{{ taskProject.id }}</span>
     <h5>
-      <span *ngIf="!this.taskSummaryEditorShow" class="item-text" (click)="summaryClick()">
-        {{ task.summary }}
-      </span>
+      <div class="summary-text-wrapper" *ngIf="!this.taskSummaryInputShow">
+        <span class="summary-text" [innerHTML]="safeHTML(task.summary)"> </span>
+        <tasque-button
+          class="btn icon edit"
+          [icon]="editIcon"
+          (click)="summaryClick()"
+        ></tasque-button>
+      </div>
 
-      <angular-editor
-        *ngIf="this.taskSummaryEditorShow"
+      <div
+        class="input-wrapper"
+        *ngIf="this.taskSummaryInputShow"
+        (clickOutside)="summaryInputOutsideClick()"
         [delayClickOutsideInit]="true"
-        id="taskSummaryEditor"
-        formControlName="taskSummary"
-        [config]="editorConfig"
-        placeholder="Type some text..."
-        class="editor"
-        (clickOutside)="summaryEditorOutsideClick()"
       >
-      </angular-editor>
-
-      <span class="error" *ngIf="!this.editTaskForm.value.taskSummary.valid">{{
-        summaryErrorMessage
-      }}</span>
+        <tasque-input
+          placeholder="Type some text"
+          formControlName="taskSummary"
+          errorMessage=""
+          [invalid]="!editTaskForm.controls.taskSummary.valid"
+        >
+        </tasque-input>
+      </div>
 
       <div class="task-summary-buttons">
         <tasque-button class="btn icon pink" [icon]="linkIcon"></tasque-button>
@@ -34,6 +38,9 @@
         <tasque-button class="btn icon" [icon]="ellipsisIcon"></tasque-button>
       </div>
     </h5>
+    <span class="error" *ngIf="!this.editTaskForm.controls.taskSummary.valid">{{
+      summaryErrorMessage
+    }}</span>
   </div>
 
   <div class="task-main-container">
@@ -88,28 +95,37 @@
       <div class="item-wrapper">
         <span class="item-label">Description</span>
 
-        <div *ngIf="!this.taskDescriptionEditorShow" class="item-text" (click)="descriptionClick()">
-          <span *ngIf="task.description">
-            {{ task.description }}
-          </span>
-          <span *ngIf="!task.description">-</span>
+        <div class="fill-description-width">
+          <div class="description-text-wrapper" *ngIf="!this.taskDescriptionEditorShow">
+            <span
+              class="description-text"
+              *ngIf="task.description"
+              [innerHTML]="safeHTML(task.description)"
+            >
+            </span>
+            <tasque-button
+              class="btn icon edit"
+              [icon]="editIcon"
+              (click)="descriptionClick()"
+            ></tasque-button>
+          </div>
+
+          <angular-editor
+            *ngIf="this.taskDescriptionEditorShow"
+            (clickOutside)="descriptionEditorOutsideClick()"
+            [delayClickOutsideInit]="true"
+            id="taskDescriptionEditor"
+            formControlName="taskDescription"
+            [config]="editorConfig"
+            placeholder="Type some text..."
+            class="description-editor"
+          >
+          </angular-editor>
+
+          <span class="error" *ngIf="!this.editTaskForm.controls.taskDescription.valid">{{
+            descriptionErrorMessage
+          }}</span>
         </div>
-
-        <angular-editor
-          *ngIf="this.taskDescriptionEditorShow"
-          (clickOutside)="descriptionEditorOutsideClick()"
-          [delayClickOutsideInit]="true"
-          id="taskDescriptionEditor"
-          formControlName="taskDescription"
-          [config]="editorConfig"
-          placeholder="Type some text..."
-          class="editor"
-        >
-        </angular-editor>
-
-        <span class="error" *ngIf="!this.editTaskForm.value.taskSummary.valid">{{
-          descriptionErrorMessage
-        }}</span>
       </div>
     </div>
 
