@@ -46,6 +46,9 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     TasqueBoardComponent,
     PageWithSidebarComponent,
     TasqueTeamComponent,
+    TasqueProjectSettingsComponent,
+    SelectUsersComponent,
+    TasqueBoardComponent,
     TasqueProjectSettingsComponent
   ],
   imports: [
