@@ -1,2 +1,22 @@
-<tasque-button class="create-proj-dialog" [text]="this.btnText" [class]="this.btnClass" (btnClick)="openDialog()"> </tasque-button>
-<app-organization-list></app-organization-list>
+<tasque-sidebar name="edit-organization" btnText="Edit organization" btnClass="btn stroke">
+  <div class="task-creation-conteiner">
+    <div class="task-creation-header">
+      <h4 class="task-creation-header-title">Edit organization</h4>
+      <div class="task-creation-header-button"></div>
+    </div>
+    <div class="task-creation-body">
+      <div class="task-creation-body-wrapper">
+        <form>
+          <tasque-input label="Organization name" placeholder="Write organization name"> </tasque-input>
+          <tasque-select-users [board]="board"></tasque-select-users>
+        </form>
+      </div>
+    </div>
+    <div class="task-creation-footer">
+      <div class="task-creation-footer-button">
+        <tasque-button type="submit" class="btn stroke" text="Cancel"> </tasque-button>
+        <tasque-button type="submit" class="btn fill" text="Edit"> </tasque-button>
+      </div>
+    </div>
+  </div>
+</tasque-sidebar>

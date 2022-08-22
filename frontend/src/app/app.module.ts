@@ -53,7 +53,6 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     TasqueBoardComponent,
     EditOrganizationComponent,
     EditOrganizationDialogComponent,
-    ,
     TasqueProjectSettingsComponent,
   ],
   imports: [

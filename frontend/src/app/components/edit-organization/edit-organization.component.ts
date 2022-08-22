@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { IBoard, IUserCard } from 'src/shared/components/select-users/Models';
 import { EditOrganizationDialogComponent } from './edit-organization-dialog/edit-organization-dialog.component';
 
 @Component({
@@ -13,6 +14,22 @@ export class EditOrganizationComponent implements OnInit {
   public btnText = 'Create project';
   public btnClass = 'mini';
 
+  public user: IUserCard[] = [
+    {
+      email: 'test@email.com',
+      username: 'username 1',
+      profileURL: 'null',
+      avatarURL: 'https://www.w3schools.com/howto/img_avatar.png',
+      role: null,
+    },
+  ];
+
+  public board: IBoard = {
+    id: 1,
+    type: 1,
+    users: this.user,
+    hasRoles: false,
+  };
   ngOnInit(): void {}
 
   openDialog(): void {

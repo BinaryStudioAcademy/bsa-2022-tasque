@@ -1,0 +1,55 @@
+@import 'src/colors.sass'
+
+.task-creation-conteiner
+    height: 100vh
+    min-height: 100%
+    width: 100%
+    min-width: 100%
+    display: flex
+    flex-direction: column
+    background: colorscheme(gray-100)
+    font-family: 'Nunito'
+
+.task-creation-header,
+.task-creation-footer
+    height: 145px
+    background: colorscheme(white-100)
+    display: flex
+    align-items: center
+
+.task-creation-header
+    padding: 0 51px
+
+.header-wrapper
+    p,h5
+        margin: 0px
+
+.task-creation-header-title
+    font-family: 'Nunito'
+    font-style: normal
+    font-weight: 700
+    font-size: 24px
+    line-height: 114%
+
+.task-creation-header-button
+    margin-left: auto
+    >.btn
+        margin-left: 15px
+
+.task-creation-footer-button
+    padding: 0 51px
+    margin-left: auto
+    >.btn
+        margin-left: 15px
+
+.task-creation-body
+    max-height: 100%
+    flex-grow: 3
+
+.task-creation-body-wrapper
+    padding: 0px 50px
+
+.error
+    color: colorscheme(pink-300)
+    display: block
+    text-align: center
