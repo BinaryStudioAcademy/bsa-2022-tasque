@@ -32,10 +32,6 @@ builder.Services.AddDbContext<DataContext>(
 
 builder.WebHost.UseUrls("http://*:5000");
 
-AppConfigurationExtension.RegisterServices(builder.Services, builder.Configuration);
-
-builder.Services.RegisterIdentity();
-
 var app = builder.Build();
 
 // Apply pending migrations
