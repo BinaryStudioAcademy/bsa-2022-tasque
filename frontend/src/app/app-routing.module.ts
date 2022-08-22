@@ -9,7 +9,7 @@ import { PageWithSidebarComponent } from './components/page-with-sidebar/page-wi
 import { TasqueBoardComponent } from './components/tasque-board/tasque-board.component';
 import { TasqueTeamComponent } from './components/tasque-team/tasque-team.component';
 import { TasqueProjectSettingsComponent } from './components/tasque-project-settings/tasque-project-settings.component';
-import { AuthGuard } from './guards/auth.guard';
+import { AuthGuard } from './auth/guards/auth.guard';
 
 const routes: Routes = [
   ...AuthRoutes,
