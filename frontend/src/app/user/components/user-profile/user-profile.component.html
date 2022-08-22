@@ -8,7 +8,7 @@
                 <div class="img-text">
                     <div class="upload-button" (click)="file.click()">
                         <input hidden class="file-hide" #file accept="image/*" type="file" (change)="handleFileInput($event.target)">
-                        Upload
+                        <fa-icon [icon]="pencilIcon" class="icon-right"></fa-icon>
                     </div>                    
                 </div>                
             </div>

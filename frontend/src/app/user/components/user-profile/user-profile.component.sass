@@ -6,8 +6,6 @@
     border-radius: 50%
     opacity: 1
     display: block
-    transition: .5s ease
-    backface-visibility: hidden
 
 .main-content
     display: flex
@@ -34,34 +32,27 @@
     align-items: center
  
 .avatar-container
-    width: 50%
+    width: 200
     display: flex
     justify-content: center
     align-items: center
     position: relative
-    &:hover
-        img
-            opacity: 0.3
-        .img-text
-            opacity: 1
 
 .img-text
-    transition: .5s ease
-    opacity: 0
     position: absolute
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
-    -ms-transform: translate(-50%, -50%)
+    bottom: 0
+    right: 0
     text-align: center
     cursor: pointer
     font-size: 24px
-    color: colorscheme(gray-500)
+    color: colorscheme(gray-400)
+    
 
 .upload-button
-    margin-top: 10px
+    margin: 2px 3px   
+    border-radius: 10%
     &:hover
-        color: colorscheme(gray-400)
+        color: colorscheme(gray-500)
 
 .half-container
     width: 800px
