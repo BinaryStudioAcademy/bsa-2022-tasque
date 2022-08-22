@@ -17,6 +17,7 @@ const routes: Routes = [
     path: '', component: PageWithoutSidebarComponent,
     canActivate: [AuthGuard],
     children: [
+      { path: '', redirectTo: 'organizations', pathMatch: 'full' },
       { path: 'organizations', component: OrganizationListComponent },
       { path: 'projects', component: ProjectListComponent, },
       ...UserRoutes,
