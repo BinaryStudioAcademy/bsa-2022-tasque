@@ -38,10 +38,11 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   private errMsg?: string;
 
   @ViewChild('passwordInput') passwordInput: InputComponent;
+  @ViewChild('emailInput') emailInput: InputComponent;
 
   get emailErrorMessage(): string {
     const ctrl = this.emailControl;
-    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
+    if (ctrl.errors?.['required']) {
       return 'Email is required';
     }
     if (ctrl.errors?.['pattern']) {
@@ -53,7 +54,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
   get passwordErrorMessage(): string {
     const ctrl = this.passwordControl;
-    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
+    if (ctrl.errors?.['required']) {
       return 'Password is required';
     }
     if (ctrl.errors?.['minlength']) {
@@ -100,9 +101,9 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   }
 
   public submitForm(): void {
-    if (!this.loginForm.valid || !this.loginForm.dirty) {
-      this.loginForm.markAllAsTouched();
-      this.toastrService.error('Invalid values');
+    if (this.loginForm.invalid) {
+      this.showError(this.emailInput);
+      this.showError(this.passwordInput);
       return;
     }
 
@@ -148,6 +149,27 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     this.hidePass = !this.hidePass;
     this.passwordInput.type = this.hidePass ? 'password' : 'text';
     this.passwordInput.icon = this.hidePass ? this.faHide : this.faShow;
+  }
+
+  public showError(input: InputComponent): void {
+    let isError = false;
+    let errMsg = '';
+    switch (input.inputLabel) {
+      case 'Email':
+        isError = this.emailControl.invalid;
+        errMsg = this.emailErrorMessage;
+        break;
+      case 'Password':
+        isError = this.passwordControl.invalid;
+        errMsg = this.passwordErrorMessage;
+    }
+
+    input.invalid = isError;
+    input.errorMessage = errMsg;
+  }
+
+  public hideError(input: InputComponent): void {
+    input.invalid = false;
   }
 
   private resendConfirmationEmail(): void {
