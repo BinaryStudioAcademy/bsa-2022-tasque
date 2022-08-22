@@ -16,7 +16,7 @@
       <div class="task-menu">
         <div class="project-team">
           <div class="search-input-container">
-            <tasque-input [class]="'search-input'" [icon]="searchIcon" iconPosition="left" type="search" [borderRadius]="50" placeholder="Search..."></tasque-input>
+            <tasque-input class="search-input" type="search" [icon]="searchIcon" iconPosition="search" placeholder="Search..."></tasque-input>
           </div>
           <div>
             <tasque-team-select></tasque-team-select>
@@ -47,7 +47,7 @@
           <span *ngIf="!isOpenColumnAddDialog" (click)="OpenAddColumn()">+ Add Section</span>
           <div *ngIf="isOpenColumnAddDialog">
             <form [formGroup]="createColumnForm" (ngSubmit)="AddColumn()">
-              <tasque-input type="text" placeholder="Type name" [borderRadius]="25" formControlName="columnName" [invalid]="!createColumnForm.valid && createColumnForm.touched" errorMessage="required" [icon]="plusIcon" iconPosition="right" (iconClick)="AddColumn()"></tasque-input>
+              <tasque-input type="text" placeholder="Type name" formControlName="columnName" [invalid]="!createColumnForm.valid && createColumnForm.touched" errorMessage="required" [icon]="plusIcon" iconPosition="right" (iconClick)="AddColumn()"></tasque-input>
             </form>
           </div>
         </div>

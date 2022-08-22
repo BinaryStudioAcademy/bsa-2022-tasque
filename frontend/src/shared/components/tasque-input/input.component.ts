@@ -8,7 +8,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-export type IconPosition = 'right' | 'left';
+export type IconPosition = 'right' | 'left' | 'search' | 'mini-search';
 
 @Component({
   selector: 'tasque-input',
@@ -24,8 +24,8 @@ export type IconPosition = 'right' | 'left';
 })
 
 export class InputComponent implements ControlValueAccessor {
-  public inputBorderRadius = 10;
-  public inputClass = '';
+
+  public inputClass = 'input';
   public inputType = 'text';
   public inputValue = '';
   public inputLabel = '';
@@ -44,14 +44,6 @@ export class InputComponent implements ControlValueAccessor {
   }
   get type(): string {
     return this.inputType;
-  }
-
-  @Input()
-  set borderRadius(radius: number) {
-    this.inputBorderRadius = radius;
-  }
-  get borderRadius(): number {
-    return this.inputBorderRadius;
   }
 
   @Input()
