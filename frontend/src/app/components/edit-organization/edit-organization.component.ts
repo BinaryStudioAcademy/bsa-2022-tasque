@@ -2,12 +2,13 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
+import { NotificationService } from 'src/core/services/notification.service';
+import { SideBarService } from 'src/core/services/sidebar.service';
 import {
   BoardType,
   IBoard,
   IUserCard,
 } from 'src/shared/components/select-users/Models';
-import { EditOrganizationDialogComponent } from './edit-organization-dialog/edit-organization-dialog.component';
 
 @Component({
   selector: 'app-edit-organization',
@@ -21,7 +22,7 @@ export class EditOrganizationComponent implements OnInit {
   public organizationUsersControl: FormControl;
   public btnText = 'Create project';
   public btnClass = 'mini';
-  public test = '';
+  public sidebarName = 'editOrganization';
 
   get organizationNameErrorMessage(): string {
     const ctrl = this.organizationNameControl;
@@ -32,7 +33,10 @@ export class EditOrganizationComponent implements OnInit {
     return '';
   }
 
-  constructor(public matDialog: MatDialog) {}
+  constructor(
+    private notification: NotificationService,
+    private sideBarService: SideBarService,
+  ) {}
 
   public user: IUserCard[] = [
     {
@@ -51,6 +55,9 @@ export class EditOrganizationComponent implements OnInit {
     hasRoles: true,
   };
   ngOnInit(): void {
+    this.sidebarName += this.organization.id;
+    console.log(this.sidebarName);
+
     this.editOrganization = new FormGroup({
       editOrganization: this.editOrganization,
     });
@@ -60,13 +67,18 @@ export class EditOrganizationComponent implements OnInit {
     ]);
   }
 
-  openDialog(): void {
-    const dialog = this.matDialog.open(EditOrganizationDialogComponent);
-    dialog.afterClosed().subscribe();
-  }
+  public submitForm(): void {
+    if (!this.editOrganization.valid) {
+      this.notification.error('Invalid values');
+      return;
+    }
 
-  save() {
     this.organization.name = 'teeeeeeeest';
     console.log(this.board);
+  }
+
+  public clearForm(): void {
+    this.editOrganization.reset();
+    this.sideBarService.toggle('');
   }
 }

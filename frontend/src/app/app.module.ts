@@ -28,7 +28,6 @@ import { TasqueProjectSettingsComponent } from './components/tasque-project-sett
 import { ToastrConfig } from 'src/entity-models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
 import { EditOrganizationComponent } from './components/edit-organization/edit-organization.component';
-import { EditOrganizationDialogComponent } from './components/edit-organization/edit-organization-dialog/edit-organization-dialog.component';
 import { SelectUsersComponent } from '../shared/components/select-users/select-users.component';
 
 @NgModule({
@@ -52,7 +51,6 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     SelectUsersComponent,
     TasqueBoardComponent,
     EditOrganizationComponent,
-    EditOrganizationDialogComponent,
     TasqueProjectSettingsComponent,
   ],
   imports: [

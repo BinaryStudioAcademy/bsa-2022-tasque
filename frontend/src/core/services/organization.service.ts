@@ -6,29 +6,48 @@ import { NewOrganizationModel } from '../models/organization/new-organization-mo
 import { HttpService } from './http.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OrganizationService {
-
   public routePrefix = '/api/organization';
 
-  constructor(
-    public httpService: HttpService
-  ) { }
+  constructor(public httpService: HttpService) {}
 
-  createOrganization(organization: NewOrganizationModel): Observable<HttpResponse<OrganizationModel>> {
-    return this.httpService.postFullRequest<OrganizationModel>(this.routePrefix + '/create', organization);
+  createOrganization(
+    organization: NewOrganizationModel,
+  ): Observable<HttpResponse<OrganizationModel>> {
+    return this.httpService.postFullRequest<OrganizationModel>(
+      this.routePrefix + '/create',
+      organization,
+    );
   }
 
   getOrganizations(): Observable<HttpResponse<OrganizationModel[]>> {
-    return this.httpService.getFullRequest<OrganizationModel[]>(this.routePrefix + '/getAll');
+    return this.httpService.getFullRequest<OrganizationModel[]>(
+      this.routePrefix + '/getAll',
+    );
   }
 
   getOrganization(id: number): Observable<HttpResponse<OrganizationModel>> {
-    return this.httpService.getFullRequest<OrganizationModel>(this.routePrefix + `/getById/${id}`);
+    return this.httpService.getFullRequest<OrganizationModel>(
+      this.routePrefix + `/getById/${id}`,
+    );
   }
 
-  getUserOrganizations(userId: number): Observable<HttpResponse<OrganizationModel[]>> {
-    return this.httpService.getFullRequest<OrganizationModel[]>(this.routePrefix + `/getUserOrganizationsById/${userId}`);
+  getUserOrganizations(
+    userId: number,
+  ): Observable<HttpResponse<OrganizationModel[]>> {
+    return this.httpService.getFullRequest<OrganizationModel[]>(
+      this.routePrefix + `/getUserOrganizationsById/${userId}`,
+    );
+  }
+
+  editOrganization(
+    organization: OrganizationModel,
+  ): Observable<HttpResponse<OrganizationModel[]>> {
+    return this.httpService.putFullRequest<OrganizationModel[]>(
+      this.routePrefix,
+      organization,
+    );
   }
 }
