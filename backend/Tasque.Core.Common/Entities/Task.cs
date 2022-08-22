@@ -11,9 +11,8 @@ public class Task : BaseEntity
         Labels = new List<Label>();
         Users = new List<User>();
     }
-    public string Name { get; set; } = null!;
-    public string? Description { get; set; }
     public string Summary { get; set; } = null!;
+    public string? Description { get; set; }
 
     public TaskState State { get; set; }
     public TaskType Type { get; set; }
