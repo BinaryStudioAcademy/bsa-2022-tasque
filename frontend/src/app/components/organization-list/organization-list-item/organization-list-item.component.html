@@ -3,7 +3,8 @@
     ><a href="#">{{ organization.name }}</a></mat-card-title
   >
   <mat-card-actions>
-    <tasque-button *ngIf="organization.authorId === currentUser.id" class="btn stroke" text="Edit"> </tasque-button>
+    <tasque-button class="btn stroke" text="Edit"> </tasque-button>
+    <app-edit-organization *ngIf="organization.authorId === currentUser.id"></app-edit-organization>
     <tasque-button class="btn stroke" text="Open"> </tasque-button>
   </mat-card-actions>
 </mat-card>
