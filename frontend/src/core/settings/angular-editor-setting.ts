@@ -11,6 +11,7 @@ export const EditorConfig: AngularEditorConfig = {
   translate: 'yes',
   enableToolbar: true,
   showToolbar: true,
+  sanitize: false,
   placeholder: 'Enter text here...',
   defaultParagraphSeparator: '',
   defaultFontName: '',
