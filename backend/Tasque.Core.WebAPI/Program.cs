@@ -3,7 +3,6 @@ global using FluentValidation;
 using Tasque.Core.DAL;
 using Tasque.Core.WebAPI.AppConfigurationExtension;
 using Tasque.Core.WebAPI.Middlewares;
-using Tasque.Core.Identity;
 using Microsoft.EntityFrameworkCore;
 using NLog.Extensions.Logging;
 
@@ -13,17 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddNLog();
 
-builder.Services.ConfigureMapper();
-builder.Services.ConfigureValidator();
-builder.Services.ConfigureCurrentUserParameters();
-builder.Services.ConfigureEmailServices(builder.Configuration);
-builder.Services.AddSwagger();
-
 // Add services to the container.
 
 AppConfigurationExtension.RegisterServices(builder.Services, builder.Configuration);
-
-builder.Services.AddCors();
 
 builder.Services.AddDbContext<DataContext>(
     o => o.UseNpgsql(builder.Configuration["ConnectionStrings:TasqueDb"], 
@@ -31,10 +22,6 @@ builder.Services.AddDbContext<DataContext>(
         .EnableDetailedErrors());
 
 builder.WebHost.UseUrls("http://*:5000");
-
-AppConfigurationExtension.RegisterServices(builder.Services, builder.Configuration);
-
-builder.Services.RegisterIdentity();
 
 var app = builder.Build();
 
@@ -57,8 +44,15 @@ app.UseCors(builder =>
         .AllowAnyOrigin()
         .AllowAnyMethod());
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwagger(action =>
+{
+    action.RouteTemplate = "api/swagger/{documentName}/swagger.json";
+});
+app.UseSwaggerUI(action => 
+{
+    action.SwaggerEndpoint("v1/swagger.json", "Tasque API");
+    action.RoutePrefix = "api/swagger";
+});
 
 app.UseRouting();
 
