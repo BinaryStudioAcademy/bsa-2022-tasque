@@ -1,7 +1,13 @@
 <div class="container">
-  <app-left-sidebar></app-left-sidebar>
-  <main>
-    <tasque-header></tasque-header>
-    <router-outlet></router-outlet>
-  </main>
+  <div class="menu">
+    <app-left-sidebar></app-left-sidebar>
+  </div>
+  <div class="main">
+    <div>
+      <tasque-header></tasque-header>
+    </div>
+    <div>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>
