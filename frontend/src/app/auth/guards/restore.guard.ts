@@ -14,7 +14,7 @@ export class RestoreGuard implements CanDeactivate<RestorePageComponent> {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (!component.loginForm.dirty) return true;
+    if (!component.requestForm.dirty) return true;
     return window.confirm('Data would not be saved. Continue?');
   }
 }
