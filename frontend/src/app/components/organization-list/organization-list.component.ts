@@ -104,8 +104,7 @@ export class OrganizationListComponent implements OnInit {
             this.items = result.body;
             this.itemsShow = this.items;
           }
-        }
-      );
+        });
   }
 
   filterItems(): void {

@@ -55,7 +55,7 @@ export class CreateOrganizationDialogComponent implements OnInit {
 
     const organization: NewOrganizationModel = {
       name: this.createOrganizationForm.value,
-      authorId: this.currentUser.id
+      authorId: this.currentUser.id as number
     };
     this.organizationService.createOrganization(organization)
       .pipe(takeUntil(this.unsubscribe$))

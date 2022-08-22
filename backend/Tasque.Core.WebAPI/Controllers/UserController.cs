@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO;
 
@@ -15,14 +16,6 @@ namespace Tasque.Core.WebAPI.Controllers
         public UserController(UserService service)
         {
             _service = service;
-        }
-
-        [HttpGet("current")]
-        public async Task<IActionResult> GetCurrentUser()
-        {
-            var id = GetCurrentUserId();
-            var user = await _service.GetUserById(id);
-            return Ok(user);
         }
 
         [HttpPut("edit")]
@@ -47,10 +40,21 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok(result);
         }
 
+        [HttpGet("current")]
+        public async Task<IActionResult> GetCurrentUserFromToken()
+        {
+            return Ok(await _service.
+                    GetUserById(
+                        GetCurrentUserId()));
+        }
+
         private int GetCurrentUserId()
         {
-            /* Just a stub. Should be implemented */
-            return 1;
+            var id = User.Claims.FirstOrDefault(x => x.Type == "id")?.Value;
+            if (string.IsNullOrEmpty(id))
+                throw new InvalidTokenException("Invalid access token");
+
+            return int.Parse(id);
         }
     }
 }
