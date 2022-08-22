@@ -12,6 +12,11 @@ namespace Tasque.Core.DAL.EntityConfiguration
                 .HasOne(project => project.Author)
                 .WithMany(user => user.OwnedProjects)
                 .HasForeignKey(project => project.AuthorId);
+
+            builder
+                .HasMany(project => project.UserRoles)
+                .WithOne(userProjectRole => userProjectRole.Project)
+                .HasForeignKey(userProjectRole => userProjectRole.ProjectId);
         }
     }
 }

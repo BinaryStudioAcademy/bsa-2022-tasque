@@ -9,7 +9,12 @@ namespace Tasque.Core.DAL.EntityConfiguration
         public void Configure(EntityTypeBuilder<UserProjectRole> builder)
         {
             builder
-                .HasNoKey();
+                .HasKey(userProjectRole => new { userProjectRole.ProjectId, userProjectRole.UserId, userProjectRole.RoleId });
+
+            builder
+                .HasOne(userProjectRole => userProjectRole.Project)
+                .WithMany(project => project.UserRoles)
+                .HasForeignKey(userProjectRole => userProjectRole.ProjectId);
         }
     }
 }
