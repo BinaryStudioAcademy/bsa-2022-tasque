@@ -1,22 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { faCheckToSlot, faXmark, faLink, faPaperclip, faShareNodes, faEllipsisVertical, faFaceSmile, faPen } from '@fortawesome/free-solid-svg-icons';
 import { BaseComponent } from 'src/core/base/base.component';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TaskState } from 'src/core/models/enums/task-state';
-import { TaskPriority } from 'src/core/models/enums/task-priority';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import { EditorConfig } from 'src/core/settings/angular-editor-setting';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { TaskType } from 'src/core/models/enums/task-type';
-
-export interface EditTaskDialogData {
-  currentUser: UserModel,
-  task: TaskModel
-}
+import { TaskState } from 'src/core/models/task/task-state';
+import { TaskPriority } from 'src/core/models/task/task-priority';
 
 @Component({
   selector: 'tasque-task-editing',
@@ -25,8 +19,8 @@ export interface EditTaskDialogData {
 })
 export class TaskEditingComponent extends BaseComponent implements OnInit {
 
-  public task: TaskModel;
-  public currentUser: UserModel;
+  @Input() public task: TaskModel;
+  @Input() public currentUser: UserModel;
   public taskProject: ProjectModel;
   public taskUser: UserModel;
   public taskSprint: SprintModel;
@@ -45,22 +39,59 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public taskDescriptionEditorShow = false;
   public taskSummaryInputShow = false;
 
-  public taskStatusOptions: [color: string, title: string, id: number][] = [
-    ['yellow', 'To Do', TaskState.Todo],
-    ['orange', 'In Progress', TaskState.InProgress],
-    ['green', 'Done', TaskState.Done],
-    ['red', 'Canceled', TaskState.Done],
-  ];
-  public taskPriorityOptions: [color: string, title: string, id: number][] = [
-    ['green', 'Low', TaskPriority.Low],
-    ['yellow', 'Medium', TaskPriority.Medium],
-    ['orange', 'High', TaskPriority.High],
-  ];
-
+  public taskStatusOptions: [color: string, title: string, id: number][] = [];
+  public taskPriorityOptions: [color: string, title: string, id: number][] = [];
   public projectOptions: [color: string, title: string, id: number][] = [];
   public sprintOptions: [color: string, title: string, id: number][] = [];
 
-  public projects: ProjectModel[] = [
+  @Input() public taskPriorities: TaskPriority[] = [
+    {
+      id: 1,
+      name: 'Low',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 2,
+      name: 'Middle',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 3,
+      name: 'High',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+  ];
+  @Input() public taskStates: TaskState[] = [
+    {
+      id: 1,
+      name: 'To Do',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 2,
+      name: 'In Progress',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 3,
+      name: 'Done',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 4,
+      name: 'Canceled',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+  ];
+
+  @Input() public projects: ProjectModel[] = [
     {
       id: 1,
       name: 'project 1',
@@ -87,7 +118,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     },
   ];
 
-  public sprints: SprintModel[] = [
+  @Input() public sprints: SprintModel[] = [
     {
       id: 1,
       name: 'spr1',
@@ -110,7 +141,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       updatedAt: new Date()
     }
   ];
-  public users: UserModel[] = [
+  @Input() public users: UserModel[] = [
     {
       id: 1,
       name: 'User1Name',
@@ -130,9 +161,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
   public editorConfig: AngularEditorConfig = EditorConfig;
 
-  constructor(
-    private sanitizer: DomSanitizer
-  ) {
+  constructor(private sanitizer: DomSanitizer) {
     super();
 
     this.task = {
@@ -140,9 +169,24 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       name: 'Hi',
       summary: 'Maaaaan',
       description: 'qweqwe',
-      taskState: TaskState.Todo,
-      taskType: TaskType.Bug,
-      taskPriority: TaskPriority.High,
+      taskState: {
+        id: 1,
+        name: 'Hi',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      taskType: {
+        id: 1,
+        name: 'Hi',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      taskPriority: {
+        id: 1,
+        name: 'Hi',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
       authorId: 1,
       projectId: 2,
       sprintId: 3,
@@ -164,15 +208,15 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     this.taskSprint = this.sprints.find((x) => x.id === this.task.sprintId)!;
 
     this.editTaskForm = new FormGroup({
-      taskProject: new FormControl(this.chooseProject(this.taskProject)),
+      taskProject: new FormControl(this.convertToOption(this.taskProject)),
       taskSummary: new FormControl(this.task.summary, [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(80)
       ]),
-      taskStatus: new FormControl(this.chooseTaskStatus(this.task.taskState)),
-      taskPriority: new FormControl(this.chooseTaskPriority(this.task.taskPriority)),
-      taskSprint: new FormControl(this.chooseSprint(this.taskSprint)),
+      taskStatus: new FormControl(this.convertToOption(this.task.taskState)),
+      taskPriority: new FormControl(this.convertToOption(this.task.taskPriority)),
+      taskSprint: new FormControl(this.convertToOption(this.taskSprint)),
       taskDescription: new FormControl<SafeHtml | undefined>(this.task.description, [
         Validators.maxLength(5000)
       ]),
@@ -181,6 +225,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
     this.fillProjectOptions(this.projects);
     this.fillSprintOptions(this.sprints);
+    this.fillTaskStatesOptions(this.taskStates);
+    this.fillTaskPrioritiesOptions(this.taskPriorities);
   }
 
   public safeHTML(unsafe: string): SafeHtml {
@@ -232,57 +278,47 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     return '';
   }
 
-  private chooseTaskStatus(taskStatus: TaskState): [string, string, number] {
-    return this.taskStatusOptions.find((x) => x[2] === taskStatus) ?? ['white', 'To Do', TaskState.Todo];
-  }
-
-  private chooseTaskPriority(taskPriority: TaskPriority): [string, string, number] {
-    return this.taskStatusOptions.find((x) => x[2] === taskPriority) ?? ['green', 'Low', TaskPriority.Low];
-  }
-
-  private chooseProject(project: ProjectModel): [string, string, number] {
-    switch (project.id % 4) {
+  private convertToOption(item: SprintModel | ProjectModel | TaskState | TaskPriority): [string, string, number] {
+    switch (item.id % 5) {
       case 1:
-        return ['yellow', project.name, project.id];
+        return ['green', item.name, item.id];
       case 2:
-        return ['green', project.name, project.id];
+        return ['yellow', item.name, item.id];
       case 3:
-        return ['orange', project.name, project.id];
+        return ['orange', item.name, item.id];
       case 4:
-        return ['red', project.name, project.id];
+        return ['red', item.name, item.id];
       default:
-        return ['white', '-', 0];
-    }
-  }
-
-  private chooseSprint(sprint: SprintModel): [string, string, number] {
-    switch (sprint.id % 4) {
-      case 1:
-        return ['yellow', sprint.name, sprint.id];
-      case 2:
-        return ['green', sprint.name, sprint.id];
-      case 3:
-        return ['orange', sprint.name, sprint.id];
-      case 4:
-        return ['red', sprint.name, sprint.id];
-      default:
-        return ['white', '-', 0];
+        return ['lightgray', '-', 0];
     }
   }
 
   private fillProjectOptions(projects: ProjectModel[]): void {
-    const projectOptions: [color: string, title: string, id: number][] = [];
+    this.projectOptions = [];
     projects.forEach((element) => {
-      projectOptions.push(this.chooseProject(element));
+      this.projectOptions.push(this.convertToOption(element));
     });
-    this.projectOptions = projectOptions;
   }
 
   private fillSprintOptions(sprints: SprintModel[]): void {
-    const sprintOptions: [color: string, title: string, id: number][] = [['white', '-', 0]];
+    this.sprintOptions = [];
+    this.sprintOptions.push(['lightgray', '-', 0]);
     sprints.forEach((element) => {
-      sprintOptions.push(this.chooseSprint(element));
+      this.sprintOptions.push(this.convertToOption(element));
     });
-    this.sprintOptions = sprintOptions;
+  }
+
+  private fillTaskPrioritiesOptions(taskPriorities: TaskPriority[]): void {
+    this.taskPriorityOptions = [];
+    taskPriorities.forEach((element) => {
+      this.taskPriorityOptions.push(this.convertToOption(element));
+    });
+  }
+
+  private fillTaskStatesOptions(taskStates: TaskState[]): void {
+    this.taskStatusOptions = [];
+    taskStates.forEach((element) => {
+      this.taskStatusOptions.push(this.convertToOption(element));
+    });
   }
 }
