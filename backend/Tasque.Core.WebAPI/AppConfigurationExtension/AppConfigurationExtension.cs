@@ -12,6 +12,7 @@ using Tasque.Core.BLL.Services;
 using Tasque.Core.BLL.Services.Auth;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.Common.Entities;
+using Tasque.Core.Identity;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
 {
@@ -117,6 +118,13 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
 
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
+
+            services.ConfigureMapper();
+            services.ConfigureValidator();
+            services.ConfigureCurrentUserParameters();
+            services.ConfigureEmailServices(configuration);
+            services.AddSwagger();
+
             var jwtIssuerOptions = new JwtIssuerOptions();
             configuration.GetSection("JwtIssuerOptions").Bind(jwtIssuerOptions);
 
@@ -137,6 +145,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<OrganizationService>()
                 .AddScoped<UserService>()
                 .AddScoped<FileUploadService>();
+
+            services.RegisterIdentity();
         }
 
         public static void AddSwagger(this IServiceCollection services)
