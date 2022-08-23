@@ -1,12 +1,13 @@
 <h1 mat-dialog-title>Create organization</h1>
     <div class="create-org-dialog">
+        <form class="form-container" onSubmit="createOrganization()">
     <mat-dialog-content class="dialog-content">
-        <span class="input-title">Name</span>
         <tasque-input
             type="text"
-            id="organizationName"
-            #organizationName
+            [invalid]="!this.createOrganizationForm.valid"
+            [formControl]="createOrganizationForm"
             [class]="inputClass"
+            [errorMessage]="createOrgErrorMessage"
             [placeholder]="placeholderText"
             [label]="inputLabel"
         ></tasque-input>
@@ -18,11 +19,12 @@
             [class]="this.btnClass">
         </tasque-button>
         <tasque-button
-            [mat-dialog-close]="true"
+            [mat-dialog-close]="isSuccessful"
             [text]="this.createBtnName"
             [class]="this.btnClass"
-            (btnClick)="createOrganization(organizationName.value)">
+            (btnClick)="createOrganization()">
         </tasque-button>
     </mat-dialog-actions>
+</form>
 </div>
 
