@@ -5,6 +5,8 @@ import { takeUntil } from 'rxjs/operators';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { UserModel } from 'src/entity-models/user-model';
 import { NewOrganizationModel } from 'src/core/models/organization/new-organization-model';
+import { FormControl, Validators } from '@angular/forms';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-create-organization-dialog',
@@ -18,25 +20,47 @@ export class CreateOrganizationDialogComponent implements OnInit {
   public cancelBtnName = 'Cancel';
   public inputClass = 'input';
   public placeholderText = 'Write organization name';
+  public createOrgErrorMessage = 'Name is required';
   public inputType = 'text';
   public inputLabel = 'Organization name';
 
+  public isSuccessful:boolean;
+
   public unsubscribe$ = new Subject<void>();
+
+  public organizationName = '';
+  public createOrganizationForm: FormControl;
 
   constructor(
     public organizationService: OrganizationService,
-    @Inject(MAT_DIALOG_DATA) public currentUser: UserModel) { }
+    public notificationService: NotificationService,
+    @Inject(MAT_DIALOG_DATA) public currentUser: UserModel) {
+      this.createOrganizationForm = new FormControl(this.organizationName, [
+        Validators.required,
+      ]);
+     }
 
   ngOnInit(): void {
   }
 
-  createOrganization(name: string): void {
+  createOrganization(): void {
+    if(!this.createOrganizationForm.valid) {
+      this.createOrganizationForm.markAllAsTouched();
+      this.isSuccessful = false;
+      this.notificationService.error('Something go wrong');
+      return;
+    }
+
+    this.isSuccessful = true;
+
     const organization: NewOrganizationModel = {
-      name: name,
-      authorId: this.currentUser.id
+      name: this.createOrganizationForm.value,
+      authorId: this.currentUser.id as number
     };
     this.organizationService.createOrganization(organization)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe();
+
+    this.notificationService.success('Organization has been created successfully');
   }
 }

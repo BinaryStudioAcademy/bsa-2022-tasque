@@ -81,6 +81,7 @@ export class RestorePageComponent implements OnInit, OnDestroy {
   ) {
     this.emailControl = new FormControl(this.email, [
       Validators.required,
+      Validators.email,
       Validators.pattern(ValidationConstants.emailRegex),
     ]);
     this.passwordControl = new FormControl('', [

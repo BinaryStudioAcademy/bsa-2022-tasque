@@ -7,6 +7,7 @@ import { UserModel } from 'src/core/models/user/user-model';
 import { CreateOrganizationDialogComponent } from '../create-organization/create-organization-dialog/create-organization-dialog.component';
 import { takeUntil } from 'rxjs/operators';
 import { faMagnifyingGlass, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Component({
   selector: 'app-organization-list',
@@ -14,11 +15,7 @@ import { faMagnifyingGlass, IconDefinition } from '@fortawesome/free-solid-svg-i
   styleUrls: ['./organization-list.component.sass']
 })
 export class OrganizationListComponent implements OnInit {
-  @Input() public currentUser: UserModel = {
-    name: 'Login1',
-    email: 'testlogin@gmail.com',
-    id: 2,
-  };
+  @Input() public currentUser: UserModel;
 
   public items: OrganizationModel[] = [
     {
@@ -92,10 +89,14 @@ export class OrganizationListComponent implements OnInit {
   public faMagnifyingGlass: IconDefinition = faMagnifyingGlass;
 
   constructor(
+    private currentUserService: GetCurrentUserService,
     private matDialog: MatDialog,
     private organizationService: OrganizationService) { }
 
   ngOnInit(): void {
+    this.currentUserService.currentUser.subscribe((user) => {
+      this.currentUser = user as UserModel;
+    });
     this.organizationService.getUserOrganizations(this.currentUser.id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
@@ -104,8 +105,7 @@ export class OrganizationListComponent implements OnInit {
             this.items = result.body;
             this.itemsShow = this.items;
           }
-        }
-      );
+        });
   }
 
   filterItems(): void {
