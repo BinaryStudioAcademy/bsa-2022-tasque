@@ -7,7 +7,7 @@ import { DropdownComponent } from './components/tasque-dropdown/dropdown.compone
 import { ButtonComponent } from './components/tasque-button/button.component';
 import { LoadingComponent } from './components/tasque-loading/loading.component';
 import { CheckboxComponent } from './components/tasque-checkbox/checkbox.component';
-import { InputComponent } from './components/tasque-input/input.component'; 
+import { InputComponent } from './components/tasque-input/input.component';
 import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
@@ -23,6 +23,7 @@ import { TaskCreationComponent } from 'src/shared/components/tasque-task-creatio
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { TasqueSidebarComponent } from './components/tasque-sidebar/tasque-sidebar.component';
 import { TasqueSideBarModalComponent } from './components/tasque-sidebar/tasque-sidebar-modal/sidebar-modal.component';
+import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 
 @NgModule({
   imports: [
@@ -53,6 +54,7 @@ import { TasqueSideBarModalComponent } from './components/tasque-sidebar/tasque-
     TaskCreationComponent,
     TasqueSidebarComponent,
     TasqueSideBarModalComponent,
+    NotFoundPageComponent,
   ],
   exports: [
     CommonModule,
@@ -79,6 +81,7 @@ import { TasqueSideBarModalComponent } from './components/tasque-sidebar/tasque-
     HeaderComponent,
     TasqueTeamSelectComponent,
     TaskCreationComponent,
+    NotFoundPageComponent
   ],
   providers: [SideBarService],
 })
