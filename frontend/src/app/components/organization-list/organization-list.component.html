@@ -1,14 +1,29 @@
 <div class="organization-list">
   <div class="organizations-header">
-    <h4>My Organizations</h4>
-    <tasque-button class="btn fill" text="Create Organization" (btnClick)="openDialog()"></tasque-button>
+    <h4>List of Organizations</h4>
+    <tasque-button
+      class="btn fill"
+      text="Create Organization"
+      (btnClick)="openDialog()"
+    ></tasque-button>
   </div>
   <div class="organizations-search">
-    <tasque-input [icon]="faMagnifyingGlass" class="search-input" iconPosition="search" type="search" placeholder="Search..." [(ngModel)]="inputSearch" (ngModelChange)="filterItems()"> </tasque-input>
+    <tasque-input
+      [icon]="faMagnifyingGlass"
+      class="search-input"
+      iconPosition="search"
+      type="search"
+      placeholder="Search..."
+      [(ngModel)]="inputSearch"
+      (ngModelChange)="filterItems()"
+    >
+    </tasque-input>
   </div>
   <div class="organization-list-cards">
-    <div class="organization-card" *ngFor="let item of itemsShow">
-      <app-organization-list-item [organization]="item" [currentUser]="currentUser"></app-organization-list-item>
-    </div>
+    <app-organization-list-item
+      *ngFor="let item of itemsShow"
+      [organization]="item"
+      [currentUser]="currentUser"
+    ></app-organization-list-item>
   </div>
 </div>
