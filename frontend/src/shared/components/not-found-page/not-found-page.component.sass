@@ -1,0 +1,26 @@
+@import 'src/colors.sass'
+
+*
+  font-family: 'Nunito'
+
+.container
+  display: flex
+  flex-flow: column
+  text-align: center
+  justify-content: center
+  > *:not(*:last-child)
+    margin-bottom: 15px
+
+.num-container > fa-icon:not(*:last-child)
+    margin-right: 5px
+
+.btn-container
+  display: flex
+  justify-content: center
+
+.text-14
+  font-size: 14px
+
+a
+  text-decoration: none
+  color: colorscheme(black-100)
