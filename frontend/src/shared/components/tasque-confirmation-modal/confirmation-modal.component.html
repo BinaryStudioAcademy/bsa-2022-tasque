@@ -1,11 +1,9 @@
 <div class="confirmation-dialog-container">
   <h2 mat-dialog-title>{{ title }}</h2>
 
-  <mat-dialog-content>
-    <p>{{ message }}</p>
-  </mat-dialog-content>
+  <p>{{ message }}</p>
 
-  <mat-dialog-actions [ngSwitch]="type">
+  <div [ngSwitch]="type">
     <div class="button-container" *ngSwitchCase="'default'">
       <tasque-button text="Cancel" class="btn fill grey" (btnClick)="onDismiss()"></tasque-button>
       <tasque-button text="Ok" class="btn fill green" (btnClick)="onConfirm()"></tasque-button>
@@ -14,5 +12,5 @@
       <tasque-button text="Cancel" class="btn fill grey" (btnClick)="onDismiss()"></tasque-button>
       <tasque-button text="Delete" class="btn fill red" (btnClick)="onConfirm()"></tasque-button>
     </div>
-  </mat-dialog-actions>
+  </div>
 </div>
