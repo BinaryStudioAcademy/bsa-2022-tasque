@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -6,6 +6,7 @@ import { OrganizationModel } from 'src/core/models/organization/organization-mod
 import { NotificationService } from 'src/core/services/notification.service';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { SideBarService } from 'src/core/services/sidebar.service';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import {
   BoardType,
   IBoard,
@@ -17,7 +18,8 @@ import {
   templateUrl: './edit-organization.component.html',
   styleUrls: ['./edit-organization.component.sass'],
 })
-export class EditOrganizationComponent implements OnInit {
+export class EditOrganizationComponent implements OnInit, OnDestroy {
+  faPenToSquare = faPenToSquare;
   @Input() public organization: OrganizationModel;
   public editOrganization: FormGroup = new FormGroup({});
   public organizationNameControl: FormControl;
@@ -26,10 +28,14 @@ export class EditOrganizationComponent implements OnInit {
   public btnClass = 'mini';
   public sidebarName = 'editOrganization';
   public unsubscribe$ = new Subject<void>();
+  public organizationName = '';
 
   get organizationNameErrorMessage(): string {
     const ctrl = this.organizationNameControl;
 
+    if (ctrl.errors?.['minlength']) {
+      return 'Summary must be at least 2 characters';
+    }
     if (ctrl.errors?.['required']) {
       return 'Project is required';
     }
@@ -40,7 +46,12 @@ export class EditOrganizationComponent implements OnInit {
     private notification: NotificationService,
     private sideBarService: SideBarService,
     private organizationService: OrganizationService,
-  ) {}
+  ) {
+    this.organizationNameControl = new FormControl(this.organizationName, [
+      Validators.required,
+      Validators.minLength(2),
+    ]);
+  }
 
   public user: IUserCard[] = [
     {
@@ -59,21 +70,21 @@ export class EditOrganizationComponent implements OnInit {
     hasRoles: true,
   };
   ngOnInit(): void {
+    this.organizationName = this.organization.name;
     this.sidebarName += this.organization.id;
-    console.log(this.sidebarName);
 
     this.editOrganization = new FormGroup({
-      editOrganization: this.editOrganization,
+      organizationNameControl: this.organizationNameControl,
     });
+  }
 
-    this.organizationNameControl = new FormControl(this.organization.name, [
-      Validators.required,
-    ]);
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   public submitForm(): void {
-    this.organization.name = 'teeeeeeeest';
-    console.log(this.board);
+    this.organization.name = this.organizationName;
 
     this.organizationService
       .editOrganization(this.organization)
@@ -87,5 +98,10 @@ export class EditOrganizationComponent implements OnInit {
   public clearForm(): void {
     this.editOrganization.reset();
     this.sideBarService.toggle('');
+  }
+
+  public titleContent(event: Event): string {
+    const input = event.target as HTMLElement;
+    return input.innerText;
   }
 }

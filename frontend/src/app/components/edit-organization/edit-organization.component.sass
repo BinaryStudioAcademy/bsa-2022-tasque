@@ -7,15 +7,18 @@
     min-width: 100%
     display: flex
     flex-direction: column
-    background: colorscheme(gray-100)
     font-family: 'Nunito'
 
 .task-creation-header,
 .task-creation-footer
-    height: 145px
+    height: 90px
     background: colorscheme(white-100)
     display: flex
     align-items: center
+
+.task-creation-body
+    max-height: 100%
+    flex-grow: 3
 
 .task-creation-header
     padding: 0 51px
@@ -42,10 +45,6 @@
     >.btn
         margin-left: 15px
 
-.task-creation-body
-    max-height: 100%
-    flex-grow: 3
-
 .task-creation-body-wrapper
     padding: 0px 50px
 
@@ -54,28 +53,44 @@
     display: block
     text-align: center
 
-tasque-input
-    ::ng-deep
-        width: 100%
-        .input
-            height: 30px
-            background: none
-            font-weight: 700
-            font-size: 18px
-            line-height: 114.88%
-        mat-grid-list
-            height: calc(336px) !important
-        .mat-grid-tile
-            height: calc(252px) !important
+.organizationName-wrapper
+    display: flex
+    align-items: center
+    padding: 5px
+    border-radius: 10px
+    .icon
+        vertical-align: middle
+    &:hover
+        background: colorscheme(gray-300)
+        border: 2px solid colorscheme(violet-200)
+        .icon
+            display: none
+    &:focus
+        outline: 0px solid transparent
+    tasque-button
+        ::ng-deep
+            button
+                color: colorscheme(gray-500)
+                .ng-fa-icon
+                    vertical-align: sub
 
-tasque-input
-    ::ng-deep
-        .input:hover
-            background: colorscheme(gray-300)
+.organizationName
+    background: none
+    font-weight: 700
+    font-size: 27px
+    line-height: 114.88%
+    outline: 0px solid transparent
+    opacity: .88
 
 tasque-select-users
     ::ng-deep
         .mat-grid-list
-            height: calc(336px) !important
+            height: calc(420px) !important
         .mat-grid-tile.list
-            height: calc(252px) !important
+            height: calc(336px) !important
+        h3
+            font-size: 16px
+            padding-left: 5px
+            padding-top: 20px
+            text-align: left !important
+            margin-bottom: 10px !important

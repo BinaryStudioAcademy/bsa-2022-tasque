@@ -34,7 +34,7 @@ namespace Tasque.Core.WebAPI.Controllers
             var organizations = await _service.EditOrganization(organization);
             if (organizations is not null)
             {
-                return Ok(organizations);
+                return Ok();
             }
             else
             {
