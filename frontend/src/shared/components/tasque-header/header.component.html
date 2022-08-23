@@ -2,7 +2,7 @@
   <div class="navigation-panel">
     <div [matMenuTriggerFor]="workMenu">
       <span>Your work</span>
-      <img src="..\..\assets\arrow_icon.svg">
+      <img src="\assets\arrow_icon.svg" />
       <mat-menu #workMenu="matMenu">
         <button mat-menu-item>One task</button>
         <button mat-menu-item>Some task</button>
@@ -10,7 +10,7 @@
     </div>
     <div [matMenuTriggerFor]="projectMenu">
       <span>Project</span>
-      <img src="..\..\assets\arrow_icon.svg">
+      <img src="\assets\arrow_icon.svg" />
       <mat-menu #projectMenu="matMenu">
         <button mat-menu-item>Last project</button>
         <button mat-menu-item>Previous project</button>
@@ -18,6 +18,12 @@
     </div>
     <div>
       <tasque-organizations-dropdown></tasque-organizations-dropdown>
+    </div>
+    <div>
+      <span [routerLink]="['/organizations']">My Organizations</span>
+    </div>
+    <div>
+      <span [routerLink]="['/projects']">My Projects</span>
     </div>
     <div>
       <span>Calendar</span>
@@ -35,21 +41,22 @@
     <div class="search-input">
       <tasque-input
         class="search-input header-extension"
-        type="search" 
+        type="search"
         placeholder="Search..."
         [icon]="searchIcon"
-        iconPosition="search">
+        iconPosition="search"
+      >
       </tasque-input>
     </div>
     <div>
-      <img src="..\..\assets\bell_icon.svg">
+      <img src="\assets\bell_icon.svg" />
     </div>
     <div>
-      <img src="..\..\assets\settings_icon.svg">  
+      <img src="\assets\settings_icon.svg" />
     </div>
     <div [matMenuTriggerFor]="profileMenu">
-      <img src="..\..\assets\avatar.png" width="45px" height="45px">
-      <img src="..\..\assets\arrow_full_icon.svg">
+      <img src="\assets\avatar.png" width="45px" height="45px" />
+      <img src="\assets\arrow_full_icon.svg" />
       <mat-menu #profileMenu="matMenu">
         <button mat-menu-item>Profile settings</button>
         <button mat-menu-item>Log out</button>
