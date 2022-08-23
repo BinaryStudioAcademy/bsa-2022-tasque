@@ -28,18 +28,37 @@ namespace Tasque.Core.WebAPI.Controllers
             }
         }
 
+        [Route("getOrganizationUsers/{id}")]
+        [HttpGet]
+        public async virtual Task<IActionResult> GetOrganizationUsers(int id)
+        {
+            var users = await _service.GetOrganizationUsers(id);
+            if (users is not null)
+            {
+                return Ok(users);
+            }
+            else
+            {
+                return NotFound("Users not found");
+            }
+        }
+
         [HttpPut]
         public async virtual Task<IActionResult> UpdateOrganization([FromBody] OrganizationDto organization)
         {
+            var users = await _service.GetOrganizationUsers(1);
+
             var organizations = await _service.EditOrganization(organization);
+
             if (organizations is not null)
             {
                 return Ok();
             }
             else
             {
-                return BadRequest("Entities not found");
+                return NotFound("Organization not found");
             }
+            
         }
     }
 }

@@ -15,6 +15,7 @@ public class DataContext : DbContext
         modelBuilder.ApplyConfiguration(new UserConfiguration());
         modelBuilder.ApplyConfiguration(new TaskConfiguration());
         modelBuilder.ApplyConfiguration(new ProjectConfiguration());
+        modelBuilder.ApplyConfiguration(new OrganizationConfiguration());
     }
 
     public DbSet<Organization> Organizations { get; set; } = null!;

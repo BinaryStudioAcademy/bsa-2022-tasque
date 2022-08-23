@@ -43,5 +43,18 @@ namespace Tasque.Core.BLL.Services
             return _mapper.Map<OrganizationDto>(organizationEntity);
 
         }
+
+        public async Task<IEnumerable<UserDto>> GetOrganizationUsers(int organizationId)
+        {
+            var organizationEntity = await _db.Organizations
+                .Include(u => u.Users)
+                .FirstOrDefaultAsync(o => o.Id == organizationId)
+                ?? throw new ValidationException("Organization not found");
+
+            var users = organizationEntity.Users;
+
+            return _mapper.Map<IEnumerable<UserDto>>(users);
+        }
+
     }
 }
