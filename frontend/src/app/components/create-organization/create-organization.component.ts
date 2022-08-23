@@ -27,7 +27,7 @@ export class CreateOrganizationComponent implements OnInit {
   ngOnInit(): void {
     this.currentUserService.currentUser.subscribe((user) => {
       this.currentUser = user as UserModel;
-    })
+    });
   }
 
   openDialog():void {
