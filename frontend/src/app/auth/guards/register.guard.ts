@@ -8,7 +8,7 @@ import { NotificationService } from '../../../core/services/notification.service
 @Injectable({
   providedIn: 'root',
 })
-export class RegisterGuard implements CanDeactivate<RegisterPageComponent>, CanActivate {
+export class RegisterGuard implements CanDeactivate<RegisterPageComponent> {
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -23,13 +23,5 @@ export class RegisterGuard implements CanDeactivate<RegisterPageComponent>, CanA
     | UrlTree {
     if (!component.registerForm.dirty) return true;
     return window.confirm('Data would not be saved. Continue?');
-  }
-  canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.authService.areTokensExist()) {
-      this.router.navigate(['/organizations']);
-      this.notificationService.info('You are already logged in', 'Reminding');
-      return false;
-    }
-    return true;
   }
 }
