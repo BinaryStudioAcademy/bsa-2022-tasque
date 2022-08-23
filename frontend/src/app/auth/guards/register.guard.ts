@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, CanDeactivate, Router, UrlTree } from '@angular/router';
+import { CanDeactivate, Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { RegisterPageComponent } from '../components/register-page/register-page.component';
 import { AuthService } from '../../../core/services/auth.service';
