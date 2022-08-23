@@ -28,6 +28,8 @@ import { TasqueProjectSettingsComponent } from './components/tasque-project-sett
 import { ToastrConfig } from 'src/entity-models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
 import { SelectUsersComponent } from '../shared/components/select-users/select-users.component';
+import { CreateSprintComponent } from './components/create-sprint/create-sprint.component';
+import { CreateSprintDialogComponent } from './components/create-sprint/create-sprint-dialog/create-sprint-dialog.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     TasqueProjectSettingsComponent,
     SelectUsersComponent,
     TasqueBoardComponent,
-    TasqueProjectSettingsComponent
+    TasqueProjectSettingsComponent,
+    CreateSprintComponent,
+    CreateSprintDialogComponent
   ],
   imports: [
     BrowserModule,
