@@ -13,7 +13,11 @@ export const AuthRoutes: Routes = [
     path: 'auth',
     component: AuthPageComponent,
     children: [
-      { path: 'login', component: LoginPageComponent, canActivate: [LoginGuard] },
+      {
+        path: 'login',
+        component: LoginPageComponent,
+        canActivate: [LoginGuard]
+      },
       {
         path: 'register',
         component: RegisterPageComponent,

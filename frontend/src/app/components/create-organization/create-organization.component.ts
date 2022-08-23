@@ -2,8 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateOrganizationDialogComponent } from './create-organization-dialog/create-organization-dialog.component';
-import { UserModel } from 'src/entity-models/user-model';
 import { ButtonComponent } from 'src/shared/components/tasque-button/button.component';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { UserModel } from 'src/core/models/user/user-model';
 
 @Component({
   selector: 'app-create-organization',
@@ -12,23 +13,21 @@ import { ButtonComponent } from 'src/shared/components/tasque-button/button.comp
 })
 export class CreateOrganizationComponent implements OnInit {
 
-  @Input() public currentUser: UserModel = {
-    name: 'Login1',
-    email: 'testlogin@gmail.com',
-    id: 1,
-    salt: 'Salt',
-    password: 'Password'
-  };
+  @Input() public currentUser: UserModel;
 
   public btnClass = 'mini';
   public btnText = 'Create organization';
   public unsubscribe$ = new Subject<void>();
 
   constructor(
+    public currentUserService: GetCurrentUserService,
     public buttonComponent:ButtonComponent,
     public matDialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.currentUserService.currentUser.subscribe((user) => {
+      this.currentUser = user as UserModel;
+    });
   }
 
   openDialog():void {
