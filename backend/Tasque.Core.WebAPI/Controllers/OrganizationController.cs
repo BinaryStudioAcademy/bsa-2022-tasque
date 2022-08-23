@@ -46,8 +46,6 @@ namespace Tasque.Core.WebAPI.Controllers
         [HttpPut]
         public async virtual Task<IActionResult> UpdateOrganization([FromBody] OrganizationDto organization)
         {
-            var users = await _service.GetOrganizationUsers(1);
-
             var organizations = await _service.EditOrganization(organization);
 
             if (organizations is not null)
@@ -57,8 +55,25 @@ namespace Tasque.Core.WebAPI.Controllers
             else
             {
                 return NotFound("Organization not found");
-            }
-            
+            }           
+        }
+
+        [Route("users/add")]
+        [HttpPost]
+        public async virtual Task<IActionResult> AddUserToOrganization([FromBody] OrganizationDto organization, [FromBody] UserDto user)
+        {
+            await _service.AddUser(organization, user);
+
+            return Ok();
+        }
+
+        [Route("users/del")]
+        [HttpPost]
+        public async virtual Task<IActionResult> DeleteUserInOrganization([FromBody] OrganizationDto organization, [FromBody] UserDto user)
+        {
+             await _service.DeleteUser(organization, user);
+
+            return NoContent();
         }
     }
 }

@@ -69,6 +69,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
     users: this.user,
     hasRoles: true,
   };
+
   ngOnInit(): void {
     this.organizationName = this.organization.name;
     this.sidebarName += this.organization.id;
@@ -97,7 +98,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
 
   public clearForm(): void {
     this.editOrganization.reset();
-    this.sideBarService.toggle('');
+    this.sideBarService.toggle(this.sidebarName);
   }
 
   public titleContent(event: Event): string {

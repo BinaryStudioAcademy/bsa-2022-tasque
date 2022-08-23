@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.DAL;
+using Task = System.Threading.Tasks.Task;
 
 namespace Tasque.Core.BLL.Services
 {
@@ -54,6 +55,30 @@ namespace Tasque.Core.BLL.Services
             var users = organizationEntity.Users;
 
             return _mapper.Map<IEnumerable<UserDto>>(users);
+        }
+
+        public async Task AddUser(OrganizationDto organizationDto, UserDto userDto)
+        {
+            var organizationEntity = await _db.Organizations.FirstOrDefaultAsync(o => o.Id == organizationDto.Id)
+               ?? throw new ValidationException("Organization not found");
+
+            var user = _mapper.Map<User>(userDto);
+
+            organizationEntity.Users.Add(user);
+
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task DeleteUser(OrganizationDto organizationDto, UserDto userDto)
+        {
+            var organizationEntity = await _db.Organizations.FirstOrDefaultAsync(o => o.Id == organizationDto.Id)
+               ?? throw new ValidationException("Organization not found");
+
+            var user = _mapper.Map<User>(userDto);
+
+            organizationEntity.Users.Remove(user);
+
+            await _db.SaveChangesAsync();
         }
 
     }
