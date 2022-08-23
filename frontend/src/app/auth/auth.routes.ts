@@ -6,25 +6,29 @@ import { ConfirmEmailPageComponent } from './components/confirm-email-page/confi
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { RegisterPageComponent } from './components/register-page/register-page.component';
 import { RestorePageComponent } from './components/restore-page/restore-page.component';
+import { LoginGuard } from './guards/login.guard';
 
 export const AuthRoutes: Routes = [
   {
     path: 'auth',
     component: AuthPageComponent,
     children: [
-      { 
-        path: 'login', 
+      {
+        path: 'login',
         component: LoginPageComponent,
+        canActivate: [LoginGuard]
       },
       {
         path: 'register',
         component: RegisterPageComponent,
         canDeactivate: [RegisterGuard],
+        canActivate: [LoginGuard],
       },
       {
         path: 'restore',
         component: RestorePageComponent,
         canDeactivate: [RestoreGuard],
+        canActivate: [LoginGuard],
       },
       { path: 'confirm', component: ConfirmEmailPageComponent },
     ],

@@ -9,17 +9,23 @@ import { PageWithSidebarComponent } from './components/page-with-sidebar/page-wi
 import { TasqueBoardComponent } from './components/tasque-board/tasque-board.component';
 import { TasqueTeamComponent } from './components/tasque-team/tasque-team.component';
 import { TasqueProjectSettingsComponent } from './components/tasque-project-settings/tasque-project-settings.component';
+import { AuthGuard } from './auth/guards/auth.guard';
 
 const routes: Routes = [
   ...AuthRoutes,
-  { path: '', component: PageWithoutSidebarComponent,
+  {
+    path: '', component: PageWithoutSidebarComponent,
+    canActivate: [AuthGuard],
     children: [
+      { path: '', redirectTo: 'organizations', pathMatch: 'full' },
       { path: 'organizations', component: OrganizationListComponent },
       { path: 'projects', component: ProjectListComponent, },
       ...UserRoutes,
     ]
   },
-  { path: 'project', component: PageWithSidebarComponent,
+  {
+    path: 'project', component: PageWithSidebarComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: 'board', component: TasqueBoardComponent },
       { path: 'team', component: TasqueTeamComponent },
