@@ -41,6 +41,6 @@ namespace Tasque.Core.BLL.Services
     {
         internal string FileName { get; }
         private AssemblyResource(string file) => FileName = file;
-        public static AssemblyResource ConfirmEmailMessage => new("ConfirmEmailMessage.html");
+        public static AssemblyResource ResetPasswordMessage => new("ResetPasswordMessage.html");
     }
 }
