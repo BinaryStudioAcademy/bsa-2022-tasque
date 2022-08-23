@@ -1,11 +1,27 @@
-app-button
+@import 'src/colors.sass'
+
+*
+    font-family: 'Nunito', sans-serif
+    font-style: normal
+
+app-button 
     margin: 20px
 
-mat-dialog-content
-    text-align: center
+.mat-dialog-title
+    margin: 0
 
 h2
     text-align: center
 
-mat-dialog-actions
-    justify-content: center
+.button-container
+    display: flex
+    gap: 15px
+
+tasque-button
+    ::ng-deep button
+        width: 80px
+
+.confirmation-dialog-container
+    display: flex
+    flex-direction: column
+    gap: 15px
