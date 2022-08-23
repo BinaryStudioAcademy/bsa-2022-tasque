@@ -81,6 +81,7 @@ import { AvatarComponent } from './components/tasque-avatar/avatar.component';
     HeaderComponent,
     TasqueTeamSelectComponent,
     TaskCreationComponent,
+    AvatarComponent
   ],
   providers: [SideBarService],
 })
