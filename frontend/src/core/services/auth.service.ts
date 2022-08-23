@@ -50,4 +50,8 @@ export class AuthService {
   setAuthToken(token: AccessToken): void {
     localStorage.setItem(LocalStorageKeys.token, token.accessToken);
   }
+
+  areTokensExist(): boolean {
+    return localStorage.getItem('token') !== null;
+  }
 }
