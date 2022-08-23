@@ -120,6 +120,7 @@ namespace Tasque.Core.BLL.Services.Auth
             return token.Kind switch
             {
                 TokenKind.PasswordReset => await AssemblyResourceService.GetResource(AssemblyResource.ResetPasswordMessage),
+                TokenKind.EmailConfirmation => await AssemblyResourceService.GetResource(AssemblyResource.ConfirmEmailMessage),
                 _ => ""
             };
         }
