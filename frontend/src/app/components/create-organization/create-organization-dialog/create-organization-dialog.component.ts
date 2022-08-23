@@ -24,7 +24,7 @@ export class CreateOrganizationDialogComponent implements OnInit {
   public inputType = 'text';
   public inputLabel = 'Organization name';
 
-  public isSucced:boolean;
+  public isSuccessful:boolean;
 
   public unsubscribe$ = new Subject<void>();
 
@@ -46,12 +46,12 @@ export class CreateOrganizationDialogComponent implements OnInit {
   createOrganization(): void {
     if(!this.createOrganizationForm.valid) {
       this.createOrganizationForm.markAllAsTouched();
-      this.isSucced = false;
+      this.isSuccessful = false;
       this.notificationService.error('Something go wrong');
       return;
     }
 
-    this.isSucced = true;
+    this.isSuccessful = true;
 
     const organization: NewOrganizationModel = {
       name: this.createOrganizationForm.value,
