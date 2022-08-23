@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Azure.Cosmos;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SendGrid.Extensions.DependencyInjection;
 using System.Reflection;
 using System.Text;
 using Tasque.Core.BLL.Helpers;
+using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.BLL.JWT;
 using Tasque.Core.BLL.MappingProfiles;
 using Tasque.Core.BLL.Options;
@@ -18,7 +20,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
 {
     public static class AppConfigurationExtension
     {
-        public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
         {
             var secretKey = configuration["JwtIssuerOptions:Key"];
             var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
@@ -52,6 +54,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                         }
                     };
                 });
+
+            return services;
         }
 
         public static void ConfigureMapper(this IServiceCollection services)
@@ -60,6 +64,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             {
                 cfg.AddProfile<UserProfile>();
                 cfg.AddProfile<OrganizationProfile>();
+                cfg.AddProfile<TaskProfile>();
             },
             Assembly.GetExecutingAssembly());
         }
@@ -129,7 +134,11 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             configuration.GetSection("JwtIssuerOptions").Bind(jwtIssuerOptions);
 
             services.AddSingleton(jwtIssuerOptions);
-            services.ConfigureJwt(configuration);
+
+            services
+                .ConfigureJwt(configuration)
+                .ConfigureAzureCosmosDb(configuration);
+
             services.AddScoped<JwtFactory>();
             services.ConfigureS3Services(configuration);
             services.AddMvc();
@@ -144,7 +153,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<IEmailService, SendGridService>()
                 .AddScoped<OrganizationService>()
                 .AddScoped<UserService>()
-                .AddScoped<FileUploadService>();
+                .AddScoped<FileUploadService>()
+                .AddScoped<ITaskService, TaskService>();
 
             services.RegisterIdentity();
         }
@@ -182,6 +192,18 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
 
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tasque.Core.WebApi", Version = "v1" });
             });
+        }
+
+        public static IServiceCollection ConfigureAzureCosmosDb(this IServiceCollection services, IConfiguration configuration)
+        {
+            var cosmosOptions = new CosmosDbOptions();
+            configuration.GetSection(nameof(CosmosDbOptions)).Bind(cosmosOptions);
+
+            var client = new CosmosClient(cosmosOptions.Account, cosmosOptions.Key);
+            var cosmosService = new CosmosTaskService(client, cosmosOptions.DatabaseName, cosmosOptions.ContainerName);
+
+            services.AddSingleton<ICosmosTaskService>(cosmosService);
+            return services;
         }
     }
 }
