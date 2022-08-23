@@ -82,7 +82,8 @@ namespace Tasque.Core.BLL.Services.Auth
             Dictionary<string, string> args = new()
             {
                 { "appLink", host },
-                { "logoLink", "http://localhost:9700/thumbnail_1080p.png" },
+                // FIXME: Host thumbnail somewhere and provide link in options
+                // { "logoLink", "" },
                 { "username", token.User.Name },
                 { "email", token.User.Email },
                 { "link", $"{link}?key={key}" }
