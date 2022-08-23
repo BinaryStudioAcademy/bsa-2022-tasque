@@ -10,6 +10,7 @@ public class Project : BaseEntity
         UserRoles = new List<UserProjectRole>();
     }
     public string Name { get; set; } = null!;
+    public string Key { get; set; } = null!;
 
     public int AuthorId { get; set; }
     public User Author { get; set; } = null!;
