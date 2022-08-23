@@ -6,8 +6,9 @@ using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Models.Email;
 using Tasque.Core.DAL;
+using Tasque.Core.Identity.Options;
 
-namespace Tasque.Core.BLL.Services.Auth
+namespace Tasque.Core.Identity.Services
 {
     public class ConfirmationTokenService
     {
@@ -16,8 +17,8 @@ namespace Tasque.Core.BLL.Services.Auth
         private EmailConfirmationOptions _emailOptions;
 
         public ConfirmationTokenService(
-            DataContext context, 
-            IEmailService emailService, 
+            DataContext context,
+            IEmailService emailService,
             IOptions<EmailConfirmationOptions> emailOptions)
         {
             _context = context;
@@ -77,7 +78,7 @@ namespace Tasque.Core.BLL.Services.Auth
             string endpoint;
             var host = _emailOptions.Host;
             var key = token.Token;
-            
+
             switch (token.Kind)
             {
                 case TokenKind.EmailConfirmation:

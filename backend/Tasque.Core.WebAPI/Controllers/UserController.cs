@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tasque.Core.BLL.Exeptions;
-using Tasque.Core.BLL.Helpers;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO;
+using Tasque.Core.Identity.Exeptions;
+using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers
 {

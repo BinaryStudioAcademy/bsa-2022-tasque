@@ -1,4 +1,4 @@
-﻿namespace Tasque.Core.BLL.Exeptions
+﻿namespace Tasque.Core.Identity.Exeptions
 {
 
     [Serializable]
