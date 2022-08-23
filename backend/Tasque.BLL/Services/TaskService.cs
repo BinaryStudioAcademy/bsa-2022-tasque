@@ -80,14 +80,20 @@ namespace Tasque.Core.BLL.Services
             return JoinTaskAttributesWithDto(task, attributes.CustomFields);
         }
 
-        public async Task<TaskDto> UpdateTask(TaskDto model)
+        public async Task<TaskDto> UpdateTask(UpdateTaskModel model)
         {
             var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == model.Id);
 
             if (task == null)
                 throw new NotFoundException(nameof(Common.Entities.Task));
 
-            var customAttributes = await _cosmosTaskService.UpdateTask(_mapper.Map<TaskCosmosModel>(model.CustomFields));
+            var cosmosModel = new TaskCosmosModel()
+            {
+                Id = task.Id.ToString(),
+                CustomFields = model.CustomFields,
+            };
+
+            var customAttributes = await _cosmosTaskService.UpdateTask(cosmosModel);
 
             task.Labels = model.Labels;
             task.SprintId = model.SprintId;

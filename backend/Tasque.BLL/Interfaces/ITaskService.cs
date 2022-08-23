@@ -16,7 +16,7 @@ namespace Tasque.Core.BLL.Interfaces
 
         Task<TaskDto> GetTaskById(int id);
 
-        Task<TaskDto> UpdateTask(TaskDto model);
+        Task<TaskDto> UpdateTask(UpdateTaskModel model);
 
         Task DeleteTask(int id);
     }

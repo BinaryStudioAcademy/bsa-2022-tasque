@@ -39,7 +39,7 @@ namespace Tasque.Core.WebAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] TaskDto model)
+        public async Task<IActionResult> UpdateTask([FromBody] UpdateTaskModel model)
         {
             return Ok(await _taskService.UpdateTask(model));
         }
