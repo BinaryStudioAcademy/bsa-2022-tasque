@@ -23,6 +23,7 @@ import { TaskCreationComponent } from 'src/shared/components/tasque-task-creatio
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { TasqueSidebarComponent } from './components/tasque-sidebar/tasque-sidebar.component';
 import { TasqueSideBarModalComponent } from './components/tasque-sidebar/tasque-sidebar-modal/sidebar-modal.component';
+import { AvatarComponent } from './components/tasque-avatar/avatar.component';
 
 @NgModule({
   imports: [
@@ -53,6 +54,7 @@ import { TasqueSideBarModalComponent } from './components/tasque-sidebar/tasque-
     TaskCreationComponent,
     TasqueSidebarComponent,
     TasqueSideBarModalComponent,
+    AvatarComponent
   ],
   exports: [
     CommonModule,
