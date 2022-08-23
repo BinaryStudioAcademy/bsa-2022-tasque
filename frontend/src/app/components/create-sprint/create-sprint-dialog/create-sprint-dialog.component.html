@@ -1,1 +1,76 @@
-<p>create-sprint-dialog works!</p>
+<form #sprintForm="ngForm" class="create-sprint-dialog" (ngSubmit)="onSubmit()">
+    <mat-dialog-content class="dialog-content">
+      <h3>
+        Start Sprint
+        <span class="dialog-info">You can change these details anytime in your project settings.</span>
+      </h3>
+      <div class="tasque-input">
+        <tasque-input
+          [class]="this.inputClass"
+          id="sprintName"
+          placeholder="Sprint name"
+          label="Name"
+          [(ngModel)]="data.name"
+          name="fieldName" ngDefaultControl
+          #sprintName required>
+        </tasque-input>
+      </div>
+      <div class="tasque-input">
+        <tasque-dropdown
+          [class]="this.inputClass"
+          id="sprintStartAt"
+          label="Duration"          
+          name="fieldStart" ngDefaultControl
+          #sprintStartAt>
+        </tasque-dropdown>
+      </div>
+      <div class="tasque-input">
+        <tasque-input
+          [class]="this.inputClass"
+          id="sprintStartAt"
+          label="Start date"
+          type="datetime-local"
+          [(ngModel)]="data.startAt"
+          name="fieldStart" ngDefaultControl
+          #sprintStartAt>
+        </tasque-input>
+      </div>
+      <div class="tasque-input">
+        <tasque-input
+          [class]="this.inputClass"
+          id="sprintEndAt"
+          label="End date"
+          type="datetime-local"
+          [(ngModel)]="data.endAt"
+          name="fieldEnd" ngDefaultControl
+          #sprintEndAt>
+        </tasque-input>
+      </div>
+      <div class="tasque-input">
+        <label>Description</label>
+        <textarea
+          class="input-text-area"
+          id="sprintDescription"
+          label="Description"
+          [(ngModel)]="data.description"
+          name="fieldDescription" ngDefaultControl
+          #sprintDescription>
+        </textarea>
+      </div>
+    </mat-dialog-content>    
+    <mat-dialog-actions class="dialog-options" align="end">
+      <tasque-button
+        [mat-dialog-close]="false"
+        [text]="this.cancelBtnName"
+        [class]="this.cancelBtnClass">
+      </tasque-button>
+      <tasque-button
+        [mat-dialog-close]="true"
+        type="submit"
+        [text]="this.createBtnName"
+        [class]="this.createBtnClass + (sprintForm.invalid ? ' disabled' : '')"
+        (btnClick)="onSubmit()"
+      >  
+      </tasque-button>
+    </mat-dialog-actions>
+  </form>
