@@ -7,6 +7,7 @@ import { LocalStorageKeys } from 'src/entity-models/local-storage-keys';
 import { PasswordChangesDTO } from '../../dto/password-changes-dto';
 import { ProfileChangesDTO } from '../../dto/profile-changes-dto';
 import { UserService } from '../../services/user.service';
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-user-profile',
@@ -33,6 +34,7 @@ export class UserProfileComponent implements OnInit {
   public localStorageKeys = LocalStorageKeys;
   private validationConstants = ValidationConstants;
   public isProfileChanged = false;
+  public pencilIcon = faPencil;
 
   constructor(private notificationService: NotificationService, private userService: UserService) {
     
@@ -177,16 +179,6 @@ export class UserProfileComponent implements OnInit {
   public checkChanged(): void {
     this.isProfileChanged = this.profileChanges.avatarURL !=  this.originalUser.avatarURL ||
       this.profileChanges.name !=  this.originalUser.name;
-  }
-
-  public deleteAvatar(fileInput: HTMLInputElement): void {    
-    if (this.profileChanges.avatarURL != undefined && this.profileChanges.avatarURL != null)
-    {
-      fileInput.value = '';
-      this.profileChanges.avatarURL = undefined;
-      this.checkChanged();
-      this.notificationService.success('Deleted successfully');
-    }    
   }
 
 }
