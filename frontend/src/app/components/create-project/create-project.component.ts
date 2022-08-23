@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserModel } from '../../../core/models/user/user-model';
 import { OrganizationModel } from '../../../core/models/organization/organization-model';
 import { NewProjectCredentialsModel } from '../../../core/models/project/new-project-credentials.model';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Component({
   selector: 'app-create-project',
@@ -12,11 +13,7 @@ import { NewProjectCredentialsModel } from '../../../core/models/project/new-pro
 })
 export class CreateProjectComponent implements OnInit {
 
-  public currentUser: UserModel = {
-    name: 'Login1',
-    email: 'testlogin@gmail.com',
-    id: 1,
-  };
+  public currentUser: UserModel;
   public currentOrganization: OrganizationModel = {
     id: 1,
     name: 'Organization1',
@@ -27,11 +24,16 @@ export class CreateProjectComponent implements OnInit {
 
   public btnText = 'Create project';
   public btnClass = 'mini';
+
   constructor(
-    public matDialog: MatDialog
+    public matDialog: MatDialog,
+    public currentUserService: GetCurrentUserService,
   ) { }
 
   ngOnInit(): void {
+    this.currentUserService.currentUser.subscribe((user) => {
+      this.currentUser = user as UserModel;
+    })
   }
 
   openDialog(): void {
