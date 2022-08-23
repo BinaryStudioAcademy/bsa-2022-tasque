@@ -65,7 +65,7 @@ export class RestorePageComponent implements OnInit, OnDestroy {
   get passwordRepeatErrorMessage(): string {
     const ctrl = this.passwordRepeatControl;
     if (ctrl.errors?.['required'] && ctrl.touched) {
-      return 'Password is required';
+      return 'Repeat password is required';
     }
     if (ctrl.errors?.['pattern']) {
       return 'Passwords do not match';
