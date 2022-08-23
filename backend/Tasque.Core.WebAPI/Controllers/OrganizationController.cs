@@ -15,9 +15,23 @@ namespace Tasque.Core.WebAPI.Controllers
 
         [Route("getUserOrganizationsById/{id}")]
         [HttpGet]
-        public async virtual Task<IActionResult> GetUserOrganizationsById(int userId)
+        public async virtual Task<IActionResult> GetUserOrganizationsById(int id)
         {
-            var organizations = await _service.GetUserOrganizations(userId);
+            var organizations = await _service.GetUserOrganizations(id);
+            if (organizations is not null)
+            {
+                return Ok(organizations);
+            }
+            else
+            {
+                return BadRequest("Entities not found");
+            }
+        }
+
+        [HttpPut]
+        public async virtual Task<IActionResult> UpdateOrganization([FromBody] OrganizationDto organization)
+        {
+            var organizations = await _service.EditOrganization(organization);
             if (organizations is not null)
             {
                 return Ok(organizations);

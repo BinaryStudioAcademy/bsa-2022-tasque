@@ -37,6 +37,7 @@ export class OrganizationService {
   getUserOrganizations(
     userId: number,
   ): Observable<HttpResponse<OrganizationModel[]>> {
+    console.log(userId);
     return this.httpService.getFullRequest<OrganizationModel[]>(
       this.routePrefix + `/getUserOrganizationsById/${userId}`,
     );

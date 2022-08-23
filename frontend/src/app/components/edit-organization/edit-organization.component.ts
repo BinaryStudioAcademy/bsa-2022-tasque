@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { NotificationService } from 'src/core/services/notification.service';
+import { OrganizationService } from 'src/core/services/organization.service';
 import { SideBarService } from 'src/core/services/sidebar.service';
 import {
   BoardType,
@@ -23,6 +25,7 @@ export class EditOrganizationComponent implements OnInit {
   public btnText = 'Create project';
   public btnClass = 'mini';
   public sidebarName = 'editOrganization';
+  public unsubscribe$ = new Subject<void>();
 
   get organizationNameErrorMessage(): string {
     const ctrl = this.organizationNameControl;
@@ -36,6 +39,7 @@ export class EditOrganizationComponent implements OnInit {
   constructor(
     private notification: NotificationService,
     private sideBarService: SideBarService,
+    private organizationService: OrganizationService,
   ) {}
 
   public user: IUserCard[] = [
@@ -68,13 +72,16 @@ export class EditOrganizationComponent implements OnInit {
   }
 
   public submitForm(): void {
-    if (!this.editOrganization.valid) {
-      this.notification.error('Invalid values');
-      return;
-    }
-
     this.organization.name = 'teeeeeeeest';
     console.log(this.board);
+
+    this.organizationService
+      .editOrganization(this.organization)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+        }
+      });
   }
 
   public clearForm(): void {
