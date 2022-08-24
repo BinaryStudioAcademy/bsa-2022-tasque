@@ -6,24 +6,16 @@ import { OrganizationService } from 'src/core/services/organization.service';
 import { UserModel } from 'src/core/models/user/user-model';
 import { CreateOrganizationDialogComponent } from '../create-organization/create-organization-dialog/create-organization-dialog.component';
 import { takeUntil } from 'rxjs/operators';
-import {
-  faMagnifyingGlass,
-  IconDefinition,
-} from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Component({
   selector: 'app-organization-list',
   templateUrl: './organization-list.component.html',
-  styleUrls: ['./organization-list.component.sass'],
+  styleUrls: ['./organization-list.component.sass']
 })
 export class OrganizationListComponent implements OnInit {
-  @Input() public currentUser: UserModel = {
-    id: 1,
-    name: 'Test',
-    email: 'email@email.email',
-    avatar: 'null',
-  };
+  @Input() public currentUser: UserModel;
 
   public items: OrganizationModel[] = [
     {
@@ -34,14 +26,14 @@ export class OrganizationListComponent implements OnInit {
       updatedAt: new Date(),
     },
     {
-      id: 2,
+      id: 1,
       name: 'Organization 2',
       authorId: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
-      id: 3,
+      id: 1,
       name: 'Organization 3',
       authorId: 2,
       createdAt: new Date(),
@@ -88,7 +80,7 @@ export class OrganizationListComponent implements OnInit {
       authorId: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
-    },
+    }
   ];
 
   public inputSearch = '';
@@ -99,22 +91,21 @@ export class OrganizationListComponent implements OnInit {
   constructor(
     private currentUserService: GetCurrentUserService,
     private matDialog: MatDialog,
-    private organizationService: OrganizationService,
-  ) {}
+    private organizationService: OrganizationService) { }
 
   ngOnInit(): void {
     this.currentUserService.currentUser.subscribe((user) => {
       this.currentUser = user as UserModel;
     });
-    this.organizationService
-      .getUserOrganizations(this.currentUser.id)
+    this.organizationService.getUserOrganizations(this.currentUser.id)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((result) => {
-        if (result.body) {
-          this.items = result.body;
-          this.itemsShow = this.items;
-        }
-      });
+      .subscribe(
+        (result) => {
+          if (result.body) {
+            this.items = result.body;
+            this.itemsShow = this.items;
+          }
+        });
   }
 
   filterItems(): void {
@@ -122,7 +113,8 @@ export class OrganizationListComponent implements OnInit {
       this.itemsShow = this.items.filter((item) => {
         return item.name.toLowerCase().includes(this.inputSearch.toLowerCase());
       });
-    } else {
+    }
+    else {
       this.itemsShow = this.items;
     }
   }
