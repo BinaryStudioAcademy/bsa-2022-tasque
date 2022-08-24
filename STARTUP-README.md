@@ -31,13 +31,13 @@ Go to [Backend path](./frontend)
 
 - Update database if it is not updated or invalid
 
-```bash
+```console
 dotnet ef database update --startup-project Tasque.Core.WebAPI --project Tasque.DAL
 ```
 
 - Run project using _vs studio_ or _console_
 
-```bash
+```console
 dotnet run --project Tasque.Core.WebAPI/Tasque.Core.WebAPI.csproj
 ```
 
@@ -47,13 +47,13 @@ Go to [Frontend path](./frontend)
 
 - Install or update all node modules
 
-```bash
+```console
 npm install
 ```
 
 - Run project using this command in console
 
-```bash
+```console
 ng serve
 ```
 
