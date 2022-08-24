@@ -19,7 +19,7 @@ export class CreateSprintComponent implements OnInit {
     startAt: new Date(),
     endAt: new Date('2022-08-24T10:20'),
     projectId: 1,
-    description: ""
+    description: ''
   };
 
   public btnText = 'Start sprint';
@@ -39,7 +39,8 @@ export class CreateSprintComponent implements OnInit {
       description: this.currentSprint.description,
       startAt: this.currentSprint.startAt.toISOString().slice(0, 16),
       endAt: this.currentSprint.endAt.toISOString().slice(0, 16),
-      projectId: this.currentSprint.projectId
+      projectId: this.currentSprint.projectId,
+      isNew: true
     } as NewSprintModel;
     const dialog = this.matDialog.open(CreateSprintDialogComponent, { data: newSprint });
     dialog.afterClosed().subscribe();

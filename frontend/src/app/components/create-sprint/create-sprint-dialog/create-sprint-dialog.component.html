@@ -1,60 +1,63 @@
-<form #sprintForm="ngForm" class="create-sprint-dialog" (ngSubmit)="onSubmit()">
+<form [formGroup]="sprintForm" class="create-sprint-dialog" (ngSubmit)="onSubmit()">
     <mat-dialog-content class="dialog-content">
       <h3>
         Start Sprint
-        <span class="dialog-info">You can change these details anytime in your project settings.</span>
+        <span *ngIf="data.isNew" class="dialog-info">Issues will be added in this sprint.</span>
       </h3>
       <div class="tasque-input">
         <tasque-input
           [class]="this.inputClass"
-          id="sprintName"
           placeholder="Sprint name"
+          formControlName="sprintName"
           label="Name"
           [(ngModel)]="data.name"
           name="fieldName" ngDefaultControl
-          #sprintName required>
+          [invalid]="sprintName.invalid"
+          [errorMessage]="requiredErrorMessage">
         </tasque-input>
       </div>
       <div class="tasque-input">
         <tasque-dropdown
           [class]="this.inputClass"
-          id="sprintStartAt"
-          label="Duration"          
-          name="fieldStart" ngDefaultControl
-          #sprintStartAt>
+          [options]="periods"
+          formControlName="sprintDuration"
+          label="Duration"
+          name="fieldDuration" ngDefaultControl
+          [invalid]="sprintDuration.invalid"
+          [errorMessage]="requiredErrorMessage">
         </tasque-dropdown>
       </div>
       <div class="tasque-input">
         <tasque-input
           [class]="this.inputClass"
-          id="sprintStartAt"
+          formControlName="sprintStartAt"
           label="Start date"
           type="datetime-local"
           [(ngModel)]="data.startAt"
           name="fieldStart" ngDefaultControl
-          #sprintStartAt>
+          [invalid]="sprintStartAt.invalid"
+          [errorMessage]="requiredErrorMessage">
         </tasque-input>
       </div>
       <div class="tasque-input">
         <tasque-input
           [class]="this.inputClass"
-          id="sprintEndAt"
+          formControlName="sprintEndAt"
           label="End date"
           type="datetime-local"
           [(ngModel)]="data.endAt"
-          name="fieldEnd" ngDefaultControl
-          #sprintEndAt>
+          [invalid]="sprintEndAt.invalid"
+          [errorMessage]="requiredErrorMessage">
         </tasque-input>
       </div>
       <div class="tasque-input">
         <label>Description</label>
         <textarea
           class="input-text-area"
-          id="sprintDescription"
+          formControlName="sprintDescription"
           label="Description"
           [(ngModel)]="data.description"
-          name="fieldDescription" ngDefaultControl
-          #sprintDescription>
+          name="fieldDescription" ngDefaultControl>
         </textarea>
       </div>
     </mat-dialog-content>    

@@ -24,6 +24,7 @@ tasque-button
   font-style: normal
   font-weight: 400
   font-size: 14px
+  margin-bottom: 10px
 
 .tasque-input
   margin-bottom: 1em
@@ -53,3 +54,41 @@ tasque-button
   line-height: 16px
   display: flex
   align-items: center
+
+tasque-dropdown.input
+    ::ng-deep .selected-wrapper
+        height: 45px
+        border-radius: 10px
+        width: 400px
+        border: none
+        line-height: 19px
+        display: flex
+        align-items: center
+        background: colorscheme(gray-200)
+        &:focus
+            outline: none
+            border: 2px solid colorscheme(violet-200)
+            caret-color: colorscheme(violet-200)
+
+tasque-dropdown.input
+    ::ng-deep .options-container
+        max-height: 145px
+        width: 400px
+        border: none
+        line-height: 19px        
+        background: colorscheme(gray-200)
+        &:focus
+            outline: none
+            border: 2px solid colorscheme(violet-200)
+            caret-color: colorscheme(violet-200)
+
+tasque-dropdown.input
+    ::ng-deep .color-square
+        display: none
+
+.mat-dialog-content
+    -ms-overflow-style: none
+    scrollbar-width: none
+    
+.mat-dialog-content::-webkit-scrollbar
+          display: none

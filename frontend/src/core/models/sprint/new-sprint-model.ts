@@ -3,5 +3,6 @@
   description?: string,  
   startAt: string,
   endAt: string,
-  projectId: number
+  projectId: number,
+  isNew: boolean
 }
