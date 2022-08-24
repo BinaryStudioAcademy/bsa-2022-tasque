@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SendGrid.Extensions.DependencyInjection;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 using Tasque.Core.BLL.Helpers;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.BLL.JWT;
@@ -131,7 +133,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddSwagger();
 
             var jwtIssuerOptions = new JwtIssuerOptions();
-            configuration.GetSection("JwtIssuerOptions").Bind(jwtIssuerOptions);
+            configuration.GetSection(nameof(JwtIssuerOptions)).Bind(jwtIssuerOptions);
 
             services.AddSingleton(jwtIssuerOptions);
 
@@ -142,7 +144,12 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddScoped<JwtFactory>();
             services.ConfigureS3Services(configuration);
             services.AddMvc();
-            services.AddControllers();
+
+            var jsonOptions = new JsonOptions();
+
+            services.AddControllers().AddJsonOptions(options =>
+            options.JsonSerializerOptions.UnknownTypeHandling = JsonUnknownTypeHandling.JsonElement);
+
             services.AddCors();
 
             services

@@ -14,6 +14,6 @@ namespace Tasque.Core.Common.DTO.PartialModels
         public string Id { get; set; } = null!;
 
         [JsonProperty(PropertyName = CosmosDbKeys.CustomFieldsKey)]
-        public CosmosTaskFields? CustomFields { get; set; }
+        public List<CosmosTaskFields>? CustomFields { get; set; }
     }
 }

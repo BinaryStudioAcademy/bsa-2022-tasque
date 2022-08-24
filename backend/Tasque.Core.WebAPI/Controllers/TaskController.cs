@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO;
-using Tasque.Core.Common.DTO.PartialModels;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
@@ -32,20 +31,20 @@ namespace Tasque.Core.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTask([FromBody] CreateTaskModel model)
+        public async Task<IActionResult> CreateTask([FromBody] TaskDto model)
         {
             var task = await _taskService.CreateTask(model);
             return Created(task.ToString()?? "", task);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateTask([FromBody] UpdateTaskModel model)
+        public async Task<IActionResult> UpdateTask([FromBody] TaskDto model)
         {
             return Ok(await _taskService.UpdateTask(model));
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteTask(int id)
         {
             await _taskService.DeleteTask(id);
             return NoContent();

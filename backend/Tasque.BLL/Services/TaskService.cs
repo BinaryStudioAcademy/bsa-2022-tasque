@@ -1,9 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO;
@@ -31,7 +26,7 @@ namespace Tasque.Core.BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<TaskDto> CreateTask(CreateTaskModel model)
+        public async Task<TaskDto> CreateTask(TaskDto model)
         {
             var entity = _mapper.Map<Common.Entities.Task>(model);
             _dbContext.Add(entity);
@@ -40,12 +35,12 @@ namespace Tasque.Core.BLL.Services
             var cosmosModel= new TaskCosmosModel()
             {
                 Id = entity.Id.ToString(),
-                CustomFields = model.CustomFields,
+                CustomFields = model.CustomFields
             };
 
             var attributes = await _cosmosTaskService.CreateTask(cosmosModel);
 
-            return JoinTaskAttributesWithDto(_mapper.Map<TaskDto>(entity), attributes.CustomFields);
+            return JoinTaskAttributesWithDto(_mapper.Map<TaskDto>(entity), attributes);
         }
 
         public async Task DeleteTask(int id)
@@ -66,7 +61,7 @@ namespace Tasque.Core.BLL.Services
             var tasks = _mapper.Map<List<TaskDto>>(_dbContext.Tasks);
             var customFields = await _cosmosTaskService.GetAllTasks();
 
-            return tasks.Join(customFields, t => t.Id, ca => int.Parse(ca.Id), (t, ca) => JoinTaskAttributesWithDto(t, ca.CustomFields)).ToList();
+            return tasks.Join(customFields, t => t.Id, ca => int.Parse(ca.Id), (t, ca) => JoinTaskAttributesWithDto(t, ca)).ToList();
         }
 
         public async Task<TaskDto> GetTaskById(int id)
@@ -77,10 +72,10 @@ namespace Tasque.Core.BLL.Services
 
             var attributes = await _cosmosTaskService.GetTaskById(task.Id.ToString());
 
-            return JoinTaskAttributesWithDto(task, attributes.CustomFields);
+            return JoinTaskAttributesWithDto(task, attributes);
         }
 
-        public async Task<TaskDto> UpdateTask(UpdateTaskModel model)
+        public async Task<TaskDto> UpdateTask(TaskDto model)
         {
             var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == model.Id);
 
@@ -90,11 +85,14 @@ namespace Tasque.Core.BLL.Services
             var cosmosModel = new TaskCosmosModel()
             {
                 Id = task.Id.ToString(),
-                CustomFields = model.CustomFields,
+                CustomFields = model?.CustomFields,
             };
 
             var customAttributes = await _cosmosTaskService.UpdateTask(cosmosModel);
 
+            task.Name = model.Name;
+            task.Description = model.Description;
+            task.Summary = model.Summary;
             task.Labels = model.Labels;
             task.SprintId = model.SprintId;
             task.Attachments = model.Attachments;
@@ -105,34 +103,15 @@ namespace Tasque.Core.BLL.Services
 
             SaveChanges(task);
 
-            return JoinTaskAttributesWithDto(_mapper.Map<TaskDto>(task), customAttributes.CustomFields);
+            return JoinTaskAttributesWithDto(_mapper.Map<TaskDto>(task), customAttributes);
         }
 
-        private TaskDto JoinTaskAttributesWithDto(TaskDto task, CosmosTaskFields? attributes)
+        private TaskDto JoinTaskAttributesWithDto(TaskDto task, TaskCosmosModel? attributes)
         {
             if (attributes == null)
                 return task;
 
-            var customFields = new TaskCustomFields()
-            {
-                CustomDateFields = attributes.CustomDateFields,
-                CustomTextFields = attributes.CustomTextFields,
-                CustomParagraphFilds = attributes.CustomParagraphFilds,
-                CustomNumberFields = attributes.CustomNumberFields,
-
-                CustomCheckboxFields = attributes.CustomCheckboxFields,
-                CustomDropdownFields = attributes.CustomDropdownFields,
-                CustomDropdownDependenciesFields = attributes.CustomDropdownDependenciesFields,
-            };
-
-            var userFields = new List<UserDto>();
-            attributes?.CustomUserFields?.ForEach(i => userFields.Add(
-                _mapper.Map<UserDto>(
-                    _dbContext.Users.FirstOrDefault(u => u.Id == i))));
-
-            customFields.CustomUserFields = userFields;
-
-            task.CustomFields = customFields;
+            task.CustomFields = attributes?.CustomFields;
             return task;
         }
 

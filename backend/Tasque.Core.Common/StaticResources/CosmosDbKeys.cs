@@ -10,6 +10,6 @@ namespace Tasque.Core.Common.StaticResources
     {
         public const string IdKey = "id";
 
-        public const string CustomFieldsKey = "custom-fields";
+        public const string CustomFieldsKey = "customFields";
     }
 }
