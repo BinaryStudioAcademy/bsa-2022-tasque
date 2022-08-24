@@ -40,6 +40,45 @@ export class SelectUsersComponent implements OnInit {
           name,
         };
       });
+
+    // board should be passed as a parameter
+    // ================================
+    const boardName = prompt(
+      'Please, enter a board name (supported values - "WithRoles", "WithoutRoles")',
+    ) as string;
+    const getBoard = (): IBoard => {
+      switch (boardName) {
+        case 'WithRoles':
+          return {
+            id: 1,
+            type: BoardType.Organization,
+            hasRoles: true,
+            users: [],
+          };
+        case 'WithoutRoles':
+          return {
+            id: 1,
+            type: BoardType.Board,
+            hasRoles: false,
+            users: [],
+          };
+        default:
+          throw TypeError('Unknown name');
+      }
+    };
+    const board = getBoard();
+    const key = this.service.createKey(board);
+
+    if (localStorage.getItem(key)) {
+      this.board = JSON.parse(localStorage.getItem(key) as string);
+    } else {
+      this.board = board;
+    }
+    // ================================
+
+    if (!this.board) {
+      throw new TypeError('Board is required');
+    }
   }
 
   ngOnInit(): void {

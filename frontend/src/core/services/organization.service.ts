@@ -1,11 +1,10 @@
-import { HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OrganizationModel } from '../models/organization/organization-model';
 import { NewOrganizationModel } from '../models/organization/new-organization-model';
 import { HttpService } from './http.service';
 import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
-import { IUserCard } from 'src/shared/components/select-users/Models';
 
 @Injectable({
   providedIn: 'root',
@@ -65,7 +64,7 @@ export class OrganizationService {
     organizationId: number,
     user: ProfileChangesDTO,
   ): Observable<HttpResponse<ProfileChangesDTO>> {
-    return this.httpService.postRequest(
+    return this.httpService.postFullRequest(
       this.routePrefix + `/${organizationId}/users/add`,
       user,
     );
@@ -74,9 +73,9 @@ export class OrganizationService {
   delUser(
     organizationId: number,
     user: ProfileChangesDTO,
-  ): Observable<HttpResponse<OrganizationModel[]>> {
-    return this.httpService.postFullRequest<OrganizationModel[]>(
-      this.routePrefix + `/users/del/${organizationId}`,
+  ): Observable<HttpResponse<ProfileChangesDTO>> {
+    return this.httpService.postFullRequest(
+      this.routePrefix + `/${organizationId}/users/del`,
       user,
     );
   }

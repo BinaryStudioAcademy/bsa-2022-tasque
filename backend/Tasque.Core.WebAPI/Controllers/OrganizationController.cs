@@ -67,13 +67,13 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok();
         }
 
-        [Route("users/del")]
+        [Route("{organizationId}/users/del")]
         [HttpPost]
         public async virtual Task<IActionResult> DeleteUserInOrganization(int organizationId, [FromBody] UserDto user)
         {
              await _service.DeleteUser(organizationId, user);
 
-            return NoContent();
+            return Ok();
         }
     
     }

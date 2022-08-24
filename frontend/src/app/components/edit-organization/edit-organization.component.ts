@@ -7,11 +7,7 @@ import { NotificationService } from 'src/core/services/notification.service';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { SideBarService } from 'src/core/services/sidebar.service';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-import {
-  BoardType,
-  IBoard,
-  IUserCard,
-} from 'src/shared/components/select-users/Models';
+import { BoardType, IBoard } from 'src/shared/components/select-users/Models';
 import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
 
 @Component({
@@ -30,8 +26,6 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
   public sidebarName = 'editOrganization';
   public unsubscribe$ = new Subject<void>();
   public organizationName = '';
-
-  public users: ProfileChangesDTO[] = [];
 
   get organizationNameErrorMessage(): string {
     const ctrl = this.organizationNameControl;
@@ -56,25 +50,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
     ]);
   }
 
-  public user: IUserCard[] = [
-    {
-      email: 'test@email.com',
-      username: 'username 1',
-      profileURL: 'null',
-      avatarURL: 'https://www.w3schools.com/howto/img_avatar.png',
-      role: null,
-    },
-  ];
-
-  public board: IBoard = {
-    id: 1,
-    type: BoardType.Organization,
-    users: this.user,
-    hasRoles: true,
-  };
-
   ngOnInit(): void {
-    this.getUsers();
     this.organizationName = this.organization.name;
     this.sidebarName += this.organization.id;
 
@@ -89,8 +65,6 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
   }
 
   public submitForm(): void {
-    this.addUser();
-
     this.organization.name = this.organizationName;
 
     this.organizationService
@@ -112,6 +86,27 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
     return input.innerText;
   }
 
+  // Rework when the BoardService is implemented
+  // ================================
+  public board: IBoard = {
+    id: 1,
+    type: BoardType.Organization,
+    users: [
+      {
+        email: 'test@email.com',
+        username: 'username 1',
+        profileURL: 'null',
+        avatarURL: 'https://www.w3schools.com/howto/img_avatar.png',
+        role: null,
+      },
+    ],
+    hasRoles: true,
+  };
+
+  public users: ProfileChangesDTO[] = [
+    { id: 1, name: 'Test user', email: 'test@test.test', avatarURL: 'null' },
+  ];
+
   public getUsers(): void {
     this.organizationService
       .getOrganizationUsers(this.organization.id)
@@ -119,21 +114,32 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
       .subscribe((result) => {
         if (result.body) {
           this.users = result.body;
-          console.log(this.users);
         }
       });
   }
 
   public addUser(): void {
     this.organizationService
-      .addUser(this.organization.id, this.users[1])
+      .addUser(this.organization.id, this.users[0])
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
-        if (result.body) {
-          console.log(result.body);
+        if (result.status == 200) {
+          this.notification.success('The user is added to the organization');
         }
       });
   }
 
-  public delUser(): void {}
+  public delUser(): void {
+    this.organizationService
+      .delUser(this.organization.id, this.users[0])
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.status == 200) {
+          this.notification.success(
+            'The user has been removed from the organization',
+          );
+        }
+      });
+  }
+  // ================================
 }

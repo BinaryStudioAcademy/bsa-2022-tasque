@@ -18,7 +18,9 @@ namespace Tasque.Core.BLL.Services
 
         public async Task<IEnumerable<Organization>> GetUserOrganizations(int userId)
         {
+
             var organizations = await _db.Users
+                .Include(u => u.OwnedOrganization)
                 .Where(user => userId == user.Id)
                 .SelectMany(user => user.ParticipatedProjects)
                 .Union(_db.Users
@@ -29,6 +31,7 @@ namespace Tasque.Core.BLL.Services
                 .ToListAsync();
 
             return organizations;
+
         }
 
         public async Task<OrganizationDto> EditOrganization(OrganizationDto organization)
@@ -59,11 +62,16 @@ namespace Tasque.Core.BLL.Services
 
         public async Task AddUser(int organizationId, UserDto userDto)
         {
-            var organizationEntity = await _db.Organizations.FirstOrDefaultAsync(o => o.Id == organizationId)
+            var organizationEntity = await _db.Organizations
+                .Include(u => u.Users)
+                .FirstOrDefaultAsync(o => o.Id == organizationId)
                ?? throw new ValidationException("Organization not found");
 
             var userEntity = await _db.Users.FirstOrDefaultAsync(u => u.Id == userDto.Id)
                 ?? throw new ValidationException("User not found");
+
+            if (organizationEntity.Users.Contains(userEntity))
+                return;
 
             var user = _mapper.Map<User>(userEntity);
 
@@ -74,11 +82,16 @@ namespace Tasque.Core.BLL.Services
 
         public async Task DeleteUser(int organizationId, UserDto userDto)
         {
-            var organizationEntity = await _db.Organizations.FirstOrDefaultAsync(o => o.Id == organizationId)
+            var organizationEntity = await _db.Organizations
+                .Include(u => u.Users)
+                .FirstOrDefaultAsync(o => o.Id == organizationId)
                ?? throw new ValidationException("Organization not found");
 
             var userEntity = await _db.Users.FirstOrDefaultAsync(u => u.Id == userDto.Id)
                ?? throw new ValidationException("User not found");
+
+            if (!organizationEntity.Users.Contains(userEntity))
+                return;
 
             var user = _mapper.Map<User>(userEntity);
 
