@@ -17,6 +17,6 @@ export interface TaskModel {
   parentTaskId: number,
   createdAt: Date,
   updatedAt: Date,
-  deadLine: Date,
+  deadline: Date,
   finishedAt?: Date,
 }
