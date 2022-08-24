@@ -16,6 +16,10 @@
     display: flex
     align-items: center
 
+.task-creation-footer-button
+    display: flex
+    flex-direction: row
+
 .task-creation-body
     max-height: 100%
     flex-grow: 3
@@ -95,3 +99,11 @@ tasque-select-users
             padding-top: 20px
             text-align: left !important
             margin-bottom: 10px !important
+
+tasque-sidebar             
+    ::ng-deep
+        tasque-button
+        ::ng-deep
+            .openSidebar
+                margin: 10px
+                height: 35px

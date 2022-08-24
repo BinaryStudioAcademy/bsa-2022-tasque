@@ -2,7 +2,8 @@
   <a class="organization-name" href="#">{{ organization.name }}</a>
 
   <div class="buttons-container">
-    <tasque-button *ngIf="organization.authorId === currentUser.id" class="btn stroke" text="Edit"> </tasque-button>
+    <app-edit-organization *ngIf="organization.authorId === currentUser.id" class="btn stroke" [organization]="organization"></app-edit-organization>
+
     <tasque-button class="btn stroke" text="Open"> </tasque-button>
   </div>
 </div>

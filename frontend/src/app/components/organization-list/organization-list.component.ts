@@ -18,7 +18,12 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
   styleUrls: ['./organization-list.component.sass'],
 })
 export class OrganizationListComponent implements OnInit {
-  @Input() public currentUser: UserModel;
+  @Input() public currentUser: UserModel = {
+    id: 1,
+    name: 'Test',
+    email: 'email@email.email',
+    avatar: 'null',
+  };
 
   public items: OrganizationModel[] = [
     {
