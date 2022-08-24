@@ -23,6 +23,7 @@ import { TaskCreationComponent } from 'src/shared/components/tasque-task-creatio
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { TasqueSidebarComponent } from './components/tasque-sidebar/tasque-sidebar.component';
 import { TasqueSideBarModalComponent } from './components/tasque-sidebar/tasque-sidebar-modal/sidebar-modal.component';
+import { AvatarComponent } from './components/tasque-avatar/avatar.component';
 import { NgClickOutsideDirective } from 'ng-click-outside2';
 import { TaskEditingComponent } from './components/tasque-task-editing/task-editing.component';
 
@@ -57,6 +58,7 @@ import { TaskEditingComponent } from './components/tasque-task-editing/task-edit
     TasqueSidebarComponent,
     TasqueSideBarModalComponent,
     TaskEditingComponent,
+    AvatarComponent
   ],
   exports: [
     CommonModule,
@@ -86,6 +88,7 @@ import { TaskEditingComponent } from './components/tasque-task-editing/task-edit
     AngularEditorModule,
     NgClickOutsideDirective,
     TaskEditingComponent,
+    AvatarComponent
   ],
   providers: [SideBarService],
 })
