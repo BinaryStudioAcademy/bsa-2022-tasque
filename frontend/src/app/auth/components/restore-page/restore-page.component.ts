@@ -65,7 +65,7 @@ export class RestorePageComponent implements OnInit, OnDestroy {
   get passwordRepeatErrorMessage(): string {
     const ctrl = this.passwordRepeatControl;
     if (ctrl.errors?.['required'] && ctrl.touched) {
-      return 'Password is required';
+      return 'Repeat password is required';
     }
     if (ctrl.errors?.['pattern']) {
       return 'Passwords do not match';
@@ -81,13 +81,14 @@ export class RestorePageComponent implements OnInit, OnDestroy {
   ) {
     this.emailControl = new FormControl(this.email, [
       Validators.required,
+      Validators.email,
       Validators.pattern(ValidationConstants.emailRegex),
     ]);
     this.passwordControl = new FormControl('', [
       Validators.required,
       Validators.minLength(ValidationConstants.minLengthPassword),
     ]);
-    this.passwordRepeatControl = new FormControl('', [Validators.required]);
+    this.passwordRepeatControl = new FormControl(this.passwordControl?.value, [Validators.required]);
   }
 
   ngOnInit(): void {
@@ -154,6 +155,11 @@ export class RestorePageComponent implements OnInit, OnDestroy {
   }
 
   submitPassword(): void {
+
+    if(!this.resetForm.valid){
+      this.resetForm.markAllAsTouched();
+      return;
+    }
     const credentials = {
       password: this.passwordControl.value,
       token: this.token,
@@ -178,5 +184,19 @@ export class RestorePageComponent implements OnInit, OnDestroy {
           });
         }
       });
+  }
+
+  resetPasswordControl(): void {
+    this.passwordRepeatControl = new FormControl(
+      this.passwordRepeatControl.value,
+      [
+        Validators.required,
+        Validators.pattern(this.passwordControl.value as string),
+      ],
+    );
+    this.resetForm = new FormGroup({
+      passwordControl: this.passwordControl,
+      passwordRepeatControl: this.passwordRepeatControl,
+    });
   }
 }

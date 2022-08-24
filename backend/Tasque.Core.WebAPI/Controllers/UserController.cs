@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Tasque.Core.BLL.Exeptions;
+using Tasque.Core.BLL.Helpers;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO;
 
@@ -11,24 +13,18 @@ namespace Tasque.Core.WebAPI.Controllers
     public class UserController : ControllerBase
     {
         private UserService _service;
+        private readonly int _userId;
 
-        public UserController(UserService service)
+        public UserController(UserService service, CurrentUserParameters userParams)
         {
             _service = service;
-        }
-
-        [HttpGet("current")]
-        public async Task<IActionResult> GetCurrentUser()
-        {
-            var id = GetCurrentUserId();
-            var user = await _service.GetUserById(id);
-            return Ok(user);
+            _userId = int.Parse(userParams.Id?? throw new InvalidTokenException("Invalid access token"));
         }
 
         [HttpPut("edit")]
         public async Task<IActionResult> EditUserProfile([FromBody] UserDto dto)
         {
-            if(dto == null || dto.Id != GetCurrentUserId())
+            if(dto == null || dto.Id != _userId)
             {
                 return BadRequest("Could not save changes");
             }
@@ -39,7 +35,7 @@ namespace Tasque.Core.WebAPI.Controllers
         [HttpPut("password")]
         public async Task<IActionResult> EditPassword([FromBody] PasswordEditDto dto)
         {
-            if (dto == null || dto.Id != GetCurrentUserId())
+            if (dto == null || dto.Id != _userId)
             {
                 return BadRequest("Could not save changes");
             }
@@ -47,10 +43,11 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok(result);
         }
 
-        private int GetCurrentUserId()
+        [HttpGet("current")]
+        public async Task<IActionResult> GetCurrentUserFromToken()
         {
-            /* Just a stub. Should be implemented */
-            return 1;
+            return Ok(await _service.
+                    GetUserById(_userId));
         }
     }
 }

@@ -28,6 +28,8 @@ export class OrganizationsDropdownComponent implements OnInit {
     private storageService: StorageService) { }
 
   ngOnInit(): void {
+    if(this.storageService.currentOrganizationId === -1)
+      return;
     this.storageService.currentOrganizationId$.subscribe(
       (result) => {
         const searchedOrganization = this.availableOrganizations.find((x) => x.id === result);

@@ -1,6 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { UserModel } from 'src/core/models/user/user-model';
 import { HttpService } from 'src/core/services/http.service';
 import { PasswordChangesDTO } from '../dto/password-changes-dto';
 import { ProfileChangesDTO } from '../dto/profile-changes-dto';
@@ -14,7 +15,7 @@ export class UserService {
     private httpService: HttpService
   ) { }
 
-  getCurrentUser(): Observable<HttpResponse<ProfileChangesDTO>> {
+  getCurrentUser(): Observable<HttpResponse<UserModel>> {
     return this.httpService.getFullRequest(this.routePrefix + '/current');
   }
 

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { RestorePageComponent } from '../components/restore-page/restore-page.component';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class RestoreGuard implements CanDeactivate<RestorePageComponent> {
   canDeactivate(
