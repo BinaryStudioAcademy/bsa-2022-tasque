@@ -1,4 +1,4 @@
-﻿namespace Tasque.Core.BLL.Helpers
+﻿namespace Tasque.Core.Identity.Helpers
 {
     public class CurrentUserParameters
     {

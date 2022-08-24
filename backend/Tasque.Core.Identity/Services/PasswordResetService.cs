@@ -1,16 +1,16 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Tasque.Core.BLL.Exeptions;
-using Tasque.Core.BLL.JWT;
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Security;
 using Tasque.Core.DAL;
+using Tasque.Core.Identity.Exeptions;
+using Tasque.Core.Identity.JWT;
 
 // Ambiguity between model Task and System.Threading Task
 using MSTask = System.Threading.Tasks.Task;
 
-namespace Tasque.Core.BLL.Services.Auth
+namespace Tasque.Core.Identity.Services
 {
     public class PasswordResetService
     {
@@ -47,7 +47,7 @@ namespace Tasque.Core.BLL.Services.Auth
         {
             var userEntity = _context.Users.FirstOrDefault(x => x.Email == email)
                 ?? throw new ValidationException("No user with requested email");
-            
+
             if (!userEntity.IsEmailConfirmed)
                 throw new EmailNotConfirmedException(email);
 

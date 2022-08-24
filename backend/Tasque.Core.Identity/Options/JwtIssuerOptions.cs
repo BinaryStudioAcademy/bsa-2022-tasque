@@ -1,4 +1,4 @@
-﻿namespace Tasque.Core.BLL.Options
+﻿namespace Tasque.Core.Identity.Options
 {
     public class JwtIssuerOptions
     {

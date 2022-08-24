@@ -15,7 +15,7 @@ Tasque is a task tracking system that unites all the good parts of the common ta
 - [RxJS](https://rxjs.dev/) (7.4.x);
 - [NPM](https://www.npmjs.com/) (8.x.x);
 - [PostgreSQL](https://www.postgresql.org/) (14.2)
-      
+
 ## Tools
 
 - [pgAdmin](https://www.pgadmin.org/)/[DBeaver](https://dbeaver.io/)
@@ -29,19 +29,20 @@ Tasque is a task tracking system that unites all the good parts of the common ta
 erDiagram
       Project ||--o{ User : authorId_id
       Project ||--|| Board : id_projectId
-      Project ||--o{ Project_User : id_projectId
+      Project ||--o{ User_Project_Role : id_projectId
       Project }o--|| Organization : organizationId_id
       Project ||--o{ Sprint : id_projectId
       Project {
         id int PK
         name string
+        key string
         author_id int FK
         organization_id int FK
         created_at datetime
         updated_at datetime
     }
       User ||--o{ User_Task : id_userId
-      User ||--o{ Project_User : id_userId
+      User ||--o{ User_Project_Role : id_userId
       User ||--|| Calendar : id_userId
       User ||--o{ Meeting_User : id_userId
       User ||--o{ Notification : id_userId
@@ -51,30 +52,32 @@ erDiagram
         email string
         password string
         salt string
-        created_at datetime 
+        created_at datetime
         updated_at datetime
-	      isEmailConfirmed boolean
+	    isEmailConfirmed boolean
         avatarURL string
     }
       Task }o--|| User : authorId_id
       Task }o--|| Project : projectId_id
       Task }o--|| BoardColumn : boardColumnId_id
+      Task }o--|| TaskState : stateId_id
+      Task }o--|| TaskType : typeId_id
+      Task }o--|| TaskPriority : priorityId_id
       Task ||--o{ User_Task : id_taskId
       Task ||--o{ Sprint : sprintId_id
       Task ||--o{ Task_Attachment : id_taskId
       Task ||--o{ User : lastUpdatedBy_id
       Task {
         id int PK
-        name string
-        description string
         summary string
-        state TaskState
-        type TaskType
-        priority TaskPriority
+        description string
         created_at datetime
         updated_at datetime
         deadline datetime
         finished_at datetime
+        stateId int FK
+        typeId int FK
+        priorityId int FK
         author_id int FK
         project_id int FK
         board_column_id int FK
@@ -117,7 +120,7 @@ erDiagram
         id int PK
         name string
         project_id int FK
-    } 
+    }
 
       Attachment ||--o{ Task_Attachment : id_attachmentId
       Attachment{
@@ -137,7 +140,12 @@ erDiagram
         board_id int FK
     }
 
-      Project_User {
+    User_Project {
+        project_id int FK
+        user_id int FK
+    }
+
+      User_Project_Role {
         project_id int FK
         user_id int FK
         role_id int FK
@@ -170,10 +178,12 @@ erDiagram
 	      attachment_id int FK
     }
 
-      Role }o--|| Project_User : id_roleId
+      Role }o--|| User_Project_Role : id_roleId
       Role {
         id int PK
         name string
+        created_at datetime
+        updated_at datetime
     }
 
       Task_Label }o--|| Task : taskId_id
@@ -193,11 +203,32 @@ erDiagram
 	      calendar_id int
     }
 
-		EmailConfirmationToken ||--o{ User : token_userId
-		EmailConfirmationToken {
-			token uuid PK
-			user_id int FK
-			expiring_at datetime
-		}
-```
+      EmailConfirmationToken ||--o{ User : token_userId
+      EmailConfirmationToken {
+        token uuid PK
+        user_id int FK
+        expiring_at datetime
+    }
 
+    TaskState {
+        id int PK
+        name string
+        created_at datetime
+        updated_at datetime
+    }
+
+    TaskType {
+        id int PK
+        name string
+        created_at datetime
+        updated_at datetime
+    }
+
+    TaskPriority {
+        id int PK
+        name string
+        created_at datetime
+        updated_at datetime
+    }
+
+```
