@@ -8,15 +8,15 @@ import { Component, Input, OnInit } from '@angular/core';
 export class AvatarComponent implements OnInit {
 
   @Input()
-  diameter_px: number
+  diameter_px: number;
 
   @Input()
-  imageURL: string
+  imageURL: string;
 
   @Input()
-  alt: string
+  alt: string;
 
-  defaultImage = "https://www.w3schools.com/howto/img_avatar.png";
+  defaultImage = 'https://www.w3schools.com/howto/img_avatar.png';
 
   constructor() { }
 
