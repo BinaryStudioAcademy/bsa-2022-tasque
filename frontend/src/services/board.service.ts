@@ -19,7 +19,11 @@ export class BoardService {
     const key = this.createKey(board);
 
     // change to Http.getAll
-    board = JSON.parse(localStorage.getItem(key) as string);
+    let storedBoard = JSON.parse(localStorage.getItem(key) as string);
+    if (board != storedBoard) {
+      storedBoard = board;
+      this.save(storedBoard);
+    }
     const users: IUserCard[] = board ? board.users : [];
     return new Observable((observer) => {
       observer.next(users);
