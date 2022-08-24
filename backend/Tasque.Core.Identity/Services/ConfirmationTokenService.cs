@@ -2,12 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Tasque.Core.BLL.Options;
+using Tasque.Core.BLL.Services;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Models.Email;
 using Tasque.Core.DAL;
+using Tasque.Core.Identity.Options;
 
-namespace Tasque.Core.BLL.Services.Auth
+namespace Tasque.Core.Identity.Services
 {
     public class ConfirmationTokenService
     {

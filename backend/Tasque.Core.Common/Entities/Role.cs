@@ -6,9 +6,9 @@ public class Role : BaseEntity
 {
     public Role()
     {
-        Users = new List<User>();
+        Users = new List<UserProjectRole>();
     }
     public string Name { get; set; } = null!;
 
-    public virtual ICollection<User> Users { get; set; }
+    public virtual ICollection<UserProjectRole> Users { get; set; }
 }

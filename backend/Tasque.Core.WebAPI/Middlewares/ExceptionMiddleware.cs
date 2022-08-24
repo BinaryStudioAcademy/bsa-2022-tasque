@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Net;
 using Tasque.Core.BLL.Exeptions;
+using Tasque.Core.Identity.Exeptions;
 
 namespace Tasque.Core.WebAPI.Middlewares
 {

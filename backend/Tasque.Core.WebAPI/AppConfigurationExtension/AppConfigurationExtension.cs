@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 using Microsoft.IdentityModel.Tokens;
@@ -10,63 +10,29 @@ using System.Text.Json.Serialization;
 using Tasque.Core.BLL.Helpers;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.BLL.JWT;
+﻿using Microsoft.OpenApi.Models;
+using SendGrid.Extensions.DependencyInjection;
+using System.Reflection;
 using Tasque.Core.BLL.MappingProfiles;
 using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services;
-using Tasque.Core.BLL.Services.Auth;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Identity;
+using Tasque.Core.Identity.Services;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
 {
     public static class AppConfigurationExtension
     {
-        public static IServiceCollection ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
-        {
-            var secretKey = configuration["JwtIssuerOptions:Key"];
-            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
-
-            var jwtOptions = configuration.GetSection("JwtIssuerOptions");
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = jwtOptions["Issuer"],
-
-                        ValidateAudience = true,
-                        ValidAudience = jwtOptions["Audience"],
-
-                        ValidateIssuerSigningKey = true,
-                        ValidateLifetime = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions["Key"]))
-                    };
-
-                    options.Events = new JwtBearerEvents
-                    {
-                        OnAuthenticationFailed = context =>
-                        {
-                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                                context.Response.Headers.Add("Token-expired", "true");
-
-                            return System.Threading.Tasks.Task.CompletedTask;
-                        }
-                    };
-                });
-
-            return services;
-        }
 
         public static void ConfigureMapper(this IServiceCollection services)
         {
             services.AddAutoMapper(cfg =>
             {
-                cfg.AddProfile<UserProfile>();
                 cfg.AddProfile<OrganizationProfile>();
                 cfg.AddProfile<TaskProfile>();
+                cfg.ConfigureIdentityMapping();
             },
             Assembly.GetExecutingAssembly());
         }
@@ -74,11 +40,6 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
         public static void ConfigureValidator(this IServiceCollection services)
         {
             services.AddValidatorsFromAssemblyContaining<UserValidator>();
-        }
-
-        public static void ConfigureCurrentUserParameters(this IServiceCollection services)
-        {
-            services.AddScoped(typeof(CurrentUserParameters));
         }
 
         public static void ConfigureEmailServices(this IServiceCollection services, IConfiguration configuration)
@@ -128,23 +89,14 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
 
             services.ConfigureMapper();
             services.ConfigureValidator();
-            services.ConfigureCurrentUserParameters();
             services.ConfigureEmailServices(configuration);
-            services.AddSwagger();
-
-            var jwtIssuerOptions = new JwtIssuerOptions();
-            configuration.GetSection(nameof(JwtIssuerOptions)).Bind(jwtIssuerOptions);
-
-            services.AddSingleton(jwtIssuerOptions);
-
-            services
-                .ConfigureJwt(configuration)
-                .ConfigureAzureCosmosDb(configuration);
-
-            services.AddScoped<JwtFactory>();
+            services.AddSwagger();            
             services.ConfigureS3Services(configuration);
             services.AddMvc();
-
+          
+            services
+                .ConfigureAzureCosmosDb(configuration);
+          
             var jsonOptions = new JsonOptions();
 
             services.AddControllers().AddJsonOptions(options =>
@@ -163,7 +115,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<FileUploadService>()
                 .AddScoped<ITaskService, TaskService>();
 
-            services.RegisterIdentity();
+            services.RegisterIdentity(configuration);
         }
 
         public static void AddSwagger(this IServiceCollection services)

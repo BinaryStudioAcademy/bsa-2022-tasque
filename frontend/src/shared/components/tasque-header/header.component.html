@@ -55,7 +55,7 @@
       <img src="\assets\settings_icon.svg" />
     </div>
     <div [matMenuTriggerFor]="profileMenu">
-      <img src="\assets\avatar.png" width="45px" height="45px" />
+      <tasque-avatar imageURL="\assets\avatar.png" [diameter_px]="45"></tasque-avatar>
       <img src="\assets\arrow_full_icon.svg" />
       <mat-menu #profileMenu="matMenu">
         <button mat-menu-item>Profile settings</button>
