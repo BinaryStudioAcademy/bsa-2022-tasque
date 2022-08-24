@@ -40,11 +40,6 @@ export class SelectUsersComponent implements OnInit {
           name,
         };
       });
-
-    // board should be passed as a parameter
-    // ================================
-
-    // ================================
   }
 
   ngOnInit(): void {

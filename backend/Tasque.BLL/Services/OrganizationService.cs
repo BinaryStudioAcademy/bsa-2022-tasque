@@ -57,24 +57,30 @@ namespace Tasque.Core.BLL.Services
             return _mapper.Map<IEnumerable<UserDto>>(users);
         }
 
-        public async Task AddUser(OrganizationDto organizationDto, UserDto userDto)
+        public async Task AddUser(int organizationId, UserDto userDto)
         {
-            var organizationEntity = await _db.Organizations.FirstOrDefaultAsync(o => o.Id == organizationDto.Id)
+            var organizationEntity = await _db.Organizations.FirstOrDefaultAsync(o => o.Id == organizationId)
                ?? throw new ValidationException("Organization not found");
 
-            var user = _mapper.Map<User>(userDto);
+            var userEntity = await _db.Users.FirstOrDefaultAsync(u => u.Id == userDto.Id)
+                ?? throw new ValidationException("User not found");
+
+            var user = _mapper.Map<User>(userEntity);
 
             organizationEntity.Users.Add(user);
 
             await _db.SaveChangesAsync();
         }
 
-        public async Task DeleteUser(OrganizationDto organizationDto, UserDto userDto)
+        public async Task DeleteUser(int organizationId, UserDto userDto)
         {
-            var organizationEntity = await _db.Organizations.FirstOrDefaultAsync(o => o.Id == organizationDto.Id)
+            var organizationEntity = await _db.Organizations.FirstOrDefaultAsync(o => o.Id == organizationId)
                ?? throw new ValidationException("Organization not found");
 
-            var user = _mapper.Map<User>(userDto);
+            var userEntity = await _db.Users.FirstOrDefaultAsync(u => u.Id == userDto.Id)
+               ?? throw new ValidationException("User not found");
+
+            var user = _mapper.Map<User>(userEntity);
 
             organizationEntity.Users.Remove(user);
 

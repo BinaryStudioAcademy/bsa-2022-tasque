@@ -57,23 +57,24 @@ namespace Tasque.Core.WebAPI.Controllers
                 return NotFound("Organization not found");
             }           
         }
-
-        [Route("users/add")]
+    
+        [Route("{organizationId}/users/add")]
         [HttpPost]
-        public async virtual Task<IActionResult> AddUserToOrganization([FromBody] OrganizationDto organization, [FromBody] UserDto user)
+        public async virtual Task<IActionResult> AddUserToOrganization(int organizationId, [FromBody] UserDto user)
         {
-            await _service.AddUser(organization, user);
+            await _service.AddUser(1, user);
 
             return Ok();
         }
 
         [Route("users/del")]
         [HttpPost]
-        public async virtual Task<IActionResult> DeleteUserInOrganization([FromBody] OrganizationDto organization, [FromBody] UserDto user)
+        public async virtual Task<IActionResult> DeleteUserInOrganization(int organizationId, [FromBody] UserDto user)
         {
-             await _service.DeleteUser(organization, user);
+             await _service.DeleteUser(organizationId, user);
 
             return NoContent();
         }
+    
     }
 }

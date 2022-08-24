@@ -12,6 +12,7 @@ import {
   IBoard,
   IUserCard,
 } from 'src/shared/components/select-users/Models';
+import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
 
 @Component({
   selector: 'app-edit-organization',
@@ -29,6 +30,8 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
   public sidebarName = 'editOrganization';
   public unsubscribe$ = new Subject<void>();
   public organizationName = '';
+
+  public users: ProfileChangesDTO[] = [];
 
   get organizationNameErrorMessage(): string {
     const ctrl = this.organizationNameControl;
@@ -71,6 +74,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit(): void {
+    this.getUsers();
     this.organizationName = this.organization.name;
     this.sidebarName += this.organization.id;
 
@@ -85,6 +89,8 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
   }
 
   public submitForm(): void {
+    this.addUser();
+
     this.organization.name = this.organizationName;
 
     this.organizationService
@@ -105,4 +111,29 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
     const input = event.target as HTMLElement;
     return input.innerText;
   }
+
+  public getUsers(): void {
+    this.organizationService
+      .getOrganizationUsers(this.organization.id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.users = result.body;
+          console.log(this.users);
+        }
+      });
+  }
+
+  public addUser(): void {
+    this.organizationService
+      .addUser(this.organization.id, this.users[1])
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          console.log(result.body);
+        }
+      });
+  }
+
+  public delUser(): void {}
 }
