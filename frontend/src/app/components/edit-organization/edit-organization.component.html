@@ -1,5 +1,5 @@
 <tasque-sidebar [name]="sidebarName" btnText="Edit" btnClass="btn stroke openSidebar">
-  <div class="task-creation-conteiner" [formGroup]="editOrganization">
+  <div class="task-creation-conteiner" [formGroup]="editOrganizationForm">
     <div class="task-creation-header">
       <div class="organizationName-wrapper">
         <div class="organizationName" [textContent]="organizationName" (input)="organizationName = titleContent($event)" contenteditable="true" [formControl]="organizationNameControl" ngDefaultControl></div>

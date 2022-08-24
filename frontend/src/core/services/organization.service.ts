@@ -51,7 +51,7 @@ export class OrganizationService {
     );
   }
 
-  editOrganization(
+  updateOrganization(
     organization: OrganizationModel,
   ): Observable<HttpResponse<OrganizationModel[]>> {
     return this.httpService.putFullRequest<OrganizationModel[]>(
