@@ -1,7 +1,7 @@
 <tasque-sidebar name="task-editing" btnText="Edit Task" btnClass="btn stroke">
   <form class="edit-task-dialog" [formGroup]="editTaskForm">
     <div class="task-summary-container">
-      <span class="item-label"> PR-{{ taskProject.id }}</span>
+      <span class="item-label"> {{ taskProject.key }}</span>
       <h5>
         <div class="summary-text-wrapper" *ngIf="!this.taskSummaryInputShow">
           <span class="summary-text" [innerHTML]="safeHTML(task.summary)"> </span>
@@ -91,18 +91,22 @@
 
         <div class="item-wrapper">
           <span class="item-label">Assignees</span>
-          <span formControlName="taskAssignees" ngDefaultControl>User Select Button</span>
+          <tasque-button class="btn icon select-button" text="+"></tasque-button>
         </div>
         <div class="item-wrapper">
           <span class="item-label">Reporter</span>
-          <span>avatar__</span>
-          <span> {{ taskReporter.name }}</span>
+          <div class="user-info">
+            <tasque-avatar [diameter_px]="30" alt="avatar"></tasque-avatar>
+            <span> {{ taskReporter.name }}</span>
+          </div>
         </div>
 
         <div class="item-wrapper">
           <span class="item-label">Author</span>
-          <span>avatar__</span>
-          <span> {{ taskUser.name }}</span>
+          <div class="user-info">
+            <tasque-avatar [diameter_px]="30" alt="avatar"></tasque-avatar>
+            <span> {{ taskUser.name }}</span>
+          </div>
         </div>
 
         <div class="item-wrapper">
@@ -153,7 +157,7 @@
     </div>
 
     <div class="user-comment-container">
-      <span>avatar</span>
+      <tasque-avatar [diameter_px]="45" alt="avatar"></tasque-avatar>
 
       <div class="input-wrapper">
         <tasque-input placeholder="Type a comment"></tasque-input>

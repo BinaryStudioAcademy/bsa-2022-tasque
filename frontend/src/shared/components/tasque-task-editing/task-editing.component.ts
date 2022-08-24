@@ -118,6 +118,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     {
       id: 1,
       name: 'project 1',
+      key: 'PR-1',
       authorId: 0,
       organizationId: 0,
       createdAt: new Date(),
@@ -126,6 +127,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     {
       id: 2,
       name: 'project 2',
+      key: 'PR-2',
       authorId: 0,
       organizationId: 0,
       createdAt: new Date(),
@@ -134,6 +136,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     {
       id: 3,
       name: 'project 3',
+      key: 'PR-3',
       authorId: 0,
       organizationId: 0,
       createdAt: new Date(),
@@ -189,9 +192,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
     this.task = {
       id: 1,
-      name: 'Hi',
-      summary: 'Maaaaan',
-      description: 'qweqwe',
+      summary: 'Summary',
+      description: 'Description',
       state: {
         id: 1,
         name: 'Hi',
