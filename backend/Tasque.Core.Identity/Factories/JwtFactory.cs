@@ -2,9 +2,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Tasque.Core.BLL.Options;
+using Tasque.Core.Identity.Options;
 
-namespace Tasque.Core.BLL.JWT
+namespace Tasque.Core.Identity.JWT
 {
     public class JwtFactory
     {

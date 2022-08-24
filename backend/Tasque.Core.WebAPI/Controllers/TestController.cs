@@ -1,8 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tasque.Core.BLL.Services.Auth;
-using Tasque.Core.Common.DTO;
-using Tasque.Core.Common.Entities;
 using Tasque.Core.DAL;
 
 namespace Tasque.Core.WebAPI.Controllers
