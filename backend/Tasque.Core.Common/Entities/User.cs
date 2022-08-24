@@ -13,7 +13,7 @@ public class User : BaseEntity
         ParticipatedProjects = new List<Project>();
         OwnedTasks = new List<Task>();
         ParticipatedTasks = new List<Task>();
-        Roles = new List<Role>();
+        Roles = new List<UserProjectRole>();
     }
     public string Name { get; set; } = null!;
     public string Email { get; set; } = null!;
@@ -27,7 +27,7 @@ public class User : BaseEntity
     public virtual ICollection<Project> ParticipatedProjects { get; set; }
     public virtual ICollection<Task> OwnedTasks { get; set; }
     public virtual ICollection<Task> ParticipatedTasks { get; set; }
-    public virtual ICollection<Role> Roles { get; set; }
+    public virtual ICollection<UserProjectRole> Roles { get; set; }
 }
 
 public class UserValidator : AbstractValidator<User>
