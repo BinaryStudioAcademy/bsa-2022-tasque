@@ -4,9 +4,8 @@ import { TaskType } from './task-type';
 
 export interface TaskModel {
   id: number,
-  name: string,
-  description?: string,
   summary: string,
+  description?: string,
   state: TaskState,
   type: TaskType,
   priority: TaskPriority,
