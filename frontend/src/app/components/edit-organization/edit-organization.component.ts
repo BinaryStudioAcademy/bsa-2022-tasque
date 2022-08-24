@@ -18,7 +18,7 @@ import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
 export class EditOrganizationComponent implements OnInit, OnDestroy {
   faPenToSquare = faPenToSquare;
   @Input() public organization: OrganizationModel;
-  public editOrganization: FormGroup = new FormGroup({});
+  public editOrganizationForm: FormGroup = new FormGroup({});
   public organizationNameControl: FormControl;
   public organizationUsersControl: FormControl;
   public btnText = 'Create project';
@@ -54,7 +54,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
     this.organizationName = this.organization.name;
     this.sidebarName += this.organization.id;
 
-    this.editOrganization = new FormGroup({
+    this.editOrganizationForm = new FormGroup({
       organizationNameControl: this.organizationNameControl,
     });
   }
@@ -68,16 +68,21 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
     this.organization.name = this.organizationName;
 
     this.organizationService
-      .editOrganization(this.organization)
+      .updateOrganization(this.organization)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
-        if (result.body) {
+        if (result.status == 200) {
+          this.notification.success(
+            'Organization data has been updated successfully',
+          );
+          this.editOrganizationForm.reset();
+          this.sideBarService.toggle(this.sidebarName);
         }
       });
   }
 
   public clearForm(): void {
-    this.editOrganization.reset();
+    this.editOrganizationForm.reset();
     this.sideBarService.toggle(this.sidebarName);
   }
 
