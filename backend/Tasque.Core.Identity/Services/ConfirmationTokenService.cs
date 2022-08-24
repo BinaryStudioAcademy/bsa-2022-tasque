@@ -2,12 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Tasque.Core.BLL.Options;
+using Tasque.Core.BLL.Services;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Models.Email;
 using Tasque.Core.DAL;
+using Tasque.Core.Identity.Options;
 
-namespace Tasque.Core.BLL.Services.Auth
+namespace Tasque.Core.Identity.Services
 {
     public class ConfirmationTokenService
     {
@@ -16,8 +18,8 @@ namespace Tasque.Core.BLL.Services.Auth
         private EmailConfirmationOptions _emailOptions;
 
         public ConfirmationTokenService(
-            DataContext context, 
-            IEmailService emailService, 
+            DataContext context,
+            IEmailService emailService,
             IOptions<EmailConfirmationOptions> emailOptions)
         {
             _context = context;
@@ -59,49 +61,69 @@ namespace Tasque.Core.BLL.Services.Auth
 
             return confToken;
         }
-        public Task<bool> SendConfirmationEmail(ConfirmationToken token)
+        public async Task<bool> SendConfirmationEmail(ConfirmationToken token)
         {
             var user = token.User;
             var reciever = new EmailContact(user.Email, user.Name);
             var email = new EmailMessage(reciever)
             {
                 Subject = GetEmailSubject(token),
-                Content = GetEmailText(token),
+                Content = await GetEmailText(token),
                 Sender = new EmailContact(_emailOptions.SenderEmail, _emailOptions.SenderName)
             };
-            return _emailService.SendEmailAsync(email);
+            return await _emailService.SendEmailAsync(email);
         }
 
-        private string GetEmailText(ConfirmationToken token)
-        {
-            string endpoint;
+        private async Task<string> GetEmailText(ConfirmationToken token)
+        {   
             var host = _emailOptions.Host;
+            var endpoint = GetEndpoint(token);
+            var link = $"{host}{endpoint}";
             var key = token.Token;
             
-            switch (token.Kind)
+            Dictionary<string, string> args = new()
             {
-                case TokenKind.EmailConfirmation:
-                    endpoint = _emailOptions.ConfirmationEndpoint;
-                    return "<h3>Thanks for choosing Tasque</h3><br/>" +
-                            $"<a href=\"{host}{endpoint}?key={key}\">" +
-                            "Click here to confirm your email" +
-                            "</a>";
-                case TokenKind.PasswordReset:
-                    endpoint = _emailOptions.PasswordResetEndpoint;
-                    return "<h3>Thanks for choosing Tasque</h3><br/>" +
-                            $"<a href=\"{host}{endpoint}?key={key}\">" +
-                            "Click here to reset your password" +
-                            "</a>";
-                default: return "";
-            }
+                { "appLink", host },
+                // FIXME: Host thumbnail somewhere and provide link in options
+                // { "logoLink", "" },
+                { "username", token.User.Name },
+                { "email", token.User.Email },
+                { "link", $"{link}?key={key}" }
+            };
+
+            string html = await GetEmailHtml(token);
+            foreach (var kv in args)
+                html = html.Replace($"{{{kv.Key}}}", kv.Value);
+
+            return html;
         }
 
-        private string GetEmailSubject(ConfirmationToken token)
+        private string GetEndpoint(ConfirmationToken token)
+        {
+            return token.Kind switch
+            {
+                TokenKind.EmailConfirmation => _emailOptions.ConfirmationEndpoint,
+                TokenKind.PasswordReset => _emailOptions.PasswordResetEndpoint,
+                _ => ""
+            };
+        }
+
+        private static string GetEmailSubject(ConfirmationToken token)
         {
             return token.Kind switch
             {
                 TokenKind.EmailConfirmation => "Email confirmation",
                 TokenKind.PasswordReset => "Password reset",
+                _ => ""
+            };
+        }
+
+        private static async Task<string> GetEmailHtml(ConfirmationToken token)
+        {
+            return token.Kind switch
+            {
+                TokenKind.PasswordReset => await AssemblyResourceService.GetResource(AssemblyResource.ResetPasswordMessage),
+                TokenKind.EmailConfirmation => await AssemblyResourceService.GetResource(AssemblyResource.ConfirmEmailMessage),
                 _ => ""
             };
         }

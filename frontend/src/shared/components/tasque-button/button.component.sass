@@ -1,77 +1,82 @@
 @import 'src/colors.sass'
 
+button
+  display: flex
+  align-items: center
+  justify-content: center
+
 .btn
-    text-align: center
-    color: colorscheme(violet-200)
-    font-family: 'Nunito', sans-serif
-    font-style: normal
-    font-size: 16px
-    line-height: 22px
-    font-weight: 700
-    border: none
-    background: none
-    padding: 0
-    &:hover
-        color: colorscheme(violet-400)
-        cursor: pointer
+  text-align: center
+  color: colorscheme(violet-200)
+  font-family: 'Nunito', sans-serif
+  font-style: normal
+  font-size: 16px
+  line-height: 22px
+  font-weight: 700
+  border: none
+  background: none
+  padding: 0
+  &:hover
+    color: colorscheme(violet-400)
+    cursor: pointer
     &.disabled
-        color: colorscheme(gray-400)
-        background: none
-        cursor: not-allowed
+      color: colorscheme(gray-400)
+      background: none
+      cursor: not-allowed
 
 .btn.inon
   cursor: pointer
   > fa-icon
-      margin: 0
+    margin: 0
 
 .mini
-    color: colorscheme(violet-200)
-    padding: 7px 15px
-    gap: 10px
-    border: 2px solid colorscheme(violet-200)
-    border-radius: 50px
-    &:hover
-        background: colorscheme(violet-200)
-        color: colorscheme(white-100)
-        cursor: pointer
+  color: colorscheme(violet-200)
+  padding: 7px 15px
+  gap: 10px
+  border: 2px solid colorscheme(violet-200)
+  border-radius: 50px
+  &:hover
+    background: colorscheme(violet-200)
+    color: colorscheme(white-100)
+    cursor: pointer
     &.disabled
-        color: colorscheme(gray-400)
-        border-color: colorscheme(gray-400)
-        background: none
-        cursor: not-allowed
+      color: colorscheme(gray-400)
+      border-color: colorscheme(gray-400)
+      background: none
+      cursor: not-allowed
 
 .stroke
-    color: colorscheme(pink-200)
-    padding: 13px 20px
-    gap: 10px
-    border: 2px solid colorscheme(pink-200)
-    border-radius: 50px
-    &:hover
-        background: colorscheme(pink-200)
-        color: colorscheme(white-100)
-        cursor: pointer
+  color: colorscheme(pink-200)
+  padding: 13px 20px
+  gap: 10px
+  border: 2px solid colorscheme(pink-200)
+  border-radius: 50px
+  &:hover
+    background: colorscheme(pink-200)
+    color: colorscheme(white-100)
+    cursor: pointer
     &.disabled
-        color: colorscheme(gray-400)
-        border-color: colorscheme(gray-400)
-        background: none
-        cursor: not-allowed
+      color: colorscheme(gray-400)
+      border-color: colorscheme(gray-400)
+      background: none
+      cursor: not-allowed
 
 .fill
-    padding: 13px 20px
-    gap: 10px
+  padding: 13px 20px
+  gap: 10px
+  color: colorscheme(white-100)
+  background: colorscheme(pink-200)
+  border: 1px solid colorscheme(pink-200)
+  border-radius: 50px
+  &:hover
+    background: colorscheme(pink-300)
     color: colorscheme(white-100)
-    background: colorscheme(pink-200)
-    border: 1px solid colorscheme(pink-200)
-    border-radius: 50px
-    &:hover
-        background: colorscheme(pink-300)
-        color: colorscheme(white-100)
     &.disabled
-        color: colorscheme(white-100)
-        background: none
-        background-color: colorscheme(gray-400)
-        cursor: not-allowed
-        border: none
+      color: colorscheme(white-100)
+      background: none
+      background-color: colorscheme(gray-400)
+      cursor: not-allowed
+      border: none
 
 .gray
   background: colorscheme(gray-200)
@@ -81,30 +86,32 @@
     background: colorscheme(gray-400)
 
 .violet-stroke
-    color: colorscheme(violet-200)
-    border-color: colorscheme(violet-200)
-    &:hover
-      background-color: colorscheme(violet-200)
+  color: colorscheme(violet-200)
+  border-color: colorscheme(violet-200)
+  &:hover
+    background-color: colorscheme(violet-200)
     &.disabled
       color: colorscheme(gray-400)
       background: none
       cursor: not-allowed
 
-
 .red
-    background: colorscheme(red-100)
-    &:hover
-         background: colorscheme(red-200)
+  background: colorscheme(red-100)
+  border: none
+  &:hover
+    background: colorscheme(red-200)
 
 .green
-    background: colorscheme(green-100)
-    &:hover
-         background: colorscheme(green-200)
+  background: colorscheme(green-100)
+  border: none
+  &:hover
+    background: colorscheme(green-200)
 
 .grey
-    background: colorscheme(dark-grey-100)
-    &:hover
-         background: colorscheme(dark-grey-200)
+  background: colorscheme(dark-grey-100)
+  border: none
+  &:hover
+    background: colorscheme(dark-grey-200)
 
 .icon-right
-    margin-left: 5px
+  margin-left: 5px

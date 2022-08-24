@@ -1,9 +1,10 @@
-<mat-card>
-  <mat-card-title
-    ><a href="#">{{ organization.name }}</a></mat-card-title
-  >
-  <mat-card-actions>
-    <app-edit-organization *ngIf="organization.authorId === currentUser.id" [organization]="organization"></app-edit-organization>
+<div class="organization-card">
+  <a class="organization-name" href="#">{{ organization.name }}</a>
+
+  <div class="buttons-container">
+    <tasque-button *ngIf="organization.authorId === currentUser.id" class="btn stroke" text="Edit"> </tasque-button>
     <tasque-button class="btn stroke" text="Open"> </tasque-button>
-  </mat-card-actions>
-</mat-card>
+  </div>
+</div>
+
+<hr />

@@ -1,11 +1,18 @@
 .organization-list
-  font-family: 'Nunito', sans-serif
-  font-style: normal
+  display: flex
+  flex-direction: column
+  gap: 15px
   overflow-y: auto
   margin: 0 56px 0 56px
 
 .organizations-header
-  margin-left: 20px
   display: flex
-  justify-content: space-between
   align-items: center
+  gap: 30px
+
+.organization-list-cards
+  display: flex
+  flex-direction: column
+
+.organizations-search ::ng-deep input
+  width: 420px

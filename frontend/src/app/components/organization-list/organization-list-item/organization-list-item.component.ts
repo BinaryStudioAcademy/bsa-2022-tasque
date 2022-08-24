@@ -8,11 +8,7 @@ import { OrganizationModel } from 'src/core/models/organization/organization-mod
   styleUrls: ['./organization-list-item.component.sass']
 })
 export class OrganizationListItemComponent implements OnInit {
-  @Input() public currentUser: UserModel = {
-    name: 'Login1',
-    email: 'testlogin@gmail.com',
-    id: 1,
-  };
+  @Input() public currentUser: UserModel;
   @Input() public organization: OrganizationModel;
 
   constructor() { }

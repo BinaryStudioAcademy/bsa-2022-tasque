@@ -13,7 +13,7 @@ public class User : BaseEntity
         ParticipatedProjects = new List<Project>();
         OwnedTasks = new List<Task>();
         ParticipatedTasks = new List<Task>();
-        Roles = new List<Role>();
+        Roles = new List<UserProjectRole>();
         OwnedOrganization = new List<Organization>();
         ParticipatedOrganization = new List<Organization>();
     }
@@ -29,7 +29,7 @@ public class User : BaseEntity
     public virtual ICollection<Project> ParticipatedProjects { get; set; }
     public virtual ICollection<Task> OwnedTasks { get; set; }
     public virtual ICollection<Task> ParticipatedTasks { get; set; }
-    public virtual ICollection<Role> Roles { get; set; }
+    public virtual ICollection<UserProjectRole> Roles { get; set; }
     public virtual ICollection<Organization> ParticipatedOrganization { get; set; }
     public virtual ICollection<Organization> OwnedOrganization { get; set; }
 }

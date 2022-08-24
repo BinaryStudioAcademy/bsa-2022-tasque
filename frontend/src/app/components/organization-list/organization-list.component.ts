@@ -10,6 +10,7 @@ import {
   faMagnifyingGlass,
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Component({
   selector: 'app-organization-list',
@@ -17,11 +18,7 @@ import {
   styleUrls: ['./organization-list.component.sass'],
 })
 export class OrganizationListComponent implements OnInit {
-  @Input() public currentUser: UserModel = {
-    name: 'Login1',
-    email: 'testlogin@gmail.com',
-    id: 2,
-  };
+  @Input() public currentUser: UserModel;
 
   public items: OrganizationModel[] = [
     {
@@ -46,43 +43,43 @@ export class OrganizationListComponent implements OnInit {
       updatedAt: new Date(),
     },
     {
-      id: 4,
-      name: 'Organization 2',
+      id: 1,
+      name: 'Organization 4',
       authorId: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
-      id: 5,
-      name: 'Organization 3',
+      id: 1,
+      name: 'Organization 5',
       authorId: 2,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
-      id: 6,
-      name: 'Organization 2',
+      id: 1,
+      name: 'Organization 6',
       authorId: 2,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
-      id: 7,
-      name: 'Organization 3',
+      id: 1,
+      name: 'Organization 7',
       authorId: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
-      id: 8,
-      name: 'Organization 2',
+      id: 1,
+      name: 'Organization 8',
       authorId: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
-      id: 9,
-      name: 'Organization 3',
+      id: 1,
+      name: 'Organization 9',
       authorId: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -95,11 +92,15 @@ export class OrganizationListComponent implements OnInit {
   public faMagnifyingGlass: IconDefinition = faMagnifyingGlass;
 
   constructor(
+    private currentUserService: GetCurrentUserService,
     private matDialog: MatDialog,
     private organizationService: OrganizationService,
   ) {}
 
   ngOnInit(): void {
+    this.currentUserService.currentUser.subscribe((user) => {
+      this.currentUser = user as UserModel;
+    });
     this.organizationService
       .getUserOrganizations(this.currentUser.id)
       .pipe(takeUntil(this.unsubscribe$))

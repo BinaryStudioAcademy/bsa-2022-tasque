@@ -16,6 +16,7 @@ public class DataContext : DbContext
         modelBuilder.ApplyConfiguration(new TaskConfiguration());
         modelBuilder.ApplyConfiguration(new ProjectConfiguration());
         modelBuilder.ApplyConfiguration(new OrganizationConfiguration());
+        modelBuilder.ApplyConfiguration(new UserProjectRoleConfiguration());
     }
 
     public DbSet<Organization> Organizations { get; set; } = null!;
@@ -31,6 +32,10 @@ public class DataContext : DbContext
     public DbSet<Meeting> Meetings { get; set; } = null!;
     public DbSet<Notification> Notifications { get; set; } = null!;
     public DbSet<Role> Roles { get; set; } = null!;
+    public DbSet<TaskPriority> TaskPriorities { get; set; } = null!;
+    public DbSet<TaskState> TaskStates { get; set; } = null!;
+    public DbSet<TaskType> TaskTypes { get; set; } = null!;
+    public DbSet<UserProjectRole> UserProjectRoles { get; set; } = null!;
     public DbSet<Sprint> Sprints { get; set; } = null!;
     public DbSet<ConfirmationToken> ConfirmationTokens { get; set; } = null!;
 }
