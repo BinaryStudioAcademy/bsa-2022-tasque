@@ -45,6 +45,7 @@
         <div class="item-wrapper">
           <span class="item-label">Project</span>
           <tasque-dropdown
+            class="red"
             width="200px"
             [options]="projectOptions"
             formControlName="taskProject"
@@ -70,6 +71,15 @@
         </div>
 
         <div class="item-wrapper">
+          <span class="item-label">Type</span>
+          <tasque-dropdown
+            width="200px"
+            [options]="taskTypeOptions"
+            formControlName="taskPriority"
+          ></tasque-dropdown>
+        </div>
+
+        <div class="item-wrapper">
           <span class="item-label">Sprint</span>
           <tasque-dropdown
             width="80px"
@@ -85,6 +95,12 @@
         </div>
         <div class="item-wrapper">
           <span class="item-label">Reporter</span>
+          <span>avatar__</span>
+          <span> {{ taskReporter.name }}</span>
+        </div>
+
+        <div class="item-wrapper">
+          <span class="item-label">Author</span>
           <span>avatar__</span>
           <span> {{ taskUser.name }}</span>
         </div>

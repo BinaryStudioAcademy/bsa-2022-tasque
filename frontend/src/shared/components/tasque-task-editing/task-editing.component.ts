@@ -11,6 +11,7 @@ import { EditorConfig } from 'src/core/settings/angular-editor-setting';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskPriority } from 'src/core/models/task/task-priority';
+import { TaskType } from 'src/core/models/task/task-type';
 
 @Component({
   selector: 'tasque-task-editing',
@@ -23,6 +24,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   @Input() public currentUser: UserModel;
   public taskProject: ProjectModel;
   public taskUser: UserModel;
+  public taskReporter: UserModel;
   public taskSprint: SprintModel;
 
   public editTaskForm: FormGroup = {} as FormGroup;
@@ -41,6 +43,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
   public taskStatusOptions: [color: string, title: string, id: number][] = [];
   public taskPriorityOptions: [color: string, title: string, id: number][] = [];
+  public taskTypeOptions: [color: string, title: string, id: number][] = [];
   public projectOptions: [color: string, title: string, id: number][] = [];
   public sprintOptions: [color: string, title: string, id: number][] = [];
 
@@ -86,6 +89,26 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     {
       id: 4,
       name: 'Canceled',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+  ];
+  @Input() public taskTypes: TaskType[] = [
+    {
+      id: 1,
+      name: 'Bug',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 2,
+      name: 'Feature',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 3,
+      name: 'Enhancement',
       createdAt: new Date(),
       updatedAt: new Date()
     },
@@ -197,6 +220,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       deadline: new Date()
     };
     this.currentUser = this.users[1];
+    this.taskReporter = this.users[2];
   }
 
   ngOnInit(): void {
@@ -216,6 +240,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       ]),
       taskStatus: new FormControl(this.convertToOption(this.task.state)),
       taskPriority: new FormControl(this.convertToOption(this.task.priority)),
+      taskType: new FormControl(this.convertToOption(this.task.type)),
       taskSprint: new FormControl(this.convertToOption(this.taskSprint)),
       taskDescription: new FormControl<SafeHtml | undefined>(this.task.description, [
         Validators.maxLength(5000)
@@ -227,6 +252,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     this.fillSprintOptions(this.sprints);
     this.fillTaskStatesOptions(this.taskStates);
     this.fillTaskPrioritiesOptions(this.taskPriorities);
+    this.fillTaskTypesOptions(this.taskTypes);
   }
 
   public safeHTML(unsafe: string): SafeHtml {
@@ -319,6 +345,13 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     this.taskStatusOptions = [];
     taskStates.forEach((element) => {
       this.taskStatusOptions.push(this.convertToOption(element));
+    });
+  }
+
+  private fillTaskTypesOptions(taskTypes: TaskType[]): void {
+    this.taskTypeOptions = [];
+    taskTypes.forEach((element) => {
+      this.taskTypeOptions.push(this.convertToOption(element));
     });
   }
 }
