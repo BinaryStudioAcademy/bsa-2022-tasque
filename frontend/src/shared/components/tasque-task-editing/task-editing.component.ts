@@ -169,19 +169,19 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       name: 'Hi',
       summary: 'Maaaaan',
       description: 'qweqwe',
-      taskState: {
+      state: {
         id: 1,
         name: 'Hi',
         createdAt: new Date(),
         updatedAt: new Date()
       },
-      taskType: {
+      type: {
         id: 1,
         name: 'Hi',
         createdAt: new Date(),
         updatedAt: new Date()
       },
-      taskPriority: {
+      priority: {
         id: 1,
         name: 'Hi',
         createdAt: new Date(),
@@ -194,7 +194,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       parentTaskId: 5,
       createdAt: new Date(),
       updatedAt: new Date(),
-      deadLine: new Date()
+      deadline: new Date()
     };
     this.currentUser = this.users[1];
   }
@@ -214,8 +214,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         Validators.minLength(2),
         Validators.maxLength(80)
       ]),
-      taskStatus: new FormControl(this.convertToOption(this.task.taskState)),
-      taskPriority: new FormControl(this.convertToOption(this.task.taskPriority)),
+      taskStatus: new FormControl(this.convertToOption(this.task.state)),
+      taskPriority: new FormControl(this.convertToOption(this.task.priority)),
       taskSprint: new FormControl(this.convertToOption(this.taskSprint)),
       taskDescription: new FormControl<SafeHtml | undefined>(this.task.description, [
         Validators.maxLength(5000)
