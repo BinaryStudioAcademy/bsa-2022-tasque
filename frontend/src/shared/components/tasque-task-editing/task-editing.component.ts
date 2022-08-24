@@ -12,6 +12,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskPriority } from 'src/core/models/task/task-priority';
 import { TaskType } from 'src/core/models/task/task-type';
+import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
 
 @Component({
   selector: 'tasque-task-editing',
@@ -41,11 +42,11 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public taskDescriptionEditorShow = false;
   public taskSummaryInputShow = false;
 
-  public taskStatusOptions: [color: string, title: string, id: number][] = [];
-  public taskPriorityOptions: [color: string, title: string, id: number][] = [];
-  public taskTypeOptions: [color: string, title: string, id: number][] = [];
-  public projectOptions: [color: string, title: string, id: number][] = [];
-  public sprintOptions: [color: string, title: string, id: number][] = [];
+  public taskStatusOptions: TasqueDropdownOption[] = [];
+  public taskPriorityOptions: TasqueDropdownOption[] = [];
+  public taskTypeOptions: TasqueDropdownOption[] = [];
+  public projectOptions: TasqueDropdownOption[] = [];
+  public sprintOptions: TasqueDropdownOption[] = [];
 
   @Input() public taskPriorities: TaskPriority[] = [
     {
@@ -306,23 +307,47 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     return '';
   }
 
-  private convertToOption(item: SprintModel | ProjectModel | TaskState | TaskPriority | TaskType): [string, string, number] {
+  private convertToOption(item: SprintModel | ProjectModel | TaskState | TaskPriority | TaskType): TasqueDropdownOption {
     if (item.id === 0) {
-      return ['lightgray', '-', 0];
+      return {
+        color: 'lightgray',
+        title: '-',
+        id: 0
+      };
     }
 
     switch (item.id % 4) {
       case 1:
-        return ['green', item.name, item.id];
+        return {
+          color: 'green',
+          title: item.name,
+          id: item.id
+        };
       case 2:
-        return ['yellow', item.name, item.id];
+        return {
+          color: 'yellow',
+          title: item.name,
+          id: item.id
+        };
       case 3:
-        return ['orange', item.name, item.id];
+        return {
+          color: 'orange',
+          title: item.name,
+          id: item.id
+        };
       case 0:
-        return ['red', item.name, item.id];
+        return {
+          color: 'red',
+          title: item.name,
+          id: item.id
+        };
     }
 
-    return ['pink', 'error', -1];
+    return {
+      color: 'pink',
+      title: 'error',
+      id: -1
+    };
   }
 
   private fillProjectOptions(projects: ProjectModel[]): void {
@@ -333,7 +358,12 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   }
 
   private fillSprintOptions(sprints: SprintModel[]): void {
-    this.sprintOptions = [['lightgray', '-', 0]];
+    this.sprintOptions = [{
+      color: 'lightgray',
+      title: '-',
+      id: 0
+    }];
+
     sprints.forEach((element) => {
       this.sprintOptions.push(this.convertToOption(element));
     });

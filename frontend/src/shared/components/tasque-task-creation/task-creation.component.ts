@@ -6,6 +6,7 @@ import { NotificationService } from 'src/core/services/notification.service';
 import { Subject } from 'rxjs';
 import { EditorConfig } from 'src/core/settings/angular-editor-setting';
 import { TaskCreateViewModel } from 'src/core/models/task/task-create-view-model';
+import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
 
 @Component({
   selector: 'tasque-task-creation',
@@ -26,8 +27,8 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   public editorContent = '';
 
   @Input() public currentUser: number;
-  @Input() public projects: [color: string, title: string, id: number][];
-  @Input() public issueTypes: [color: string, title: string, id: number][];
+  @Input() public projects: TasqueDropdownOption[];
+  @Input() public issueTypes: TasqueDropdownOption[];
 
   get projectErrorMessage(): string {
     const ctrl = this.projectControl;
