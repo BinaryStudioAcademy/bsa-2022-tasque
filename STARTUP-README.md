@@ -6,7 +6,7 @@ Go to [Backend path](./frontend)
 
 - Setup environment variables in [appsettings.json](./backend/Tasque.Core.WebAPI/appsettings.json) or using _user secrets_
 
-```json
+```yaml
   "JwtIssuerOptions": {
     "Issuer": "tasque",
     "Audience": "tasque",
