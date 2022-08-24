@@ -196,19 +196,19 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       description: 'Description',
       state: {
         id: 1,
-        name: 'Hi',
+        name: 'To Do',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       type: {
         id: 1,
-        name: 'Hi',
+        name: 'Bug',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       priority: {
         id: 1,
-        name: 'Hi',
+        name: 'Low',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -252,9 +252,9 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
     this.fillProjectOptions(this.projects);
     this.fillSprintOptions(this.sprints);
-    this.fillTaskStatesOptions(this.taskStates);
-    this.fillTaskPrioritiesOptions(this.taskPriorities);
-    this.fillTaskTypesOptions(this.taskTypes);
+    this.fillTaskStateOptions(this.taskStates);
+    this.fillTaskPriorityOptions(this.taskPriorities);
+    this.fillTaskTypeOptions(this.taskTypes);
   }
 
   public safeHTML(unsafe: string): SafeHtml {
@@ -306,19 +306,23 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     return '';
   }
 
-  private convertToOption(item: SprintModel | ProjectModel | TaskState | TaskPriority): [string, string, number] {
-    switch (item.id % 5) {
+  private convertToOption(item: SprintModel | ProjectModel | TaskState | TaskPriority | TaskType): [string, string, number] {
+    if (item.id === 0) {
+      return ['lightgray', '-', 0];
+    }
+
+    switch (item.id % 4) {
       case 1:
         return ['green', item.name, item.id];
       case 2:
         return ['yellow', item.name, item.id];
       case 3:
         return ['orange', item.name, item.id];
-      case 4:
+      case 0:
         return ['red', item.name, item.id];
-      default:
-        return ['lightgray', '-', 0];
     }
+
+    return ['pink', 'error', -1];
   }
 
   private fillProjectOptions(projects: ProjectModel[]): void {
@@ -329,28 +333,27 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   }
 
   private fillSprintOptions(sprints: SprintModel[]): void {
-    this.sprintOptions = [];
-    this.sprintOptions.push(['lightgray', '-', 0]);
+    this.sprintOptions = [['lightgray', '-', 0]];
     sprints.forEach((element) => {
       this.sprintOptions.push(this.convertToOption(element));
     });
   }
 
-  private fillTaskPrioritiesOptions(taskPriorities: TaskPriority[]): void {
+  private fillTaskPriorityOptions(taskPriorities: TaskPriority[]): void {
     this.taskPriorityOptions = [];
     taskPriorities.forEach((element) => {
       this.taskPriorityOptions.push(this.convertToOption(element));
     });
   }
 
-  private fillTaskStatesOptions(taskStates: TaskState[]): void {
+  private fillTaskStateOptions(taskStates: TaskState[]): void {
     this.taskStatusOptions = [];
     taskStates.forEach((element) => {
       this.taskStatusOptions.push(this.convertToOption(element));
     });
   }
 
-  private fillTaskTypesOptions(taskTypes: TaskType[]): void {
+  private fillTaskTypeOptions(taskTypes: TaskType[]): void {
     this.taskTypeOptions = [];
     taskTypes.forEach((element) => {
       this.taskTypeOptions.push(this.convertToOption(element));
