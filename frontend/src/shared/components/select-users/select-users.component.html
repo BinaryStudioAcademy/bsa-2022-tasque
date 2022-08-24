@@ -15,8 +15,8 @@
             }"
           ></tasque-input>
         </div>
-        <div class="wpx-120 pr-15 ml-15">
-          <button class="mat-button-primary w-100" type="submit" mat-flat-button color="primary" (btnClick)="add()">Add User</button>
+        <div class="header-button-container wpx-150 pr-15 ml-15">
+          <tasque-button class="mini btn" text="Add User" [icon]="addIcon" type="submit" (btnClick)="add()"></tasque-button>
         </div>
       </form>
     </mat-grid-tile>
@@ -31,7 +31,10 @@
             <mat-list-item role="listitem">
               <div class="user-data mr-15">
                 <img [src]="user.avatarURL" alt="user's avatar" class="avatar" />
-                <a mat-flat-button [href]="user.profileURL" class="username">{{ user.username }}</a>
+                <a [href]="user.profileURL" class="username">
+                  <tasque-button class="btn" [text]="user.username"></tasque-button>
+                </a>
+                <!-- <a mat-flat-button [href]="user.profileURL" class="username">{{ user.username }}</a> -->
               </div>
               <div class="user-actions ml-15">
                 <mat-form-field class="role-input" appearance="fill" *ngIf="board.hasRoles">
@@ -42,9 +45,11 @@
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-                <button mat-mini-fab color="primary" class="mat-button-action" (click)="delete(user.email)">
+                <tasque-button class="stroke mr-15 ml-15" text="Remove"></tasque-button>
+                <!-- <tasque-button class="btn" [icon]="addIcon"> </tasque-button> -->
+                <!-- <button mat-mini-fab color="primary" class="mat-button-action" (click)="delete(user.email)">
                   <mat-icon>clear</mat-icon>
-                </button>
+                </button> -->
               </div>
             </mat-list-item>
           </div>

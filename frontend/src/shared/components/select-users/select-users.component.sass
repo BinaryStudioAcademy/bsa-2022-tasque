@@ -51,9 +51,13 @@
 					width: 100%
 					justify-content: space-between
 
-					.mat-button-primary
-						margin-top: 17px
-						width: 100px
+					.header-button-container
+						padding-top: 17px
+						display: flex
+						justify-content: flex-end
+
+						tasque-button
+							min-width: 120px
 
 				mat-list
 					width: 100%
@@ -100,10 +104,8 @@
 								border-radius: 50%
 								margin: 10px 15px
 
-							.mat-flat-button
-								&:hover
-									color: colorscheme("violet-200") !important
-									font-size: 16
+							a
+								text-decoration: none
 
 								&.username
 									overflow: hidden

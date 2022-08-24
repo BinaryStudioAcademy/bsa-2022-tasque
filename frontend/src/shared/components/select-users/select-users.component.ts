@@ -11,6 +11,7 @@ import {
 } from './Models';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
+import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'tasque-select-users',
@@ -27,6 +28,7 @@ export class SelectUsersComponent implements OnInit {
   public validationConstants = ValidationConstants;
   public emailControl: FormControl;
   public searchForm: FormGroup = new FormGroup({});
+  addIcon = faSquarePlus;
 
   @Input()
   public board: IBoard;
