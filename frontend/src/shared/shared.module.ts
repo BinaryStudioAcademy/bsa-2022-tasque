@@ -12,7 +12,6 @@ import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.com
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationModalComponent } from './components/tasque-confirmation-modal/confirmation-modal.component';
 import { OrganizationsDropdownComponent } from './components/tasque-header/organizations-dropdown/organizations-dropdown.component';
-import { MenuDropdownComponent } from './components/tasque-menu-dropdown/menu-dropdown.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TasqueLogoComponent } from './components/tasque-logo/tasque-logo.component';
 import { SideBarService } from 'src/core/services/sidebar.service';
@@ -51,7 +50,6 @@ import { TaskEditingComponent } from './components/tasque-task-editing/task-edit
     DropdownComponent,
     TasqueLogoComponent,
     OrganizationsDropdownComponent,
-    MenuDropdownComponent,
     HeaderComponent,
     TasqueTeamSelectComponent,
     TaskCreationComponent,
@@ -80,7 +78,6 @@ import { TaskEditingComponent } from './components/tasque-task-editing/task-edit
     TasqueLogoComponent,
     TasqueSidebarComponent,
     TasqueSideBarModalComponent,
-    MenuDropdownComponent,
     OrganizationsDropdownComponent,
     HeaderComponent,
     TasqueTeamSelectComponent,
