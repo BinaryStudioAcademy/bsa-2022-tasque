@@ -70,7 +70,7 @@ export class OrganizationService {
     );
   }
 
-  delUser(
+  deleteUser(
     organizationId: number,
     user: ProfileChangesDTO,
   ): Observable<HttpResponse<ProfileChangesDTO>> {
