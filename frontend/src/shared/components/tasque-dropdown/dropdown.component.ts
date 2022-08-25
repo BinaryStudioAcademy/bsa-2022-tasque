@@ -1,12 +1,11 @@
-import {
-  Component,
-  EventEmitter,
-  forwardRef,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, forwardRef, HostListener, Input, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
+export interface TasqueDropdownOption {
+  color: string;
+  title: string;
+  id: number;
+}
 
 @Component({
   selector: 'tasque-dropdown',
@@ -15,20 +14,29 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => DropdownComponent),
       multi: true,
+      useExisting: forwardRef(() => DropdownComponent),
     },
   ],
 })
 export class DropdownComponent implements OnInit, ControlValueAccessor {
   public dropdownErrorMessage = 'error';
   public dropdownValueIsError = false;
-  @Input() public options: [color: string, title: string, id: number][] = [
-    ['red', 'Development', 0],
-    ['#F6F7F9', 'Feature', 1],
+  @Input() public options: TasqueDropdownOption[] = [
+    {
+      color: 'red',
+      title: 'Development',
+      id: 0
+    },
+    {
+      color: '#F6F7F9',
+      title: 'Feature',
+      id: 1
+    },
   ];
   @Input() public label = '';
   @Input() public width = '300px';
+  @Input() public optionsWidth: string;
   @Input() public placeholder = '';
   @Input() public autoSelect = false;
 
@@ -46,25 +54,40 @@ export class DropdownComponent implements OnInit, ControlValueAccessor {
   }
   @Output() onSelect = new EventEmitter<number>();
 
-  onChange: (value: [string, string, number]) => void = () => {};
-  onTouched: (value: [string, string, number]) => void = () => {};
+  onChange: (value: TasqueDropdownOption) => void = () => { };
+  onTouched: (value: TasqueDropdownOption) => void = () => { };
 
   public selectedOption:
-    | [color: string, title: string, id: number]
+    | TasqueDropdownOption
     | undefined = undefined;
   public expanded = false;
 
-  constructor() {}
+  private wasInside = false;
 
-  writeValue(option: [string, string, number]): void {
+  @HostListener('click')
+  clickInside(): void {
+    this.wasInside = true;
+  }
+
+  @HostListener('document:click')
+  clickOutside(): void {
+    if (!this.wasInside) {
+      this.expanded = false;
+    }
+    this.wasInside = false;
+  }
+
+  constructor() { }
+
+  writeValue(option: TasqueDropdownOption): void {
     this.selectedOption = option;
   }
 
-  registerOnChange(fn: (value: [string, string, number]) => void): void {
+  registerOnChange(fn: (value: TasqueDropdownOption) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: (value: [string, string, number]) => void): void {
+  registerOnTouched(fn: (value: TasqueDropdownOption) => void): void {
     this.onTouched = fn;
   }
 
@@ -78,12 +101,12 @@ export class DropdownComponent implements OnInit, ControlValueAccessor {
     this.expanded = !this.expanded;
   }
 
-  public select(option: [string, string, number]): void {
+  public select(option: TasqueDropdownOption): void {
     this.onChange(option);
 
     if (this.selectedOption != option) {
       this.selectedOption = option;
-      this.onSelect.emit(this.selectedOption[2]);
+      this.onSelect.emit(this.selectedOption.id);
     }
     this.expanded = false;
   }

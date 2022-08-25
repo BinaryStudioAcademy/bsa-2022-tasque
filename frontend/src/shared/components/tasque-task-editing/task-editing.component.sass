@@ -1,0 +1,161 @@
+@import 'src/colors.sass'
+
+$icon-edit-width: 10px
+$item-label-width: 85px
+$task-summary-buttons-width: 161px
+
+.edit-task-dialog
+  display: flex
+  flex-direction: column
+  height: 100%
+
+.item-wrapper
+  display: flex
+  flex-direction: row
+  align-items: center
+  margin-bottom: 15px
+.item-label
+  font-size: 14px
+  color: colorscheme(gray-500)
+  width: $item-label-width
+  word-wrap: break-word
+
+.description-text-wrapper
+  width: calc( 100% - $icon-edit-width )
+  display: flex
+  gap: 10px
+  align-items: center
+  ::ng-deep tasque-button button
+    font-size: 20px
+
+.description-text
+  max-height: 250px
+  word-wrap: break-word
+  overflow-y: auto
+
+.description-editor
+  width: calc( 100% - $icon-edit-width )
+
+.item-text
+  cursor: pointer
+
+.user-comment-container
+  display: flex
+  margin-top: auto
+  align-items: center
+  padding-top: 20px
+  padding-left: 45px
+  padding-right: 30px
+  padding-bottom: 45px
+  .input-wrapper
+    width: 100%
+    ::ng-deep tasque-input input
+      height: 70px
+      border-top-right-radius: 0px
+      border-bottom-right-radius: 0px
+
+.subtask-container
+  margin-bottom: 15px
+h5
+  margin-bottom: 10px
+
+.comments-container
+  margin-bottom: 15px
+
+.task-summary-container
+  display: flex
+  flex-direction: column
+  margin-bottom: 60px
+  gap: 15px
+  padding-top: 50px
+  padding-left: 45px
+  padding-right: 30px
+.item-label
+  font-size: 15px
+  color: colorscheme(gray-500)
+h5
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+  align-items: center
+  width: 100%
+  .input-wrapper
+    width: 100%
+
+.summary-text-wrapper
+  width: calc( 100% - $task-summary-buttons-width - $icon-edit-width )
+  display: flex
+  gap: 10px
+  align-items: center
+  ::ng-deep tasque-button button
+    font-size: 20px
+
+.summary-text
+  max-height: 250px
+  word-wrap: break-word
+  overflow-y: auto
+
+.task-summary-buttons
+  display: flex
+  flex-direction: row
+  gap: 15px
+  margin-left: 15px
+  margin-right: 15px
+  ::ng-deep tasque-button button
+    font-size: 23px
+  ::ng-deep tasque-button.pink button
+    color: colorscheme(pink-200)
+    font-size: 23px
+  &:hover
+    color: colorscheme(pink-100)
+
+.task-main-container
+  display: flex
+  flex-direction: column
+  background: colorscheme(gray-100)
+  padding-top: 30px
+  padding-left: 45px
+  padding-right: 30px
+  padding-bottom: 30px
+
+.user-comment-buttons
+  display: flex
+  flex-direction: row
+  gap: 10px
+  background: colorscheme(gray-200)
+  height: 70px
+  align-items: center
+  padding-left: 10px
+  padding-right: 40px
+  border-top-right-radius: 10px
+  border-bottom-right-radius: 10px
+  ::ng-deep tasque-button button
+    color: colorscheme(gray-400)
+    font-size: 23px
+
+.error
+  color: colorscheme(pink-300)
+
+.task-info-container
+  width: 100%
+
+.fill-description-width
+  width: calc( 100% - $item-label-width )
+  display: flex
+  flex-direction: column
+  row-gap: 15px
+
+tasque-avatar
+  padding-right: 10px
+
+.select-button ::ng-deep button
+  font-size: 30px
+  background: colorscheme(gray-300)
+  border-radius: 50%
+  height: 30px
+  width: 30px
+
+.user-info
+  display: flex
+  align-items: center
+  cursor: pointer
