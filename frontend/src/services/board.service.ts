@@ -42,12 +42,11 @@ export class BoardService {
     };
 
     // change to HttpClient.put for Board entity
-    board.users.push(user);
-
-    this.save(board);
     return new Observable((observer) => {
       // For simulation during the tests. Math random should be removed later
-      if (Math.random() <= 0.9) {
+      if (Math.random() <= 0.5) {
+        board.users.push(user);
+        this.save(board);
         observer.next('done');
         observer.complete();
       }

@@ -1,5 +1,5 @@
 <div class="global-wrapper">
-  <h3 class="select-users-title">Select Users</h3>
+  <h3 class="text-center">Select Users</h3>
   <div class="select-users-wrapper">
     <div class="row b-b select-users-header container" [ngStyle]="{ 'height.px': defaultRowHeight_px }">
       <form [formGroup]="searchForm" (ngSubmit)="add()">
@@ -37,7 +37,7 @@
               </div>
               <div class="user-actions ml-15">
                 <tasque-dropdown [options]="roles"></tasque-dropdown>
-                <tasque-button class="stroke mr-15 ml-15" text="Remove"></tasque-button>
+                <tasque-button class="stroke mr-15 ml-15" text="Remove" (btnClick)="delete(user.email)"></tasque-button>
               </div>
             </li>
           </div>
@@ -45,7 +45,6 @@
       </ng-template>
       <ng-template [ngIf]="!isLoading && usersCount == 0">
         <h4 class="text-center">It's quiet out here... You should invite someone.</h4>
-        <span></span>
       </ng-template>
     </div>
   </div>

@@ -1,3 +1,5 @@
+import { TasqueDropdownOption } from "../tasque-dropdown/dropdown.component";
+
 export enum BusinessRole {
   Administrator = 1,
   Organizer = 2,
@@ -32,13 +34,14 @@ export interface IBoard extends IBoardKey {
   users: IUserCard[];
 }
 
-export function getRolesAsArray(): [color: string, text: string, id: number][] {
+export function getRolesAsArray(): TasqueDropdownOption[] {
   return Object.keys(BusinessRole)
     .filter((v) => isNaN(Number(v)))
     .map((name) => {
-      let color = 'white';
-      let text = name;
-      let id: number = BusinessRole[name as keyof typeof BusinessRole]
-      return [color, text, id];
+      return {
+        color: 'white',
+        title: name,
+        id: BusinessRole[name as keyof typeof BusinessRole]
+      }
     });
 }
