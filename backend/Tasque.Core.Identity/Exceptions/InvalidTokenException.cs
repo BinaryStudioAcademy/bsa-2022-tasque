@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tasque.Core.BLL.Exeptions
+﻿namespace Tasque.Core.Identity.Exeptions
 {
     public class InvalidTokenException : Exception
     {
