@@ -3,11 +3,11 @@ using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
 
-namespace Tasque.Core.BLL.MappingProfiles
+namespace Tasque.Core.Identity.MappingProfiles
 {
-    public class UserProfile : Profile
+    public class UserMappingProfile : Profile
     {
-        public UserProfile()
+        public UserMappingProfile()
         {
             CreateMap<UserRegisterDto, User>();
             CreateMap<User, UserDto>().ReverseMap();

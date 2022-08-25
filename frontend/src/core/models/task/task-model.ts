@@ -1,7 +1,21 @@
+import { TaskPriority } from './task-priority';
+import { TaskState } from './task-state';
+import { TaskType } from './task-type';
+
 export interface TaskModel {
-  currentUser?: number;
-  project?: [string, string, number];
-  issueType?: [string, string, number];
-  summary?: string;
-  description?: string;
+  id: number,
+  summary: string,
+  description?: string,
+  state: TaskState,
+  type: TaskType,
+  priority: TaskPriority,
+  authorId: number,
+  projectId: number,
+  sprintId: number,
+  lastUpdatedById: number,
+  parentTaskId: number,
+  createdAt: Date,
+  updatedAt: Date,
+  deadline: Date,
+  finishedAt?: Date,
 }

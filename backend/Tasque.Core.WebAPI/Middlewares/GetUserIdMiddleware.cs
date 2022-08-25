@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using Tasque.Core.BLL.Helpers;
+using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Middlewares
 {

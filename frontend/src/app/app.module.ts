@@ -28,7 +28,6 @@ import { TasqueProjectSettingsComponent } from './components/tasque-project-sett
 import { ToastrConfig } from 'src/entity-models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
 import { SelectUsersComponent } from '../shared/components/select-users/select-users.component';
-import { EditProjectComponent } from './components/edit-project/edit-project.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +50,6 @@ import { EditProjectComponent } from './components/edit-project/edit-project.com
     SelectUsersComponent,
     TasqueBoardComponent,
     TasqueProjectSettingsComponent,
-    EditProjectComponent
   ],
   imports: [
     BrowserModule,
@@ -73,4 +71,4 @@ import { EditProjectComponent } from './components/edit-project/edit-project.com
     OrganizationListComponent
   ]
 })
-export class AppModule {}
+export class AppModule { }

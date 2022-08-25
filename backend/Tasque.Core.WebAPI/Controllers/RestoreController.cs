@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Tasque.Core.BLL.Services.Auth;
 using Tasque.Core.Common.DTO;
+using Tasque.Core.Identity.Services;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
