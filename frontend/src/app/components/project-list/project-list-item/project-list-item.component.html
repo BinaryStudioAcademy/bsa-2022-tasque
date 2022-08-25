@@ -1,11 +1,7 @@
 <mat-card>
-  <mat-card-title><a href="#">{{projectName}}</a></mat-card-title>
+  <mat-card-title><a href="#">{{project.name}}</a></mat-card-title>
   <mat-card-actions align="end">
-    <tasque-button
-      class="stroke gray"
-      text="Edit"
-    >
-    </tasque-button>
+    <app-edit-project [project]="project"></app-edit-project>
     <tasque-button
       class="fill"
       text="Open"

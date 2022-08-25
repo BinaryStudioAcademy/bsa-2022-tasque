@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
+import { ProjectService } from 'src/core/services/project.service';
 import { ProjectModel } from '../../../core/models/project/project-model';
 
 @Component({
@@ -12,86 +14,19 @@ export class ProjectListComponent implements OnInit {
   public inputSearch = '';
   public searchIcon = faMagnifyingGlass;
 
-  public items:ProjectModel[] = [
-    {
-      id: 1,
-      name: 'Test Project',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 2,
-      name: 'Test Project 2',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 3,
-      name: 'Test Project 3',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 4,
-      name: 'Test Project 4',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 5,
-      name: 'Test Project 5',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 6,
-      name: 'Test Project 6',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 7,
-      name: 'Test Project 7',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 8,
-      name: 'Test Project 8',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 9,
-      name: 'Test Project 9',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-  ] ;
+  public items: ProjectInfoModel[] = [];
 
   public itemsShow = this.items;
 
-  constructor() { }
+  constructor(public projectService: ProjectService) { }
 
   ngOnInit(): void {
+    this.projectService.getAllProjectsOfThisUser(1).subscribe(data => {
+      if(data.body) {
+        this.items = data.body;
+        this.itemsShow = this.items;
+      }
+    })
   }
 
   filterItems(): void{

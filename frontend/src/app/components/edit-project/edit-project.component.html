@@ -1,0 +1,28 @@
+<tasque-sidebar name="edit" class="stroke gray" text="Edit">
+  <div class="content">
+    <div class="container">
+      <label>Project parameters</label>
+      <form [formGroup]="editProjectForm" (ngSubmit)="editProject()">
+        <tasque-input 
+          label="New project name" 
+          placeholder="Enter a new name for project..." 
+          formControlName="editProjectName" 
+          [invalid]="showErrorMessage" 
+          errorMessage="All bad"></tasque-input>
+        <tasque-button class="submit btn" text="rename" (btnClick)="editProject()"></tasque-button>
+      </form>
+    </div>
+    <div class="container">
+      <label>Change member role</label>
+      <tasque-select-users></tasque-select-users>
+    </div>
+    <div class="container">
+      <label>Remove member</label>
+      <tasque-select-users></tasque-select-users>
+    </div>
+    <div class="container">
+      <label>Invite member</label>
+      <tasque-select-users></tasque-select-users>
+    </div>
+  </div>
+</tasque-sidebar>

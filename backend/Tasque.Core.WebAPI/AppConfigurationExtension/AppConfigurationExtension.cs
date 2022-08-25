@@ -60,6 +60,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             {
                 cfg.AddProfile<UserProfile>();
                 cfg.AddProfile<OrganizationProfile>();
+                cfg.AddProfile<ProjectProfile>();
             },
             Assembly.GetExecutingAssembly());
         }

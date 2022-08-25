@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 
 @Component({
   selector: 'app-project-list-item',
@@ -8,7 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ProjectListItemComponent implements OnInit {
 
   @Input()
-  public projectName: string;
+  public project: ProjectInfoModel
 
   constructor() { }
 
