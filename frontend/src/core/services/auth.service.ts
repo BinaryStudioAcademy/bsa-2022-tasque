@@ -47,6 +47,10 @@ export class AuthService {
     return this.httpService.postFullRequest(this.routePrefix + '/restore', credentials);
   }
 
+  checkRefLink(ref: string): Observable<HttpResponse<string>> {
+    return this.httpService.getRequest(this.routePrefix + `/ref?key=${ref}`);
+  }
+
   setAuthToken(token: AccessToken): void {
     localStorage.setItem(LocalStorageKeys.token, token.accessToken);
   }

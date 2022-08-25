@@ -8,7 +8,9 @@ import { ToastrService } from 'ngx-toastr';
 import { ErrorMessages } from 'src/entity-models/const-resources/error-messages';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
-import { switchMap } from 'rxjs/operators';
+import { filter, map, mergeMap, switchMap, takeUntil } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-register-page',
@@ -34,12 +36,14 @@ export class RegisterPageComponent implements OnInit {
   public validationConstants = ValidationConstants;
   public errorMessages = ErrorMessages;
 
+  private unsubscribe$ = new Subject<void>();
+
   get nameErrorMessage(): string {
     const ctrl = this.nameControl;
     if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
       return 'Name is required';
     }
-    if(ctrl.errors?.['minlength'] && (ctrl.dirty || ctrl.touched)) {
+    if (ctrl.errors?.['minlength'] && (ctrl.dirty || ctrl.touched)) {
       return 'Name minimum length is 4 characters';
     }
     return '';
@@ -72,7 +76,7 @@ export class RegisterPageComponent implements OnInit {
     if (ctrl.errors?.['pattern']) {
       return 'Passwords do not match';
     }
-    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)){
+    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
       return 'You need to repeat your password';
     }
     return '';
@@ -81,6 +85,8 @@ export class RegisterPageComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private toastrService: ToastrService,
+    private route: ActivatedRoute,
+    private router: Router,
   ) {
     this.nameControl = new FormControl(this.userRegister.name, [
       Validators.required,
@@ -101,6 +107,22 @@ export class RegisterPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.queryParams
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        filter((params) => !!params['ref']),
+        map((params) => params['ref'] as string),
+        mergeMap((ref) => this.authService.checkRefLink(ref)),
+      )
+      .subscribe(
+        (email) => {
+          this.emailControl.setValue(email);
+        },
+        () => {
+          this.router.navigate([], { replaceUrl: true, relativeTo: this.route });
+        },
+      );
+
     this.registerForm = new FormGroup({
       nameControl: this.nameControl,
       emailControl: this.emailControl,
@@ -153,7 +175,7 @@ export class RegisterPageComponent implements OnInit {
         ),
       )
       .subscribe(() => {
-    this.toastrService.info('Check your mailbox');
+        this.toastrService.info('Check your mailbox');
       });
   }
 }
