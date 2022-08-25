@@ -1,13 +1,11 @@
-﻿import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+﻿import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ProjectService } from '../../../../core/services/project.service';
 import { NewProjectModel } from '../../../../core/models/project/new-project-model';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-
 import { takeUntil } from 'rxjs/operators';
 import { NewProjectCredentialsModel } from '../../../../core/models/project/new-project-credentials.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 
 @Component({
   selector: 'app-create-project-dialog',
@@ -18,7 +16,7 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
   get projectNameErrorMessage(): string {
     const ctrl = this.projectNameControl;
 
-    if (ctrl.errors?.['required']) {
+    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
       return 'Project name is required';
     }
     return '';
@@ -27,7 +25,7 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
   get projectKeyErrorMessage(): string {
     const ctrl = this.projectKeyControl;
 
-    if (ctrl.errors?.['required']) {
+    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
       return 'Project key is required';
     }
     return '';
@@ -36,9 +34,6 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
   public createProjectForm: FormGroup = new FormGroup({});
   public projectNameControl: FormControl;
   public projectKeyControl: FormControl;
-
-  @ViewChild('projectNameInput') projectNameInput: InputComponent;
-  @ViewChild('projectKeyInput') projectKeyInput: InputComponent;
 
   public createBtnName = 'Create project';
   public createBtnClass = 'fill';
@@ -75,28 +70,6 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     ]);
   }
 
-  public showError(input: InputComponent): void {
-    let isError = false;
-    let errMsg = '';
-    switch (input.inputLabel) {
-      case 'Key':
-        isError = this.projectKeyControl.invalid;
-        errMsg = this.projectKeyErrorMessage;
-        break;
-      case 'Name':
-        isError = this.projectNameControl.invalid;
-        errMsg = this.projectNameErrorMessage;
-        break;
-    }
-
-    input.invalid = isError;
-    input.errorMessage = errMsg;
-  }
-
-  public hideError(input: InputComponent): void {
-    input.invalid = false;
-  }
-
   ngOnInit(): void {
     this.createProjectForm = new FormGroup({
       projectNameControl: this.projectNameControl,
@@ -111,15 +84,11 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (!this.createProjectForm.valid) {
+      this.createProjectForm.markAllAsTouched();
+      this.projectKeyControl.markAllAsTouched();
       return;
     }
 
-    if (this.createProjectForm.invalid) {
-      this.showError(this.projectKeyInput);
-      this.showError(this.projectNameInput);
-
-      return;
-    }
     const newProject: NewProjectModel = {
       name: this.newProjectName,
       authorId: this.data.authorId,
