@@ -25,6 +25,7 @@ import { TasqueSideBarModalComponent } from './components/tasque-sidebar/tasque-
 import { AvatarComponent } from './components/tasque-avatar/avatar.component';
 import { NgClickOutsideDirective } from 'ng-click-outside2';
 import { TaskEditingComponent } from './components/tasque-task-editing/task-editing.component';
+import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 
 @NgModule({
   imports: [
@@ -56,7 +57,8 @@ import { TaskEditingComponent } from './components/tasque-task-editing/task-edit
     TasqueSidebarComponent,
     TasqueSideBarModalComponent,
     TaskEditingComponent,
-    AvatarComponent
+    AvatarComponent,
+    NotFoundPageComponent,
   ],
   exports: [
     CommonModule,
@@ -85,7 +87,8 @@ import { TaskEditingComponent } from './components/tasque-task-editing/task-edit
     AngularEditorModule,
     NgClickOutsideDirective,
     TaskEditingComponent,
-    AvatarComponent
+    AvatarComponent,
+    NotFoundPageComponent
   ],
   providers: [SideBarService],
 })
