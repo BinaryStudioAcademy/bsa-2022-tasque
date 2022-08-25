@@ -56,16 +56,16 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
 
   public unsubscribe$ = new Subject<void>();
 
-  public newProject: NewProjectModel;
+  public newProject: NewProjectModel = {};
 
   constructor(
     public projectService: ProjectService,
     @Inject(MAT_DIALOG_DATA) public data: NewProjectCredentialsModel,
   ) {
-    this.projectNameControl = new FormControl(this.newProjectName, [
+    this.projectNameControl = new FormControl(this.newProject.name, [
       Validators.required,
     ]);
-    this.projectKeyControl = new FormControl(this.newProjectKey, [
+    this.projectKeyControl = new FormControl(this.newProject.key, [
       Validators.required,
     ]);
   }
@@ -89,13 +89,14 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const newProject: NewProjectModel = {
-      name: this.newProjectName,
+    this.newProject = {
       authorId: this.data.authorId,
       organizationId: this.data.organizationId,
+      name: this.createProjectForm.get('projectNameControl')?.value,
+      key: this.createProjectForm.get('projectKeyControl')?.value,
     };
     this.projectService
-      .createProject(newProject)
+      .createProject(this.newProject)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe();
   }
