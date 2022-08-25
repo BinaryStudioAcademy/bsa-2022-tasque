@@ -57,6 +57,7 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   public newProject: NewProjectModel = {
     name: '',
+    key: '',
     authorId: 0,
     organizationId: 0,
   };
