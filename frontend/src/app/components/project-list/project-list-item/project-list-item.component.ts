@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ProjectModel } from 'src/core/models/project/project-model';
+import { UserModel } from 'src/core/models/user/user-model';
 
 @Component({
   selector: 'app-project-list-item',
@@ -7,12 +9,10 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ProjectListItemComponent implements OnInit {
 
-  @Input()
-  public projectName: string;
+  @Input() public currentUser: UserModel;
+  @Input() public project: ProjectModel;
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void { }
 }
