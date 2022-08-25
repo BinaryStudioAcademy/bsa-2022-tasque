@@ -10,7 +10,6 @@ import { TasqueBoardComponent } from './components/tasque-board/tasque-board.com
 import { TasqueTeamComponent } from './components/tasque-team/tasque-team.component';
 import { TasqueProjectSettingsComponent } from './components/tasque-project-settings/tasque-project-settings.component';
 import { AuthGuard } from './auth/guards/auth.guard';
-import { NotFoundPageComponent } from 'src/shared/components/not-found-page/not-found-page.component';
 
 const routes: Routes = [
   ...AuthRoutes,
