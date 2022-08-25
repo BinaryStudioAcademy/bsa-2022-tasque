@@ -38,7 +38,7 @@ export class BoardService {
       username: email,
       profileURL: 'something',
       avatarURL: 'https://www.w3schools.com/howto/img_avatar.png',
-      role: board.hasRoles ? BusinessRole.Participant : null,
+      role: BusinessRole.Participant,
     };
 
     // change to HttpClient.put for Board entity

@@ -21,7 +21,7 @@ export interface IUserCard {
   username: string;
   profileURL: string;
   avatarURL: string;
-  role: BusinessRole | null;
+  role: BusinessRole;
 }
 
 export interface IBoardKey {

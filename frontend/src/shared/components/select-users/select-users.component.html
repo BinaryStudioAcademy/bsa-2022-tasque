@@ -36,7 +36,7 @@
                 </a>
               </div>
               <div class="user-actions ml-15">
-                <tasque-dropdown [options]="roles"></tasque-dropdown>
+                <tasque-dropdown [options]="roles" [placeholder]="roleToString(user.role)" width="150px" (onSelect)="update(user, $event)"></tasque-dropdown>
                 <tasque-button class="stroke mr-15 ml-15" text="Remove" (btnClick)="delete(user.email)"></tasque-button>
               </div>
             </li>

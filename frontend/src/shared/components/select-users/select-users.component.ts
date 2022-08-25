@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { BoardService } from 'src/services/board.service';
 import {
+  BusinessRole,
   getRolesAsArray,
   IBoard,
   IUserCard,
@@ -84,12 +85,17 @@ export class SelectUsersComponent implements OnInit {
     });
   }
 
-  update(user: IUserCard): void {
+  update(user: IUserCard, role: BusinessRole): void {
     this.isLoading = true;
+    user.role = role;
     this.service.updateUser(this.board, user).subscribe(() => {
       this.toastr.success(`${user.username} was updated successfully !`);
       this.refreshList();
     });
+  }
+
+  roleToString(role: BusinessRole): string {
+    return BusinessRole[role];
   }
 
   private refreshList(): void {
