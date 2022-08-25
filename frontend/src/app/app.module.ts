@@ -49,7 +49,7 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     TasqueProjectSettingsComponent,
     SelectUsersComponent,
     TasqueBoardComponent,
-    TasqueProjectSettingsComponent
+    TasqueProjectSettingsComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,4 +71,4 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     OrganizationListComponent
   ]
 })
-export class AppModule {}
+export class AppModule { }

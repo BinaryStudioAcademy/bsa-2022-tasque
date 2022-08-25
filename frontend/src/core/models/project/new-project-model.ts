@@ -1,6 +1,6 @@
-﻿export interface NewProjectModel {
-  name?: string;
+﻿﻿export interface NewProjectModel {
+  name: string;
   key?: string;
-  authorId?: number;
-  organizationId?: number;
+  authorId: number;
+  organizationId: number;
 }

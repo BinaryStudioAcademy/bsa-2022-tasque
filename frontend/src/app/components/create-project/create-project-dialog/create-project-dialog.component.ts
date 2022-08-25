@@ -57,7 +57,11 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
   public isSuccessful: boolean;
 
   public unsubscribe$ = new Subject<void>();
-  public newProject: NewProjectModel = {};
+  public newProject: NewProjectModel = {
+    name: '',
+    authorId: 0,
+    organizationId: 0,
+  };
 
   constructor(
     public projectService: ProjectService,
@@ -98,6 +102,7 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
       name: this.createProjectForm.get('projectNameControl')?.value,
       key: this.createProjectForm.get('projectKeyControl')?.value,
     };
+
     this.projectService
       .createProject(this.newProject)
       .pipe(takeUntil(this.unsubscribe$))
