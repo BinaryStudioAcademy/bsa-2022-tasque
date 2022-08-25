@@ -11,10 +11,9 @@
       <tasque-input [class]="this.inputKeyClass" [id]="this.inputKeyId" [label]="this.inputKeyLabel" [formControl]="projectKeyControl" [invalid]="!projectKeyControl.valid" [errorMessage]="projectKeyErrorMessage"> </tasque-input>
     </div>
   </mat-dialog-content>
-  {{ createProjectForm.valid }}
   <mat-divider></mat-divider>
   <mat-dialog-actions class="dialog-options" align="end">
-    <tasque-button [mat-dialog-close]="false" [text]="this.cancelBtnName" [class]="this.cancelBtnClass"> </tasque-button>
+    <tasque-button [text]="this.cancelBtnName" [class]="this.cancelBtnClass" (click)="onClose()"> </tasque-button>
     <tasque-button type="submit" [text]="this.createBtnName" [class]="this.createBtnClass" (click)="onSubmit()"> </tasque-button>
   </mat-dialog-actions>
 </form>

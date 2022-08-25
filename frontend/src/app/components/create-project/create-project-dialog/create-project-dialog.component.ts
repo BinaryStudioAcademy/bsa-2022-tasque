@@ -2,10 +2,11 @@
 import { Subject } from 'rxjs';
 import { ProjectService } from '../../../../core/services/project.service';
 import { NewProjectModel } from '../../../../core/models/project/new-project-model';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 import { NewProjectCredentialsModel } from '../../../../core/models/project/new-project-credentials.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-create-project-dialog',
@@ -53,14 +54,16 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
 
   public newProjectName = '';
   public newProjectKey = '';
+  public isSuccessful: boolean;
 
   public unsubscribe$ = new Subject<void>();
-
   public newProject: NewProjectModel = {};
 
   constructor(
     public projectService: ProjectService,
+    public notificationService: NotificationService,
     @Inject(MAT_DIALOG_DATA) public data: NewProjectCredentialsModel,
+    private dialogRef: MatDialogRef<CreateProjectDialogComponent>,
   ) {
     this.projectNameControl = new FormControl(this.newProject.name, [
       Validators.required,
@@ -98,6 +101,16 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     this.projectService
       .createProject(this.newProject)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe();
+      .subscribe((resp) => {
+        if (resp.status == 200) {
+          this.notificationService.success('The project has been created');
+          this.dialogRef.close();
+        }
+      });
+  }
+
+  onClose(): void {
+    this.createProjectForm.reset();
+    this.dialogRef.close();
   }
 }
