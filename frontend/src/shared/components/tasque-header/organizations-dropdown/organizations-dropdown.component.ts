@@ -32,12 +32,12 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
   }
 
   ngOnInit(): void {
+    this.subscribeToCurrentOrganization();
+    this.subscribeToOrganizationControl();
+
     if (this.storageService.currentOrganizationId === -1) {
       return;
     }
-
-    this.subscribeToCurrentOrganization();
-    this.subscribeToOrganizationControl();
 
     const searchedOrganization = this.availableOrganizations
       .find((x) => x.id === this.storageService.currentOrganizationId);
