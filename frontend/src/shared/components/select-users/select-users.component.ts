@@ -3,9 +3,7 @@ import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { BoardService } from 'src/services/board.service';
 import {
-  BoardType,
-  BusinessRole,
-  EnumToArrayElement,
+  getRolesAsArray,
   IBoard,
   IUserCard,
 } from './Models';
@@ -20,28 +18,23 @@ import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 })
 export class SelectUsersComponent implements OnInit {
   users$!: Observable<IUserCard[]>;
-  usersCount = 0;
-  roles: EnumToArrayElement[];
+  roles: [color: string, title: string, id: number][];
   isLoading = true;
   public userEmail = '';
-  public rowspan = 0;
   public validationConstants = ValidationConstants;
   public emailControl: FormControl;
   public searchForm: FormGroup = new FormGroup({});
+
   addIcon = faSquarePlus;
+  public rowspan = 0;
+  usersCount = 0;
+  public defaultRowHeight_px = 84;
 
   @Input()
   public board: IBoard;
 
   constructor(private service: BoardService, private toastr: ToastrService) {
-    this.roles = Object.keys(BusinessRole)
-      .filter((v) => isNaN(Number(v)))
-      .map((name) => {
-        return {
-          id: BusinessRole[name as keyof typeof BusinessRole],
-          name,
-        };
-      });
+    this.roles = getRolesAsArray();
   }
 
   ngOnInit(): void {

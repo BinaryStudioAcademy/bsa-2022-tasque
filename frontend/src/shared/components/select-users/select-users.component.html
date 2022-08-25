@@ -34,22 +34,19 @@
                 <a [href]="user.profileURL" class="username">
                   <tasque-button class="btn" [text]="user.username"></tasque-button>
                 </a>
-                <!-- <a mat-flat-button [href]="user.profileURL" class="username">{{ user.username }}</a> -->
+              
               </div>
               <div class="user-actions ml-15">
                 <mat-form-field class="role-input" appearance="fill" *ngIf="board.hasRoles">
                   <mat-label>Role</mat-label>
                   <mat-select [(value)]="user.role" (valueChange)="update(user)">
-                    <mat-option *ngFor="let role of roles" [value]="role.id">
-                      {{ role.name }}
+                    <mat-option *ngFor="let role of roles" [value]="role[2]">
+                      {{ role[1] }}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
+                <tasque-dropdown [options]="roles"></tasque-dropdown>
                 <tasque-button class="stroke mr-15 ml-15" text="Remove"></tasque-button>
-                <!-- <tasque-button class="btn" [icon]="addIcon"> </tasque-button> -->
-                <!-- <button mat-mini-fab color="primary" class="mat-button-action" (click)="delete(user.email)">
-                  <mat-icon>clear</mat-icon>
-                </button> -->
               </div>
             </mat-list-item>
           </div>
