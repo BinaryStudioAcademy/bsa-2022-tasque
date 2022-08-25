@@ -26,7 +26,7 @@ export class SelectUsersComponent implements OnInit {
   public searchForm: FormGroup = new FormGroup({});
 
   addIcon = faSquarePlus;
-  public rowspan = 0;
+  public rowspan = 1;
   usersCount = 0;
   public defaultRowHeight_px = 84;
 
@@ -95,7 +95,7 @@ export class SelectUsersComponent implements OnInit {
     this.users$ = this.service.getUsers(this.board);
     this.service.getUsers(this.board).subscribe((data) => {
       this.usersCount = data.length;
-      this.rowspan = Math.min(this.usersCount, 5);
+      this.rowspan = Math.max(1, Math.min(this.usersCount, 5));
       this.isLoading = false;
     });
   }

@@ -1,7 +1,7 @@
-<div layout-sm class="wrapper select-user">
-  <h3 class="text-center">Select Users</h3>
-  <mat-grid-list rowHeight="84px" cols="1">
-    <mat-grid-tile [rowspan]="1" class="b-b">
+<div class="global-wrapper">
+  <h3 class="select-users-title">Select Users</h3>
+  <div class="select-users-wrapper">
+    <div class="row b-b select-users-header container" [ngStyle]="{ 'height.px': defaultRowHeight_px }">
       <form [formGroup]="searchForm" (ngSubmit)="add()">
         <div class="w-85 pl-15 mr-15">
           <tasque-input
@@ -19,45 +19,35 @@
           <tasque-button class="mini btn" text="Add User" [icon]="addIcon" type="submit" (btnClick)="add()"></tasque-button>
         </div>
       </form>
-    </mat-grid-tile>
-    <mat-grid-tile class="list" [rowspan]="rowspan">
+    </div>
+    <!-- <div class="select-users-body container" [ngStyle]="{ 'height.px': defaultRowHeight_px * rowspan }">
       <ng-template [ngIf]="isLoading">
         <tasque-loading></tasque-loading>
       </ng-template>
       <ng-template [ngIf]="!isLoading && usersCount > 0">
-        <mat-list role="list">
+        <ul role="list">
           <div class="list-item-element" *ngFor="let user of users$ | async; index as i">
-            <mat-divider *ngIf="i != 0"></mat-divider>
-            <mat-list-item role="listitem">
+            <br *ngIf="i != 0" />
+            <li role="listitem">
               <div class="user-data mr-15">
                 <img [src]="user.avatarURL" alt="user's avatar" class="avatar" />
                 <a [href]="user.profileURL" class="username">
                   <tasque-button class="btn" [text]="user.username"></tasque-button>
                 </a>
-              
               </div>
               <div class="user-actions ml-15">
-                <mat-form-field class="role-input" appearance="fill" *ngIf="board.hasRoles">
-                  <mat-label>Role</mat-label>
-                  <mat-select [(value)]="user.role" (valueChange)="update(user)">
-                    <mat-option *ngFor="let role of roles" [value]="role[2]">
-                      {{ role[1] }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
                 <tasque-dropdown [options]="roles"></tasque-dropdown>
                 <tasque-button class="stroke mr-15 ml-15" text="Remove"></tasque-button>
               </div>
-            </mat-list-item>
+            </li>
           </div>
-        </mat-list>
+        </ul>
       </ng-template>
       <ng-template [ngIf]="!isLoading && usersCount == 0">
-        <mat-divider></mat-divider>
         <h4 class="text-center">It's quiet out here... You should invite someone.</h4>
         <span></span>
       </ng-template>
-    </mat-grid-tile>
-  </mat-grid-list>
+    </div> -->
+  </div>
 </div>
 <router-outlet></router-outlet>
