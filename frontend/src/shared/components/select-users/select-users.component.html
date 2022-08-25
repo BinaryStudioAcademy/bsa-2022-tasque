@@ -20,7 +20,7 @@
         </div>
       </form>
     </div>
-    <!-- <div class="select-users-body container" [ngStyle]="{ 'height.px': defaultRowHeight_px * rowspan }">
+    <div class="select-users-body container" [ngStyle]="{ 'height.px': defaultRowHeight_px * rowspan }">
       <ng-template [ngIf]="isLoading">
         <tasque-loading></tasque-loading>
       </ng-template>
@@ -30,7 +30,7 @@
             <br *ngIf="i != 0" />
             <li role="listitem">
               <div class="user-data mr-15">
-                <img [src]="user.avatarURL" alt="user's avatar" class="avatar" />
+                <tasque-avatar [imageURL]="user.avatarURL" alt="user's avatar" [diameter_px]="40"></tasque-avatar>
                 <a [href]="user.profileURL" class="username">
                   <tasque-button class="btn" [text]="user.username"></tasque-button>
                 </a>
@@ -47,7 +47,7 @@
         <h4 class="text-center">It's quiet out here... You should invite someone.</h4>
         <span></span>
       </ng-template>
-    </div> -->
+    </div>
   </div>
 </div>
 <router-outlet></router-outlet>
