@@ -22,7 +22,6 @@ const routes: Routes = [
       { path: 'organizations', component: OrganizationListComponent },
       { path: 'projects', component: ProjectListComponent, },
       ...UserRoutes,
-      { path:'**', component: NotFoundPageComponent }
     ]
   },
   {
