@@ -37,8 +37,8 @@ export class CreateSprintComponent implements OnInit {
     const newSprint = {
       name: this.currentSprint.name,
       description: this.currentSprint.description,
-      startAt: this.currentSprint.startAt.toISOString().slice(0, 16),
-      endAt: this.currentSprint.endAt.toISOString().slice(0, 16),
+      startAt: this.currentSprint.startAt ? this.currentSprint.startAt.toISOString().slice(0, 16) : "",
+      endAt: this.currentSprint.endAt ? this.currentSprint.endAt.toISOString().slice(0, 16) : "",
       projectId: this.currentSprint.projectId,
       isNew: true
     } as NewSprintModel;

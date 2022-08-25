@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { NewSprintModel } from 'src/core/models/sprint/new-sprint-model';
+import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 
 @Component({
   selector: 'app-create-sprint-dialog',
@@ -25,13 +26,13 @@ export class CreateSprintDialogComponent implements OnInit {
   public sprintEndAt: FormControl;
   public sprintDescription: FormControl;
 
-  public duration: [color: string, title: string, id: number];
+  public duration: TasqueDropdownOption;
 
-  public periods: [color: string, title: string, id: number][] = [
-    ['#0000', 'Custom', 0],
-    ['#0000', 'One Week', 1],
-    ['#0000', 'Two weeks', 2],
-    ['#0000', 'Four weeks', 4],
+  public periods: TasqueDropdownOption[] = [
+    { color: '#0000', title: 'Custom', id: 0},
+    { color: '#0000', title: 'One Week', id: 0},
+    { color: '#0000', title: 'Two Weeks', id: 0},
+    { color: '#0000', title: 'Four Weeks', id: 0},
   ];
 
   public unsubscribe$ = new Subject<void>();

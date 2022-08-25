@@ -4,7 +4,7 @@
   description?: string,  
   createdAt: Date,
   updatedAt: Date,
-  startAt: Date,
-  endAt: Date,
+  startAt?: Date,
+  endAt?: Date,
   projectId: number
 }
