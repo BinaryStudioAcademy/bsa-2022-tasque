@@ -110,5 +110,11 @@ namespace Tasque.Core.Identity.Services
             await _tokenService.SendConfirmationEmail(token);
             return true;
         }
+
+        public async Task<string> GetEmailFromReferralKey(Guid key)
+        {
+            var token = await _tokenService.ConfirmToken(key, TokenKind.ReferralSignUp);
+            return token.User.Email;
+        }
     }
 }
