@@ -136,7 +136,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
 
   public delUser(): void {
     this.organizationService
-      .delUser(this.organization.id, this.users[0])
+      .deleteUser(this.organization.id, this.users[0])
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.status == 200) {
