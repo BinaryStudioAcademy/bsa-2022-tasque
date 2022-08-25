@@ -20,15 +20,15 @@
         </div>
       </form>
     </div>
-    <div class="select-users-body container" [ngStyle]="{ 'height.px': defaultRowHeight_px * rowspan }">
+    <div class="select-users-body container">
       <ng-template [ngIf]="isLoading">
         <tasque-loading></tasque-loading>
       </ng-template>
       <ng-template [ngIf]="!isLoading && usersCount > 0">
-        <ul role="list">
+        <ul role="list" [ngStyle]="{ 'height.px': defaultRowHeight_px * rowspan }">
           <div class="list-item-element" *ngFor="let user of users$ | async; index as i">
-            <br *ngIf="i != 0" />
-            <li role="listitem">
+            <hr *ngIf="i != 0" />
+            <li role="listitem" class="row" >
               <div class="user-data mr-15">
                 <tasque-avatar [imageURL]="user.avatarURL" alt="user's avatar" [diameter_px]="40"></tasque-avatar>
                 <a [href]="user.profileURL" class="username">

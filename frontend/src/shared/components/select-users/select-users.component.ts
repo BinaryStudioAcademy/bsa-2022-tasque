@@ -10,6 +10,7 @@ import {
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
 import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
 
 @Component({
   selector: 'tasque-select-users',
@@ -18,7 +19,7 @@ import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 })
 export class SelectUsersComponent implements OnInit {
   users$!: Observable<IUserCard[]>;
-  roles: [color: string, title: string, id: number][];
+  roles: TasqueDropdownOption[];
   isLoading = true;
   public userEmail = '';
   public validationConstants = ValidationConstants;
