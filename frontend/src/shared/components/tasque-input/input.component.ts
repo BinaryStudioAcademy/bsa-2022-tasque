@@ -34,7 +34,6 @@ export class InputComponent implements ControlValueAccessor {
 
   public iconPos: IconPosition;
   public inputIcon?: IconProp = undefined;
-
   
   @Input() value: string;
 
