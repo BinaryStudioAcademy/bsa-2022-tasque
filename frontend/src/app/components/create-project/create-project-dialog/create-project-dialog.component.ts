@@ -52,8 +52,6 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
   public inputKeyId = 'projectKey';
   public inputKeyLabel = 'Key';
 
-  public newProjectName = '';
-  public newProjectKey = '';
   public isSuccessful: boolean;
 
   public unsubscribe$ = new Subject<void>();
