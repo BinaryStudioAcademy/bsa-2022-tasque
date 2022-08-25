@@ -103,7 +103,8 @@ erDiagram
         description string
         created_at datetime
         updated_at datetime
-        deadline datetime
+        start_at datetime
+        end_at datetime
         project_id int FK
     }
 
