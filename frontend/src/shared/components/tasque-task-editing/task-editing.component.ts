@@ -291,7 +291,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       return 'Summary must be at least 2 characters';
     }
     if (ctrl.errors?.['maxlength']) {
-      return 'Summary must be at less  80 characters';
+      return 'Summary must not exceed  80 characters';
     }
 
     return '';
@@ -301,7 +301,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     const ctrl = this.editTaskForm.controls.taskDescription;
 
     if (ctrl.errors?.['maxlength']) {
-      return 'Description must be at less 5000 characters';
+      return 'Description must not exceed 5000 characters';
     }
 
     return '';
