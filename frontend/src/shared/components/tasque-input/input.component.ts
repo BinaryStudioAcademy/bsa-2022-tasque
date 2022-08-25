@@ -96,6 +96,9 @@ export class InputComponent implements ControlValueAccessor {
     this.inputIcon = icon;
   }
 
+  @Input()
+  public readonly = false;
+
   get iconClass(): string {
     let res = this.iconPos as string;
     if (this.iconClick.observers.length) {
