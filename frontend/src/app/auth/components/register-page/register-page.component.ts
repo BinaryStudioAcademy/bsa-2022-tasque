@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { AuthService } from 'src/core/services/auth.service';
@@ -35,6 +35,9 @@ export class RegisterPageComponent implements OnInit {
   faHide = faEyeSlash;
   public validationConstants = ValidationConstants;
   public errorMessages = ErrorMessages;
+
+  @ViewChild('emailInput')
+  public emailInput: InputComponent;
 
   private unsubscribe$ = new Subject<void>();
 
@@ -117,6 +120,7 @@ export class RegisterPageComponent implements OnInit {
       .subscribe(
         (email) => {
           this.emailControl.setValue(email);
+          this.emailInput.readonly = true;
         },
         () => {
           this.router.navigate([], { replaceUrl: true, relativeTo: this.route });
