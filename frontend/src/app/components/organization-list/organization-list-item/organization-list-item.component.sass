@@ -1,29 +1,31 @@
 @import 'src/colors.sass'
 
-.mat-card
+.organization-card
   min-height: 50px
   display: flex
   justify-content: space-between
-  margin-bottom: 20px
   align-items: center
-  border-radius: 20px
+  padding: 5px
+  &:hover
+    background-color: colorscheme(gray-300)
 
-a
+.organization-name
   text-decoration: none
   color: colorscheme(black-100)
   font-family: "Nunito"
   font-style: normal
+  padding-left: 30px
+  font-size: 20px
+
+.buttons-container
+  display: flex
+  padding-right: 25px
 
 tasque-button
-    margin: 10px
+  margin: 10px
+  ::ng-deep
+    button
+      height: 35px
 
-.mat-card-actions
-  align-items: center
-
-.mat-card-title
-  margin-left: 10px
-  margin-bottom: 0
-
-.mat-card-actions
-  padding-top: 0
-  margin-bottom: 0
+hr
+  border: 1px solid colorscheme(gray-300)

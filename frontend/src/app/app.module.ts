@@ -75,4 +75,4 @@ import { CreateSprintDialogComponent } from './components/create-sprint/create-s
     OrganizationListComponent
   ]
 })
-export class AppModule {}
+export class AppModule { }
