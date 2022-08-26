@@ -1,4 +1,4 @@
-import { TasqueDropdownOption } from "../tasque-dropdown/dropdown.component";
+import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
 
 export enum BusinessRole {
   Administrator = 1,
@@ -21,7 +21,7 @@ export interface IUserCard {
   username: string;
   profileURL: string;
   avatarURL: string;
-  role: BusinessRole;
+  role: BusinessRole | null;
 }
 
 export interface IBoardKey {
@@ -42,6 +42,6 @@ export function getRolesAsArray(): TasqueDropdownOption[] {
         color: '',
         title: name,
         id: BusinessRole[name as keyof typeof BusinessRole]
-      }
+      };
     });
 }

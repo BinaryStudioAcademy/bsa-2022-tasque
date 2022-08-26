@@ -118,7 +118,7 @@ export class DropdownComponent implements OnInit, ControlValueAccessor {
     this.expanded = false;
   }
 
-  public setStyles() {
+  public setStyles(): object {
     if (this.dropBelow) {
       return {
         width: this.optionsWidth,

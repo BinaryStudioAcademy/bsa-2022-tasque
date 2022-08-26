@@ -94,8 +94,8 @@ export class SelectUsersComponent implements OnInit {
     });
   }
 
-  roleToString(role: BusinessRole): string {
-    return BusinessRole[role];
+  roleToString(role: BusinessRole | null): string {
+    return role ? BusinessRole[role] : "";
   }
 
   private refreshList(): void {

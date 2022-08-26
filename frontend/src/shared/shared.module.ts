@@ -61,7 +61,7 @@ import { MenuDropdownComponent } from './components/tasque-menu-dropdown/menu-dr
     TaskEditingComponent,
     AvatarComponent,
     NotFoundPageComponent,
-    SelectUsersComponent
+    SelectUsersComponent,
     MenuDropdownComponent
   ],
   exports: [
@@ -93,7 +93,7 @@ import { MenuDropdownComponent } from './components/tasque-menu-dropdown/menu-dr
     TaskEditingComponent,
     AvatarComponent,
     NotFoundPageComponent,
-    SelectUsersComponent
+    SelectUsersComponent,
     MenuDropdownComponent
   ],
   providers: [SideBarService],
