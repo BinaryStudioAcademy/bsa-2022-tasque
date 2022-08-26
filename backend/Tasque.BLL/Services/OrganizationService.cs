@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Tasque.Core.Common.DTO;
+using Tasque.Core.Common.DTO.Organization;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.DAL;

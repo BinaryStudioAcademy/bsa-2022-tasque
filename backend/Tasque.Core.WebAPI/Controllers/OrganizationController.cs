@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
-using Tasque.Core.Common.DTO;
+using Tasque.Core.Common.DTO.Organization;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
 
@@ -56,9 +56,9 @@ namespace Tasque.Core.WebAPI.Controllers
             else
             {
                 return NotFound("Organization not found");
-            }           
+            }
         }
-    
+
         [Route("{organizationId}/users/add")]
         [HttpPost]
         public async virtual Task<IActionResult> AddUserToOrganization(int organizationId, [FromBody] UserDto user)
@@ -72,10 +72,10 @@ namespace Tasque.Core.WebAPI.Controllers
         [HttpPost]
         public async virtual Task<IActionResult> DeleteUserInOrganization(int organizationId, [FromBody] UserDto user)
         {
-             await _service.DeleteUser(organizationId, user);
+            await _service.DeleteUser(organizationId, user);
 
             return Ok();
         }
-    
+
     }
 }
