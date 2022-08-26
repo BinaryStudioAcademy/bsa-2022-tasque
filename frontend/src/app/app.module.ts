@@ -27,6 +27,7 @@ import { TasqueTeamComponent } from './components/tasque-team/tasque-team.compon
 import { TasqueProjectSettingsComponent } from './components/tasque-project-settings/tasque-project-settings.component';
 import { ToastrConfig } from 'src/entity-models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
+import { EditOrganizationComponent } from './components/edit-organization/edit-organization.component';
 import { SelectUsersComponent } from '../shared/components/select-users/select-users.component';
 
 @NgModule({
@@ -49,6 +50,7 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     TasqueProjectSettingsComponent,
     SelectUsersComponent,
     TasqueBoardComponent,
+    EditOrganizationComponent,
     TasqueProjectSettingsComponent,
   ],
   imports: [
@@ -63,12 +65,11 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     AuthModule,
     UserModule,
   ],
-  providers: [BrowserAnimationsModule,
+  providers: [
+    BrowserAnimationsModule,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
-  exports: [
-    OrganizationListComponent
-  ]
+  exports: [OrganizationListComponent],
 })
-export class AppModule { }
+export class AppModule {}

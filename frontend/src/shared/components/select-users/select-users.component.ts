@@ -73,7 +73,7 @@ export class SelectUsersComponent implements OnInit {
       () => {
         this.isLoading = false;
         this.toastr.error(`User with email ${username} was not found !`);
-      }
+      },
     );
   }
 

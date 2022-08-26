@@ -27,6 +27,7 @@ import { NgClickOutsideDirective } from 'ng-click-outside2';
 import { TaskEditingComponent } from './components/tasque-task-editing/task-editing.component';
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { SelectUsersComponent } from './components/select-users/select-users.component';
+import { MenuDropdownComponent } from './components/tasque-menu-dropdown/menu-dropdown.component';
 
 @NgModule({
   imports: [
@@ -61,6 +62,7 @@ import { SelectUsersComponent } from './components/select-users/select-users.com
     AvatarComponent,
     NotFoundPageComponent,
     SelectUsersComponent
+    MenuDropdownComponent
   ],
   exports: [
     CommonModule,
@@ -92,6 +94,7 @@ import { SelectUsersComponent } from './components/select-users/select-users.com
     AvatarComponent,
     NotFoundPageComponent,
     SelectUsersComponent
+    MenuDropdownComponent
   ],
   providers: [SideBarService],
 })
