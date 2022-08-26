@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services;
@@ -16,15 +17,18 @@ namespace Tasque.Core.Identity.Services
         private DataContext _context;
         private IEmailService _emailService;
         private EmailConfirmationOptions _emailOptions;
+        private IConfiguration _configuration;
 
         public ConfirmationTokenService(
             DataContext context,
             IEmailService emailService,
-            IOptions<EmailConfirmationOptions> emailOptions)
+            IOptions<EmailConfirmationOptions> emailOptions,
+            IConfiguration configuration)
         {
             _context = context;
             _emailService = emailService;
             _emailOptions = emailOptions.Value;
+            _configuration = configuration;
         }
 
         public async Task<ConfirmationToken> CreateConfirmationToken(User user, TokenKind kind)
@@ -80,12 +84,13 @@ namespace Tasque.Core.Identity.Services
             var endpoint = GetEndpoint(token);
             var link = $"{host}{endpoint}";
             var key = token.Token;
-            
+            var logo = _configuration["Host:Logo"];
+
+
             Dictionary<string, string> args = new()
             {
                 { "appLink", host },
-                // FIXME: Host thumbnail somewhere and provide link in options
-                // { "logoLink", "" },
+                { "logoLink", logo },
                 { "username", token.User.Name },
                 { "email", token.User.Email },
                 { "link", $"{link}?key={key}" }
