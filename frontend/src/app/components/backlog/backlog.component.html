@@ -1,7 +1,25 @@
-<div class="wrapper">
+<div class="backlog-conteiner">
   <div class="header">
-    <p>Scrum in space</p>
-    <h3>Backlog</h3>
-    <tasque-dropdown></tasque-dropdown>
+    <div class="wrapper title">
+      <div>
+        <p>Scrum in space</p>
+        <h3>Backlog</h3>
+      </div>
+      <tasque-dropdown width="120px" class="header-dropdown"></tasque-dropdown>
+      <tasque-button class="btn" [icon]="faMaximize"></tasque-button>
+    </div>
+    <div class="wrapper search">
+      <div class="backlog-search">
+        <tasque-input [icon]="faMagnifyingGlass" class="search-input" iconPosition="search" type="search" placeholder="Search..."> </tasque-input>
+      </div>
+      <div class="navigation">
+        <p class="active">All</p>
+        <p>Only my issues</p>
+        <p>Recently updated</p>
+      </div>
+    </div>
+  </div>
+  <div class="body">
+    <app-sprint class="sprint"></app-sprint>
   </div>
 </div>

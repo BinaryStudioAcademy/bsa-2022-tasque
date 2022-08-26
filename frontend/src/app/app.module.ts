@@ -30,6 +30,7 @@ import { UserModule } from './user/user.module';
 import { EditOrganizationComponent } from './components/edit-organization/edit-organization.component';
 import { SelectUsersComponent } from '../shared/components/select-users/select-users.component';
 import { BacklogComponent } from './components/backlog/backlog.component';
+import { SprintComponent } from './components/backlog/sprint/sprint.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { BacklogComponent } from './components/backlog/backlog.component';
     EditOrganizationComponent,
     TasqueProjectSettingsComponent,
     BacklogComponent,
+    SprintComponent,
   ],
   imports: [
     BrowserModule,
