@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { UserModel } from 'src/core/models/user/user-model';
 import { ProjectModel } from '../../../core/models/project/project-model';
 
 @Component({
@@ -8,11 +9,16 @@ import { ProjectModel } from '../../../core/models/project/project-model';
   styleUrls: ['./project-list.component.sass']
 })
 export class ProjectListComponent implements OnInit {
+  public currentUser: UserModel = {
+    id: 0,
+    name: '',
+    email: ''
+  };
 
   public inputSearch = '';
   public searchIcon = faMagnifyingGlass;
 
-  public items:ProjectModel[] = [
+  public items: ProjectModel[] = [
     {
       id: 1,
       name: 'Test Project',
@@ -85,7 +91,7 @@ export class ProjectListComponent implements OnInit {
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
     },
-  ] ;
+  ];
 
   public itemsShow = this.items;
 
@@ -94,10 +100,15 @@ export class ProjectListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  filterItems(): void{
-    this.itemsShow = this.items.filter((item) => {
-      return item.name.includes(this.inputSearch);
-    });
+  filterItems(): void {
+    if (this.inputSearch) {
+      this.itemsShow = this.items.filter((item) => {
+        return item.name.toLowerCase().includes(this.inputSearch.toLowerCase());
+      });
+    }
+    else {
+      this.itemsShow = this.items;
+    }
   }
 
 }
