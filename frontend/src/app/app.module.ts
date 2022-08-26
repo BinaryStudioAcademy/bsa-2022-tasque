@@ -29,6 +29,7 @@ import { ToastrConfig } from 'src/entity-models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
 import { EditOrganizationComponent } from './components/edit-organization/edit-organization.component';
 import { SelectUsersComponent } from '../shared/components/select-users/select-users.component';
+import { BacklogComponent } from './components/backlog/backlog.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { SelectUsersComponent } from '../shared/components/select-users/select-u
     TasqueBoardComponent,
     EditOrganizationComponent,
     TasqueProjectSettingsComponent,
+    BacklogComponent,
   ],
   imports: [
     BrowserModule,
