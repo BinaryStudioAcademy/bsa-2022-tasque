@@ -23,12 +23,10 @@ namespace Tasque.Core.BLL.Services
             var organizations = await _db.Users
                 .Include(u => u.OwnedOrganization)
                 .Where(user => userId == user.Id)
-                .SelectMany(user => user.ParticipatedProjects)
+                .SelectMany(user => user.OwnedOrganization)
                 .Union(_db.Users
                     .Where(user => userId == user.Id)
-                    .SelectMany(user => user.OwnedProjects))
-                .Include(x => x.Organization)
-                .Select(project => project.Organization)
+                    .SelectMany(user => user.ParticipatedOrganization))
                 .ToListAsync();
 
             return organizations;

@@ -1,11 +1,6 @@
-<div [matMenuTriggerFor]="organizationsMenu">
-  <span> {{ currentOrganization.name }} Organization </span>
-  <img src="..\..\assets\tick.svg" alt="tick" />
-  <mat-menu class="violet-transparent" #organizationsMenu="matMenu">
-    <div *ngFor="let organization of availableOrganizations">
-      <button *ngIf="organization.id" (click)="onClick(organization.id)" mat-menu-item>
-        <span> {{ organization.name }} Organization </span>
-      </button>
-    </div>
-  </mat-menu> 
-</div>
+<tasque-menu-dropdown
+  [options]="organizationNames"
+  [label]="currentOrganization.name"
+  [formControl]="organizationControl"
+>
+</tasque-menu-dropdown>
