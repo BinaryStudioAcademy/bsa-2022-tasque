@@ -46,6 +46,7 @@ erDiagram
       User ||--|| Calendar : id_userId
       User ||--o{ Meeting_User : id_userId
       User ||--o{ Notification : id_userId
+      User ||--o{ Organization_User : id_userId
       User {
         id int PK
         name string
@@ -107,6 +108,7 @@ erDiagram
         project_id int FK
     }
 
+      Organization ||--o{ Organization_User : id_organizationId
       Organization {
         id int PK
         name string
@@ -115,6 +117,10 @@ erDiagram
         updated_at datetime
     }
 
+      Organization_User {
+	      organization_id int FK
+	      user_id int FK
+    }
       Label }o--|| Project : projectId_id
       Label {
         id int PK
