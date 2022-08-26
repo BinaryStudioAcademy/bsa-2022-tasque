@@ -15,7 +15,7 @@
     </div>
   </button>
   <span class="error" *ngIf="dropdownValueIsError">{{ dropdownErrorMessage }}</span>
-  <div class="options-container" *ngIf="expanded" [ngStyle]="{ 'width': optionsWidth }">
+  <div class="options-container" *ngIf="expanded" [ngStyle]="setStyles()">
     <div class="option" *ngFor="let option of options" (click)="select(option)">
       <svg class="color-square" *ngIf="option.color">
         <rect [ngStyle]="{ 'fill': option.color }" />
