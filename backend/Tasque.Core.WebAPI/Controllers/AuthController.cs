@@ -57,5 +57,12 @@ namespace Tasque.Core.WebAPI.Controllers
             string email = await _service.GetEmailFromReferralKey(key);
             return Ok(email);
         }
+
+        [HttpPost("ref")]
+        public async Task<IActionResult> RegisterReferral([FromQuery] string email)
+        {
+            await _service.Register(email);
+            return Ok();
+        }
     }
 }

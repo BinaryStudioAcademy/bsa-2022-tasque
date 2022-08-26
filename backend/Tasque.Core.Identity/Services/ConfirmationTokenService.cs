@@ -27,7 +27,7 @@ namespace Tasque.Core.Identity.Services
             _emailOptions = emailOptions.Value;
         }
 
-        public async Task<ConfirmationToken> CreateConfirmationToken(User user, TokenKind kind)
+        public async Task<ConfirmationToken> CreateConfirmationToken(User user, TokenKind kind, double? lifetime = null)
         {
             var existingTokens = _context.ConfirmationTokens
                 .Where(x => x.UserId == user.Id && x.Kind == kind)
@@ -38,7 +38,7 @@ namespace Tasque.Core.Identity.Services
             var confToken = new ConfirmationToken
             {
                 User = user,
-                ExpiringAt = DateTime.UtcNow.AddSeconds(_emailOptions.TokenLifetime),
+                ExpiringAt = DateTime.UtcNow.AddSeconds(lifetime ?? _emailOptions.TokenLifetime),
                 Kind = kind
             };
             _context.ConfirmationTokens.Add(confToken);
@@ -75,12 +75,12 @@ namespace Tasque.Core.Identity.Services
         }
 
         private async Task<string> GetEmailText(ConfirmationToken token)
-        {   
+        {
             var host = _emailOptions.Host;
             var endpoint = GetEndpoint(token);
             var link = $"{host}{endpoint}";
             var key = token.Token;
-            
+
             Dictionary<string, string> args = new()
             {
                 { "appLink", host },

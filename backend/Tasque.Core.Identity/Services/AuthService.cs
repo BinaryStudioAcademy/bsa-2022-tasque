@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Tasque.Core.Common;
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Security;
 using Tasque.Core.DAL;
 using Tasque.Core.Identity.Exeptions;
 using Tasque.Core.Identity.JWT;
+using Task = System.Threading.Tasks.Task;
 
 namespace Tasque.Core.Identity.Services
 {
@@ -79,6 +81,26 @@ namespace Tasque.Core.Identity.Services
             _context.Users.Add(userEntity);
             await _context.SaveChangesAsync();
             return _mapper.Map<UserDto>(userEntity);
+        }
+
+        public async Task Register(string email)
+        {
+            var isEmail = Constants.EMAIL_REGEX.IsMatch(email);
+            if (!isEmail)
+                throw new ValidationException("Email is not valid");
+            if (_context.Users.Any(x => x.Email == email))
+                throw new ValidationException("User with given email already exists");
+
+            var user = new User()
+            {
+                Email = email
+            };
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            var lifetime = TimeSpan.FromDays(365).TotalSeconds;
+            var token = await _tokenService.CreateConfirmationToken(user, TokenKind.ReferralSignUp, lifetime);
+            await _tokenService.SendConfirmationEmail(token);
         }
 
         public Task<bool> RequestEmailConfirmation(string email)
