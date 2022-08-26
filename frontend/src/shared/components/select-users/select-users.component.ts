@@ -95,7 +95,7 @@ export class SelectUsersComponent implements OnInit {
   }
 
   roleToString(role: BusinessRole | null): string {
-    return role ? BusinessRole[role] : "";
+    return role ? BusinessRole[role] : '';
   }
 
   private refreshList(): void {
