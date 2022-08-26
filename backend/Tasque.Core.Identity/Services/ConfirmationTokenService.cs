@@ -104,6 +104,7 @@ namespace Tasque.Core.Identity.Services
             {
                 TokenKind.EmailConfirmation => _emailOptions.ConfirmationEndpoint,
                 TokenKind.PasswordReset => _emailOptions.PasswordResetEndpoint,
+                TokenKind.ReferralSignUp => "register",
                 _ => ""
             };
         }
@@ -114,6 +115,7 @@ namespace Tasque.Core.Identity.Services
             {
                 TokenKind.EmailConfirmation => "Email confirmation",
                 TokenKind.PasswordReset => "Password reset",
+                TokenKind.ReferralSignUp => "Tasque invitation",
                 _ => ""
             };
         }
@@ -124,6 +126,7 @@ namespace Tasque.Core.Identity.Services
             {
                 TokenKind.PasswordReset => await AssemblyResourceService.GetResource(AssemblyResource.ResetPasswordMessage),
                 TokenKind.EmailConfirmation => await AssemblyResourceService.GetResource(AssemblyResource.ConfirmEmailMessage),
+                TokenKind.ReferralSignUp => await AssemblyResourceService.GetResource(AssemblyResource.ReferralInvitationMessage),
                 _ => ""
             };
         }
