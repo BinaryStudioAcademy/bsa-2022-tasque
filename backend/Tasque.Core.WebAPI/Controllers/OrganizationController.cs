@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO;
+using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
 
 namespace Tasque.Core.WebAPI.Controllers
