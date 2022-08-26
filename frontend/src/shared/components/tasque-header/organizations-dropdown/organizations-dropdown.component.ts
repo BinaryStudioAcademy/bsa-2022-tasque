@@ -1,16 +1,18 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { StorageService } from 'src/core/services/storage.service';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { takeUntil } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
+import { BaseComponent } from 'src/core/base/base.component';
 
 @Component({
   selector: 'tasque-organizations-dropdown',
   templateUrl: './organizations-dropdown.component.html',
   styleUrls: ['./organizations-dropdown.component.sass']
 })
-export class OrganizationsDropdownComponent implements OnInit {
+export class OrganizationsDropdownComponent extends BaseComponent implements OnInit {
+
   @Input() public availableOrganizations: OrganizationModel[] = [];
 
   public currentOrganization: OrganizationModel = {
@@ -21,25 +23,17 @@ export class OrganizationsDropdownComponent implements OnInit {
     updatedAt: new Date()
   };
 
-  public unsubscribe$ = new Subject<void>();
+  public organizationControl = new FormControl('');
 
   constructor(
     private organizationService: OrganizationService,
-    private storageService: StorageService) { }
+    private storageService: StorageService) {
+    super();
+  }
 
   ngOnInit(): void {
-    if(this.storageService.currentOrganizationId === -1)
-      return;
-    this.storageService.currentOrganizationId$.subscribe(
-      (result) => {
-        const searchedOrganization = this.availableOrganizations.find((x) => x.id === result);
-        if (searchedOrganization) {
-          this.currentOrganization = searchedOrganization;
-        }
-        else {
-          this.setOrganization();
-        }
-      });
+    this.subscribeToCurrentOrganization();
+    this.subscribeToOrganizationControl();
 
     if (this.storageService.currentOrganizationId === -1) {
       return;
@@ -69,7 +63,36 @@ export class OrganizationsDropdownComponent implements OnInit {
       );
   }
 
-  onClick(organizationId: number): void {
-    this.storageService.currentOrganizationId = organizationId;
+  get organizationNames(): string[] {
+    return this.availableOrganizations.map((x) => x.name);
+  }
+
+  private subscribeToCurrentOrganization(): void {
+    this.storageService.currentOrganizationId$.subscribe(
+      (result) => {
+        const searchedOrganization = this.availableOrganizations.find((x) => x.id === result);
+        if (searchedOrganization) {
+          this.currentOrganization = searchedOrganization;
+        }
+        else {
+          this.setOrganization();
+        }
+      });
+  }
+
+  private subscribeToOrganizationControl(): void {
+    this.organizationControl.valueChanges.subscribe(
+      () => {
+        const searchedOrganization = this.availableOrganizations
+          .find((x) => x.name === this.organizationControl.value);
+
+        if (searchedOrganization) {
+          this.currentOrganization = searchedOrganization;
+        }
+        else {
+          this.setOrganization();
+        }
+      }
+    );
   }
 }
