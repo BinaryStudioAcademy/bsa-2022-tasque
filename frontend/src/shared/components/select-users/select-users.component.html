@@ -1,7 +1,7 @@
 <div class="global-wrapper">
   <h3 class="text-center">Select Users</h3>
   <div class="select-users-wrapper">
-    <div class="row b-b select-users-header container" [ngStyle]="{ 'height.px': defaultRowHeight_px }">
+    <div class="row b-b select-users-header container">
       <form [formGroup]="searchForm" (ngSubmit)="add()">
         <div class="w-85 pl-15 mr-15">
           <tasque-input
@@ -25,7 +25,7 @@
         <tasque-loading></tasque-loading>
       </ng-template>
       <ng-template [ngIf]="!isLoading && usersCount > 0">
-        <ul role="list" [ngStyle]="{ 'height.px': defaultRowHeight_px * rowspan }">
+        <ul role="list" [ngStyle]="{ 'height.px': defaultRowHeight_px * rowspan + 1 }">
           <div class="list-item-element" *ngFor="let user of users$ | async; index as i">
             <hr *ngIf="i != 0" />
             <li role="listitem" class="row" >
@@ -36,7 +36,7 @@
                 </a>
               </div>
               <div class="user-actions ml-15">
-                <tasque-dropdown [options]="roles" [placeholder]="roleToString(user.role)" width="150px" (onSelect)="update(user, $event)"></tasque-dropdown>
+                <tasque-dropdown [options]="roles" [placeholder]="roleToString(user.role)" [dropBelow]="false" width="150px" (onSelect)="update(user, $event)"></tasque-dropdown>
                 <tasque-button class="stroke mr-15 ml-15" text="Remove" (btnClick)="delete(user.email)"></tasque-button>
               </div>
             </li>

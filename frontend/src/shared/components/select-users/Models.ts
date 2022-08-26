@@ -39,7 +39,7 @@ export function getRolesAsArray(): TasqueDropdownOption[] {
     .filter((v) => isNaN(Number(v)))
     .map((name) => {
       return {
-        color: 'white',
+        color: '',
         title: name,
         id: BusinessRole[name as keyof typeof BusinessRole]
       }

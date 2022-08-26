@@ -4,9 +4,10 @@
 	.w-#{$i * 5} 
 		width: #{$i * 5%} !important
 
-@for $i from 3 through 8 
+@for $i from 3 through 8
 	.wpx-#{$i * 30} 
 		width: #{$i * 30}px !important
+		min-width: #{$i * 30}px !important
 
 @for $i from 1 through 5
 	.pl-#{$i * 5}
@@ -27,17 +28,40 @@
 	border-color: colorscheme(gray-400)
 
 .global-wrapper
+	// position: relative
+
 	h3
 		margin: 15px 0px
 
 	.text-center
 		text-align: center
 
+	.select-users-header
+		height: 100px
+
 	.select-users-wrapper
 		border: solid
 		border-width: 1px
 		border-color: colorscheme(gray-400)
 		border-radius: 10px
+		overflow-y: scroll
+		margin-bottom: 50px
+
+		&::-webkit-scrollbar
+				width: .75rem
+
+		&::-webkit-scrollbar-track
+			border-bottom-right-radius: 10px
+			border-top-right-radius: 10px
+			background: colorscheme('gray-200')
+			border-bottom: solid
+			border-color: colorscheme('gray-400')
+			border-width: 1px
+
+		&::-webkit-scrollbar-thumb
+			background: colorscheme('gray-400')
+			border-bottom-right-radius: 10px
+			border-top-right-radius: 10px
 
 		.row
 			display: inline-flex
@@ -48,7 +72,7 @@
 			
 
 		.container
-			min-height: 84px
+			min-height: 80px
 			width: 100%
 			display: flex
 			justify-content: center
@@ -72,7 +96,7 @@
 		ul
 			width: 100%
 			height: 100%
-			overflow-y: scroll
+			overflow-y: visible
 
 			&::-webkit-scrollbar
 				width: .75rem
@@ -89,16 +113,18 @@
 				border-bottom-right-radius: 10px
 
 			.list-item-element
-				height: 84px
+				height: 80px
 
 				hr
+					margin: 0px
 					border-top: 1px solid colorscheme('gray-400')
 					border-bottom: 0px solid gray
 
 			li
 				display: flex
 				align-items: center
-				height: 82px
+				height: 80px
+				// position: relative
 
 				.user-data
 					max-width: 65%
@@ -124,3 +150,5 @@
 				.user-actions
 					display: inline-flex
 					align-items: center
+					// position: absolute
+					right: 15px

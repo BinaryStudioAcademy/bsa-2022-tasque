@@ -30,7 +30,7 @@ export class SelectUsersComponent implements OnInit {
   addIcon = faSquarePlus;
   public rowspan = 1;
   usersCount = 0;
-  public defaultRowHeight_px = 84;
+  public defaultRowHeight_px = 80;
 
   @Input()
   public board: IBoard;
