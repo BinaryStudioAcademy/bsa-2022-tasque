@@ -2,7 +2,14 @@
   <div class="navigation-panel">
     <tasque-menu-dropdown label="Your work" [options]="yourWorkOptions"> </tasque-menu-dropdown>
     <tasque-menu-dropdown label="Project" [options]="projectOptions"> </tasque-menu-dropdown>
-    <tasque-menu-dropdown label="Create task" [options]="createOptions" [toggleDropdownOnLabelClick]="false" (labelClicked)="openCreateTaskDialog()" [formControl]="createItemControl"> </tasque-menu-dropdown>
+    <tasque-menu-dropdown
+      label="Create task"
+      [options]="createOptions"
+      [toggleDropdownOnLabelClick]="false"
+      (labelClicked)="openCreateTaskDialog()"
+      [formControl]="createItemControl"
+    >
+    </tasque-menu-dropdown>
     <tasque-organizations-dropdown class="button"></tasque-organizations-dropdown>
     <span class="button" [routerLink]="['/organizations']">My Organizations</span>
     <span class="button" [routerLink]="['/projects']">My Projects</span>
@@ -10,7 +17,14 @@
   </div>
   <div class="user-panel">
     <div class="search-input">
-      <tasque-input class="search-input header-extension" type="search" placeholder="Search..." [icon]="searchIcon" iconPosition="search"> </tasque-input>
+      <tasque-input
+        class="search-input header-extension"
+        type="search"
+        placeholder="Search..."
+        [icon]="searchIcon"
+        iconPosition="search"
+      >
+      </tasque-input>
     </div>
     <div>
       <img src="\assets\bell_icon.svg" />
