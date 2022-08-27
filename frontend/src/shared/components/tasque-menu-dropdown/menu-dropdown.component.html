@@ -6,7 +6,7 @@
 
   <div class="options-container" *ngIf="expanded">
     <div class="option" *ngFor="let option of options" (click)="select(option)">
-      {{ option }}
+      {{ option.name }}
     </div>
   </div>
 </div>

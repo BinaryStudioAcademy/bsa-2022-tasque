@@ -3,6 +3,11 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
+export interface MenuDropdownOption {
+  id?: number,
+  name: string
+}
+
 @Component({
   selector: 'tasque-menu-dropdown',
   templateUrl: './menu-dropdown.component.html',
@@ -20,8 +25,8 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
   @Input() public label?: string;
   @Input() public buttonIcon?: IconProp = faChevronDown;
 
-  @Input() public options: string[];
-  public selectedOption: string;
+  @Input() public options: MenuDropdownOption[];
+  public selectedOption: MenuDropdownOption;
 
   @Output() labelClicked = new EventEmitter();
   @Input() toggleDropdownOnLabelClick = true;
@@ -29,8 +34,8 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
   public expanded = false;
   private wasInside = false;
 
-  onChange: (value: string) => void = () => { };
-  onTouched: (value: string) => void = () => { };
+  onChange: (value: MenuDropdownOption) => void = () => { };
+  onTouched: (value: MenuDropdownOption) => void = () => { };
 
   @HostListener('click')
   clickInside(): void {
@@ -49,15 +54,15 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
     this.wasInside = false;
   }
 
-  writeValue(option: string): void {
+  writeValue(option: MenuDropdownOption): void {
     this.selectedOption = option;
   }
 
-  registerOnChange(fn: (value: string) => void): void {
+  registerOnChange(fn: (value: MenuDropdownOption) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: (value: string) => void): void {
+  registerOnTouched(fn: (value: MenuDropdownOption) => void): void {
     this.onTouched = fn;
   }
 
@@ -76,7 +81,7 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  public select(option: string): void {
+  public select(option: MenuDropdownOption): void {
     this.onChange(option);
 
     if (this.selectedOption != option) {
