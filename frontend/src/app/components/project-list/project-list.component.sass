@@ -1,27 +1,18 @@
-@import 'src/colors.sass'
-
 .project-list
-  font-family: 'Nunito', sans-serif
-  font-style: normal
+  display: flex
+  flex-direction: column
+  gap: 15px
   overflow-y: auto
+  margin: 0 56px 0 56px
 
-.cards-info
+.projects-header
   display: flex
-  justify-content: space-between
   align-items: center
+  gap: 30px
 
-.cards-info-actions
-  margin-top: 16px
-  margin-right: 40px
+.project-list-cards
   display: flex
+  flex-direction: column
 
-a
-  margin: auto auto auto 16px
-
-.title
-  margin-bottom: 25px
-  margin-left: 56px
-
-
-.cards-items
-  padding-top: 20px
+.project-search ::ng-deep input
+  width: 420px

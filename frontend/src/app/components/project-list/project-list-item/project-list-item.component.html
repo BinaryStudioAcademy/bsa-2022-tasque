@@ -1,12 +1,11 @@
-<mat-card>
-  <mat-card-title><a href="#">{{project.name}}</a></mat-card-title>
-  <mat-card-actions align="end">
-    <app-edit-project [project]="project"></app-edit-project>
-    <tasque-button
-      class="fill"
-      text="Open"
+<div class="project-card">
+  <a class="project-name" href="#">{{ project.name }}</a>
 
-    >
+  <div class="buttons-container">
+    <tasque-button *ngIf="project.authorId === currentUser.id" class="btn stroke" text="Edit">
     </tasque-button>
-  </mat-card-actions>
-</mat-card>
+    <tasque-button class="btn stroke" text="Open"> </tasque-button>
+  </div>
+</div>
+
+<hr />

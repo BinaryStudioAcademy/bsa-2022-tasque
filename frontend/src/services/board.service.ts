@@ -19,7 +19,11 @@ export class BoardService {
     const key = this.createKey(board);
 
     // change to Http.getAll
-    board = JSON.parse(localStorage.getItem(key) as string);
+    let storedBoard = JSON.parse(localStorage.getItem(key) as string);
+    if (board != storedBoard) {
+      storedBoard = board;
+      this.save(storedBoard);
+    }
     const users: IUserCard[] = board ? board.users : [];
     return new Observable((observer) => {
       observer.next(users);
@@ -34,16 +38,15 @@ export class BoardService {
       username: email,
       profileURL: 'something',
       avatarURL: 'https://www.w3schools.com/howto/img_avatar.png',
-      role: board.hasRoles ? BusinessRole.Participant : null,
+      role: BusinessRole.Participant,
     };
 
     // change to HttpClient.put for Board entity
-    board.users.push(user);
-
-    this.save(board);
     return new Observable((observer) => {
       // For simulation during the tests. Math random should be removed later
-      if (Math.random() <= 0.9) {
+      if (Math.random() <= 0.5) {
+        board.users.push(user);
+        this.save(board);
         observer.next('done');
         observer.complete();
       }

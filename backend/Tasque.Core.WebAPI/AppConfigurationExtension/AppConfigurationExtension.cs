@@ -93,7 +93,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<IEmailService, SendGridService>()
                 .AddScoped<OrganizationService>()
                 .AddScoped<UserService>()
-                .AddScoped<FileUploadService>();
+                .AddScoped<FileUploadService>()
+                .AddScoped<SprintService>();
 
             services.RegisterIdentity(configuration);
         }
