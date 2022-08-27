@@ -19,6 +19,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<OrganizationProfile>();
+                cfg.AddProfile<ProjectProfile>();
+                cfg.AddProfile<UserProfiles>();
                 cfg.ConfigureIdentityMapping();
             },
             Assembly.GetExecutingAssembly());

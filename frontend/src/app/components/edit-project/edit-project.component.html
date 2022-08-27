@@ -14,15 +14,15 @@
     </div>
     <div class="container">
       <label>Change member role</label>
-      <tasque-select-users></tasque-select-users>
-    </div>
-    <div class="container">
-      <label>Remove member</label>
-      <tasque-select-users></tasque-select-users>
+      <tasque-select-users [board]="changeRoleBoard"></tasque-select-users>
     </div>
     <div class="container">
       <label>Invite member</label>
-      <tasque-select-users></tasque-select-users>
+      <tasque-select-users [board]="inviteUserBoard"></tasque-select-users>
+    </div>
+    <div class="container">
+      <label>Kick member</label>
+      <tasque-select-users [board]="deleteUserBoard"></tasque-select-users>
     </div>
   </div>
 </tasque-sidebar>

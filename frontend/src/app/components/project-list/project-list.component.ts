@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 import { ProjectService } from 'src/core/services/project.service';
-import { ProjectModel } from '../../../core/models/project/project-model';
 
 @Component({
   selector: 'app-project-list',
@@ -21,7 +20,7 @@ export class ProjectListComponent implements OnInit {
   constructor(public projectService: ProjectService) { }
 
   ngOnInit(): void {
-    this.projectService.getAllProjectsOfThisUser(1).subscribe(data => {
+    this.projectService.getAllProjectsOfThisOrganization(1).subscribe(data => {
       if(data.body) {
         this.items = data.body;
         this.itemsShow = this.items;

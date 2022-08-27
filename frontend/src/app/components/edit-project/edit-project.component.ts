@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EditProjectModel } from 'src/core/models/project/edit-project-model';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 import { ProjectService } from 'src/core/services/project.service';
-import { IBoard } from 'src/shared/components/select-users/Models';
+import { IBoard, IUserCard } from 'src/shared/components/select-users/Models';
 
 @Component({
   selector: 'app-edit-project',
@@ -19,16 +19,23 @@ export class EditProjectComponent implements OnInit {
   editProjectModel: EditProjectModel;
 
   changeRoleBoard: IBoard;
-  deleteUser: IBoard;
-  inviteUser: IBoard;
+  deleteUserBoard: IBoard;
+  inviteUserBoard: IBoard;
+
+  invitedUsersList: IUserCard[];
 
   constructor(formBuilder: FormBuilder, public projectService: ProjectService) {
     this.editProjectForm = formBuilder.group({
       'editProjectName': ['', [Validators.required, Validators.min(3), Validators.max(12)]]
     });
+    
+    
   }
 
   ngOnInit() {
+      this.changeRoleBoard = {id: 1, type: 1, hasRoles: true, users: this.project.users}
+      this.deleteUserBoard = {id: 1, type: 1, hasRoles: false, users: this.project.users}
+      this.inviteUserBoard = {id: 1, type: 1, hasRoles: false, users: this.invitedUsersList}
   }
 
   editProject() {

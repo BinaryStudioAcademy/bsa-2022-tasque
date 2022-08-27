@@ -26,7 +26,7 @@ export class ProjectService {
     return this.httpService.putRequest<void>(this.routePrefix + '/edit', editProject);
   }
 
-  getAllProjectsOfThisUser(userId: number): Observable<HttpResponse<ProjectInfoModel[]>> {
-    return this.httpService.getFullRequest<ProjectInfoModel[]>(this.routePrefix + `/user/${userId}`);
+  getAllProjectsOfThisOrganization(organizationId: number): Observable<HttpResponse<ProjectInfoModel[]>> {
+    return this.httpService.getFullRequest<ProjectInfoModel[]>(this.routePrefix + `/all/${organizationId}`);
   } 
 }

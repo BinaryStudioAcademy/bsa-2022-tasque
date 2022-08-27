@@ -23,16 +23,32 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         return Ok();
     }
 
-    [HttpGet("user/{id}")]
-    public async Task<IActionResult> GetAllUserProjects(int id)
+    [HttpGet("all/{organizationId}")]
+    public async Task<IActionResult> GetAllProjectsOfOrganization(int organizationId)
     {
-        return Ok(await _service.GetAllUserProject(id));
+        return Ok(await _service.GetAllProjectsOfOrganization(organizationId));
     }
 
     [HttpPut("invite")]
     public async Task<IActionResult> InviteUserToProject([FromBody]UserInviteDto userInviteDto)
     {
         await _service.InviteUserToProject(userInviteDto);
+
+        return Ok();
+    }
+
+    [HttpPut("kick")]
+    public async Task<IActionResult> KickUser([FromBody] UserInviteDto userInviteDto)
+    {
+        await _service.KickUserOfProject(userInviteDto);
+
+        return Ok();
+    }
+
+    [HttpPut("role")]
+    public async Task<IActionResult> UpdateUserRole([FromBody] ChangeUserRoleDto changeUserRoleDto)
+    {
+        await _service.ChangeUserRole(changeUserRoleDto);
 
         return Ok();
     }

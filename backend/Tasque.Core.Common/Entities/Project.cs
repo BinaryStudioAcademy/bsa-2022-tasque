@@ -7,7 +7,7 @@ public class Project : BaseEntity
     public Project()
     {
         Users = new List<User>();
-        UserRoles = new List<UserProjectRole>();
+        UserProjectRole = new List<UserProjectRole>();
     }
     public string Name { get; set; } = null!;
     public string Key { get; set; } = null!;
@@ -19,5 +19,5 @@ public class Project : BaseEntity
     public Organization Organization { get; set; } = null!;
 
     public virtual ICollection<User> Users { get; set; }
-    public virtual ICollection<UserProjectRole> UserRoles { get; set; }
+    public virtual ICollection<UserProjectRole> UserProjectRole { get; set; }
 }

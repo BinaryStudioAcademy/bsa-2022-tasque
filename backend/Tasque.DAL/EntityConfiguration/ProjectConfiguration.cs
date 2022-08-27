@@ -14,7 +14,7 @@ namespace Tasque.Core.DAL.EntityConfiguration
                 .HasForeignKey(project => project.AuthorId);
 
             builder
-                .HasMany(project => project.UserRoles)
+                .HasMany(project => project.UserProjectRole)
                 .WithOne(userProjectRole => userProjectRole.Project)
                 .HasForeignKey(userProjectRole => userProjectRole.ProjectId);
         }

@@ -13,7 +13,7 @@ namespace Tasque.Core.DAL.EntityConfiguration
 
             builder
                 .HasOne(userProjectRole => userProjectRole.Project)
-                .WithMany(project => project.UserRoles)
+                .WithMany(project => project.UserProjectRole)
                 .HasForeignKey(userProjectRole => userProjectRole.ProjectId);
         }
     }

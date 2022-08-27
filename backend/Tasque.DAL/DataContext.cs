@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.DAL.EntityConfiguration;
+using Tasque.Core.DAL.SeedData;
 using Task = Tasque.Core.Common.Entities.Task;
 
 namespace Tasque.Core.DAL;
@@ -16,6 +17,7 @@ public class DataContext : DbContext
         modelBuilder.ApplyConfiguration(new TaskConfiguration());
         modelBuilder.ApplyConfiguration(new ProjectConfiguration());
         modelBuilder.ApplyConfiguration(new UserProjectRoleConfiguration());
+        modelBuilder.Seed();
     }
 
     public DbSet<Organization> Organizations { get; set; } = null!;
