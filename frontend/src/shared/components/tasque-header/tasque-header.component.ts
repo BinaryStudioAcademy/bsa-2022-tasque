@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from 'src/core/models/user/user-model';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { MenuDropdownOption } from '../tasque-menu-dropdown/menu-dropdown.component';
 
 @Component({
   selector: 'tasque-header',
@@ -13,17 +14,17 @@ export class HeaderComponent implements OnInit {
 
   public searchIcon = faMagnifyingGlass;
   public currentUser: UserModel;
-  public createOptions: string[] = [
-    'Create Organization', 'Create Project',
+  public createOptions: MenuDropdownOption[] = [
+    { name: 'Create Organization' }, { name: 'Create Project' },
   ];
-  public yourWorkOptions: string[] = [
-    'One task', 'Some task',
+  public yourWorkOptions: MenuDropdownOption[] = [
+    { name: 'One task' }, { name: 'Some task' },
   ];
-  public projectOptions: string[] = [
-    'Last Project', 'Previous Project',
+  public projectOptions: MenuDropdownOption[] = [
+    { name: 'Last Project' }, { name: 'Previous Project' },
   ];
 
-  public createItemControl = new FormControl('');
+  public createItemControl = new FormControl<MenuDropdownOption | undefined>(undefined);
 
   constructor(
     private currentUserService: GetCurrentUserService,
@@ -35,7 +36,7 @@ export class HeaderComponent implements OnInit {
     });
 
     this.createItemControl.valueChanges.subscribe(
-      () => this.openCreateItemDialog(this.createItemControl.value as string)
+      () => this.openCreateItemDialog(this.createItemControl.value?.name as string)
     );
   }
 
