@@ -23,13 +23,26 @@ export interface MenuDropdownOption {
 export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
 
   @Input() public label?: string;
-  @Input() public buttonIcon?: IconProp = faChevronDown;
+
+  @Input() public buttonIcon?: IconProp;
+
+  @Input() public downArrowIcon = faChevronDown;
+
+  @Input() public upArrowIcon = faChevronUp;
+
+  public currentArrowIcon: IconProp;
 
   @Input() public options: MenuDropdownOption[];
   public selectedOption: MenuDropdownOption;
 
   @Output() labelClicked = new EventEmitter();
   @Input() toggleDropdownOnLabelClick = true;
+
+  @Input() avatarUrl = '\\assets\\avatar.png';
+  @Input() diameter_px = 45;
+
+  @Input() public hasAvatar = false;
+  @Output() avatarClicked = new EventEmitter();
 
   public expanded = false;
   private wasInside = false;
@@ -47,8 +60,8 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
     if (!this.wasInside) {
       this.expanded = false;
 
-      if (this.buttonIcon === faChevronUp) {
-        this.buttonIcon = faChevronDown;
+      if (this.currentArrowIcon === this.upArrowIcon) {
+        this.currentArrowIcon = this.downArrowIcon;
       }
     }
     this.wasInside = false;
@@ -68,16 +81,18 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
 
   constructor() { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.currentArrowIcon = this.downArrowIcon;
+  }
 
   public toggleDropdown(): void {
     this.expanded = !this.expanded;
 
     if (this.expanded) {
-      this.buttonIcon = faChevronUp;
+      this.currentArrowIcon = this.upArrowIcon;
     }
     else {
-      this.buttonIcon = faChevronDown;
+      this.currentArrowIcon = this.downArrowIcon;
     }
   }
 
@@ -89,8 +104,8 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
     }
 
     this.expanded = false;
-    if (this.buttonIcon === faChevronUp) {
-      this.buttonIcon = faChevronDown;
+    if (this.currentArrowIcon === this.upArrowIcon) {
+      this.currentArrowIcon = this.downArrowIcon;
     }
   }
 
@@ -102,7 +117,16 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
     this.labelClicked.emit();
   }
 
-  public iconClick(): void {
+  public arrowIconClick(): void {
+    this.toggleDropdown();
+  }
+
+  public buttonIconClick(): void {
+    this.toggleDropdown();
+  }
+
+  public avatarClick(): void {
+    this.avatarClicked.emit();
     this.toggleDropdown();
   }
 }
