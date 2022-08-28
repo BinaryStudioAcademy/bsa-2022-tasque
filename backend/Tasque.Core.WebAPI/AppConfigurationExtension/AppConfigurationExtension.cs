@@ -1,6 +1,10 @@
-﻿using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Cosmos;
+using Microsoft.OpenApi.Models;
 using SendGrid.Extensions.DependencyInjection;
 using System.Reflection;
+using System.Text.Json.Serialization;
+using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.BLL.MappingProfiles;
 using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services;
@@ -19,6 +23,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<OrganizationProfile>();
+                cfg.AddProfile<TaskProfile>();
                 cfg.ConfigureIdentityMapping();
             },
             Assembly.GetExecutingAssembly());
@@ -80,7 +85,13 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.AddSwagger();            
             services.ConfigureS3Services(configuration);
             services.AddMvc();
-            services.AddControllers();
+          
+            services
+                .ConfigureAzureCosmosDb(configuration);
+
+            services.AddControllers().AddJsonOptions(options =>
+            options.JsonSerializerOptions.UnknownTypeHandling = JsonUnknownTypeHandling.JsonElement);
+
             services.AddCors();
 
             services
@@ -92,7 +103,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<OrganizationService>()
                 .AddScoped<UserService>()
                 .AddScoped<FileUploadService>()
-                .AddScoped<SprintService>();
+                .AddScoped<SprintService>()
+                .AddScoped<ITaskService, TaskService>();
 
             services.RegisterIdentity(configuration);
         }
@@ -130,6 +142,18 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
 
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tasque.Core.WebApi", Version = "v1" });
             });
+        }
+
+        public static IServiceCollection ConfigureAzureCosmosDb(this IServiceCollection services, IConfiguration configuration)
+        {
+            var cosmosOptions = new CosmosDbOptions();
+            configuration.GetSection(nameof(CosmosDbOptions)).Bind(cosmosOptions);
+
+            var client = new CosmosClient(cosmosOptions.Account, cosmosOptions.Key);
+            var cosmosService = new CosmosTaskService(client, cosmosOptions.DatabaseName, cosmosOptions.ContainerName);
+
+            services.AddSingleton<ICosmosTaskService>(cosmosService);
+            return services;
         }
     }
 }
