@@ -6,7 +6,7 @@ import { OrganizationService } from 'src/core/services/organization.service';
 import { UserModel } from 'src/core/models/user/user-model';
 import { CreateOrganizationDialogComponent } from '../create-organization/create-organization-dialog/create-organization-dialog.component';
 import { takeUntil } from 'rxjs/operators';
-import { faMagnifyingGlass, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faMessage, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Component({
@@ -83,6 +83,7 @@ export class OrganizationListComponent implements OnInit {
     }
   ];
 
+  public warningIcon = faMessage;
   public inputSearch = '';
   public itemsShow: OrganizationModel[] = this.items;
   public unsubscribe$ = new Subject<void>();
