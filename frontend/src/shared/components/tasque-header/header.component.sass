@@ -25,14 +25,23 @@ header div
   justify-content: space-between
 
 .navigation-panel
-  padding-left: 25px
+  padding-left: 45px
   gap: 25px
 
-.user-panel div
-  margin-right: 25px
-  cursor: pointer
+.user-panel 
+  display: flex
+  gap: 25px
+  padding-right: 35px
 
 .button
   cursor: pointer
   &:hover
     color: colorscheme(gray-400)
+
+.profile-dropdown
+  ::ng-deep .dropdown-button
+    gap: 10px
+  ::ng-deep .dropdown-icon
+    font-size: 18px
+  ::ng-deep .options-container
+    left: -60px
