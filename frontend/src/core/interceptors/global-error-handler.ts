@@ -4,9 +4,10 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../services/auth.service';
 
 @Injectable()
-export class GlobalErrorHandler implements ErrorHandler {
+export class GlobalErrorHandler extends ErrorHandler {
   constructor(
     private injector: Injector) {
+    super();
   }
 
   private get toastrService(): ToastrService {
@@ -18,6 +19,9 @@ export class GlobalErrorHandler implements ErrorHandler {
   }
 
   handleError(error: unknown): void {
+    // TODO: Remove in prod
+    super.handleError(error);
+
     if (!(error instanceof HttpErrorResponse)) {
       this.toastrService.error('An unexpected client-side error has occurred.', 'Error', {
         closeButton: true,
