@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCaretUp, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from 'src/core/models/user/user-model';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { MenuDropdownOption } from '../tasque-menu-dropdown/menu-dropdown.component';
@@ -23,6 +23,12 @@ export class HeaderComponent implements OnInit {
   public projectOptions: MenuDropdownOption[] = [
     { name: 'Last Project' }, { name: 'Previous Project' },
   ];
+  public profileOptions: MenuDropdownOption[] = [
+    { name: 'Profile settings' }, { name: 'Log out' },
+  ];
+
+  public upArrowIcon = faCaretUp;
+  public downArrowIcon = faCaretDown;
 
   public createItemControl = new FormControl<MenuDropdownOption | undefined>(undefined);
 

@@ -26,19 +26,15 @@
       >
       </tasque-input>
     </div>
-    <div>
-      <img src="\assets\bell_icon.svg" />
-    </div>
-    <div>
-      <img src="\assets\settings_icon.svg" />
-    </div>
-    <div [matMenuTriggerFor]="profileMenu">
-      <tasque-avatar imageURL="\assets\avatar.png" [diameter_px]="45"></tasque-avatar>
-      <img src="\assets\arrow_full_icon.svg" />
-      <mat-menu #profileMenu="matMenu">
-        <button mat-menu-item>Profile settings</button>
-        <button mat-menu-item>Log out</button>
-      </mat-menu>
-    </div>
+    <img class="button" src="\assets\bell_icon.svg" />
+    <img class="button" src="\assets\settings_icon.svg" />
+    <tasque-menu-dropdown
+      class="profile-dropdown"
+      [hasAvatar]="true"
+      [options]="profileOptions"
+      [upArrowIcon]="upArrowIcon"
+      [downArrowIcon]="downArrowIcon"
+    >
+    </tasque-menu-dropdown>
   </div>
 </header>
