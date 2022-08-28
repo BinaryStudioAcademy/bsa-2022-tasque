@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { OrganizationService } from 'src/core/services/organization.service';
@@ -24,7 +24,7 @@ export class CreateOrganizationDialogComponent implements OnInit {
   public inputType = 'text';
   public inputLabel = 'Organization name';
 
-  public isSuccessful:boolean;
+  public isSuccessful: boolean;
 
   public unsubscribe$ = new Subject<void>();
 
@@ -32,19 +32,20 @@ export class CreateOrganizationDialogComponent implements OnInit {
   public createOrganizationForm: FormControl;
 
   constructor(
+    public dialogRef: MatDialogRef<CreateOrganizationDialogComponent>,
     public organizationService: OrganizationService,
     public notificationService: NotificationService,
     @Inject(MAT_DIALOG_DATA) public currentUser: UserModel) {
-      this.createOrganizationForm = new FormControl(this.organizationName, [
-        Validators.required,
-      ]);
-     }
+    this.createOrganizationForm = new FormControl(this.organizationName, [
+      Validators.required,
+    ]);
+  }
 
   ngOnInit(): void {
   }
 
   createOrganization(): void {
-    if(!this.createOrganizationForm.valid) {
+    if (!this.createOrganizationForm.valid) {
       this.createOrganizationForm.markAllAsTouched();
       this.isSuccessful = false;
       this.notificationService.error('Something go wrong');
@@ -59,8 +60,9 @@ export class CreateOrganizationDialogComponent implements OnInit {
     };
     this.organizationService.createOrganization(organization)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe();
-
-    this.notificationService.success('Organization has been created successfully');
+      .subscribe((result) => {
+        this.notificationService.success('Organization has been created successfully');
+        this.dialogRef.close(result.body);
+      });
   }
 }
