@@ -31,6 +31,7 @@ import { EditOrganizationComponent } from './components/edit-organization/edit-o
 import { SelectUsersComponent } from '../shared/components/select-users/select-users.component';
 import { BacklogComponent } from './components/backlog/backlog.component';
 import { SprintComponent } from './components/backlog/sprint/sprint.component';
+import { IssueComponent } from './components/backlog/sprint/issue/issue.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { SprintComponent } from './components/backlog/sprint/sprint.component';
     TasqueProjectSettingsComponent,
     BacklogComponent,
     SprintComponent,
+    IssueComponent,
   ],
   imports: [
     BrowserModule,
