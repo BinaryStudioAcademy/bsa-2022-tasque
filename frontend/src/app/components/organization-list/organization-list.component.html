@@ -1,7 +1,11 @@
 <div class="organization-list">
   <div class="organizations-header">
     <h4>List of Organizations</h4>
-    <tasque-button class="btn fill" text="Create Organization" (btnClick)="openDialog()"></tasque-button>
+    <tasque-button
+      class="btn fill"
+      text="Create Organization"
+      (btnClick)="openCreateOrganizationDialog()"
+    ></tasque-button>
   </div>
   <div class="organizations-search">
     <tasque-input

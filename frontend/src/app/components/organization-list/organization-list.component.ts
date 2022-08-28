@@ -120,10 +120,14 @@ export class OrganizationListComponent implements OnInit {
     }
   }
 
-  openDialog(): void {
+  openCreateOrganizationDialog(): void {
     const dialog = this.matDialog.open(CreateOrganizationDialogComponent, {
       data: this.currentUser,
     });
-    dialog.afterClosed().subscribe();
+    dialog.afterClosed().subscribe((result) => {
+      this.items.push(result);
+      this.itemsShow = this.items;
+    }
+    );
   }
 }
