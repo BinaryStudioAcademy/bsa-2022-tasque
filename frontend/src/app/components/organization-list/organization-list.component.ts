@@ -8,6 +8,7 @@ import { CreateOrganizationDialogComponent } from '../create-organization/create
 import { takeUntil } from 'rxjs/operators';
 import { faMagnifyingGlass, faMessage, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { StorageService } from 'src/core/services/storage.service';
 
 @Component({
   selector: 'app-organization-list',
@@ -92,7 +93,8 @@ export class OrganizationListComponent implements OnInit {
   constructor(
     private currentUserService: GetCurrentUserService,
     private matDialog: MatDialog,
-    private organizationService: OrganizationService) { }
+    private organizationService: OrganizationService,
+    private storageService: StorageService) { }
 
   ngOnInit(): void {
     this.currentUserService.currentUser.subscribe((user) => {
@@ -127,6 +129,10 @@ export class OrganizationListComponent implements OnInit {
     dialog.afterClosed().subscribe((result) => {
       this.items.push(result);
       this.itemsShow = this.items;
+
+      if (this.items.length === 1) {
+        this.storageService.currentOrganizationId = this.items[0].id;
+      }
     }
     );
   }
