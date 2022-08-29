@@ -33,6 +33,13 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok(user);
         }
 
+        [HttpPut("edit/avatar")]
+        public async Task<IActionResult> EditUserAvatar([FromQuery] string img)
+        {
+            var user = await _service.EditUserAvatar(_userId, img);
+            return Ok(user);
+        }
+
         [HttpPut("password")]
         public async Task<IActionResult> EditPassword([FromBody] PasswordEditDto dto)
         {
