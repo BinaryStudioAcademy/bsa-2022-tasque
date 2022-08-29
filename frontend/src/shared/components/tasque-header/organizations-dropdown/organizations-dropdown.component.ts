@@ -5,6 +5,8 @@ import { OrganizationModel } from 'src/core/models/organization/organization-mod
 import { takeUntil } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { BaseComponent } from 'src/core/base/base.component';
+import { UserModel } from 'src/core/models/user/user-model';
+import { MenuDropdownOption } from '../../tasque-menu-dropdown/menu-dropdown.component';
 
 @Component({
   selector: 'tasque-organizations-dropdown',
@@ -13,7 +15,27 @@ import { BaseComponent } from 'src/core/base/base.component';
 })
 export class OrganizationsDropdownComponent extends BaseComponent implements OnInit {
 
-  @Input() public availableOrganizations: OrganizationModel[] = [];
+  private user: UserModel;
+
+  @Input()
+  set currentUser(user: UserModel) {
+    if (!user) {
+      return;
+    }
+
+    this.user = user;
+
+    this.organizationService.getUserOrganizations(this.currentUser.id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (result) => {
+          this.availableOrganizations = result.body as OrganizationModel[];
+        }
+      );
+  }
+  get currentUser(): UserModel {
+    return this.user;
+  }
 
   public currentOrganization: OrganizationModel = {
     id: -1,
@@ -23,7 +45,9 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
     updatedAt: new Date()
   };
 
-  public organizationControl = new FormControl('');
+  public availableOrganizations: OrganizationModel[] = [];
+
+  public organizationControl = new FormControl<MenuDropdownOption | undefined>(undefined);
 
   constructor(
     private organizationService: OrganizationService,
@@ -34,20 +58,6 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
   ngOnInit(): void {
     this.subscribeToCurrentOrganization();
     this.subscribeToOrganizationControl();
-
-    if (this.storageService.currentOrganizationId === -1) {
-      return;
-    }
-
-    const searchedOrganization = this.availableOrganizations
-      .find((x) => x.id === this.storageService.currentOrganizationId);
-
-    if (searchedOrganization) {
-      this.currentOrganization = searchedOrganization;
-    }
-    else {
-      this.setOrganization();
-    }
   }
 
   private setOrganization(): void {
@@ -63,14 +73,19 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
       );
   }
 
-  get organizationNames(): string[] {
-    return this.availableOrganizations.map((x) => x.name);
+  get organizationNames(): MenuDropdownOption[] {
+    return this.availableOrganizations as MenuDropdownOption[];
   }
 
   private subscribeToCurrentOrganization(): void {
     this.storageService.currentOrganizationId$.subscribe(
       (result) => {
+        if (result === -1) {
+          return;
+        }
+
         const searchedOrganization = this.availableOrganizations.find((x) => x.id === result);
+
         if (searchedOrganization) {
           this.currentOrganization = searchedOrganization;
         }
@@ -84,10 +99,11 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
     this.organizationControl.valueChanges.subscribe(
       () => {
         const searchedOrganization = this.availableOrganizations
-          .find((x) => x.name === this.organizationControl.value);
+          .find((x) => x.id === this.organizationControl.value?.id);
 
         if (searchedOrganization) {
           this.currentOrganization = searchedOrganization;
+          this.storageService.currentOrganizationId = this.currentOrganization.id;
         }
         else {
           this.setOrganization();
