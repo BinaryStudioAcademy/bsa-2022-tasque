@@ -64,12 +64,24 @@ namespace Tasque.Core.Identity.Services
             return _mapper.Map<UserDto>(confToken.User);
         }
 
-        public async Task<UserDto> Register(UserRegisterDto registerInfo)
+        public async Task<AuthTokenDto?> Register(UserRegisterDto registerInfo)
         {
-            var userEntity = _mapper.Map<User>(registerInfo);
+            var userEntity = new User();
+            ConfirmationToken? token = null;
+
+            if (registerInfo.Key.HasValue)
+            {
+                token = await _tokenService.ConfirmToken(registerInfo.Key!.Value, TokenKind.ReferralSignUp);
+                if (token.User.Email != registerInfo.Email)
+                    throw new ValidationException("Invalid token");
+                userEntity = token.User;
+                userEntity.IsEmailConfirmed = true;
+            }
+
+            userEntity = _mapper.Map(registerInfo, userEntity);
             _validator.ValidateAndThrow(userEntity);
 
-            if (_context.Users.Any(x => x.Email == userEntity.Email))
+            if (token == null && _context.Users.Any(x => x.Email == userEntity.Email))
             {
                 throw new ValidationException("User with given email already exists");
             }
@@ -78,9 +90,20 @@ namespace Tasque.Core.Identity.Services
             userEntity.Salt = Convert.ToBase64String(salt);
             userEntity.Password = SecurityHelper.HashPassword(registerInfo.Password, salt);
 
-            _context.Users.Add(userEntity);
+            AuthTokenDto? res = null;
+            if (token == null)
+            {
+                _context.Users.Add(userEntity);
+            }
+            else
+            {
+                _context.Users.Update(userEntity);
+                _context.ConfirmationTokens.Remove(token);
+                res = GetAccessToken(userEntity.Id, userEntity.Name, userEntity.Email);
+            }
+
             await _context.SaveChangesAsync();
-            return _mapper.Map<UserDto>(userEntity);
+            return res;
         }
 
         public async Task Register(string email)

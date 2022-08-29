@@ -47,8 +47,8 @@ namespace Tasque.Core.WebAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegisterDto registerInfo)
         {
-            await _service.Register(registerInfo);
-            return Ok();
+            var token = await _service.Register(registerInfo);
+            return Ok(token);
         }
 
         [HttpGet("ref")]

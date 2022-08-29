@@ -20,8 +20,10 @@ import { Subject } from 'rxjs';
 export class RegisterPageComponent implements OnInit {
   public passwordRepeat = '';
   public hidePass = true;
-	public hidePassRepeat = true;
-	public isInvite = false;
+  public hidePassRepeat = true;
+  public isInvite = false;
+
+  private key?: string;
 
   public userRegister: UserRegisterModel = {};
   public registerForm: FormGroup = new FormGroup({});
@@ -122,13 +124,16 @@ export class RegisterPageComponent implements OnInit {
       .pipe(
         takeUntil(this.unsubscribe$),
         filter((params) => !!params['key']),
-        map((params) => params['key'] as string),
+        map((params) => {
+          this.key = params['key'] as string;
+          return this.key;
+        }),
         mergeMap((ref) => this.authService.checkRefLink(ref)),
       )
       .subscribe(
         (resp) => {
-					this.emailControl.setValue(resp.body?.email);
-					this.isInvite = true;
+          this.emailControl.setValue(resp.body?.email);
+          this.isInvite = true;
         },
         () => {
           this.router.navigate([], {
@@ -173,17 +178,29 @@ export class RegisterPageComponent implements OnInit {
       name: this.nameControl.value,
       email: this.emailControl.value,
       password: this.passwordControl.value,
+      key: this.key,
     } as UserRegisterModel;
 
-    this.authService
-      .registerUser(model)
-      .pipe(
-        switchMap(() =>
-          this.authService.resendEmailConfirmation(model.email ?? ''),
-        ),
-      )
-      .subscribe(() => {
-        this.toastrService.info('Check your mailbox');
+    if (!this.key) {
+      this.authService
+        .registerUser(model)
+        .pipe(
+          switchMap(() =>
+            this.authService.resendEmailConfirmation(model.email ?? ''),
+          ),
+        )
+        .subscribe(() => {
+          this.toastrService.info('Check your mailbox');
+        });
+      return;
+    }
+
+    this.authService.registerUser(model)
+      .subscribe((resp) => {
+        if (resp.body != null) {
+          this.authService.setAuthToken(resp.body);
+        }
+        this.router.navigate(['/']);
       });
   }
 }

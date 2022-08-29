@@ -23,7 +23,7 @@ export class AuthService {
     return this.httpService.postFullRequest(this.routePrefix + '/login', credentials);
   }
 
-  registerUser(credentials: UserRegisterModel):Observable<HttpResponse<string>> {
+  registerUser(credentials: UserRegisterModel):Observable<HttpResponse<AccessToken>> {
     return this.httpService.postFullRequest(this.routePrefix + '/register', credentials);
   }
 
