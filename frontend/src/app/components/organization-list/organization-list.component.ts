@@ -1,111 +1,58 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { UserModel } from 'src/core/models/user/user-model';
 import { CreateOrganizationDialogComponent } from '../create-organization/create-organization-dialog/create-organization-dialog.component';
 import { takeUntil } from 'rxjs/operators';
-import { faMagnifyingGlass, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { BaseComponent } from 'src/core/base/base.component';
 
 @Component({
   selector: 'app-organization-list',
   templateUrl: './organization-list.component.html',
   styleUrls: ['./organization-list.component.sass']
 })
-export class OrganizationListComponent implements OnInit {
-  @Input() public currentUser: UserModel;
+export class OrganizationListComponent extends BaseComponent implements OnInit {
+  public currentUser: UserModel = {
+    id: 0,
+    name: '',
+    email: ''
+  };
 
-  public items: OrganizationModel[] = [
-    {
-      id: 1,
-      name: 'Organization 1',
-      authorId: 2,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 1,
-      name: 'Organization 2',
-      authorId: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 1,
-      name: 'Organization 3',
-      authorId: 2,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 1,
-      name: 'Organization 4',
-      authorId: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 1,
-      name: 'Organization 5',
-      authorId: 2,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 1,
-      name: 'Organization 6',
-      authorId: 2,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 1,
-      name: 'Organization 7',
-      authorId: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 1,
-      name: 'Organization 8',
-      authorId: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 1,
-      name: 'Organization 9',
-      authorId: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }
-  ];
+  public items: OrganizationModel[] = [];
 
   public inputSearch = '';
-  public itemsShow: OrganizationModel[] = this.items;
-  public unsubscribe$ = new Subject<void>();
-  public faMagnifyingGlass: IconDefinition = faMagnifyingGlass;
+  public itemsShow: OrganizationModel[];
+  public faMagnifyingGlass = faMagnifyingGlass;
 
   constructor(
     private currentUserService: GetCurrentUserService,
     private matDialog: MatDialog,
-    private organizationService: OrganizationService) { }
+    private organizationService: OrganizationService) {
+    super();
+  }
 
   ngOnInit(): void {
     this.currentUserService.currentUser.subscribe((user) => {
       this.currentUser = user as UserModel;
+
+      this.organizationService.getUserOrganizations(this.currentUser.id)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+          (result) => {
+            if (result.body) {
+              this.items = result.body;
+              this.itemsShow = this.items;
+            }
+          },
+          (error) => {
+            if (error.status === 400) {
+              this.items = this.itemsShow = [];
+            }
+          });
     });
-    this.organizationService.getUserOrganizations(this.currentUser.id)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (result) => {
-          if (result.body) {
-            this.items = result.body;
-            this.itemsShow = this.items;
-          }
-        });
   }
 
   filterItems(): void {
