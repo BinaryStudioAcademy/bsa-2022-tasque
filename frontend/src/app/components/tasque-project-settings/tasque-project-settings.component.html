@@ -1,1 +1,27 @@
-<p>tasque-project-settings works!</p>
+<div>
+    <h1>Project options page</h1>
+</div>
+<div class="menu-actions">
+    <div class="test-button">
+        <tasque-button
+            class="btn stroke"
+            text="columns and statuses"
+        >
+        </tasque-button>
+    </div>
+    <div class="test-button">
+        <tasque-button
+            class="btn stroke"
+            text="issue types"
+            >
+        </tasque-button>
+    </div>
+    <div class="test-button">
+        <tasque-button
+            class="btn stroke"
+            text="issue template"
+            (btnClick)="moveToIssueTemplates()"
+            >
+        </tasque-button>
+    </div>
+</div>

@@ -28,6 +28,7 @@ import { TasqueProjectSettingsComponent } from './components/tasque-project-sett
 import { ToastrConfig } from 'src/entity-models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
 import { EditOrganizationComponent } from './components/edit-organization/edit-organization.component';
+import { ProjectOptionsModule } from './components/tasque-project-settings/project-options-module/project-options-module.module';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { EditOrganizationComponent } from './components/edit-organization/edit-o
     ToastrModule.forRoot(ToastrConfig),
     AuthModule,
     UserModule,
+    ProjectOptionsModule
   ],
   providers: [
     BrowserAnimationsModule,

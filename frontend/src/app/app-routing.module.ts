@@ -10,6 +10,7 @@ import { TasqueBoardComponent } from './components/tasque-board/tasque-board.com
 import { TasqueTeamComponent } from './components/tasque-team/tasque-team.component';
 import { TasqueProjectSettingsComponent } from './components/tasque-project-settings/tasque-project-settings.component';
 import { AuthGuard } from './auth/guards/auth.guard';
+import { ProjectSettingsRoutes } from './components/tasque-project-settings/project-options-module/project-options-routes';
 
 const routes: Routes = [
   ...AuthRoutes,
@@ -30,6 +31,7 @@ const routes: Routes = [
       { path: 'board', component: TasqueBoardComponent },
       { path: 'team', component: TasqueTeamComponent },
       { path: 'settings', component: TasqueProjectSettingsComponent },
+      ...ProjectSettingsRoutes,
     ]
   },
   { path: '**', redirectTo: '/auth/login', pathMatch: 'full' },

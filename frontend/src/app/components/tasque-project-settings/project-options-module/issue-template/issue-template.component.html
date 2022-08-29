@@ -1,0 +1,22 @@
+<div class="issue-template-form">
+    <h2>Issue template</h2>
+    <hr>
+    <div class="issue-template">
+        <div class="issue-fields">
+            <h2>Fields with description</h2>
+            <div cdkDropList class="issue-fields" (cdkDropListDropped)="dropFieldsWithDescription($event)">
+                <div class="issue-field" *ngFor="let item of fieldsWithDescription" cdkDrag>{{item}}</div>
+            </div>
+            <h2>Context fields</h2>
+            <div cdkDropList class="issue-fields" (cdkDropListDropped)="dropContextFields($event)">
+                <div class="issue-field" *ngFor="let item of contextFields" cdkDrag>{{item}}</div>
+            </div>
+        </div>
+        <div class="custom-fields">
+            <h2>Custom fields</h2>
+            <div cdkDropList class="issue-fields" (cdkDropListDropped)="dropCustomFields($event)">
+                <div class="custom-field" *ngFor="let item of customFields" cdkDrag>{{item}}</div>
+            </div>
+        </div>
+    </div>
+</div>
