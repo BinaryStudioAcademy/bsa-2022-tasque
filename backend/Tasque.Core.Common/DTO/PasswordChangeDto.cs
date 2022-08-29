@@ -1,8 +1,7 @@
-﻿namespace Tasque.Core.Common.DTO
+﻿namespace Tasque.Core.Common.DTO;
+
+public class PasswordChangeDto
 {
-    public class PasswordChangeDto
-    {
-        public Guid Token { get; set; }
-        public string Password { get; set; } = "";
-    }
+    public Guid Token { get; set; }
+    public string Password { get; set; } = "";
 }

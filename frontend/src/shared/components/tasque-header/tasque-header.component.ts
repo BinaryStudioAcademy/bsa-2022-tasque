@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { faCaretDown, faCaretUp, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from 'src/core/models/user/user-model';
+import { AuthService } from 'src/core/services/auth.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { MenuDropdownOption } from '../tasque-menu-dropdown/menu-dropdown.component';
 
@@ -34,6 +35,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private currentUserService: GetCurrentUserService,
+    private authService: AuthService,
   ) { }
 
   ngOnInit(): void {
@@ -44,6 +46,10 @@ export class HeaderComponent implements OnInit {
     this.createItemControl.valueChanges.subscribe(
       () => this.openCreateItemDialog(this.createItemControl.value?.name as string)
     );
+  }
+
+  public logout(): void {
+    this.authService.logout();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
