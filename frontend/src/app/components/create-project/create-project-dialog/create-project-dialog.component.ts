@@ -31,6 +31,7 @@ export class CreateProjectDialogComponent implements OnInit {
   public inputKeyLabel = 'Key';
 
   public newProjectName = '';
+  public newProjectKey = '';
 
   public unsubscribe$ = new Subject<void>();
 
@@ -44,12 +45,12 @@ export class CreateProjectDialogComponent implements OnInit {
   }
 
   onSubmit(): void{
-
     const newProject: NewProjectModel = {
       name: this.newProjectName,
-      authorId: this.data.authorId,
+      key: this.newProjectKey,
       organizationId: this.data.organizationId,
     };
+
     this.projectService.createProject(newProject)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe();

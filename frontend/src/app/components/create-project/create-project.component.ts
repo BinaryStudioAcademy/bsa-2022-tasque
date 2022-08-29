@@ -13,7 +13,6 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
 })
 export class CreateProjectComponent implements OnInit {
 
-  public currentUser: UserModel;
   public currentOrganization: OrganizationModel = {
     id: 1,
     name: 'Organization1',
@@ -26,21 +25,18 @@ export class CreateProjectComponent implements OnInit {
   public btnClass = 'mini';
 
   constructor(
-    public matDialog: MatDialog,
-    public currentUserService: GetCurrentUserService,
+    public matDialog: MatDialog
   ) { }
 
   ngOnInit(): void {
-    this.currentUserService.currentUser.subscribe((user) => {
-      this.currentUser = user as UserModel;
-    });
+
   }
 
   openDialog(): void {
     const newProjectCredential: NewProjectCredentialsModel = {
-      authorId: this.currentUser.id,
       organizationId: this.currentOrganization.id,
     };
+    
     const dialog = this.matDialog.open(CreateProjectDialogComponent, { data: newProjectCredential });
     dialog.afterClosed().subscribe();
   }

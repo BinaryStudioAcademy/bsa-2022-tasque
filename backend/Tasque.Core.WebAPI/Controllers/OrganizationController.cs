@@ -1,18 +1,39 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Organization;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
+using Tasque.Core.Identity.Exeptions;
+using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class OrganizationController : EntityController<Organization, OrganizationDto, OrganizationService>
+    public class OrganizationController : EntityController<Organization, CreateOrganizationDto, OrganizationService>
     {
-        public OrganizationController(OrganizationService service) : base(service) { }
+        private readonly CurrentUserParameters _currentUser;
+        public OrganizationController(OrganizationService service, CurrentUserParameters currentUser) : base(service)
+        {
+            _currentUser = currentUser;
+        }
+
+        [Route("create")]
+        [HttpPost]
+        public override IActionResult Create([FromBody] CreateOrganizationDto createOrganizationDto)
+        {
+            var entity = new Organization()
+            {
+                Name = createOrganizationDto.Name,
+                AuthorId = int.Parse(_currentUser.Id ?? throw new InvalidTokenException("Invalid access token"))
+            };
+            var org = _service.Create(entity);
+
+            return Ok(org);
+        }
 
         [Route("getUserOrganizationsById/{id}")]
         [HttpGet]
