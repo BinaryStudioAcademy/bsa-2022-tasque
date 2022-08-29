@@ -93,7 +93,10 @@ namespace Tasque.Core.Identity.Services
 
             var user = new User()
             {
-                Email = email
+                Email = email,
+                Password = "",
+                Salt = "",
+                Name = ""
             };
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

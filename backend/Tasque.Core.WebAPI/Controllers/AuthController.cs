@@ -10,7 +10,7 @@ namespace Tasque.Core.WebAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private AuthService _service;        
+        private AuthService _service;
 
         public AuthController(AuthService service)
         {
@@ -43,7 +43,7 @@ namespace Tasque.Core.WebAPI.Controllers
             var token = _service.GetAccessToken(user.Id, user.Name, user.Email);
             return Ok(token);
         }
-        
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegisterDto registerInfo)
         {
@@ -55,7 +55,7 @@ namespace Tasque.Core.WebAPI.Controllers
         public async Task<IActionResult> GetRefEmail([FromQuery] Guid key)
         {
             string email = await _service.GetEmailFromReferralKey(key);
-            return Ok(email);
+            return Ok(new EmailDto { Email = email });
         }
 
         [HttpPost("ref")]
