@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { BoardModel } from '../../../core/models/board/board-model';
-import { CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TaskInfoModel } from 'src/core/models/board/task-Info-model';
 
 @Component({
@@ -19,9 +19,9 @@ export class TasqueBoardComponent implements OnInit {
   private newBoard: BoardModel;
 
   public board: BoardModel[] = [
-    { columnName: 'To Do', tasks: [{name: 'TaskOne', avatarUrl: ''},{name: 'TaskTwo', avatarUrl: ''},{name: 'TaskThree', avatarUrl: ''} ] }, 
-    { columnName: 'In Progress', tasks: [{name: 'TaskFour', avatarUrl: ''}] }, 
-    { columnName: 'Code Review', tasks: [{name: 'TaskFive', avatarUrl: ''}, {name: 'TaskSix', avatarUrl: ''}] }, 
+    { columnName: 'To Do', tasks: [ { name: 'TaskOne', avatarUrl: '' }, { name: 'TaskTwo', avatarUrl: '' }, { name: 'TaskThree', avatarUrl: '' } ] }, 
+    { columnName: 'In Progress', tasks: [ { name: 'TaskFour', avatarUrl: '' }] }, 
+    { columnName: 'Code Review', tasks: [ { name: 'TaskFive', avatarUrl: '' }, { name: 'TaskSix', avatarUrl: '' }] }, 
     { columnName: 'Done', tasks: [] },
   ];
 
@@ -52,7 +52,7 @@ export class TasqueBoardComponent implements OnInit {
     this.createColumnForm.reset();
   }
 
-  drop(event: CdkDragDrop<TaskInfoModel[]>) {
+  drop(event: CdkDragDrop<TaskInfoModel[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
