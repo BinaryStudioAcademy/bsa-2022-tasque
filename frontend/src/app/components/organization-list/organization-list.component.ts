@@ -8,7 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { faMagnifyingGlass, faMessage } from '@fortawesome/free-solid-svg-icons';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { BaseComponent } from 'src/core/base/base.component';
-import { StorageService } from 'src/core/services/storage.service';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 
 @Component({
   selector: 'app-organization-list',
@@ -33,7 +33,7 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
     private currentUserService: GetCurrentUserService,
     private matDialog: MatDialog,
     private organizationService: OrganizationService,
-    private storageService: StorageService) {
+    private getCurrentOrganizationService: GetCurrentOrganizationService) {
     super();
   }
 
@@ -73,13 +73,11 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
     const dialog = this.matDialog.open(CreateOrganizationDialogComponent, {
       data: this.currentUser,
     });
-    dialog.afterClosed().subscribe((result) => {
+    dialog.afterClosed().subscribe((result: OrganizationModel) => {
+
       this.items.push(result);
       this.itemsShow = this.items;
-
-      if (this.items.length === 1) {
-        this.storageService.currentOrganizationId = this.items[0].id;
-      }
+      this.getCurrentOrganizationService.updateOrganizations(result);
     }
     );
   }
