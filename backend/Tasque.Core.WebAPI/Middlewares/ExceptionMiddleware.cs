@@ -33,6 +33,9 @@ namespace Tasque.Core.WebAPI.Middlewares
                     case ValidationException ex:
                         await HandleValidationException(httpContext, ex);
                         break;
+                    case NotFoundException ex:
+                        await HandleNotFoundException(httpContext, ex);
+                        break;
                     case EmailNotConfirmedException ex:
                         await HandleEmailNotConfirmedException(httpContext, ex);
                         break;
@@ -41,7 +44,16 @@ namespace Tasque.Core.WebAPI.Middlewares
                         break;
                 }
             }
-        }        
+        }
+
+        private async Task HandleNotFoundException(HttpContext httpContext, NotFoundException ex)
+        {
+            _logger.LogError(ex.Message);
+            if (ex.InnerException != null)
+                _logger.LogError(ex.InnerException.Message);
+            await CreateExceptionAsync(httpContext, HttpStatusCode.NotFound, ex.Message);
+        }
+
         private async Task CreateExceptionAsync(HttpContext context, 
             HttpStatusCode statusCode = HttpStatusCode.InternalServerError,
             object? errorBody = null)
@@ -55,6 +67,8 @@ namespace Tasque.Core.WebAPI.Middlewares
         private async Task HandleGenericException(HttpContext context, Exception ex)
         {
             _logger.LogError("{ex.Message}", ex.Message);
+            if (ex.InnerException != null)
+                _logger.LogError(ex.InnerException.Message);
             await CreateExceptionAsync(context);
         }
         private async Task HandleHttpException(HttpContext context, HttpException ex)
