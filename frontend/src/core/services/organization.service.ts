@@ -12,7 +12,7 @@ import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
 export class OrganizationService {
   public routePrefix = '/api/organization';
 
-  constructor(public httpService: HttpService) {}
+  constructor(public httpService: HttpService) { }
 
   createOrganization(
     organization: NewOrganizationModel,
@@ -53,8 +53,8 @@ export class OrganizationService {
 
   updateOrganization(
     organization: OrganizationModel,
-  ): Observable<HttpResponse<OrganizationModel[]>> {
-    return this.httpService.putFullRequest<OrganizationModel[]>(
+  ): Observable<HttpResponse<OrganizationModel>> {
+    return this.httpService.putFullRequest<OrganizationModel>(
       this.routePrefix,
       organization,
     );

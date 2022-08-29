@@ -45,13 +45,13 @@ namespace Tasque.Core.WebAPI.Controllers
         }
 
         [HttpPut]
-        public async virtual Task<IActionResult> UpdateOrganization([FromBody] OrganizationDto organization)
+        public async virtual Task<IActionResult> UpdateOrganization([FromBody] OrganizationDto organizationDto)
         {
-            var organizations = await _service.EditOrganization(organization);
+            var organization = await _service.EditOrganization(organizationDto);
 
-            if (organizations is not null)
+            if (organization is not null)
             {
-                return Ok();
+                return Ok(organization);
             }
             else
             {
