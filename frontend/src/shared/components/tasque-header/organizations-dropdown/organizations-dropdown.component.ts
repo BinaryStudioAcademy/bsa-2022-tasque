@@ -58,6 +58,7 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
   ngOnInit(): void {
     this.subscribeToCurrentOrganization();
     this.subscribeToOrganizationControl();
+    this.subscribeToOrganizationsChange();
 
     if (this.storageService.currentOrganizationId === -1) {
       if (this.availableOrganizations.length > 0) {
@@ -129,6 +130,30 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
         }
         else {
           this.setOrganization();
+        }
+      }
+    );
+  }
+
+  private subscribeToOrganizationsChange(): void {
+    this.getCurrentOrganizationService.organizationsUpdated$.subscribe(
+      (organization) => {
+        const index = this.availableOrganizations.findIndex((org) => org.id === organization.id);
+
+        if (index === -1) {
+          this.availableOrganizations.push(organization);
+
+          if (this.getCurrentOrganizationService.currentOrganizationId === -1) {
+            this.getCurrentOrganizationService.currentOrganizationId = this.availableOrganizations[0].id;
+          }
+
+          return;
+        }
+
+        this.availableOrganizations[index] = organization;
+
+        if (this.currentOrganization.id === organization.id) {
+          this.currentOrganization = organization;
         }
       }
     );
