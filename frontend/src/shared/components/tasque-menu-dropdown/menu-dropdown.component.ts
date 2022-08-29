@@ -3,6 +3,11 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
+export interface MenuDropdownOption {
+  id?: number,
+  name: string
+}
+
 @Component({
   selector: 'tasque-menu-dropdown',
   templateUrl: './menu-dropdown.component.html',
@@ -18,19 +23,32 @@ import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
 
   @Input() public label?: string;
-  @Input() public buttonIcon?: IconProp = faChevronDown;
 
-  @Input() public options: string[];
-  public selectedOption: string;
+  @Input() public buttonIcon?: IconProp;
+
+  @Input() public downArrowIcon = faChevronDown;
+
+  @Input() public upArrowIcon = faChevronUp;
+
+  public currentArrowIcon: IconProp;
+
+  @Input() public options: MenuDropdownOption[];
+  public selectedOption: MenuDropdownOption;
 
   @Output() labelClicked = new EventEmitter();
   @Input() toggleDropdownOnLabelClick = true;
 
+  @Input() avatarUrl = '\\assets\\avatar.png';
+  @Input() diameter_px = 45;
+
+  @Input() public hasAvatar = false;
+  @Output() avatarClicked = new EventEmitter();
+
   public expanded = false;
   private wasInside = false;
 
-  onChange: (value: string) => void = () => { };
-  onTouched: (value: string) => void = () => { };
+  onChange: (value: MenuDropdownOption) => void = () => { };
+  onTouched: (value: MenuDropdownOption) => void = () => { };
 
   @HostListener('click')
   clickInside(): void {
@@ -42,41 +60,43 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
     if (!this.wasInside) {
       this.expanded = false;
 
-      if (this.buttonIcon === faChevronUp) {
-        this.buttonIcon = faChevronDown;
+      if (this.currentArrowIcon === this.upArrowIcon) {
+        this.currentArrowIcon = this.downArrowIcon;
       }
     }
     this.wasInside = false;
   }
 
-  writeValue(option: string): void {
+  writeValue(option: MenuDropdownOption): void {
     this.selectedOption = option;
   }
 
-  registerOnChange(fn: (value: string) => void): void {
+  registerOnChange(fn: (value: MenuDropdownOption) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: (value: string) => void): void {
+  registerOnTouched(fn: (value: MenuDropdownOption) => void): void {
     this.onTouched = fn;
   }
 
   constructor() { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.currentArrowIcon = this.downArrowIcon;
+  }
 
   public toggleDropdown(): void {
     this.expanded = !this.expanded;
 
     if (this.expanded) {
-      this.buttonIcon = faChevronUp;
+      this.currentArrowIcon = this.upArrowIcon;
     }
     else {
-      this.buttonIcon = faChevronDown;
+      this.currentArrowIcon = this.downArrowIcon;
     }
   }
 
-  public select(option: string): void {
+  public select(option: MenuDropdownOption): void {
     this.onChange(option);
 
     if (this.selectedOption != option) {
@@ -84,8 +104,8 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
     }
 
     this.expanded = false;
-    if (this.buttonIcon === faChevronUp) {
-      this.buttonIcon = faChevronDown;
+    if (this.currentArrowIcon === this.upArrowIcon) {
+      this.currentArrowIcon = this.downArrowIcon;
     }
   }
 
@@ -97,7 +117,16 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
     this.labelClicked.emit();
   }
 
-  public iconClick(): void {
+  public arrowIconClick(): void {
+    this.toggleDropdown();
+  }
+
+  public buttonIconClick(): void {
+    this.toggleDropdown();
+  }
+
+  public avatarClick(): void {
+    this.avatarClicked.emit();
     this.toggleDropdown();
   }
 }
