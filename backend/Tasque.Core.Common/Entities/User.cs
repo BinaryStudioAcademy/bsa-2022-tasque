@@ -36,14 +36,13 @@ public class User : BaseEntity
 
 public class UserValidator : AbstractValidator<User>
 {
-    private static readonly Regex EMAIL_REGEX = new(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,3}$");
     public UserValidator()
     {
         // Not using built-in email validation because it's not working properly
         // example@example -> valid email
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email is required")
-            .Matches(EMAIL_REGEX).WithMessage("Email adress is not valid");
+            .Matches(Constants.EMAIL_REGEX).WithMessage("Email adress is not valid");
         RuleFor(x => x.Password).MinimumLength(8).WithMessage("Password must be at least 8 characters");
     }
 }

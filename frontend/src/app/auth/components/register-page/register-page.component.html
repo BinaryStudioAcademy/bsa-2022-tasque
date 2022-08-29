@@ -4,7 +4,7 @@
     <span class="label-14">Already have an account? <a routerLink="../login">Log In</a></span>
   </div>
   <tasque-input label="Name" placeholder="Enter your name" [formControl]="nameControl" [invalid]="showError" [errorMessage]="nameErrorMessage"></tasque-input>
-  <tasque-input label="Email" placeholder="Enter your email" [formControl]="emailControl" [errorMessage]="emailErrorMessage" [invalid]="showError"></tasque-input>
+  <tasque-input label="Email" placeholder="Enter your email" [readonly]="isInvite" [formControl]="emailControl" [errorMessage]="emailErrorMessage" [invalid]="showError" #emailInput></tasque-input>
   <tasque-input label="Password" placeholder="Enter your password" type="password" (ngModelChange)="resetPasswordControl()" [formControl]="passwordControl" [errorMessage]="passwordErrorMessage" [invalid]="showError" [icon]="faShow" iconPosition="right" #passwordInput (iconClick)="flipPassword(passwordInput)"></tasque-input>
   <tasque-input label="Repeat password" placeholder="Repeat your password" type="password" (ngModelChange)="resetPasswordControl()" [formControl]="passwordRepeatControl" [errorMessage]="passwordRepeatErrorMessage" [invalid]="showError" [icon]="faShow" iconPosition="right" #passwordRepeatInput (iconClick)="flipPassword(passwordRepeatInput)"></tasque-input>
   <div class="button-container">
