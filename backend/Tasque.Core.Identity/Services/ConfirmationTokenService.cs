@@ -31,7 +31,7 @@ namespace Tasque.Core.Identity.Services
             _configuration = configuration;
         }
 
-        public async Task<ConfirmationToken> CreateConfirmationToken(User user, TokenKind kind)
+        public async Task<ConfirmationToken> CreateConfirmationToken(User user, TokenKind kind, double? lifetime = null)
         {
             var existingTokens = _context.ConfirmationTokens
                 .Where(x => x.UserId == user.Id && x.Kind == kind)
@@ -42,7 +42,7 @@ namespace Tasque.Core.Identity.Services
             var confToken = new ConfirmationToken
             {
                 User = user,
-                ExpiringAt = DateTime.UtcNow.AddSeconds(_emailOptions.TokenLifetime),
+                ExpiringAt = DateTime.UtcNow.AddSeconds(lifetime ?? _emailOptions.TokenLifetime),
                 Kind = kind
             };
             _context.ConfirmationTokens.Add(confToken);
@@ -79,7 +79,7 @@ namespace Tasque.Core.Identity.Services
         }
 
         private async Task<string> GetEmailText(ConfirmationToken token)
-        {   
+        {
             var host = _emailOptions.Host;
             var endpoint = GetEndpoint(token);
             var link = $"{host}{endpoint}";
@@ -109,6 +109,7 @@ namespace Tasque.Core.Identity.Services
             {
                 TokenKind.EmailConfirmation => _emailOptions.ConfirmationEndpoint,
                 TokenKind.PasswordReset => _emailOptions.PasswordResetEndpoint,
+                TokenKind.ReferralSignUp => "register",
                 _ => ""
             };
         }
@@ -119,6 +120,7 @@ namespace Tasque.Core.Identity.Services
             {
                 TokenKind.EmailConfirmation => "Email confirmation",
                 TokenKind.PasswordReset => "Password reset",
+                TokenKind.ReferralSignUp => "Tasque invitation",
                 _ => ""
             };
         }
@@ -129,6 +131,7 @@ namespace Tasque.Core.Identity.Services
             {
                 TokenKind.PasswordReset => await AssemblyResourceService.GetResource(AssemblyResource.ResetPasswordMessage),
                 TokenKind.EmailConfirmation => await AssemblyResourceService.GetResource(AssemblyResource.ConfirmEmailMessage),
+                TokenKind.ReferralSignUp => await AssemblyResourceService.GetResource(AssemblyResource.ReferralInvitationMessage),
                 _ => ""
             };
         }
