@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { NewSprintModel } from 'src/core/models/sprint/new-sprint-model';
+import { EditSprintModel } from 'src/core/models/sprint/edit-sprint-model';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
-import { CreateSprintDialogComponent } from './create-sprint-dialog/create-sprint-dialog.component';
+import { EditSprintDialogComponent } from './edit-sprint-dialog/edit-sprint-dialog.component';
 
 @Component({
-  selector: 'app-create-sprint',
-  templateUrl: './create-sprint.component.html',
-  styleUrls: ['./create-sprint.component.sass']
+  selector: 'app-edit-sprint',
+  templateUrl: './edit-sprint.component.html',
+  styleUrls: ['./edit-sprint.component.sass']
 })
-export class CreateSprintComponent implements OnInit {
+export class EditSprintComponent implements OnInit {
 
   public currentSprint: SprintModel = {
     id: 1,
@@ -34,15 +34,15 @@ export class CreateSprintComponent implements OnInit {
   }
 
   openDialog(): void {
-    const newSprint = {
+    const editSprint = {
       name: this.currentSprint.name,
       description: this.currentSprint.description,
       startAt: this.currentSprint.startAt ? this.currentSprint.startAt.toISOString().slice(0, 16) : "",
       endAt: this.currentSprint.endAt ? this.currentSprint.endAt.toISOString().slice(0, 16) : "",
       projectId: this.currentSprint.projectId,
-      isNew: true
-    } as NewSprintModel;
-    const dialog = this.matDialog.open(CreateSprintDialogComponent, { data: newSprint });
+      isStarting: true
+    } as EditSprintModel;
+    const dialog = this.matDialog.open(EditSprintDialogComponent, { data: editSprint });
     dialog.afterClosed().subscribe();
   }
 

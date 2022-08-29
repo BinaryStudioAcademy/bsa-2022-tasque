@@ -2,15 +2,15 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
-import { NewSprintModel } from 'src/core/models/sprint/new-sprint-model';
+import { EditSprintModel } from 'src/core/models/sprint/edit-sprint-model';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 
 @Component({
-  selector: 'app-create-sprint-dialog',
-  templateUrl: './create-sprint-dialog.component.html',
-  styleUrls: ['./create-sprint-dialog.component.sass']
+  selector: 'app-edit-sprint-dialog',
+  templateUrl: './edit-sprint-dialog.component.html',
+  styleUrls: ['./edit-sprint-dialog.component.sass']
 })
-export class CreateSprintDialogComponent implements OnInit {
+export class EditSprintDialogComponent implements OnInit {
 
   public createBtnName = 'Start';
   public createBtnClass = 'fill';
@@ -38,7 +38,7 @@ export class CreateSprintDialogComponent implements OnInit {
   public unsubscribe$ = new Subject<void>();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: NewSprintModel
+    @Inject(MAT_DIALOG_DATA) public data: EditSprintModel
   ) {
     this.sprintName = new FormControl(this.data.name, [
       Validators.required,

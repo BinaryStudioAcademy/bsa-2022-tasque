@@ -1,8 +1,8 @@
-<form [formGroup]="sprintForm" class="create-sprint-dialog" (ngSubmit)="onSubmit()">
+<form [formGroup]="sprintForm" class="edit-sprint-dialog" (ngSubmit)="onSubmit()">
     <mat-dialog-content class="dialog-content">
       <h3>
         Start Sprint
-        <span *ngIf="data.isNew" class="dialog-info">Issues will be added in this sprint.</span>
+        <span *ngIf="data.isStarting" class="dialog-info">Issues will be added in this sprint.</span>
       </h3>
       <div class="tasque-input">
         <tasque-input
