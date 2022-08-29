@@ -106,6 +106,9 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<UserService>()
                 .AddScoped<FileUploadService>()
                 .AddScoped<SprintService>()
+                .AddScoped<TaskPriorityService>()
+                .AddScoped<TaskStateService>()
+                .AddScoped<TaskTypeService>()
                 .AddScoped<ITaskService, TaskService>();
 
             services.RegisterIdentity(configuration);

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Tasque.Core.Common.DTO.PartialModels;
 using Tasque.Core.Common.DTO.Task;
+using Tasque.Core.Common.Entities;
 using Task = Tasque.Core.Common.Entities.Task;
 
 namespace Tasque.Core.BLL.MappingProfiles
@@ -10,8 +11,9 @@ namespace Tasque.Core.BLL.MappingProfiles
         public TaskProfile()
         {
             CreateMap<Task, TaskDto>().ReverseMap();
-            //CreateMap<CreateTaskModel, Task>().ReverseMap();
-            CreateMap<TaskCustomFields, CosmosTaskFields>();
+            CreateMap<TaskTypeDto, TaskTypeDto>().ReverseMap();
+            CreateMap<TaskPriorityDto, TaskPriorityDto>().ReverseMap();
+            CreateMap<TaskState, TaskStateDto>().ReverseMap();
         }
     }
 }

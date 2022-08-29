@@ -14,9 +14,9 @@ namespace Tasque.Core.Common.DTO.Task
         public string? Description { get; set; }
         public string Summary { get; set; } = null!;
 
-        public TaskStateDto State { get; set; }
-        public TaskTypeDto Type { get; set; }
-        public TaskPriorityDto Priority { get; set; }
+        public int StateId { get; set; }
+        public int TypeId { get; set; }
+        public int PriorityId { get; set; }
 
         public DateTime Deadline { get; set; }
         public DateTime? FinishedAt { get; set; }
