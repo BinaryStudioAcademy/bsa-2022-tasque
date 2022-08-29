@@ -1,6 +1,7 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Tasque.Core.BLL.Interfaces;
-using Tasque.Core.Common.DTO.PartialModels;
+using Tasque.Core.Common.DTO.PartialModels.TaskEntity;
+using Tasque.Core.Common.Enums;
 using Tasque.Core.Common.StaticResources;
 
 namespace Tasque.Core.BLL.Services

@@ -10,8 +10,6 @@ namespace Tasque.Core.BLL.MappingProfiles
         public TaskProfile()
         {
             CreateMap<Task, TaskDto>().ReverseMap();
-            //CreateMap<CreateTaskModel, Task>().ReverseMap();
-            CreateMap<TaskCustomFields, CosmosTaskFields>();
         }
     }
 }

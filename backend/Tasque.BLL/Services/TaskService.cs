@@ -2,7 +2,7 @@
 using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO;
-using Tasque.Core.Common.DTO.PartialModels;
+using Tasque.Core.Common.DTO.PartialModels.TaskEntity;
 using Tasque.Core.Common.Entities.Abstract;
 using Tasque.Core.DAL;
 
