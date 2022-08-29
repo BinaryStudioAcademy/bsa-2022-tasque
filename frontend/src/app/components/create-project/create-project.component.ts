@@ -1,10 +1,8 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { CreateProjectDialogComponent } from './create-project-dialog/create-project-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { UserModel } from '../../../core/models/user/user-model';
 import { OrganizationModel } from '../../../core/models/organization/organization-model';
 import { NewProjectCredentialsModel } from '../../../core/models/project/new-project-credentials.model';
-import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Component({
   selector: 'app-create-project',
