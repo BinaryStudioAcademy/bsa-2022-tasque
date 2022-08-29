@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { UserModel } from 'src/core/models/user/user-model';
+import { BoardService } from 'src/services/board.service';
+import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import {
   faMaximize,
   faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { BoardService } from 'src/services/board.service';
-import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 
 @Component({
   selector: 'app-backlog',
@@ -16,36 +18,34 @@ import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/drop
 export class BacklogComponent implements OnInit {
   faMaximize = faMaximize;
   faMagnifyingGlass = faMagnifyingGlass;
-  public unsubscribe$ = new Subject<void>();
-  public options: TasqueDropdownOption[] = [
-    {
-      color: 'red',
-      title: 'Development',
-      id: 0,
-    },
-    {
-      color: '#F6F7F9',
-      title: 'Feature',
-      id: 1,
-    },
-  ];
 
-  constructor(public boardService: BoardService) {}
+  @Input() public currentUser: UserModel;
+
+  public unsubscribe$ = new Subject<void>();
+  public boards: TasqueDropdownOption[];
+
+  constructor(
+    public boardService: BoardService,
+    public currentUserService: GetCurrentUserService,
+  ) {}
 
   ngOnInit(): void {
-    this.getUserBoards();
+    this.currentUserService.currentUser.subscribe((user) => {
+      this.currentUser = user as UserModel;
+      this.getUserBoards();
+    });
   }
 
   public getUserBoards(): void {
     this.boardService
-      .getUserBoards(1)
+      .getUserBoards(this.currentUser.id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          this.options = result.body.map((item) => ({
+          this.boards = result.body.map((item) => ({
             id: item.id,
             title: item.name,
-            color: 'white',
+            color: 'red',
           }));
         }
       });

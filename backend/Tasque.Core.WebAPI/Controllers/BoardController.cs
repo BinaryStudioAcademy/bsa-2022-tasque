@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
-using Tasque.Core.Common.DTO.Project;
+using Tasque.Core.Common.DTO.Board;
 using Tasque.Core.Common.Entities;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
     [Route("api/board")]
-    public class BoardController : EntityController<Board, NewProjectDto, BoardService>
+    public class BoardController : EntityController<Board, BoardDto, BoardService>
     {
         public BoardController(BoardService service) : base(service) { }
 
