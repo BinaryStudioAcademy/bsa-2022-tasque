@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.BLL.Interfaces;
-using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.DTO.PartialModels;
+using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.Entities.Abstract;
 using Tasque.Core.DAL;
 
@@ -90,7 +90,6 @@ namespace Tasque.Core.BLL.Services
 
             var customAttributes = await _cosmosTaskService.UpdateTask(cosmosModel);
 
-            task.Name = model.Name;
             task.Description = model.Description;
             task.Summary = model.Summary;
             task.Labels = model.Labels;

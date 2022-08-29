@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.DTO.PartialModels;
+using Tasque.Core.Common.DTO.Task;
 using Task = Tasque.Core.Common.Entities.Task;
 
 namespace Tasque.Core.BLL.MappingProfiles

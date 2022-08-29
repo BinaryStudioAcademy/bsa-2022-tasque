@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.DTO.PartialModels;
+using Tasque.Core.Common.DTO.Task;
 
 namespace Tasque.Core.BLL.Interfaces
 {

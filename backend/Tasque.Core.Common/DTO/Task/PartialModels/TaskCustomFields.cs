@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tasque.Core.Common.DTO.User;
 
 namespace Tasque.Core.Common.DTO.PartialModels
 {
