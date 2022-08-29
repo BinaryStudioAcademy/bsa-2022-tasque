@@ -26,10 +26,12 @@
           <img src="assets/board/filter.svg">           
         </div>
       </div>
-      <div class="board-columns">
-        <div *ngFor="let item of board">
+      <div class="board-columns" cdkDropListGroup>
+        <div cdkDropList *ngFor="let item of board" 
+        (cdkDropListDropped)="drop($event)" 
+        [cdkDropListData]="item.tasks">
           <div class="column-title">
-            <div>
+            <div class="board-list">
               <span class="column-name">{{item.columnName}}</span>
               <span class="column-element-count"> ({{item.tasks.length}})</span>
             </div>
@@ -38,7 +40,7 @@
               <img src="assets/board/column_menu.svg"> 
             </div>  
           </div>
-          <div class="column" *ngFor="let task of item.tasks">
+          <div class="column" *ngFor="let task of item.tasks" cdkDrag>
               <span>{{task.name}}</span>
               <span>{{task.avatarUrl}}</span>
           </div>
