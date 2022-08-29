@@ -20,7 +20,8 @@ import { Subject } from 'rxjs';
 export class RegisterPageComponent implements OnInit {
   public passwordRepeat = '';
   public hidePass = true;
-  public hidePassRepeat = true;
+	public hidePassRepeat = true;
+	public isInvite = false;
 
   public userRegister: UserRegisterModel = {};
   public registerForm: FormGroup = new FormGroup({});
@@ -110,29 +111,32 @@ export class RegisterPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        filter((params) => !!params['ref']),
-        map((params) => params['ref'] as string),
-        mergeMap((ref) => this.authService.checkRefLink(ref)),
-      )
-      .subscribe(
-        (email) => {
-          this.emailControl.setValue(email);
-          this.emailInput.readonly = true;
-        },
-        () => {
-          this.router.navigate([], { replaceUrl: true, relativeTo: this.route });
-        },
-      );
-
     this.registerForm = new FormGroup({
       nameControl: this.nameControl,
       emailControl: this.emailControl,
       passwordControl: this.passwordControl,
       passwordRepeatControl: this.passwordRepeatControl,
     });
+
+    this.route.queryParams
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        filter((params) => !!params['key']),
+        map((params) => params['key'] as string),
+        mergeMap((ref) => this.authService.checkRefLink(ref)),
+      )
+      .subscribe(
+        (resp) => {
+					this.emailControl.setValue(resp.body?.email);
+					this.isInvite = true;
+        },
+        () => {
+          this.router.navigate([], {
+            replaceUrl: true,
+            relativeTo: this.route,
+          });
+        },
+      );
   }
 
   flipPassword(input: InputComponent): void {
