@@ -1,4 +1,12 @@
-import { Component, EventEmitter, forwardRef, HostListener, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  forwardRef,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export interface TasqueDropdownOption {
@@ -26,12 +34,12 @@ export class DropdownComponent implements OnInit, ControlValueAccessor {
     {
       color: 'red',
       title: 'Development',
-      id: 0
+      id: 0,
     },
     {
       color: '#F6F7F9',
       title: 'Feature',
-      id: 1
+      id: 1,
     },
   ];
   @Input() public label = '';
@@ -39,6 +47,7 @@ export class DropdownComponent implements OnInit, ControlValueAccessor {
   @Input() public optionsWidth: string;
   @Input() public placeholder = '';
   @Input() public autoSelect = false;
+  @Input() public dropBelow = true;
 
   @Input()
   set invalid(hasError: boolean) {
@@ -54,12 +63,10 @@ export class DropdownComponent implements OnInit, ControlValueAccessor {
   }
   @Output() onSelect = new EventEmitter<number>();
 
-  onChange: (value: TasqueDropdownOption) => void = () => { };
-  onTouched: (value: TasqueDropdownOption) => void = () => { };
+  onChange: (value: TasqueDropdownOption) => void = () => {};
+  onTouched: (value: TasqueDropdownOption) => void = () => {};
 
-  public selectedOption:
-    | TasqueDropdownOption
-    | undefined = undefined;
+  public selectedOption: TasqueDropdownOption | undefined = undefined;
   public expanded = false;
 
   private wasInside = false;
@@ -77,7 +84,7 @@ export class DropdownComponent implements OnInit, ControlValueAccessor {
     this.wasInside = false;
   }
 
-  constructor() { }
+  constructor() {}
 
   writeValue(option: TasqueDropdownOption): void {
     this.selectedOption = option;
@@ -109,5 +116,18 @@ export class DropdownComponent implements OnInit, ControlValueAccessor {
       this.onSelect.emit(this.selectedOption.id);
     }
     this.expanded = false;
+  }
+
+  public setStyles(): object {
+    if (this.dropBelow) {
+      return {
+        width: this.optionsWidth,
+        top: '100%',
+      };
+    }
+    return {
+      width: this.optionsWidth,
+      bottom: '100%',
+    };
   }
 }

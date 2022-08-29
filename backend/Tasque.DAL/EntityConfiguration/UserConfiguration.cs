@@ -19,6 +19,10 @@ namespace Tasque.Core.DAL.EntityConfiguration
             builder
                 .HasMany(user => user.ParticipatedTasks)
                 .WithMany(task => task.Users);
+
+            builder
+               .HasMany(user => user.ParticipatedOrganization)
+               .WithMany(organization => organization.Users);
         }
     }
 }

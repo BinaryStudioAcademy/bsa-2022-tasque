@@ -5,9 +5,8 @@ import { OrganizationService } from 'src/core/services/organization.service';
 import { UserModel } from 'src/core/models/user/user-model';
 import { CreateOrganizationDialogComponent } from '../create-organization/create-organization-dialog/create-organization-dialog.component';
 import { takeUntil } from 'rxjs/operators';
-import { faMagnifyingGlass, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
-import { NotificationService } from 'src/core/services/notification.service';
 import { BaseComponent } from 'src/core/base/base.component';
 
 @Component({
@@ -22,107 +21,38 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
     email: ''
   };
 
-  public items: OrganizationModel[] = [
-    {
-      id: 1,
-      name: 'Organization 1',
-      authorId: 2,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 2,
-      name: 'Organization 2',
-      authorId: 2,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 3,
-      name: 'Organization 3',
-      authorId: 2,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 4,
-      name: 'Organization 4',
-      authorId: 2,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 5,
-      name: 'Organization 5',
-      authorId: 2,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 6,
-      name: 'Organization 6',
-      authorId: 2,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 7,
-      name: 'Organization 7',
-      authorId: 2,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 8,
-      name: 'Organization 8',
-      authorId: 0,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 9,
-      name: 'Organization 9',
-      authorId: 2,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  ];
+  public items: OrganizationModel[] = [];
 
   public inputSearch = '';
   public itemsShow: OrganizationModel[];
-  public faMagnifyingGlass: IconDefinition = faMagnifyingGlass;
+  public faMagnifyingGlass = faMagnifyingGlass;
 
   constructor(
     private currentUserService: GetCurrentUserService,
     private matDialog: MatDialog,
-    private organizationService: OrganizationService,
-    private notificationService: NotificationService) {
+    private organizationService: OrganizationService) {
     super();
   }
 
   ngOnInit(): void {
-    this.itemsShow = this.items;
-
     this.currentUserService.currentUser.subscribe((user) => {
       this.currentUser = user as UserModel;
-    });
 
-    this.organizationService.getUserOrganizations(this.currentUser.id)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (result) => {
-          if (result.body) {
-            this.items = result.body;
-            this.itemsShow = this.items;
-          }
-        },
-        (error) => {
-          if (error.status === 400) {
-            this.items = this.itemsShow = [];
-            return;
-          }
-          this.notificationService.error(error);
-        });
+      this.organizationService.getUserOrganizations(this.currentUser.id)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+          (result) => {
+            if (result.body) {
+              this.items = result.body;
+              this.itemsShow = this.items;
+            }
+          },
+          (error) => {
+            if (error.status === 400) {
+              this.items = this.itemsShow = [];
+            }
+          });
+    });
   }
 
   filterItems(): void {

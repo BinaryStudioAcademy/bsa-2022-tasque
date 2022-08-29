@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tasque.Core.Common.DTO;
+using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
 
 namespace Tasque.Core.Identity.MappingProfiles

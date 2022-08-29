@@ -1,10 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ErrorHandler, Inject, Injector, Injectable } from '@angular/core';
+import { ErrorHandler, Injector, Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../services/auth.service';
 
 @Injectable()
 export class GlobalErrorHandler extends ErrorHandler {
-  constructor(@Inject(Injector) private injector: Injector) {
+  constructor(private injector: Injector) {
     super();
   }
 
@@ -12,23 +13,38 @@ export class GlobalErrorHandler extends ErrorHandler {
     return this.injector.get(ToastrService);
   }
 
-  handleError(error: any): void {
-    if (
-      error instanceof HttpErrorResponse &&
-      error.status >= 400 &&
-      error.status < 500 &&
-      typeof error.error === 'string'
-    ) {
-      this.toastrService.error(error.error, '');
-    } else {
-      this.toastrService.error('An unexpected error has occurred.', 'Error', {
-        closeButton: true,
-        timeOut: 5000,
-        onActivateTick: true,
-      });
-    }
+  private get authService(): AuthService {
+    return this.injector.get(AuthService);
+  }
 
+  handleError(error: unknown): void {
     // TODO: Remove in prod
     super.handleError(error);
+
+    if (!(error instanceof HttpErrorResponse)) {
+      this.toastrService.error('An unexpected client-side error has occurred.', 'Error');
+      return;
+    }
+
+    if (error.status === 0) {
+      this.toastrService.error('No connection.', 'Error');
+      return;
+    }
+
+    if (error.status >= 500) {
+      this.toastrService.error('An unexpected server-side error has occurred.', 'Error');
+      return;
+    }
+
+    if (error.status === 401) {
+      this.toastrService.error('Authorization has expired. Please sign in again', 'Error');
+      this.authService.logout();
+      return;
+    }
+
+    if (error.status >= 400) {
+      this.toastrService.error(error.error, '');
+      return;
+    }
   }
 }

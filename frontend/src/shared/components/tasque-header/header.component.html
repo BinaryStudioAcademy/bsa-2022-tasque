@@ -1,41 +1,19 @@
 <header>
   <div class="navigation-panel">
-    <div [matMenuTriggerFor]="workMenu">
-      <span>Your work</span>
-      <img src="\assets\arrow_icon.svg" />
-      <mat-menu #workMenu="matMenu">
-        <button mat-menu-item>One task</button>
-        <button mat-menu-item>Some task</button>
-      </mat-menu>
-    </div>
-    <div [matMenuTriggerFor]="projectMenu">
-      <span>Project</span>
-      <img src="\assets\arrow_icon.svg" />
-      <mat-menu #projectMenu="matMenu">
-        <button mat-menu-item>Last project</button>
-        <button mat-menu-item>Previous project</button>
-      </mat-menu>
-    </div>
-    <div>
-      <tasque-organizations-dropdown></tasque-organizations-dropdown>
-    </div>
-    <div>
-      <span [routerLink]="['/organizations']">My Organizations</span>
-    </div>
-    <div>
-      <span [routerLink]="['/projects']">My Projects</span>
-    </div>
-    <div>
-      <span>Calendar</span>
-    </div>
-    <div [matMenuTriggerFor]="createMenu">
-      <span>Create</span>
-      <mat-menu #createMenu="matMenu">
-        <button mat-menu-item>Issue</button>
-        <button mat-menu-item>Board</button>
-        <button mat-menu-item>Project</button>
-      </mat-menu>
-    </div>
+    <tasque-menu-dropdown label="Your work" [options]="yourWorkOptions"> </tasque-menu-dropdown>
+    <tasque-menu-dropdown label="Project" [options]="projectOptions"> </tasque-menu-dropdown>
+    <tasque-menu-dropdown
+      label="Create task"
+      [options]="createOptions"
+      [toggleDropdownOnLabelClick]="false"
+      (labelClicked)="openCreateTaskDialog()"
+      [formControl]="createItemControl"
+    >
+    </tasque-menu-dropdown>
+    <tasque-organizations-dropdown [currentUser]="currentUser" class="button"></tasque-organizations-dropdown>
+    <span class="button" [routerLink]="['/organizations']">My Organizations</span>
+    <span class="button" [routerLink]="['/projects']">My Projects</span>
+    <span class="button">Calendar</span>
   </div>
   <div class="user-panel">
     <div class="search-input">
@@ -48,19 +26,16 @@
       >
       </tasque-input>
     </div>
-    <div>
-      <img src="\assets\bell_icon.svg" />
-    </div>
-    <div>
-      <img src="\assets\settings_icon.svg" />
-    </div>
-    <div [matMenuTriggerFor]="profileMenu">
-      <tasque-avatar imageURL="\assets\avatar.png" [diameter_px]="45"></tasque-avatar>
-      <img src="\assets\arrow_full_icon.svg" />
-      <mat-menu #profileMenu="matMenu">
-        <button mat-menu-item>Profile settings</button>
-        <button mat-menu-item>Log out</button>
-      </mat-menu>
-    </div>
+    <img class="button" src="\assets\bell_icon.svg" />
+    <img class="button" src="\assets\settings_icon.svg" />
+    <tasque-menu-dropdown
+      class="profile-dropdown"
+      [hasAvatar]="true"
+      [options]="profileOptions"
+      [upArrowIcon]="upArrowIcon"
+      [downArrowIcon]="downArrowIcon"
+      [formControl]="profileControl"
+    >
+    </tasque-menu-dropdown>
   </div>
 </header>
