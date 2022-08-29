@@ -153,7 +153,7 @@ export class RegisterPageComponent implements OnInit {
     }
     else{
       this.registerForm.markAllAsTouched();
-      this.showError = true
+      this.showError = true;
     }
   }
 }
