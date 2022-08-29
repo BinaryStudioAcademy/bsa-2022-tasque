@@ -13,7 +13,7 @@ import {
 
 // localStorage is used for tests only. It will be removed when we have a proper BoardService
 export class BoardService {
-  constructor() {}
+  constructor() { }
 
   public getUsers(board: IBoard): Observable<IUserCard[]> {
     const key = this.createKey(board);
@@ -31,7 +31,7 @@ export class BoardService {
     });
   }
 
-  public addUser(email: string, board: IBoard): Observable<any> {
+  public addUser(email: string, board: IBoard): Observable<unknown> {
     // change to HttpClient.getOne
     const user: IUserCard | null = {
       email: email,
@@ -54,7 +54,7 @@ export class BoardService {
     });
   }
 
-  public deleteUser(board: IBoard, email: string): Observable<any> {
+  public deleteUser(board: IBoard, email: string): Observable<unknown> {
     // change to HttpClient.delete
     board.users = board.users.filter((u) => u.email != email);
 
@@ -65,7 +65,7 @@ export class BoardService {
     });
   }
 
-  public updateUser(board: IBoard, user: IUserCard): Observable<any> {
+  public updateUser(board: IBoard, user: IUserCard): Observable<unknown> {
     // change to HttpClient.put for user
     const updateUser = board.users.filter((u) => u.email == user.email)[0];
     const updateIndex = board.users.indexOf(updateUser);

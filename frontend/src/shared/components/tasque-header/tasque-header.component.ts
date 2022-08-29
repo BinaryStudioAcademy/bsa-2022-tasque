@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from 'src/core/models/user/user-model';
+import { AuthService } from 'src/core/services/auth.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Component({
@@ -27,6 +28,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private currentUserService: GetCurrentUserService,
+    private authService: AuthService,
   ) { }
 
   ngOnInit(): void {
@@ -37,6 +39,10 @@ export class HeaderComponent implements OnInit {
     this.createItemControl.valueChanges.subscribe(
       () => this.openCreateItemDialog(this.createItemControl.value as string)
     );
+  }
+
+  public logout(): void {
+    this.authService.logout();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
