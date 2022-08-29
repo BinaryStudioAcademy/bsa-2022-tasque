@@ -10,7 +10,6 @@ namespace Tasque.Core.WebAPI.Controllers
     {
         public BoardController(BoardService service) : base(service) { }
 
-
         [Route("getUserBoards/{id}")]
         [HttpGet]
         public async virtual Task<IActionResult> GetUserBoards(int id)
