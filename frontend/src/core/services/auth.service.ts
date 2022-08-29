@@ -7,23 +7,24 @@ import { UserRegisterModel } from 'src/entity-models/user-register-model';
 import { UserResetPasswordModel } from 'src/entity-models/user-reset-password-model';
 import { HttpService } from './http.service';
 import { LocalStorageKeys } from 'src/entity-models/local-storage-keys';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
   public routePrefix = '/api/user';
 
   constructor(
-    private httpService: HttpService
+    private httpService: HttpService,
+    private router: Router
   ) { }
 
-  loginUser(credentials: UserLoginModel):Observable<HttpResponse<AccessToken>> {
+  loginUser(credentials: UserLoginModel): Observable<HttpResponse<AccessToken>> {
     return this.httpService.postFullRequest(this.routePrefix + '/login', credentials);
   }
 
-  registerUser(credentials: UserRegisterModel):Observable<HttpResponse<string>> {
+  registerUser(credentials: UserRegisterModel): Observable<HttpResponse<string>> {
     return this.httpService.postFullRequest(this.routePrefix + '/register', credentials);
   }
 
@@ -49,6 +50,13 @@ export class AuthService {
 
   setAuthToken(token: AccessToken): void {
     localStorage.setItem(LocalStorageKeys.token, token.accessToken);
+  }
+
+  logout(): void {
+    localStorage.clear();
+    this.router.navigate(['/auth/login'], {
+      replaceUrl: true,
+    });
   }
 
   areTokensExist(): boolean {

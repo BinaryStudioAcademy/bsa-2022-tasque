@@ -11,7 +11,7 @@ namespace Tasque.Core.WebAPI.Controllers
         where TService : IEntityCrudService<TModel>
     {
         protected readonly TService _service;
-        protected readonly Mapper mapper;
+        protected readonly IMapper mapper;
         public EntityController(TService service)
         {
             _service = service;

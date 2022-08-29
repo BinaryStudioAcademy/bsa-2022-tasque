@@ -4,9 +4,10 @@
 	.w-#{$i * 5} 
 		width: #{$i * 5%} !important
 
-@for $i from 3 through 8 
+@for $i from 3 through 8
 	.wpx-#{$i * 30} 
 		width: #{$i * 30}px !important
+		min-width: #{$i * 30}px !important
 
 @for $i from 1 through 5
 	.pl-#{$i * 5}
@@ -26,111 +27,110 @@
 	border-width: 1px
 	border-color: colorscheme(gray-400)
 
-.wrapper
+.global-wrapper
+
 	h3
-		text-align: center
 		margin: 15px 0px
 
-	mat-grid-list
+	.text-center
+		text-align: center
+
+	.select-users-header
+		height: 100px
+
+	.select-users-wrapper
 		border: solid
 		border-width: 1px
 		border-color: colorscheme(gray-400)
 		border-radius: 10px
+		overflow-y: scroll
 
-		mat-grid-tile
-			min-height: 84px
+		&::-webkit-scrollbar
+				width: .75rem
 
-			::ng-deep .mat-grid-tile-content
-				justify-content: space-between
+		&::-webkit-scrollbar-track
+			border-bottom-right-radius: 10px
+			border-top-right-radius: 10px
+			background: colorscheme('gray-200')
+			border-bottom: solid
+			border-color: colorscheme('gray-400')
+			border-width: 1px
 
-				form
-					position: absolute
-					display: flex
+		&::-webkit-scrollbar-thumb
+			background: colorscheme('gray-400')
+			border-bottom-right-radius: 10px
+			border-top-right-radius: 10px
+
+		.row
+			display: inline-flex
+			width: 100%
+			padding: 0px
+			justify-content: space-between
+			align-items: center
+			
+
+		.container
+			min-height: 80px
+			width: 100%
+			display: flex
+			justify-content: center
+			align-items: center
+
+		form
+			display: flex
+			align-items: center
+			height: 100%
+			width: 100%
+			justify-content: space-between
+
+			.header-button-container
+				padding-top: 17px
+				display: flex
+				justify-content: flex-end
+
+				tasque-button
+					min-width: 120px
+
+		ul
+			width: 100%
+			height: 100%
+			overflow-y: visible
+
+			.list-item-element
+				height: 80px
+
+				hr
+					margin: 0px
+					border-top: 1px solid colorscheme('gray-400')
+					border-bottom: 0px solid gray
+
+			li
+				display: flex
+				align-items: center
+				height: 80px
+
+				.user-data
+					max-width: 65%
 					align-items: center
-					height: 100%
-					width: 100%
-					justify-content: space-between
+					display: flex
+					overflow: hidden
+					white-space: nowrap
 
-					.mat-button-primary
-						margin-top: 17px
-						width: 100px
+					tasque-avatar
+							margin: 0px 15px
 
-				mat-list
-					width: 100%
-					height: 100%
-					padding-top: 2px
-					overflow-y: scroll
 
-					&::-webkit-scrollbar
-						width: .75rem
+					a
+						text-decoration: none
 
-					&::-webkit-scrollbar-track
-						border-bottom-right-radius: 10px
-						background: colorscheme('gray-200')
-						border-bottom: solid
-						border-color: colorscheme('gray-400')
-						border-width: 1px
-
-					&::-webkit-scrollbar-thumb
-						background: colorscheme('gray-400')
-						border-bottom-right-radius: 10px
-
-					mat-list-item
-						display: flex
-						align-items: center
-						height: 84px
-
-						::ng-deep .mat-list-item-content
-							display: inline-flex
-							width: 100%
-							padding: 0px
-							justify-content: space-between
-
-						.user-data
-							max-width: 65%
-							align-items: center
-							display: flex
+						&.username
 							overflow: hidden
 							white-space: nowrap
-
-							tasque-avatar
-								margin: 0px 15px
-
-							.mat-flat-button
-								&:hover
-									color: colorscheme("violet-200") !important
-									font-size: 16
-
-								&.username
-									overflow: hidden
-									white-space: nowrap
-									text-overflow: ellipsis
-									text-align: start
-									padding: 0px
-							
-						.user-actions
-							display: inline-flex
-							align-items: center
-
-							mat-form-field
-								border-radius: 10px
-								width: 140px
-
-								::ng-deep .mat-form-field-underline
-									visibility: hidden
-
-								::ng-deep .mat-form-field-flex
-									padding: 0.3em 0.3em 0em 0.3em
-									border: solid
-									border-radius: 10px
-									border-color: colorscheme('gray-400')
-									border-width: 1px
-								
-								::ng-deep .mat-form-field-infix
-									padding-bottom: 0.3em
-
-								::ng-deep .mat-form-field-wrapper
-									padding-bottom: 0px
-
-							.mat-button-action
-								margin: 10px 15px
+							text-overflow: ellipsis
+							text-align: start
+							padding: 0px
+					
+				.user-actions
+					display: inline-flex
+					align-items: center
+					right: 15px

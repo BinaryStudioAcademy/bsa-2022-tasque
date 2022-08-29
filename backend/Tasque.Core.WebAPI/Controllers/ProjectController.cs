@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
+using Tasque.Core.Common.DTO.Project;
 using Tasque.Core.Common.Entities;
-using Tasque.Core.Common.PartialModels;
 
 namespace Tasque.Core.WebAPI.Controllers;
 
@@ -10,6 +10,6 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
 {
     public ProjectController(ProjectService service) : base(service)
     {
-        
+
     }
 }
