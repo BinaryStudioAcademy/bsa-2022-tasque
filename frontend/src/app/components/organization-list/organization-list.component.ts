@@ -74,6 +74,9 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
       data: this.currentUser,
     });
     dialog.afterClosed().subscribe((result: OrganizationModel) => {
+      if (!result) {
+        return;
+      }
 
       this.items.push(result);
       this.itemsShow = this.items;
