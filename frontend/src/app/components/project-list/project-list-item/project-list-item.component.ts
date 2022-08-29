@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ProjectModel } from 'src/core/models/project/project-model';
+import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 import { UserModel } from 'src/core/models/user/user-model';
 
 @Component({
@@ -10,7 +10,7 @@ import { UserModel } from 'src/core/models/user/user-model';
 export class ProjectListItemComponent implements OnInit {
 
   @Input() public currentUser: UserModel;
-  @Input() public project: ProjectModel;
+  @Input() public project: ProjectInfoModel;
 
   constructor() { }
 

@@ -6,6 +6,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ProjectModel } from '../models/project/project-model';
 import { EditProjectModel } from '../models/project/edit-project-model';
 import { ProjectInfoModel } from '../models/project/project-info-model';
+import { InviteUserModel } from '../models/project/invite-user-model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +23,14 @@ export class ProjectService {
   }
 
   editProject(editProject: EditProjectModel): Observable<void> {
-    console.log(editProject);
     return this.httpService.putRequest<void>(this.routePrefix + '/edit', editProject);
   }
 
   getAllProjectsOfThisOrganization(organizationId: number): Observable<HttpResponse<ProjectInfoModel[]>> {
     return this.httpService.getFullRequest<ProjectInfoModel[]>(this.routePrefix + `/all/${organizationId}`);
-  } 
+  }
+
+  inviteUser(userInvite: InviteUserModel): Observable<void> {
+    return this.httpService.putRequest<void>(this.routePrefix + '/invite', userInvite);
+  }
 }

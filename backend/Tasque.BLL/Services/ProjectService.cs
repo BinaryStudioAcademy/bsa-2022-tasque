@@ -19,20 +19,20 @@ public class ProjectService : EntityCrudService<Project>
         _mapper = mapper;
     }
 
-    public override Project Create(Project entity)
-    {
-        var project = _db.Projects.Add(entity).Entity;
+    //public override Project Create(Project entity)
+    //{
+    //    var project = _db.Projects.Add(entity).Entity;
 
-        _db.UserProjectRoles.Add(new UserProjectRole()
-        {
-            ProjectId = project.Id,
-            UserId = project.AuthorId,
-            RoleId = (int)BaseProjectRole.Admin
-        });
+    //    _db.UserProjectRoles.Add(new UserProjectRole()
+    //    {
+    //        ProjectId = project.Id,
+    //        UserId = project.AuthorId,
+    //        RoleId = (int)BaseProjectRole.Admin
+    //    });
 
-        _db.SaveChanges();
-        return project;
-    }
+    //    _db.SaveChanges();
+    //    return project;
+    //}
 
     public async Task EditProject(EditProjectDto projectDto)
     {
@@ -50,9 +50,9 @@ public class ProjectService : EntityCrudService<Project>
     {
         var projects = await _db.Projects
             .Where(proj => proj.OrganizationId == organizationId)
-            .Include(p => p.UserProjectRole)
+            .Include(p => p.UserRoles)
                 .ThenInclude(u => u.User)
-            .Include(p => p.UserProjectRole)
+            .Include(p => p.UserRoles)
                 .ThenInclude(r => r.Role)
             .ToListAsync();
 

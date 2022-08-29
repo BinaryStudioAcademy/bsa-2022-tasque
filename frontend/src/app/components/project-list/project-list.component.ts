@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 import { UserModel } from 'src/core/models/user/user-model';
-import { ProjectModel } from '../../../core/models/project/project-model';
+import { ProjectService } from 'src/core/services/project.service';
 
 @Component({
   selector: 'app-project-list',
@@ -9,105 +10,40 @@ import { ProjectModel } from '../../../core/models/project/project-model';
   styleUrls: ['./project-list.component.sass']
 })
 export class ProjectListComponent implements OnInit {
+  
   public currentUser: UserModel = {
-    id: 0,
-    name: '',
-    email: ''
+    id: 1,
+    name: 'tester',
+    email: 'tester@gmail.com'
   };
 
   public inputSearch = '';
   public searchIcon = faMagnifyingGlass;
 
-  public items: ProjectModel[] = [
-    {
-      id: 1,
-      name: 'Test Project',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 2,
-      name: 'Test Project 2',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 3,
-      name: 'Test Project 3',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 4,
-      name: 'Test Project 4',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 5,
-      name: 'Test Project 5',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 6,
-      name: 'Test Project 6',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 7,
-      name: 'Test Project 7',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 8,
-      name: 'Test Project 8',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 9,
-      name: 'Test Project 9',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-  ];
+  public projectsModel: ProjectInfoModel[] = [];
 
-  public itemsShow = this.items;
+  public itemsShow = this.projectsModel;
 
-  constructor() { }
+  constructor(public projectService: ProjectService) { 
+  }
 
   ngOnInit(): void {
+    this.projectService.getAllProjectsOfThisOrganization(1).subscribe((data) => {
+      if(data.body) {
+        this.projectsModel = data.body;
+        this.itemsShow = this.projectsModel;
+      }
+    });
   }
 
   filterItems(): void {
     if (this.inputSearch) {
-      this.itemsShow = this.items.filter((item) => {
+      this.itemsShow = this.projectsModel.filter((item) => {
         return item.name.toLowerCase().includes(this.inputSearch.toLowerCase());
       });
     }
     else {
-      this.itemsShow = this.items;
+      this.itemsShow = this.projectsModel;
     }
   }
 

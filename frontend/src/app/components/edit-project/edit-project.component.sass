@@ -17,3 +17,43 @@
     & .submit
         display: flex
         flex-direction: row-reverse
+
+.projectName-wrapper
+    display: flex
+    align-items: center
+    padding: 5px
+    border-radius: 10px
+    .icon
+        vertical-align: middle
+        border-radius: 50%
+    &:hover
+        background: colorscheme(gray-300)
+        border: 2px solid colorscheme(violet-200)
+        .icon
+            display: none
+    &:focus
+        outline: 0px solid transparent
+    tasque-button
+        ::ng-deep
+            button
+                color: colorscheme(gray-500)
+                .ng-fa-icon
+                    vertical-align: sub
+
+.projectName
+    background: none
+    font-weight: 700
+    font-size: 27px
+    line-height: 114.88%
+    outline: 0px solid transparent
+    opacity: .88
+
+.task-creation-footer-button
+    margin-top: 30px
+    padding: 0 51px
+    margin-left: auto
+    display: flex
+    flex-direction: row
+    justify-content: flex-end
+    >.btn
+        margin-left: 15px

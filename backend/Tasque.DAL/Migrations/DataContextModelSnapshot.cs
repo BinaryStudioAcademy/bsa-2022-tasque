@@ -1037,13 +1037,9 @@ namespace Tasque.Core.DAL.Migrations
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Project", b =>
                 {
-<<<<<<< HEAD
-                    b.Navigation("UserProjectRole");
-=======
                     b.Navigation("Sprints");
 
                     b.Navigation("UserRoles");
->>>>>>> dev
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Role", b =>

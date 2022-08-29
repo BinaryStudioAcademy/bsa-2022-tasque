@@ -14,4 +14,5 @@ export class OrganizationListItemComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void { }
+
 }

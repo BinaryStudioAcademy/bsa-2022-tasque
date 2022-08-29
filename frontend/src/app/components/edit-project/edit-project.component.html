@@ -1,16 +1,10 @@
-<tasque-sidebar name="edit" class="stroke gray" text="Edit">
-  <div class="content">
+<tasque-sidebar [name]="sidebarName" btnText="Edit" btnClass="btn stroke openSidebar">
+  <div class="content" [formGroup]="editProjectForm">
     <div class="container">
-      <label>Project parameters</label>
-      <form [formGroup]="editProjectForm" (ngSubmit)="editProject()">
-        <tasque-input 
-          label="New project name" 
-          placeholder="Enter a new name for project..." 
-          formControlName="editProjectName" 
-          [invalid]="showErrorMessage" 
-          errorMessage="All bad"></tasque-input>
-        <tasque-button class="submit btn" text="rename" (btnClick)="editProject()"></tasque-button>
-      </form>
+      <div class="projectName-wrapper">
+        <div class="projectName" [textContent]="project.name" (input)="project.name = titleContent($event)" contenteditable="true" [formControl]="projectNameControl" ngDefaultControl></div>
+        <tasque-button class="btn icon" [icon]="faPenToSquare"> </tasque-button>
+      </div>
     </div>
     <div class="container">
       <label>Change member role</label>
@@ -23,6 +17,10 @@
     <div class="container">
       <label>Kick member</label>
       <tasque-select-users [board]="deleteUserBoard"></tasque-select-users>
+    </div>
+    <div class="task-creation-footer-button">
+      <tasque-button type="submit" class="btn stroke violet-stroke" text="Cancel" (click)="clearForm()"> </tasque-button>
+      <tasque-button type="submit" class="btn stroke violet-stroke" text="Save" (click)="submitForm()"> </tasque-button>
     </div>
   </div>
 </tasque-sidebar>

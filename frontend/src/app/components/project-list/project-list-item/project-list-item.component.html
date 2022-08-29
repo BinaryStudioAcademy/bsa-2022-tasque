@@ -2,8 +2,9 @@
   <a class="project-name" href="#">{{ project.name }}</a>
 
   <div class="buttons-container">
-    <tasque-button *ngIf="project.authorId === currentUser.id" class="btn stroke" text="Edit">
-    </tasque-button>
+    <!-- *ngIf="project.authorId === currentUser.id" -->
+    <app-edit-project class="btn stroke" [project]="project"></app-edit-project>
+
     <tasque-button class="btn stroke" text="Open"> </tasque-button>
   </div>
 </div>
