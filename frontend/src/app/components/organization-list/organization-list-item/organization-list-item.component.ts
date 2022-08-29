@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { UserModel } from 'src/core/models/user/user-model';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { Router } from '@angular/router';
-import { StorageService } from 'src/core/services/storage.service';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 
 @Component({
   selector: 'app-organization-list-item',
@@ -15,13 +15,13 @@ export class OrganizationListItemComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private storageService: StorageService
+    private getCurrentOrganizationService: GetCurrentOrganizationService
   ) { }
 
   ngOnInit(): void { }
 
   public openOrganization(): void {
-    this.storageService.currentOrganizationId = this.organization.id;
+    this.getCurrentOrganizationService.currentOrganizationId = this.organization.id;
     this.router.navigate(['projects'], { replaceUrl: true });
     window.scroll(0, 0);
   }

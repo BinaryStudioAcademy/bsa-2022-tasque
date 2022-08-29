@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class StorageService {
+export class GetCurrentOrganizationService {
     constructor() { }
 
     public currentOrganizationId$ = new BehaviorSubject<number>(this.currentOrganizationId);
