@@ -1,4 +1,4 @@
-﻿namespace Tasque.Core.Common.DTO
+﻿namespace Tasque.Core.Common.DTO.User
 {
     public class UserRegisterDto
     {

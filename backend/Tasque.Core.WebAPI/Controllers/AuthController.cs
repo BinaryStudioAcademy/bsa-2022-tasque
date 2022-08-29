@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.Common.DTO;
+using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Identity.Services;
 
 namespace Tasque.Core.WebAPI.Controllers

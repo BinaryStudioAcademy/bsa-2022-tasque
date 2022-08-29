@@ -1,17 +1,41 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { StorageService } from 'src/core/services/storage.service';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { takeUntil } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
+import { BaseComponent } from 'src/core/base/base.component';
+import { UserModel } from 'src/core/models/user/user-model';
+import { MenuDropdownOption } from '../../tasque-menu-dropdown/menu-dropdown.component';
 
 @Component({
   selector: 'tasque-organizations-dropdown',
   templateUrl: './organizations-dropdown.component.html',
   styleUrls: ['./organizations-dropdown.component.sass']
 })
-export class OrganizationsDropdownComponent implements OnInit {
-  @Input() public availableOrganizations: OrganizationModel[] = [];
+export class OrganizationsDropdownComponent extends BaseComponent implements OnInit {
+
+  private user: UserModel;
+
+  @Input()
+  set currentUser(user: UserModel) {
+    if (!user) {
+      return;
+    }
+
+    this.user = user;
+
+    this.organizationService.getUserOrganizations(this.currentUser.id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (result) => {
+          this.availableOrganizations = result.body as OrganizationModel[];
+        }
+      );
+  }
+  get currentUser(): UserModel {
+    return this.user;
+  }
 
   public currentOrganization: OrganizationModel = {
     id: -1,
@@ -21,39 +45,19 @@ export class OrganizationsDropdownComponent implements OnInit {
     updatedAt: new Date()
   };
 
-  public unsubscribe$ = new Subject<void>();
+  public availableOrganizations: OrganizationModel[] = [];
+
+  public organizationControl = new FormControl<MenuDropdownOption | undefined>(undefined);
 
   constructor(
     private organizationService: OrganizationService,
-    private storageService: StorageService) { }
+    private storageService: StorageService) {
+    super();
+  }
 
   ngOnInit(): void {
-    if(this.storageService.currentOrganizationId === -1)
-      return;
-    this.storageService.currentOrganizationId$.subscribe(
-      (result) => {
-        const searchedOrganization = this.availableOrganizations.find((x) => x.id === result);
-        if (searchedOrganization) {
-          this.currentOrganization = searchedOrganization;
-        }
-        else {
-          this.setOrganization();
-        }
-      });
-
-    if (this.storageService.currentOrganizationId === -1) {
-      return;
-    }
-
-    const searchedOrganization = this.availableOrganizations
-      .find((x) => x.id === this.storageService.currentOrganizationId);
-
-    if (searchedOrganization) {
-      this.currentOrganization = searchedOrganization;
-    }
-    else {
-      this.setOrganization();
-    }
+    this.subscribeToCurrentOrganization();
+    this.subscribeToOrganizationControl();
   }
 
   private setOrganization(): void {
@@ -69,7 +73,42 @@ export class OrganizationsDropdownComponent implements OnInit {
       );
   }
 
-  onClick(organizationId: number): void {
-    this.storageService.currentOrganizationId = organizationId;
+  get organizationNames(): MenuDropdownOption[] {
+    return this.availableOrganizations as MenuDropdownOption[];
+  }
+
+  private subscribeToCurrentOrganization(): void {
+    this.storageService.currentOrganizationId$.subscribe(
+      (result) => {
+        if (result === -1) {
+          return;
+        }
+
+        const searchedOrganization = this.availableOrganizations.find((x) => x.id === result);
+
+        if (searchedOrganization) {
+          this.currentOrganization = searchedOrganization;
+        }
+        else {
+          this.setOrganization();
+        }
+      });
+  }
+
+  private subscribeToOrganizationControl(): void {
+    this.organizationControl.valueChanges.subscribe(
+      () => {
+        const searchedOrganization = this.availableOrganizations
+          .find((x) => x.id === this.organizationControl.value?.id);
+
+        if (searchedOrganization) {
+          this.currentOrganization = searchedOrganization;
+          this.storageService.currentOrganizationId = this.currentOrganization.id;
+        }
+        else {
+          this.setOrganization();
+        }
+      }
+    );
   }
 }
