@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TasqueProjectSettingsComponent implements OnInit {
 
+  public projectId: number;
   constructor() { }
 
   ngOnInit(): void {
