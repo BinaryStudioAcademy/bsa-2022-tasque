@@ -47,29 +47,27 @@ export class HeaderComponent implements OnInit {
     });
 
     this.createItemControl.valueChanges.subscribe(
-      (option) => this.openCreateItemDialog(option?.name as string)
+      (option) => this.createItemOptionChange(option)
     );
 
     this.profileControl.valueChanges.subscribe(
-      (option) => this.openProfileDialog(option?.name as string)
+      (option) => this.profileOptionChange(option)
     );
   }
 
-  public logout(): void {
-    this.authService.logout();
-  }
+  public openCreateTaskDialog(): void { }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public openCreateItemDialog(option: string): void { }
-  public openCreateTaskDialog(): void { }
-  public openProfileDialog(option: string): void {
-    if (option === 'Log out') {
-      this.logout();
-    }
-    else if (option === 'Profile settings') {
-      this.router.navigate(['/user/profile'], {
-        replaceUrl: true,
-      });
+  public createItemOptionChange(option: MenuDropdownOption | null | undefined): void { }
+
+  public profileOptionChange(option: MenuDropdownOption | null | undefined): void {
+    switch (option?.name) {
+      case 'Log out':
+        this.authService.logout();
+        return;
+      case 'Profile settings':
+        this.router.navigate(['/user/profile'], { replaceUrl: true });
+        return;
     }
   }
 }
