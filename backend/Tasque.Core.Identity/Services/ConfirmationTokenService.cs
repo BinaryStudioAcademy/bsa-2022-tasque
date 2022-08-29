@@ -84,7 +84,7 @@ namespace Tasque.Core.Identity.Services
             var endpoint = GetEndpoint(token);
             var link = $"{host}{endpoint}";
             var key = token.Token;
-            var logo = _configuration["Host:Logo"];
+            var logo = _configuration["Host:BigLogo"];
 
 
             Dictionary<string, string> args = new()
