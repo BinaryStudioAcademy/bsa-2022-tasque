@@ -51,17 +51,17 @@ namespace Tasque.Core.BLL.Services
             return _mapper.Map<UserDto>(userEntity);
         }
 
-        public async Task<UserDto> EditUserAvatar(int userId, string imageData)
+        public async Task<UserDto> EditUserAvatar(int userId, ImageDto imageData)
         {
             var userEntity = await _context.Users.FindAsync(userId)
                 ?? throw new ValidationException("No user with given id");
-
-            string? newUrl = imageData;
-            if (!string.IsNullOrEmpty(imageData)
-                && !imageData.StartsWith("http://")
-                && !imageData.StartsWith("https://"))
+            var imgStr = imageData.ImageData;
+            string? newUrl = imgStr;
+            if (!string.IsNullOrEmpty(imgStr)
+                && !imgStr.StartsWith("http://")
+                && !imgStr.StartsWith("https://"))
             {
-                newUrl = await _fileUploadService.UploadFileAsync(imageData, "avatars");
+                newUrl = await _fileUploadService.UploadFileAsync(imgStr, "avatars");
             }
 
             userEntity.AvatarURL = newUrl;

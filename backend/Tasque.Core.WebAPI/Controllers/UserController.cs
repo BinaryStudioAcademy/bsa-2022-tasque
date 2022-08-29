@@ -34,7 +34,7 @@ namespace Tasque.Core.WebAPI.Controllers
         }
 
         [HttpPut("edit/avatar")]
-        public async Task<IActionResult> EditUserAvatar([FromQuery] string img)
+        public async Task<IActionResult> EditUserAvatar([FromBody] ImageDto img)
         {
             var user = await _service.EditUserAvatar(_userId, img);
             return Ok(user);
