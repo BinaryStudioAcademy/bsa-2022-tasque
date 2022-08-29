@@ -5,7 +5,7 @@
         <p>Scrum in space</p>
         <h3>Backlog</h3>
       </div>
-      <tasque-dropdown width="120px" class="header-dropdown"></tasque-dropdown>
+      <tasque-dropdown width="120px" class="header-dropdown" [options]="options"></tasque-dropdown>
     </div>
     <div class="wrapper search">
       <div class="backlog-search">
@@ -19,8 +19,6 @@
     </div>
   </div>
   <div class="body">
-    <app-sprint class="sprint"></app-sprint>
-    <app-sprint class="sprint"></app-sprint>
-    <app-sprint class="sprint"></app-sprint>
+    <tasque-button class="btn" text="test" (click)="getUserBoards()"></tasque-button>
   </div>
 </div>
