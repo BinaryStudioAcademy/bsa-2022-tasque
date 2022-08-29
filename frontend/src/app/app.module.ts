@@ -27,7 +27,7 @@ import { TasqueTeamComponent } from './components/tasque-team/tasque-team.compon
 import { TasqueProjectSettingsComponent } from './components/tasque-project-settings/tasque-project-settings.component';
 import { ToastrConfig } from 'src/entity-models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
-import { SelectUsersComponent } from '../shared/components/select-users/select-users.component';
+import { EditOrganizationComponent } from './components/edit-organization/edit-organization.component';
 import { CreateSprintComponent } from './components/create-sprint/create-sprint.component';
 import { CreateSprintDialogComponent } from './components/create-sprint/create-sprint-dialog/create-sprint-dialog.component';
 
@@ -42,15 +42,14 @@ import { CreateSprintDialogComponent } from './components/create-sprint/create-s
     ProjectListItemComponent,
     OrganizationListComponent,
     OrganizationListItemComponent,
-    SelectUsersComponent,
     TasqueBoardComponent,
     PageWithoutSidebarComponent,
     TasqueBoardComponent,
     PageWithSidebarComponent,
     TasqueTeamComponent,
     TasqueProjectSettingsComponent,
-    SelectUsersComponent,
     TasqueBoardComponent,
+    EditOrganizationComponent,
     TasqueProjectSettingsComponent,
     CreateSprintComponent,
     CreateSprintDialogComponent
@@ -67,12 +66,11 @@ import { CreateSprintDialogComponent } from './components/create-sprint/create-s
     AuthModule,
     UserModule,
   ],
-  providers: [BrowserAnimationsModule,
+  providers: [
+    BrowserAnimationsModule,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
-  exports: [
-    OrganizationListComponent
-  ]
+  exports: [OrganizationListComponent],
 })
-export class AppModule { }
+export class AppModule {}

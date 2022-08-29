@@ -1,0 +1,23 @@
+<tasque-sidebar [name]="sidebarName" btnText="Edit" btnClass="btn stroke openSidebar">
+  <div class="task-creation-conteiner" [formGroup]="editOrganizationForm">
+    <div class="task-creation-header">
+      <div class="organizationName-wrapper">
+        <div class="organizationName" [textContent]="organizationName" (input)="organizationName = titleContent($event)" contenteditable="true" [formControl]="organizationNameControl" ngDefaultControl></div>
+        <tasque-button class="btn icon" [icon]="faPenToSquare"> </tasque-button>
+      </div>
+      <div class="task-creation-header-button"></div>
+    </div>
+    <div class="task-creation-body">
+      <div class="task-creation-body-wrapper">
+        <tasque-select-users [board]="board"></tasque-select-users>
+      </div>
+    </div>
+
+    <div class="task-creation-footer">
+      <div class="task-creation-footer-button">
+        <tasque-button type="submit" class="btn stroke violet-stroke" text="Cancel" (click)="clearForm()"> </tasque-button>
+        <tasque-button type="submit" class="btn stroke violet-stroke" text="Save" (click)="submitForm()"> </tasque-button>
+      </div>
+    </div>
+  </div>
+</tasque-sidebar>

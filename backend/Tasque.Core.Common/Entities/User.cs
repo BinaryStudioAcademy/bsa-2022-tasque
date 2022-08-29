@@ -14,6 +14,8 @@ public class User : BaseEntity
         OwnedTasks = new List<Task>();
         ParticipatedTasks = new List<Task>();
         Roles = new List<UserProjectRole>();
+        OwnedOrganization = new List<Organization>();
+        ParticipatedOrganization = new List<Organization>();
     }
     public string Name { get; set; } = null!;
     public string Email { get; set; } = null!;
@@ -28,18 +30,19 @@ public class User : BaseEntity
     public virtual ICollection<Task> OwnedTasks { get; set; }
     public virtual ICollection<Task> ParticipatedTasks { get; set; }
     public virtual ICollection<UserProjectRole> Roles { get; set; }
+    public virtual ICollection<Organization> ParticipatedOrganization { get; set; }
+    public virtual ICollection<Organization> OwnedOrganization { get; set; }
 }
 
 public class UserValidator : AbstractValidator<User>
 {
-    private static readonly Regex EMAIL_REGEX = new(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,3}$");
     public UserValidator()
     {
         // Not using built-in email validation because it's not working properly
         // example@example -> valid email
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email is required")
-            .Matches(EMAIL_REGEX).WithMessage("Email adress is not valid");
+            .Matches(Constants.EMAIL_REGEX).WithMessage("Email adress is not valid");
         RuleFor(x => x.Password).MinimumLength(8).WithMessage("Password must be at least 8 characters");
     }
 }

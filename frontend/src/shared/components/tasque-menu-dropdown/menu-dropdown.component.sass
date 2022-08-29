@@ -1,0 +1,54 @@
+@import 'src/colors.sass'
+
+.dropdown-wrapper
+  font-family: Nunito
+  font-style: normal
+  color: colorscheme(white-100)
+  display: flex
+  position: relative
+  cursor: pointer
+
+.dropdown-button
+  display: flex
+  align-items: center
+  gap: 5px
+  &:hover
+    color: colorscheme(gray-400)
+
+.dropdown-label
+  font-size: 18px
+
+.dropdown-icon
+  font-size: 14px
+
+.options-container
+  margin-top: 2px
+  background-color: colorscheme(white-100)
+  border: 2px solid colorscheme(gray-300)
+  border-radius: 10px
+  max-height: 140px
+  overflow: auto
+  width: max-content
+  position: absolute
+  left: 0
+  top: 100%
+  z-index: 1
+  box-sizing: border-box
+
+.option
+  height: 35px
+  display: flex
+  flex-direction: row
+  justify-content: flex-start
+  align-items: center
+  cursor: pointer
+  font-size: 14px
+  font-weight: 400
+  line-height: 19px
+  padding-left: 15px
+  padding-right: 15px
+  color: black
+  &:hover
+    background-color: colorscheme(gray-100)
+  &.active
+    background-color: colorscheme(gray-200)

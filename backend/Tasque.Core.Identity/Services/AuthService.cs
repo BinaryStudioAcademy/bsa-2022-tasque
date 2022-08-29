@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Tasque.Core.Common;
 using Tasque.Core.Common.DTO;
+using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Security;
 using Tasque.Core.DAL;
 using Tasque.Core.Identity.Exeptions;
 using Tasque.Core.Identity.JWT;
+using Task = System.Threading.Tasks.Task;
 
 namespace Tasque.Core.Identity.Services
 {
@@ -62,12 +65,24 @@ namespace Tasque.Core.Identity.Services
             return _mapper.Map<UserDto>(confToken.User);
         }
 
-        public async Task<UserDto> Register(UserRegisterDto registerInfo)
+        public async Task<AuthTokenDto?> Register(UserRegisterDto registerInfo)
         {
-            var userEntity = _mapper.Map<User>(registerInfo);
+            var userEntity = new User();
+            ConfirmationToken? token = null;
+
+            if (registerInfo.Key.HasValue)
+            {
+                token = await _tokenService.ConfirmToken(registerInfo.Key!.Value, TokenKind.ReferralSignUp);
+                if (token.User.Email != registerInfo.Email)
+                    throw new ValidationException("Invalid token");
+                userEntity = token.User;
+                userEntity.IsEmailConfirmed = true;
+            }
+
+            userEntity = _mapper.Map(registerInfo, userEntity);
             _validator.ValidateAndThrow(userEntity);
 
-            if (_context.Users.Any(x => x.Email == userEntity.Email))
+            if (token == null && _context.Users.Any(x => x.Email == userEntity.Email))
             {
                 throw new ValidationException("User with given email already exists");
             }
@@ -76,9 +91,43 @@ namespace Tasque.Core.Identity.Services
             userEntity.Salt = Convert.ToBase64String(salt);
             userEntity.Password = SecurityHelper.HashPassword(registerInfo.Password, salt);
 
-            _context.Users.Add(userEntity);
+            AuthTokenDto? res = null;
+            if (token == null)
+            {
+                _context.Users.Add(userEntity);
+            }
+            else
+            {
+                _context.Users.Update(userEntity);
+                _context.ConfirmationTokens.Remove(token);
+                res = GetAccessToken(userEntity.Id, userEntity.Name, userEntity.Email);
+            }
+
             await _context.SaveChangesAsync();
-            return _mapper.Map<UserDto>(userEntity);
+            return res;
+        }
+
+        public async Task Register(string email)
+        {
+            var isEmail = Constants.EMAIL_REGEX.IsMatch(email);
+            if (!isEmail)
+                throw new ValidationException("Email is not valid");
+            if (_context.Users.Any(x => x.Email == email))
+                throw new ValidationException("User with given email already exists");
+
+            var user = new User()
+            {
+                Email = email,
+                Password = "",
+                Salt = "",
+                Name = ""
+            };
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            var lifetime = TimeSpan.FromDays(365).TotalSeconds;
+            var token = await _tokenService.CreateConfirmationToken(user, TokenKind.ReferralSignUp, lifetime);
+            await _tokenService.SendConfirmationEmail(token);
         }
 
         public Task<bool> RequestEmailConfirmation(string email)
@@ -109,6 +158,12 @@ namespace Tasque.Core.Identity.Services
             var token = await _tokenService.CreateConfirmationToken(userEntity, TokenKind.EmailConfirmation);
             await _tokenService.SendConfirmationEmail(token);
             return true;
+        }
+
+        public async Task<string> GetEmailFromReferralKey(Guid key)
+        {
+            var token = await _tokenService.ConfirmToken(key, TokenKind.ReferralSignUp);
+            return token.User.Email;
         }
     }
 }

@@ -67,6 +67,21 @@ namespace Tasque.Core.DAL.Migrations
                     b.ToTable("MeetingUser");
                 });
 
+            modelBuilder.Entity("OrganizationUser", b =>
+                {
+                    b.Property<int>("ParticipatedOrganizationId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ParticipatedOrganizationId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("OrganizationUser");
+                });
+
             modelBuilder.Entity("ProjectUser", b =>
                 {
                     b.Property<int>("ParticipatedProjectsId")
@@ -443,14 +458,25 @@ namespace Tasque.Core.DAL.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<DateTime?>("EndAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("StartAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Sprints");
                 });
@@ -710,6 +736,21 @@ namespace Tasque.Core.DAL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("OrganizationUser", b =>
+                {
+                    b.HasOne("Tasque.Core.Common.Entities.Organization", null)
+                        .WithMany()
+                        .HasForeignKey("ParticipatedOrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Tasque.Core.Common.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ProjectUser", b =>
                 {
                     b.HasOne("Tasque.Core.Common.Entities.Project", null)
@@ -839,7 +880,7 @@ namespace Tasque.Core.DAL.Migrations
             modelBuilder.Entity("Tasque.Core.Common.Entities.Organization", b =>
                 {
                     b.HasOne("Tasque.Core.Common.Entities.User", "Author")
-                        .WithMany()
+                        .WithMany("OwnedOrganization")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -864,6 +905,17 @@ namespace Tasque.Core.DAL.Migrations
                     b.Navigation("Author");
 
                     b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("Tasque.Core.Common.Entities.Sprint", b =>
+                {
+                    b.HasOne("Tasque.Core.Common.Entities.Project", "Project")
+                        .WithMany("Sprints")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Task", b =>
@@ -899,7 +951,7 @@ namespace Tasque.Core.DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("Tasque.Core.Common.Entities.Sprint", "Sprint")
-                        .WithMany()
+                        .WithMany("Tasks")
                         .HasForeignKey("SprintId");
 
                     b.HasOne("Tasque.Core.Common.Entities.TaskState", "State")
@@ -962,12 +1014,19 @@ namespace Tasque.Core.DAL.Migrations
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Project", b =>
                 {
+                    b.Navigation("Sprints");
+
                     b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Role", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Tasque.Core.Common.Entities.Sprint", b =>
+                {
+                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.TaskPriority", b =>
@@ -987,6 +1046,8 @@ namespace Tasque.Core.DAL.Migrations
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.User", b =>
                 {
+                    b.Navigation("OwnedOrganization");
+
                     b.Navigation("OwnedProjects");
 
                     b.Navigation("OwnedTasks");

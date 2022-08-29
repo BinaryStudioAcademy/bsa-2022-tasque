@@ -14,6 +14,7 @@
       [ngClass]="{
         'error': inputValueIsError
       }"
+      [readonly]="readonly"
     />
   </div>
   <span class="error" *ngIf="inputValueIsError">{{ inputErrorMessage }}</span>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { AuthService } from 'src/core/services/auth.service';
@@ -8,7 +8,9 @@ import { ToastrService } from 'ngx-toastr';
 import { ErrorMessages } from 'src/entity-models/const-resources/error-messages';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
-import { switchMap } from 'rxjs/operators';
+import { filter, map, mergeMap, switchMap, takeUntil } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-register-page',
@@ -19,6 +21,9 @@ export class RegisterPageComponent implements OnInit {
   public passwordRepeat = '';
   public hidePass = true;
   public hidePassRepeat = true;
+  public isInvite = false;
+
+  private key?: string;
 
   public userRegister: UserRegisterModel = {};
   public registerForm: FormGroup = new FormGroup({});
@@ -34,12 +39,17 @@ export class RegisterPageComponent implements OnInit {
   public validationConstants = ValidationConstants;
   public errorMessages = ErrorMessages;
 
+  @ViewChild('emailInput')
+  public emailInput: InputComponent;
+
+  private unsubscribe$ = new Subject<void>();
+
   get nameErrorMessage(): string {
     const ctrl = this.nameControl;
     if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
       return 'Name is required';
     }
-    if(ctrl.errors?.['minlength'] && (ctrl.dirty || ctrl.touched)) {
+    if (ctrl.errors?.['minlength'] && (ctrl.dirty || ctrl.touched)) {
       return 'Name minimum length is 4 characters';
     }
     return '';
@@ -72,7 +82,7 @@ export class RegisterPageComponent implements OnInit {
     if (ctrl.errors?.['pattern']) {
       return 'Passwords do not match';
     }
-    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)){
+    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
       return 'You need to repeat your password';
     }
     return '';
@@ -81,6 +91,8 @@ export class RegisterPageComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private toastrService: ToastrService,
+    private route: ActivatedRoute,
+    private router: Router,
   ) {
     this.nameControl = new FormControl(this.userRegister.name, [
       Validators.required,
@@ -107,6 +119,29 @@ export class RegisterPageComponent implements OnInit {
       passwordControl: this.passwordControl,
       passwordRepeatControl: this.passwordRepeatControl,
     });
+
+    this.route.queryParams
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        filter((params) => !!params['key']),
+        map((params) => {
+          this.key = params['key'] as string;
+          return this.key;
+        }),
+        mergeMap((ref) => this.authService.checkRefLink(ref)),
+      )
+      .subscribe(
+        (resp) => {
+          this.emailControl.setValue(resp.body?.email);
+          this.isInvite = true;
+        },
+        () => {
+          this.router.navigate([], {
+            replaceUrl: true,
+            relativeTo: this.route,
+          });
+        },
+      );
   }
 
   flipPassword(input: InputComponent): void {
@@ -143,17 +178,29 @@ export class RegisterPageComponent implements OnInit {
       name: this.nameControl.value,
       email: this.emailControl.value,
       password: this.passwordControl.value,
+      key: this.key,
     } as UserRegisterModel;
 
-    this.authService
-      .registerUser(model)
-      .pipe(
-        switchMap(() =>
-          this.authService.resendEmailConfirmation(model.email ?? ''),
-        ),
-      )
-      .subscribe(() => {
-    this.toastrService.info('Check your mailbox');
+    if (!this.key) {
+      this.authService
+        .registerUser(model)
+        .pipe(
+          switchMap(() =>
+            this.authService.resendEmailConfirmation(model.email ?? ''),
+          ),
+        )
+        .subscribe(() => {
+          this.toastrService.info('Check your mailbox');
+        });
+      return;
+    }
+
+    this.authService.registerUser(model)
+      .subscribe((resp) => {
+        if (resp.body != null) {
+          this.authService.setAuthToken(resp.body);
+        }
+        this.router.navigate(['/']);
       });
   }
 }

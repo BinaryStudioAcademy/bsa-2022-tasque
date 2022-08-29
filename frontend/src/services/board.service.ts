@@ -13,13 +13,17 @@ import {
 
 // localStorage is used for tests only. It will be removed when we have a proper BoardService
 export class BoardService {
-  constructor() {}
+  constructor() { }
 
   public getUsers(board: IBoard): Observable<IUserCard[]> {
     const key = this.createKey(board);
 
     // change to Http.getAll
-    board = JSON.parse(localStorage.getItem(key) as string);
+    let storedBoard = JSON.parse(localStorage.getItem(key) as string);
+    if (board != storedBoard) {
+      storedBoard = board;
+      this.save(storedBoard);
+    }
     const users: IUserCard[] = board ? board.users : [];
     return new Observable((observer) => {
       observer.next(users);
@@ -27,23 +31,22 @@ export class BoardService {
     });
   }
 
-  public addUser(email: string, board: IBoard): Observable<any> {
+  public addUser(email: string, board: IBoard): Observable<unknown> {
     // change to HttpClient.getOne
     const user: IUserCard | null = {
       email: email,
       username: email,
       profileURL: 'something',
       avatarURL: 'https://www.w3schools.com/howto/img_avatar.png',
-      role: board.hasRoles ? BusinessRole.Participant : null,
+      role: BusinessRole.Participant,
     };
 
     // change to HttpClient.put for Board entity
-    board.users.push(user);
-
-    this.save(board);
     return new Observable((observer) => {
       // For simulation during the tests. Math random should be removed later
-      if (Math.random() <= 0.9) {
+      if (Math.random() <= 0.5) {
+        board.users.push(user);
+        this.save(board);
         observer.next('done');
         observer.complete();
       }
@@ -51,7 +54,7 @@ export class BoardService {
     });
   }
 
-  public deleteUser(board: IBoard, email: string): Observable<any> {
+  public deleteUser(board: IBoard, email: string): Observable<unknown> {
     // change to HttpClient.delete
     board.users = board.users.filter((u) => u.email != email);
 
@@ -62,7 +65,7 @@ export class BoardService {
     });
   }
 
-  public updateUser(board: IBoard, user: IUserCard): Observable<any> {
+  public updateUser(board: IBoard, user: IUserCard): Observable<unknown> {
     // change to HttpClient.put for user
     const updateUser = board.users.filter((u) => u.email == user.email)[0];
     const updateIndex = board.users.indexOf(updateUser);

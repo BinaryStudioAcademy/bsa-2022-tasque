@@ -1,0 +1,18 @@
+<div class="dropdown-wrapper">
+  <div class="dropdown-button">
+    <tasque-avatar
+      *ngIf="hasAvatar"
+      (click)="avatarClick()"
+      [imageURL]="avatarUrl"
+      [diameter_px]="diameter_px"
+    ></tasque-avatar>
+    <span class="dropdown-label" *ngIf="label" (click)="labelClick()">{{ label }}</span>
+    <fa-icon class="dropdown-icon" (click)="arrowIconClick()" [icon]="currentArrowIcon"></fa-icon>
+  </div>
+
+  <div class="options-container" *ngIf="expanded">
+    <div class="option" *ngFor="let option of options" (click)="select(option)">
+      {{ option.name }}
+    </div>
+  </div>
+</div>
