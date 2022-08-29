@@ -60,7 +60,7 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
     this.subscribeToOrganizationControl();
 
     if (this.storageService.currentOrganizationId === -1) {
-      if (this.availableOrganizations) {
+      if (this.availableOrganizations.length > 0) {
         this.currentOrganization = this.availableOrganizations[0];
         this.storageService.currentOrganizationId = this.currentOrganization.id;
       }
@@ -92,7 +92,11 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
   }
 
   get organizationNames(): MenuDropdownOption[] {
-    return this.availableOrganizations as MenuDropdownOption[];
+    if (this.availableOrganizations.length > 0) {
+      return this.availableOrganizations as MenuDropdownOption[];
+    }
+
+    return [];
   }
 
   private subscribeToCurrentOrganization(): void {
