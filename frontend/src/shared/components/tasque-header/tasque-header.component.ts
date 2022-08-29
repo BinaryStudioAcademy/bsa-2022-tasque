@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { faCaretDown, faCaretUp, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from 'src/core/models/user/user-model';
 import { AuthService } from 'src/core/services/auth.service';
@@ -32,10 +33,12 @@ export class HeaderComponent implements OnInit {
   public downArrowIcon = faCaretDown;
 
   public createItemControl = new FormControl<MenuDropdownOption | undefined>(undefined);
+  public profileControl = new FormControl<MenuDropdownOption | undefined>(undefined);
 
   constructor(
     private currentUserService: GetCurrentUserService,
     private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -44,7 +47,11 @@ export class HeaderComponent implements OnInit {
     });
 
     this.createItemControl.valueChanges.subscribe(
-      () => this.openCreateItemDialog(this.createItemControl.value?.name as string)
+      (option) => this.openCreateItemDialog(option?.name as string)
+    );
+
+    this.profileControl.valueChanges.subscribe(
+      (option) => this.openProfileDialog(option?.name as string)
     );
   }
 
@@ -53,6 +60,16 @@ export class HeaderComponent implements OnInit {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public openCreateItemDialog(value: string): void { }
+  public openCreateItemDialog(option: string): void { }
   public openCreateTaskDialog(): void { }
+  public openProfileDialog(option: string): void {
+    if (option === 'Log out') {
+      this.logout();
+    }
+    else if (option === 'Profile settings') {
+      this.router.navigate(['/user/profile'], {
+        replaceUrl: true,
+      });
+    }
+  }
 }
