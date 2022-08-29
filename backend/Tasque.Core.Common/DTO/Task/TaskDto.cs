@@ -33,15 +33,15 @@ namespace Tasque.Core.Common.DTO.Task
 
         public int? ParentTaskId { get; set; }
 
-        public virtual ICollection<Attachment>? Attachments { get; set; }
-        public virtual ICollection<Label>? Labels { get; set; }
+        public virtual ICollection<AttachmentDto>? Attachments { get; set; }
+        public virtual ICollection<LabelDto>? Labels { get; set; }
         public virtual ICollection<UserDto>? Users { get; set; }
 
         public List<CosmosTaskFields>? CustomFields { get; set; }
         public TaskDto()
         {
-            Attachments = new List<Attachment>();
-            Labels = new List<Label>();
+            Attachments = new List<AttachmentDto>();
+            Labels = new List<LabelDto>();
             Users = new List<UserDto>();
         }
     }

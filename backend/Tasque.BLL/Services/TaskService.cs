@@ -92,9 +92,9 @@ namespace Tasque.Core.BLL.Services
 
             task.Description = model.Description;
             task.Summary = model.Summary;
-            task.Labels = model.Labels;
+            //task.Labels = model.Labels;
             task.SprintId = model.SprintId;
-            task.Attachments = model.Attachments;
+            //task.Attachments = model.Attachments;
             task.BoardColumnId = model.BoardColumnId;
             task.Description = model.Description;
             task.Deadline = model.Deadline;
