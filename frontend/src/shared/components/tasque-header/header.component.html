@@ -1,7 +1,14 @@
 <header>
   <div class="navigation-panel">
     <tasque-menu-dropdown label="Your work" [options]="yourWorkOptions"> </tasque-menu-dropdown>
-    <tasque-menu-dropdown label="My Projects" [options]="projectOptions"> </tasque-menu-dropdown>
+    <tasque-menu-dropdown
+      label="My Projects"
+      [options]="projectOptions"
+      headerLabel="Recent Projects"
+      footerLabel="Manage my projects"
+      (footerClicked)="openProjectsPage()"
+    >
+    </tasque-menu-dropdown>
     <span class="button">Calendar</span>
     <tasque-menu-dropdown
       class="create-button"
