@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { OrganizationService } from 'src/core/services/organization.service';
-import { StorageService } from 'src/core/services/storage.service';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { takeUntil } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { BaseComponent } from 'src/core/base/base.component';
 import { UserModel } from 'src/core/models/user/user-model';
 import { MenuDropdownOption } from '../../tasque-menu-dropdown/menu-dropdown.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'tasque-organizations-dropdown',
@@ -30,6 +31,10 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
       .subscribe(
         (result) => {
           this.availableOrganizations = result.body as OrganizationModel[];
+
+          if (this.getCurrentOrganizationService.currentOrganizationId === -1 && this.availableOrganizations.length > 0) {
+            this.getCurrentOrganizationService.currentOrganizationId = this.availableOrganizations[0].id;
+          }
         }
       );
   }
@@ -39,7 +44,7 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
 
   public currentOrganization: OrganizationModel = {
     id: -1,
-    name: 'None',
+    name: 'My Organizations',
     authorId: -1,
     createdAt: new Date(),
     updatedAt: new Date()
@@ -51,17 +56,37 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
 
   constructor(
     private organizationService: OrganizationService,
-    private storageService: StorageService) {
+    private getCurrentOrganizationService: GetCurrentOrganizationService,
+    private router: Router) {
     super();
   }
 
   ngOnInit(): void {
     this.subscribeToCurrentOrganization();
     this.subscribeToOrganizationControl();
+    this.subscribeToOrganizationsChange();
+
+    if (this.getCurrentOrganizationService.currentOrganizationId === -1) {
+      return;
+    }
+
+    const searchedOrganization = this.availableOrganizations
+      .find((x) => x.id === this.getCurrentOrganizationService.currentOrganizationId);
+
+    if (searchedOrganization) {
+      this.currentOrganization = searchedOrganization;
+    }
+    else {
+      this.setOrganization();
+    }
   }
 
   private setOrganization(): void {
-    this.organizationService.getOrganization(this.storageService.currentOrganizationId)
+    if (this.getCurrentOrganizationService.currentOrganizationId === -1) {
+      return;
+    }
+
+    this.organizationService.getOrganization(this.getCurrentOrganizationService.currentOrganizationId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (result) => {
@@ -74,13 +99,21 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
   }
 
   get organizationNames(): MenuDropdownOption[] {
-    return this.availableOrganizations as MenuDropdownOption[];
+    if (this.availableOrganizations.length > 0) {
+      return this.availableOrganizations as MenuDropdownOption[];
+    }
+
+    return [];
   }
 
   private subscribeToCurrentOrganization(): void {
-    this.storageService.currentOrganizationId$.subscribe(
+    this.getCurrentOrganizationService.currentOrganizationId$.subscribe(
       (result) => {
         if (result === -1) {
+          return;
+        }
+
+        if (this.currentOrganization.id === result) {
           return;
         }
 
@@ -97,18 +130,50 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
 
   private subscribeToOrganizationControl(): void {
     this.organizationControl.valueChanges.subscribe(
-      () => {
-        const searchedOrganization = this.availableOrganizations
-          .find((x) => x.id === this.organizationControl.value?.id);
+      (option) => {
+        const searchedOrganization = this.availableOrganizations.find((x) => x.id === option?.id);
 
         if (searchedOrganization) {
           this.currentOrganization = searchedOrganization;
-          this.storageService.currentOrganizationId = this.currentOrganization.id;
+          this.getCurrentOrganizationService.currentOrganizationId = this.currentOrganization.id;
         }
         else {
           this.setOrganization();
         }
+        this.router.navigate(['organizations'], { replaceUrl: true });
+        window.scroll(0, 0);
       }
     );
+  }
+
+  private subscribeToOrganizationsChange(): void {
+    this.getCurrentOrganizationService.organizationsUpdated$.subscribe(
+      (organization) => {
+        const index = this.availableOrganizations.findIndex((org) => org.id === organization.id);
+
+        if (index === -1) {
+          this.availableOrganizations.push(organization);
+
+          if (this.getCurrentOrganizationService.currentOrganizationId === -1) {
+            this.getCurrentOrganizationService.currentOrganizationId = this.availableOrganizations[0].id;
+          }
+
+          return;
+        }
+
+        this.availableOrganizations[index] = organization;
+
+        if (this.currentOrganization.id === organization.id) {
+          this.currentOrganization = organization;
+        }
+      }
+    );
+  }
+
+  public openOrganizationsPage(): void {
+    this.router.navigate(['/organizations'], {
+      replaceUrl: true,
+    });
+    window.scroll(0, 0);
   }
 }
