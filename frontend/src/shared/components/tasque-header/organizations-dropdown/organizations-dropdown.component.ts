@@ -111,6 +111,10 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
           return;
         }
 
+        if (this.currentOrganization.id === result) {
+          return;
+        }
+
         const searchedOrganization = this.availableOrganizations.find((x) => x.id === result);
 
         if (searchedOrganization) {
