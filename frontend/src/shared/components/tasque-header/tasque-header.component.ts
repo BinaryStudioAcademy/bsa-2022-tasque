@@ -70,4 +70,12 @@ export class HeaderComponent implements OnInit {
         return;
     }
   }
+
+  get currentUserAvatar(): string {
+    if (!this.currentUser || !this.currentUser.avatar) {
+      return '\\assets\\avatar.png';
+    }
+
+    return this.currentUser.avatar;
+  }
 }
