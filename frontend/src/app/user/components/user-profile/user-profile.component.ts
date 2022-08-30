@@ -23,6 +23,7 @@ export class UserProfileComponent implements OnInit {
   public profileChanges: ProfileChangesDTO = {} as ProfileChangesDTO;
   public passwordChanches: PasswordChangesDTO;
   public hidePass = true;
+  public hideNewPass = true;
   public profileForm: FormGroup = new FormGroup({});
   public changePassForm: FormGroup = new FormGroup({});
   public userNameControl: FormControl;

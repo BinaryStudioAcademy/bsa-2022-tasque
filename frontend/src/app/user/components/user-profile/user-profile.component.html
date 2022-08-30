@@ -103,11 +103,11 @@
                           'error': newPasswordControl.invalid && (newPasswordControl.dirty || newPasswordControl.touched)
                         }"
                         [(ngModel)]="passwordChanches.newPassword"
-                        [type]="hidePass ? 'password' : 'text'"
+                        [type]="hideNewPass ? 'password' : 'text'"
                         placeholder="Password"
                         formControlName="newPasswordControl"
                       />
-                      <mat-icon class="hide-icon" (click)="hidePass = !hidePass">{{ hidePass ? 'visibility' : 'visibility_off' }}</mat-icon>
+                      <mat-icon class="hide-icon" (click)="hideNewPass = !hideNewPass">{{ hideNewPass ? 'visibility' : 'visibility_off' }}</mat-icon>
                       <span class="error" *ngIf="newPasswordControl.errors?.['required'] && (newPasswordControl.dirty || newPasswordControl.touched)">Password is required.</span>
                       <span class="error" *ngIf="newPasswordControl.errors?.['minlength']">Must be at least 8 characters</span>
                     </div>
