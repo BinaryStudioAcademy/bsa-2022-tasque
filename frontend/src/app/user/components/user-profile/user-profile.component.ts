@@ -8,7 +8,7 @@ import { PasswordChangesDTO } from '../../dto/password-changes-dto';
 import { ProfileChangesDTO } from '../../dto/profile-changes-dto';
 import { UserService } from '../../services/user.service';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
-import { mergeMap, takeUntil } from 'rxjs/operators';
+import { filter, mergeMap, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-profile',
@@ -156,25 +156,18 @@ export class UserProfileComponent implements OnInit {
   }
 
   public saveNewInfo(): void {
-    if (!this.isProfileChanged) {
-      this.notificationService.error('Profile was not changed');
-      return;
-    }
-    this.userService.editUserProfile(this.profileChanges).subscribe(
-      (resp) => {
-        if (resp.ok && resp.body != null) {
-          this.profileChanges = resp.body;
-          this.originalUser = Object.assign({}, resp.body);
-          this.isProfileChanged = false;
-          this.notificationService.success('Profile was successfully changed');
-        } else {
-          this.notificationService.error('Something went wrong');
-        }
-      },
-      (error) => {
-        this.notificationService.error(error);
-      },
-    );
+    if (this.profileForm.invalid || !this.isProfileChanged) return;
+    this.userService
+      .editUserProfile(this.profileChanges)
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        filter((resp) => resp.body != null),
+      )
+      .subscribe((resp) => {
+        this.originalUser = resp.body as ProfileChangesDTO;
+        this.profileChanges = Object.assign({}, this.originalUser);
+        this.notificationService.success('Profile was successfully updated');
+      });
   }
 
   public saveNewPassword(): void {
