@@ -1,18 +1,39 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Organization;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
+using Tasque.Core.Identity.Exeptions;
+using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class OrganizationController : EntityController<Organization, OrganizationDto, OrganizationService>
+    public class OrganizationController : EntityController<Organization, CreateOrganizationDto, OrganizationService>
     {
-        public OrganizationController(OrganizationService service) : base(service) { }
+        private readonly CurrentUserParameters _currentUser;
+        public OrganizationController(OrganizationService service, CurrentUserParameters currentUser) : base(service)
+        {
+            _currentUser = currentUser;
+        }
+
+        [Route("create")]
+        [HttpPost]
+        public override IActionResult Create([FromBody] CreateOrganizationDto createOrganizationDto)
+        {
+            var entity = new Organization()
+            {
+                Name = createOrganizationDto.Name,
+                AuthorId = int.Parse(_currentUser.Id ?? throw new InvalidTokenException("Invalid access token"))
+            };
+            var org = _service.Create(entity);
+
+            return Ok(org);
+        }
 
         [Route("getUserOrganizationsById/{id}")]
         [HttpGet]
@@ -45,13 +66,13 @@ namespace Tasque.Core.WebAPI.Controllers
         }
 
         [HttpPut]
-        public async virtual Task<IActionResult> UpdateOrganization([FromBody] OrganizationDto organization)
+        public async virtual Task<IActionResult> UpdateOrganization([FromBody] OrganizationDto organizationDto)
         {
-            var organizations = await _service.EditOrganization(organization);
+            var organization = await _service.EditOrganization(organizationDto);
 
-            if (organizations is not null)
+            if (organization is not null)
             {
-                return Ok();
+                return Ok(organization);
             }
             else
             {

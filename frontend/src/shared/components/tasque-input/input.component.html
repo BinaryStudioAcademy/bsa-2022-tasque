@@ -12,8 +12,9 @@
       [placeholder]="inputPlaceholder"
       [class]="inputClass"
       [ngClass]="{
-        'error': inputValueIsError
+        'error': inputValueIsError && inputErrorMessage
       }"
+      [readonly]="readonly"
     />
   </div>
   <span class="error" *ngIf="inputValueIsError">{{ inputErrorMessage }}</span>
