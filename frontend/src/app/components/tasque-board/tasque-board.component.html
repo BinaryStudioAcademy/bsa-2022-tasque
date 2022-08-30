@@ -39,8 +39,7 @@
             </div>  
           </div>
           <div class="column" *ngFor="let task of item.tasks">
-              <span>{{task.name}}</span>
-              <span>{{task.avatarUrl}}</span>
+            <tasque-card [taskInfo]="task"></tasque-card>
           </div>
         </div>
         <div class="create-column" (mouseleave)="onClickedOutside()">
