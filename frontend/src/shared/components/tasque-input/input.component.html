@@ -12,7 +12,7 @@
       [placeholder]="inputPlaceholder"
       [class]="inputClass"
       [ngClass]="{
-        'error': inputValueIsError
+        'error': inputValueIsError && inputErrorMessage
       }"
       [readonly]="readonly"
     />

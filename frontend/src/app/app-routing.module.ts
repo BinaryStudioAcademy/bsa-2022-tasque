@@ -10,27 +10,31 @@ import { TasqueBoardComponent } from './components/tasque-board/tasque-board.com
 import { TasqueTeamComponent } from './components/tasque-team/tasque-team.component';
 import { TasqueProjectSettingsComponent } from './components/tasque-project-settings/tasque-project-settings.component';
 import { AuthGuard } from './auth/guards/auth.guard';
+import { BacklogComponent } from './components/backlog/backlog.component';
 
 const routes: Routes = [
   ...AuthRoutes,
   {
-    path: '', component: PageWithoutSidebarComponent,
+    path: '',
+    component: PageWithoutSidebarComponent,
     canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'organizations', pathMatch: 'full' },
       { path: 'organizations', component: OrganizationListComponent },
-      { path: 'projects', component: ProjectListComponent, },
+      { path: 'projects', component: ProjectListComponent },
+      { path: 'backlog', component: BacklogComponent },
       ...UserRoutes,
-    ]
+    ],
   },
   {
-    path: 'project', component: PageWithSidebarComponent,
+    path: 'project',
+    component: PageWithSidebarComponent,
     canActivate: [AuthGuard],
     children: [
       { path: 'board', component: TasqueBoardComponent },
       { path: 'team', component: TasqueTeamComponent },
       { path: 'settings', component: TasqueProjectSettingsComponent },
-    ]
+    ],
   },
   { path: '**', redirectTo: '/auth/login', pathMatch: 'full' },
 ];

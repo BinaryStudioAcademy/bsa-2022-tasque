@@ -4,7 +4,7 @@
     <tasque-button
       class="btn fill"
       text="Create Organization"
-      (btnClick)="openDialog()"
+      (btnClick)="openCreateOrganizationDialog()"
     ></tasque-button>
   </div>
   <div class="organizations-search">
@@ -20,6 +20,11 @@
     </tasque-input>
   </div>
   <div class="organization-list-cards">
+    <p class="empty-organization-warning" *ngIf="items.length < 1">
+      <fa-icon [icon]="warningIcon"></fa-icon>
+      You are not a participant of any organization, create a new one or ask the organization admin to invite
+      you
+    </p>
     <app-organization-list-item
       *ngFor="let item of itemsShow"
       [organization]="item"

@@ -21,6 +21,12 @@ namespace Tasque.Core.WebAPI.Controllers
             return "pong";
         }
 
+        [HttpGet("ping500")]
+        public void PingException()
+        {
+            throw new Exception("pong");
+        }
+
         // [HttpGet("test")]
         // public List<User> Test()
         //  {

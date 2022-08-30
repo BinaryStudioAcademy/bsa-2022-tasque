@@ -19,4 +19,5 @@ export class SprintService {
   editSprint(editedSprint: EditSprintModel):Observable<HttpResponse<SprintModel>>{
     return this.httpService.putFullRequest<SprintModel>(this.routePrefix + '/edit', editedSprint);
   }
+
 }

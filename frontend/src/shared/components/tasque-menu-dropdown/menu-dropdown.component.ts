@@ -22,27 +22,30 @@ export interface MenuDropdownOption {
 })
 export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
 
-  @Input() public label?: string;
+  @Input() public label?: string; // Main label of the dropdown
 
-  @Input() public buttonIcon?: IconProp;
+  @Input() public downArrowIcon = faChevronDown;  // Down State of the arrow (applies when dropdown is not expanded)
 
-  @Input() public downArrowIcon = faChevronDown;
-
-  @Input() public upArrowIcon = faChevronUp;
+  @Input() public upArrowIcon = faChevronUp; // Up State of the arrow (applies when dropdown is expanded)
 
   public currentArrowIcon: IconProp;
 
-  @Input() public options: MenuDropdownOption[];
+  @Input() public options: MenuDropdownOption[]; // input data
   public selectedOption: MenuDropdownOption;
 
-  @Output() labelClicked = new EventEmitter();
+  @Output() labelClicked = new EventEmitter(); // event that represents click on the dropdown main label
   @Input() toggleDropdownOnLabelClick = true;
 
-  @Input() avatarUrl = '\\assets\\avatar.png';
-  @Input() diameter_px = 45;
+  @Input() avatarUrl = '\\assets\\avatar.png'; // url of the avatar
+  @Input() diameter_px = 45; // size of the avatar
 
-  @Input() public hasAvatar = false;
-  @Output() avatarClicked = new EventEmitter();
+  @Input() public hasAvatar = false; // state of the avatar visibility
+  @Output() avatarClicked = new EventEmitter(); // click on the avatar
+
+  @Input() headerLabel: string; // text of the top label in the options container. Pass it to see this option 
+  @Input() footerLabel: string; // text of the bottom label in the options container. Pass it to see this option 
+  @Output() headerClicked = new EventEmitter(); // click on the top label
+  @Output() footerClicked = new EventEmitter(); // click on the bottom label
 
   public expanded = false;
   private wasInside = false;
@@ -121,12 +124,18 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
     this.toggleDropdown();
   }
 
-  public buttonIconClick(): void {
+  public avatarClick(): void {
+    this.avatarClicked.emit();
     this.toggleDropdown();
   }
 
-  public avatarClick(): void {
-    this.avatarClicked.emit();
+  public headerClick(): void {
+    this.headerClicked.emit();
+    this.toggleDropdown();
+  }
+
+  public footerClick(): void {
+    this.footerClicked.emit();
     this.toggleDropdown();
   }
 }
