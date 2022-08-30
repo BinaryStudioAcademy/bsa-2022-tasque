@@ -10,17 +10,17 @@ export class IssueTemplateComponent implements OnInit {
 
   constructor() { }
 
-  public fieldsWithDescription: string[] = ['Title', 'Description', 'Summary', 'Priority', 'State', 'Type'];
+  public fieldsWithDescription: string[] = ['Title', 'Description', 'Summary', 'State', 'Type'];
   public contextFields: string[] = ['Assignee', 'Label', 'Sprint', 'Story point estimate'];
-  public customFields: string[] = ['Custom field 1', 
-    'Custom field 2', 
-    'Custom field 3', 
-    'Custom field 4',
-    'Custom field 5', 
-    'Custom field 6', 
-    'Custom field 7',
-    'Custom field 8',
-    'Custom field 9'];
+  public customFields: string[] = [
+    'Text', 
+    'Paragraph', 
+    'Number',
+    'Label', 
+    'User', 
+    'Date',
+    'Dropdown',
+    'Check box'];
 
   ngOnInit(): void {
   }
