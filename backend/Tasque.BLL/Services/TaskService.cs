@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Mailjet.Client.TransactionalEmails;
 using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.PartialModels;
@@ -92,9 +93,9 @@ namespace Tasque.Core.BLL.Services
 
             task.Description = model.Description;
             task.Summary = model.Summary;
-            //task.Labels = model.Labels;
+            task.Labels = _mapper.Map<List<Common.Entities.Label>>(model.Labels);
             task.SprintId = model.SprintId;
-            //task.Attachments = model.Attachments;
+            task.Attachments = _mapper.Map<List<Common.Entities.Attachment>>(model.Attachments);
             task.BoardColumnId = model.BoardColumnId;
             task.Description = model.Description;
             task.Deadline = model.Deadline;

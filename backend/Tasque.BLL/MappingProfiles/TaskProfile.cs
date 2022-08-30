@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.DTO.PartialModels;
 using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.Entities;
@@ -14,6 +15,8 @@ namespace Tasque.Core.BLL.MappingProfiles
             CreateMap<TaskTypeDto, TaskTypeDto>().ReverseMap();
             CreateMap<TaskPriorityDto, TaskPriorityDto>().ReverseMap();
             CreateMap<TaskState, TaskStateDto>().ReverseMap();
+            CreateMap<Attachment, AttachmentDto>().ReverseMap();
+            CreateMap<Label, LabelDto>().ReverseMap();
         }
     }
 }

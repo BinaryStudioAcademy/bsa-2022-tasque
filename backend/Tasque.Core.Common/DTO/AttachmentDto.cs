@@ -8,6 +8,6 @@ namespace Tasque.Core.Common.DTO
 {
     public class AttachmentDto
     {
-        public string URI { get; set; }
+        public string? URI { get; set; }
     }
 }
