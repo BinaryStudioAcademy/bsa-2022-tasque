@@ -1,8 +1,8 @@
 <form [formGroup]="sprintForm" class="edit-sprint-dialog">
     <mat-dialog-content class="dialog-content">
       <h4>
-        {{data.isStarting ? 'Start sprint' : 'Edit sprint: ' + data.name}}
-        <span *ngIf="data.isStarting" class="dialog-info"><strong>{{data.tasks ? data.tasks.length : 0}}</strong> issues will be added in this sprint.</span>
+        {{sprint.isStarting ? 'Start sprint' : 'Edit sprint: ' + sprint.name}}
+        <span *ngIf="sprint.isStarting" class="dialog-info"><strong>{{sprint.tasks ? sprint.tasks.length : 0}}</strong> issues will be added in this sprint.</span>
       </h4>
       <div class="tasque-input">
         <tasque-input
@@ -10,7 +10,7 @@
           placeholder="Sprint name"
           formControlName="sprintName"
           label="Name"
-          [(ngModel)]="data.name"
+          [(ngModel)]="sprint.name"
           name="fieldName" ngDefaultControl
           [invalid]="sprintName.invalid"
           [errorMessage]="requiredErrorMessage">
@@ -34,7 +34,7 @@
           placeholder="Select a date"
           label="Start date"
           type="datetime-local"
-          [(ngModel)]="data.startAt"
+          [(ngModel)]="sprint.startAt"
           name="fieldStart" ngDefaultControl
           [invalid]="sprintStartAt.invalid"
           [errorMessage]="requiredErrorMessage">
@@ -46,7 +46,7 @@
           formControlName="sprintEndAt"
           label="End date"
           type="datetime-local"
-          [(ngModel)]="data.endAt"
+          [(ngModel)]="sprint.endAt"
           [invalid]="sprintEndAt.invalid"
           [errorMessage]="requiredErrorMessage">
         </tasque-input>
@@ -57,7 +57,7 @@
           class="input-text-area"
           formControlName="sprintDescription"
           label="Description"
-          [(ngModel)]="data.description"
+          [(ngModel)]="sprint.description"
           name="fieldDescription" ngDefaultControl>
         </textarea>
       </div>
@@ -66,7 +66,7 @@
       <tasque-button
         [mat-dialog-close]="true"
         type="submit"
-        [text]="data.isStarting ? 'Start' : 'Update'"
+        [text]="sprint.isStarting ? 'Start' : 'Update'"
         [class]="this.createBtnClass + (sprintForm.invalid ? ' disabled' : '')"
         (btnClick)="onSubmit()">
       </tasque-button>

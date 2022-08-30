@@ -1,6 +1,4 @@
-﻿import { TaskModel } from "../task/task-model";
-
-export interface EditSprintModel {
+﻿export interface EditSprintModel {
   id: number,
   name: string,
   description?: string,  
@@ -8,5 +6,5 @@ export interface EditSprintModel {
   endAt?: string,
   projectId: number,
   isStarting: boolean,
-  tasks: TaskModel[]
+  tasks: number[]
 }

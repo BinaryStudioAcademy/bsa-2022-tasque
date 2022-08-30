@@ -17,9 +17,11 @@ export class EditSprintComponent implements OnInit {
     name: 'PROJ Sprint 3',
     createdAt: new Date(2000, 1, 1),
     updatedAt: new Date(2001, 1, 1),
-    projectId: 1,
+    projectId: 2,
     description: ''
   };
+
+  public tasks: number[];
 
   @Input() public isStarting: boolean;
 
@@ -35,12 +37,14 @@ export class EditSprintComponent implements OnInit {
 
   openDialog(): void {
     const editSprint = {
+      id: this.currentSprint.id,
       name: this.currentSprint.name,
       description: this.currentSprint.description,
       startAt: this.currentSprint.startAt ? moment(this.currentSprint.startAt).format('YYYY-MM-DDTHH:mm') : undefined,
       endAt: this.currentSprint.endAt ? moment(this.currentSprint.endAt).format('YYYY-MM-DDTHH:mm') : undefined,
       projectId: this.currentSprint.projectId,
-      isStarting: this.isStarting
+      isStarting: this.isStarting,
+      tasks: this.tasks
     } as EditSprintModel;
     const dialog = this.matDialog.open(EditSprintDialogComponent, { data: editSprint });
     dialog.afterClosed().subscribe();

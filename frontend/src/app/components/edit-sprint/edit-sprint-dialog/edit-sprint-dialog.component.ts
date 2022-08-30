@@ -5,6 +5,8 @@ import { Subject } from 'rxjs';
 import { EditSprintModel } from 'src/core/models/sprint/edit-sprint-model';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import * as moment from 'moment'; 
+import { SprintService } from 'src/core/services/sprint.service';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-edit-sprint-dialog',
@@ -38,21 +40,23 @@ export class EditSprintDialogComponent implements OnInit {
   public unsubscribe$ = new Subject<void>();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: EditSprintModel
+    @Inject(MAT_DIALOG_DATA) public sprint: EditSprintModel,
+    private sprintService: SprintService,
+    private notificationService: NotificationService
   ) {
-    if (data.isStarting) {
-      this.data.startAt = moment(new Date()).format('YYYY-MM-DDTHH:mm');
-      this.data.endAt = this.addDays(this.data.startAt, 7);
+    if (sprint.isStarting) {
+      this.sprint.startAt = moment(new Date()).format('YYYY-MM-DDTHH:mm');
+      this.sprint.endAt = this.addDays(this.sprint.startAt, 7);
     }
-    this.sprintName = new FormControl(this.data.name, [
+    this.sprintName = new FormControl(this.sprint.name, [
       Validators.required,
       Validators.minLength(4),
     ]);
     this.sprintDuration = new FormControl(this.periods[0], [ ]);
-    this.sprintStartAt = new FormControl(this.data.startAt, [ ]);
-    this.sprintEndAt = new FormControl(this.data.endAt, [ ]);
-    this.sprintDescription = new FormControl(this.data.description, [ ]);
-    if (data.isStarting) {
+    this.sprintStartAt = new FormControl(this.sprint.startAt, [ ]);
+    this.sprintEndAt = new FormControl(this.sprint.endAt, [ ]);
+    this.sprintDescription = new FormControl(this.sprint.description, [ ]);
+    if (sprint.isStarting) {
       this.sprintStartAt.addValidators(Validators.required);
       this.sprintEndAt.addValidators(Validators.required);
     }
@@ -70,14 +74,26 @@ export class EditSprintDialogComponent implements OnInit {
     this.sprintForm.controls.sprintDuration.valueChanges.subscribe(
       () => {
         const value: number = this.sprintForm.controls.sprintDuration.value.id;
-        if (value > 0 && this.data.startAt) {
-          this.data.endAt = this.addDays(this.data.startAt, 7 * value);
+        if (value > 0 && this.sprint.startAt) {
+          this.sprint.endAt = this.addDays(this.sprint.startAt, 7 * value);
         }        
       });
   }
 
   onSubmit(): void{
-    
+    this.sprintService.editSprint(this.sprint).subscribe(
+      (resp) => {
+        if (resp.ok && resp.body != null) {
+          this.sprint.name = resp.body.name;
+          this.notificationService.success('Sprint was successfully changed');
+        } else {
+          this.notificationService.error('Something went wrong');
+        }
+      },
+      (error) => {
+        this.notificationService.error(error);
+      },
+    );
   }
   
   private addDays(stringDate: string, days: number): string{
