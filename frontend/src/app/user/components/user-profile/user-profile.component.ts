@@ -21,7 +21,7 @@ export class UserProfileComponent implements OnInit {
   public allowedFileTypes = ['image/png', 'image/jpeg', 'image/gif'];
   public originalUser: ProfileChangesDTO = {} as ProfileChangesDTO;
   public profileChanges: ProfileChangesDTO = {} as ProfileChangesDTO;
-  public passwordChanches: PasswordChangesDTO;
+  public passwordChanges: PasswordChangesDTO;
   public hidePass = true;
   public hideNewPass = true;
   public profileForm: FormGroup = new FormGroup({});
@@ -46,9 +46,9 @@ export class UserProfileComponent implements OnInit {
   ngOnInit(): void {
     this.getUser();
 
-    this.passwordChanches = {} as PasswordChangesDTO;
-    this.passwordChanches.newPassword = '';
-    this.passwordChanches.previousPassword = '';
+    this.passwordChanges = {} as PasswordChangesDTO;
+    this.passwordChanges.newPassword = '';
+    this.passwordChanges.previousPassword = '';
     this.emailControl = new FormControl(this.profileChanges.email, [
       Validators.email,
       Validators.required,
@@ -59,7 +59,7 @@ export class UserProfileComponent implements OnInit {
       Validators.minLength(this.validationConstants.minLengthName),
     ]);
     this.prevPasswordControl = new FormControl(
-      this.passwordChanches.previousPassword,
+      this.passwordChanges.previousPassword,
       [
         Validators.required,
         Validators.minLength(this.validationConstants.minLengthPassword),
@@ -67,7 +67,7 @@ export class UserProfileComponent implements OnInit {
       ],
     );
     this.newPasswordControl = new FormControl(
-      this.passwordChanches.previousPassword,
+      this.passwordChanges.previousPassword,
       [
         Validators.required,
         Validators.minLength(this.validationConstants.minLengthPassword),
@@ -146,7 +146,7 @@ export class UserProfileComponent implements OnInit {
         if (resp.ok && resp.body != null) {
           this.profileChanges = resp.body;
           this.originalUser = Object.assign({}, resp.body);
-          this.passwordChanches.id = this.originalUser.id;
+          this.passwordChanges.id = this.originalUser.id;
         } else {
           this.notificationService.error('Something went wrong');
         }
@@ -178,7 +178,7 @@ export class UserProfileComponent implements OnInit {
     }
 
     this.userService
-      .editPassword(this.passwordChanches)
+      .editPassword(this.passwordChanges)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
         this.changePassForm.reset();
