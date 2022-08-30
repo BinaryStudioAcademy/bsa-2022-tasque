@@ -1,0 +1,22 @@
+<div class="card">
+  <div *ngIf="taskInfo.attachmentUrl">
+    <img class="attach" src="{{taskInfo.attachmentUrl}}" />
+  </div>
+  <div>
+    <div class="task-content">
+      <span>
+        {{taskInfo.description}}
+      </span>
+      <img src="assets/board/column_menu.svg">
+    </div>
+    <div class="task-status">
+      <span>Issue</span>
+      <span>High</span>
+      <span>5 days</span>
+    </div>
+    <div class="task-info">
+      <span>{{taskInfo.projectKey}}</span>
+      <tasque-avatar [imageURL]="taskInfo.userAvatarUrl" alt="user's avatar" [diameter_px]="30"></tasque-avatar>
+    </div>
+  </div>
+</div>
