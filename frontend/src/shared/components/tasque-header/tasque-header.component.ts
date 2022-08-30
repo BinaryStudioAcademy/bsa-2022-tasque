@@ -71,6 +71,14 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  get currentUserAvatar(): string {
+    if (!this.currentUser || !this.currentUser.avatar) {
+      return '\\assets\\avatar.png';
+    }
+
+    return this.currentUser.avatar;
+  }
+
   public openProjectsPage(): void {
     this.router.navigate(['/projects'], { replaceUrl: true });
   }

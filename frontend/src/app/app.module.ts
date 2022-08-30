@@ -28,6 +28,7 @@ import { TasqueProjectSettingsComponent } from './components/tasque-project-sett
 import { ToastrConfig } from 'src/entity-models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
 import { EditOrganizationComponent } from './components/edit-organization/edit-organization.component';
+import { TasqueCardComponent } from './components/tasque-card/tasque-card.component';
 import { BacklogComponent } from './components/backlog/backlog.component';
 
 @NgModule({
@@ -50,7 +51,8 @@ import { BacklogComponent } from './components/backlog/backlog.component';
     TasqueBoardComponent,
     EditOrganizationComponent,
     TasqueProjectSettingsComponent,
-    BacklogComponent,
+    TasqueCardComponent,
+    BacklogComponent
   ],
   imports: [
     BrowserModule,
