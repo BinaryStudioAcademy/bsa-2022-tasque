@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { EditSprintModel } from 'src/core/models/sprint/edit-sprint-model';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
+import * as moment from 'moment'; 
 
 @Component({
   selector: 'app-edit-sprint-dialog',
@@ -12,7 +13,6 @@ import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/drop
 })
 export class EditSprintDialogComponent implements OnInit {
 
-  public createBtnName = 'Start';
   public createBtnClass = 'fill';
   public cancelBtnName = 'Cancel';
   public cancelBtnClass = 'fill gray';
@@ -29,10 +29,10 @@ export class EditSprintDialogComponent implements OnInit {
   public duration: TasqueDropdownOption;
 
   public periods: TasqueDropdownOption[] = [
-    { color: '#0000', title: 'Custom', id: 0},
-    { color: '#0000', title: 'One Week', id: 0},
-    { color: '#0000', title: 'Two Weeks', id: 0},
-    { color: '#0000', title: 'Four Weeks', id: 0},
+    { color: '#0000', title: 'Custom', id: 0 },
+    { color: '#0000', title: 'One Week', id: 1 },
+    { color: '#0000', title: 'Two Weeks', id: 2 },
+    { color: '#0000', title: 'Four Weeks', id: 4 },
   ];
 
   public unsubscribe$ = new Subject<void>();
@@ -40,20 +40,22 @@ export class EditSprintDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: EditSprintModel
   ) {
+    if (data.isStarting) {
+      this.data.startAt = moment(new Date()).format('YYYY-MM-DDTHH:mm');
+      this.data.endAt = this.addDays(this.data.startAt, 7);
+    }
     this.sprintName = new FormControl(this.data.name, [
       Validators.required,
       Validators.minLength(4),
     ]);
-    this.sprintDuration = new FormControl(this.periods[0], [ 
-      Validators.required
-    ]);
-    this.sprintStartAt = new FormControl(this.data.startAt, [
-      Validators.required,
-    ]);
-    this.sprintEndAt = new FormControl(this.data.endAt, [
-      Validators.required,
-    ]);
+    this.sprintDuration = new FormControl(this.periods[0], [ ]);
+    this.sprintStartAt = new FormControl(this.data.startAt, [ ]);
+    this.sprintEndAt = new FormControl(this.data.endAt, [ ]);
     this.sprintDescription = new FormControl(this.data.description, [ ]);
+    if (data.isStarting) {
+      this.sprintStartAt.addValidators(Validators.required);
+      this.sprintEndAt.addValidators(Validators.required);
+    }
    }
 
   ngOnInit(): void {
@@ -67,8 +69,8 @@ export class EditSprintDialogComponent implements OnInit {
 
     this.sprintForm.controls.sprintDuration.valueChanges.subscribe(
       () => {
-        const value: number = this.sprintForm.controls.sprintDuration.value[2];
-        if (value > 0) {
+        const value: number = this.sprintForm.controls.sprintDuration.value.id;
+        if (value > 0 && this.data.startAt) {
           this.data.endAt = this.addDays(this.data.startAt, 7 * value);
         }        
       });
@@ -78,10 +80,15 @@ export class EditSprintDialogComponent implements OnInit {
     
   }
   
-  addDays(stringDate: string, days: number): string{
-    const date = new Date(stringDate);
+  private addDays(stringDate: string, days: number): string{
+    const date = this.dateFromStr(stringDate);
     date.setDate(date.getDate() + days);
     return date.toISOString().slice(0, 16);
+  }
+
+  private dateFromStr(str: string): Date {
+    const d = new Date(str);
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() - d.getTimezoneOffset());
   }
   
 }

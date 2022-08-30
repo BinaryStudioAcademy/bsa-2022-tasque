@@ -1,5 +1,5 @@
 <tasque-button
   [class]="btnClass"
-  [text]="btnText"
+  [text]="isStarting ? 'Start sprint' : 'Edit sprint'"
   (btnClick)="openDialog()">
 </tasque-button>

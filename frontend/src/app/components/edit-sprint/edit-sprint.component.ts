@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import * as moment from 'moment';
 import { EditSprintModel } from 'src/core/models/sprint/edit-sprint-model';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import { EditSprintDialogComponent } from './edit-sprint-dialog/edit-sprint-dialog.component';
@@ -16,13 +17,12 @@ export class EditSprintComponent implements OnInit {
     name: 'PROJ Sprint 3',
     createdAt: new Date(2000, 1, 1),
     updatedAt: new Date(2001, 1, 1),
-    startAt: new Date(),
-    endAt: new Date('2022-08-24T10:20'),
     projectId: 1,
     description: ''
   };
 
-  public btnText = 'Start sprint';
+  @Input() public isStarting: boolean;
+
   public btnClass = 'btn mini';
 
   constructor(
@@ -37,10 +37,10 @@ export class EditSprintComponent implements OnInit {
     const editSprint = {
       name: this.currentSprint.name,
       description: this.currentSprint.description,
-      startAt: this.currentSprint.startAt ? this.currentSprint.startAt.toISOString().slice(0, 16) : "",
-      endAt: this.currentSprint.endAt ? this.currentSprint.endAt.toISOString().slice(0, 16) : "",
+      startAt: this.currentSprint.startAt ? moment(this.currentSprint.startAt).format('YYYY-MM-DDTHH:mm') : undefined,
+      endAt: this.currentSprint.endAt ? moment(this.currentSprint.endAt).format('YYYY-MM-DDTHH:mm') : undefined,
       projectId: this.currentSprint.projectId,
-      isStarting: true
+      isStarting: this.isStarting
     } as EditSprintModel;
     const dialog = this.matDialog.open(EditSprintDialogComponent, { data: editSprint });
     dialog.afterClosed().subscribe();

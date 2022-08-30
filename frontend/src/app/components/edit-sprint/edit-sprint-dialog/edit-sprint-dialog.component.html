@@ -1,9 +1,9 @@
-<form [formGroup]="sprintForm" class="edit-sprint-dialog" (ngSubmit)="onSubmit()">
+<form [formGroup]="sprintForm" class="edit-sprint-dialog">
     <mat-dialog-content class="dialog-content">
-      <h3>
-        Start Sprint
-        <span *ngIf="data.isStarting" class="dialog-info">Issues will be added in this sprint.</span>
-      </h3>
+      <h4>
+        {{data.isStarting ? 'Start sprint' : 'Edit sprint: ' + data.name}}
+        <span *ngIf="data.isStarting" class="dialog-info"><strong>{{data.tasks ? data.tasks.length : 0}}</strong> issues will be added in this sprint.</span>
+      </h4>
       <div class="tasque-input">
         <tasque-input
           [class]="this.inputClass"
@@ -31,6 +31,7 @@
         <tasque-input
           [class]="this.inputClass"
           formControlName="sprintStartAt"
+          placeholder="Select a date"
           label="Start date"
           type="datetime-local"
           [(ngModel)]="data.startAt"
@@ -61,19 +62,18 @@
         </textarea>
       </div>
     </mat-dialog-content>    
-    <mat-dialog-actions class="dialog-options" align="end">
+    <mat-dialog-actions class="dialog-options" align="end">      
+      <tasque-button
+        [mat-dialog-close]="true"
+        type="submit"
+        [text]="data.isStarting ? 'Start' : 'Update'"
+        [class]="this.createBtnClass + (sprintForm.invalid ? ' disabled' : '')"
+        (btnClick)="onSubmit()">
+      </tasque-button>
       <tasque-button
         [mat-dialog-close]="false"
         [text]="this.cancelBtnName"
         [class]="this.cancelBtnClass">
-      </tasque-button>
-      <tasque-button
-        [mat-dialog-close]="true"
-        type="submit"
-        [text]="this.createBtnName"
-        [class]="this.createBtnClass + (sprintForm.invalid ? ' disabled' : '')"
-        (btnClick)="onSubmit()"
-      >  
-      </tasque-button>
+      </tasque-button>      
     </mat-dialog-actions>
   </form>
