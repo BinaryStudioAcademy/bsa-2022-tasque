@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop'
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'
 
 @Component({
   selector: 'app-issue-template',
@@ -34,14 +34,29 @@ export class IssueTemplateComponent implements OnInit {
   }
 
   dropCustomFields(event: CdkDragDrop<string[]>):void {
-    moveItemInArray(this.customFields, event.previousIndex, event.currentIndex);
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
   }
 
-  deleteContextItem(): void {
-    this.contextFields.pop();
-  }
+  deleteContextItem(val: string): void {
+    this.contextFields.forEach((value,index)=>{
+        if(value==val) this.contextFields.splice(index,1);
+    });
+    console.log('Delete context ' + val);
+}
 
   deleteDescriptionItem(val:string): void {
-    this.fieldsWithDescription.pop();
+    this.fieldsWithDescription.forEach((value,index)=>{
+        if(value==val) this.fieldsWithDescription.splice(index,1);
+    });
+    console.log('Delete description ' + val);
   }
 }
