@@ -12,7 +12,7 @@
         </div>
     </div>
     <hr>
-    <div class="issue-template">
+    <div *ngIf="selectedIssue !== undefined" class="issue-template">
         <div class="issue-fields" cdkDropListGroup>
             <h2>Const fields</h2>
             <div class="issue-fields">
@@ -56,6 +56,11 @@
                     <span style="margin: 0 5px 0 5px">{{item}}</span>
                 </div>
             </div>
+        </div>
+    </div>
+    <div *ngIf="selectedIssue === undefined">
+        <div class="no-issue">
+            <h2>Select an issue first</h2>
         </div>
     </div>
 </div>

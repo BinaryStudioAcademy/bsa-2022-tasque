@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
+import { TaskTemplate } from 'src/core/models/task/task-template';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-issue-template',
@@ -9,7 +11,9 @@ import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/drop
 })
 export class IssueTemplateComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private notificationService: ToastrService,
+  ) { }
 
   public fieldsWithDescription: string[] = ['Title', 'Description', 'Summary', 'State', 'Type'];
   public contextFields: string[] = ['Assignee', 'Label', 'Sprint', 'Story point estimate'];
@@ -77,17 +81,27 @@ export class IssueTemplateComponent implements OnInit {
   }
 
   saveChanges(): void {
-    console.log('clicked save changes')
+    if(this.selectedId === undefined){
+      this.notificationService.error('No issue type selected');
+      return;
+    }
+    console.log('clicked save changes');
+    console.log(this.contextFields);
+    console.log(this.fieldsWithDescription);
+    console.log('template');
+    const template: TaskTemplate = {
+      id: this.selectedId,
+      customDescriptionFields: this.fieldsWithDescription,
+      customContextFields: this.contextFields,
+    }
+    console.log(template);
+    this.notificationService.success(`${this.selectedIssue.title} template has been updated successfully`);
   }
 
-  setSelected(val:number){
+  setSelected(val:number): void {
     this.selectedId = val;
     const issue = this.dropdownOptions.find(i => i.id === this.selectedId) as TasqueDropdownOption;
     this.issueColor = issue.color;
     this.selectedIssue = issue;
-  }
-
-  logSelected(): void{
-    console.log('selected', this.selectedId);
   }
 }
