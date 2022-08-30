@@ -1,0 +1,41 @@
+<div class="sprint-conteiner">
+  <div class="sprint-header">
+    <div class="wrapper">
+      <h4 class="sprint-name">Mars Landing</h4>
+      <div class="issues">
+        <p>issues</p>
+        <p class="issues-count">3</p>
+      </div>
+      <div class="estimate">
+        <p>estimate</p>
+        <p class="estimate-count">5</p>
+      </div>
+      <div class="wrapper button">
+        <tasque-button text="Start sprint" class="btn mini voilet"></tasque-button>
+
+        <div class="dropdown-button">
+          <div class="dropdown" style="float: right">
+            <tasque-button class="btn dropbtn" [icon]="faEllipsisV"></tasque-button>
+            <div class="dropdown-content">
+              <a href="#">Ссылка 1</a>
+              <a href="#">Ссылка 2</a>
+              <a href="#">Ссылка 3</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="select-user">
+      <tasque-team-select></tasque-team-select>
+    </div>
+  </div>
+  <div class="sprint-body">
+    <app-issue></app-issue>
+    <app-issue></app-issue>
+    <app-issue></app-issue>
+    <app-issue></app-issue>
+  </div>
+  <div class="sprint-footer">
+    <tasque-button text="+ Create issues" class="btn mini voilet"></tasque-button>
+  </div>
+</div>

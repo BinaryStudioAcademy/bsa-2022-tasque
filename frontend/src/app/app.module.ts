@@ -28,6 +28,8 @@ import { TasqueProjectSettingsComponent } from './components/tasque-project-sett
 import { ToastrConfig } from 'src/entity-models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
 import { EditOrganizationComponent } from './components/edit-organization/edit-organization.component';
+import { SprintComponent } from './components/backlog/sprint/sprint.component';
+import { IssueComponent } from './components/backlog/sprint/issue/issue.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,8 @@ import { EditOrganizationComponent } from './components/edit-organization/edit-o
     TasqueBoardComponent,
     EditOrganizationComponent,
     TasqueProjectSettingsComponent,
+    SprintComponent,
+    IssueComponent,
   ],
   imports: [
     BrowserModule,
