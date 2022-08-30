@@ -2,7 +2,7 @@
     <h2>Issue template</h2>
     <hr>
     <div class="issue-template">
-        <div class="issue-fields">
+        <div class="issue-fields" cdkDropListGroup>
             <h2>Const fields</h2>
             <div class="issue-field" style="cursor:default">
                 <span style="margin-left: 5px; width: 55%">Priority</span>
@@ -11,14 +11,14 @@
                 <span style="margin-left: 5px">Status</span>
             </div>
             <h2>Fields with description</h2>
-            <div cdkDropList class="issue-fields" [cdkDropListData]="fieldsWithDescription" (cdkDropListDropped)="dropFieldsWithDescription($event)">
+            <div cdkDropList class="issue-fields" #descriptionList="cdkDropList" [cdkDropListData]="fieldsWithDescription" (cdkDropListDropped)="dropCustomFields($event)">
                 <div class="issue-field" *ngFor="let item of fieldsWithDescription" cdkDrag>
                     <span style="margin-left: 5px">{{item}}</span>
                     <button style="margin-right: 10px" (click)="deleteDescriptionItem(item)">Delete</button>
                 </div>
             </div>
             <h2>Context fields</h2>
-            <div cdkDropList class="issue-fields" [cdkDropListData]="contextFields" (cdkDropListDropped)="dropContextFields($event)">
+            <div cdkDropList class="issue-fields" #contextList="cdkDropList" [cdkDropListData]="contextFields" (cdkDropListDropped)="dropCustomFields($event)">
                 <div class="issue-field" *ngFor="let item of contextFields" cdkDrag>
                     <span style="margin-left: 5px">{{item}}</span>
                     <button style="margin-right: 10px" (click)="deleteContextItem(item)">Delete</button>
@@ -27,7 +27,7 @@
         </div>
         <div class="custom-fields">
             <h2>Custom fields</h2>
-            <div [cdkDropListData]="customFields" [cdkDropListConnectedTo]="fieldsWithDescription" cdkDropList class="issue-fields" (cdkDropListDropped)="dropCustomFields($event)">
+            <div [cdkDropListData]="customFields" [cdkDropListConnectedTo]="[descriptionList, contextList]" cdkDropList class="issue-fields" (cdkDropListDropped)="dropCustomFields($event)">
                 <div class="custom-field" *ngFor="let item of customFields" cdkDrag>
                     <span style="margin-left: 5px">{{item}}</span>
                 </div>

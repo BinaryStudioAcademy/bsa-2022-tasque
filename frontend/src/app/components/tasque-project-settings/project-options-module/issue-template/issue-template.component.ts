@@ -25,15 +25,8 @@ export class IssueTemplateComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  dropFieldsWithDescription(event: CdkDragDrop<string[]>):void {
-    moveItemInArray(this.fieldsWithDescription, event.previousIndex, event.currentIndex);
-  }
-
-  dropContextFields(event: CdkDragDrop<string[]>):void {
-    moveItemInArray(this.contextFields, event.previousIndex, event.currentIndex);
-  }
-
-  dropCustomFields(event: CdkDragDrop<string[]>):void {
+  dropCustomFields(event: CdkDragDrop<string[]>): void {
+    const cloned  = Object.assign([], this.customFields);
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -44,6 +37,7 @@ export class IssueTemplateComponent implements OnInit {
         event.currentIndex,
       );
     }
+    this.customFields = cloned;
   }
 
   deleteContextItem(val: string): void {
