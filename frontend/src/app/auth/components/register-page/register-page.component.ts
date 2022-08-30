@@ -38,6 +38,7 @@ export class RegisterPageComponent implements OnInit {
   faHide = faEyeSlash;
   public validationConstants = ValidationConstants;
   public errorMessages = ErrorMessages;
+  public showError: boolean;
 
   @ViewChild('emailInput')
   public emailInput: InputComponent;
@@ -167,13 +168,7 @@ export class RegisterPageComponent implements OnInit {
   }
 
   public submitForm(): void {
-    if (!this.registerForm.valid) {
-      this.registerForm.markAllAsTouched();
-      this.passwordRepeatControl.markAllAsTouched();
-      this.toastrService.error('Invalid values');
-      return;
-    }
-
+    if (this.registerForm.valid) {
     const model = {
       name: this.nameControl.value,
       email: this.emailControl.value,
@@ -202,5 +197,10 @@ export class RegisterPageComponent implements OnInit {
         }
         this.router.navigate(['/']);
       });
+    }
+    else{
+      this.registerForm.markAllAsTouched();
+      this.showError = true;
+    }
   }
 }

@@ -9,6 +9,7 @@ import { SideBarService } from 'src/core/services/sidebar.service';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { BoardType, IBoard } from 'src/shared/components/select-users/Models';
 import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 
 @Component({
   selector: 'app-edit-organization',
@@ -43,6 +44,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
     private notification: NotificationService,
     private sideBarService: SideBarService,
     private organizationService: OrganizationService,
+    private getCurrentOrganizationService: GetCurrentOrganizationService
   ) {
     this.organizationNameControl = new FormControl(this.organizationName, [
       Validators.required,
@@ -71,10 +73,11 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
       .updateOrganization(this.organization)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
-        if (result.status == 200) {
+        if (result.status == 200 && result.body !== null) {
           this.notification.success(
             'Organization data has been updated successfully',
           );
+          this.getCurrentOrganizationService.updateOrganizations(result.body);
           this.editOrganizationForm.reset();
           this.sideBarService.toggle(this.sidebarName);
         }

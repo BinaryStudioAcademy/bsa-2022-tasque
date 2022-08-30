@@ -28,6 +28,7 @@ import { TasqueProjectSettingsComponent } from './components/tasque-project-sett
 import { ToastrConfig } from 'src/entity-models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
 import { EditOrganizationComponent } from './components/edit-organization/edit-organization.component';
+import { BacklogComponent } from './components/backlog/backlog.component';
 import { SprintComponent } from './components/backlog/sprint/sprint.component';
 import { IssueComponent } from './components/backlog/sprint/issue/issue.component';
 
@@ -51,6 +52,7 @@ import { IssueComponent } from './components/backlog/sprint/issue/issue.componen
     TasqueBoardComponent,
     EditOrganizationComponent,
     TasqueProjectSettingsComponent,
+    BacklogComponent,
     SprintComponent,
     IssueComponent,
   ],
