@@ -2,6 +2,7 @@
   <div class="navigation-panel">
     <tasque-menu-dropdown label="Your work" [options]="yourWorkOptions"> </tasque-menu-dropdown>
     <tasque-menu-dropdown label="My Projects" [options]="projectOptions"> </tasque-menu-dropdown>
+    <span class="button">Calendar</span>
     <tasque-menu-dropdown
       label="Create task"
       [options]="createOptions"
@@ -11,9 +12,6 @@
     >
     </tasque-menu-dropdown>
     <tasque-organizations-dropdown [currentUser]="currentUser" class="button"></tasque-organizations-dropdown>
-    <span class="button" [routerLink]="['/organizations']">My Organizations</span>
-    <span class="button" [routerLink]="['/projects']">My Projects</span>
-    <span class="button">Calendar</span>
   </div>
   <div class="user-panel">
     <div class="search-input">
