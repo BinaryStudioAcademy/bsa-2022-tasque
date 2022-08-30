@@ -53,12 +53,12 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
   public inputKeyLabel = 'Key';
 
   public isSuccessful: boolean;
+  public newProjectKey = '';
 
   public unsubscribe$ = new Subject<void>();
   public newProject: NewProjectModel = {
     name: '',
     key: '',
-    authorId: 0,
     organizationId: 0,
   };
 
@@ -96,7 +96,6 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     }
 
     this.newProject = {
-      authorId: this.data.authorId,
       organizationId: this.data.organizationId,
       name: this.createProjectForm.get('projectNameControl')?.value,
       key: this.createProjectForm.get('projectKeyControl')?.value,

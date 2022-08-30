@@ -5,40 +5,15 @@
       <span class="dialog-info">You can change these details anytime in your project settings.</span>
     </h3>
     <div class="tasque-input">
-      <tasque-input 
-        [class]="this.inputNameClass" 
-        [id]="this.inputNameId" 
-        [placeholder]="this.inputNamePlaceholder" 
-        [label]="this.inputNameLabel" 
-        name="fieldName" 
-        [formControl]="projectNameControl" 
-        [invalid]="!projectNameControl.valid" 
-        [errorMessage]="projectNameErrorMessage"> 
-      </tasque-input>
+      <tasque-input [class]="this.inputNameClass" [id]="this.inputNameId" [placeholder]="this.inputNamePlaceholder" [label]="this.inputNameLabel" name="fieldName" [formControl]="projectNameControl" [invalid]="!projectNameControl.valid" [errorMessage]="projectNameErrorMessage"> </tasque-input>
     </div>
     <div class="tasque-input">
-      <tasque-input 
-        [class]="this.inputKeyClass" 
-        [id]="this.inputKeyId" 
-        [label]="this.inputKeyLabel" 
-        [formControl]="projectKeyControl" 
-        [invalid]="!projectKeyControl.valid" 
-        [errorMessage]="projectKeyErrorMessage"> 
-      </tasque-input>
+      <tasque-input [class]="this.inputKeyClass" [id]="this.inputKeyId" [label]="this.inputKeyLabel" [(ngModel)]="newProjectKey" name="fieldName" ngDefaultControl #projectKey required> </tasque-input>
     </div>
   </mat-dialog-content>
   <mat-divider></mat-divider>
   <mat-dialog-actions class="dialog-options" align="end">
-    <tasque-button 
-      [text]="this.cancelBtnName" 
-      [class]="this.cancelBtnClass" 
-      (click)="onClose()"> 
-    </tasque-button>
-    <tasque-button 
-      type="submit" 
-      [text]="this.createBtnName" 
-      [class]="this.createBtnClass" 
-      (click)="onSubmit()"> 
-    </tasque-button>
+    <tasque-button [text]="this.cancelBtnName" [class]="this.cancelBtnClass" (click)="onClose()"> </tasque-button>
+    <tasque-button [mat-dialog-close]="true" type="submit" [text]="this.createBtnName" [class]="this.createBtnClass + (projectForm.invalid ? ' disabled' : '')" (btnClick)="onSubmit()"> </tasque-button>
   </mat-dialog-actions>
 </form>
