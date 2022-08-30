@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using System.Text.RegularExpressions;
 using Tasque.Core.Common.Entities.Abstract;
+using Tasque.Core.Common.Security;
 
 namespace Tasque.Core.Common.Entities;
 
@@ -44,5 +45,9 @@ public class UserValidator : AbstractValidator<User>
             .NotEmpty().WithMessage("Email is required")
             .Matches(Constants.EMAIL_REGEX).WithMessage("Email adress is not valid");
         RuleFor(x => x.Password).MinimumLength(8).WithMessage("Password must be at least 8 characters");
+            
+        RuleFor(x => x.Name)
+            .MinimumLength(2).WithMessage("Username must be at least 2 characters")
+            .MaximumLength(30).WithMessage("Username must not exceed 30 characters");
     }
 }
