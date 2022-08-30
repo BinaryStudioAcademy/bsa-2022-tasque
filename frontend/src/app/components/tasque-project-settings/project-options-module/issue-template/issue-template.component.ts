@@ -19,20 +19,29 @@ export class IssueTemplateComponent implements OnInit {
     'Custom field 5', 
     'Custom field 6', 
     'Custom field 7',
-    'Custom field 8'];
+    'Custom field 8',
+    'Custom field 9'];
 
   ngOnInit(): void {
   }
 
-  dropFieldsWithDescription(event: CdkDragDrop<string[]>) {
+  dropFieldsWithDescription(event: CdkDragDrop<string[]>):void {
     moveItemInArray(this.fieldsWithDescription, event.previousIndex, event.currentIndex);
   }
 
-  dropContextFields(event: CdkDragDrop<string[]>) {
+  dropContextFields(event: CdkDragDrop<string[]>):void {
     moveItemInArray(this.contextFields, event.previousIndex, event.currentIndex);
   }
 
-  dropCustomFields(event: CdkDragDrop<string[]>) {
+  dropCustomFields(event: CdkDragDrop<string[]>):void {
     moveItemInArray(this.customFields, event.previousIndex, event.currentIndex);
+  }
+
+  deleteContextItem(): void {
+    this.contextFields.pop();
+  }
+
+  deleteDescriptionItem(val:string): void {
+    this.fieldsWithDescription.pop();
   }
 }
