@@ -70,4 +70,8 @@ export class HeaderComponent implements OnInit {
         return;
     }
   }
+
+  public openProjectsPage(): void {
+    this.router.navigate(['/projects'], { replaceUrl: true });
+  }
 }
