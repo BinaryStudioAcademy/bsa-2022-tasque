@@ -78,4 +78,9 @@ export class HeaderComponent implements OnInit {
 
     return this.currentUser.avatar;
   }
+
+  public openProjectsPage(): void {
+    this.router.navigate(['/projects'], { replaceUrl: true });
+    window.scroll(0, 0);
+  }
 }

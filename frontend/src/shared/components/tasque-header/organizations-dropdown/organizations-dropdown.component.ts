@@ -44,7 +44,7 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
 
   public currentOrganization: OrganizationModel = {
     id: -1,
-    name: 'None',
+    name: 'My Organizations',
     authorId: -1,
     createdAt: new Date(),
     updatedAt: new Date()
@@ -168,5 +168,12 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
         }
       }
     );
+  }
+
+  public openOrganizationsPage(): void {
+    this.router.navigate(['/organizations'], {
+      replaceUrl: true,
+    });
+    window.scroll(0, 0);
   }
 }

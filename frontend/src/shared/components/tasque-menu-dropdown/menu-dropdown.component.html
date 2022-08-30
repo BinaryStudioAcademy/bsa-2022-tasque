@@ -11,8 +11,16 @@
   </div>
 
   <div class="options-container" *ngIf="expanded">
-    <div class="option" *ngFor="let option of options" (click)="select(option)">
-      {{ option.name }}
+    <div class="option header" *ngIf="headerLabel" (click)="headerClick()">
+      {{ headerLabel }}
+    </div>
+    <div class="options" *ngIf="options">
+      <div class="option" *ngFor="let option of options" (click)="select(option)">
+        {{ option.name }}
+      </div>
+    </div>
+    <div class="option footer" [class.solo]="options.length == 0" *ngIf="footerLabel" (click)="footerClick()">
+      {{ footerLabel }}
     </div>
   </div>
 </div>
