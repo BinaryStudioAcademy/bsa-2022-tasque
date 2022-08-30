@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'
+import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 
 @Component({
   selector: 'app-issue-template',
@@ -21,6 +22,27 @@ export class IssueTemplateComponent implements OnInit {
     'Date',
     'Dropdown',
     'Check box'];
+
+  public selectedIssue: TasqueDropdownOption;
+  public issueColor: string;
+
+  public dropdownOptions: TasqueDropdownOption[] = [
+    {
+      id: 0,
+      color: 'red',
+      title: 'Issue'
+    },{
+      id: 1,
+      color: 'blue',
+      title: 'Task'
+    },{
+      id: 2,
+      color: 'green',
+      title: 'Enhance'
+    },
+  ];
+
+  public selectedId: number;
 
   ngOnInit(): void {
   }
@@ -52,5 +74,20 @@ export class IssueTemplateComponent implements OnInit {
         if(value==val) this.fieldsWithDescription.splice(index,1);
     });
     console.log('Delete description ' + val);
+  }
+
+  saveChanges(): void {
+    console.log('clicked save changes')
+  }
+
+  setSelected(val:number){
+    this.selectedId = val;
+    const issue = this.dropdownOptions.find(i => i.id === this.selectedId) as TasqueDropdownOption;
+    this.issueColor = issue.color;
+    this.selectedIssue = issue;
+  }
+
+  logSelected(): void{
+    console.log('selected', this.selectedId);
   }
 }
