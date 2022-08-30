@@ -110,3 +110,24 @@
   background-color: #8b9499
   border-radius: 10px
 
+.board-list
+    background: colorscheme(white-100)
+    overflow: hidden
+    display: block
+
+.cdk-drag-placeholder 
+    opacity: 0
+
+.cdk-drag-animating 
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1)
+
+.example-box:last-child 
+    border: none
+
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) 
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1)
+
+.column
+    cursor: move
+    background: colorscheme(white-100)
+

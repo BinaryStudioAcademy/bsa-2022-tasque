@@ -28,6 +28,7 @@ import { TasqueProjectSettingsComponent } from './components/tasque-project-sett
 import { ToastrConfig } from 'src/entity-models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
 import { EditOrganizationComponent } from './components/edit-organization/edit-organization.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TasqueCardComponent } from './components/tasque-card/tasque-card.component';
 import { BacklogComponent } from './components/backlog/backlog.component';
 
@@ -65,6 +66,7 @@ import { BacklogComponent } from './components/backlog/backlog.component';
     ToastrModule.forRoot(ToastrConfig),
     AuthModule,
     UserModule,
+    DragDropModule
   ],
   providers: [
     BrowserAnimationsModule,
