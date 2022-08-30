@@ -20,12 +20,12 @@ namespace Tasque.Core.BLL.Services
         public async Task<IEnumerable<Organization>> GetUserOrganizations(int userId)
         {
             var organizations = await _db.Users
-                .Include(u => u.OwnedOrganization)
                 .Where(user => userId == user.Id)
                 .SelectMany(user => user.OwnedOrganization)
                 .Union(_db.Users
                     .Where(user => userId == user.Id)
                     .SelectMany(user => user.ParticipatedOrganization))
+                .OrderBy(organization => organization.Id)
                 .ToListAsync();
 
             return organizations;
