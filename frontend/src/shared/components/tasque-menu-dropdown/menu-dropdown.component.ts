@@ -44,6 +44,11 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
   @Input() public hasAvatar = false;
   @Output() avatarClicked = new EventEmitter();
 
+  @Input() headerLabel: string;
+  @Input() footerLabel: string;
+  @Output() headerClicked = new EventEmitter();
+  @Output() footerClicked = new EventEmitter();
+
   public expanded = false;
   private wasInside = false;
 
@@ -128,5 +133,22 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
   public avatarClick(): void {
     this.avatarClicked.emit();
     this.toggleDropdown();
+  }
+
+  public headerClick(): void {
+    this.headerClicked.emit();
+    this.toggleDropdown();
+  }
+
+  public footerClick(): void {
+    this.footerClicked.emit();
+    this.toggleDropdown();
+  }
+
+  public setFooterClasses(): string {
+    if (this.options.length > 0) {
+      return '';
+    }
+    return 'solo';
   }
 }
