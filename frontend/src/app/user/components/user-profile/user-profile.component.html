@@ -92,6 +92,7 @@
                       <mat-icon class="hide-icon" (click)="hidePass = !hidePass">{{ hidePass ? 'visibility' : 'visibility_off' }}</mat-icon>
                       <span class="error" *ngIf="prevPasswordControl.errors?.['required'] && (prevPasswordControl.dirty || prevPasswordControl.touched)">Password is required.</span>
                       <span class="error" *ngIf="prevPasswordControl.errors?.['minlength']">Must be at least 8 characters</span>
+                      <span class="error" *ngIf="prevPasswordControl.errors?.['maxlength']">Must be less than 256 characters</span>
                     </div>
                   </div>
                   <div class="input-container">
@@ -110,6 +111,7 @@
                       <mat-icon class="hide-icon" (click)="hideNewPass = !hideNewPass">{{ hideNewPass ? 'visibility' : 'visibility_off' }}</mat-icon>
                       <span class="error" *ngIf="newPasswordControl.errors?.['required'] && (newPasswordControl.dirty || newPasswordControl.touched)">Password is required.</span>
                       <span class="error" *ngIf="newPasswordControl.errors?.['minlength']">Must be at least 8 characters</span>
+                      <span class="error" *ngIf="newPasswordControl.errors?.['maxlength']">Must be less than 256 characters</span>
                     </div>
                   </div>
             </form>

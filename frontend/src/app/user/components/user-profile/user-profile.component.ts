@@ -63,6 +63,7 @@ export class UserProfileComponent implements OnInit {
       [
         Validators.required,
         Validators.minLength(this.validationConstants.minLengthPassword),
+        Validators.maxLength(this.validationConstants.maxLengthPassword),
       ],
     );
     this.newPasswordControl = new FormControl(
@@ -70,6 +71,7 @@ export class UserProfileComponent implements OnInit {
       [
         Validators.required,
         Validators.minLength(this.validationConstants.minLengthPassword),
+        Validators.maxLength(this.validationConstants.maxLengthPassword),
       ],
     );
     this.profileForm = new FormGroup({
