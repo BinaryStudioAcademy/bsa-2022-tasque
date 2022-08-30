@@ -16,12 +16,22 @@
                     <span style="margin-left: 5px">{{item}}</span>
                     <button style="margin-right: 10px" (click)="deleteDescriptionItem(item)">Delete</button>
                 </div>
+                <div *ngIf="fieldsWithDescription.length === 0">
+                    <div class="empty-container">
+                        <span>Drag here your first field!</span>
+                    </div>
+                </div>
             </div>
             <h2>Context fields</h2>
             <div cdkDropList class="issue-fields" #contextList="cdkDropList" [cdkDropListData]="contextFields" (cdkDropListDropped)="dropCustomFields($event)">
                 <div class="issue-field" *ngFor="let item of contextFields" cdkDrag>
                     <span style="margin-left: 5px">{{item}}</span>
                     <button style="margin-right: 10px" (click)="deleteContextItem(item)">Delete</button>
+                </div>
+                <div *ngIf="contextFields.length === 0">
+                    <div class="empty-container">
+                        <span>Drag here your first field!</span>
+                    </div>
                 </div>
             </div>
         </div>
