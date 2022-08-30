@@ -19,9 +19,9 @@ export class TasqueBoardComponent implements OnInit {
   private newBoard: BoardModel;
 
   public board: BoardModel[] = [
-    { columnName: 'To Do', tasks: [ { name: 'TaskOne', avatarUrl: '' }, { name: 'TaskTwo', avatarUrl: '' }, { name: 'TaskThree', avatarUrl: '' } ] }, 
-    { columnName: 'In Progress', tasks: [ { name: 'TaskFour', avatarUrl: '' }] }, 
-    { columnName: 'Code Review', tasks: [ { name: 'TaskFive', avatarUrl: '' }, { name: 'TaskSix', avatarUrl: '' }] }, 
+    { columnName: 'To Do', tasks: [ { description: 'Create task', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TO' }, { description: 'Drag task to "In Progress" column', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TT' }, { description: 'Drag task to "Code Review" column', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TT' } ] }, 
+    { columnName: 'In Progress', tasks: [ { description: 'Create an issue', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TF' }] }, 
+    { columnName: 'Code Review', tasks: [ { description: 'Drag task to "Done" column', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TF' }, { description: 'Smile!', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TS' }] }, 
     { columnName: 'Done', tasks: [] },
   ];
 
