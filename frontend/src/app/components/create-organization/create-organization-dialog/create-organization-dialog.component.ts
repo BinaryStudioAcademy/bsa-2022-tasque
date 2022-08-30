@@ -54,8 +54,7 @@ export class CreateOrganizationDialogComponent implements OnInit {
     this.isSuccessful = true;
 
     const organization: NewOrganizationModel = {
-      name: this.createOrganizationForm.value,
-      authorId: this.currentUser.id as number
+      name: this.createOrganizationForm.value
     };
     this.organizationService.createOrganization(organization)
       .pipe(takeUntil(this.unsubscribe$))

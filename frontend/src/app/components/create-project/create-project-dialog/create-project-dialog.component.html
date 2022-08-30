@@ -20,7 +20,9 @@
         [class]="this.inputKeyClass"
         [id]="this.inputKeyId"
         [label]="this.inputKeyLabel"
-        #projectKey>
+        [(ngModel)]="newProjectKey"
+        name="fieldName" ngDefaultControl
+        #projectKey required>
       </tasque-input>
     </div>
   </mat-dialog-content>
@@ -36,8 +38,8 @@
       type="submit"
       [text]="this.createBtnName"
       [class]="this.createBtnClass + (projectForm.invalid ? ' disabled' : '')"
+      (btnClick)="onSubmit()"
     >
-
     </tasque-button>
   </mat-dialog-actions>
 </form>
