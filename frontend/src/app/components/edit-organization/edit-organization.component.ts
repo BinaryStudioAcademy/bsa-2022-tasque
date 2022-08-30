@@ -85,6 +85,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
   }
 
   public clearForm(): void {
+    this.organizationName = this.organization.name;
     this.editOrganizationForm.reset();
     this.sideBarService.toggle(this.sidebarName);
   }
