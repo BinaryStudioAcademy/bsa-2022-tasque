@@ -19,7 +19,7 @@
         {{ option.name }}
       </div>
     </div>
-    <div class="option footer" [ngClass]="setFooterClasses()" *ngIf="footerLabel" (click)="footerClick()">
+    <div class="option footer" [class.solo]="options.length == 0" *ngIf="footerLabel" (click)="footerClick()">
       {{ footerLabel }}
     </div>
   </div>

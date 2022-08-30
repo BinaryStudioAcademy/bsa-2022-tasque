@@ -138,11 +138,4 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
     this.footerClicked.emit();
     this.toggleDropdown();
   }
-
-  public setFooterClasses(): string {
-    if (this.options.length > 0) {
-      return '';
-    }
-    return 'solo';
-  }
 }
