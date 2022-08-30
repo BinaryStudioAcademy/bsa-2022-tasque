@@ -4,15 +4,15 @@ import { UserCircle } from './models';
 @Component({
   selector: 'tasque-team-select',
   templateUrl: './tasque-team-select.component.html',
-  styleUrls: ['./tasque-team-select.component.sass']
+  styleUrls: ['./tasque-team-select.component.sass'],
 })
 export class TasqueTeamSelectComponent implements OnInit {
-
   public inputSearch = '';
 
   public showPopUp = false;
 
-  public avatars: UserCircle[] = [ // remove when integrated in component with data
+  public avatars: UserCircle[] = [
+    // remove when integrated in component with data
     {
       email: 'petroporoshenko@gmail.com',
       username: 'Petro Poroshenko',
@@ -67,24 +67,23 @@ export class TasqueTeamSelectComponent implements OnInit {
 
   public profileColors: string[] = [];
 
-  constructor() {
-
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.generateColor();
   }
 
   generateColor(): void {
-    for(let i = 0; i < this.avatarsShow.length; i++) {
-      this.profileColors.push('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6));
+    for (let i = 0; i < this.avatarsShow.length; i++) {
+      this.profileColors.push(
+        '#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6),
+      );
     }
   }
 
-  filterItems(): void{
+  filterItems(): void {
     this.avatarsShow = this.avatars.filter((avatar) => {
       return avatar.username.includes(this.inputSearch);
     });
   }
-
 }

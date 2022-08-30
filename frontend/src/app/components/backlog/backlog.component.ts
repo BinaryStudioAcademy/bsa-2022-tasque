@@ -9,6 +9,8 @@ import {
   faMaximize,
   faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
+import { SprintService } from 'src/core/services/sprint.service';
+import { SprintModel } from 'src/core/models/sprint/sprint-model';
 
 @Component({
   selector: 'app-backlog',
@@ -23,9 +25,11 @@ export class BacklogComponent implements OnInit {
 
   public unsubscribe$ = new Subject<void>();
   public boards: TasqueDropdownOption[];
+  public sprints: SprintModel[];
 
   constructor(
     public boardService: BoardService,
+    public sprintService: SprintService,
     public currentUserService: GetCurrentUserService,
   ) {}
 
@@ -47,6 +51,19 @@ export class BacklogComponent implements OnInit {
             title: item.name,
             color: 'red',
           }));
+        }
+      });
+
+    this.getSprints();
+  }
+
+  public getSprints(): void {
+    this.sprintService
+      .getProjectSprints(1)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.sprints = result.body;
         }
       });
   }

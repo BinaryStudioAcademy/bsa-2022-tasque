@@ -34,6 +34,7 @@ const routes: Routes = [
       { path: 'board', component: TasqueBoardComponent },
       { path: 'team', component: TasqueTeamComponent },
       { path: 'settings', component: TasqueProjectSettingsComponent },
+      { path: 'backlog', component: BacklogComponent },
     ],
   },
   { path: '**', redirectTo: '/auth/login', pathMatch: 'full' },

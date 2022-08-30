@@ -10,9 +10,19 @@ namespace Tasque.Core.BLL.Services
 {
     public class SprintService : EntityCrudService<Sprint>
     {
-        public SprintService(DataContext db) : base(db)
+        private IMapper _mapper;
+        public SprintService(DataContext db, IMapper mapper) : base(db)
         {
+            _mapper = mapper;
+        }
 
+        public async Task<IEnumerable<SprintDto>> GetProjectSprints(int projectId)
+        {
+            var sprints = await _db.Sprints
+                .Where(s => s.ProjectId == projectId)
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<SprintDto>>(sprints);
         }
 
     }
