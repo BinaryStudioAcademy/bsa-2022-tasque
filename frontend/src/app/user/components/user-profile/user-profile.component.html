@@ -58,7 +58,7 @@
                         />
                         <span class="error" *ngIf="userNameControl.errors?.['required'] && (userNameControl.dirty || userNameControl.touched)">Name is required.</span>
                         <span class="error" *ngIf="userNameControl.errors?.['minlength']">Must be at least 2 characters</span>
-                        <span class="error" *ngIf="userNameControl.errors?.['maxlength']">Must be at least 30 characters</span>
+                        <span class="error" *ngIf="userNameControl.errors?.['maxlength']">Must be no more than 30 characters</span>
                     </div>
                 </div>
             </form>
