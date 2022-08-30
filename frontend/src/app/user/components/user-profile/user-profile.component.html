@@ -57,7 +57,8 @@
                             (input)="checkChanged()"
                         />
                         <span class="error" *ngIf="userNameControl.errors?.['required'] && (userNameControl.dirty || userNameControl.touched)">Name is required.</span>
-                        <span class="error" *ngIf="userNameControl.errors?.['minlength']">Must be at least 4 characters</span>
+                        <span class="error" *ngIf="userNameControl.errors?.['minlength']">Must be at least 2 characters</span>
+                        <span class="error" *ngIf="userNameControl.errors?.['maxlength']">Must be at least 30 characters</span>
                     </div>
                 </div>
             </form>
@@ -84,7 +85,7 @@
                         [ngClass]="{
                           'error': prevPasswordControl.invalid && (prevPasswordControl.dirty || prevPasswordControl.touched)
                         }"
-                        [(ngModel)]="passwordChanches.previousPassword"
+                        [(ngModel)]="passwordChanges.previousPassword"
                         [type]="hidePass ? 'password' : 'text'"
                         placeholder="Password"
                         formControlName="prevPasswordControl"
@@ -103,7 +104,7 @@
                         [ngClass]="{
                           'error': newPasswordControl.invalid && (newPasswordControl.dirty || newPasswordControl.touched)
                         }"
-                        [(ngModel)]="passwordChanches.newPassword"
+                        [(ngModel)]="passwordChanges.newPassword"
                         [type]="hideNewPass ? 'password' : 'text'"
                         placeholder="Password"
                         formControlName="newPasswordControl"

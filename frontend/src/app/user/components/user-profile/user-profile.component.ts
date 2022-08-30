@@ -57,6 +57,7 @@ export class UserProfileComponent implements OnInit {
     this.userNameControl = new FormControl(this.profileChanges.email, [
       Validators.required,
       Validators.minLength(this.validationConstants.minLengthName),
+      Validators.maxLength(this.validationConstants.maxLengthName),
     ]);
     this.prevPasswordControl = new FormControl(
       this.passwordChanges.previousPassword,
