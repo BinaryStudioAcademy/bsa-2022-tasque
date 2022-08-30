@@ -26,4 +26,8 @@ export class UserService {
   editPassword(password: PasswordChangesDTO): Observable<HttpResponse<PasswordChangesDTO>> {
     return this.httpService.putFullRequest(this.routePrefix + '/password', password);
   }
+
+  editAvatar(imageData: string): Observable<HttpResponse<ProfileChangesDTO>> {
+    return this.httpService.putFullRequest(this.routePrefix + '/edit/avatar', { imageData });
+  }
 }

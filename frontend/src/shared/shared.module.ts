@@ -62,7 +62,7 @@ import { MenuDropdownComponent } from './components/tasque-menu-dropdown/menu-dr
     AvatarComponent,
     NotFoundPageComponent,
     SelectUsersComponent,
-    MenuDropdownComponent
+    MenuDropdownComponent,
   ],
   exports: [
     CommonModule,
@@ -94,8 +94,8 @@ import { MenuDropdownComponent } from './components/tasque-menu-dropdown/menu-dr
     AvatarComponent,
     NotFoundPageComponent,
     SelectUsersComponent,
-    MenuDropdownComponent
+    MenuDropdownComponent,
   ],
   providers: [SideBarService],
 })
-export class SharedModule { }
+export class SharedModule {}

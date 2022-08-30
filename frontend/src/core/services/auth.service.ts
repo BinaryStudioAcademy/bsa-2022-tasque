@@ -24,7 +24,7 @@ export class AuthService {
     return this.httpService.postFullRequest(this.routePrefix + '/login', credentials);
   }
 
-  registerUser(credentials: UserRegisterModel): Observable<HttpResponse<string>> {
+  registerUser(credentials: UserRegisterModel):Observable<HttpResponse<AccessToken>> {
     return this.httpService.postFullRequest(this.routePrefix + '/register', credentials);
   }
 
@@ -46,6 +46,10 @@ export class AuthService {
 
   resetPassword(credentials: UserResetPasswordModel): Observable<HttpResponse<AccessToken>> {
     return this.httpService.postFullRequest(this.routePrefix + '/restore', credentials);
+  }
+
+  checkRefLink(ref: string): Observable<HttpResponse<{ email: string }>> {
+    return this.httpService.getFullRequest(this.routePrefix + `/ref?key=${ref}`);
   }
 
   setAuthToken(token: AccessToken): void {

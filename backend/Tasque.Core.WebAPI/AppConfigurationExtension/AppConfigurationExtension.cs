@@ -18,6 +18,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
         {
             services.AddAutoMapper(cfg =>
             {
+                cfg.AddProfile<BoardProfiles>();
                 cfg.AddProfile<OrganizationProfile>();
                 cfg.ConfigureIdentityMapping();
             },
@@ -92,7 +93,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<OrganizationService>()
                 .AddScoped<UserService>()
                 .AddScoped<FileUploadService>()
-                .AddScoped<SprintService>();
+                .AddScoped<SprintService>()
+                .AddScoped<BoardService>();
 
             services.RegisterIdentity(configuration);
         }
