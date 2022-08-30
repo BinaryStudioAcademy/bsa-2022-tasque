@@ -81,5 +81,6 @@ export class HeaderComponent implements OnInit {
 
   public openProjectsPage(): void {
     this.router.navigate(['/projects'], { replaceUrl: true });
+    window.scroll(0, 0);
   }
 }

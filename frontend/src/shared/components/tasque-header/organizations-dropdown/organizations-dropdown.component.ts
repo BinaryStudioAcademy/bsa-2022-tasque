@@ -174,5 +174,6 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
     this.router.navigate(['/organizations'], {
       replaceUrl: true,
     });
+    window.scroll(0, 0);
   }
 }
