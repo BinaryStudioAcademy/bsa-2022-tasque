@@ -173,24 +173,17 @@ export class UserProfileComponent implements OnInit {
   }
 
   public saveNewPassword(): void {
-    if (this.prevPasswordControl.invalid || this.newPasswordControl.invalid) {
-      this.notificationService.error('Password can not be changed');
+    if (this.changePassForm.invalid || !this.changePassForm.dirty) {
       return;
     }
 
-    this.userService.editPassword(this.passwordChanches).subscribe(
-      (resp) => {
-        if (resp.ok && resp.body != null) {
-          this.changePassForm.reset();
-          this.notificationService.success('Password was successfully changed');
-        } else {
-          this.notificationService.error('Something went wrong');
-        }
-      },
-      (error) => {
-        this.notificationService.error(error);
-      },
-    );
+    this.userService
+      .editPassword(this.passwordChanches)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.changePassForm.reset();
+        this.notificationService.success('Password was successfully changed');
+      });
   }
 
   public checkChanged(): void {
