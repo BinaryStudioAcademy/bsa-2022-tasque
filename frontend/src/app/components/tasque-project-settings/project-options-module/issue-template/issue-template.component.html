@@ -29,7 +29,7 @@
                 <h2>Fields with description</h2>
                 <div cdkDropList class="issue-fields" #descriptionList="cdkDropList" [cdkDropListData]="fieldsWithDescription" (cdkDropListDropped)="dropCustomFields($event)">
                     <div class="issue-field" *ngFor="let item of fieldsWithDescription" cdkDrag>
-                        <tasque-issue-field [fieldName]="item"></tasque-issue-field>
+                        <tasque-issue-field [field]="item"></tasque-issue-field>
                         <tasque-button style="margin-right: 10px" class="btn icon" [icon]="faTrash" (btnClick)="deleteDescriptionItem(item)"></tasque-button>
                     </div>
                     <div *ngIf="fieldsWithDescription.length === 0">
@@ -41,7 +41,7 @@
                 <h2>Context fields</h2>
                 <div cdkDropList class="issue-fields" #contextList="cdkDropList" [cdkDropListData]="contextFields" (cdkDropListDropped)="dropCustomFields($event)">
                     <div class="issue-field" *ngFor="let item of contextFields" cdkDrag>
-                        <tasque-issue-field [fieldName]="item"></tasque-issue-field>
+                        <tasque-issue-field [field]="item"></tasque-issue-field>
                         <tasque-button style="margin-right: 10px" class="btn icon" [icon]="faTrash" (click)="deleteContextItem(item)"></tasque-button>
                     </div>
                     <div *ngIf="contextFields.length === 0">
@@ -55,7 +55,7 @@
                 <h2>Available fields</h2>
                 <div [cdkDropListData]="customFields" [cdkDropListConnectedTo]="[descriptionList, contextList]" cdkDropList class="custom-fields-container" (cdkDropListDropped)="dropCustomFields($event)">
                     <div class="custom-field" *ngFor="let item of customFields" cdkDrag>
-                        <span style="margin: 0 5px 0 5px">{{item}}</span>
+                        <span style="margin: 0 5px 0 5px">{{item.name}}</span>
                     </div>
                 </div>
             </div>

@@ -4,6 +4,7 @@ import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/drop
 import { TaskTemplate } from 'src/core/models/task/task-template';
 import { ToastrService } from 'ngx-toastr';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { TaskCustomField } from 'src/core/models/task/task-custom-field';
 
 @Component({
   selector: 'app-issue-template',
@@ -16,24 +17,27 @@ export class IssueTemplateComponent implements OnInit {
     private notificationService: ToastrService,
   ) { }
 
-  public fieldsWithDescription: string[] = [ 'Description', 'Summary', 'State', 'Type'];
-  public contextFields: string[] = ['Assignee', 'Label', 'Sprint', 'Story point estimate'];
-  public customFields: string[] = [
-    'Text', 
-    'Paragraph', 
-    'Number',
-    'Label', 
-    'User', 
-    'Date',
-    'Dropdown',
-    'Check box'];
+  @Input() public issueTemplate: TaskTemplate;  
+  //fieldsWithDescription and contextFields props should be replaced with this object same properties
+
+  public fieldsWithDescription: TaskCustomField[] = [ { name: 'Description' }, { name: 'Summary'}, { name: 'State' }, { name: 'Type' }];
+  public contextFields: TaskCustomField[] = [ { name:'Assignee' }, { name:'Label' }, { name:'Sprint' }, { name:'Story point estimate' }];
+  public customFields: TaskCustomField[] = [
+    { name: 'Text' }, 
+    { name: 'Paragraph' }, 
+    { name: 'Number' },
+    { name: 'Label' }, 
+    { name: 'User' }, 
+    { name: 'Date' },
+    { name: 'Dropdown' },
+    { name: 'Check box' }];
 
   public selectedIssue: TasqueDropdownOption;
   public issueColor: string;
   public fieldName: string;
   faTrash = faTrash;
 
-  @Input() public dropdownOptions: TasqueDropdownOption[] = [
+  @Input() public dropdownOptions: TasqueDropdownOption[] = [ //Here will be all project issue types
     {
       id: 0,
       color: 'red',
@@ -54,7 +58,7 @@ export class IssueTemplateComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  dropCustomFields(event: CdkDragDrop<string[]>): void {
+  dropCustomFields(event: CdkDragDrop<TaskCustomField[]>): void {
     const cloned  = Object.assign([], this.customFields);
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -69,13 +73,13 @@ export class IssueTemplateComponent implements OnInit {
     this.customFields = cloned;
   }
 
-  deleteContextItem(val: string): void {
+  deleteContextItem(val: TaskCustomField): void {
     this.contextFields.forEach((value,index)=>{
         if(value==val) this.contextFields.splice(index,1);
     });
 }
 
-  deleteDescriptionItem(val:string): void {
+  deleteDescriptionItem(val:TaskCustomField): void {
     this.fieldsWithDescription.forEach((value,index)=>{
         if(value==val) this.fieldsWithDescription.splice(index,1);
     });

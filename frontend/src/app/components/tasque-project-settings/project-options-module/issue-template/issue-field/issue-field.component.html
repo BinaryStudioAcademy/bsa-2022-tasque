@@ -2,8 +2,8 @@
     <div *ngIf="!isChanging" class="fieldName-wrapper">
         <div 
             class="fieldName" 
-            [textContent]="fieldName" 
-            (input)="fieldName = fieldRename($event)" 
+            [textContent]="field.name" 
+            (input)="field.name = fieldRename($event)" 
             contenteditable="true"
             >
         </div>
@@ -13,8 +13,8 @@
         <form>
             <input 
                 type="text" 
-                [(ngModel)]="fieldName" 
-                [placeholder]="fieldName" 
+                [(ngModel)]="field.name" 
+                [placeholder]="field.name" 
                 [formControl]="fieldControl">
         </form>
         <tasque-button class="btn icon" [icon]="faCheck" (btnClick)="toogleChanging()"></tasque-button>

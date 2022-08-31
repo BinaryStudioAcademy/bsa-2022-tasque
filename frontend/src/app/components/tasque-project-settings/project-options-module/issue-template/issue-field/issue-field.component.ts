@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { faPenToSquare, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { TaskCustomField } from 'src/core/models/task/task-custom-field';
 
 @Component({
   selector: 'tasque-issue-field',
@@ -10,7 +11,7 @@ import { faPenToSquare, faCheck } from '@fortawesome/free-solid-svg-icons';
 export class IssueFieldComponent implements OnInit {
 
   constructor() {
-    this.fieldControl = new FormControl(this.fieldName, [
+    this.fieldControl = new FormControl(this.field, [
       Validators.required,
       Validators.minLength(2),
     ]);
@@ -23,7 +24,7 @@ export class IssueFieldComponent implements OnInit {
 
   isChanging = false;
 
-  @Input() fieldName: string;
+  @Input() field: TaskCustomField;
 
   ngOnInit(): void {
   }
