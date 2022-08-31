@@ -7,6 +7,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { TaskCustomField } from 'src/core/models/task/task-custom-field';
 import { AvailableFields } from 'src/entity-models/const-resources/available-fields';
 import { TaskFieldType } from 'src/core/models/task/task-field-types';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-issue-template',
@@ -17,6 +18,7 @@ export class IssueTemplateComponent implements OnInit {
 
   constructor(
     private notificationService: ToastrService,
+    private router: Router,
   ) { }
 
   @Input() public issueTemplate: TaskTemplate;  
@@ -58,6 +60,7 @@ export class IssueTemplateComponent implements OnInit {
   ];
 
   public selectedId: number;
+  public isLabel: boolean;
 
   ngOnInit(): void {
   }
@@ -115,6 +118,11 @@ export class IssueTemplateComponent implements OnInit {
     this.notificationService.success(`${this.selectedIssue.title} template has been updated successfully`);
   }
 
+  discardChanges(): void {
+    console.log('Discard changes');
+    this.router.navigate(['/project/settings']);
+  }
+
   setSelected(val:number): void {
     this.selectedId = val;
     const issue = this.dropdownOptions.find(i => i.id === this.selectedId) as TasqueDropdownOption;
@@ -125,5 +133,9 @@ export class IssueTemplateComponent implements OnInit {
   public fieldRename(event: Event): string {
     const input = event.target as HTMLElement;
     return input.innerText;
+  }
+
+  setIsLabel(val: boolean): void {
+    this.isLabel = val;
   }
 }

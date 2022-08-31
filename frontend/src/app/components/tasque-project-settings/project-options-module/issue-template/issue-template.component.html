@@ -29,7 +29,7 @@
                 <h2>Fields with description</h2>
                 <div cdkDropList class="issue-fields" #descriptionList="cdkDropList" [cdkDropListData]="fieldsWithDescription" (cdkDropListDropped)="dropCustomFields($event)">
                     <div class="issue-field" *ngFor="let item of fieldsWithDescription" cdkDrag>
-                        <tasque-issue-field [field]="item"></tasque-issue-field>
+                        <tasque-issue-field [field]="item" (isLabel)="setIsLabel($event)"></tasque-issue-field>
                         <tasque-button style="margin-right: 10px" class="btn icon" [icon]="faTrash" (btnClick)="deleteDescriptionItem(item)"></tasque-button>
                     </div>
                     <div *ngIf="fieldsWithDescription.length === 0">
@@ -41,7 +41,7 @@
                 <h2>Context fields</h2>
                 <div cdkDropList class="issue-fields" #contextList="cdkDropList" [cdkDropListData]="contextFields" (cdkDropListDropped)="dropCustomFields($event)">
                     <div class="issue-field" *ngFor="let item of contextFields" cdkDrag>
-                        <tasque-issue-field [field]="item"></tasque-issue-field>
+                        <tasque-issue-field [field]="item" (isLabel)="setIsLabel($event)"></tasque-issue-field>
                         <tasque-button style="margin-right: 10px" class="btn icon" [icon]="faTrash" (click)="deleteContextItem(item)"></tasque-button>
                     </div>
                     <div *ngIf="contextFields.length === 0">
@@ -50,6 +50,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div *ngIf="isLabel">
+                <span>Label</span>
             </div>
             <div class="custom-fields">
                 <h2>Available fields</h2>
@@ -60,11 +63,14 @@
                 </div>
             </div>
         </div>
-        <tasque-button class="btn stroke" style="margin: 0 0 0 55px" text="Save Changes" (btnClick)="saveChanges()"></tasque-button>
+        <div class="button-container">
+            <tasque-button class="btn stroke" style="margin: 0 0 0 55px" text="Cancel" (btnClick)="discardChanges()"></tasque-button>
+            <tasque-button class="btn stroke" style="margin: 0 0 0 55px" text="Save Changes" (btnClick)="saveChanges()"></tasque-button>
+        </div>
     </div>
     <div *ngIf="selectedIssue === undefined">
         <div class="no-issue">
-            <h2>Select an issue first</h2>
+            <h2>Select an issue type first in the menu above</h2>
         </div>
     </div>
 </div>
