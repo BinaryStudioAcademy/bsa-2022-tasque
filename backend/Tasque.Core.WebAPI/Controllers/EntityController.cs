@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.Entities.Abstract;
 using Tasque.Core.Identity.Helpers;
@@ -6,6 +7,7 @@ using Tasque.Core.Identity.Helpers;
 namespace Tasque.Core.WebAPI.Controllers
 {
     [ApiController]
+    [Authorize]
     public abstract class EntityController<TModel, TDto, TService> : ControllerBase
         where TModel : BaseEntity
         where TDto : class
