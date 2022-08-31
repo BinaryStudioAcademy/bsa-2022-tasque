@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { TaskCustomField } from 'src/core/models/task/task-custom-field';
 import { AvailableFields } from 'src/entity-models/const-resources/available-fields';
+import { TaskFieldType } from 'src/core/models/task/task-field-types';
 
 @Component({
   selector: 'app-issue-template',
@@ -21,8 +22,18 @@ export class IssueTemplateComponent implements OnInit {
   @Input() public issueTemplate: TaskTemplate;  
   //fieldsWithDescription and contextFields props should be replaced with this object same properties
 
-  public fieldsWithDescription: TaskCustomField[] = [ { name: 'Description' }, { name: 'Summary'}, { name: 'State' }, { name: 'Type' }];
-  public contextFields: TaskCustomField[] = [ { name:'Assignee' }, { name:'Label' }, { name:'Sprint' }, { name:'Story point estimate' }];
+  public fieldsWithDescription: TaskCustomField[] = [ 
+    { name: 'Description', type: TaskFieldType.Paragraph }, 
+    { name: 'Summary', type: TaskFieldType.Text }, 
+    { name: 'State', type: TaskFieldType.State }, 
+    { name: 'Type', type: TaskFieldType.Type }
+  ];
+  public contextFields: TaskCustomField[] = [ 
+    { name:'Assignee', type: TaskFieldType.User }, 
+    { name:'Label', type: TaskFieldType.Label }, 
+    { name:'Sprint', type: TaskFieldType.Type }, 
+    { name:'Story point estimate', type: TaskFieldType.Number }
+  ];
   public customFields = Object.assign([], AvailableFields) as TaskCustomField[];
 
   public selectedIssue: TasqueDropdownOption;
@@ -60,7 +71,7 @@ export class IssueTemplateComponent implements OnInit {
       if(event.previousContainer.data === this.customFields) {
         console.log('Work');
         const toMove: TaskCustomField[] = [];
-        this.customFields.forEach(f => toMove.push( { name: f.name } ));
+        this.customFields.forEach(f => toMove.push( { name: f.name, type: f.type } ));
         transferArrayItem(
           toMove,
           event.container.data,
