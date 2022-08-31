@@ -20,6 +20,7 @@ export class IssueComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.issue);
     this.getIssueAuthor();
   }
 
@@ -30,7 +31,6 @@ export class IssueComponent implements OnInit {
       .subscribe((result) => {
         if (result.body) {
           this.issueAuthor = result.body;
-          console.log(result.body);
           //  if (this.issueAuthor.avatar == undefined) {
           // this.issueAuthor.avatar = '\\assets\\avatar.png';
           // }

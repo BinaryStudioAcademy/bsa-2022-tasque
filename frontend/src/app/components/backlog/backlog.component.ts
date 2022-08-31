@@ -12,6 +12,7 @@ import {
 import { SprintService } from 'src/core/services/sprint.service';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { IssueSort } from './models';
 
 @Component({
   selector: 'app-backlog',
@@ -28,6 +29,7 @@ export class BacklogComponent implements OnInit {
   public unsubscribe$ = new Subject<void>();
   public boards: TasqueDropdownOption[];
   public sprints: SprintModel[];
+  public filterIssue: IssueSort;
 
   constructor(
     public boardService: BoardService,
@@ -70,10 +72,14 @@ export class BacklogComponent implements OnInit {
   }
 
   dropSprint(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.sprints, event.previousIndex, event.currentIndex + 1);
+    moveItemInArray(this.sprints, event.previousIndex, event.currentIndex);
   }
 
   dropSprintBtnClick(position: number) {
-    moveItemInArray(this.sprints, 0, 1);
+    //  moveItemInArray(this.sprints, 0, 1);
+  }
+
+  taskSort(sort: IssueSort): void {
+    this.filterIssue = sort;
   }
 }
