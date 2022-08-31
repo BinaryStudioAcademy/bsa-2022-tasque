@@ -3,7 +3,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import { TaskTemplate } from 'src/core/models/task/task-template';
 import { ToastrService } from 'ngx-toastr';
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-issue-template',
@@ -31,7 +31,7 @@ export class IssueTemplateComponent implements OnInit {
   public selectedIssue: TasqueDropdownOption;
   public issueColor: string;
   public fieldName: string;
-  faPenToSquare = faPenToSquare;
+  faTrash = faTrash;
 
   @Input() public dropdownOptions: TasqueDropdownOption[] = [
     {
@@ -73,14 +73,12 @@ export class IssueTemplateComponent implements OnInit {
     this.contextFields.forEach((value,index)=>{
         if(value==val) this.contextFields.splice(index,1);
     });
-    console.log('Delete context ' + val);
 }
 
   deleteDescriptionItem(val:string): void {
     this.fieldsWithDescription.forEach((value,index)=>{
         if(value==val) this.fieldsWithDescription.splice(index,1);
     });
-    console.log('Delete description ' + val);
   }
 
   saveChanges(): void {
@@ -89,9 +87,6 @@ export class IssueTemplateComponent implements OnInit {
       return;
     }
     console.log('clicked save changes');
-    console.log(this.contextFields);
-    console.log(this.fieldsWithDescription);
-    console.log('template');
     const template: TaskTemplate = {
       id: this.selectedId,
       customDescriptionFields: this.fieldsWithDescription,

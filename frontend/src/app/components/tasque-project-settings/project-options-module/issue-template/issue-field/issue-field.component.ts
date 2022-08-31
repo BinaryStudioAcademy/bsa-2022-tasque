@@ -3,7 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { faPenToSquare, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-issue-field',
+  selector: 'tasque-issue-field',
   templateUrl: './issue-field.component.html',
   styleUrls: ['./issue-field.component.sass']
 })

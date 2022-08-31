@@ -28,8 +28,8 @@
             <h2>Fields with description</h2>
             <div cdkDropList class="issue-fields" #descriptionList="cdkDropList" [cdkDropListData]="fieldsWithDescription" (cdkDropListDropped)="dropCustomFields($event)">
                 <div class="issue-field" *ngFor="let item of fieldsWithDescription" cdkDrag>
-                    <app-issue-field [fieldName]="item"></app-issue-field>
-                    <tasque-button style="margin-right: 10px" class="btn" text="Delete" (btnClick)="deleteDescriptionItem(item)">Delete</tasque-button>
+                    <tasque-issue-field [fieldName]="item"></tasque-issue-field>
+                    <tasque-button style="margin-right: 10px" class="btn icon" [icon]="faTrash" (btnClick)="deleteDescriptionItem(item)"></tasque-button>
                 </div>
                 <div *ngIf="fieldsWithDescription.length === 0">
                     <div class="empty-container">
@@ -40,8 +40,8 @@
             <h2>Context fields</h2>
             <div cdkDropList class="issue-fields" #contextList="cdkDropList" [cdkDropListData]="contextFields" (cdkDropListDropped)="dropCustomFields($event)">
                 <div class="issue-field" *ngFor="let item of contextFields" cdkDrag>
-                    <app-issue-field [fieldName]="item"></app-issue-field>
-                    <tasque-button style="margin-right: 10px" class="btn" text="Delete" (click)="deleteContextItem(item)">Delete</tasque-button>
+                    <tasque-issue-field [fieldName]="item"></tasque-issue-field>
+                    <tasque-button style="margin-right: 10px" class="btn icon" [icon]="faTrash" (click)="deleteContextItem(item)"></tasque-button>
                 </div>
                 <div *ngIf="contextFields.length === 0">
                     <div class="empty-container">
