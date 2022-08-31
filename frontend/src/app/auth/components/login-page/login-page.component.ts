@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/core/services/auth.service';
 import { LocalStorageKeys } from 'src/entity-models/local-storage-keys';
-import { UserLoginModel } from 'src/entity-models/user-login-model';
+import { UserLoginModel } from 'src/core/models/user/user-login-model';
 import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
 import { ToastrService } from 'ngx-toastr';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
