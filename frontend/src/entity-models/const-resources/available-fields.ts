@@ -1,5 +1,5 @@
-import { TaskCustomField } from "src/core/models/task/task-custom-field";
-import { TaskFieldType } from "src/core/models/task/task-field-types";
+import { TaskCustomField } from 'src/core/models/task/task-custom-field';
+import { TaskFieldType } from 'src/core/models/task/task-field-types';
 
 export const AvailableFields: TaskCustomField[] = [
     { name: 'Text', type: TaskFieldType.Text }, 

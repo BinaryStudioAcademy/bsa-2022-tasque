@@ -1,4 +1,4 @@
-import { TaskCustomField } from "./task-custom-field";
+import { TaskCustomField } from './task-custom-field';
 
 export interface TaskTemplate {
     id: number,

@@ -51,8 +51,8 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="isLabel">
-                <span>Label</span>
+            <div *ngIf="isLabel !== undefined" class="label-edit-form">
+                <app-label-field-edit [field]="isLabel"></app-label-field-edit>
             </div>
             <div class="custom-fields">
                 <h2>Available fields</h2>

@@ -25,7 +25,7 @@ export class IssueFieldComponent implements OnInit {
 
   isChanging = false;
   isFieldLabel = false;
-  @Output() isLabel = new EventEmitter<boolean>();
+  @Output() isLabel = new EventEmitter<TaskCustomField>();
   @Output() isDropDown = false;
 
   @Input() field: TaskCustomField;
@@ -36,10 +36,10 @@ export class IssueFieldComponent implements OnInit {
   get errorMessage(): string {
     const control = this.fieldControl;
     if(control.errors?.['required'])
-      return 'Field can not be empty'
+      return 'Field can not be empty';
     if(control.errors?.['minlength'])
-      return 'Minimum length are 2 characters'
-    return ''
+      return 'Minimum length are 2 characters';
+    return '';
   }
 
   public fieldRename(event: Event): string {
@@ -53,6 +53,6 @@ export class IssueFieldComponent implements OnInit {
   
   public toogleLabelChanging(): void {
     this.isFieldLabel = !this.isFieldLabel;
-    this.isLabel.emit(this.isFieldLabel);
+    this.isLabel.emit(this.field);
   }
 }

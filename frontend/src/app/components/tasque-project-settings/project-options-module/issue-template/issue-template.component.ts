@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import { TaskTemplate } from 'src/core/models/task/task-template';
 import { ToastrService } from 'ngx-toastr';
@@ -32,7 +32,11 @@ export class IssueTemplateComponent implements OnInit {
   ];
   public contextFields: TaskCustomField[] = [ 
     { name:'Assignee', type: TaskFieldType.User }, 
-    { name:'Label', type: TaskFieldType.Label }, 
+    { name:'Label', type: TaskFieldType.Label, labels: [ 
+      { color: 'red', name: 'first label' },
+      { color: 'green', name: 'second label' },
+      { color: 'blue', name: 'third label' }, 
+    ] }, 
     { name:'Sprint', type: TaskFieldType.Type }, 
     { name:'Story point estimate', type: TaskFieldType.Number }
   ];
@@ -60,13 +64,12 @@ export class IssueTemplateComponent implements OnInit {
   ];
 
   public selectedId: number;
-  public isLabel: boolean;
+  public isLabel: TaskCustomField;
 
   ngOnInit(): void {
   }
 
   dropCustomFields(event: CdkDragDrop<TaskCustomField[]>): void {
-    const cloned = Object.assign([], AvailableFields);
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -74,7 +77,7 @@ export class IssueTemplateComponent implements OnInit {
       if(event.previousContainer.data === this.customFields) {
         console.log('Work');
         const toMove: TaskCustomField[] = [];
-        this.customFields.forEach(f => toMove.push( { name: f.name, type: f.type } ));
+        this.customFields.forEach((f) => toMove.push( { name: f.name, type: f.type } ));
         transferArrayItem(
           toMove,
           event.container.data,
@@ -113,7 +116,7 @@ export class IssueTemplateComponent implements OnInit {
       id: this.selectedId,
       customDescriptionFields: this.fieldsWithDescription,
       customContextFields: this.contextFields,
-    }
+    };
     console.log(template);
     this.notificationService.success(`${this.selectedIssue.title} template has been updated successfully`);
   }
@@ -125,7 +128,7 @@ export class IssueTemplateComponent implements OnInit {
 
   setSelected(val:number): void {
     this.selectedId = val;
-    const issue = this.dropdownOptions.find(i => i.id === this.selectedId) as TasqueDropdownOption;
+    const issue = this.dropdownOptions.find((i) => i.id === this.selectedId) as TasqueDropdownOption;
     this.issueColor = issue.color;
     this.selectedIssue = issue;
   }
@@ -135,7 +138,7 @@ export class IssueTemplateComponent implements OnInit {
     return input.innerText;
   }
 
-  setIsLabel(val: boolean): void {
+  setIsLabel(val: TaskCustomField): void {
     this.isLabel = val;
   }
 }
