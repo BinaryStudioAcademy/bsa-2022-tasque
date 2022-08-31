@@ -64,7 +64,8 @@ export class IssueTemplateComponent implements OnInit {
   ];
 
   public selectedId: number;
-  public isLabel: TaskCustomField;
+  public isLabel: TaskCustomField | undefined;
+  public isDropdown: TaskCustomField | undefined;
 
   ngOnInit(): void {
   }
@@ -139,6 +140,17 @@ export class IssueTemplateComponent implements OnInit {
   }
 
   setIsLabel(val: TaskCustomField): void {
+    this.isDropdown = undefined;
     this.isLabel = val;
+  }
+
+  setIsDropdown(val: TaskCustomField): void {
+    this.isLabel = undefined;
+    this.isDropdown = val;
+  }
+
+  closeEdit(): void {
+    this.isLabel = undefined;
+    this.isDropdown = undefined;
   }
 }

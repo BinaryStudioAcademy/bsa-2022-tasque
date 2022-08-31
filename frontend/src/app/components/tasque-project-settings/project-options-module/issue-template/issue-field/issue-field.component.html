@@ -23,4 +23,7 @@
     <div *ngIf="field.type === 3" class="label-field">
         <tasque-button class="btn icon" [icon]="faEdit" (btnClick)="toogleLabelChanging()"></tasque-button>
     </div>
+    <div *ngIf="field.type === 5" class="label-field">
+        <tasque-button class="btn icon" [icon]="faEdit" (btnClick)="toogleDropdownChanging()"></tasque-button>
+    </div>
 </div>

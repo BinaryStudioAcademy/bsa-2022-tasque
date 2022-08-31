@@ -29,7 +29,7 @@
                 <h2>Fields with description</h2>
                 <div cdkDropList class="issue-fields" #descriptionList="cdkDropList" [cdkDropListData]="fieldsWithDescription" (cdkDropListDropped)="dropCustomFields($event)">
                     <div class="issue-field" *ngFor="let item of fieldsWithDescription" cdkDrag>
-                        <tasque-issue-field [field]="item" (isLabel)="setIsLabel($event)"></tasque-issue-field>
+                        <tasque-issue-field [field]="item" (isLabel)="setIsLabel($event)" (isDropDown)="setIsDropdown($event)"></tasque-issue-field>
                         <tasque-button style="margin-right: 10px" class="btn icon" [icon]="faTrash" (btnClick)="deleteDescriptionItem(item)"></tasque-button>
                     </div>
                     <div *ngIf="fieldsWithDescription.length === 0">
@@ -41,7 +41,7 @@
                 <h2>Context fields</h2>
                 <div cdkDropList class="issue-fields" #contextList="cdkDropList" [cdkDropListData]="contextFields" (cdkDropListDropped)="dropCustomFields($event)">
                     <div class="issue-field" *ngFor="let item of contextFields" cdkDrag>
-                        <tasque-issue-field [field]="item" (isLabel)="setIsLabel($event)"></tasque-issue-field>
+                        <tasque-issue-field [field]="item" (isLabel)="setIsLabel($event)" (isDropDown)="setIsDropdown($event)"></tasque-issue-field>
                         <tasque-button style="margin-right: 10px" class="btn icon" [icon]="faTrash" (click)="deleteContextItem(item)"></tasque-button>
                     </div>
                     <div *ngIf="contextFields.length === 0">
@@ -52,7 +52,10 @@
                 </div>
             </div>
             <div *ngIf="isLabel !== undefined" class="label-edit-form">
-                <app-label-field-edit [field]="isLabel"></app-label-field-edit>
+                <app-label-field-edit [field]="isLabel" (closeEdit)="closeEdit()"></app-label-field-edit>
+            </div>
+            <div *ngIf="isDropdown !== undefined" class="dropdown-edit-form">
+                <app-dropdown-field-edit [field]="isDropdown" (closeEdit)="closeEdit()"></app-dropdown-field-edit>
             </div>
             <div class="custom-fields">
                 <h2>Available fields</h2>

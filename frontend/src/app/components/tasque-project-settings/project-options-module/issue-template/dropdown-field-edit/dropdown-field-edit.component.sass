@@ -4,30 +4,24 @@
     height: 25px
     width: 25px
 
-.label
+.dropdown
     display: flex
-    justify-content: flex-start
+    justify-content: space-between
     flex-direction: row
     margin: 5px 0 5px 0
 
-.label-color
-    margin-right: 10px
-
-.create-label
+.create-dropdown
     display: flex
 
-.edit-label
+.edit-dropdown
     display: flex
     justify-content: center
-    .color-input
-        width: 25px
-        height: 25px
-        tasque-button
-            ::ng-deep
-            button
-                color: colorscheme(gray-500)
-                .ng-fa-icon
-                    vertical-align: sub
+    tasque-button
+        ::ng-deep
+        button
+            color: colorscheme(gray-500)
+            .ng-fa-icon
+                vertical-align: sub
             
 
 .custom-input
@@ -36,4 +30,3 @@
     background-color: colorscheme(gray-100)
     &:focus
         border: none
-

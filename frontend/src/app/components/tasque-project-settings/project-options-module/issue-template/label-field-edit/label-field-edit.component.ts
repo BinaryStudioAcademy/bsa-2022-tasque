@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { LabelField } from 'src/core/models/task/label-field';
 import { TaskCustomField } from 'src/core/models/task/task-custom-field';
-import { faPenToSquare, faCheck, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-label-field-edit',
@@ -13,22 +13,21 @@ export class LabelFieldEditComponent implements OnInit {
   constructor() { }
 
   @Input() field: TaskCustomField;
+  @Output() closeEdit = new EventEmitter<boolean>();
   public labels: LabelField[];
 
-  faPenToSquare = faPenToSquare;
   faCheck = faCheck;
   faMinus = faMinus;
   faPlus = faPlus;
 
   isChanging = false;
-  newField: LabelField = { name: ''};
+  newField: LabelField = { name: '' };
 
   ngOnInit(): void {
     this.labels = this.field?.labels as LabelField[];
   }
 
   public deleteLabel(val: LabelField): void  {
-    console.log('delete label');
     this.labels.forEach((value,index)=>{
         if(value==val) this.labels.splice(index,1);
     });
@@ -36,21 +35,15 @@ export class LabelFieldEditComponent implements OnInit {
 
   public addLabel(): void {
     this.isChanging = ! this.isChanging;
-    console.log('add label');
-  }
-
-  public setEv(val: MouseEvent, type: string): void {
-    if(type === 'color'){
-      this.newField.color = String(val);
-    } else {
-      this.newField.name = String(val);
-    }
-    console.log(val);
   }
 
   public saveLabel():void {
     this.labels.push(this.newField);
     this.isChanging = false;
     console.log(this.newField);
+  }
+
+  public finishEdit(): void {
+    this.closeEdit.emit(false);
   }
 }

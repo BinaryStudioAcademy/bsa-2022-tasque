@@ -25,8 +25,9 @@ export class IssueFieldComponent implements OnInit {
 
   isChanging = false;
   isFieldLabel = false;
+  isFieldDropdown = false;
   @Output() isLabel = new EventEmitter<TaskCustomField>();
-  @Output() isDropDown = false;
+  @Output() isDropDown = new EventEmitter<TaskCustomField>();
 
   @Input() field: TaskCustomField;
 
@@ -54,5 +55,10 @@ export class IssueFieldComponent implements OnInit {
   public toogleLabelChanging(): void {
     this.isFieldLabel = !this.isFieldLabel;
     this.isLabel.emit(this.field);
+  }
+
+  public toogleDropdownChanging(): void {
+    this.isFieldDropdown = !this.isFieldDropdown;
+    this.isDropDown.emit(this.field);
   }
 }
