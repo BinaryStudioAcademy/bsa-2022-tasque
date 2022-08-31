@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import { TaskTemplate } from 'src/core/models/task/task-template';
 import { ToastrService } from 'ngx-toastr';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-issue-template',
@@ -15,7 +16,7 @@ export class IssueTemplateComponent implements OnInit {
     private notificationService: ToastrService,
   ) { }
 
-  public fieldsWithDescription: string[] = ['Title', 'Description', 'Summary', 'State', 'Type'];
+  public fieldsWithDescription: string[] = [ 'Description', 'Summary', 'State', 'Type'];
   public contextFields: string[] = ['Assignee', 'Label', 'Sprint', 'Story point estimate'];
   public customFields: string[] = [
     'Text', 
@@ -29,8 +30,10 @@ export class IssueTemplateComponent implements OnInit {
 
   public selectedIssue: TasqueDropdownOption;
   public issueColor: string;
+  public fieldName: string;
+  faPenToSquare = faPenToSquare;
 
-  public dropdownOptions: TasqueDropdownOption[] = [
+  @Input() public dropdownOptions: TasqueDropdownOption[] = [
     {
       id: 0,
       color: 'red',
@@ -103,5 +106,10 @@ export class IssueTemplateComponent implements OnInit {
     const issue = this.dropdownOptions.find(i => i.id === this.selectedId) as TasqueDropdownOption;
     this.issueColor = issue.color;
     this.selectedIssue = issue;
+  }
+
+  public fieldRename(event: Event): string {
+    const input = event.target as HTMLElement;
+    return input.innerText;
   }
 }

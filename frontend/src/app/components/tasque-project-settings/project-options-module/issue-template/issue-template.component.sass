@@ -54,12 +54,15 @@
     align-items: center
     border: 2px dashed colorscheme(blue-200)
     border-radius: 4px
-    background-color: colorscheme(blue-100) 
+    background-color: colorscheme(blue-100)
 
 .custom-fields-container
     display: flex
     flex-wrap: wrap
     justify-items: space-around
+    background-color: colorscheme(blue-100)
+    height: 100%
+    padding: 0 10px 0 25px
 
 .custom-field
     margin: 5px 5px 5px 0
@@ -97,3 +100,25 @@
     display: flex
     justify-content: center
     align-items: center
+
+.left-field-side
+    display: flex
+    justify-content: space-between
+    .icon
+        vertical-align: middle
+        border-radius: 50%
+    &:hover
+        background: colorscheme(gray-300)
+        border: 2px solid colorscheme(violet-200)
+        border-radius: 4px 
+        cursor: text
+        .icon
+            display: none
+    &:focus
+        outline: 0px solid transparent
+    tasque-button
+        ::ng-deep
+            button
+                color: colorscheme(gray-500)
+                .ng-fa-icon
+                    vertical-align: sub

@@ -1,14 +1,16 @@
 <div class="issue-template-form">
-    <h2>Issue template</h2>
+    <h1>Issue template</h1>
     <hr>
     <div class="select-issue-type">
         <tasque-dropdown class="dropdown" label="Select issue type" placeholder="Issue type" [options]="dropdownOptions" (onSelect)="setSelected($event)"></tasque-dropdown>
         <div class="selected-issue" *ngIf="selectedIssue !== undefined">
             <div class="issue-color" [style.background-color]="issueColor"></div>
-            <div class="issue-name"><h1>{{selectedIssue.title}}</h1></div>
+            <div class="issue-name">
+                <h2>{{selectedIssue.title}}</h2>
+            </div>
         </div>
         <div class="selected-issue" *ngIf="selectedIssue === undefined">
-            <h1>Select an issue type</h1>
+            <h2>Select an issue type</h2>
         </div>
     </div>
     <hr>
@@ -26,7 +28,7 @@
             <h2>Fields with description</h2>
             <div cdkDropList class="issue-fields" #descriptionList="cdkDropList" [cdkDropListData]="fieldsWithDescription" (cdkDropListDropped)="dropCustomFields($event)">
                 <div class="issue-field" *ngFor="let item of fieldsWithDescription" cdkDrag>
-                    <span style="margin-left: 5px">{{item}}</span>
+                    <app-issue-field [fieldName]="item"></app-issue-field>
                     <tasque-button style="margin-right: 10px" class="btn" text="Delete" (btnClick)="deleteDescriptionItem(item)">Delete</tasque-button>
                 </div>
                 <div *ngIf="fieldsWithDescription.length === 0">
@@ -38,7 +40,7 @@
             <h2>Context fields</h2>
             <div cdkDropList class="issue-fields" #contextList="cdkDropList" [cdkDropListData]="contextFields" (cdkDropListDropped)="dropCustomFields($event)">
                 <div class="issue-field" *ngFor="let item of contextFields" cdkDrag>
-                    <span style="margin-left: 5px">{{item}}</span>
+                    <app-issue-field [fieldName]="item"></app-issue-field>
                     <tasque-button style="margin-right: 10px" class="btn" text="Delete" (click)="deleteContextItem(item)">Delete</tasque-button>
                 </div>
                 <div *ngIf="contextFields.length === 0">
@@ -50,7 +52,7 @@
             <tasque-button class="btn stroke" text="Save Changes" (btnClick)="saveChanges()"></tasque-button>
         </div>
         <div class="custom-fields">
-            <h2>Custom fields</h2>
+            <h2>Available fields</h2>
             <div [cdkDropListData]="customFields" [cdkDropListConnectedTo]="[descriptionList, contextList]" cdkDropList class="custom-fields-container" (cdkDropListDropped)="dropCustomFields($event)">
                 <div class="custom-field" *ngFor="let item of customFields" cdkDrag>
                     <span style="margin: 0 5px 0 5px">{{item}}</span>

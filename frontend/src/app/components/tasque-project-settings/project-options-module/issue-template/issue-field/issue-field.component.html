@@ -1,0 +1,22 @@
+<div class="fieldName-wrapper">
+    <div *ngIf="!isChanging" class="fieldName-wrapper">
+        <div 
+            class="fieldName" 
+            [textContent]="fieldName" 
+            (input)="fieldName = fieldRename($event)" 
+            contenteditable="true"
+            >
+        </div>
+        <tasque-button class="btn icon" [icon]="faPenToSquare" (btnClick)="toogleChanging()"></tasque-button>
+    </div>
+    <div *ngIf="isChanging" class="fieldName-wrapper">
+        <form>
+            <input 
+                type="text" 
+                [(ngModel)]="fieldName" 
+                [placeholder]="fieldName" 
+                [formControl]="fieldControl">
+        </form>
+        <tasque-button class="btn icon" [icon]="faCheck" (btnClick)="toogleChanging()"></tasque-button>
+    </div>
+</div>
