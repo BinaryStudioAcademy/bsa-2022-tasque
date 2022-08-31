@@ -15,7 +15,8 @@
                 type="text" 
                 [(ngModel)]="field.name" 
                 [placeholder]="field.name" 
-                [formControl]="fieldControl">
+                [formControl]="fieldControl"
+                (keydown.enter)="toogleChanging()">
         </form>
         <tasque-button class="btn icon" [icon]="faCheck" (btnClick)="toogleChanging()"></tasque-button>
     </div>

@@ -111,4 +111,33 @@ export class IssueTemplateComponent implements OnInit {
     const input = event.target as HTMLElement;
     return input.innerText;
   }
+  
+  listDrop(e: any){
+    e.cancel = true;
+
+    if (e.sourceCtrl && e.dragItem && Array.isArray(e.dragItem)){
+        e.targetCtrl.suspendLayout();
+
+        for (let i = 0; i < e.dragItem.length; i++){
+            let clone = e.sourceCtrl.cloneItem(e.dragItem[i]);
+
+            // Depending on drop position, place the clone item accordingly
+            switch (e.dropPos){
+                case 1: // Above
+                    e.targetCtrl.insertItemBefore(clone, e.targetItem);
+                    break;
+
+                case 2: // Below
+                    e.targetCtrl.insertItemAfter(clone, e.targetItem);
+                    break;
+
+                default: // At the end
+                    e.targetCtrl.addItem(clone);
+                    break;
+            }
+        }
+        
+        e.targetCtrl.resumeLayout();
+    }
+}
 }
