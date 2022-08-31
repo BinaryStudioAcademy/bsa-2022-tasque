@@ -4,6 +4,7 @@ import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { BoardModel } from '../../../core/models/board/board-model';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TaskInfoModel } from 'src/core/models/board/task-Info-model';
+import { UserModel } from 'src/core/models/user/user-model';
 
 @Component({
   selector: 'tasque-board',
@@ -18,10 +19,16 @@ export class TasqueBoardComponent implements OnInit {
   public createColumnForm: FormGroup;
   private newBoard: BoardModel;
 
+  user: UserModel = {
+    id: 1,
+    name: 'John Doe',
+    email: 'johndoe@gmail.com'
+  }
+
   public board: BoardModel[] = [
-    { columnName: 'To Do', tasks: [ { description: 'Create task', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TO' }, { description: 'Drag task to "In Progress" column', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TT' }, { description: 'Drag task to "Code Review" column', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TT' } ] }, 
-    { columnName: 'In Progress', tasks: [ { description: 'Create an issue', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TF' }] }, 
-    { columnName: 'Code Review', tasks: [ { description: 'Drag task to "Done" column', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TF' }, { description: 'Smile!', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TS' }] }, 
+    { columnName: 'To Do', tasks: [ { description: 'Create task', attachmentUrl: '', user: this.user, projectKey: 'TO' }, { description: 'Drag task to "In Progress" column', attachmentUrl: '', user: this.user, projectKey: 'TT' }, { description: 'Drag task to "Code Review" column', attachmentUrl: '', user: this.user, projectKey: 'TT' } ] }, 
+    { columnName: 'In Progress', tasks: [ { description: 'Create an issue', attachmentUrl: '', user: this.user, projectKey: 'TF' }] }, 
+    { columnName: 'Code Review', tasks: [ { description: 'Drag task to "Done" column', attachmentUrl: '', user: this.user, projectKey: 'TF' }, { description: 'Smile!', attachmentUrl: '', user: this.user, projectKey: 'TS' }] }, 
     { columnName: 'Done', tasks: [] },
   ];
 
