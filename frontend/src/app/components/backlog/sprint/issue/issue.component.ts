@@ -30,9 +30,10 @@ export class IssueComponent implements OnInit {
       .subscribe((result) => {
         if (result.body) {
           this.issueAuthor = result.body;
-          if (this.issueAuthor.avatar == undefined) {
-            this.issueAuthor.avatar = '\\assets\\avatar.png';
-          }
+          console.log(result.body);
+          //  if (this.issueAuthor.avatar == undefined) {
+          // this.issueAuthor.avatar = '\\assets\\avatar.png';
+          // }
         }
       });
   }
