@@ -11,10 +11,10 @@ export class AvatarComponent implements OnInit {
   diameter_px: number;
 
   @Input()
-  imageURL: string;
+  alt: string;
 
   @Input()
-  alt: string;
+  user: UserModel;
 
   defaultImage = 'https://www.w3schools.com/howto/img_avatar.png';
 
