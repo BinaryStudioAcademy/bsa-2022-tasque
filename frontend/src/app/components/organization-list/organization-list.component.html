@@ -20,7 +20,7 @@
     </tasque-input>
   </div>
   <div class="organization-list-cards">
-    <p class="empty-organization-warning" *ngIf="!items">
+    <p class="empty-organization-warning" *ngIf="items.length < 1">
       <fa-icon [icon]="warningIcon"></fa-icon>
       You are not a participant of any organization, create a new one or ask the organization admin to invite
       you
