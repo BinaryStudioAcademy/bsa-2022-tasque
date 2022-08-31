@@ -15,7 +15,23 @@ public class SprintController : EntityController<Sprint, SprintDto, SprintServic
 
     [Route("getSprintsByProjectId/{id}")]
     [HttpGet]
-    public async virtual Task<IActionResult> GetUserOrganizationsById(int id)
+    public async virtual Task<IActionResult> GetSprintsByProjectId(int id)
+    {
+        var sprints = await _service.GetProjectSprints(id);
+
+        if (sprints is not null)
+        {
+            return Ok(sprints);
+        }
+        else
+        {
+            return BadRequest("Entities not found");
+        }
+    }
+
+    [Route("{id}/tasks")]
+    [HttpGet]
+    public async virtual Task<IActionResult> GetSprintTasks(int id)
     {
         var sprints = await _service.GetProjectSprints(id);
 

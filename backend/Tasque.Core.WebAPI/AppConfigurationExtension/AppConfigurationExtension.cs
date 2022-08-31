@@ -18,6 +18,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
         {
             services.AddAutoMapper(cfg =>
             {
+                cfg.AddProfile<TaskProfiles>();
                 cfg.AddProfile<SprintProfiles>();
                 cfg.AddProfile<BoardProfiles>();
                 cfg.AddProfile<OrganizationProfile>();

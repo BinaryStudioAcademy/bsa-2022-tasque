@@ -19,8 +19,15 @@ namespace Tasque.Core.BLL.Services
         public async Task<IEnumerable<SprintDto>> GetProjectSprints(int projectId)
         {
             var sprints = await _db.Sprints
-                .Include(s => s.Tasks)
                 .Where(s => s.ProjectId == projectId)
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<SprintDto>>(sprints);
+        }
+        public async Task<IEnumerable<SprintDto>> GetSprintTasks(int sprintId)
+        {
+            var sprints = await _db.Tasks
+                .Where(t => t.SprintId == sprintId)
                 .ToListAsync();
 
             return _mapper.Map<IEnumerable<SprintDto>>(sprints);
