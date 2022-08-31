@@ -5,6 +5,7 @@ import { TaskTemplate } from 'src/core/models/task/task-template';
 import { ToastrService } from 'ngx-toastr';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { TaskCustomField } from 'src/core/models/task/task-custom-field';
+import { AvailableFields } from 'src/entity-models/const-resources/available-fields';
 
 @Component({
   selector: 'app-issue-template',
@@ -22,15 +23,7 @@ export class IssueTemplateComponent implements OnInit {
 
   public fieldsWithDescription: TaskCustomField[] = [ { name: 'Description' }, { name: 'Summary'}, { name: 'State' }, { name: 'Type' }];
   public contextFields: TaskCustomField[] = [ { name:'Assignee' }, { name:'Label' }, { name:'Sprint' }, { name:'Story point estimate' }];
-  public customFields: TaskCustomField[] = [
-    { name: 'Text' }, 
-    { name: 'Paragraph' }, 
-    { name: 'Number' },
-    { name: 'Label' }, 
-    { name: 'User' }, 
-    { name: 'Date' },
-    { name: 'Dropdown' },
-    { name: 'Check box' }];
+  public customFields = Object.assign([], AvailableFields) as TaskCustomField[];
 
   public selectedIssue: TasqueDropdownOption;
   public issueColor: string;
@@ -59,10 +52,22 @@ export class IssueTemplateComponent implements OnInit {
   }
 
   dropCustomFields(event: CdkDragDrop<TaskCustomField[]>): void {
-    const cloned  = Object.assign([], this.customFields);
+    const cloned = Object.assign([], AvailableFields);
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
+
+      if(event.previousContainer.data === this.customFields) {
+        console.log('Work');
+        const toMove: TaskCustomField[] = [];
+        this.customFields.forEach(f => toMove.push( { name: f.name } ));
+        transferArrayItem(
+          toMove,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex,
+        );
+      } else
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -70,7 +75,6 @@ export class IssueTemplateComponent implements OnInit {
         event.currentIndex,
       );
     }
-    this.customFields = cloned;
   }
 
   deleteContextItem(val: TaskCustomField): void {
@@ -111,33 +115,4 @@ export class IssueTemplateComponent implements OnInit {
     const input = event.target as HTMLElement;
     return input.innerText;
   }
-  
-  listDrop(e: any){
-    e.cancel = true;
-
-    if (e.sourceCtrl && e.dragItem && Array.isArray(e.dragItem)){
-        e.targetCtrl.suspendLayout();
-
-        for (let i = 0; i < e.dragItem.length; i++){
-            let clone = e.sourceCtrl.cloneItem(e.dragItem[i]);
-
-            // Depending on drop position, place the clone item accordingly
-            switch (e.dropPos){
-                case 1: // Above
-                    e.targetCtrl.insertItemBefore(clone, e.targetItem);
-                    break;
-
-                case 2: // Below
-                    e.targetCtrl.insertItemAfter(clone, e.targetItem);
-                    break;
-
-                default: // At the end
-                    e.targetCtrl.addItem(clone);
-                    break;
-            }
-        }
-        
-        e.targetCtrl.resumeLayout();
-    }
-}
 }
