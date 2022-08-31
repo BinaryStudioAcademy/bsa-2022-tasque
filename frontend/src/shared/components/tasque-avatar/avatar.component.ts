@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { UserModel } from 'src/core/models/user/user-model';
 
 @Component({
   selector: 'tasque-avatar',
@@ -8,7 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class AvatarComponent implements OnInit {
 
   @Input()
-  diameter_px: number;
+  diameter_px!: number;
 
   @Input()
   alt: string;
@@ -16,10 +17,22 @@ export class AvatarComponent implements OnInit {
   @Input()
   user: UserModel;
 
-  defaultImage = 'https://www.w3schools.com/howto/img_avatar.png';
+  fontSize: number;
 
   constructor() { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.fontSize = this.diameter_px / 2;
+  }
 
+  getInitials(user: UserModel): string {
+    let partsOfName = user.name.split(" ");
+    console.log(user);
+    if (partsOfName.length >= 2) {
+      return partsOfName[0][0] + partsOfName[1][0];
+    }
+    else {
+      return partsOfName[0][0];
+    }
+  }
 }
