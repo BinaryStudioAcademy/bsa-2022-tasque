@@ -34,13 +34,10 @@
       </div>
     </div>
     <div class="sprint-body">
-      <app-issue></app-issue>
-      <app-issue></app-issue>
-      <app-issue></app-issue>
-      <app-issue></app-issue>
+      <app-issue *ngFor="let task of tasks" [issue]="task"></app-issue>
     </div>
     <div class="sprint-footer">
-      <tasque-button text="+ Create issues" class="btn mini voilet"></tasque-button>
+      <tasque-task-creation btnText="+ Create issues" btnClass="btn mini voilet" [sidebarName]="createIssueSidebarName"></tasque-task-creation>
     </div>
   </details>
 </div>

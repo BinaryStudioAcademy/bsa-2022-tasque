@@ -63,7 +63,6 @@ export class BacklogComponent implements OnInit {
       .subscribe((result) => {
         if (result.body) {
           this.sprints = result.body;
-          console.log(this.sprints);
         }
       });
   }

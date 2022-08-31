@@ -2,6 +2,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.Common.DTO;
+using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Security;
 using Tasque.Core.DAL;
@@ -24,13 +25,13 @@ namespace Tasque.Core.BLL.Services
 
             return _mapper.Map<IEnumerable<SprintDto>>(sprints);
         }
-        public async Task<IEnumerable<SprintDto>> GetSprintTasks(int sprintId)
+        public async Task<IEnumerable<TaskDto>> GetSprintTasks(int sprintId)
         {
-            var sprints = await _db.Tasks
+            var tasks = await _db.Tasks
                 .Where(t => t.SprintId == sprintId)
                 .ToListAsync();
 
-            return _mapper.Map<IEnumerable<SprintDto>>(sprints);
+            return _mapper.Map<IEnumerable<TaskDto>>(tasks);
         }
 
     }

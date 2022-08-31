@@ -33,11 +33,11 @@ public class SprintController : EntityController<Sprint, SprintDto, SprintServic
     [HttpGet]
     public async virtual Task<IActionResult> GetSprintTasks(int id)
     {
-        var sprints = await _service.GetProjectSprints(id);
+        var tasks = await _service.GetSprintTasks(id);
 
-        if (sprints is not null)
+        if (tasks is not null)
         {
-            return Ok(sprints);
+            return Ok(tasks);
         }
         else
         {
