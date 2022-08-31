@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { fromEvent, Subject } from 'rxjs';
 import { NotificationService } from 'src/core/services/notification.service';
-import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
-import { LocalStorageKeys } from 'src/entity-models/local-storage-keys';
+import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
+import { LocalStorageKeys } from 'src/core/models/local-storage-keys';
 import { PasswordChangesDTO } from '../../dto/password-changes-dto';
 import { ProfileChangesDTO } from '../../dto/profile-changes-dto';
 import { UserService } from '../../services/user.service';
@@ -41,7 +41,7 @@ export class UserProfileComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private userService: UserService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getUser();

@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { UserModel } from 'src/core/models/user/user-model';
-import { BoardService } from 'src/services/board.service';
+import { BoardService } from 'src/core/services/board.service';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import {
   faMaximize,
@@ -27,7 +27,7 @@ export class BacklogComponent implements OnInit {
   constructor(
     public boardService: BoardService,
     public currentUserService: GetCurrentUserService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.currentUserService.currentUser.subscribe((user) => {

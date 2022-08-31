@@ -2,7 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpService } from 'src/core/services/http.service';
-import { BoardModel } from 'src/entity-models/board-model';
+import { BoardModelDto } from 'src/core/models/board/board-model-dto';
 import {
   BusinessRole,
   IBoard,
@@ -18,7 +18,7 @@ import {
 export class BoardService {
   public routePrefix = '/api/board';
 
-  constructor(public httpService: HttpService) {}
+  constructor(public httpService: HttpService) { }
 
   public getUsers(board: IBoard): Observable<IUserCard[]> {
     const key = this.createKey(board);
@@ -97,8 +97,8 @@ export class BoardService {
     localStorage.setItem(key, JSON.stringify(board));
   }
 
-  getUserBoards(userId: number): Observable<HttpResponse<BoardModel[]>> {
-    return this.httpService.getFullRequest<BoardModel[]>(
+  getUserBoards(userId: number): Observable<HttpResponse<BoardModelDto[]>> {
+    return this.httpService.getFullRequest<BoardModelDto[]>(
       this.routePrefix + `/getUserBoards/${userId}`,
     );
   }
