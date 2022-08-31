@@ -122,7 +122,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
             this.toastrService.success(
               'You will be redirected to your profile',
               'Login successful',
-              { disableTimeOut: true },
             );
             this.router.navigate(['../..', 'organizations'], {
               replaceUrl: true,
