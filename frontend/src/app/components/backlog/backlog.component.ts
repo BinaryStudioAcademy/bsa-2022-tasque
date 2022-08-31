@@ -11,6 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { SprintService } from 'src/core/services/sprint.service';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-backlog',
@@ -66,5 +67,13 @@ export class BacklogComponent implements OnInit {
           this.sprints = result.body;
         }
       });
+  }
+
+  dropSprint(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.sprints, event.previousIndex, event.currentIndex + 1);
+  }
+
+  dropSprintBtnClick(position: number) {
+    moveItemInArray(this.sprints, 0, 1);
   }
 }

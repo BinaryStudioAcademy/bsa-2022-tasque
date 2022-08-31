@@ -22,8 +22,8 @@
             <div class="dropdown" style="float: right">
               <tasque-button class="btn dropbtn" [icon]="faEllipsisV"></tasque-button>
               <div class="dropdown-content">
-                <a>Move sprint up</a>
-                <a>Move sprint down</a>
+                <a (click)="dropSprintClick(0)">Move sprint up</a>
+                <a (click)="dropSprintClick(1)">Move sprint down</a>
                 <a>Edit sprint </a>
                 <a>Delete sprint </a>
               </div>
@@ -41,7 +41,7 @@
       <app-issue *ngFor="let task of tasks" [issue]="task"></app-issue>
     </div>
     <div class="sprint-footer">
-      <tasque-task-creation (click)="openCreateIssuesModal()" btnText="+ Create issues" btnClass="btn mini voilet" [sidebarName]="createIssueSidebarName"></tasque-task-creation>
+      <tasque-task-creation btnText="+ Create issues" btnClass="btn mini voilet" [sidebarName]="createIssueSidebarName"></tasque-task-creation>
     </div>
   </details>
 </div>

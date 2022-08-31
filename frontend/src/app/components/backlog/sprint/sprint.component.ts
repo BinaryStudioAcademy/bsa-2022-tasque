@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, OnChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnChanges,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -18,6 +25,7 @@ export class SprintComponent implements OnInit, OnChanges {
   public unsubscribe$ = new Subject<void>();
   public createIssueSidebarName = 'createIssue';
   @Input() public inputSearch = '';
+  @Output() dropSprint = new EventEmitter<number>();
 
   constructor(public sprintService: SprintService) {}
 
@@ -39,10 +47,6 @@ export class SprintComponent implements OnInit, OnChanges {
       });
   }
 
-  public openCreateIssuesModal() {
-    console.log(this.inputSearch);
-  }
-
   filterItems(): void {
     if (this.inputSearch) {
       this.tasks = this.tasksShow.filter((item) => {
@@ -57,5 +61,9 @@ export class SprintComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.filterItems();
+  }
+
+  dropSprintClick(value: number) {
+    this.dropSprint.emit(this.sprint.id);
   }
 }
