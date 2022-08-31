@@ -14,51 +14,55 @@
         </div>
     </div>
     <hr>
-    <div *ngIf="selectedIssue !== undefined" class="issue-template">
-        <div class="issue-fields" cdkDropListGroup>
-            <h2>Const fields</h2>
-            <div class="issue-fields">
-                <div class="issue-field" style="cursor:default">
-                    <span style="margin-left: 5px">Priority</span>
+    <div *ngIf="selectedIssue !== undefined" class="issue-template-start">
+        <div class="issue-template">
+            <div class="issue-fields" cdkDropListGroup>
+                <h2>Const fields</h2>
+                <div class="issue-fields">
+                    <div class="issue-field" style="cursor:default">
+                        <span style="margin-left: 5px">Priority</span>
+                    </div>
+                    <div class="issue-field" style="cursor:default">
+                        <span style="margin-left: 5px">Status</span>
+                    </div>
                 </div>
-                <div class="issue-field" style="cursor:default">
-                    <span style="margin-left: 5px">Status</span>
+                <h2>Fields with description</h2>
+                <div cdkDropList class="issue-fields" #descriptionList="cdkDropList" [cdkDropListData]="fieldsWithDescription" (cdkDropListDropped)="dropCustomFields($event)">
+                    <div class="issue-field" *ngFor="let item of fieldsWithDescription" cdkDrag>
+                        <tasque-issue-field [fieldName]="item"></tasque-issue-field>
+                        <tasque-button style="margin-right: 10px" class="btn icon" [icon]="faTrash" (btnClick)="deleteDescriptionItem(item)"></tasque-button>
+                    </div>
+                    <div *ngIf="fieldsWithDescription.length === 0">
+                        <div class="empty-container">
+                            <span>Drag here your first field!</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <h2>Fields with description</h2>
-            <div cdkDropList class="issue-fields" #descriptionList="cdkDropList" [cdkDropListData]="fieldsWithDescription" (cdkDropListDropped)="dropCustomFields($event)">
-                <div class="issue-field" *ngFor="let item of fieldsWithDescription" cdkDrag>
-                    <tasque-issue-field [fieldName]="item"></tasque-issue-field>
-                    <tasque-button style="margin-right: 10px" class="btn icon" [icon]="faTrash" (btnClick)="deleteDescriptionItem(item)"></tasque-button>
-                </div>
-                <div *ngIf="fieldsWithDescription.length === 0">
-                    <div class="empty-container">
-                        <span>Drag here your first field!</span>
+                <h2>Context fields</h2>
+                <div cdkDropList class="issue-fields" #contextList="cdkDropList" [cdkDropListData]="contextFields" (cdkDropListDropped)="dropCustomFields($event)">
+                    <div class="issue-field" *ngFor="let item of contextFields" cdkDrag>
+                        <tasque-issue-field [fieldName]="item"></tasque-issue-field>
+                        <tasque-button style="margin-right: 10px" class="btn icon" [icon]="faTrash" (click)="deleteContextItem(item)"></tasque-button>
+                    </div>
+                    <div *ngIf="contextFields.length === 0">
+                        <div class="empty-container">
+                            <span>Drag here your first field!</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <h2>Context fields</h2>
-            <div cdkDropList class="issue-fields" #contextList="cdkDropList" [cdkDropListData]="contextFields" (cdkDropListDropped)="dropCustomFields($event)">
-                <div class="issue-field" *ngFor="let item of contextFields" cdkDrag>
-                    <tasque-issue-field [fieldName]="item"></tasque-issue-field>
-                    <tasque-button style="margin-right: 10px" class="btn icon" [icon]="faTrash" (click)="deleteContextItem(item)"></tasque-button>
-                </div>
-                <div *ngIf="contextFields.length === 0">
-                    <div class="empty-container">
-                        <span>Drag here your first field!</span>
+            <div class="custom-fields">
+                <h2>Available fields</h2>
+                <div [cdkDropListData]="customFields" [cdkDropListConnectedTo]="[descriptionList, contextList]" cdkDropList class="custom-fields-container" (cdkDropListDropped)="dropCustomFields($event)">
+                    <div class="custom-field" *ngFor="let item of customFields" cdkDrag>
+                        <div class="custom-field-name">
+                            <span style="margin: 0 5px 0 5px">{{item}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <tasque-button class="btn stroke" text="Save Changes" (btnClick)="saveChanges()"></tasque-button>
         </div>
-        <div class="custom-fields">
-            <h2>Available fields</h2>
-            <div [cdkDropListData]="customFields" [cdkDropListConnectedTo]="[descriptionList, contextList]" cdkDropList class="custom-fields-container" (cdkDropListDropped)="dropCustomFields($event)">
-                <div class="custom-field" *ngFor="let item of customFields" cdkDrag>
-                    <span style="margin: 0 5px 0 5px">{{item}}</span>
-                </div>
-            </div>
-        </div>
+        <tasque-button class="btn stroke" style="margin: 0 0 0 55px" text="Save Changes" (btnClick)="saveChanges()"></tasque-button>
     </div>
     <div *ngIf="selectedIssue === undefined">
         <div class="no-issue">

@@ -7,13 +7,25 @@
     margin-top: 15px
     display: flex
     justify-content: space-around
+    max-height: 450px
+
+.issue-template-start
+    display: flex
+    flex-direction: column
 
 .issue-fields
     width: 55%
     background: colorscheme(white-100)
-    overflow: hidden
+    overflow: hidden auto
     display: block
     margin: 0 0 15px 0
+    border-top: 2px solid colorscheme(gray-100)
+
+::-webkit-scrollbar
+    background-color: colorscheme(gray-100)
+
+::-webkit-scrollbar-thumb
+    background-color: colorscheme(blue-100)
 
 .issue-field
     margin: 5px 5px 5px 0
@@ -129,3 +141,4 @@
                 color: colorscheme(gray-500)
                 .ng-fa-icon
                     vertical-align: sub
+
