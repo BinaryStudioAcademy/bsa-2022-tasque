@@ -2,5 +2,7 @@
   [options]="organizationNames"
   [label]="currentOrganization.name"
   [formControl]="organizationControl"
+  footerLabel="Manage my organizations"
+  (footerClicked)="openOrganizationsPage()"
 >
 </tasque-menu-dropdown>
