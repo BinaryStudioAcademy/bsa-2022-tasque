@@ -10,7 +10,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export interface TasqueDropdownOption {
-  color: string;
+  color?: string;
   title: string;
   id: number;
 }

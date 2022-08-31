@@ -31,10 +31,10 @@ export class EditSprintDialogComponent implements OnInit {
   public duration: TasqueDropdownOption;
 
   public periods: TasqueDropdownOption[] = [
-    { color: '#0000', title: 'Custom', id: 0 },
-    { color: '#0000', title: 'One Week', id: 1 },
-    { color: '#0000', title: 'Two Weeks', id: 2 },
-    { color: '#0000', title: 'Four Weeks', id: 4 },
+    { title: 'Custom', id: 0 },
+    { title: 'One Week', id: 1 },
+    { title: 'Two Weeks', id: 2 },
+    { title: 'Four Weeks', id: 4 },
   ];
 
   public unsubscribe$ = new Subject<void>();
