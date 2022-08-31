@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.DTO.User;
-using Tasque.Core.Identity.Exeptions;
 using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers
@@ -19,7 +18,7 @@ namespace Tasque.Core.WebAPI.Controllers
         public UserController(UserService service, CurrentUserParameters userParams)
         {
             _service = service;
-            _userId = int.Parse(userParams.Id ?? throw new InvalidTokenException("Invalid access token"));
+            _userId = userParams.Id;
         }
 
         [HttpPut("edit")]

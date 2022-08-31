@@ -5,7 +5,6 @@ using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Organization;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
-using Tasque.Core.Identity.Exeptions;
 using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers
@@ -28,7 +27,7 @@ namespace Tasque.Core.WebAPI.Controllers
             var entity = new Organization()
             {
                 Name = createOrganizationDto.Name,
-                AuthorId = int.Parse(_currentUser.Id ?? throw new InvalidTokenException("Invalid access token"))
+                AuthorId = _currentUser.Id
             };
             var org = _service.Create(entity);
 

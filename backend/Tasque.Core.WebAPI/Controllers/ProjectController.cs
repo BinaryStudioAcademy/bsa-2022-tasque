@@ -2,7 +2,6 @@
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Project;
 using Tasque.Core.Common.Entities;
-using Tasque.Core.Identity.Exeptions;
 using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers;
@@ -25,7 +24,7 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
             Name = entityDTO.Name,
             Key = entityDTO.Key,
             OrganizationId = entityDTO.OrganizationId,
-            AuthorId = int.Parse(_currentUser.Id ?? throw new InvalidTokenException("Invalid access token"))
+            AuthorId = _currentUser.Id
         };
 
         _service.Create(entity);
