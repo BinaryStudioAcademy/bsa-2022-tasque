@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { BoardService } from 'src/services/board.service';
+import { BoardService } from 'src/core/services/board.service';
 import {
   BusinessRole,
   getRolesAsArray,
