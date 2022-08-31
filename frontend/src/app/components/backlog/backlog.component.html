@@ -9,7 +9,7 @@
     </div>
     <div class="wrapper search">
       <div class="backlog-search">
-        <tasque-input [icon]="faMagnifyingGlass" class="search-input" iconPosition="search" type="search" placeholder="Search..."> </tasque-input>
+        <tasque-input [icon]="faMagnifyingGlass" class="search-input" iconPosition="search" type="search" placeholder="Search..." [(ngModel)]="inputSearch"> </tasque-input>
       </div>
       <div class="navigation">
         <p class="active">All</p>
@@ -19,6 +19,6 @@
     </div>
   </div>
   <div class="body">
-    <app-sprint *ngFor="let sprint of sprints" [sprint]="sprint"></app-sprint>
+    <app-sprint *ngFor="let sprint of sprints" [sprint]="sprint" [inputSearch]="inputSearch"></app-sprint>
   </div>
 </div>

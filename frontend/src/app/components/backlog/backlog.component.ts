@@ -22,6 +22,7 @@ export class BacklogComponent implements OnInit {
   faMagnifyingGlass = faMagnifyingGlass;
 
   @Input() public currentUser: UserModel;
+  public inputSearch = '';
 
   public unsubscribe$ = new Subject<void>();
   public boards: TasqueDropdownOption[];

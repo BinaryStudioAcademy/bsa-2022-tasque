@@ -89,7 +89,25 @@ app-issue
     .dropdown-content
         display: block
 
-details summary::-webkit-details-marker,
-details summary::marker
+details
+    summary
+        list-style: none
+
+.marker
+    padding-right: 10px
+summary::-webkit-details-marker
     display: none
-    content: ""
+
+details[open]
+    .marker
+        .open
+            display: none
+        .close
+            display: inline
+
+details
+    .marker
+        .open
+            display: inline
+        .close
+            display: none

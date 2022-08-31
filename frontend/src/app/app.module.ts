@@ -55,7 +55,7 @@ import { IssueComponent } from './components/backlog/sprint/issue/issue.componen
     EditOrganizationComponent,
     TasqueProjectSettingsComponent,
     TasqueCardComponent,
-    BacklogComponent
+    BacklogComponent,
     SprintComponent,
     IssueComponent,
   ],
@@ -70,7 +70,7 @@ import { IssueComponent } from './components/backlog/sprint/issue/issue.componen
     ToastrModule.forRoot(ToastrConfig),
     AuthModule,
     UserModule,
-    DragDropModule
+    DragDropModule,
   ],
   providers: [
     BrowserAnimationsModule,

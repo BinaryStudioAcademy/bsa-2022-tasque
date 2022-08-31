@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -11,15 +11,18 @@ import { SprintService } from 'src/core/services/sprint.service';
   templateUrl: './sprint.component.html',
   styleUrls: ['./sprint.component.sass'],
 })
-export class SprintComponent implements OnInit {
+export class SprintComponent implements OnInit, OnChanges {
   @Input() public sprint: SprintModel;
   public tasks: TaskModel[];
+  public tasksShow: TaskModel[];
   public unsubscribe$ = new Subject<void>();
   public createIssueSidebarName = 'createIssue';
+  @Input() public inputSearch = '';
 
   constructor(public sprintService: SprintService) {}
 
   faEllipsisV = faEllipsisV;
+
   ngOnInit(): void {
     this.getSprintTasks();
     this.createIssueSidebarName += this.sprint.id;
@@ -31,10 +34,28 @@ export class SprintComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          this.tasks = result.body;
+          this.tasks = this.tasksShow = result.body;
         }
       });
   }
 
-  public openCreateIssuesModal() {}
+  public openCreateIssuesModal() {
+    console.log(this.inputSearch);
+  }
+
+  filterItems(): void {
+    if (this.inputSearch) {
+      this.tasks = this.tasksShow.filter((item) => {
+        return item.summary
+          .toLowerCase()
+          .includes(this.inputSearch.toLowerCase());
+      });
+    } else {
+      this.tasks = this.tasksShow;
+    }
+  }
+
+  ngOnChanges() {
+    this.filterItems();
+  }
 }

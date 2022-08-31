@@ -2,6 +2,10 @@
   <details>
     <summary>
       <div class="wrapper">
+        <div class="marker">
+          <p class="open">▶</p>
+          <p class="close">▼</p>
+        </div>
         <h4 class="sprint-name">{{ sprint.name }}</h4>
         <div class="issues">
           <p>issues</p>
@@ -37,7 +41,7 @@
       <app-issue *ngFor="let task of tasks" [issue]="task"></app-issue>
     </div>
     <div class="sprint-footer">
-      <tasque-task-creation btnText="+ Create issues" btnClass="btn mini voilet" [sidebarName]="createIssueSidebarName"></tasque-task-creation>
+      <tasque-task-creation (click)="openCreateIssuesModal()" btnText="+ Create issues" btnClass="btn mini voilet" [sidebarName]="createIssueSidebarName"></tasque-task-creation>
     </div>
   </details>
 </div>
