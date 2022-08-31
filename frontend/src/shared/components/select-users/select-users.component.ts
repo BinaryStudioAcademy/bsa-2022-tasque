@@ -105,7 +105,7 @@ export class SelectUsersComponent implements OnInit {
       email: user.email,
       name: user.username,
       avatarURL: user.avatarURL
-    }
+    };
   }
 
   private refreshList(): void {
