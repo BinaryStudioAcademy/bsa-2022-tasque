@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { delay, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/core/services/auth.service';
-import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
+import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 import { UserResetPasswordModel } from 'src/core/models/user/user-reset-password-model';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 

@@ -9,7 +9,7 @@ import {
   IUserCard,
 } from './Models';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
+import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
 

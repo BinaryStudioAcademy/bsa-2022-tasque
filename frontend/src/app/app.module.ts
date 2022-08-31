@@ -25,7 +25,7 @@ import { PageWithoutSidebarComponent } from './components/page-without-sidebar/p
 import { PageWithSidebarComponent } from './components/page-with-sidebar/page-with-sidebar.component';
 import { TasqueTeamComponent } from './components/tasque-team/tasque-team.component';
 import { TasqueProjectSettingsComponent } from './components/tasque-project-settings/tasque-project-settings.component';
-import { ToastrConfig } from 'src/entity-models/const-resources/toastr-config';
+import { ToastrConfig } from 'src/core/models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
 import { EditOrganizationComponent } from './components/edit-organization/edit-organization.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -75,4 +75,4 @@ import { BacklogComponent } from './components/backlog/backlog.component';
   bootstrap: [AppComponent],
   exports: [OrganizationListComponent],
 })
-export class AppModule {}
+export class AppModule { }
