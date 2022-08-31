@@ -15,10 +15,10 @@ namespace Tasque.Core.WebAPI.Controllers
     [Authorize]
     public class OrganizationController : EntityController<Organization, CreateOrganizationDto, OrganizationService>
     {
-        private readonly CurrentUserParameters _currentUser;
-        public OrganizationController(OrganizationService service, CurrentUserParameters currentUser) : base(service)
+        public OrganizationController(OrganizationService service, CurrentUserParameters currentUser)
+            : base(service, currentUser)
         {
-            _currentUser = currentUser;
+            
         }
 
         [Route("create")]

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.Entities.Abstract;
+using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
@@ -12,11 +13,14 @@ namespace Tasque.Core.WebAPI.Controllers
     {
         protected readonly TService _service;
         protected readonly IMapper mapper;
-        public EntityController(TService service)
+        protected readonly CurrentUserParameters _currentUser;
+
+        public EntityController(TService service, CurrentUserParameters currentUser)
         {
             _service = service;
             var config = new MapperConfiguration(cfg => cfg.CreateMap<TDto, TModel>().ReverseMap());
             mapper = new Mapper(config);
+            _currentUser = currentUser;
         }
 
         [Route("getById/{id}")]

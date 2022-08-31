@@ -10,11 +10,10 @@ namespace Tasque.Core.WebAPI.Controllers;
 [Route("api/project")]
 public class ProjectController : EntityController<Project, NewProjectDto, ProjectService>
 {
-    private readonly CurrentUserParameters _currentUser;
-
-    public ProjectController(ProjectService service, CurrentUserParameters currentUser) : base(service)
+    public ProjectController(ProjectService service, CurrentUserParameters currentUser) 
+        : base(service, currentUser)
     {
-        _currentUser = currentUser;
+        
     }
 
     [Route("create")]
