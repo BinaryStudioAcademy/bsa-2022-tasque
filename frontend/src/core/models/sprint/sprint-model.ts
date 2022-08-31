@@ -1,7 +1,10 @@
+import { TaskModel } from '../task/task-model';
+
 export interface SprintModel {
-    id: number,
-    name: string,
-    description?: string,
-    createdAt: Date,
-    updatedAt: Date,
+  id: number;
+  name: string;
+  description?: string;
+  tasks?: TaskModel[];
+  createdAt: Date;
+  updatedAt: Date;
 }

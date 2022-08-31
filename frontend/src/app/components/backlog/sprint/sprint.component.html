@@ -1,42 +1,46 @@
 <div class="sprint-conteiner">
-  <div class="sprint-header">
-    <div class="wrapper">
-      <h4 class="sprint-name">Mars Landing</h4>
-      <div class="issues">
-        <p>issues</p>
-        <p class="issues-count">3</p>
-      </div>
-      <div class="estimate">
-        <p>estimate</p>
-        <p class="estimate-count">5</p>
-      </div>
-      <div class="wrapper button">
-        <tasque-button text="Start sprint" class="btn mini voilet"></tasque-button>
+  <details>
+    <summary>
+      <div class="wrapper">
+        <h4 class="sprint-name">{{ sprint.name }}</h4>
+        <div class="issues">
+          <p>issues</p>
+          <p class="issues-count">3</p>
+        </div>
+        <div class="estimate">
+          <p>estimate</p>
+          <p class="estimate-count">5</p>
+        </div>
+        <div class="wrapper button">
+          <tasque-button text="Start sprint" class="btn mini voilet"></tasque-button>
 
-        <div class="dropdown-button">
-          <div class="dropdown" style="float: right">
-            <tasque-button class="btn dropbtn" [icon]="faEllipsisV"></tasque-button>
-            <div class="dropdown-content">
-              <a>Move sprint up</a>
-              <a>Move sprint down</a>
-              <a>Edit sprint </a>
-              <a>Delete sprint </a>
+          <div class="dropdown-button">
+            <div class="dropdown" style="float: right">
+              <tasque-button class="btn dropbtn" [icon]="faEllipsisV"></tasque-button>
+              <div class="dropdown-content">
+                <a>Move sprint up</a>
+                <a>Move sprint down</a>
+                <a>Edit sprint </a>
+                <a>Delete sprint </a>
+              </div>
             </div>
           </div>
         </div>
       </div>
+    </summary>
+    <div class="sprint-header">
+      <div class="select-user">
+        <tasque-team-select></tasque-team-select>
+      </div>
     </div>
-    <div class="select-user">
-      <tasque-team-select></tasque-team-select>
+    <div class="sprint-body">
+      <app-issue></app-issue>
+      <app-issue></app-issue>
+      <app-issue></app-issue>
+      <app-issue></app-issue>
     </div>
-  </div>
-  <div class="sprint-body">
-    <app-issue></app-issue>
-    <app-issue></app-issue>
-    <app-issue></app-issue>
-    <app-issue></app-issue>
-  </div>
-  <div class="sprint-footer">
-    <tasque-button text="+ Create issues" class="btn mini voilet"></tasque-button>
-  </div>
+    <div class="sprint-footer">
+      <tasque-button text="+ Create issues" class="btn mini voilet"></tasque-button>
+    </div>
+  </details>
 </div>

@@ -37,6 +37,7 @@ export class BacklogComponent implements OnInit {
     this.currentUserService.currentUser.subscribe((user) => {
       this.currentUser = user as UserModel;
       this.getUserBoards();
+      this.getSprints();
     });
   }
 
@@ -53,8 +54,6 @@ export class BacklogComponent implements OnInit {
           }));
         }
       });
-
-    this.getSprints();
   }
 
   public getSprints(): void {
@@ -64,6 +63,7 @@ export class BacklogComponent implements OnInit {
       .subscribe((result) => {
         if (result.body) {
           this.sprints = result.body;
+          console.log(this.sprints);
         }
       });
   }
