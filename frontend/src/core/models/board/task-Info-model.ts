@@ -1,4 +1,4 @@
-import { UserModel } from "../user/user-model";
+import { UserModel } from '../user/user-model';
 
 export interface TaskInfoModel {
     description: string;

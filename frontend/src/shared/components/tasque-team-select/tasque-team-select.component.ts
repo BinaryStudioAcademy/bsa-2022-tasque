@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { UserModel } from 'src/core/models/user/user-model';
-import { UserCircle } from './models';
 
 @Component({
   selector: 'tasque-team-select',

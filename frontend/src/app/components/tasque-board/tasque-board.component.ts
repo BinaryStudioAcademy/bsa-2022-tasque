@@ -23,7 +23,7 @@ export class TasqueBoardComponent implements OnInit {
     id: 1,
     name: 'John Doe',
     email: 'johndoe@gmail.com'
-  }
+  };
 
   public board: BoardModel[] = [
     { columnName: 'To Do', tasks: [ { description: 'Create task', attachmentUrl: '', user: this.user, projectKey: 'TO' }, { description: 'Drag task to "In Progress" column', attachmentUrl: '', user: this.user, projectKey: 'TT' }, { description: 'Drag task to "Code Review" column', attachmentUrl: '', user: this.user, projectKey: 'TT' } ] }, 

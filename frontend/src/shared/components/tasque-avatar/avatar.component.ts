@@ -23,16 +23,14 @@ export class AvatarComponent implements OnInit {
 
   ngOnInit(): void {
     this.fontSize = this.diameter_px / 2;
-    console.log(this.user);
   }
 
   getInitials(user: UserModel): string {
-    let partsOfName = user.name.split(" ");
+    const partsOfName = user.name.split(' ');
     if (partsOfName.length >= 2) {
       return partsOfName[0][0] + partsOfName[1][0];
     }
-    else {
-      return partsOfName[0][0];
-    }
+    
+    return partsOfName[0][0];
   }
 }

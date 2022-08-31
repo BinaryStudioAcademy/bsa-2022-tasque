@@ -15,7 +15,7 @@ import { MenuDropdownOption } from '../tasque-menu-dropdown/menu-dropdown.compon
 export class HeaderComponent implements OnInit {
 
   public searchIcon = faMagnifyingGlass;
-  public currentUser: UserModel = { id: 1, name: 'John Doe', email: 'johndoe@gmail.com', avatarURL: 'https://www.w3schools.com/howto/img_avatar.png' }
+  public currentUser: UserModel = { id: 1, name: 'John Doe', email: 'johndoe@gmail.com' };
   public createOptions: MenuDropdownOption[] = [
     { name: 'Create Organization' }, { name: 'Create Project' },
   ];
