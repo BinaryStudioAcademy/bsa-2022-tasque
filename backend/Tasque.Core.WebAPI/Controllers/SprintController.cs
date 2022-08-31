@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
-using Tasque.Core.Common.DTO;
+using Tasque.Core.Common.DTO.Sprint;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Identity.Helpers;
 
@@ -13,5 +13,14 @@ public class SprintController : EntityController<Sprint, SprintDto, SprintServic
         : base(service, currentUser)
     {
         
+    }
+
+    [Route("edit")]
+    [HttpPut]
+    public virtual async Task<IActionResult> Edit([FromBody] EditSprintDto sprintDto)
+    {        
+        var entity = await _service.Edit(sprintDto);
+        var dto = mapper.Map<SprintDto>(entity);
+        return Ok(dto);
     }
 }
