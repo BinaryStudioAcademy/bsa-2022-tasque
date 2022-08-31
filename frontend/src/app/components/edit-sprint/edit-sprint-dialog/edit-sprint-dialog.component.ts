@@ -77,11 +77,7 @@ export class EditSprintDialogComponent implements OnInit {
           this.sprint.endAt = this.addDays(this.sprint.startAt, 7 * value);
         }        
       });
-        const value: number = this.sprintForm.controls.sprintDuration.value.id;
-        if (value > 0 && this.sprint.startAt) {
-          this.sprint.endAt = this.addDays(this.sprint.startAt, 7 * value);
-        }        
-      });
+
   }
 
   onSubmit(): void{
