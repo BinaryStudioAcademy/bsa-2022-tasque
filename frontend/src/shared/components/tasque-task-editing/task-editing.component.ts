@@ -151,21 +151,24 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       name: 'spr1',
       description: 'sprint desc',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      projectId: 1
     },
     {
       id: 2,
       name: 'spr2',
       description: 'sprint desc',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      projectId: 2
     },
     {
       id: 3,
       name: 'spr3',
       description: 'sprint desc',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      projectId: 3
     }
   ];
   @Input() public users: UserModel[] = [
