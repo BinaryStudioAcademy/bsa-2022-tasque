@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.DTO.User;
@@ -9,7 +8,6 @@ using Tasque.Core.Identity.Helpers;
 namespace Tasque.Core.WebAPI.Controllers
 {
     [Route("api/user")]
-    [AllowAnonymous]  //should be removed
     [ApiController]
     public class UserController : ControllerBase
     {
