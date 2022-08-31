@@ -2,6 +2,7 @@ import { Component, EventEmitter, forwardRef, HostListener, Input, OnInit, Outpu
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { UserModel } from 'src/core/models/user/user-model';
 
 export interface MenuDropdownOption {
   id?: number,
@@ -36,7 +37,7 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
   @Output() labelClicked = new EventEmitter(); // event that represents click on the dropdown main label
   @Input() toggleDropdownOnLabelClick = true;
 
-  @Input() user = { id: 1, name: 'John Doe', email: 'johndoe@gmail.com' } // url of the avatar
+  @Input() user: UserModel = { id: 1, name: 'John Doe', email: 'johndoe@gmail.com', avatarURL: 'https://www.w3schools.com/howto/img_avatar.png' } // url of the avatar
   @Input() diameter_px = 45; // size of the avatar
 
   @Input() public hasAvatar = false; // state of the avatar visibility
