@@ -40,14 +40,6 @@ namespace Tasque.Core.WebAPI.Controllers
             }
         }
 
-        [Route("getAll")]
-        [HttpGet]
-        public virtual IActionResult GetAll()
-        {
-            var entities = _service.GetAll();
-            return Ok(entities);
-        }
-
         [Route("create")]
         [HttpPost]
         public virtual IActionResult Create([FromBody] TDto entityDTO)
