@@ -19,6 +19,6 @@
     </div>
   </div>
   <div cdkDropList class="body" (cdkDropListDropped)="dropSprint($event)">
-    <app-sprint *ngFor="let sprint of sprints" [sprint]="sprint" [inputSearch]="inputSearch" cdkDrag cdkDragBoundary=".body" (dropSprint)="dropSprintBtnClick($event)" [filterIssue]="filterIssue"></app-sprint>
+    <app-sprint *ngFor="let sprint of sprints" [sprint]="sprint" [currentUser]="currentUser" [inputSearch]="inputSearch" cdkDrag cdkDragBoundary=".body" (dropSprint)="dropSprintBtnClick($event)" [filterIssue]="filterIssue"></app-sprint>
   </div>
 </div>

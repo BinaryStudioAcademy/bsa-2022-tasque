@@ -12,6 +12,7 @@ import { UserModel } from 'src/core/models/user/user-model';
 })
 export class IssueComponent implements OnInit {
   @Input() public issue: TaskModel;
+  @Input() public currentUser: UserModel;
   public issueAuthor: UserModel;
   public unsubscribe$ = new Subject<void>();
 
@@ -31,9 +32,10 @@ export class IssueComponent implements OnInit {
       .subscribe((result) => {
         if (result.body) {
           this.issueAuthor = result.body;
-          //  if (this.issueAuthor.avatar == undefined) {
-          // this.issueAuthor.avatar = '\\assets\\avatar.png';
-          // }
+
+          if (this.issueAuthor.avatarURL == undefined) {
+            this.issueAuthor.avatarURL = '\\assets\\avatar.png';
+          }
         }
       });
   }

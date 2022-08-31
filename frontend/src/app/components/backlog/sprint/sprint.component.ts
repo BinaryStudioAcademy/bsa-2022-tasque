@@ -13,6 +13,7 @@ import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { SprintService } from 'src/core/services/sprint.service';
 import { IssueSort } from '../models';
+import { UserModel } from 'src/core/models/user/user-model';
 
 @Component({
   selector: 'app-sprint',
@@ -27,6 +28,7 @@ export class SprintComponent implements OnInit, OnChanges {
   public createIssueSidebarName = 'createIssue';
   @Input() public inputSearch = '';
   @Input() public filterIssue: IssueSort;
+  @Input() public currentUser: UserModel;
   @Output() dropSprint = new EventEmitter<number>();
 
   constructor(public sprintService: SprintService) {}
@@ -64,7 +66,7 @@ export class SprintComponent implements OnInit, OnChanges {
       this.tasks.sort((a) => a.priority?.id);
     } else if (this.filterIssue == IssueSort.OnlyMyIssues) {
       this.tasks = this.tasks.filter((item) => {
-        return item.authorId == 1;
+        return item.authorId == this.currentUser.id;
       });
     } else if (this.filterIssue == IssueSort.RecentlyUpdated) {
       this.tasks.sort(
