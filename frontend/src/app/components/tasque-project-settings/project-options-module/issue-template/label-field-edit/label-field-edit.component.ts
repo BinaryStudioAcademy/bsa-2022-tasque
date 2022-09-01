@@ -28,7 +28,8 @@ export class LabelFieldEditComponent implements OnInit {
   formColorControl: FormControl;
 
   isChanging = false;
-  newField: LabelField = { name: '' };
+  newFieldName: string;
+  newFieldColor: string;
 
   get errorMessage(): string {
     if(this.formNameControl.errors?.['required']) {
@@ -43,18 +44,18 @@ export class LabelFieldEditComponent implements OnInit {
   ngOnInit(): void {
     this.labels = this.field?.labels as LabelField[];
 
-    this.formNameControl = new FormControl(this.newField.name, [
+    this.formNameControl = new FormControl(this.newFieldName, [
       Validators.required,
       Validators.minLength(2),
     ]);
 
-    this.formColorControl = new FormControl(this.newField.color, [
+    this.formColorControl = new FormControl(this.newFieldColor, [
       Validators.required,
     ]);
   }
 
   public deleteLabel(val: LabelField): void  {
-    this.labels.forEach((value,index)=>{
+    this.labels.forEach((value,index) => {
         if(value==val) this.labels.splice(index,1);
     });
   }
@@ -68,7 +69,14 @@ export class LabelFieldEditComponent implements OnInit {
       this.notify.error(this.errorMessage);
       return;
     }
-    this.labels.push(this.newField);
+    if(this.labels === undefined){
+      this.labels = [];
+    }
+    const val: LabelField = {
+      name: this.newFieldName,
+      color: this.newFieldColor,
+    }
+    this.labels.push(val);
     this.isChanging = false;
   }
 
@@ -78,9 +86,9 @@ export class LabelFieldEditComponent implements OnInit {
 
   setValue(val: string, type: string): void {
     if(type === 'name'){
-      this.newField.name = val;
+      this.newFieldName = val;
     } else {
-      this.newField.color = val;
+      this.newFieldColor = val;
     }
   }
 }

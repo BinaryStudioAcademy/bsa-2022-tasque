@@ -1,9 +1,10 @@
 import { TaskCustomField } from './task-custom-field';
 
 export interface TaskTemplate {
-    id: number,
+    projectId: number,
+    typeId: number,
 
-    customDescriptionFields: TaskCustomField[],
     customContextFields: TaskCustomField[],
+    customDescriptionFields: TaskCustomField[],
 }
 

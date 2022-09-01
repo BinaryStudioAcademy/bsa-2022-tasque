@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Mailjet.Client.TransactionalEmails;
 using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.PartialModels;

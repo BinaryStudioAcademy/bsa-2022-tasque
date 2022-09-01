@@ -8,6 +8,7 @@ import { TaskCustomField } from 'src/core/models/task/task-custom-field';
 import { TaskFieldType } from 'src/core/models/task/task-field-types';
 import { Router } from '@angular/router';
 import { AvailableFields } from 'src/core/models/const-resources/available-fields';
+import { TaskTemplateService } from 'src/core/services/task-template.service';
 
 @Component({
   selector: 'app-issue-template',
@@ -19,6 +20,7 @@ export class IssueTemplateComponent implements OnInit {
   constructor(
     private notificationService: ToastrService,
     private router: Router,
+    private taskTemplateService: TaskTemplateService,
   ) { }
 
   @Input() public issueTemplate: TaskTemplate;  
@@ -63,6 +65,7 @@ export class IssueTemplateComponent implements OnInit {
     },
   ];
 
+  @Input() projectId: number = 1;
   public selectedId: number;
   public isLabel: TaskCustomField | undefined;
   public isDropdown: TaskCustomField | undefined;
@@ -111,12 +114,22 @@ export class IssueTemplateComponent implements OnInit {
       this.notificationService.error('No issue type selected');
       return;
     }
-    // const template: TaskTemplate = { //<-----should be send to backend
-    //   id: this.selectedId,
-    //   customDescriptionFields: this.fieldsWithDescription,
-    //   customContextFields: this.contextFields,
-    // };
-    this.notificationService.success(`${this.selectedIssue.title} template has been updated successfully`);
+    const template: TaskTemplate = { 
+      typeId: this.selectedId,
+      projectId: this.projectId,
+      customDescriptionFields: this.fieldsWithDescription,
+      customContextFields: this.contextFields,
+    };
+
+    console.log(template);
+    console.log('Start send request');
+
+    this.taskTemplateService.createTaskTemplate(template)
+    .subscribe((resp) => {
+      console.log('resp');
+      console.log(resp.body);
+      this.notificationService.success(`${this.selectedIssue.title} template has been updated successfully`);
+    });
   }
 
   discardChanges(): void {
