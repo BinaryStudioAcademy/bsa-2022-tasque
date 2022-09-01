@@ -23,7 +23,9 @@ import { UserCircle } from 'src/shared/components/tasque-team-select/models';
 })
 export class SprintComponent implements OnInit, OnChanges {
   @Input() public sprint: SprintModel;
-  public users: UserModel[];
+
+  public sprintUsers: UserModel[];
+  public sprintUsersCircle?: UserCircle[];
 
   public tasks: TaskModel[];
   public tasksShow: TaskModel[];
@@ -62,8 +64,15 @@ export class SprintComponent implements OnInit, OnChanges {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          this.users = result.body;
-          console.log(this.users);
+          this.sprintUsers = result.body;
+
+          this.sprintUsersCircle = this.sprintUsers.map((item) => ({
+            id: item.id,
+            username: item.name,
+            email: item.email,
+            avatarURL: item.avatarURL || '',
+            profileURL: '',
+          }));
         }
       });
   }
