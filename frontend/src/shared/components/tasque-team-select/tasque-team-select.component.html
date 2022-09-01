@@ -27,6 +27,9 @@
       <div class="search-container">
         <tasque-input
           type="search"
+          class="search-input"
+          [icon]="searchIcon"
+          iconPosition="search"
           placeholder="Search members"
           [(ngModel)]="inputSearch"
           (ngModelChange)="filterItems()"
