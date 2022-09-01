@@ -5,9 +5,9 @@ import { TaskTemplate } from 'src/core/models/task/task-template';
 import { ToastrService } from 'ngx-toastr';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { TaskCustomField } from 'src/core/models/task/task-custom-field';
-import { AvailableFields } from 'src/entity-models/const-resources/available-fields';
 import { TaskFieldType } from 'src/core/models/task/task-field-types';
 import { Router } from '@angular/router';
+import { AvailableFields } from 'src/core/models/const-resources/available-fields';
 
 @Component({
   selector: 'app-issue-template',
