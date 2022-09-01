@@ -12,9 +12,11 @@ export class SprintService {
 
   public routePrefix = '/api/sprint';
 
-  constructor(
-    public httpService: HttpService
-  ) { }
+  constructor(public httpService: HttpService) {}
+
+  completeSprint(sprintId: number): Observable<void> {
+    return this.httpService.putRequest<void>(this.routePrefix + `/complete/${sprintId}`, new Object);
+  }
 
   editSprint(editedSprint: EditSprintModel):Observable<HttpResponse<SprintModel>>{
     return this.httpService.putFullRequest<SprintModel>(this.routePrefix + '/edit', editedSprint);

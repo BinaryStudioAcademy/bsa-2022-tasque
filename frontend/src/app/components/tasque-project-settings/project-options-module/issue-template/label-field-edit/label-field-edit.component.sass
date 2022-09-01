@@ -1,0 +1,39 @@
+@import 'src/colors.sass' 
+
+.label-color
+    height: 25px
+    width: 25px
+
+.label
+    display: flex
+    justify-content: flex-start
+    flex-direction: row
+    margin: 5px 0 5px 0
+
+.label-color
+    margin-right: 10px
+
+.create-label
+    display: flex
+
+.edit-label
+    display: flex
+    justify-content: center
+    .color-input
+        width: 25px
+        height: 25px
+        tasque-button
+            ::ng-deep
+            button
+                color: colorscheme(gray-500)
+                .ng-fa-icon
+                    vertical-align: sub
+            
+
+.custom-input
+    outline: none
+    border: none
+    background-color: colorscheme(gray-100)
+    &:focus
+        border: none
+

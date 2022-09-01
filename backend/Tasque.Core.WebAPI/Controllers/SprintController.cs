@@ -12,7 +12,16 @@ public class SprintController : EntityController<Sprint, SprintDto, SprintServic
     public SprintController(SprintService service, CurrentUserParameters currentUser)
         : base(service, currentUser)
     {
-        
+
+    }
+
+    [Route("complete/{id}")]
+    [HttpPut]
+    public async Task<IActionResult> CompleteSprint(int id)
+    {
+        await _service.CompleteSprint(id);
+
+        return Ok();
     }
 
     [Route("edit")]

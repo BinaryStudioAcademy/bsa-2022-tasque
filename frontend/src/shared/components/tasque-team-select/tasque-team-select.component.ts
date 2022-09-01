@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserModel } from 'src/core/models/user/user-model';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { UserCircle } from './models';
 
 @Component({
   selector: 'tasque-team-select',
@@ -9,7 +11,7 @@ import { UserModel } from 'src/core/models/user/user-model';
 export class TasqueTeamSelectComponent implements OnInit {
 
   public inputSearch = '';
-
+  public searchIcon = faMagnifyingGlass;
   public showPopUp = false;
 
   public avatars: UserModel[] = [ // remove when integrated in component with data

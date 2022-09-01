@@ -7,6 +7,7 @@ namespace Tasque.Core.BLL.Options
         public string Host { get; set; } = "";
         public string ConfirmationEndpoint { get; set; } = "";
         public string PasswordResetEndpoint { get; set; } = "";
+        public string InviteEndpoint { get; set; } = "";
         public string SenderEmail { get; set; } = null!;
         public string SenderName { get; set; } = null!;
         public int TokenLifetime { get; set; }
