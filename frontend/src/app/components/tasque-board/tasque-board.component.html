@@ -28,7 +28,7 @@
       </div>
       <div class="board-columns" cdkDropListGroup>
         <div cdkDropList *ngFor="let item of board" 
-        (cdkDropListDropped)="drop($event)" 
+        (cdkDropListDropped)="dragDrop($event)" 
         [cdkDropListData]="item.tasks">
           <div class="column-title">
             <div class="board-list">
@@ -45,10 +45,10 @@
           </div>
         </div>
         <div class="create-column" (mouseleave)="onClickedOutside()">
-          <span *ngIf="!isOpenColumnAddDialog" (click)="OpenAddColumn()">+ Add Section</span>
+          <span *ngIf="!isOpenColumnAddDialog" (click)="openAddColumn()">+ Add Section</span>
           <div *ngIf="isOpenColumnAddDialog">
-            <form [formGroup]="createColumnForm" (ngSubmit)="AddColumn()">
-              <tasque-input type="text" placeholder="Type name" formControlName="columnName" [invalid]="!createColumnForm.valid && createColumnForm.touched" errorMessage="required" [icon]="plusIcon" iconPosition="right" (iconClick)="AddColumn()"></tasque-input>
+            <form [formGroup]="createColumnForm" (ngSubmit)="addColumn()">
+              <tasque-input type="text" placeholder="Type name" formControlName="columnName" [invalid]="!createColumnForm.valid && createColumnForm.touched" errorMessage="required" [icon]="plusIcon" iconPosition="right" (iconClick)="addColumn()"></tasque-input>
             </form>
           </div>
         </div>

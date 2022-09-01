@@ -1,32 +1,31 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.Common.DTO.Board;
-using Tasque.Core.Common.Entities;
 using Tasque.Core.DAL;
 
 namespace Tasque.Core.BLL.Services
 {
-    public class BoardService : EntityCrudService<Board>
+    public class BoardService
     {
-        private DataContext _context;
+        private DataContext _db;
         private IMapper _mapper;
 
-        public BoardService(DataContext context, IMapper mapper) : base(context)
+        public BoardService(DataContext context, IMapper mapper)
         {
-            _context = context;
+            _db = context;
             _mapper = mapper;
         }
 
-        public async Task<ICollection<BoardDto>> GetUserBoards(int userId)
+        public async Task<BoardInfoDto> GetBoardByProjectId(int projectId)
         {
-            var userEntity = await _db.Users.FirstOrDefaultAsync(u => u.Id == userId)
-                  ?? throw new ValidationException("User not found");
+            var board = await _db.Boards
+                .FirstOrDefaultAsync(b => b.ProjectId == projectId);
 
-            var boardEntity = await _context.Boards.Where(b => b.Project.Users.Contains(userEntity))
+            var column = await _db.BoardColumns
+                .Where(c => c.BoardId == board.Id)
                 .ToListAsync();
 
-            return _mapper.Map<ICollection<BoardDto>>(boardEntity);
+            var tasks = await _db.Tasks.Where()
         }
     }
 }

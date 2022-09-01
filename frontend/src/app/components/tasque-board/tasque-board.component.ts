@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { BoardModel } from '../../../core/models/board/board-model';
+import { BoardColumnModel } from '../../../core/models/board/board-column-model';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TaskInfoModel } from 'src/core/models/board/task-Info-model';
 
@@ -14,16 +14,13 @@ export class TasqueBoardComponent implements OnInit {
 
   public searchIcon = faMagnifyingGlass;
   public plusIcon = faPlus;
+
   public isOpenColumnAddDialog: boolean;
   public createColumnForm: FormGroup;
-  private newBoard: BoardModel;
+  
+  private newBoard: BoardColumnModel;
 
-  public board: BoardModel[] = [
-    { columnName: 'To Do', tasks: [ { description: 'Create task', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TO' }, { description: 'Drag task to "In Progress" column', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TT' }, { description: 'Drag task to "Code Review" column', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TT' } ] }, 
-    { columnName: 'In Progress', tasks: [ { description: 'Create an issue', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TF' }] }, 
-    { columnName: 'Code Review', tasks: [ { description: 'Drag task to "Done" column', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TF' }, { description: 'Smile!', attachmentUrl: '', userAvatarUrl: '', projectKey: 'TS' }] }, 
-    { columnName: 'Done', tasks: [] },
-  ];
+  public board: BoardColumnModel[] = [];
 
   constructor(formBuilder: FormBuilder) { 
     this.createColumnForm = formBuilder.group({
@@ -32,13 +29,14 @@ export class TasqueBoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
 
-  OpenAddColumn(): void {
+  openAddColumn(): void {
     this.isOpenColumnAddDialog = true;
   }
 
-  AddColumn(): void {
+  addColumn(): void {
     if(this.createColumnForm.valid) {
       this.newBoard = { columnName: this.createColumnForm.get('columnName')?.value, tasks: [] };
       this.board.push(this.newBoard);
@@ -52,7 +50,7 @@ export class TasqueBoardComponent implements OnInit {
     this.createColumnForm.reset();
   }
 
-  drop(event: CdkDragDrop<TaskInfoModel[]>): void {
+  dragDrop(event: CdkDragDrop<TaskInfoModel[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
