@@ -16,7 +16,7 @@ export class CompleteSprintComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  OpenCompSprintDialog(): void {
+  openCompSprintDialog(): void {
     const dialog = this.matDialog.open(CompleteSprintDialogComponent);
     dialog.afterClosed().subscribe(); 
   }
