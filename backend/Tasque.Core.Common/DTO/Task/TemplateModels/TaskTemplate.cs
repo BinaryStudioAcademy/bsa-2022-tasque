@@ -8,6 +8,8 @@ namespace Tasque.Core.Common.DTO.Task.TemplateModels
 {
     public class TaskTemplate
     {
+        public int Id { get; set; }
+
         public int TypeId { get; set; }
 
         public int ProjectId { get; set; }

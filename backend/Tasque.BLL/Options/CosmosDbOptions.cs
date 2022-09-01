@@ -10,7 +10,9 @@ namespace Tasque.Core.BLL.Options
     {
         public string DatabaseName { get; set; } = null!;
 
-        public string ContainerName { get; set; } = null!;
+        public string TaskContainer { get; set; } = null!;
+
+        public string TemplateContainer { get; set; } = null!;
 
         public string Account { get; set; } = null!;
 

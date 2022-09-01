@@ -15,31 +15,33 @@ namespace Tasque.Core.WebAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<TaskTemplate> GetAllProjectTemplates(int projectId)
         {
-            return new string[] { "value1", "value2" };
+            return null;
         }
 
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult GetTemplate(int id)
         {
-            return "value";
+            return Ok();
         }
 
         [HttpPost("saveTemplate")]
-        public IActionResult Post([FromBody] TaskTemplate value)
+        public IActionResult Createtemplate([FromBody] TaskTemplate value)
         {
             return Ok(value);
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult UpdateTemplate([FromBody] TaskTemplate value)
         {
+            return Ok(value);
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult DeleteTemplate(int id)
         {
+            return NoContent();
         }
     }
 }

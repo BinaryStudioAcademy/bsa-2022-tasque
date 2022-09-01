@@ -157,9 +157,13 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             configuration.GetSection(nameof(CosmosDbOptions)).Bind(cosmosOptions);
 
             var client = new CosmosClient(cosmosOptions.Account, cosmosOptions.Key);
-            var cosmosService = new CosmosTaskService(client, cosmosOptions.DatabaseName, cosmosOptions.ContainerName);
+            var cosmosTaskService = new CosmosTaskService(client, cosmosOptions.DatabaseName, cosmosOptions.TaskContainer);
+            var cosmosTemplateService = new CosmosTemplateService(client, cosmosOptions.DatabaseName, cosmosOptions.TemplateContainer);
 
-            services.AddSingleton<ICosmosTaskService>(cosmosService);
+            services
+                .AddSingleton<ICosmosTaskService>(cosmosTaskService)
+                .AddSingleton<ICosmosTemplateService>(cosmosTemplateService);
+
             return services;
         }
     }

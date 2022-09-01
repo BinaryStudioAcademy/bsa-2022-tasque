@@ -14,7 +14,6 @@ namespace Tasque.Core.Common.Enums
         Label,
         User,
         Dropown,
-        DropdownDependencies,
         CheckBox,
         Date
     }
