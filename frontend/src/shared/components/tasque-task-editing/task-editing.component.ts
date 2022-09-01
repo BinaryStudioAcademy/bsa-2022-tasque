@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { UserModel } from 'src/core/models/user/user-model';
-import { faCheckToSlot, faXmark, faLink, faPaperclip, faShareNodes, faEllipsisVertical, faFaceSmile, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faCheckToSlot, faXmark, faLink, faPaperclip, faShareNodes, faEllipsisVertical, faFaceSmile, faPen, faFlag } from '@fortawesome/free-solid-svg-icons';
 import { BaseComponent } from 'src/core/base/base.component';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -23,7 +23,6 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
   @Input() public task: TaskModel;
   @Input() public currentUser: UserModel;
-  public taskProject: ProjectModel;
   public taskUser: UserModel;
   public taskReporter: UserModel;
   public taskSprint: SprintModel;
@@ -38,6 +37,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public ellipsisIcon = faEllipsisVertical;
   public faceSmileIcon = faFaceSmile;
   public editIcon = faPen;
+  public flagIcon = faFlag;
 
   public taskDescriptionEditorShow = false;
   public taskSummaryInputShow = false;
@@ -99,19 +99,22 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       id: 1,
       name: 'Bug',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      icon: this.flagIcon
     },
     {
       id: 2,
       name: 'Feature',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      icon: this.flagIcon
     },
     {
       id: 3,
       name: 'Enhancement',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      icon: this.flagIcon
     },
   ];
 
@@ -208,7 +211,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         id: 1,
         name: 'Bug',
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
+        icon: this.flagIcon
       },
       priority: {
         id: 1,
@@ -216,10 +220,10 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         createdAt: new Date(),
         updatedAt: new Date()
       },
-      authorId: 1,
-      projectId: 2,
-      sprintId: 3,
-      lastUpdatedById: 4,
+      author: this.users.filter(u => u.id == 1)[0],
+      project: this.projects.filter(p => p.id == 2)[0],
+      sprint: this.sprints.filter(s => s.id == 3)[0],
+      lastUpdatedBy: this.users.filter(u => u.id == 4)[0],
       parentTaskId: 5,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -231,14 +235,10 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
   ngOnInit(): void {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.taskProject = this.projects.find((x) => x.id === this.task.projectId)!;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.taskUser = this.users.find((x) => x.id === this.task.authorId)!;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.taskSprint = this.sprints.find((x) => x.id === this.task.sprintId)!;
+    this.taskSprint = this.sprints.find((x) => x.id === this.task.sprint.id)!;
 
     this.editTaskForm = new FormGroup({
-      taskProject: new FormControl(this.convertToOption(this.taskProject)),
+      taskProject: new FormControl(this.convertToOption(this.task.project)),
       taskSummary: new FormControl(this.task.summary, [
         Validators.required,
         Validators.minLength(2),

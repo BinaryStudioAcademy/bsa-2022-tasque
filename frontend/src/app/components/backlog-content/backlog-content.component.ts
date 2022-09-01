@@ -128,6 +128,7 @@ export class BacklogContentComponent implements OnInit {
   public sprints: SprintModel[] = [
     {
       id: 1,
+      projectId: 3,
       name: 'spr1',
       description: 'sprint desc',
       createdAt: new Date(),
@@ -135,6 +136,7 @@ export class BacklogContentComponent implements OnInit {
     },
     {
       id: 2,
+      projectId: 3,
       name: 'spr2',
       description: 'sprint desc',
       createdAt: new Date(),
@@ -142,6 +144,7 @@ export class BacklogContentComponent implements OnInit {
     },
     {
       id: 3,
+      projectId: 3,
       name: 'spr3',
       description: 'sprint desc',
       createdAt: new Date(),
