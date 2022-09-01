@@ -2,13 +2,15 @@
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Board;
 using Tasque.Core.Common.Entities;
+using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
     [Route("api/board")]
     public class BoardController : EntityController<Board, BoardDto, BoardService>
     {
-        public BoardController(BoardService service) : base(service) { }
+        public BoardController(BoardService service, CurrentUserParameters currentUser)
+            : base(service, currentUser) { }
 
         [Route("getUserBoards/{id}")]
         [HttpGet]

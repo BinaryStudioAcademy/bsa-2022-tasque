@@ -1,14 +1,14 @@
 import { HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AccessToken } from 'src/entity-models/access-token';
-import { UserLoginModel } from 'src/entity-models/user-login-model';
-import { UserRegisterModel } from 'src/entity-models/user-register-model';
-import { UserResetPasswordModel } from 'src/entity-models/user-reset-password-model';
+import { AccessToken } from '../models/access-token';
+import { UserLoginModel } from 'src/core/models/user/user-login-model';
 import { HttpService } from './http.service';
-import { LocalStorageKeys } from 'src/entity-models/local-storage-keys';
+import { LocalStorageKeys } from '../models/local-storage-keys';
 import { Router } from '@angular/router';
 import { GetCurrentOrganizationService } from './get-current-organization.service';
+import { UserRegisterModel } from '../models/user/user-register-model';
+import { UserResetPasswordModel } from '../models/user/user-reset-password-model';
 
 @Injectable({
   providedIn: 'root'

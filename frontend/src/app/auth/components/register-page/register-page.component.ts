@@ -2,15 +2,15 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { AuthService } from 'src/core/services/auth.service';
-import { UserRegisterModel } from 'src/entity-models/user-register-model';
-import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
+import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 import { ToastrService } from 'ngx-toastr';
-import { ErrorMessages } from 'src/entity-models/const-resources/error-messages';
+import { ErrorMessages } from 'src/core/models/const-resources/error-messages';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { filter, map, mergeMap, switchMap, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { UserRegisterModel } from 'src/core/models/user/user-register-model';
 
 @Component({
   selector: 'app-register-page',
@@ -169,36 +169,36 @@ export class RegisterPageComponent implements OnInit {
 
   public submitForm(): void {
     if (this.registerForm.valid) {
-    const model = {
-      name: this.nameControl.value,
-      email: this.emailControl.value,
-      password: this.passwordControl.value,
-      key: this.key,
-    } as UserRegisterModel;
+      const model = {
+        name: this.nameControl.value,
+        email: this.emailControl.value,
+        password: this.passwordControl.value,
+        key: this.key,
+      } as UserRegisterModel;
 
-    if (!this.key) {
-      this.authService
-        .registerUser(model)
-        .pipe(
-          switchMap(() =>
-            this.authService.resendEmailConfirmation(model.email ?? ''),
-          ),
-        )
-        .subscribe(() => {
-          this.toastrService.info('Check your mailbox');
+      if (!this.key) {
+        this.authService
+          .registerUser(model)
+          .pipe(
+            switchMap(() =>
+              this.authService.resendEmailConfirmation(model.email ?? ''),
+            ),
+          )
+          .subscribe(() => {
+            this.toastrService.info('Check your mailbox');
+          });
+        return;
+      }
+
+      this.authService.registerUser(model)
+        .subscribe((resp) => {
+          if (resp.body != null) {
+            this.authService.setAuthToken(resp.body);
+          }
+          this.router.navigate(['/']);
         });
-      return;
     }
-
-    this.authService.registerUser(model)
-      .subscribe((resp) => {
-        if (resp.body != null) {
-          this.authService.setAuthToken(resp.body);
-        }
-        this.router.navigate(['/']);
-      });
-    }
-    else{
+    else {
       this.registerForm.markAllAsTouched();
       this.showError = true;
     }

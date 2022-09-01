@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { OrganizationService } from 'src/core/services/organization.service';
-import { UserModel } from 'src/entity-models/user-model';
+import { UserModel } from 'src/core/models/user/user-model';
 import { NewOrganizationModel } from 'src/core/models/organization/new-organization-model';
 import { FormControl, Validators } from '@angular/forms';
 import { NotificationService } from 'src/core/services/notification.service';
