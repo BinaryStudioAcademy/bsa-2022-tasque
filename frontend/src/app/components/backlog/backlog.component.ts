@@ -76,7 +76,7 @@ export class BacklogComponent implements OnInit {
   }
 
   dropSprintBtnClick(position: number) {
-    //  moveItemInArray(this.sprints, 0, 1);
+    moveItemInArray(this.sprints, 0, 1);
   }
 
   taskSort(sort: IssueSort): void {

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { UserCircle } from './models';
 
 @Component({
@@ -8,6 +9,7 @@ import { UserCircle } from './models';
 })
 export class TasqueTeamSelectComponent implements OnInit {
   public inputSearch = '';
+  @Output() selectedUser = new EventEmitter<UserCircle>();
 
   public showPopUp = false;
 
@@ -85,5 +87,9 @@ export class TasqueTeamSelectComponent implements OnInit {
     this.avatarsShow = this.avatars.filter((avatar) => {
       return avatar.username.includes(this.inputSearch);
     });
+  }
+
+  selectUser(avatars: UserCircle): void {
+    this.selectedUser.emit(avatars);
   }
 }

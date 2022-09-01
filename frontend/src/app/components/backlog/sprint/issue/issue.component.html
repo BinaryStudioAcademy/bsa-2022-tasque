@@ -2,7 +2,7 @@
   <p class="issue-type">Issue</p>
   <p class="issue-key">TIS-1</p>
   <p class="issue-title">{{ issue.summary }}</p>
-  <p class="issue-date">5 days</p>
+  <p class="issue-date">{{ deadline() }}</p>
   <div class="issue-users">
     <img [src]="issueAuthor?.avatarURL" alt="avatar" [title]="issueAuthor?.name" />
   </div>

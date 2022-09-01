@@ -22,6 +22,7 @@ export class IssueComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.issue);
+
     this.getIssueAuthor();
   }
 
@@ -38,5 +39,10 @@ export class IssueComponent implements OnInit {
           }
         }
       });
+  }
+
+  public deadline(): Date {
+    var start = new Date(this.issue.deadline);
+    return start;
   }
 }
