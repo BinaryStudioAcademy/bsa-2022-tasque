@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { faPenToSquare, faCheck, faDatabase } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faCheck, faCode } from '@fortawesome/free-solid-svg-icons';
 import { TaskCustomField } from 'src/core/models/task/task-custom-field';
 
 @Component({
@@ -20,7 +20,7 @@ export class IssueFieldComponent implements OnInit {
 
   faPenToSquare = faPenToSquare;
   faCheck = faCheck;
-  faEdit = faDatabase;
+  faEdit = faCode;
   public fieldControl: FormControl;
 
   isChanging = false;
