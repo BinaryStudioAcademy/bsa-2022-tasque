@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.Common.DTO.Sprint;
 using Tasque.Core.Common.DTO.Task;

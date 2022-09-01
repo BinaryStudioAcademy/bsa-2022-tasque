@@ -10,12 +10,9 @@ namespace Tasque.Core.WebAPI.Controllers;
 public class SprintController : EntityController<Sprint, SprintDto, SprintService>
 {
     public SprintController(SprintService service, CurrentUserParameters currentUser)
-        : base(service, currentUser)
+       : base(service, currentUser)
     {
-            return BadRequest("Entities not found");
-        }
-    }
-        
+
     }
 
     [Route("edit")]

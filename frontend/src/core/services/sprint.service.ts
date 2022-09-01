@@ -1,7 +1,5 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { SprintModel } from '../models/sprint/sprint-model';
 import { TaskModel } from '../models/task/task-model';
 import { UserModel } from '../models/user/user-model';
 import { Observable } from 'rxjs';

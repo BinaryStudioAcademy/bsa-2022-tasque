@@ -61,7 +61,6 @@ import { IssueComponent } from './components/backlog/sprint/issue/issue.componen
     BacklogComponent,
     EditSprintComponent,
     EditSprintDialogComponent,
-    ,
     SprintComponent,
     IssueComponent,
   ],

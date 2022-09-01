@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Tasque.Core.Common.DTO;
+using Tasque.Core.Common.DTO.Sprint;
 using Tasque.Core.Common.Entities;
 
 namespace Tasque.Core.BLL.MappingProfiles
