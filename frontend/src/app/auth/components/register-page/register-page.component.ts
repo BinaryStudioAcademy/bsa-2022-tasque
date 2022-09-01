@@ -100,7 +100,6 @@ export class RegisterPageComponent implements OnInit {
       Validators.minLength(this.validationConstants.minLengthName),
     ]);
     this.emailControl = new FormControl(this.userRegister.email, [
-      Validators.email,
       Validators.required,
       Validators.pattern(this.validationConstants.emailRegex),
     ]);

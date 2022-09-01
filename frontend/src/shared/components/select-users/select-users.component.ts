@@ -46,7 +46,6 @@ export class SelectUsersComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
     this.emailControl = new FormControl(this.userEmail, [
-      Validators.email,
       Validators.required,
       Validators.pattern(this.validationConstants.emailRegex),
     ]);
@@ -63,7 +62,7 @@ export class SelectUsersComponent implements OnInit {
     this.isLoading = true;
 
     const username = this.userEmail;
-    this.emailToAdd.emit(username);
+    this.onAdd.emit(username);
 
     this.emailControl = new FormControl(this.userEmail, [
       Validators.email,
@@ -79,7 +78,7 @@ export class SelectUsersComponent implements OnInit {
   delete(email: string): void {
     this.isLoading = true;
     
-    this.emailToDelete.emit(email);
+    this.onDelete.emit(email);
 
     this.refreshList();
   }
@@ -88,7 +87,7 @@ export class SelectUsersComponent implements OnInit {
     this.isLoading = true;
     user.role = role;
     
-    this.userToUpdate.emit(user);
+    this.onUpdate.emit(user);
 
     this.refreshList();
   }
