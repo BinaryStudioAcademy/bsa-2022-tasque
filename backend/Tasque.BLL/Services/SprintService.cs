@@ -1,11 +1,7 @@
-<<<<<<< HEAD
 ﻿using Microsoft.EntityFrameworkCore;
 using Tasque.Core.BLL.Exeptions;
-=======
 ﻿using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Tasque.Core.Common.DTO.Sprint;
->>>>>>> dev
 using Tasque.Core.Common.Entities;
 using Tasque.Core.DAL;
 using Task = System.Threading.Tasks.Task;
@@ -19,22 +15,6 @@ namespace Tasque.Core.BLL.Services
 
         }
 
-<<<<<<< HEAD
-        public async Task CompleteSprint(int sprintId)
-        {
-            var sprint = await _db.Sprints
-                .Where(s => s.Id == sprintId)
-                .FirstOrDefaultAsync();
-
-            if (sprint == null)
-                throw new HttpException(System.Net.HttpStatusCode.NotFound, "Sprinter with this ID does not exist");
-
-            sprint.IsComplete = true;
-
-            _db.Update(sprint);
-            await _db.SaveChangesAsync();
-        }
-=======
         public async Task<Sprint> Edit(EditSprintDto dto)
         {
             var entity = await _db.Sprints.FirstOrDefaultAsync(s => s.Id == dto.Id)
@@ -67,6 +47,17 @@ namespace Tasque.Core.BLL.Services
             return entity;
         }
 
->>>>>>> dev
+        public async Task CompleteSprint(int sprintId)
+        {
+            var sprint = await _db.Sprints.FirstOrDefaultAsync(s => s.Id == sprintId);
+
+            if (sprint == null)
+                throw new HttpException(System.Net.HttpStatusCode.NotFound, "Sprinter with this ID does not exist");
+
+            sprint.IsComplete = true;
+
+            _db.Update(sprint);
+            await _db.SaveChangesAsync();
+        }
     }
 }

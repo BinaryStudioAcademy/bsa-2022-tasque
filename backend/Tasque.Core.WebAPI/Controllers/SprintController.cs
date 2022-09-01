@@ -6,25 +6,20 @@ using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers;
 
-[Route("api/sprint")]
+[Route("api/sprint/")]
 public class SprintController : EntityController<Sprint, SprintDto, SprintService>
 {
-<<<<<<< HEAD
-    private readonly SprintService _sprintService;
-
-    public SprintController(SprintService service) : base(service)
-=======
     public SprintController(SprintService service, CurrentUserParameters currentUser)
         : base(service, currentUser)
->>>>>>> dev
     {
-        _sprintService = service;
+
     }
 
-    [HttpPut("/complete/{id}")]
+    [Route("complete/{id}")]
+    [HttpPut]
     public async Task<IActionResult> CompleteSprint(int id)
     {
-        await _sprintService.CompleteSprint(id);
+        await _service.CompleteSprint(id);
 
         return Ok();
     }

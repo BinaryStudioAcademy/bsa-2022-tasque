@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SprintInfo } from 'src/core/models/sprint/sprint-info';
 import { SprintService } from 'src/core/services/sprint.service';
@@ -10,7 +10,7 @@ import { SprintService } from 'src/core/services/sprint.service';
 })
 export class CompleteSprintDialogComponent implements OnInit {
 
-  public sprint: SprintInfo = {id: 1, name: 'Prol', complatedIssues: 42, openIssue: 3}
+  @Input() sprint: SprintInfo = {id: -1, name: '', openIssue: 0, complatedIssues: 0};
 
   public finishBtnName = 'Complate sprint';
   public createBtnClass = 'fill';
@@ -29,5 +29,6 @@ export class CompleteSprintDialogComponent implements OnInit {
 
   onSubmit(): void {
     this.sprintService.completeSprint(this.sprint.id).subscribe();
+    this.dialogRef.close();
   }
 }
