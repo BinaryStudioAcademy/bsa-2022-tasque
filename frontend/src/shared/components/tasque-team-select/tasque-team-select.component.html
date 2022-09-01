@@ -1,6 +1,6 @@
 <div class="container">
   <div class="users" *ngIf="avatars.length <= 4">
-    <a class="user-avatar" *ngFor="let item of avatars.slice(0, 7); let i = index" [attr.data-index]="i">
+    <a class="user-avatar" *ngFor="let item of avatars.slice(0, 7); let i = index" [attr.data-index]="i" (click)="selectUser(item)">
       <img *ngIf="item.avatarURL.length != 0" class="user-avatar-img" [src]="item.avatarURL" [alt]="item.username" />
       <div *ngIf="item.avatarURL.length == 0" class="user-avatar-img" style="background-color: {{ profileColors[i] }}">
         <span>{{ item.username[0] }}</span>

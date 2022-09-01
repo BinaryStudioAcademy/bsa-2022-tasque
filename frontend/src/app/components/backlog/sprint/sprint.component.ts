@@ -102,8 +102,11 @@ export class SprintComponent implements OnInit, OnChanges {
     }
   }
 
-  test(user: UserCircle): void {
+  filterUserTasks(user: UserCircle): void {
     console.log(user);
+    this.tasks = this.tasksShow.filter((item) => {
+      return item.authorId == user.id;
+    });
   }
   //+++++++++++++++++++++++++rewrite after the backend part of sprintі sorting is implemented++++++++++++++++
   ngOnChanges() {

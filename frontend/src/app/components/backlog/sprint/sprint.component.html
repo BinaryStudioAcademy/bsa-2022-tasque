@@ -34,7 +34,7 @@
     </summary>
     <div class="sprint-header">
       <div class="select-user">
-        <tasque-team-select (selectedUser)="test($event)" *ngIf="sprintUsersCircle" [avatars]="sprintUsersCircle"></tasque-team-select>
+        <tasque-team-select (selectedUser)="filterUserTasks($event)" *ngIf="sprintUsersCircle" [avatars]="sprintUsersCircle"></tasque-team-select>
       </div>
     </div>
     <div class="sprint-body">
