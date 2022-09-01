@@ -6,3 +6,4 @@ export interface TaskTemplate {
     customDescriptionFields: TaskCustomField[],
     customContextFields: TaskCustomField[],
 }
+

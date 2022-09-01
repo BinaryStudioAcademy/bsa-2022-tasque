@@ -7,3 +7,4 @@ export const ProjectSettingsRoutes: Routes = [
         component: IssueTemplateComponent,
     },
 ];
+

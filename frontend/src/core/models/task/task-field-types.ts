@@ -11,3 +11,4 @@ export enum TaskFieldType {
     Priority,
     Type,
 }
+

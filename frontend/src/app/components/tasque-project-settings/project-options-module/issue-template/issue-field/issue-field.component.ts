@@ -62,3 +62,4 @@ export class IssueFieldComponent implements OnInit {
     this.isDropDown.emit(this.field);
   }
 }
+
