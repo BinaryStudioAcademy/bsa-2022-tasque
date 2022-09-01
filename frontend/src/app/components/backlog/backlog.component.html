@@ -12,9 +12,9 @@
         <tasque-input [icon]="faMagnifyingGlass" class="search-input" iconPosition="search" type="search" placeholder="Search..." [(ngModel)]="inputSearch"> </tasque-input>
       </div>
       <div class="navigation">
-        <p (click)="taskSort(1)" class="active">All</p>
-        <p (click)="taskSort(2)">Only my issues</p>
-        <p (click)="taskSort(3)">Recently updated</p>
+        <p (click)="taskSort(1)" [ngClass]="{ 'active': filterIssue == 1 }">All</p>
+        <p (click)="taskSort(2)" [ngClass]="{ 'active': filterIssue == 2 }">Only my issues</p>
+        <p (click)="taskSort(3)" [ngClass]="{ 'active': filterIssue == 3 }">Recently updated</p>
       </div>
     </div>
   </div>
