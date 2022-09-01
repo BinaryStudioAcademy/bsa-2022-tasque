@@ -1,0 +1,21 @@
+<div class="container">
+  <mat-dialog-content>
+    <div class="content">
+      <p>Complate {{sprint.name}} sprint</p>
+      <div class="task-info">
+        <span>This sprint contains:</span>
+        <ul>
+          <li><span class="selection">{{sprint.complatedIssues}}</span> complated issues</li>
+          <li><span class="selection">{{sprint.openIssue}}</span> open issue</li>
+        </ul>
+      </div>
+      <div>
+        <img class="complete-image" src="assets/honor.png">
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="dialog-options" align="end">
+    <tasque-button [text]="this.cancelBtnName" [class]="this.cancelBtnClass" (click)="onClose()"> </tasque-button>
+    <tasque-button type="submit" [text]="this.finishBtnName" [class]="this.createBtnClass" (btnClick)="onSubmit()"> </tasque-button>
+  </mat-dialog-actions>
+</div>

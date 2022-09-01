@@ -31,6 +31,8 @@ import { EditOrganizationComponent } from './components/edit-organization/edit-o
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TasqueCardComponent } from './components/tasque-card/tasque-card.component';
 import { BacklogComponent } from './components/backlog/backlog.component';
+import { CompleteSprintComponent } from './components/complete-sprint/complete-sprint.component';
+import { CompleteSprintDialogComponent } from './components/complete-sprint/complete-sprint-dialog/complete-sprint-dialog.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,9 @@ import { BacklogComponent } from './components/backlog/backlog.component';
     EditOrganizationComponent,
     TasqueProjectSettingsComponent,
     TasqueCardComponent,
-    BacklogComponent
+    BacklogComponent,
+    CompleteSprintComponent,
+    CompleteSprintDialogComponent,
   ],
   imports: [
     BrowserModule,
