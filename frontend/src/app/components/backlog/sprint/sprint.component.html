@@ -8,9 +8,9 @@
         </div>
         <h4 class="sprint-name">{{ sprint.name }}</h4>
         <div class="sprint-date">
-          <p class="startAt"></p>
+          <p class="startAt">{{ sprint.startAt | date: 'mediumDate' }}</p>
           <p>-</p>
-          <p class="endAt">8 Sep</p>
+          <p class="endAt">{{ sprint.endAt | date: 'mediumDate' }}</p>
         </div>
         <div class="issues">
           <p>issues</p>
