@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { BoardService } from 'src/core/services/board.service';
@@ -12,8 +12,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
-import { EventEmitter } from '@angular/core';
-import { UserModel } from 'src/core/models/user/user-model';
 
 @Component({
   selector: 'tasque-select-users',
@@ -37,9 +35,9 @@ export class SelectUsersComponent implements OnInit {
   @Input()
   public board: IBoard;
 
-  @Output() emailToAdd = new EventEmitter<string>();
-  @Output() emailToDelete = new EventEmitter<string>();
-  @Output() userToUpdate = new EventEmitter<IUserCard>();
+  @Output() onAdd = new EventEmitter<string>();
+  @Output() onDelete = new EventEmitter<string>();
+  @Output() onUpdate = new EventEmitter<IUserCard>();
 
   constructor(private service: BoardService, private toastr: ToastrService) {
     this.roles = getRolesAsArray();
