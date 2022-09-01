@@ -23,6 +23,10 @@ import { UserCircle } from 'src/shared/components/tasque-team-select/models';
 })
 export class SprintComponent implements OnInit, OnChanges {
   @Input() public sprint: SprintModel;
+  @Input() public inputSearch = '';
+  @Input() public filterIssue: IssueSort;
+  @Input() public currentUser: UserModel;
+  @Output() dropSprint = new EventEmitter<number>();
 
   public sprintUsers: UserModel[];
   public sprintUsersCircle?: UserCircle[];
@@ -31,15 +35,12 @@ export class SprintComponent implements OnInit, OnChanges {
   public tasksShow: TaskModel[];
 
   public unsubscribe$ = new Subject<void>();
+
   public createIssueSidebarName = 'createIssue';
-  @Input() public inputSearch = '';
-  @Input() public filterIssue: IssueSort;
-  @Input() public currentUser: UserModel;
-  @Output() dropSprint = new EventEmitter<number>();
+  public estimate = 0;
+  faEllipsisV = faEllipsisV;
 
   constructor(public sprintService: SprintService) {}
-
-  faEllipsisV = faEllipsisV;
 
   ngOnInit(): void {
     this.getSprintTasks();
@@ -54,6 +55,7 @@ export class SprintComponent implements OnInit, OnChanges {
       .subscribe((result) => {
         if (result.body) {
           this.tasks = this.tasksShow = result.body;
+          this.estimateCount();
         }
       });
   }
@@ -75,6 +77,11 @@ export class SprintComponent implements OnInit, OnChanges {
           }));
         }
       });
+  }
+
+  estimateCount(): void {
+    this.estimate = 0;
+    this.estimate = this.tasks.reduce((a, b) => a + Number(b.estimate || 0), 0);
   }
 
   filterItems(): void {

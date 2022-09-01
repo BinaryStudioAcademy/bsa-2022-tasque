@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UserService } from 'src/app/user/services/user.service';
@@ -13,6 +13,7 @@ import { UserModel } from 'src/core/models/user/user-model';
 export class IssueComponent implements OnInit {
   @Input() public issue: TaskModel;
   @Input() public currentUser: UserModel;
+  @Output() estimate = new EventEmitter<void>();
   public issueAuthor: UserModel;
   public unsubscribe$ = new Subject<void>();
 
@@ -42,5 +43,9 @@ export class IssueComponent implements OnInit {
   public deadline(): Date {
     var start = new Date(this.issue.deadline);
     return start;
+  }
+
+  estimateChange(): void {
+    this.estimate.emit();
   }
 }

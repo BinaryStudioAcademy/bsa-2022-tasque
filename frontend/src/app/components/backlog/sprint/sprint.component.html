@@ -18,7 +18,7 @@
         </div>
         <div class="estimate">
           <p>estimate</p>
-          <p class="estimate-count">{{ tasks?.length }}</p>
+          <p class="estimate-count">{{ estimate }}</p>
         </div>
 
         <div class="wrapper button">
@@ -44,7 +44,7 @@
       </div>
     </div>
     <div class="sprint-body">
-      <app-issue *ngFor="let task of tasks" [issue]="task" [currentUser]="currentUser"></app-issue>
+      <app-issue *ngFor="let task of tasks" [issue]="task" [currentUser]="currentUser" (estimate)="estimateCount()"></app-issue>
     </div>
     <div class="sprint-footer">
       <tasque-task-creation btnText="+ Create issues" btnClass="btn mini voilet" [sidebarName]="createIssueSidebarName"></tasque-task-creation>
