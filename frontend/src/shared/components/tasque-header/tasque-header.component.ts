@@ -72,11 +72,11 @@ export class HeaderComponent implements OnInit {
   }
 
   get currentUserAvatar(): string {
-    if (!this.currentUser || !this.currentUser.avatar) {
+    if (!this.currentUser || !this.currentUser.avatarURL) {
       return '\\assets\\avatar.png';
     }
 
-    return this.currentUser.avatar;
+    return this.currentUser.avatarURL;
   }
 
   public openProjectsPage(): void {

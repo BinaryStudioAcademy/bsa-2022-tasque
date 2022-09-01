@@ -1,4 +1,4 @@
-﻿namespace Tasque.Core.Common.DTO;
+﻿namespace Tasque.Core.Common.DTO.Sprint;
 
 public class SprintDto
 {

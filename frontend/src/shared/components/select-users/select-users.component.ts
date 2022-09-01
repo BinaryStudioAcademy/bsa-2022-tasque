@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { BoardService } from 'src/services/board.service';
+import { BoardService } from 'src/core/services/board.service';
 import {
   BusinessRole,
   getRolesAsArray,
@@ -9,7 +9,7 @@ import {
   IUserCard,
 } from './Models';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
+import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
 
