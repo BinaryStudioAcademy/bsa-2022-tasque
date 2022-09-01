@@ -9,12 +9,9 @@
         <h4 class="sprint-name">{{ sprint.name }}</h4>
         <div class="issues">
           <p>issues</p>
-          <p class="issues-count">3</p>
+          <p class="issues-count">{{ tasks?.length }}</p>
         </div>
-        <div class="estimate">
-          <p>estimate</p>
-          <p class="estimate-count">5</p>
-        </div>
+
         <div class="wrapper button">
           <tasque-button text="Start sprint" class="btn mini voilet"></tasque-button>
 
