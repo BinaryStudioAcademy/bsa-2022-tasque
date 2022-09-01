@@ -2,8 +2,6 @@
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.Task.TemplateModels;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Tasque.Core.WebAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -13,7 +11,7 @@ namespace Tasque.Core.WebAPI.Controllers
         private readonly ICosmosTemplateService _service;
         public TaskTemplateController(ICosmosTemplateService service) => _service = service;
 
-        [HttpGet]
+        [HttpGet("{projectId}")]
         public async Task<IActionResult> GetAllProjectTemplates(string projectId)
         {
             var templates = await _service.GetAllProjectTemplates(projectId);
@@ -40,7 +38,7 @@ namespace Tasque.Core.WebAPI.Controllers
             return Created(template.ToString()?? string.Empty, template);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateTemplate([FromBody] TaskTemplate value)
         {
             var template = await _service.UpdateTemplate(value);

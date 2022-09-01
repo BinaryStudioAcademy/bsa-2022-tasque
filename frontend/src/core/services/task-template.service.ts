@@ -18,4 +18,20 @@ export class TaskTemplateService {
   public createTaskTemplate(model: TaskTemplate): Observable<HttpResponse<TaskTemplate>> {
     return this.httpService.postFullRequest(this.routePrefix + '/saveTemplate', model);
   }
+
+  public updateTAskTemplate(model: TaskTemplate): Observable<HttpResponse<TaskTemplate>> {
+    return this.httpService.putFullRequest(this.routePrefix, model);
+  }
+
+  public getTemplateById(id: string): Observable<HttpResponse<TaskTemplate>> {
+    return this.httpService.getFullRequest(this.routePrefix + '/' + id);
+  }
+
+  public getAllProjectTemplates(projectId: string): Observable<HttpResponse<TaskTemplate>> {
+    return this.httpService.getFullRequest(this.routePrefix + '/' + projectId);
+  }
+
+  public deleteTemplate(id: string): Observable<HttpResponse<TaskTemplate>> {
+    return this.httpService.deleteFullRequest(this.routePrefix + '/' + id);
+  }
 }
