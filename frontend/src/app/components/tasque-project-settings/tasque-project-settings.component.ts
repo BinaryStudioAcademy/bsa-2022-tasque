@@ -23,6 +23,5 @@ export class TasqueProjectSettingsComponent implements OnInit {
 
   moveToIssueTemplates(): void {
     this.router.navigate(['project/issue-template']);
-    console.log('btn-event');
   }
 }

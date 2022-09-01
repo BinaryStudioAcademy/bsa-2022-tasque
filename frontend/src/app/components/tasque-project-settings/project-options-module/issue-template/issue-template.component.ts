@@ -51,7 +51,7 @@ export class IssueTemplateComponent implements OnInit {
     {
       id: 0,
       color: 'red',
-      title: 'Issue'
+      title: 'Bug'
     },{
       id: 1,
       color: 'blue',
@@ -59,7 +59,7 @@ export class IssueTemplateComponent implements OnInit {
     },{
       id: 2,
       color: 'green',
-      title: 'Enhance'
+      title: 'Story'
     },
   ];
 
@@ -76,7 +76,6 @@ export class IssueTemplateComponent implements OnInit {
     } else {
 
       if(event.previousContainer.data === this.customFields) {
-        console.log('Work');
         const toMove: TaskCustomField[] = [];
         this.customFields.forEach((f) => toMove.push( { name: f.name, type: f.type } ));
         transferArrayItem(
@@ -112,18 +111,15 @@ export class IssueTemplateComponent implements OnInit {
       this.notificationService.error('No issue type selected');
       return;
     }
-    console.log('clicked save changes');
-    const template: TaskTemplate = {
-      id: this.selectedId,
-      customDescriptionFields: this.fieldsWithDescription,
-      customContextFields: this.contextFields,
-    };
-    console.log(template);
+    // const template: TaskTemplate = { //<-----should be send to backend
+    //   id: this.selectedId,
+    //   customDescriptionFields: this.fieldsWithDescription,
+    //   customContextFields: this.contextFields,
+    // };
     this.notificationService.success(`${this.selectedIssue.title} template has been updated successfully`);
   }
 
   discardChanges(): void {
-    console.log('Discard changes');
     this.router.navigate(['/project/settings']);
   }
 
