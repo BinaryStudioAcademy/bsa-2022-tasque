@@ -15,18 +15,17 @@ import { NotificationService } from 'src/core/services/notification.service';
 })
 export class CreateOrganizationDialogComponent implements OnInit {
 
-  public createBtnName = 'Create organization';
+  public createBtnName = 'Create';
   public createBtnClass = 'fill';
   public cancelBtnName = 'Cancel';
   public cancelBtnClass = 'fill gray';
 
   public inputType = 'text';
   public inputNameClass = 'input';
-  public inputNameId = 'projectName';
-  public inputLabel = 'Organization name';
-  public inputNamePlaceholder = 'Write organization name';
-  public inputNameLabel = 'Organization name';
-  public createOrgErrorMessage = 'Name is required';
+  public inputNameId = 'organizationName';
+  public inputNamePlaceholder = 'Write the name of your organization';
+  public inputNameLabel = 'Name';
+  public createOrgErrorMessage = 'Organization name is required';
   public inputNameRequired = true;
 
   public isSuccessful: boolean;
