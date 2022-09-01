@@ -11,7 +11,7 @@ namespace Tasque.Core.WebAPI.Controllers
         private readonly ICosmosTemplateService _service;
         public TaskTemplateController(ICosmosTemplateService service) => _service = service;
 
-        [HttpGet("{projectId}")]
+        [HttpGet("all/{projectId}")]
         public async Task<IActionResult> GetAllProjectTemplates(string projectId)
         {
             var templates = await _service.GetAllProjectTemplates(projectId);

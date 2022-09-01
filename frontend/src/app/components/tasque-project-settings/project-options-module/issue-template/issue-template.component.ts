@@ -9,6 +9,7 @@ import { TaskFieldType } from 'src/core/models/task/task-field-types';
 import { Router } from '@angular/router';
 import { AvailableFields } from 'src/core/models/const-resources/available-fields';
 import { TaskTemplateService } from 'src/core/services/task-template.service';
+import { TaskType } from 'src/core/models/task/task-type';
 
 @Component({
   selector: 'app-issue-template',
@@ -23,24 +24,24 @@ export class IssueTemplateComponent implements OnInit {
     private taskTemplateService: TaskTemplateService,
   ) { }
 
-  @Input() public issueTemplate: TaskTemplate;  
+  public issueTemplate: TaskTemplate;  
   //fieldsWithDescription and contextFields props should be replaced with this object same properties
 
   public fieldsWithDescription: TaskCustomField[] = [ 
-    { name: 'Description', type: TaskFieldType.Paragraph }, 
-    { name: 'Summary', type: TaskFieldType.Text }, 
-    { name: 'State', type: TaskFieldType.State }, 
-    { name: 'Type', type: TaskFieldType.Type }
+    // { name: 'Description', type: TaskFieldType.Paragraph }, 
+    // { name: 'Summary', type: TaskFieldType.Text }, 
+    // { name: 'State', type: TaskFieldType.State }, 
+    // { name: 'Type', type: TaskFieldType.Type }
   ];
   public contextFields: TaskCustomField[] = [ 
-    { name:'Assignee', type: TaskFieldType.User }, 
-    { name:'Label', type: TaskFieldType.Label, labels: [ 
-      { color: 'red', name: 'first label' },
-      { color: 'green', name: 'second label' },
-      { color: 'blue', name: 'third label' }, 
-    ] }, 
-    { name:'Sprint', type: TaskFieldType.Type }, 
-    { name:'Story point estimate', type: TaskFieldType.Number }
+    // { name:'Assignee', type: TaskFieldType.User }, 
+    // { name:'Label', type: TaskFieldType.Label, labels: [ 
+    //   { color: 'red', name: 'first label' },
+    //   { color: 'green', name: 'second label' },
+    //   { color: 'blue', name: 'third label' }, 
+    // ] }, 
+    // { name:'Sprint', type: TaskFieldType.Type }, 
+    // { name:'Story point estimate', type: TaskFieldType.Number }
   ];
   public customFields = Object.assign([], AvailableFields) as TaskCustomField[];
 
@@ -49,9 +50,12 @@ export class IssueTemplateComponent implements OnInit {
   public fieldName: string;
   faTrash = faTrash;
 
-  @Input() public dropdownOptions: TasqueDropdownOption[] = [ //Here will be all project issue types
+  public templates: TaskTemplate[] = [];
+  public type: TaskType;
+
+  public dropdownOptions: TasqueDropdownOption[] = [ //Here will be all project issue types
     {
-      id: 0,
+      id: 3,
       color: 'red',
       title: 'Bug'
     },{
@@ -71,6 +75,12 @@ export class IssueTemplateComponent implements OnInit {
   public isDropdown: TaskCustomField | undefined;
 
   ngOnInit(): void {
+    this.taskTemplateService.getAllProjectTemplates(String(this.projectId))
+    .subscribe((resp) => {
+      this.templates = resp.body as TaskTemplate[];
+      this.setDropdownOptions();
+    });
+    console.log('init');
   }
 
   dropCustomFields(event: CdkDragDrop<TaskCustomField[]>): void {
@@ -116,6 +126,8 @@ export class IssueTemplateComponent implements OnInit {
     }
     const template: TaskTemplate = { 
       typeId: this.selectedId,
+      title: '',
+      id: String(this.selectedId),
       projectId: this.projectId,
       customDescriptionFields: this.fieldsWithDescription,
       customContextFields: this.contextFields,
@@ -124,7 +136,7 @@ export class IssueTemplateComponent implements OnInit {
     console.log(template);
     console.log('Start send request');
 
-    this.taskTemplateService.createTaskTemplate(template)
+    this.taskTemplateService.updateTaskTemplate(template)
     .subscribe((resp) => {
       console.log('resp');
       console.log(resp.body);
@@ -138,6 +150,14 @@ export class IssueTemplateComponent implements OnInit {
 
   setSelected(val:number): void {
     this.selectedId = val;
+    this.taskTemplateService.getTaskType(val).subscribe((resp) => {
+      this.type = resp.body as TaskType;
+    });
+    this.taskTemplateService.getTemplateById(String(val)).subscribe((resp) => {
+      this.issueTemplate = resp.body as TaskTemplate;
+      this.contextFields = this.issueTemplate.customContextFields;
+      this.fieldsWithDescription = this.issueTemplate.customDescriptionFields;
+    });
     const issue = this.dropdownOptions.find((i) => i.id === this.selectedId) as TasqueDropdownOption;
     this.issueColor = issue.color as string;
     this.selectedIssue = issue;
@@ -161,5 +181,15 @@ export class IssueTemplateComponent implements OnInit {
   closeEdit(): void {
     this.isLabel = undefined;
     this.isDropdown = undefined;
+  }
+
+  setDropdownOptions(): void {
+    this.templates.forEach((t) => {
+      this.dropdownOptions.push({
+        id: Number(t.id),
+        title: this.type.name, 
+      })
+    })
+    console.log('set options');
   }
 }

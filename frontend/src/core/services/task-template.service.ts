@@ -2,6 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TaskTemplate } from '../models/task/task-template';
+import { TaskType } from '../models/task/task-type';
 import { HttpService } from './http.service';
 
 @Injectable({
@@ -19,7 +20,7 @@ export class TaskTemplateService {
     return this.httpService.postFullRequest(this.routePrefix + '/saveTemplate', model);
   }
 
-  public updateTAskTemplate(model: TaskTemplate): Observable<HttpResponse<TaskTemplate>> {
+  public updateTaskTemplate(model: TaskTemplate): Observable<HttpResponse<TaskTemplate>> {
     return this.httpService.putFullRequest(this.routePrefix, model);
   }
 
@@ -27,11 +28,15 @@ export class TaskTemplateService {
     return this.httpService.getFullRequest(this.routePrefix + '/' + id);
   }
 
-  public getAllProjectTemplates(projectId: string): Observable<HttpResponse<TaskTemplate>> {
-    return this.httpService.getFullRequest(this.routePrefix + '/' + projectId);
+  public getAllProjectTemplates(projectId: string): Observable<HttpResponse<TaskTemplate[]>> {
+    return this.httpService.getFullRequest(this.routePrefix + '/all/' + projectId);
   }
 
   public deleteTemplate(id: string): Observable<HttpResponse<TaskTemplate>> {
     return this.httpService.deleteFullRequest(this.routePrefix + '/' + id);
+  }
+
+  public getTaskType(id: number): Observable<HttpResponse<TaskType>> {
+    return this.httpService.getFullRequest('/api/tasktype/getById/' + id);
   }
 }

@@ -58,8 +58,16 @@ namespace Tasque.Core.BLL.Services
 
         public async Task<TaskTemplate> UpdateTemplate(TaskTemplate model)
         {
-            var resp = await _container.UpsertItemAsync(model, new(model.Id));
-            return resp.Resource;
+            try
+            {
+                var resp = await _container.UpsertItemAsync(model, new(model.Id));
+                return resp.Resource;
+            }
+            catch
+            {
+                var resp = await _container.CreateItemAsync(model, new(model.Id));
+                return resp.Resource;
+            }
         }
     }
 }
