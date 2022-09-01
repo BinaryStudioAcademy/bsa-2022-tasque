@@ -126,7 +126,7 @@ export class IssueTemplateComponent implements OnInit {
   setSelected(val:number): void {
     this.selectedId = val;
     const issue = this.dropdownOptions.find((i) => i.id === this.selectedId) as TasqueDropdownOption;
-    this.issueColor = issue.color;
+    this.issueColor = issue.color as string;
     this.selectedIssue = issue;
   }
 
