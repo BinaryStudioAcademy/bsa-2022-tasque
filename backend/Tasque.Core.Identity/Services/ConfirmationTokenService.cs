@@ -109,7 +109,7 @@ namespace Tasque.Core.Identity.Services
             {
                 TokenKind.EmailConfirmation => _emailOptions.ConfirmationEndpoint,
                 TokenKind.PasswordReset => _emailOptions.PasswordResetEndpoint,
-                TokenKind.ReferralSignUp => "register",
+                TokenKind.ReferralSignUp => _emailOptions.InviteEndpoint,
                 _ => ""
             };
         }
