@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tasque.Core.Common.Entities.Task
+namespace Tasque.Core.Common.Entities.TaskAdditionalModels
 {
     public class TaskCustomField
     {
