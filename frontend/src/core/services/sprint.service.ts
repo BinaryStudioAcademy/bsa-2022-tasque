@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SprintModel } from '../models/sprint/sprint-model';
 import { TaskModel } from '../models/task/task-model';
+import { UserModel } from '../models/user/user-model';
 import { HttpService } from './http.service';
 
 @Injectable({
@@ -24,6 +25,12 @@ export class SprintService {
   getSprintTasks(sprintId: number): Observable<HttpResponse<TaskModel[]>> {
     return this.httpService.getFullRequest<TaskModel[]>(
       this.routePrefix + `/${sprintId}/tasks`,
+    );
+  }
+
+  getSprintUsers(sprintId: number): Observable<HttpResponse<UserModel[]>> {
+    return this.httpService.getFullRequest<UserModel[]>(
+      this.routePrefix + `/${sprintId}/users`,
     );
   }
 }

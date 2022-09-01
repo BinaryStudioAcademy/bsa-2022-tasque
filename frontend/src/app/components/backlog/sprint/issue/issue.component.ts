@@ -21,8 +21,6 @@ export class IssueComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.issue);
-
     this.getIssueAuthor();
   }
 

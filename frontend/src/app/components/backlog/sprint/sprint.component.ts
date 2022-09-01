@@ -14,6 +14,7 @@ import { TaskModel } from 'src/core/models/task/task-model';
 import { SprintService } from 'src/core/services/sprint.service';
 import { IssueSort } from '../models';
 import { UserModel } from 'src/core/models/user/user-model';
+import { UserCircle } from 'src/shared/components/tasque-team-select/models';
 
 @Component({
   selector: 'app-sprint',
@@ -22,8 +23,11 @@ import { UserModel } from 'src/core/models/user/user-model';
 })
 export class SprintComponent implements OnInit, OnChanges {
   @Input() public sprint: SprintModel;
+  public users: UserModel[];
+
   public tasks: TaskModel[];
   public tasksShow: TaskModel[];
+
   public unsubscribe$ = new Subject<void>();
   public createIssueSidebarName = 'createIssue';
   @Input() public inputSearch = '';
@@ -37,6 +41,7 @@ export class SprintComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.getSprintTasks();
+    this.getSprintUsers();
     this.createIssueSidebarName += this.sprint.id;
   }
 
@@ -47,6 +52,18 @@ export class SprintComponent implements OnInit, OnChanges {
       .subscribe((result) => {
         if (result.body) {
           this.tasks = this.tasksShow = result.body;
+        }
+      });
+  }
+
+  public getSprintUsers(): void {
+    this.sprintService
+      .getSprintUsers(this.sprint.id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.users = result.body;
+          console.log(this.users);
         }
       });
   }
@@ -76,6 +93,9 @@ export class SprintComponent implements OnInit, OnChanges {
     }
   }
 
+  test(user: UserCircle): void {
+    console.log(user);
+  }
   //+++++++++++++++++++++++++rewrite after the backend part of sprintі sorting is implemented++++++++++++++++
   ngOnChanges() {
     this.filterItems();

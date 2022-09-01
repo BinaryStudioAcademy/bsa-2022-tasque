@@ -44,4 +44,20 @@ public class SprintController : EntityController<Sprint, SprintDto, SprintServic
             return BadRequest("Entities not found");
         }
     }
+
+    [Route("{id}/users")]
+    [HttpGet]
+    public async virtual Task<IActionResult> GetSprintUsers(int id)
+    {
+        var tasks = await _service.GetSprintUsers(id);
+
+        if (tasks is not null)
+        {
+            return Ok(tasks);
+        }
+        else
+        {
+            return BadRequest("Entities not found");
+        }
+    }
 }

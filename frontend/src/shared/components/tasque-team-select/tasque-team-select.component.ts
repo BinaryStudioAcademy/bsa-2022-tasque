@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { UserCircle } from './models';
 
@@ -13,7 +13,7 @@ export class TasqueTeamSelectComponent implements OnInit {
 
   public showPopUp = false;
 
-  public avatars: UserCircle[] = [
+  @Input() public avatars: UserCircle[] = [
     // remove when integrated in component with data
     {
       email: 'petroporoshenko@gmail.com',
