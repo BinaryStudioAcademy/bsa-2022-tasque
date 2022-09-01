@@ -35,7 +35,7 @@ export class BacklogComponent implements OnInit {
     public boardService: BoardService,
     public sprintService: SprintService,
     public currentUserService: GetCurrentUserService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.currentUserService.currentUser.subscribe((user) => {
@@ -72,6 +72,7 @@ export class BacklogComponent implements OnInit {
   }
 
   dropSprint(event: CdkDragDrop<string[]>) {
+    console.log(this.sprints);
     moveItemInArray(this.sprints, event.previousIndex, event.currentIndex);
   }
 

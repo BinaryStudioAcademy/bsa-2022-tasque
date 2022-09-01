@@ -145,12 +145,23 @@ input[type="search"]::-webkit-search-results-decoration
 
 .test-input
   background: colorscheme(pink-200)
+  color: colorscheme(white-100)
   border: none
   text-align: center
   width: 100%
   height: 35px
   border-radius: 100%
+  padding: 0px
+  font-size: 16px
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button
+    -webkit-appearance: none
+    margin: 0
   &:hover
     border-radius: 10%
     background: colorscheme(gray-300)
+    color: colorscheme(black-100)
     border: none
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button
+      -webkit-appearance: searchfield
