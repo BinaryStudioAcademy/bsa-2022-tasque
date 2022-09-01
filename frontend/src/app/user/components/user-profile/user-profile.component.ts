@@ -50,7 +50,6 @@ export class UserProfileComponent implements OnInit {
     this.passwordChanges.newPassword = '';
     this.passwordChanges.previousPassword = '';
     this.emailControl = new FormControl(this.profileChanges.email, [
-      Validators.email,
       Validators.required,
       Validators.pattern(this.validationConstants.emailRegex),
     ]);

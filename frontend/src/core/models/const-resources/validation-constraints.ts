@@ -4,5 +4,5 @@ export const ValidationConstants = {
   minLengthPassword: 8,
   maxLengthPassword: 255,
   minLengthEmail: 8,
-  emailRegex: '^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$',
+  emailRegex: '^^((?![_.+%-])(?:(?<=[_.+%-])\\w|(?<![_.+%-])[\\w.+%-]){1,64}(?<![_.+%-]))@((?:(?![_.+%-])(?:(?<=[_.-])[a-z0-9]|(?<![_.-])[a-z0-9._-]){1,63}(?<![_.+%-]))\\.[a-z]{2,4})$',
 };
