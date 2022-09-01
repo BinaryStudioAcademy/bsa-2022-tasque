@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.Task.TemplateModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,38 +10,49 @@ namespace Tasque.Core.WebAPI.Controllers
     [ApiController]
     public class TaskTemplateController : ControllerBase
     {
-        public TaskTemplateController()
-        {
-
-        }
+        private readonly ICosmosTemplateService _service;
+        public TaskTemplateController(ICosmosTemplateService service) => _service = service;
 
         [HttpGet]
-        public IEnumerable<TaskTemplate> GetAllProjectTemplates(int projectId)
+        public async Task<IActionResult> GetAllProjectTemplates(string projectId)
         {
-            return null;
+            var templates = await _service.GetAllProjectTemplates(projectId);
+            if (templates == null)
+                return BadRequest();
+            return Ok(templates);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetTemplate(int id)
+        public async Task<IActionResult> GetTemplate(string id)
         {
-            return Ok();
+            var template = await  _service.GetTemplateById(id);
+            if (template == null)
+                return NotFound();
+            return Ok(template);
         }
 
         [HttpPost("saveTemplate")]
-        public IActionResult Createtemplate([FromBody] TaskTemplate value)
+        public async Task<IActionResult> Createtemplate([FromBody] TaskTemplate value)
         {
-            return Ok(value);
+            var template = await _service.CreateTemplate(value);
+            if (template == null)
+                return BadRequest();
+            return Created(template.ToString()?? string.Empty, template);
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateTemplate([FromBody] TaskTemplate value)
+        public async Task<IActionResult> UpdateTemplate([FromBody] TaskTemplate value)
         {
-            return Ok(value);
+            var template = await _service.UpdateTemplate(value);
+            if (template == null)
+                return BadRequest();
+            return Ok(template);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteTemplate(int id)
+        public async Task<IActionResult> DeleteTemplate(string id)
         {
+            await _service.DeleteTemplate(id);
             return NoContent();
         }
     }

@@ -11,5 +11,13 @@ namespace Tasque.Core.Common.StaticResources
         public const string IdKey = "id";
 
         public const string CustomFieldsKey = "customFields";
+
+        public const string ProjectIdKey = "projectId";
+
+        public const string TypeIdKey = "typeId";
+
+        public const string CustomContextFieldsKey = "customContextFields";
+
+        public const string CustomDescriptionFieldsKey = "customDescriptionFields";
     }
 }
