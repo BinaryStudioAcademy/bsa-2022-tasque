@@ -33,6 +33,10 @@ namespace Tasque.Core.WebAPI.Controllers
         }
 
         [HttpPut("edit/avatar")]
+        // Max image size 5MB
+        // ~150% of original size while converted into Base64
+        // And a bit more just in case
+        [RequestSizeLimit(10_000_000)]
         public async Task<IActionResult> EditUserAvatar([FromBody] ImageDto img)
         {
             var user = await _service.EditUserAvatar(_userId, img);

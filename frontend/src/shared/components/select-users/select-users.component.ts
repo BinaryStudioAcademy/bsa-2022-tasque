@@ -42,7 +42,6 @@ export class SelectUsersComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
     this.emailControl = new FormControl(this.userEmail, [
-      Validators.email,
       Validators.required,
       Validators.pattern(this.validationConstants.emailRegex),
     ]);
@@ -62,7 +61,6 @@ export class SelectUsersComponent implements OnInit {
       () => {
         this.refreshList();
         this.emailControl = new FormControl(this.userEmail, [
-          Validators.email,
           Validators.required,
           Validators.pattern(this.validationConstants.emailRegex),
         ]);

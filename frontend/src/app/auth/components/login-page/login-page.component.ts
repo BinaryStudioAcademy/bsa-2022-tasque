@@ -74,7 +74,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     this.errMsg = nav?.extras.state?.['error'];
 
     this.emailControl = new FormControl(this.userLogin.email, [
-      Validators.email,
       Validators.required,
       Validators.pattern(this.validationConstants.emailRegex),
     ]);
