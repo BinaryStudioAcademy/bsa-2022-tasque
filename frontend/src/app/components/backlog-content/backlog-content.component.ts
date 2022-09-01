@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { faAngleDown, faFlag, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { TaskType } from 'src/core/models/task/task-type';
@@ -21,7 +20,7 @@ export class BacklogContentComponent implements OnInit {
   iconDown = faAngleDown;
   iconPlus = faPlus;
   flagIcon = faFlag;
-  btnClass = "bold"
+  btnClass = 'bold';
 
   @Input() public taskStates: TaskState[] = [
     {
@@ -178,13 +177,13 @@ export class BacklogContentComponent implements OnInit {
       id: 1,
       summary: 'Create Backlog',
       description: 'Lorem ipsum',
-      state: this.taskStates.filter(s => s.name == 'In Progress')[0],
-      type: this.taskTypes.filter(t => t.name == 'Feature')[0],
-      priority: this.taskPriorities.filter(p => p.name == 'High')[0],
-      author: this.users.filter(u => u.id == 1)[0],
-      project: this.projects.filter(p => p.key == 'PR-1')[0],
-      sprint: this.sprints.filter(s => s.id == 1)[0],
-      lastUpdatedBy: this.users.filter(u => u.id == 1)[0],
+      state: this.taskStates.filter((s) => s.name == 'In Progress')[0],
+      type: this.taskTypes.filter((t) => t.name == 'Feature')[0],
+      priority: this.taskPriorities.filter((p) => p.name == 'High')[0],
+      author: this.users.filter((u) => u.id == 1)[0],
+      project: this.projects.filter((p) => p.key == 'PR-1')[0],
+      sprint: this.sprints.filter((s) => s.id == 1)[0],
+      lastUpdatedBy: this.users.filter((u) => u.id == 1)[0],
       parentTaskId: 100,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -194,19 +193,19 @@ export class BacklogContentComponent implements OnInit {
       id: 2,
       summary: 'Merge Backlog',
       description: 'Lorem ipsum',
-      state: this.taskStates.filter(s => s.name == 'To Do')[0],
-      type: this.taskTypes.filter(t => t.name == 'Feature')[0],
-      priority: this.taskPriorities.filter(p => p.name == 'High')[0],
-      author: this.users.filter(u => u.id == 1)[0],
-      project: this.projects.filter(p => p.key == 'PR-2')[0],
-      sprint: this.sprints.filter(s => s.id == 1)[0],
-      lastUpdatedBy: this.users.filter(u => u.id == 1)[0],
+      state: this.taskStates.filter((s) => s.name == 'To Do')[0],
+      type: this.taskTypes.filter((t) => t.name == 'Feature')[0],
+      priority: this.taskPriorities.filter((p) => p.name == 'High')[0],
+      author: this.users.filter((u) => u.id == 1)[0],
+      project: this.projects.filter((p) => p.key == 'PR-2')[0],
+      sprint: this.sprints.filter((s) => s.id == 1)[0],
+      lastUpdatedBy: this.users.filter((u) => u.id == 1)[0],
       parentTaskId: 100,
       createdAt: new Date(),
       updatedAt: new Date(),
       deadline: new Date()
     }
-  ]
+  ];
 
   constructor() { }
 
@@ -214,10 +213,10 @@ export class BacklogContentComponent implements OnInit {
   }
 
   toggleDropdown(): void {
-    var dropdown = document.getElementById('backlog-issues');
+    const dropdown = document.getElementById('backlog-issues');
     dropdown?.classList.toggle('show');
 
-    var icon = document.getElementById('dropdown-arrow-icon');
+    const icon = document.getElementById('dropdown-arrow-icon');
     icon?.classList.toggle('down');
   }
 
@@ -226,13 +225,13 @@ export class BacklogContentComponent implements OnInit {
   }
 
   taskStateToDropdownArray(types: TaskState[]): TasqueDropdownOption[] {
-    return types.map(type => {
+    return types.map((type) => {
       return {
         id: type.id,
         title: type.name,
-        color: ""
-      }
-    })
+        color: ''
+      };
+    });
   }
 
 }

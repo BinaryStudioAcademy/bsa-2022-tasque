@@ -47,7 +47,7 @@ export class SelectUsersComponent implements OnInit {
         role: BusinessRole.Administrator
       }
     ]
-  }
+  };
 
   constructor(private service: BoardService, private toastr: ToastrService) {
     this.roles = getRolesAsArray();

@@ -13,7 +13,6 @@ import { AuthGuard } from './auth/guards/auth.guard';
 import { ProjectSettingsRoutes } from './components/tasque-project-settings/project-options-module/project-options-routes';
 import { BacklogComponent } from './components/backlog/backlog.component';
 import { NotFoundPageComponent } from 'src/shared/components/not-found-page/not-found-page.component';
-import { BacklogContentComponent } from './components/backlog-content/backlog-content.component';
 
 const routes: Routes = [
   ...AuthRoutes,
