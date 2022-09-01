@@ -34,6 +34,8 @@ import { TasqueCardComponent } from './components/tasque-card/tasque-card.compon
 import { BacklogComponent } from './components/backlog/backlog.component';
 import { EditSprintComponent } from './components/edit-sprint/edit-sprint.component';
 import { EditSprintDialogComponent } from './components/edit-sprint/edit-sprint-dialog/edit-sprint-dialog.component';
+import { CompleteSprintComponent } from './components/complete-sprint/complete-sprint.component';
+import { CompleteSprintDialogComponent } from './components/complete-sprint/complete-sprint-dialog/complete-sprint-dialog.component';
 
 @NgModule({
   declarations: [
@@ -57,9 +59,10 @@ import { EditSprintDialogComponent } from './components/edit-sprint/edit-sprint-
     TasqueProjectSettingsComponent,
     TasqueCardComponent,
     BacklogComponent,
+    CompleteSprintComponent,
+    CompleteSprintDialogComponent,
     EditSprintComponent,
     EditSprintDialogComponent,
-    
   ],
   imports: [
     BrowserModule,
