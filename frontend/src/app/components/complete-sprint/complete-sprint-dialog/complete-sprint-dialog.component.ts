@@ -10,9 +10,10 @@ import { SprintService } from 'src/core/services/sprint.service';
 })
 export class CompleteSprintDialogComponent implements OnInit {
 
+  //Information about the current sprint
   @Input() sprint: SprintInfo = { id: -1, name: '', openIssue: 0, complatedIssues: 0 };
 
-  public finishBtnName = 'Complate sprint';
+  public finishBtnName = 'Complete sprint';
   public createBtnClass = 'fill';
   public cancelBtnName = 'Cancel';
   public cancelBtnClass = 'fill gray';

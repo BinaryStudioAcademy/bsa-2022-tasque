@@ -6,7 +6,7 @@ using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers;
 
-[Route("api/sprint/")]
+[Route("api/sprint")]
 public class SprintController : EntityController<Sprint, SprintDto, SprintService>
 {
     public SprintController(SprintService service, CurrentUserParameters currentUser)
