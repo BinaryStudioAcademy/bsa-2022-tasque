@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { fromEvent, Subject } from 'rxjs';
 import { NotificationService } from 'src/core/services/notification.service';
-import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
-import { LocalStorageKeys } from 'src/entity-models/local-storage-keys';
+import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
+import { LocalStorageKeys } from 'src/core/models/local-storage-keys';
 import { PasswordChangesDTO } from '../../dto/password-changes-dto';
 import { ProfileChangesDTO } from '../../dto/profile-changes-dto';
 import { UserService } from '../../services/user.service';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
-import { mergeMap, takeUntil } from 'rxjs/operators';
+import { filter, mergeMap, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-profile',
@@ -21,8 +21,9 @@ export class UserProfileComponent implements OnInit {
   public allowedFileTypes = ['image/png', 'image/jpeg', 'image/gif'];
   public originalUser: ProfileChangesDTO = {} as ProfileChangesDTO;
   public profileChanges: ProfileChangesDTO = {} as ProfileChangesDTO;
-  public passwordChanches: PasswordChangesDTO;
+  public passwordChanges: PasswordChangesDTO;
   public hidePass = true;
+  public hideNewPass = true;
   public profileForm: FormGroup = new FormGroup({});
   public changePassForm: FormGroup = new FormGroup({});
   public userNameControl: FormControl;
@@ -40,14 +41,14 @@ export class UserProfileComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private userService: UserService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getUser();
 
-    this.passwordChanches = {} as PasswordChangesDTO;
-    this.passwordChanches.newPassword = '';
-    this.passwordChanches.previousPassword = '';
+    this.passwordChanges = {} as PasswordChangesDTO;
+    this.passwordChanges.newPassword = '';
+    this.passwordChanges.previousPassword = '';
     this.emailControl = new FormControl(this.profileChanges.email, [
       Validators.email,
       Validators.required,
@@ -56,19 +57,22 @@ export class UserProfileComponent implements OnInit {
     this.userNameControl = new FormControl(this.profileChanges.email, [
       Validators.required,
       Validators.minLength(this.validationConstants.minLengthName),
+      Validators.maxLength(this.validationConstants.maxLengthName),
     ]);
     this.prevPasswordControl = new FormControl(
-      this.passwordChanches.previousPassword,
+      this.passwordChanges.previousPassword,
       [
         Validators.required,
         Validators.minLength(this.validationConstants.minLengthPassword),
+        Validators.maxLength(this.validationConstants.maxLengthPassword),
       ],
     );
     this.newPasswordControl = new FormControl(
-      this.passwordChanches.previousPassword,
+      this.passwordChanges.previousPassword,
       [
         Validators.required,
         Validators.minLength(this.validationConstants.minLengthPassword),
+        Validators.maxLength(this.validationConstants.maxLengthPassword),
       ],
     );
     this.profileForm = new FormGroup({
@@ -143,7 +147,7 @@ export class UserProfileComponent implements OnInit {
         if (resp.ok && resp.body != null) {
           this.profileChanges = resp.body;
           this.originalUser = Object.assign({}, resp.body);
-          this.passwordChanches.id = this.originalUser.id;
+          this.passwordChanges.id = this.originalUser.id;
         } else {
           this.notificationService.error('Something went wrong');
         }
@@ -155,46 +159,32 @@ export class UserProfileComponent implements OnInit {
   }
 
   public saveNewInfo(): void {
-    if (!this.isProfileChanged) {
-      this.notificationService.error('Profile was not changed');
-      return;
-    }
-    this.userService.editUserProfile(this.profileChanges).subscribe(
-      (resp) => {
-        if (resp.ok && resp.body != null) {
-          this.profileChanges = resp.body;
-          this.originalUser = Object.assign({}, resp.body);
-          this.isProfileChanged = false;
-          this.notificationService.success('Profile was successfully changed');
-        } else {
-          this.notificationService.error('Something went wrong');
-        }
-      },
-      (error) => {
-        this.notificationService.error(error);
-      },
-    );
+    if (this.profileForm.invalid || !this.isProfileChanged) return;
+    this.userService
+      .editUserProfile(this.profileChanges)
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        filter((resp) => resp.body != null),
+      )
+      .subscribe((resp) => {
+        this.originalUser = resp.body as ProfileChangesDTO;
+        this.profileChanges = Object.assign({}, this.originalUser);
+        this.notificationService.success('Profile was successfully updated');
+      });
   }
 
   public saveNewPassword(): void {
-    if (this.prevPasswordControl.invalid || this.newPasswordControl.invalid) {
-      this.notificationService.error('Password can not be changed');
+    if (this.changePassForm.invalid || !this.changePassForm.dirty) {
       return;
     }
 
-    this.userService.editPassword(this.passwordChanches).subscribe(
-      (resp) => {
-        if (resp.ok && resp.body != null) {
-          this.changePassForm.reset();
-          this.notificationService.success('Password was successfully changed');
-        } else {
-          this.notificationService.error('Something went wrong');
-        }
-      },
-      (error) => {
-        this.notificationService.error(error);
-      },
-    );
+    this.userService
+      .editPassword(this.passwordChanges)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.changePassForm.reset();
+        this.notificationService.success('Password was successfully changed');
+      });
   }
 
   public checkChanged(): void {

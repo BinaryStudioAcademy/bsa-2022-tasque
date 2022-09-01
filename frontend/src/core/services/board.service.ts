@@ -1,5 +1,8 @@
+import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { HttpService } from 'src/core/services/http.service';
+import { BoardModelDto } from 'src/core/models/board/board-model-dto';
 import {
   BusinessRole,
   IBoard,
@@ -13,7 +16,9 @@ import {
 
 // localStorage is used for tests only. It will be removed when we have a proper BoardService
 export class BoardService {
-  constructor() { }
+  public routePrefix = '/api/board';
+
+  constructor(public httpService: HttpService) { }
 
   public getUsers(board: IBoard): Observable<IUserCard[]> {
     const key = this.createKey(board);
@@ -90,5 +95,11 @@ export class BoardService {
   private save(board: IBoard): void {
     const key = this.createKey(board);
     localStorage.setItem(key, JSON.stringify(board));
+  }
+
+  getUserBoards(userId: number): Observable<HttpResponse<BoardModelDto[]>> {
+    return this.httpService.getFullRequest<BoardModelDto[]>(
+      this.routePrefix + `/getUserBoards/${userId}`,
+    );
   }
 }

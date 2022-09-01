@@ -1,4 +1,4 @@
-﻿export interface NewProjectModel {
+export interface NewProjectModel {
   name: string,
   key?: string,
   organizationId: number

@@ -14,8 +14,10 @@ namespace Tasque.Core.WebAPI.Middlewares
 
         public async Task InvokeAsync(HttpContext httpContext, CurrentUserParameters currentUserParameters)
         {
-            var userId = httpContext.User.FindFirst("id")?.Value;
-            currentUserParameters.Id = userId;
+            if (int.TryParse(httpContext.User.FindFirst("id")?.Value, out int userId))
+            {
+                currentUserParameters.Id = userId;
+            }
 
             await _next(httpContext);
         }

@@ -25,9 +25,15 @@ import { PageWithoutSidebarComponent } from './components/page-without-sidebar/p
 import { PageWithSidebarComponent } from './components/page-with-sidebar/page-with-sidebar.component';
 import { TasqueTeamComponent } from './components/tasque-team/tasque-team.component';
 import { TasqueProjectSettingsComponent } from './components/tasque-project-settings/tasque-project-settings.component';
-import { ToastrConfig } from 'src/entity-models/const-resources/toastr-config';
+import { ToastrConfig } from 'src/core/models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
 import { EditOrganizationComponent } from './components/edit-organization/edit-organization.component';
+import { ProjectOptionsModule } from './components/tasque-project-settings/project-options-module/project-options-module.module';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TasqueCardComponent } from './components/tasque-card/tasque-card.component';
+import { BacklogComponent } from './components/backlog/backlog.component';
+import { EditSprintComponent } from './components/edit-sprint/edit-sprint.component';
+import { EditSprintDialogComponent } from './components/edit-sprint/edit-sprint-dialog/edit-sprint-dialog.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +55,11 @@ import { EditOrganizationComponent } from './components/edit-organization/edit-o
     TasqueBoardComponent,
     EditOrganizationComponent,
     TasqueProjectSettingsComponent,
+    TasqueCardComponent,
+    BacklogComponent,
+    EditSprintComponent,
+    EditSprintDialogComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -61,6 +72,8 @@ import { EditOrganizationComponent } from './components/edit-organization/edit-o
     ToastrModule.forRoot(ToastrConfig),
     AuthModule,
     UserModule,
+    ProjectOptionsModule,
+    DragDropModule
   ],
   providers: [
     BrowserAnimationsModule,
@@ -69,4 +82,4 @@ import { EditOrganizationComponent } from './components/edit-organization/edit-o
   bootstrap: [AppComponent],
   exports: [OrganizationListComponent],
 })
-export class AppModule {}
+export class AppModule { }

@@ -22,6 +22,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
         {
             services.AddAutoMapper(cfg =>
             {
+                cfg.AddProfile<BoardProfiles>();
                 cfg.AddProfile<OrganizationProfile>();
                 cfg.AddProfile<TaskProfile>();
                 cfg.ConfigureIdentityMapping();
@@ -109,7 +110,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<TaskPriorityService>()
                 .AddScoped<TaskStateService>()
                 .AddScoped<TaskTypeService>()
-                .AddScoped<ITaskService, TaskService>();
+                .AddScoped<ITaskService, TaskService>()
+                .AddScoped<BoardService>();
 
             services.RegisterIdentity(configuration);
         }

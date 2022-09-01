@@ -57,7 +57,8 @@
                             (input)="checkChanged()"
                         />
                         <span class="error" *ngIf="userNameControl.errors?.['required'] && (userNameControl.dirty || userNameControl.touched)">Name is required.</span>
-                        <span class="error" *ngIf="userNameControl.errors?.['minlength']">Must be at least 4 characters</span>
+                        <span class="error" *ngIf="userNameControl.errors?.['minlength']">Must be at least 2 characters</span>
+                        <span class="error" *ngIf="userNameControl.errors?.['maxlength']">Must be no more than 30 characters</span>
                     </div>
                 </div>
             </form>
@@ -84,7 +85,7 @@
                         [ngClass]="{
                           'error': prevPasswordControl.invalid && (prevPasswordControl.dirty || prevPasswordControl.touched)
                         }"
-                        [(ngModel)]="passwordChanches.previousPassword"
+                        [(ngModel)]="passwordChanges.previousPassword"
                         [type]="hidePass ? 'password' : 'text'"
                         placeholder="Password"
                         formControlName="prevPasswordControl"
@@ -92,6 +93,7 @@
                       <mat-icon class="hide-icon" (click)="hidePass = !hidePass">{{ hidePass ? 'visibility' : 'visibility_off' }}</mat-icon>
                       <span class="error" *ngIf="prevPasswordControl.errors?.['required'] && (prevPasswordControl.dirty || prevPasswordControl.touched)">Password is required.</span>
                       <span class="error" *ngIf="prevPasswordControl.errors?.['minlength']">Must be at least 8 characters</span>
+                      <span class="error" *ngIf="prevPasswordControl.errors?.['maxlength']">Must be less than 256 characters</span>
                     </div>
                   </div>
                   <div class="input-container">
@@ -102,14 +104,15 @@
                         [ngClass]="{
                           'error': newPasswordControl.invalid && (newPasswordControl.dirty || newPasswordControl.touched)
                         }"
-                        [(ngModel)]="passwordChanches.newPassword"
-                        [type]="hidePass ? 'password' : 'text'"
+                        [(ngModel)]="passwordChanges.newPassword"
+                        [type]="hideNewPass ? 'password' : 'text'"
                         placeholder="Password"
                         formControlName="newPasswordControl"
                       />
-                      <mat-icon class="hide-icon" (click)="hidePass = !hidePass">{{ hidePass ? 'visibility' : 'visibility_off' }}</mat-icon>
+                      <mat-icon class="hide-icon" (click)="hideNewPass = !hideNewPass">{{ hideNewPass ? 'visibility' : 'visibility_off' }}</mat-icon>
                       <span class="error" *ngIf="newPasswordControl.errors?.['required'] && (newPasswordControl.dirty || newPasswordControl.touched)">Password is required.</span>
                       <span class="error" *ngIf="newPasswordControl.errors?.['minlength']">Must be at least 8 characters</span>
+                      <span class="error" *ngIf="newPasswordControl.errors?.['maxlength']">Must be less than 256 characters</span>
                     </div>
                   </div>
             </form>

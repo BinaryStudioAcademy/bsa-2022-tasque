@@ -7,6 +7,7 @@ import { FormControl } from '@angular/forms';
 import { BaseComponent } from 'src/core/base/base.component';
 import { UserModel } from 'src/core/models/user/user-model';
 import { MenuDropdownOption } from '../../tasque-menu-dropdown/menu-dropdown.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'tasque-organizations-dropdown',
@@ -43,7 +44,7 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
 
   public currentOrganization: OrganizationModel = {
     id: -1,
-    name: 'None',
+    name: 'My Organizations',
     authorId: -1,
     createdAt: new Date(),
     updatedAt: new Date()
@@ -55,7 +56,8 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
 
   constructor(
     private organizationService: OrganizationService,
-    private getCurrentOrganizationService: GetCurrentOrganizationService) {
+    private getCurrentOrganizationService: GetCurrentOrganizationService,
+    private router: Router) {
     super();
   }
 
@@ -111,6 +113,10 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
           return;
         }
 
+        if (this.currentOrganization.id === result) {
+          return;
+        }
+
         const searchedOrganization = this.availableOrganizations.find((x) => x.id === result);
 
         if (searchedOrganization) {
@@ -134,6 +140,8 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
         else {
           this.setOrganization();
         }
+        this.router.navigate(['organizations'], { replaceUrl: true });
+        window.scroll(0, 0);
       }
     );
   }
@@ -160,5 +168,12 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
         }
       }
     );
+  }
+
+  public openOrganizationsPage(): void {
+    this.router.navigate(['/organizations'], {
+      replaceUrl: true,
+    });
+    window.scroll(0, 0);
   }
 }

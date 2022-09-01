@@ -21,7 +21,7 @@ export class ProjectListComponent implements OnInit {
   public items: ProjectModel[] = [
     {
       id: 1,
-      name: 'Test Project',
+      name: 'Tasque',
       authorId: 1,
       organizationId: 1,
       createdAt: new Date(Date.now()),
@@ -29,7 +29,7 @@ export class ProjectListComponent implements OnInit {
     },
     {
       id: 2,
-      name: 'Test Project 2',
+      name: 'Youtube',
       authorId: 1,
       organizationId: 1,
       createdAt: new Date(Date.now()),
@@ -37,7 +37,7 @@ export class ProjectListComponent implements OnInit {
     },
     {
       id: 3,
-      name: 'Test Project 3',
+      name: 'Facebook',
       authorId: 1,
       organizationId: 1,
       createdAt: new Date(Date.now()),
@@ -45,7 +45,7 @@ export class ProjectListComponent implements OnInit {
     },
     {
       id: 4,
-      name: 'Test Project 4',
+      name: 'Twitch',
       authorId: 1,
       organizationId: 1,
       createdAt: new Date(Date.now()),
@@ -53,7 +53,7 @@ export class ProjectListComponent implements OnInit {
     },
     {
       id: 5,
-      name: 'Test Project 5',
+      name: 'AWS',
       authorId: 1,
       organizationId: 1,
       createdAt: new Date(Date.now()),
@@ -61,7 +61,7 @@ export class ProjectListComponent implements OnInit {
     },
     {
       id: 6,
-      name: 'Test Project 6',
+      name: 'Dia',
       authorId: 1,
       organizationId: 1,
       createdAt: new Date(Date.now()),
@@ -69,7 +69,7 @@ export class ProjectListComponent implements OnInit {
     },
     {
       id: 7,
-      name: 'Test Project 7',
+      name: 'Spotify',
       authorId: 1,
       organizationId: 1,
       createdAt: new Date(Date.now()),
@@ -77,15 +77,7 @@ export class ProjectListComponent implements OnInit {
     },
     {
       id: 8,
-      name: 'Test Project 8',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 9,
-      name: 'Test Project 9',
+      name: 'Google Chrome',
       authorId: 1,
       organizationId: 1,
       createdAt: new Date(Date.now()),

@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { OrganizationService } from 'src/core/services/organization.service';
-import { UserModel } from 'src/entity-models/user-model';
+import { UserModel } from 'src/core/models/user/user-model';
 import { NewOrganizationModel } from 'src/core/models/organization/new-organization-model';
 import { FormControl, Validators } from '@angular/forms';
 import { NotificationService } from 'src/core/services/notification.service';
@@ -16,13 +16,17 @@ import { NotificationService } from 'src/core/services/notification.service';
 export class CreateOrganizationDialogComponent implements OnInit {
 
   public createBtnName = 'Create';
-  public btnClass = 'mini';
+  public createBtnClass = 'fill';
   public cancelBtnName = 'Cancel';
-  public inputClass = 'input';
-  public placeholderText = 'Write organization name';
-  public createOrgErrorMessage = 'Name is required';
+  public cancelBtnClass = 'fill gray';
+
   public inputType = 'text';
-  public inputLabel = 'Organization name';
+  public inputNameClass = 'input';
+  public inputNameId = 'organizationName';
+  public inputNamePlaceholder = 'Write the name of your organization';
+  public inputNameLabel = 'Name';
+  public createOrgErrorMessage = 'Organization name is required';
+  public inputNameRequired = true;
 
   public isSuccessful: boolean;
 
