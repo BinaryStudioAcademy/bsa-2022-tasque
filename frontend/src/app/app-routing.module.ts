@@ -11,6 +11,7 @@ import { TasqueTeamComponent } from './components/tasque-team/tasque-team.compon
 import { TasqueProjectSettingsComponent } from './components/tasque-project-settings/tasque-project-settings.component';
 import { AuthGuard } from './auth/guards/auth.guard';
 import { BacklogComponent } from './components/backlog/backlog.component';
+import { NotFoundPageComponent } from 'src/shared/components/not-found-page/not-found-page.component';
 
 const routes: Routes = [
   ...AuthRoutes,
@@ -24,6 +25,7 @@ const routes: Routes = [
       { path: 'projects', component: ProjectListComponent },
       { path: 'backlog', component: BacklogComponent },
       ...UserRoutes,
+      { path: 'not-found', component: NotFoundPageComponent }
     ],
   },
   {
@@ -36,7 +38,7 @@ const routes: Routes = [
       { path: 'settings', component: TasqueProjectSettingsComponent },
     ],
   },
-  { path: '**', redirectTo: '/auth/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/not-found', pathMatch: 'full' },
 ];
 
 @NgModule({
