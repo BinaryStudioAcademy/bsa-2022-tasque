@@ -10,7 +10,7 @@ import { UserCircle } from './models';
 export class TasqueTeamSelectComponent implements OnInit {
 
   public inputSearch = '';
-  public searchIcon = faMagnifyingGlass
+  public searchIcon = faMagnifyingGlass;
   public showPopUp = false;
 
   public avatars: UserCircle[] = [ // remove when integrated in component with data
