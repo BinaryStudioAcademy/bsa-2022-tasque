@@ -5,7 +5,6 @@ import { TaskTemplate } from 'src/core/models/task/task-template';
 import { ToastrService } from 'ngx-toastr';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { TaskCustomField } from 'src/core/models/task/task-custom-field';
-import { TaskFieldType } from 'src/core/models/task/task-field-types';
 import { Router } from '@angular/router';
 import { AvailableFields } from 'src/core/models/const-resources/available-fields';
 import { TaskTemplateService } from 'src/core/services/task-template.service';
@@ -69,7 +68,7 @@ export class IssueTemplateComponent implements OnInit {
     },
   ];
 
-  @Input() projectId: number = 1;
+  @Input() projectId: number;
   public selectedId: number;
   public isLabel: TaskCustomField | undefined;
   public isDropdown: TaskCustomField | undefined;
@@ -80,7 +79,6 @@ export class IssueTemplateComponent implements OnInit {
       this.templates = resp.body as TaskTemplate[];
       this.setDropdownOptions();
     });
-    console.log('init');
   }
 
   dropCustomFields(event: CdkDragDrop<TaskCustomField[]>): void {
@@ -133,13 +131,8 @@ export class IssueTemplateComponent implements OnInit {
       customContextFields: this.contextFields,
     };
 
-    console.log(template);
-    console.log('Start send request');
-
     this.taskTemplateService.updateTaskTemplate(template)
-    .subscribe((resp) => {
-      console.log('resp');
-      console.log(resp.body);
+    .subscribe(() => {
       this.notificationService.success(`${this.selectedIssue.title} template has been updated successfully`);
     });
   }
@@ -188,8 +181,7 @@ export class IssueTemplateComponent implements OnInit {
       this.dropdownOptions.push({
         id: Number(t.id),
         title: this.type.name, 
-      })
-    })
-    console.log('set options');
+      });
+    });
   }
 }

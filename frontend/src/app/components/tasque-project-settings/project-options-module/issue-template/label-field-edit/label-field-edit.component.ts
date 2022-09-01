@@ -75,7 +75,7 @@ export class LabelFieldEditComponent implements OnInit {
     const val: LabelField = {
       name: this.newFieldName,
       color: this.newFieldColor,
-    }
+    };
     this.labels.push(val);
     this.isChanging = false;
   }
