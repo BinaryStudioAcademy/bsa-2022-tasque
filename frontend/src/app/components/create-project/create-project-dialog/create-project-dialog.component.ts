@@ -36,7 +36,7 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
   public projectNameControl: FormControl;
   public projectKeyControl: FormControl;
 
-  public createBtnName = 'Create project';
+  public createBtnName = 'Create';
   public createBtnClass = 'fill';
 
   public cancelBtnName = 'Cancel';
@@ -44,11 +44,12 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
 
   public inputNameClass = 'input';
   public inputNameId = 'projectName';
-  public inputNamePlaceholder = 'Try a team name, project goal, milestone...';
+  public inputNamePlaceholder = 'Write the name of your project';
   public inputNameLabel = 'Name';
   public inputNameRequired = true;
 
   public inputKeyClass = 'input';
+  public inputKeyPlaceholder = 'Choose a prefix for your project issue keys';
   public inputKeyId = 'projectKey';
   public inputKeyLabel = 'Key';
 

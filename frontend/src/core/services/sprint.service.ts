@@ -4,6 +4,9 @@ import { Observable } from 'rxjs';
 import { SprintModel } from '../models/sprint/sprint-model';
 import { TaskModel } from '../models/task/task-model';
 import { UserModel } from '../models/user/user-model';
+import { Observable } from 'rxjs';
+import { EditSprintModel } from '../models/sprint/edit-sprint-model';
+import { SprintModel } from '../models/sprint/sprint-model';
 import { HttpService } from './http.service';
 
 @Injectable({
@@ -31,6 +34,15 @@ export class SprintService {
   getSprintUsers(sprintId: number): Observable<HttpResponse<UserModel[]>> {
     return this.httpService.getFullRequest<UserModel[]>(
       this.routePrefix + `/${sprintId}/users`,
+    );
+  }
+
+  editSprint(
+    editedSprint: EditSprintModel,
+  ): Observable<HttpResponse<SprintModel>> {
+    return this.httpService.putFullRequest<SprintModel>(
+      this.routePrefix + '/edit',
+      editedSprint,
     );
   }
 }

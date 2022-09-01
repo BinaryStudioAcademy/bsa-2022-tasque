@@ -1,0 +1,36 @@
+@import 'src/colors.sass'
+    
+.fieldName-wrapper
+    display: flex
+    justify-content: space-between
+    align-items: center
+    .icon
+        vertical-align: middle
+        border-radius: 50%
+    &:focus
+        outline: 0px solid transparent
+    tasque-button
+        ::ng-deep
+            button
+                color: colorscheme(gray-500)
+                .ng-fa-icon
+                    vertical-align: sub
+
+.fieldName
+    background: none
+    line-height: 114.88%
+    outline: 0px solid transparent
+    padding: 0 5px 0 5px
+
+input
+    margin-left: 5px
+    border: 2px solid colorscheme(violet-100)
+    background-color: colorscheme(violet-100)
+    border-radius: 4px
+    &:focus
+        border: 2px solid colorscheme(violet-100)
+
+.edit-label-field
+    background-color: colorscheme(gray-100) 
+    position: absolute
+

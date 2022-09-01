@@ -6,5 +6,8 @@ export interface SprintModel {
   description?: string;
   createdAt: Date;
   updatedAt: Date;
+  startAt?: Date;
+  endAt?: Date;
+  projectId: number;
   tasks?: TaskModel[];
 }
