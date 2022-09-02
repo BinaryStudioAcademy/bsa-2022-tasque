@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { UserCircle } from './models';
 

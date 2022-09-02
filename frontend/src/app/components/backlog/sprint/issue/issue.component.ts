@@ -47,8 +47,7 @@ export class IssueComponent implements OnInit {
   }
 
   public deadline(): Date {
-    var start = new Date(this.issue.deadline);
-    return start;
+    return new Date(this.issue.deadline);
   }
 
   estimateChange(): void {
@@ -63,9 +62,6 @@ export class IssueComponent implements OnInit {
     this.sprintService
       .updateTaskEstimate(this.taskEstimate)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((result) => {
-        if (result.body) {
-        }
-      });
+      .subscribe();
   }
 }

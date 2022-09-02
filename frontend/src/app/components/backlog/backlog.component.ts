@@ -71,13 +71,12 @@ export class BacklogComponent implements OnInit {
       });
   }
 
-  dropSprint(event: CdkDragDrop<string[]>) {
-    console.log(this.sprints);
+  dropSprint(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.sprints, event.previousIndex, event.currentIndex);
   }
 
-  dropSprintBtnClick(position: number) {
-    moveItemInArray(this.sprints, 0, 1);
+  dropSprintBtnClick(position: number): void {
+    moveItemInArray(this.sprints, position, position + 1);
   }
 
   taskSort(sort: IssueSort): void {
