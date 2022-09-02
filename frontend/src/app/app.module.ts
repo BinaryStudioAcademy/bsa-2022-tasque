@@ -28,11 +28,14 @@ import { TasqueProjectSettingsComponent } from './components/tasque-project-sett
 import { ToastrConfig } from 'src/core/models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
 import { EditOrganizationComponent } from './components/edit-organization/edit-organization.component';
+import { ProjectOptionsModule } from './components/tasque-project-settings/project-options-module/project-options-module.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TasqueCardComponent } from './components/tasque-card/tasque-card.component';
 import { BacklogComponent } from './components/backlog/backlog.component';
 import { EditSprintComponent } from './components/edit-sprint/edit-sprint.component';
 import { EditSprintDialogComponent } from './components/edit-sprint/edit-sprint-dialog/edit-sprint-dialog.component';
+import { CompleteSprintComponent } from './components/complete-sprint/complete-sprint.component';
+import { CompleteSprintDialogComponent } from './components/complete-sprint/complete-sprint-dialog/complete-sprint-dialog.component';
 
 @NgModule({
   declarations: [
@@ -56,9 +59,10 @@ import { EditSprintDialogComponent } from './components/edit-sprint/edit-sprint-
     TasqueProjectSettingsComponent,
     TasqueCardComponent,
     BacklogComponent,
+    CompleteSprintComponent,
+    CompleteSprintDialogComponent,
     EditSprintComponent,
     EditSprintDialogComponent,
-    
   ],
   imports: [
     BrowserModule,
@@ -71,6 +75,7 @@ import { EditSprintDialogComponent } from './components/edit-sprint/edit-sprint-
     ToastrModule.forRoot(ToastrConfig),
     AuthModule,
     UserModule,
+    ProjectOptionsModule,
     DragDropModule
   ],
   providers: [

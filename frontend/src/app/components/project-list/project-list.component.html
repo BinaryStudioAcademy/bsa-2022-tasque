@@ -1,19 +1,21 @@
 <div class="project-list">
-  <div class="projects-header">
-    <h4>List of Projects</h4>
-    <app-create-project></app-create-project>
-  </div>
-  <div class="project-search">
-    <tasque-input
-      [icon]="searchIcon"
-      class="search-input"
-      iconPosition="search"
-      type="search"
-      placeholder="Search..."
-      [(ngModel)]="inputSearch"
-      (ngModelChange)="filterItems()"
-    >
-    </tasque-input>
+  <div class="project-top">
+    <div class="projects-header">
+      <h4>List of Projects</h4>
+      <app-create-project></app-create-project>
+    </div>
+    <div class="project-search">
+      <tasque-input
+        [icon]="searchIcon"
+        class="search-input"
+        iconPosition="search"
+        type="search"
+        placeholder="Search..."
+        [(ngModel)]="inputSearch"
+        (ngModelChange)="filterItems()"
+      >
+      </tasque-input>
+    </div>
   </div>
   <div class="project-list-cards">
     <app-project-list-item

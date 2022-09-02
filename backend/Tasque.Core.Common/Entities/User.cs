@@ -43,7 +43,7 @@ public class UserValidator : AbstractValidator<User>
         // example@example -> valid email
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email is required")
-            .Matches(Constants.EMAIL_REGEX).WithMessage("Email adress is not valid");
+            .Matches(Constants.EMAIL_REGEX).WithMessage("Email address is not valid");
         RuleFor(x => x.Password).MinimumLength(8).WithMessage("Password must be at least 8 characters");
             
         RuleFor(x => x.Name)
