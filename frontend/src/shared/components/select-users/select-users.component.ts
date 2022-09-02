@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { BoardService } from 'src/core/services/board.service';
@@ -49,6 +49,10 @@ export class SelectUsersComponent implements OnInit {
     ]
   };
 
+  @Output() onAdd = new EventEmitter<string>();
+  @Output() onDelete = new EventEmitter<string>();
+  @Output() onUpdate = new EventEmitter<IUserCard>();
+
   constructor(private service: BoardService, private toastr: ToastrService) {
     this.roles = getRolesAsArray();
   }
@@ -70,40 +74,36 @@ export class SelectUsersComponent implements OnInit {
     }
 
     this.isLoading = true;
+
     const username = this.userEmail;
-    this.service.addUser(username, this.board).subscribe(
-      () => {
-        this.refreshList();
-        this.emailControl = new FormControl(this.userEmail, [
-          Validators.required,
-          Validators.pattern(this.validationConstants.emailRegex),
-        ]);
-        this.searchForm = new FormGroup({ emailControl: this.emailControl });
-        this.userEmail = '';
-        this.toastr.success(`${username} was added successfully !`);
-      },
-      () => {
-        this.isLoading = false;
-        this.toastr.error(`User with email ${username} was not found !`);
-      },
-    );
+    this.onAdd.emit(username);
+
+    this.emailControl = new FormControl(this.userEmail, [
+      Validators.email,
+      Validators.required,
+      Validators.pattern(this.validationConstants.emailRegex),
+    ]);
+    this.searchForm = new FormGroup({ emailControl: this.emailControl });
+    this.userEmail = '';
+
+    this.refreshList();
   }
 
   delete(email: string): void {
     this.isLoading = true;
-    this.service.deleteUser(this.board, email).subscribe(() => {
-      this.toastr.success(`${email} was deleted successfully !`);
-      this.refreshList();
-    });
+    
+    this.onDelete.emit(email);
+
+    this.refreshList();
   }
 
   update(user: IUserCard, role: BusinessRole): void {
     this.isLoading = true;
     user.role = role;
-    this.service.updateUser(this.board, user).subscribe(() => {
-      this.toastr.success(`${user.username} was updated successfully !`);
-      this.refreshList();
-    });
+    
+    this.onUpdate.emit(user);
+
+    this.refreshList();
   }
 
   roleToString(role: BusinessRole | null): string {
