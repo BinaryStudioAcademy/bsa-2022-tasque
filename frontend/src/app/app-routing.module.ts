@@ -33,7 +33,7 @@ const routes: Routes = [
     component: PageWithSidebarComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: 'board', component: TasqueBoardComponent },
+      { path: ':id/board', component: TasqueBoardComponent },
       { path: 'team', component: TasqueTeamComponent },
       { path: 'settings', component: TasqueProjectSettingsComponent },
     ],

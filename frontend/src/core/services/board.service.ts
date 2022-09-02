@@ -9,6 +9,7 @@ import {
   IBoardKey,
   IUserCard,
 } from 'src/shared/components/select-users/Models';
+import { BoardModel } from '../models/board/board-model';
 
 @Injectable({
   providedIn: 'root',
@@ -101,5 +102,9 @@ export class BoardService {
     return this.httpService.getFullRequest<BoardInfoModel[]>(
       this.routePrefix + `/getUserBoards/${userId}`,
     );
+  }
+
+  getProjectBoard(projectId: number): Observable<HttpResponse<BoardModel>> {
+    return this.httpService.getFullRequest<BoardModel>( this.routePrefix + `/${projectId}`);
   }
 }

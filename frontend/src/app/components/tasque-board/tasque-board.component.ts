@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { BoardColumnModel } from '../../../core/models/board/board-column-model';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TaskInfoModel } from 'src/core/models/board/task-Info-model';
+import { BoardService } from 'src/core/services/board.service';
+import { NotificationService } from 'src/core/services/notification.service';
+import { BoardModel } from 'src/core/models/board/board-model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'tasque-board',
@@ -19,17 +23,34 @@ export class TasqueBoardComponent implements OnInit {
   public createColumnForm: FormGroup;
   
   private newColumn: BoardColumnModel;
+  private projectId: number;
 
-  public board: BoardColumnModel[] = [];
+  public board: BoardModel = {projectId: 0, id: 0, name: "", columns: []};
 
-  constructor(formBuilder: FormBuilder) { 
+  constructor(formBuilder: FormBuilder, private route: ActivatedRoute, private boardService: BoardService, private notificationService: NotificationService) { 
     this.createColumnForm = formBuilder.group({
       'columnName': ['', [Validators.required]]
     });
   }
 
   ngOnInit(): void {
-
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id == null) {
+      return;
+    }
+    this.projectId = parseInt(id);
+    this.boardService.getProjectBoard(this.projectId).subscribe(
+      (resp) => {
+        if (resp.ok && resp.body != null) {
+          this.board = resp.body;
+        } else {
+          this.notificationService.error('Something went wrong');
+        }
+      },
+      (error) => {
+        this.notificationService.error(error);
+      },
+    );
   }
 
   openAddColumn(): void {
@@ -38,8 +59,8 @@ export class TasqueBoardComponent implements OnInit {
 
   addColumn(): void {
     if(this.createColumnForm.valid) {
-      this.newColumn = { columnName: this.createColumnForm.get('columnName')?.value, tasks: [] };
-      this.board.push(this.newColumn);
+      this.newColumn = { id: 0, columnName: this.createColumnForm.get('columnName')?.value, tasks: [] };
+      this.board.columns.push(this.newColumn);
       this.createColumnForm.reset();
       this.isOpenColumnAddDialog = false;  
     }

@@ -39,6 +39,7 @@ namespace Tasque.Core.BLL.Services
                     columnId = t.BoardColumnId,
                     taskInfo = new TaskInfoDto()
                     {
+                        Id = t.Id,
                         AttachmentUrl = (t.Attachments.FirstOrDefault() ?? new Attachment()).URL,
                         Description = t.Description ?? "Task does not have description yet",
                         ProjectKey = t.Project.Key,
@@ -49,9 +50,12 @@ namespace Tasque.Core.BLL.Services
 
             var result = new BoardInfoDto()
             {
+                Id = board.Id,
+                ProjectId = projectId,
                 Name = board.Name,
-                Column = columns.Select(c => new BoardColumnDto
+                Columns = columns.Select(c => new BoardColumnDto
                 {
+                    Id = c.Id,
                     ColumnName = c.Name,
                     Tasks = tasks.Where(t => t.columnId == c.Id)
                         .Select(t => t.taskInfo).ToList()

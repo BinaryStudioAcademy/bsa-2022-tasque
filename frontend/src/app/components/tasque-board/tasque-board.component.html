@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="board-columns" cdkDropListGroup>
-        <div cdkDropList *ngFor="let item of board" 
+        <div cdkDropList *ngFor="let item of board.columns" 
         (cdkDropListDropped)="dragDrop($event)" 
         [cdkDropListData]="item.tasks">
           <div class="column-title">
