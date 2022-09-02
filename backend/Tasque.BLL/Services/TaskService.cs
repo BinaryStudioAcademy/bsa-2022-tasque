@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Tasque.Core.BLL.Exeptions;
+using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.PartialModels;
 using Tasque.Core.Common.DTO.Task;
@@ -32,7 +32,7 @@ namespace Tasque.Core.BLL.Services
             _dbContext.Add(entity);
             _dbContext.SaveChanges();
 
-            var cosmosModel= new TaskCosmosModel()
+            var cosmosModel= new CosmosTaskModel()
             {
                 Id = entity.Id.ToString(),
                 CustomFields = model.CustomFields
@@ -82,7 +82,7 @@ namespace Tasque.Core.BLL.Services
             if (task == null)
                 throw new NotFoundException(nameof(Common.Entities.Task));
 
-            var cosmosModel = new TaskCosmosModel()
+            var cosmosModel = new CosmosTaskModel()
             {
                 Id = task.Id.ToString(),
                 CustomFields = model?.CustomFields,
@@ -105,7 +105,7 @@ namespace Tasque.Core.BLL.Services
             return JoinTaskAttributesWithDto(_mapper.Map<TaskDto>(task), customAttributes);
         }
 
-        private TaskDto JoinTaskAttributesWithDto(TaskDto task, TaskCosmosModel? attributes)
+        private TaskDto JoinTaskAttributesWithDto(TaskDto task, CosmosTaskModel? attributes)
         {
             if (attributes == null)
                 return task;

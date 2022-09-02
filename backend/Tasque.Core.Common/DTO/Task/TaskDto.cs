@@ -10,7 +10,6 @@ namespace Tasque.Core.Common.DTO.Task
     public class TaskDto
     {
         public int Id { get; set; }
-        public string Name { get; set; } = null!;
         public string? Description { get; set; }
         public string Summary { get; set; } = null!;
 

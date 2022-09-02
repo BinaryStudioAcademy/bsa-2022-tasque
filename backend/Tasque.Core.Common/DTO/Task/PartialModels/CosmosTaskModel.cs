@@ -8,7 +8,7 @@ using Tasque.Core.Common.StaticResources;
 
 namespace Tasque.Core.Common.DTO.PartialModels
 {
-    public class TaskCosmosModel
+    public class CosmosTaskModel
     {
         [JsonProperty(PropertyName = CosmosDbKeys.IdKey)]
         public string Id { get; set; } = null!;

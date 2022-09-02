@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Newtonsoft.Json;
 using System.Net;
+using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.Identity.Exeptions;
 

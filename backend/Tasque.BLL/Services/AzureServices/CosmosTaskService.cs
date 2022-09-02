@@ -1,22 +1,26 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿using AutoMapper;
+using Microsoft.Azure.Cosmos;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.PartialModels;
 using Tasque.Core.Common.StaticResources;
 
-namespace Tasque.Core.BLL.Services
+namespace Tasque.Core.BLL.Services.AzureServices
 {
     public class CosmosTaskService : ICosmosTaskService
     {
         private readonly Container _container;
+        private readonly IMapper _mapper;
         public CosmosTaskService(
             CosmosClient dbClient,
             string databaseName,
-            string containerName)
+            string containerName,
+            IMapper mapper)
         {
             _container = dbClient.GetContainer(databaseName, containerName);
+            _mapper = mapper;
         }
 
-        public async Task<TaskCosmosModel> CreateTask(TaskCosmosModel model)
+        public async Task<CosmosTaskModel> CreateTask(CosmosTaskModel model)
         {
             var resp = await _container.CreateItemAsync(model, new(model.Id));
             return resp.Resource;
@@ -24,13 +28,13 @@ namespace Tasque.Core.BLL.Services
 
         public async Task DeleteTask(string id)
         {
-            await _container.DeleteItemAsync<TaskCosmosModel>(id, new(id));
+            await _container.DeleteItemAsync<CosmosTaskModel>(id, new(id));
         }
 
-        public async Task<List<TaskCosmosModel>> GetAllTasks()
+        public async Task<List<CosmosTaskModel>> GetAllTasks()
         {
-            var query = _container.GetItemQueryIterator<TaskCosmosModel>(new QueryDefinition(CosmosDbQueries.GetAllTasks));
-            var results = new List<TaskCosmosModel>();
+            var query = _container.GetItemQueryIterator<CosmosTaskModel>(new QueryDefinition(CosmosDbQueries.GetAllTasks));
+            var results = new List<CosmosTaskModel>();
             while (query.HasMoreResults)
             {
                 var response = await query.ReadNextAsync();
@@ -41,11 +45,11 @@ namespace Tasque.Core.BLL.Services
             return results;
         }
 
-        public async Task<TaskCosmosModel> GetTaskById(string id)
+        public async Task<CosmosTaskModel> GetTaskById(string id)
         {
             try
             {
-                var response = await _container.ReadItemAsync<TaskCosmosModel>(id, new(id));
+                var response = await _container.ReadItemAsync<CosmosTaskModel>(id, new(id));
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -54,7 +58,7 @@ namespace Tasque.Core.BLL.Services
             }
         }
 
-        public async Task<TaskCosmosModel> UpdateTask(TaskCosmosModel model)
+        public async Task<CosmosTaskModel> UpdateTask(CosmosTaskModel model)
         {
             var resp = await _container.UpsertItemAsync(model, new(model.Id));
             return resp.Resource;

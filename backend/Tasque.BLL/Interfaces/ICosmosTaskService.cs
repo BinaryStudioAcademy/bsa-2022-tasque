@@ -9,13 +9,13 @@ namespace Tasque.Core.BLL.Interfaces
 {
     public interface ICosmosTaskService
     {
-        Task<TaskCosmosModel> GetTaskById(string id);
+        Task<CosmosTaskModel> GetTaskById(string id);
 
-        Task<TaskCosmosModel> CreateTask(TaskCosmosModel model);
+        Task<CosmosTaskModel> CreateTask(CosmosTaskModel model);
 
-        Task<List<TaskCosmosModel>> GetAllTasks();
+        Task<List<CosmosTaskModel>> GetAllTasks();
 
-        Task<TaskCosmosModel> UpdateTask(TaskCosmosModel model);
+        Task<CosmosTaskModel> UpdateTask(CosmosTaskModel model);
 
         Task DeleteTask(string id);
     }

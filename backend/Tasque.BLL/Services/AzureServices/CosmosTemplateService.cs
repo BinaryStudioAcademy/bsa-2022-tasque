@@ -5,7 +5,7 @@ using Tasque.Core.Common.DTO.PartialModels;
 using Tasque.Core.Common.DTO.Task.TemplateModels;
 using Tasque.Core.Common.StaticResources;
 
-namespace Tasque.Core.BLL.Services
+namespace Tasque.Core.BLL.Services.AzureServices
 {
     public class CosmosTemplateService : ICosmosTemplateService
     {
@@ -14,7 +14,7 @@ namespace Tasque.Core.BLL.Services
         public CosmosTemplateService(
             CosmosClient dbClient,
             string databaseName,
-            string containerName, 
+            string containerName,
             IMapper mapper)
         {
             _container = dbClient.GetContainer(databaseName, containerName);

@@ -78,6 +78,8 @@ export class LabelFieldEditComponent implements OnInit {
       name: this.newFieldName,
       color: this.newFieldColor,
     });
+    this.newFieldColor = '';
+    this.newFieldName = '';
     this.field.labels = this.labels;
     this.isChanging = false;
   }

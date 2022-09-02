@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tasque.Core.BLL.Exeptions
+namespace Tasque.Core.BLL.Exceptions
 {
     public class NotFoundException : Exception
     {
