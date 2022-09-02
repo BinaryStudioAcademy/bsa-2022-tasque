@@ -2,8 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UserService } from 'src/app/user/services/user.service';
+import { TaskEstimateUpdate } from 'src/core/models/task/task-estimate-update';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { UserModel } from 'src/core/models/user/user-model';
+import { SprintService } from 'src/core/services/sprint.service';
 
 @Component({
   selector: 'app-issue',
@@ -15,9 +17,13 @@ export class IssueComponent implements OnInit {
   @Input() public currentUser: UserModel;
   @Output() estimate = new EventEmitter<void>();
   public issueAuthor: UserModel;
+  public taskEstimate: TaskEstimateUpdate;
   public unsubscribe$ = new Subject<void>();
 
-  constructor(public userServise: UserService) {
+  constructor(
+    public userServise: UserService,
+    public sprintService: SprintService,
+  ) {
     //this.issueAuthor.avatar
   }
 
@@ -47,5 +53,19 @@ export class IssueComponent implements OnInit {
 
   estimateChange(): void {
     this.estimate.emit();
+
+    this.taskEstimate = {
+      taskId: this.issue.id,
+      sprintId: this.issue.sprintId,
+      estimate: this.issue.estimate ?? 0,
+    };
+
+    this.sprintService
+      .updateTaskEstimate(this.taskEstimate)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+        }
+      });
   }
 }

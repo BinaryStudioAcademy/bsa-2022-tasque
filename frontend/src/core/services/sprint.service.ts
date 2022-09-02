@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { EditSprintModel } from '../models/sprint/edit-sprint-model';
 import { SprintModel } from '../models/sprint/sprint-model';
 import { HttpService } from './http.service';
+import { TaskEstimateUpdate } from '../models/task/task-estimate-update';
 
 @Injectable({
   providedIn: 'root',
@@ -48,6 +49,15 @@ export class SprintService {
     return this.httpService.putFullRequest<SprintModel>(
       this.routePrefix + '/edit',
       editedSprint,
+    );
+  }
+
+  updateTaskEstimate(
+    taskEstimateUpdate: TaskEstimateUpdate,
+  ): Observable<HttpResponse<UserModel[]>> {
+    return this.httpService.putFullRequest<UserModel[]>(
+      this.routePrefix + `/estimate`,
+      taskEstimateUpdate,
     );
   }
 }

@@ -2,6 +2,7 @@
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Sprint;
 using Tasque.Core.Common.Entities;
+using Tasque.Core.Common.Models.Task;
 using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers;
@@ -79,5 +80,14 @@ public class SprintController : EntityController<Sprint, SprintDto, SprintServic
         {
             return BadRequest("Entities not found");
         }
+    }
+
+    [Route("estimate")]
+    [HttpPut]
+    public async virtual Task<IActionResult> UpdateTaskEstimate([FromBody] TaskEstimateUpdate taskEstimateUpdate)
+    {
+        await _service.UpdateTaskEstimate(taskEstimateUpdate);
+
+        return Ok();
     }
 }

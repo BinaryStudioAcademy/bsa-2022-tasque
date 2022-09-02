@@ -9,6 +9,7 @@ using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.DAL;
 using Task = System.Threading.Tasks.Task;
+using Tasque.Core.Common.Models.Task;
 
 namespace Tasque.Core.BLL.Services
 {
@@ -92,6 +93,26 @@ namespace Tasque.Core.BLL.Services
             sprint.IsComplete = true;
 
             _db.Update(sprint);
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task UpdateTaskEstimate(TaskEstimateUpdate taskEstimateUpdate)
+        {
+            var sprint = await _db.Sprints
+                .FirstOrDefaultAsync(s => s.Id == taskEstimateUpdate.SprintId);
+
+            if (sprint == null)
+                throw new HttpException(System.Net.HttpStatusCode.NotFound, "Sprinter with this ID does not exist");
+
+            var task = await _db.Tasks
+                .FirstOrDefaultAsync(t => t.Id == taskEstimateUpdate.TaskId);
+
+            if (task == null)
+                throw new HttpException(System.Net.HttpStatusCode.NotFound, "Task with this ID does not exist");
+
+            task.Estimate = taskEstimateUpdate.Estimate;
+
+            _db.Update(task);
             await _db.SaveChangesAsync();
         }
     }
