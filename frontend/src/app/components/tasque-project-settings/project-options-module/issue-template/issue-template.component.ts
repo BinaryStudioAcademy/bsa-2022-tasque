@@ -141,7 +141,6 @@ export class IssueTemplateComponent implements OnInit {
 
     this.taskTemplateService.getTaskType(val).subscribe((resp) => {
       this.type = resp.body as TaskType;
-      console.log('resp type');
     }, () => {
       this.type = {
         name: 'New issue',
@@ -149,7 +148,6 @@ export class IssueTemplateComponent implements OnInit {
         updatedAt: new Date(),
         id: this.templates.length + 1,
       };
-      console.log('resp error');
 
       this.issueTemplate = {
         title: this.type.name,
@@ -162,7 +160,6 @@ export class IssueTemplateComponent implements OnInit {
 
       this.issueTemplate = resp.body as TaskTemplate;
       this.customFields = this.issueTemplate.customFields;
-      console.log('get template resp');
     }, 
     () => {
       this.issueTemplate = {
@@ -172,7 +169,6 @@ export class IssueTemplateComponent implements OnInit {
         typeId: this.type?.id,
       };
       this.customFields = [];
-      console.log('get template error');
     });
 
     const issue = this.dropdownOptions.find((i) => i.id === this.selectedId) as TasqueDropdownOption;
