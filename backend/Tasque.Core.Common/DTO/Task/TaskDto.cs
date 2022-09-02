@@ -21,5 +21,7 @@ namespace Tasque.Core.Common.DTO.Task
         public int? SprintId { get; set; }
         public int? LastUpdatedById { get; set; }
         public int? ParentTaskId { get; set; }
+
+        public int? Estimate { get; set; }
     }
 }
