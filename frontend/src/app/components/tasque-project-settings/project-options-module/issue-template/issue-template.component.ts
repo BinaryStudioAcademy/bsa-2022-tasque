@@ -68,7 +68,7 @@ export class IssueTemplateComponent implements OnInit {
     },
   ];
 
-  @Input() projectId: number;
+  @Input() projectId: number = 5;
   public selectedId: number;
   public isLabel: TaskCustomField | undefined;
   public isDropdown: TaskCustomField | undefined;

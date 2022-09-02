@@ -38,7 +38,7 @@ export class LabelFieldEditComponent implements OnInit {
     if(this.formNameControl.errors?.['minlength']) {
       return 'Minimum label name should contain 2 characters';
     }
-    return '';
+    return 'Unexpected error. Try again.';
   }
 
   ngOnInit(): void {
@@ -69,14 +69,16 @@ export class LabelFieldEditComponent implements OnInit {
       this.notify.error(this.errorMessage);
       return;
     }
-    if(this.labels === undefined){
+
+    if(this.labels === undefined || this.labels === null) {
       this.labels = [];
     }
-    const val: LabelField = {
+
+    this.labels.push({
       name: this.newFieldName,
       color: this.newFieldColor,
-    };
-    this.labels.push(val);
+    });
+    this.field.labels = this.labels;
     this.isChanging = false;
   }
 

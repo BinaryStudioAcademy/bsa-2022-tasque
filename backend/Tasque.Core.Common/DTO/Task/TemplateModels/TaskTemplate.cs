@@ -11,7 +11,7 @@ namespace Tasque.Core.Common.DTO.Task.TemplateModels
     public class TaskTemplate
     {
         [JsonProperty(PropertyName = CosmosDbKeys.IdKey)]
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
 
         [JsonProperty(PropertyName = CosmosDbKeys.TypeIdKey)]
         public int TypeId { get; set; }

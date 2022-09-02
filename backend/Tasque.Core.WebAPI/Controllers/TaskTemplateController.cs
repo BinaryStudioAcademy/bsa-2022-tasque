@@ -16,7 +16,7 @@ namespace Tasque.Core.WebAPI.Controllers
         {
             var templates = await _service.GetAllProjectTemplates(projectId);
             if (templates == null)
-                return BadRequest();
+                return BadRequest($"{nameof(TaskTemplate)} not found");
             return Ok(templates);
         }
 
@@ -25,7 +25,7 @@ namespace Tasque.Core.WebAPI.Controllers
         {
             var template = await  _service.GetTemplateById(id);
             if (template == null)
-                return NotFound();
+                return NotFound($"{nameof(TaskTemplate)} not found");
             return Ok(template);
         }
 
@@ -34,7 +34,7 @@ namespace Tasque.Core.WebAPI.Controllers
         {
             var template = await _service.CreateTemplate(value);
             if (template == null)
-                return BadRequest();
+                return BadRequest($"Unexpected problem ocured");
             return Created(template.ToString()?? string.Empty, template);
         }
 
@@ -43,7 +43,7 @@ namespace Tasque.Core.WebAPI.Controllers
         {
             var template = await _service.UpdateTemplate(value);
             if (template == null)
-                return BadRequest();
+                return BadRequest($"Unexpected problem ocured");
             return Ok(template);
         }
 
