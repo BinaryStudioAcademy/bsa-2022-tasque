@@ -46,6 +46,10 @@ export class HeaderComponent implements OnInit {
       this.currentUser = user as UserModel;
     });
 
+    this.currentUserService.userAvatarUpdated$.subscribe((avatar) => {
+      this.currentUser.avatarURL = avatar;
+    });
+
     this.createItemControl.valueChanges.subscribe(
       (option) => this.createItemOptionChange(option)
     );

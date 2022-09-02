@@ -9,6 +9,7 @@ import { ProfileChangesDTO } from '../../dto/profile-changes-dto';
 import { UserService } from '../../services/user.service';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { filter, mergeMap, takeUntil } from 'rxjs/operators';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -41,6 +42,7 @@ export class UserProfileComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private userService: UserService,
+    private currentUserService: GetCurrentUserService
   ) { }
 
   ngOnInit(): void {
@@ -130,6 +132,7 @@ export class UserProfileComponent implements OnInit {
         (resp) => {
           this.notificationService.success('Uploaded successfully');
           this.originalUser.avatarURL = resp.body?.avatarURL;
+          this.currentUserService.updateUserAvatar(this.originalUser.avatarURL);
           this.loading = false;
         },
         () => {
