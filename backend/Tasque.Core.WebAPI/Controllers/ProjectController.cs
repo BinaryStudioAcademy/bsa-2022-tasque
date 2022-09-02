@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Project;
-<<<<<<< HEAD
 using Tasque.Core.Common.DTO.User;
-=======
->>>>>>> dev
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Identity.Helpers;
 
@@ -19,7 +16,6 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         
     }
 
-<<<<<<< HEAD
     [HttpPut("edit")]
     public async Task<IActionResult> EditProject([FromBody]EditProjectDto editProjectDto)
     {
@@ -56,7 +52,8 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         await _service.ChangeUserRole(changeUserRoleDto);
 
         return Ok();
-=======
+    }
+
     [Route("create")]
     [HttpPost]
     public override IActionResult Create([FromBody] NewProjectDto entityDTO)
@@ -71,6 +68,5 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
 
         _service.Create(entity);
         return Ok(entity);
->>>>>>> dev
     }
 }

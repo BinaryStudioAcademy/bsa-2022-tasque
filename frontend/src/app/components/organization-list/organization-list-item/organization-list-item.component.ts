@@ -20,12 +20,10 @@ export class OrganizationListItemComponent implements OnInit {
 
   ngOnInit(): void { }
 
-<<<<<<< HEAD
-=======
   public openOrganization(): void {
     this.getCurrentOrganizationService.currentOrganizationId = this.organization.id;
     this.router.navigate(['projects'], { replaceUrl: true });
     window.scroll(0, 0);
   }
->>>>>>> dev
+  
 }
