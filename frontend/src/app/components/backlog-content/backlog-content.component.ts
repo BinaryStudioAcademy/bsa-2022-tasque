@@ -22,6 +22,7 @@ export class BacklogContentComponent implements OnInit {
   flagIcon = faFlag;
   btnClass = 'bold';
 
+  // TODO remove when real data is available
   @Input() public taskStates: TaskState[] = [
     {
       id: 1,
@@ -49,6 +50,7 @@ export class BacklogContentComponent implements OnInit {
     },
   ];
 
+  // TODO remove when real data is available
   @Input() public taskPriorities: TaskPriority[] = [
     {
       id: 1,
@@ -69,6 +71,8 @@ export class BacklogContentComponent implements OnInit {
       updatedAt: new Date()
     },
   ];
+
+  // TODO remove when real data is available
   @Input() public taskTypes: TaskType[] = [
     {
       id: 1,
@@ -93,6 +97,7 @@ export class BacklogContentComponent implements OnInit {
     },
   ];
 
+  // TODO remove when real data is available
   @Input() public projects: ProjectModel[] = [
     {
       id: 1,
@@ -124,6 +129,8 @@ export class BacklogContentComponent implements OnInit {
   ];
 
   public sprints$: Observable<SprintModel[]>;
+
+  // TODO remove when real data is available
   public sprints: SprintModel[] = [
     {
       id: 1,
@@ -151,6 +158,7 @@ export class BacklogContentComponent implements OnInit {
     }
   ];
 
+  // TODO remove when real data is available
   @Input() public users: UserModel[] = [
     {
       id: 1,
@@ -170,6 +178,8 @@ export class BacklogContentComponent implements OnInit {
   ];
 
   public tasks$: Observable<TaskModel[]>;
+
+  // TODO remove when real data is available
   public tasks: TaskModel[] = 
   // []
   [
