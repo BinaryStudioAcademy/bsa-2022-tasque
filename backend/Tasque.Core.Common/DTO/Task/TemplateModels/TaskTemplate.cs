@@ -10,19 +10,14 @@ namespace Tasque.Core.Common.DTO.Task.TemplateModels
 {
     public class TaskTemplate
     {
-        [JsonProperty(PropertyName = CosmosDbKeys.IdKey)]
         public string Id { get; set; } = null!;
 
-        [JsonProperty(PropertyName = CosmosDbKeys.TypeIdKey)]
         public int TypeId { get; set; }
 
-        [JsonProperty(PropertyName = CosmosDbKeys.ProjectIdKey)]
         public int ProjectId { get; set; }
 
-        [JsonProperty(PropertyName = CosmosDbKeys.CustomContextFieldsKey)]
         public List<TaskCustomField>? CustomContextFields { get; set; }
 
-        [JsonProperty(PropertyName = CosmosDbKeys.CustomDescriptionFieldsKey)]
         public List<TaskCustomField>? CustomDescriptionFields { get; set; }
     }
 }

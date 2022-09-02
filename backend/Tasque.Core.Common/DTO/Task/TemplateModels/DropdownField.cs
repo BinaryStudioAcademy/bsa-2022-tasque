@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tasque.Core.Common.DTO.Task.TemplateModels
 {
-    public class DropdownField : BaseTemplate
+    public class DropdownField
     {
         public string[] Fields { get; set; }
     }

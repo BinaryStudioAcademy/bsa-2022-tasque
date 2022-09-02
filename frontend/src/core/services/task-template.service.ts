@@ -39,4 +39,8 @@ export class TaskTemplateService {
   public getTaskType(id: number): Observable<HttpResponse<TaskType>> {
     return this.httpService.getFullRequest('/api/tasktype/getById/' + id);
   }
+
+  public getAllProjectTaskTypes(id: number): Observable<HttpResponse<TaskType[]>> {
+    return this.httpService.getFullRequest('api/tasktype/getAllByProjectId/' + id);
+  }
 }

@@ -13,7 +13,7 @@ namespace Tasque.Core.BLL.Interfaces
 
         Task DeleteTemplate(string id);
 
-        Task<List<TaskTemplate>> GetAllProjectTemplates(string projectId);
+        Task<List<TaskTemplate>> GetAllProjectTemplates(int projectId);
 
         Task<TaskTemplate> GetTemplateById(string id);
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿using AutoMapper;
+using Microsoft.Azure.Cosmos;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.Task.TemplateModels;
 using Tasque.Core.Common.StaticResources;
@@ -8,18 +9,21 @@ namespace Tasque.Core.BLL.Services
     public class CosmosTemplateService : ICosmosTemplateService
     {
         private readonly Container _container;
+        private readonly IMapper _mapper;
         public CosmosTemplateService(
             CosmosClient dbClient,
             string databaseName,
-            string containerName)
+            string containerName, IMapper mapper)
         {
             _container = dbClient.GetContainer(databaseName, containerName);
+            _mapper = mapper;
         }
 
         public async Task<TaskTemplate> CreateTemplate(TaskTemplate model)
         {
-            var resp = await _container.CreateItemAsync(model, new(model.Id));
-            return resp.Resource;
+
+            var resp = await _container.CreateItemAsync(_mapper.Map<CosmosTemplateModel>(model), new(model.Id));
+            return _mapper.Map<TaskTemplate>(resp.Resource);
         }
 
         public async Task DeleteTemplate(string id)
@@ -27,10 +31,10 @@ namespace Tasque.Core.BLL.Services
             await _container.DeleteItemAsync<TaskTemplate>(id, new(id));
         }
 
-        public async Task<List<TaskTemplate>> GetAllProjectTemplates(string projectId)
+        public async Task<List<TaskTemplate>> GetAllProjectTemplates(int projectId)
         {
             var query = _container.GetItemQueryIterator<TaskTemplate>(new QueryDefinition(
-                CosmosDbQueries.GetAllTasks + $" WHERE {CosmosDbKeys.ProjectIdKey} = {projectId}"));
+                CosmosDbQueries.GetAllTasks + $" WHERE c.{CosmosDbKeys.ProjectIdKey} = {projectId}"));
 
             var results = new List<TaskTemplate>();
             while (query.HasMoreResults)
@@ -60,13 +64,13 @@ namespace Tasque.Core.BLL.Services
         {
             try
             {
-                var resp = await _container.UpsertItemAsync(model, new(model.Id));
-                return resp.Resource;
+                var resp = await _container.UpsertItemAsync(_mapper.Map<CosmosTemplateModel>(model), new(model.Id));
+                return _mapper.Map<TaskTemplate>(resp.Resource);
             }
             catch
             {
-                var resp = await _container.CreateItemAsync(model, new(model.Id));
-                return resp.Resource;
+                var resp = await _container.CreateItemAsync(_mapper.Map<CosmosTemplateModel>(model), new(model.Id));
+                return _mapper.Map<TaskTemplate>(resp.Resource);
             }
         }
     }

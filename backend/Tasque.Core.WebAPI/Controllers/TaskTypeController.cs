@@ -13,7 +13,13 @@ namespace Tasque.Core.WebAPI.Controllers
     {
         public TaskTypeController(TaskTypeService service, CurrentUserParameters currentUser) : base(service, currentUser)
         {
-
         }
+
+        [HttpGet("getAllByProjectId/{projectId}")]
+        public async Task<IActionResult> GetAllTaskTypesByProjectId(int projectId)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

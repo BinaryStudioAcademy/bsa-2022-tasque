@@ -25,6 +25,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 cfg.AddProfile<BoardProfiles>();
                 cfg.AddProfile<OrganizationProfile>();
                 cfg.AddProfile<TaskProfile>();
+                cfg.AddProfile<TaskTemplateProfile>();
                 cfg.ConfigureIdentityMapping();
             },
             Assembly.GetExecutingAssembly());
@@ -156,9 +157,11 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             var cosmosOptions = new CosmosDbOptions();
             configuration.GetSection(nameof(CosmosDbOptions)).Bind(cosmosOptions);
 
+            var mapper = new MapperConfiguration(cfg => cfg.AddProfile<TaskTemplateProfile>()).CreateMapper();
+
             var client = new CosmosClient(cosmosOptions.Account, cosmosOptions.Key);
             var cosmosTaskService = new CosmosTaskService(client, cosmosOptions.DatabaseName, cosmosOptions.TaskContainer);
-            var cosmosTemplateService = new CosmosTemplateService(client, cosmosOptions.DatabaseName, cosmosOptions.TemplateContainer);
+            var cosmosTemplateService = new CosmosTemplateService(client, cosmosOptions.DatabaseName, cosmosOptions.TemplateContainer, mapper);
 
             services
                 .AddSingleton<ICosmosTaskService>(cosmosTaskService)
