@@ -1,17 +1,38 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
-using Tasque.Core.Common.DTO;
+using Tasque.Core.Common.DTO.Organization;
+using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
+using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class OrganizationController : EntityController<Organization, OrganizationDto, OrganizationService>
+    public class OrganizationController : EntityController<Organization, CreateOrganizationDto, OrganizationService>
     {
-        public OrganizationController(OrganizationService service) : base(service) { }
+        public OrganizationController(OrganizationService service, CurrentUserParameters currentUser)
+            : base(service, currentUser)
+        {
+            
+        }
+
+        [Route("create")]
+        [HttpPost]
+        public override IActionResult Create([FromBody] CreateOrganizationDto createOrganizationDto)
+        {
+            var entity = new Organization()
+            {
+                Name = createOrganizationDto.Name,
+                AuthorId = _currentUser.Id
+            };
+            var org = _service.Create(entity);
+
+            return Ok(org);
+        }
 
         [Route("getUserOrganizationsById/{id}")]
         [HttpGet]
@@ -44,20 +65,20 @@ namespace Tasque.Core.WebAPI.Controllers
         }
 
         [HttpPut]
-        public async virtual Task<IActionResult> UpdateOrganization([FromBody] OrganizationDto organization)
+        public async virtual Task<IActionResult> UpdateOrganization([FromBody] OrganizationDto organizationDto)
         {
-            var organizations = await _service.EditOrganization(organization);
+            var organization = await _service.EditOrganization(organizationDto);
 
-            if (organizations is not null)
+            if (organization is not null)
             {
-                return Ok();
+                return Ok(organization);
             }
             else
             {
                 return NotFound("Organization not found");
-            }           
+            }
         }
-    
+
         [Route("{organizationId}/users/add")]
         [HttpPost]
         public async virtual Task<IActionResult> AddUserToOrganization(int organizationId, [FromBody] UserDto user)
@@ -71,10 +92,10 @@ namespace Tasque.Core.WebAPI.Controllers
         [HttpPost]
         public async virtual Task<IActionResult> DeleteUserInOrganization(int organizationId, [FromBody] UserDto user)
         {
-             await _service.DeleteUser(organizationId, user);
+            await _service.DeleteUser(organizationId, user);
 
             return Ok();
         }
-    
+
     }
 }

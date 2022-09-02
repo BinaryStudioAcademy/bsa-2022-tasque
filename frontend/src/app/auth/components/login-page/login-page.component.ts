@@ -5,9 +5,9 @@ import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/core/services/auth.service';
-import { LocalStorageKeys } from 'src/entity-models/local-storage-keys';
-import { UserLoginModel } from 'src/entity-models/user-login-model';
-import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
+import { LocalStorageKeys } from 'src/core/models/local-storage-keys';
+import { UserLoginModel } from 'src/core/models/user/user-login-model';
+import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 import { ToastrService } from 'ngx-toastr';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
@@ -74,7 +74,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     this.errMsg = nav?.extras.state?.['error'];
 
     this.emailControl = new FormControl(this.userLogin.email, [
-      Validators.email,
       Validators.required,
       Validators.pattern(this.validationConstants.emailRegex),
     ]);
@@ -122,7 +121,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
             this.toastrService.success(
               'You will be redirected to your profile',
               'Login successful',
-              { disableTimeOut: true },
             );
             this.router.navigate(['../..', 'organizations'], {
               replaceUrl: true,

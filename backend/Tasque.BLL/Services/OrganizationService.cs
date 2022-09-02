@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Tasque.Core.Common.DTO;
+using Tasque.Core.Common.DTO.Organization;
+using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.DAL;
 using Task = System.Threading.Tasks.Task;
@@ -18,18 +19,16 @@ namespace Tasque.Core.BLL.Services
 
         public async Task<IEnumerable<Organization>> GetUserOrganizations(int userId)
         {
-
             var organizations = await _db.Users
-                .Include(u => u.OwnedOrganization)
                 .Where(user => userId == user.Id)
                 .SelectMany(user => user.OwnedOrganization)
                 .Union(_db.Users
                     .Where(user => userId == user.Id)
                     .SelectMany(user => user.ParticipatedOrganization))
+                .OrderBy(organization => organization.Id)
                 .ToListAsync();
 
             return organizations;
-
         }
 
         public async Task<OrganizationDto> EditOrganization(OrganizationDto organization)
@@ -43,7 +42,6 @@ namespace Tasque.Core.BLL.Services
             _db.Organizations.Update(organizationEntity);
             await _db.SaveChangesAsync();
             return _mapper.Map<OrganizationDto>(organizationEntity);
-
         }
 
         public async Task<IEnumerable<UserDto>> GetOrganizationUsers(int organizationId)

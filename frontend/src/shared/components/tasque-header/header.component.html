@@ -1,8 +1,17 @@
 <header>
   <div class="navigation-panel">
     <tasque-menu-dropdown label="Your work" [options]="yourWorkOptions"> </tasque-menu-dropdown>
-    <tasque-menu-dropdown label="Project" [options]="projectOptions"> </tasque-menu-dropdown>
     <tasque-menu-dropdown
+      label="My Projects"
+      [options]="projectOptions"
+      headerLabel="Recent Projects"
+      footerLabel="Manage my projects"
+      (footerClicked)="openProjectsPage()"
+    >
+    </tasque-menu-dropdown>
+    <span class="button">Calendar</span>
+    <tasque-menu-dropdown
+      class="create-button"
       label="Create task"
       [options]="createOptions"
       [toggleDropdownOnLabelClick]="false"
@@ -10,10 +19,9 @@
       [formControl]="createItemControl"
     >
     </tasque-menu-dropdown>
-    <tasque-organizations-dropdown class="button"></tasque-organizations-dropdown>
-    <span class="button" [routerLink]="['/organizations']">My Organizations</span>
-    <span class="button" [routerLink]="['/projects']">My Projects</span>
-    <span class="button">Calendar</span>
+  </div>
+  <div class="center-panel">
+    <tasque-organizations-dropdown [currentUser]="currentUser" class="button"></tasque-organizations-dropdown>
   </div>
   <div class="user-panel">
     <div class="search-input">
@@ -26,19 +34,17 @@
       >
       </tasque-input>
     </div>
-    <div>
-      <img src="\assets\bell_icon.svg" />
-    </div>
-    <div>
-      <img src="\assets\settings_icon.svg" />
-    </div>
-    <div [matMenuTriggerFor]="profileMenu">
-      <tasque-avatar imageURL="\assets\avatar.png" [diameter_px]="45"></tasque-avatar>
-      <img src="\assets\arrow_full_icon.svg" />
-      <mat-menu #profileMenu="matMenu">
-        <button mat-menu-item>Profile settings</button>
-        <button mat-menu-item>Log out</button>
-      </mat-menu>
-    </div>
+    <img class="button" src="\assets\bell_icon.svg" />
+    <img class="button" src="\assets\settings_icon.svg" />
+    <tasque-menu-dropdown
+      class="profile-dropdown"
+      [hasAvatar]="true"
+      [avatarUrl]="currentUserAvatar"
+      [options]="profileOptions"
+      [upArrowIcon]="upArrowIcon"
+      [downArrowIcon]="downArrowIcon"
+      [formControl]="profileControl"
+    >
+    </tasque-menu-dropdown>
   </div>
 </header>

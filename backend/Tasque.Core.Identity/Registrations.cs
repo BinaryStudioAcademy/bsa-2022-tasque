@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Tasque.Core.Identity.Helpers;
 using Tasque.Core.Identity.JWT;
-using Tasque.Core.Identity.Options;
-using AutoMapper;
 using Tasque.Core.Identity.MappingProfiles;
+using Tasque.Core.Identity.Options;
 
 namespace Tasque.Core.Identity
 {

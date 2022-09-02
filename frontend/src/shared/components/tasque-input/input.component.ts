@@ -95,6 +95,9 @@ export class InputComponent implements ControlValueAccessor {
     this.inputIcon = icon;
   }
 
+  @Input()
+  public readonly = false;
+
   get iconClass(): string {
     let res = this.iconPos as string;
     if (this.iconClick.observers.length) {
@@ -104,6 +107,7 @@ export class InputComponent implements ControlValueAccessor {
   }
 
   @Output() iconClick = new EventEmitter<MouseEvent>();
+  @Output() outputValue = new EventEmitter<string>();
 
   emitClick(args: MouseEvent): void {
     this.iconClick.emit(args);
@@ -125,5 +129,9 @@ export class InputComponent implements ControlValueAccessor {
 
   registerOnTouched(fn: (value: Event) => void): void {
     this.onTouched = fn;
+  }
+
+  emitValueChange(): void {
+    this.outputValue.emit(String(this.inputValue));
   }
 }

@@ -10,6 +10,7 @@
 
 .dropdown-button
   display: flex
+  align-items: center
   gap: 5px
   &:hover
     color: colorscheme(gray-400)
@@ -22,18 +23,19 @@
 
 .options-container
   margin-top: 2px
-  padding-right: 15px
   background-color: colorscheme(white-100)
   border: 2px solid colorscheme(gray-300)
   border-radius: 10px
-  max-height: 140px
-  overflow: auto
   width: max-content
   position: absolute
   left: 0
   top: 100%
   z-index: 1
   box-sizing: border-box
+
+.options
+  max-height: 110px
+  overflow: auto
 
 .option
   height: 35px
@@ -46,8 +48,26 @@
   font-weight: 400
   line-height: 19px
   padding-left: 15px
+  padding-right: 15px
   color: black
+  border-radius: 10px
   &:hover
     background-color: colorscheme(gray-100)
   &.active
     background-color: colorscheme(gray-200)
+  &.header
+    border-bottom: 2px solid colorscheme(gray-300)
+    border-bottom-right-radius: 0px
+    border-bottom-left-radius: 0px
+  &.footer
+    border-top: 2px solid colorscheme(gray-300)
+    border-top-right-radius: 0px
+    border-top-left-radius: 0px
+
+.solo
+  &.footer
+    border: none
+    border-radius: 10px
+  &.header
+    border: none
+    border-radius: 10px

@@ -10,8 +10,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { delay, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/core/services/auth.service';
-import { ValidationConstants } from 'src/entity-models/const-resources/validation-constraints';
-import { UserResetPasswordModel } from 'src/entity-models/user-reset-password-model';
+import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
+import { UserResetPasswordModel } from 'src/core/models/user/user-reset-password-model';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 
 @Component({
@@ -81,7 +81,6 @@ export class RestorePageComponent implements OnInit, OnDestroy {
   ) {
     this.emailControl = new FormControl(this.email, [
       Validators.required,
-      Validators.email,
       Validators.pattern(ValidationConstants.emailRegex),
     ]);
     this.passwordControl = new FormControl('', [
@@ -156,7 +155,7 @@ export class RestorePageComponent implements OnInit, OnDestroy {
 
   submitPassword(): void {
 
-    if(!this.resetForm.valid){
+    if (!this.resetForm.valid) {
       this.resetForm.markAllAsTouched();
       return;
     }

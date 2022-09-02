@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.BLL.Exeptions;
@@ -7,6 +8,10 @@ using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Enums;
 using Tasque.Core.DAL;
 using Task = System.Threading.Tasks.Task;
+=======
+﻿using Tasque.Core.Common.Entities;
+using Tasque.Core.DAL;
+>>>>>>> dev
 
 namespace Tasque.Core.BLL.Services;
 

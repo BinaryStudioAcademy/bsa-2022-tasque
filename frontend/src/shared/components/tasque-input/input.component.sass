@@ -22,6 +22,13 @@
     border: 2px solid colorscheme(violet-200)
     caret-color: colorscheme(violet-200)
 
+.input[readonly]
+  color: colorscheme(gray-500)
+  cursor: not-allowed
+  &:focus
+    outline: none
+    border: none
+
 .search-input
   border-radius: 50px
   width: 250px
@@ -111,6 +118,8 @@ input[type="search"]::-webkit-search-results-decoration
 .header-extension
   color: colorscheme(gray-400)
   background: colorscheme(transparency)
+  &::placeholder
+    color: colorscheme(gray-400)
 
 ::placeholder
   color: colorscheme(gray-500)
@@ -125,3 +134,11 @@ input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration
   display: none
 
+.edit-input
+    outline: none
+    border: none
+    height: 25px
+    border-radius: 4px
+    background-color: colorscheme(gray-100)
+    &:focus
+        border: none

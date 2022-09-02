@@ -20,7 +20,76 @@ export class ProjectListComponent implements OnInit {
   public inputSearch = '';
   public searchIcon = faMagnifyingGlass;
 
+<<<<<<< HEAD
   public projectsModel: ProjectInfoModel[] = [];
+=======
+  public items: ProjectModel[] = [
+    {
+      id: 1,
+      name: 'Tasque',
+      authorId: 1,
+      organizationId: 1,
+      createdAt: new Date(Date.now()),
+      updatedAt: new Date(Date.now()),
+    },
+    {
+      id: 2,
+      name: 'Youtube',
+      authorId: 1,
+      organizationId: 1,
+      createdAt: new Date(Date.now()),
+      updatedAt: new Date(Date.now()),
+    },
+    {
+      id: 3,
+      name: 'Facebook',
+      authorId: 1,
+      organizationId: 1,
+      createdAt: new Date(Date.now()),
+      updatedAt: new Date(Date.now()),
+    },
+    {
+      id: 4,
+      name: 'Twitch',
+      authorId: 1,
+      organizationId: 1,
+      createdAt: new Date(Date.now()),
+      updatedAt: new Date(Date.now()),
+    },
+    {
+      id: 5,
+      name: 'AWS',
+      authorId: 1,
+      organizationId: 1,
+      createdAt: new Date(Date.now()),
+      updatedAt: new Date(Date.now()),
+    },
+    {
+      id: 6,
+      name: 'Dia',
+      authorId: 1,
+      organizationId: 1,
+      createdAt: new Date(Date.now()),
+      updatedAt: new Date(Date.now()),
+    },
+    {
+      id: 7,
+      name: 'Spotify',
+      authorId: 1,
+      organizationId: 1,
+      createdAt: new Date(Date.now()),
+      updatedAt: new Date(Date.now()),
+    },
+    {
+      id: 8,
+      name: 'Google Chrome',
+      authorId: 1,
+      organizationId: 1,
+      createdAt: new Date(Date.now()),
+      updatedAt: new Date(Date.now()),
+    },
+  ];
+>>>>>>> dev
 
   public itemsShow = this.projectsModel;
 

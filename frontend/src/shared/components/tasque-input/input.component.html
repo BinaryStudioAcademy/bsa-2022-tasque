@@ -7,13 +7,15 @@
     <input
       [(ngModel)]="inputValue"
       (ngModelChange)="onChange($event)"
+      (ngModelChange)="emitValueChange()"
       (blur)="onTouched($event)"
       [type]="inputType"
       [placeholder]="inputPlaceholder"
       [class]="inputClass"
       [ngClass]="{
-        'error': inputValueIsError
+        'error': inputValueIsError && inputErrorMessage
       }"
+      [readonly]="readonly"
     />
   </div>
   <span class="error" *ngIf="inputValueIsError">{{ inputErrorMessage }}</span>

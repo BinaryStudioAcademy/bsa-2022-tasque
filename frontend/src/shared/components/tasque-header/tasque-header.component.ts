@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
+import { faCaretDown, faCaretUp, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from 'src/core/models/user/user-model';
+import { AuthService } from 'src/core/services/auth.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { MenuDropdownOption } from '../tasque-menu-dropdown/menu-dropdown.component';
 
 @Component({
   selector: 'tasque-header',
@@ -13,20 +16,29 @@ export class HeaderComponent implements OnInit {
 
   public searchIcon = faMagnifyingGlass;
   public currentUser: UserModel;
-  public createOptions: string[] = [
-    'Create Organization', 'Create Project',
+  public createOptions: MenuDropdownOption[] = [
+    { name: 'Create Organization' }, { name: 'Create Project' },
   ];
-  public yourWorkOptions: string[] = [
-    'One task', 'Some task',
+  public yourWorkOptions: MenuDropdownOption[] = [
+    { name: 'One task' }, { name: 'Some task' },
   ];
-  public projectOptions: string[] = [
-    'Last Project', 'Previous Project',
+  public projectOptions: MenuDropdownOption[] = [
+    { name: 'Last Project' }, { name: 'Previous Project' },
+  ];
+  public profileOptions: MenuDropdownOption[] = [
+    { name: 'Profile settings' }, { name: 'Log out' },
   ];
 
-  public createItemControl = new FormControl('');
+  public upArrowIcon = faCaretUp;
+  public downArrowIcon = faCaretDown;
+
+  public createItemControl = new FormControl<MenuDropdownOption | undefined>(undefined);
+  public profileControl = new FormControl<MenuDropdownOption | undefined>(undefined);
 
   constructor(
     private currentUserService: GetCurrentUserService,
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -35,11 +47,40 @@ export class HeaderComponent implements OnInit {
     });
 
     this.createItemControl.valueChanges.subscribe(
-      () => this.openCreateItemDialog(this.createItemControl.value as string)
+      (option) => this.createItemOptionChange(option)
+    );
+
+    this.profileControl.valueChanges.subscribe(
+      (option) => this.profileOptionChange(option)
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public openCreateItemDialog(value: string): void { }
   public openCreateTaskDialog(): void { }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public createItemOptionChange(option: MenuDropdownOption | null | undefined): void { }
+
+  public profileOptionChange(option: MenuDropdownOption | null | undefined): void {
+    switch (option?.name) {
+      case 'Log out':
+        this.authService.logout();
+        return;
+      case 'Profile settings':
+        this.router.navigate(['/user/profile'], { replaceUrl: true });
+        return;
+    }
+  }
+
+  get currentUserAvatar(): string {
+    if (!this.currentUser || !this.currentUser.avatarURL) {
+      return '\\assets\\avatar.png';
+    }
+
+    return this.currentUser.avatarURL;
+  }
+
+  public openProjectsPage(): void {
+    this.router.navigate(['/projects'], { replaceUrl: true });
+    window.scroll(0, 0);
+  }
 }

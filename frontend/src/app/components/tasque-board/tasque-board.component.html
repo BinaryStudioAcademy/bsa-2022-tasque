@@ -7,7 +7,7 @@
       <div class="board-tools">
         <img src="assets/board/lightning.svg">
         <img src="assets/board/star.svg">
-        <tasque-button text="Complete sprint"></tasque-button>
+        <app-complete-sprint></app-complete-sprint>
         <img src="assets/board/share.svg">
         <img src="assets/board/menu.svg">
       </div>
@@ -26,10 +26,12 @@
           <img src="assets/board/filter.svg">           
         </div>
       </div>
-      <div class="board-columns">
-        <div *ngFor="let item of board">
+      <div class="board-columns" cdkDropListGroup>
+        <div cdkDropList *ngFor="let item of board" 
+        (cdkDropListDropped)="drop($event)" 
+        [cdkDropListData]="item.tasks">
           <div class="column-title">
-            <div>
+            <div class="board-list">
               <span class="column-name">{{item.columnName}}</span>
               <span class="column-element-count"> ({{item.tasks.length}})</span>
             </div>
@@ -38,9 +40,8 @@
               <img src="assets/board/column_menu.svg"> 
             </div>  
           </div>
-          <div class="column" *ngFor="let task of item.tasks">
-              <span>{{task.name}}</span>
-              <span>{{task.avatarUrl}}</span>
+          <div class="column" *ngFor="let task of item.tasks" cdkDrag>
+            <tasque-card [taskInfo]="task"></tasque-card>
           </div>
         </div>
         <div class="create-column" (mouseleave)="onClickedOutside()">

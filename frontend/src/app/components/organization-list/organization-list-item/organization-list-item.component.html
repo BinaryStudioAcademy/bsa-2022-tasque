@@ -1,11 +1,19 @@
 <div class="organization-card">
-  <a class="organization-name" href="#">{{ organization.name }}</a>
+  <p class="organization-name" href="#">{{ organization.name }}</p>
 
   <div class="buttons-container">
+<<<<<<< HEAD
     <app-edit-organization *ngIf="organization.authorId === currentUser.id" class="btn stroke" [organization]="organization"></app-edit-organization>
 
     <tasque-button class="btn stroke" text="Open" > </tasque-button>
+=======
+    <app-edit-organization
+      *ngIf="organization.authorId === currentUser.id"
+      class="btn stroke"
+      [organization]="organization"
+    ></app-edit-organization>
+    <tasque-button (btnClick)="openOrganization()" class="btn stroke" text="Open"> </tasque-button>
+>>>>>>> dev
   </div>
 </div>
-
-<hr />
+<hr/>

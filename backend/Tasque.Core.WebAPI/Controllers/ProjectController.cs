@@ -1,20 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Project;
+<<<<<<< HEAD
 using Tasque.Core.Common.DTO.User;
+=======
+>>>>>>> dev
 using Tasque.Core.Common.Entities;
-using Tasque.Core.Common.PartialModels;
+using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers;
 
 [Route("api/project/")]
 public class ProjectController : EntityController<Project, NewProjectDto, ProjectService>
 {
-    public ProjectController(ProjectService service) : base(service)
+    public ProjectController(ProjectService service, CurrentUserParameters currentUser) 
+        : base(service, currentUser)
     {
         
     }
 
+<<<<<<< HEAD
     [HttpPut("edit")]
     public async Task<IActionResult> EditProject([FromBody]EditProjectDto editProjectDto)
     {
@@ -51,5 +56,21 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         await _service.ChangeUserRole(changeUserRoleDto);
 
         return Ok();
+=======
+    [Route("create")]
+    [HttpPost]
+    public override IActionResult Create([FromBody] NewProjectDto entityDTO)
+    {
+        var entity = new Project()
+        {
+            Name = entityDTO.Name,
+            Key = entityDTO.Key,
+            OrganizationId = entityDTO.OrganizationId,
+            AuthorId = _currentUser.Id
+        };
+
+        _service.Create(entity);
+        return Ok(entity);
+>>>>>>> dev
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Tasque.Core.Common.PartialModels;
+﻿namespace Tasque.Core.Common.DTO.Project;
 
 public class ProjectDto
 {

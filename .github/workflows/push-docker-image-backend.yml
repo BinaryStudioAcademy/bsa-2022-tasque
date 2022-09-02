@@ -2,6 +2,8 @@ name: CD
 on:
   push:
     branches: [ "dev" ]
+  workflow_dispatch:
+  
 
 # Env variable
 env:

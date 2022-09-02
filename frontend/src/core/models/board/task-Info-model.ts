@@ -1,4 +1,6 @@
 export interface TaskInfoModel {
-    name: string
-    avatarUrl: string
+    description: string;
+    projectKey: string;
+    userAvatarUrl: string;
+    attachmentUrl: string;
 }

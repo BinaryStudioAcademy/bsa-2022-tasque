@@ -1,0 +1,22 @@
+<div class="backlog-conteiner">
+  <div class="header">
+    <div class="wrapper title">
+      <div>
+        <p>Scrum in space</p>
+        <h3>Backlog</h3>
+      </div>
+      <tasque-dropdown width="120px" class="header-dropdown" [options]="boards"></tasque-dropdown>
+    </div>
+    <div class="wrapper search">
+      <div class="backlog-search">
+        <tasque-input [icon]="faMagnifyingGlass" class="mini-search-input" iconPosition="mini-search" type="search" placeholder="Search..."> </tasque-input>
+      </div>
+      <div class="navigation">
+        <p class="active">All</p>
+        <p>Only my issues</p>
+        <p>Recently updated</p>
+      </div>
+    </div>
+  </div>
+  <div class="body"></div>
+</div>

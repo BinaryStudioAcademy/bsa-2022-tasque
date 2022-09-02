@@ -1,22 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.Entities.Abstract;
+using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
     [ApiController]
+    [Authorize]
     public abstract class EntityController<TModel, TDto, TService> : ControllerBase
         where TModel : BaseEntity
         where TDto : class
         where TService : IEntityCrudService<TModel>
     {
         protected readonly TService _service;
-        protected readonly Mapper mapper;
-        public EntityController(TService service)
+        protected readonly IMapper mapper;
+        protected readonly CurrentUserParameters _currentUser;
+
+        public EntityController(TService service, CurrentUserParameters currentUser)
         {
             _service = service;
             var config = new MapperConfiguration(cfg => cfg.CreateMap<TDto, TModel>().ReverseMap());
             mapper = new Mapper(config);
+            _currentUser = currentUser;
         }
 
         [Route("getById/{id}")]
@@ -32,14 +38,6 @@ namespace Tasque.Core.WebAPI.Controllers
             {
                 return BadRequest("Entity not found");
             }
-        }
-
-        [Route("getAll")]
-        [HttpGet]
-        public virtual IActionResult GetAll()
-        {
-            var entities = _service.GetAll();
-            return Ok(entities);
         }
 
         [Route("create")]
