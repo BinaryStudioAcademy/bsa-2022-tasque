@@ -56,7 +56,7 @@ export class SprintService {
     taskEstimateUpdate: TaskEstimateUpdate,
   ): Observable<HttpResponse<void>> {
     return this.httpService.putFullRequest<void>(
-      this.routePrefix + `/estimate`,
+      this.routePrefix + '/estimate',
       taskEstimateUpdate,
     );
   }

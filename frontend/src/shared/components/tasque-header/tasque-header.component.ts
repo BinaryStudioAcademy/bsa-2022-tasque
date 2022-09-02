@@ -70,6 +70,7 @@ export class HeaderComponent implements OnInit {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public createItemOptionChange(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     option: MenuDropdownOption | null | undefined,
   ): void {}
 
