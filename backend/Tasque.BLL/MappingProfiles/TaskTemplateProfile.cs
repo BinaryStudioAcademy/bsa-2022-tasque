@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tasque.Core.Common.DTO.Task.TemplateModels;
+using Tasque.Core.Common.Enums;
 
 namespace Tasque.Core.BLL.MappingProfiles
 {
@@ -13,29 +14,23 @@ namespace Tasque.Core.BLL.MappingProfiles
     {
         public TaskTemplateProfile()
         {
+            CreateMap<TemplateCustomField, CosmosTemplateCustomField>()
+                .ForMember(ct => ct.Content, opt => opt
+                    .MapFrom(
+                        tt => tt.Dropdown != null ? JsonConvert.SerializeObject(tt.Dropdown) : 
+                        tt.Labels != null ? JsonConvert.SerializeObject(tt.Labels) : null));
+
+            CreateMap<CosmosTemplateCustomField, TemplateCustomField>()
+                .ForMember(tt => tt.Dropdown, opt => opt
+                    .MapFrom(ct => ct.Type == TaskFieldType.Dropown ? JsonConvert.DeserializeObject<DropdownField>(ct.Content) : null))
+                .ForMember(tt => tt.Labels, opt => opt
+                    .MapFrom(ct => ct.Type == TaskFieldType.Label ? JsonConvert.DeserializeObject<List<LabelField>>(ct.Content) : null));
 
             CreateMap<TaskTemplate, CosmosTemplateModel>()
-                .ForMember(tt => tt.JsonContextFields, opt => opt.MapFrom(tt => JsonConvert.SerializeObject(tt.CustomContextFields)))
-                .ForMember(tt => tt.JsonDescriptionFields, opt => opt.MapFrom(tt => JsonConvert.SerializeObject(tt.CustomDescriptionFields)));
-
+                .ForMember(ct => ct.Content, opt => opt.Ignore());
 
             CreateMap<CosmosTemplateModel, TaskTemplate>()
-                .ForMember(ct => ct.CustomContextFields, opt => opt.MapFrom(ct => JsonConvert.DeserializeObject<List<TaskCustomField>>(ct.JsonContextFields)))
-                .ForMember(ct => ct.CustomDescriptionFields, opt => opt.MapFrom(ct => JsonConvert.DeserializeObject<List<TaskCustomField>>(ct.JsonDescriptionFields)));
-
-            //new MapperConfiguration(cfg =>
-            //{
-            //    cfg.CreateMap<TaskTemplate, CosmosTemplateModel>()
-            //    .ForMember(tt => tt.JsonContextFields, opt => opt.MapFrom(tt => JsonConvert.SerializeObject(tt.CustomContextFields)))
-            //    .ForMember(tt => tt.JsonDescriptionFields, opt => opt.MapFrom(tt => JsonConvert.SerializeObject(tt.CustomDescriptionFields)));
-            //}).CreateMapper();
-
-            //new MapperConfiguration(cfg =>
-            //{
-            //    cfg.CreateMap<CosmosTemplateModel, TaskTemplate>()
-            //    .ForMember(ct => ct.CustomContextFields, opt => opt.MapFrom(ct => JsonConvert.DeserializeObject<List<TaskCustomField>>(ct.JsonContextFields)))
-            //    .ForMember(ct => ct.CustomDescriptionFields, opt => opt.MapFrom(ct => JsonConvert.DeserializeObject<List<TaskCustomField>>(ct.JsonDescriptionFields)));
-            //}).CreateMapper();
+                .ForMember(tt => tt.CustomFields, opt => opt.Ignore());
         }
     }
 }

@@ -25,10 +25,9 @@ export class IssueTemplateComponent implements OnInit {
 
   public issueTemplate: TaskTemplate;
 
-  public fieldsWithDescription: TaskCustomField[] = [];
-  public contextFields: TaskCustomField[] = [];
+  public customFields: TaskCustomField[] = [];
 
-  public customFields = Object.assign([], AvailableFields) as TaskCustomField[];
+  public availableFields = Object.assign([], AvailableFields) as TaskCustomField[];
 
   public selectedIssue: TasqueDropdownOption;
   public issueColor: string;
@@ -89,7 +88,7 @@ export class IssueTemplateComponent implements OnInit {
 
       if(event.previousContainer.data === this.customFields) {
         const toMove: TaskCustomField[] = [];
-        this.customFields.forEach((f) => toMove.push( { name: f.name, type: f.type } ));
+        this.availableFields.forEach((f) => toMove.push( { name: f.name, type: f.type } ));
         transferArrayItem(
           toMove,
           event.container.data,
@@ -107,15 +106,9 @@ export class IssueTemplateComponent implements OnInit {
     }
   }
 
-  deleteContextItem(val: TaskCustomField): void {
-    this.contextFields.forEach((value,index)=>{
-        if(value==val) this.contextFields.splice(index,1);
-    });
-}
-
-  deleteDescriptionItem(val:TaskCustomField): void {
-    this.fieldsWithDescription.forEach((value,index)=>{
-        if(value==val) this.fieldsWithDescription.splice(index,1);
+  deleteItem(val:TaskCustomField): void {
+    this.customFields.forEach((value,index)=>{
+        if(value==val) this.customFields.splice(index,1);
     });
   }
 
@@ -130,8 +123,7 @@ export class IssueTemplateComponent implements OnInit {
       title: this.issueTemplate.title,
       id: String(this.selectedId),
       projectId: this.projectId,
-      customDescriptionFields: this.fieldsWithDescription,
-      customContextFields: this.contextFields,
+      customFields: this.customFields,
     };
 
     this.taskTemplateService.updateTaskTemplate(template)
@@ -162,28 +154,24 @@ export class IssueTemplateComponent implements OnInit {
       this.issueTemplate = {
         title: this.type.name,
         projectId: this.projectId,
-        customContextFields: [],
-        customDescriptionFields: []
+        customFields: [],
       };
     });
 
     this.taskTemplateService.getTemplateById(String(val)).subscribe((resp) => {
 
       this.issueTemplate = resp.body as TaskTemplate;
-      this.contextFields = this.issueTemplate.customContextFields;
-      this.fieldsWithDescription = this.issueTemplate.customDescriptionFields;
+      this.customFields = this.issueTemplate.customFields;
       console.log('get template resp');
     }, 
     () => {
       this.issueTemplate = {
         title: 'New issue',
         projectId: this.projectId,
-        customContextFields: [],
+        customFields: [],
         typeId: this.type?.id,
-        customDescriptionFields: []
       };
-      this.contextFields = [];
-      this.fieldsWithDescription = [];
+      this.customFields = [];
       console.log('get template error');
     });
 

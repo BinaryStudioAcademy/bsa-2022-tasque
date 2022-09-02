@@ -9,8 +9,6 @@ namespace Tasque.Core.BLL.Interfaces
 {
     public interface ICosmosTemplateService
     {
-        Task<TaskTemplate> CreateTemplate(TaskTemplate model);
-
         Task DeleteTemplate(string id);
 
         Task<List<TaskTemplate>> GetAllProjectTemplates(int projectId);

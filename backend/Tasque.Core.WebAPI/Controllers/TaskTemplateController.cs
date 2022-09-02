@@ -29,15 +29,6 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok(template);
         }
 
-        [HttpPost("saveTemplate")]
-        public async Task<IActionResult> Createtemplate([FromBody] TaskTemplate value)
-        {
-            var template = await _service.CreateTemplate(value);
-            if (template == null)
-                return BadRequest($"Unexpected problem ocured");
-            return Created(template.ToString()?? string.Empty, template);
-        }
-
         [HttpPut]
         public async Task<IActionResult> UpdateTemplate([FromBody] TaskTemplate value)
         {

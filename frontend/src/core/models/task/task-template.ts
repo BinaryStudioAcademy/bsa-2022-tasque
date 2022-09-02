@@ -6,7 +6,6 @@ export interface TaskTemplate {
     projectId: number,
     typeId?: number,
 
-    customContextFields: TaskCustomField[],
-    customDescriptionFields: TaskCustomField[],
+    customFields: TaskCustomField[],
 }
 

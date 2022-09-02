@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Azure.Cosmos;
 using Tasque.Core.BLL.Interfaces;
+using Tasque.Core.Common.DTO.PartialModels;
 using Tasque.Core.Common.DTO.Task.TemplateModels;
 using Tasque.Core.Common.StaticResources;
 
@@ -13,30 +14,24 @@ namespace Tasque.Core.BLL.Services
         public CosmosTemplateService(
             CosmosClient dbClient,
             string databaseName,
-            string containerName, IMapper mapper)
+            string containerName, 
+            IMapper mapper)
         {
             _container = dbClient.GetContainer(databaseName, containerName);
             _mapper = mapper;
         }
 
-        public async Task<TaskTemplate> CreateTemplate(TaskTemplate model)
-        {
-
-            var resp = await _container.CreateItemAsync(_mapper.Map<CosmosTemplateModel>(model), new(model.Id));
-            return _mapper.Map<TaskTemplate>(resp.Resource);
-        }
-
         public async Task DeleteTemplate(string id)
         {
-            await _container.DeleteItemAsync<TaskTemplate>(id, new(id));
+            await _container.DeleteItemAsync<CosmosTemplateModel>(id, new(id));
         }
 
         public async Task<List<TaskTemplate>> GetAllProjectTemplates(int projectId)
         {
-            var query = _container.GetItemQueryIterator<TaskTemplate>(new QueryDefinition(
+            var query = _container.GetItemQueryIterator<CosmosTemplateModel>(new QueryDefinition(
                 CosmosDbQueries.GetAllTasks + $" WHERE c.{CosmosDbKeys.ProjectIdKey} = {projectId}"));
 
-            var results = new List<TaskTemplate>();
+            var results = new List<CosmosTemplateModel>();
             while (query.HasMoreResults)
             {
                 var response = await query.ReadNextAsync();
@@ -44,15 +39,15 @@ namespace Tasque.Core.BLL.Services
                 results.AddRange(response.ToList());
             }
 
-            return results;
+            return _mapper.Map<List<TaskTemplate>>(results);
         }
 
         public async Task<TaskTemplate> GetTemplateById(string id)
         {
             try
             {
-                var response = await _container.ReadItemAsync<TaskTemplate>(id, new(id));
-                return response.Resource;
+                var response = await _container.ReadItemAsync<CosmosTemplateModel>(id, new(id));
+                return _mapper.Map<TaskTemplate>(response.Resource);
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
@@ -62,16 +57,28 @@ namespace Tasque.Core.BLL.Services
 
         public async Task<TaskTemplate> UpdateTemplate(TaskTemplate model)
         {
+            var cosmosModel = _mapper.Map<CosmosTemplateModel>(model);
+            cosmosModel.Content = _mapper.Map<List<CosmosTemplateCustomField>>(model.CustomFields);
+
             try
             {
-                var resp = await _container.UpsertItemAsync(_mapper.Map<CosmosTemplateModel>(model), new(model.Id));
-                return _mapper.Map<TaskTemplate>(resp.Resource);
+                return MapCosmosModelToTemplate(
+                    await _container.UpsertItemAsync(cosmosModel, new(model.Id)));
             }
             catch
             {
-                var resp = await _container.CreateItemAsync(_mapper.Map<CosmosTemplateModel>(model), new(model.Id));
-                return _mapper.Map<TaskTemplate>(resp.Resource);
+                return MapCosmosModelToTemplate(
+                    await _container.CreateItemAsync(cosmosModel, new(model.Id)));
             }
+        }
+
+        private TaskTemplate MapCosmosModelToTemplate(ItemResponse<CosmosTemplateModel> response)
+        {
+
+            var template = _mapper.Map<TaskTemplate>(response.Resource);
+            template.CustomFields = _mapper.Map<List<TemplateCustomField>>(response.Resource.Content);
+
+            return template;
         }
     }
 }
