@@ -6,6 +6,6 @@
     <tasque-input class="input estimate-input" type="number" [(ngModel)]="issue.estimate" (inputValue)="(issue.estimate)" (change)="estimateChange()"> </tasque-input>
   </div>
   <div class="issue-users">
-    <img [src]="issueAuthor?.avatarURL" alt="avatar" [title]="issueAuthor?.name" />
+    <img src="{{ issueAuthor && issueAuthor.avatarURL ? issueAuthor.avatarURL : '\\assets\\avatar.png' }}" alt="avatar" title="{{ issueAuthor && issueAuthor.name ? issueAuthor.name : 'user' }}" />
   </div>
 </div>

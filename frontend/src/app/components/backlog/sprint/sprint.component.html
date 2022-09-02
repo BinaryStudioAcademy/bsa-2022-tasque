@@ -14,7 +14,7 @@
         </div>
         <div class="issues">
           <p>issues</p>
-          <p class="issues-count">{{ tasks?.length }}</p>
+          <p class="issues-count">{{ tasks && tasks.length ? tasks.length : 0 }}</p>
         </div>
         <div class="estimate">
           <p>estimate</p>
