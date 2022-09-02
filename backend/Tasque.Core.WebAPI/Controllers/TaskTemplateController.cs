@@ -34,7 +34,7 @@ namespace Tasque.Core.WebAPI.Controllers
         {
             var template = await _service.UpdateTemplate(value);
             if (template == null)
-                return BadRequest($"Unexpected problem ocured");
+                return BadRequest($"Unexpected problem occurred");
             return Ok(template);
         }
 

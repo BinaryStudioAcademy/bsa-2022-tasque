@@ -39,15 +39,15 @@ namespace Tasque.Core.BLL.Services
                 results.AddRange(response.ToList());
             }
 
-            return _mapper.Map<List<TaskTemplate>>(results);
+            return MapCosmosModelToTaskTemplate(results);
         }
 
         public async Task<TaskTemplate> GetTemplateById(string id)
         {
             try
             {
-                var response = await _container.ReadItemAsync<CosmosTemplateModel>(id, new(id));
-                return _mapper.Map<TaskTemplate>(response.Resource);
+                return MapItemResponseToTaskTemplate(
+                    await _container.ReadItemAsync<CosmosTemplateModel>(id, new(id)));
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
@@ -62,23 +62,39 @@ namespace Tasque.Core.BLL.Services
 
             try
             {
-                return MapCosmosModelToTemplate(
+                return MapItemResponseToTaskTemplate(
                     await _container.UpsertItemAsync(cosmosModel, new(model.Id)));
             }
             catch
             {
-                return MapCosmosModelToTemplate(
+                return MapItemResponseToTaskTemplate(
                     await _container.CreateItemAsync(cosmosModel, new(model.Id)));
             }
         }
 
-        private TaskTemplate MapCosmosModelToTemplate(ItemResponse<CosmosTemplateModel> response)
+        private TaskTemplate MapItemResponseToTaskTemplate(ItemResponse<CosmosTemplateModel> response)
         {
 
             var template = _mapper.Map<TaskTemplate>(response.Resource);
             template.CustomFields = _mapper.Map<List<TemplateCustomField>>(response.Resource.Content);
 
             return template;
+        }
+
+        private TaskTemplate MapCosmosModelToTaskTemplate(CosmosTemplateModel model)
+        {
+            var template = _mapper.Map<TaskTemplate>(model);
+            template.CustomFields = _mapper.Map<List<TemplateCustomField>>(model.Content);
+
+            return template;
+        }
+
+        private List<TaskTemplate> MapCosmosModelToTaskTemplate(List<CosmosTemplateModel> models)
+        {
+            var templates = new List<TaskTemplate>();
+            models.ForEach(ct => templates.Add(MapCosmosModelToTaskTemplate(ct)));
+
+            return templates;
         }
     }
 }
