@@ -107,4 +107,8 @@ export class BoardService {
   getProjectBoard(projectId: number): Observable<HttpResponse<BoardModel>> {
     return this.httpService.getFullRequest<BoardModel>( this.routePrefix + `/${projectId}`);
   }
+
+  updateProjectBoard(board: BoardModel): Observable<HttpResponse<BoardModel>> {
+    return this.httpService.putFullRequest<BoardModel>( this.routePrefix + `/${board.projectId}`, board);
+  }
 }

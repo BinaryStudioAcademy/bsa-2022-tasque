@@ -81,6 +81,22 @@ export class TasqueBoardComponent implements OnInit {
         event.previousIndex,
         event.currentIndex,
       );
+      this.updateColumns();
     }
+  }
+
+  updateColumns(): void {
+    this.boardService.updateProjectBoard(this.board).subscribe(
+      (resp) => {
+        if (resp.ok && resp.body != null) {
+          this.board = resp.body;
+        } else {
+          this.notificationService.error('Something went wrong');
+        }
+      },
+      (error) => {
+        this.notificationService.error(error);
+      },
+    );
   }
 }

@@ -64,5 +64,39 @@ namespace Tasque.Core.BLL.Services
             return result;
         }
 
+        public async Task<BoardInfoDto?> UpdateBoardColumns(BoardInfoDto board)
+        {
+            if (board.Columns == null)
+            {
+                return null;
+            }
+            foreach (var column in board.Columns)
+            {
+                if(column.Id == 0)
+                {
+                    var columnEntity = await _db.BoardColumns.AddAsync(new BoardColumn()
+                    {
+                        Id = column.Id,
+                        BoardId = board.Id,
+                        Name = column.ColumnName,
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
+                });
+                    column.Id = columnEntity.Entity.Id;
+                }
+                else if (column.Tasks != null)
+                {
+                    foreach (var task in column.Tasks)
+                    {
+                        var taskEntity = await _db.Tasks.FirstAsync(t => t.Id == task.Id);
+                        taskEntity.BoardColumnId = column.Id;
+                        _db.Tasks.Update(taskEntity);
+                    }
+                }
+            }
+            await _db.SaveChangesAsync();
+            return board;
+        }
+
     }
 }
