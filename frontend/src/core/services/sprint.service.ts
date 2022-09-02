@@ -15,6 +15,13 @@ export class SprintService {
 
   constructor(public httpService: HttpService) {}
 
+  completeSprint(sprintId: number): Observable<void> {
+    return this.httpService.putRequest<void>(
+      this.routePrefix + `/complete/${sprintId}`,
+      new Object(),
+    );
+  }
+
   getProjectSprints(
     projectId: number,
   ): Observable<HttpResponse<SprintModel[]>> {

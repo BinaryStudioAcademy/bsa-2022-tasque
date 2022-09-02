@@ -15,6 +15,15 @@ public class SprintController : EntityController<Sprint, SprintDto, SprintServic
 
     }
 
+    [Route("complete/{id}")]
+    [HttpPut]
+    public async Task<IActionResult> CompleteSprint(int id)
+    {
+        await _service.CompleteSprint(id);
+
+        return Ok();
+    }
+
     [Route("edit")]
     [HttpPut]
     public virtual async Task<IActionResult> Edit([FromBody] EditSprintDto sprintDto)

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { UserCircle } from './models';
 
 @Component({
@@ -10,7 +11,7 @@ import { UserCircle } from './models';
 export class TasqueTeamSelectComponent implements OnInit {
   public inputSearch = '';
   @Output() selectedUser = new EventEmitter<UserCircle>();
-
+  public searchIcon = faMagnifyingGlass;
   public showPopUp = false;
 
   @Input() public avatars: UserCircle[] = [

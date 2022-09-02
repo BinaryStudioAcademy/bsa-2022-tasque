@@ -24,7 +24,7 @@
     </div>
     <mat-divider class="divider"></mat-divider>
     <div class="search-container">
-      <tasque-input type="search" placeholder="Search members" [(ngModel)]="inputSearch" (ngModelChange)="filterItems()"> </tasque-input>
+      <tasque-input type="search" class="search-input" [icon]="searchIcon" iconPosition="search" placeholder="Search members" [(ngModel)]="inputSearch" (ngModelChange)="filterItems()"> </tasque-input>
     </div>
     <div class="members-container">
       <span>Members:</span>
