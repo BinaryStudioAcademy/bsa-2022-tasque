@@ -86,7 +86,7 @@ export class IssueTemplateComponent implements OnInit {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
 
-      if(event.previousContainer.data === this.customFields) {
+      if(event.previousContainer.data === this.availableFields) {
         const toMove: TaskCustomField[] = [];
         this.availableFields.forEach((f) => toMove.push( { name: f.name, type: f.type } ));
         transferArrayItem(

@@ -23,8 +23,5 @@ namespace Tasque.Core.Common.DTO.Task.TemplateModels
 
         [JsonProperty(PropertyName = CosmosDbKeys.CustomFieldsKey)]
         public List<CosmosTemplateCustomField>? Content { get; set; }
-
-        //[JsonProperty(PropertyName = CosmosDbKeys.CustomDescriptionFieldsKey)]
-        //public string? JsonDescriptionFields { get; set; }
     }
 }

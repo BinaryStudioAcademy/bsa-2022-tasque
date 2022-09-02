@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.Task.TemplateModels;
 
@@ -6,6 +7,7 @@ namespace Tasque.Core.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TaskTemplateController : ControllerBase
     {
         private readonly ICosmosTemplateService _service;
