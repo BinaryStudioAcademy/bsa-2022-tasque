@@ -23,6 +23,7 @@ export class BacklogComponent implements OnInit {
   faMaximize = faMaximize;
   faMagnifyingGlass = faMagnifyingGlass;
 
+  //get current user
   @Input() public currentUser: UserModel;
   public inputSearch = '';
 

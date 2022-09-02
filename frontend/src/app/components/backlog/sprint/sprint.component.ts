@@ -22,10 +22,15 @@ import { UserCircle } from 'src/shared/components/tasque-team-select/models';
   styleUrls: ['./sprint.component.sass'],
 })
 export class SprintComponent implements OnInit, OnChanges {
+  //Get the sprint to display it in the component
   @Input() public sprint: SprintModel;
+  //Get the string by which issue will be searched
   @Input() public inputSearch = '';
+  //Get the criteria by which the issue will be sorted
   @Input() public filterIssue: IssueSort;
+  //get current user
   @Input() public currentUser: UserModel;
+  //Notify parent components of sprint priority change
   @Output() dropSprint = new EventEmitter<number>();
 
   public sprintUsers: UserModel[];

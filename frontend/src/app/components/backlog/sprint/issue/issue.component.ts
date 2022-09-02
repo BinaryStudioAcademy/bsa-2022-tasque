@@ -13,8 +13,11 @@ import { SprintService } from 'src/core/services/sprint.service';
   styleUrls: ['./issue.component.sass'],
 })
 export class IssueComponent implements OnInit {
+  //Get the issue to display it in the component
   @Input() public issue: TaskModel;
+  //get current user
   @Input() public currentUser: UserModel;
+  //notifying the parent components about the change in the value of estimate
   @Output() estimate = new EventEmitter<void>();
   public issueAuthor: UserModel;
   public taskEstimate: TaskEstimateUpdate;

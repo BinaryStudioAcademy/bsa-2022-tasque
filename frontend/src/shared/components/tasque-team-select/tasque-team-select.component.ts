@@ -9,6 +9,7 @@ import { UserCircle } from './models';
 })
 export class TasqueTeamSelectComponent implements OnInit {
   public inputSearch = '';
+  //Notify the parent component when the avatar is clicked and pass the selected user to it
   @Output() selectedUser = new EventEmitter<UserCircle>();
   public searchIcon = faMagnifyingGlass;
   public showPopUp = false;
