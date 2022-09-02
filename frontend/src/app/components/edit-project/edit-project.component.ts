@@ -1,14 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
-import { EditProjectModel } from 'src/core/models/project/edit-project-model';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 import { NotificationService } from 'src/core/services/notification.service';
 import { ProjectService } from 'src/core/services/project.service';
 import { SideBarService } from 'src/core/services/sidebar.service';
 import { BoardType, IBoard, IUserCard } from 'src/shared/components/select-users/Models';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-project',

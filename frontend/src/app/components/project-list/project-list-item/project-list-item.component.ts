@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 import { UserModel } from 'src/core/models/user/user-model';
 
@@ -12,7 +13,11 @@ export class ProjectListItemComponent implements OnInit {
   @Input() public currentUser: UserModel;
   @Input() public project: ProjectInfoModel;
 
-  constructor() { }
+  constructor(public router: Router) { }
 
   ngOnInit(): void { }
+
+  openProjectBoard(): void {
+    this.router.navigate(['/project/' + this.project.id.toString() + '/board']);
+  }
 }
