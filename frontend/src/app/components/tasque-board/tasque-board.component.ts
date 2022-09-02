@@ -18,7 +18,7 @@ export class TasqueBoardComponent implements OnInit {
   public isOpenColumnAddDialog: boolean;
   public createColumnForm: FormGroup;
   
-  private newBoard: BoardColumnModel;
+  private newColumn: BoardColumnModel;
 
   public board: BoardColumnModel[] = [];
 
@@ -38,8 +38,8 @@ export class TasqueBoardComponent implements OnInit {
 
   addColumn(): void {
     if(this.createColumnForm.valid) {
-      this.newBoard = { columnName: this.createColumnForm.get('columnName')?.value, tasks: [] };
-      this.board.push(this.newBoard);
+      this.newColumn = { columnName: this.createColumnForm.get('columnName')?.value, tasks: [] };
+      this.board.push(this.newColumn);
       this.createColumnForm.reset();
       this.isOpenColumnAddDialog = false;  
     }
