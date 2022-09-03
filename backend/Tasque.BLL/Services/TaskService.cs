@@ -77,7 +77,6 @@ namespace Tasque.Core.BLL.Services
 
         public async Task<TaskDto> UpdateTask(TaskDto model)
         {
-            //var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == model.Id);
             var task = _dbContext.Tasks.Update(_mapper.Map<Common.Entities.Task>(model)).Entity;
 
             if (task == null)
@@ -90,18 +89,6 @@ namespace Tasque.Core.BLL.Services
             };
 
             var customAttributes = await _cosmosTaskService.UpdateTask(cosmosModel);
-
-            //task.Description = model.Description;
-            //task.Summary = model.Summary;
-            //task.Labels = _mapper.Map<List<Common.Entities.Label>>(model.Labels);
-            //task.SprintId = model.SprintId;
-            //task.Attachments = _mapper.Map<List<Common.Entities.Attachment>>(model.Attachments);
-            //task.BoardColumnId = model.BoardColumnId;
-            //task.Description = model.Description;
-            //task.Deadline = model.Deadline;
-            //task.LastUpdatedById = model.LastUpdatedById;
-
-
             SaveChanges(task);
 
             return JoinTaskAttributesWithDto(_mapper.Map<TaskDto>(task), customAttributes);
