@@ -33,7 +33,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   get projectErrorMessage(): string {
     const ctrl = this.projectControl;
 
-    if (ctrl.errors?.['required']) {
+    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
       return 'Project is required';
     }
     return '';
@@ -42,7 +42,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   get issueTypeErrorMessage(): string {
     const ctrl = this.issueTypeControl;
 
-    if (ctrl.errors?.['required']) {
+    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
       return 'Issue type is required';
     }
     return '';
@@ -51,10 +51,14 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   get summaryErrorMessage(): string {
     const ctrl = this.summaryControl;
 
-    if (ctrl.errors?.['minlength']) {
+    if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Summary is required';
+    }
+
+    if (ctrl.errors?.['minlength'] && (ctrl.dirty || ctrl.touched)) {
       return 'Summary must be at least 2 characters';
     }
-    if (ctrl.errors?.['maxlength']) {
+    if (ctrl.errors?.['maxlength'] && (ctrl.dirty || ctrl.touched)) {
       return 'Summary must be at less  80 characters';
     }
 
@@ -64,7 +68,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   get descriptionErrorMessage(): string {
     const ctrl = this.descriptionControl;
 
-    if (ctrl.errors?.['maxlength']) {
+    if (ctrl.errors?.['maxlength'] && (ctrl.dirty || ctrl.touched)) {
       return 'Description must be at less  80 characters';
     }
 
@@ -74,7 +78,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   get editorErrorMessage(): string {
     const ctrl = this.descriptionControl;
 
-    if (ctrl.errors?.['maxlength']) {
+    if (ctrl.errors?.['maxlength'] && (ctrl.dirty || ctrl.touched)) {
       return 'Description must be at less 5000 characters';
     }
 
@@ -120,6 +124,11 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   }
 
   public submitForm(): void {
+    if (!this.taskCreateForm.valid) {
+      this.taskCreateForm.markAllAsTouched();
+      return;
+    }
+
     if (!this.taskCreateForm.valid || !this.taskCreateForm.dirty) {
       if (!this.summaryControl.valid)
         this.notification.error('Issue name is required');
