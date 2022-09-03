@@ -20,6 +20,5 @@ namespace Tasque.Core.WebAPI.Controllers
         {
             throw new NotImplementedException();
         }
-
     }
 }

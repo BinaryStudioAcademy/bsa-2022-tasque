@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Net;
 using Tasque.Core.BLL.Exceptions;
@@ -39,6 +40,9 @@ namespace Tasque.Core.WebAPI.Middlewares
                         break;
                     case EmailNotConfirmedException ex:
                         await HandleEmailNotConfirmedException(httpContext, ex);
+                        break;
+                    case DbUpdateException ex:
+                        await HandleDbUpdateException(httpContext, ex);
                         break;
                     default:
                         await HandleGenericException(httpContext, exception);
@@ -84,6 +88,12 @@ namespace Tasque.Core.WebAPI.Middlewares
                     ? ex.Errors.Aggregate("", (x, y) => x += $"{y.ErrorMessage}\n")
                     : ex.Message;
             await CreateExceptionAsync(context, HttpStatusCode.BadRequest, message);
+        }
+
+        private async Task HandleDbUpdateException(HttpContext context, DbUpdateException ex)
+        {
+            _logger.LogError("{ex.Message}", ex.Message);
+            await CreateExceptionAsync(context, HttpStatusCode.BadRequest, new { error = ex.Message });
         }
         private async Task HandleEmailNotConfirmedException(HttpContext httpContext, EmailNotConfirmedException ex)
         {
