@@ -16,7 +16,7 @@
   <div class="users" *ngIf="miniView">
     <a class="user-avatar">
       <tasque-avatar class="user-avatar-img" [imageURL]="avatars[0].avatarURL" [alt]="avatars[0].username" [diameter_px]="50"></tasque-avatar>
-      <div class="user-overflow" (click)="showPopUp = !showPopUp">+{{ avatars.length - 1 }}</div>
+      <div class="user-overflow" *ngIf="avatars.length > 1" (click)="showPopUp = !showPopUp">+{{ avatars.length - 1 }}</div>
     </a>
   </div>
 </div>
