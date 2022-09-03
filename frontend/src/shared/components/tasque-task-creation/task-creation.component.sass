@@ -56,52 +56,16 @@
 .input-wrapper
     width: 100%
     padding: 15px 0 0px 0px
-
-tasque-input
-    ::ng-deep
-        .input-container
-            display: grid
-            grid-template-columns: min-content
-        .input-wrp
-            width: 100%
-            grid-column: 2
-        .input
-            width: 100% !important
-            height: 50px
-            background: colorscheme(gray-300)
-            border-radius: 15px !important
-        label
-            grid-column: 1
-            margin-right: 16px !important
-            width: 100px !important
-            font-weight: 400
-            font-size: 14px !important
-            line-height: 19px !important
-            margin: auto
-        .error
-            grid-column: 2
-            margin: auto
-
-tasque-dropdown
-    ::ng-deep
-        .dropdown-warapper
-            display: grid
-            grid-template-columns: min-content
-            .dropdown-button
-                width: 172px
-                background: colorscheme(gray-300)
-                grid-column: 2
-            .error
-                grid-column: 2
-                margin: auto
-            .dropdown-label
-                padding-right: 16px
-                width: 100px
-                font-weight: 400
-                font-size: 14px
-                line-height: 19px
-                grid-column: 1
-                margin: auto
+    display: flex
+    align-items: center
+    label
+        font-weight: 400
+        font-size: 14px
+        line-height: 19px
+    .label-wrapper
+        min-width: 120px
+    tasque-input
+        width: 100%
 
 .editor-wrapper
     display: flex
