@@ -33,7 +33,7 @@ namespace Tasque.Core.BLL.Services.AzureServices
 
         public async Task<List<CosmosTaskModel>> GetAllTasks()
         {
-            var query = _container.GetItemQueryIterator<CosmosTaskModel>(new QueryDefinition(CosmosDbQueries.GetAllTasks));
+            var query = _container.GetItemQueryIterator<CosmosTaskModel>(new QueryDefinition(CosmosDbQueries.GetAll));
             var results = new List<CosmosTaskModel>();
             while (query.HasMoreResults)
             {
