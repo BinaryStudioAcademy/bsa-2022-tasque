@@ -29,7 +29,7 @@ namespace Tasque.Core.BLL.Services.AzureServices
         public async Task<List<TaskTemplate>> GetAllProjectTemplates(int projectId)
         {
             var query = _container.GetItemQueryIterator<CosmosTemplateModel>(new QueryDefinition(
-                CosmosDbQueries.GetAllTasks + $" WHERE c.{CosmosDbKeys.ProjectIdKey} = {projectId}"));
+                CosmosDbQueries.GetAll + $" WHERE c.{CosmosDbKeys.ProjectIdKey} = {projectId}"));
 
             var results = new List<CosmosTemplateModel>();
             while (query.HasMoreResults)

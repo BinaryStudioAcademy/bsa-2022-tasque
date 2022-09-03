@@ -8,6 +8,6 @@ namespace Tasque.Core.Common.StaticResources
 {
     public static class CosmosDbQueries
     {
-        public const string GetAllTasks = "SELECT * FROM c";
+        public const string GetAll = "SELECT * FROM c";
     }
 }
