@@ -129,13 +129,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (!this.taskCreateForm.valid || !this.taskCreateForm.dirty) {
-      if (!this.summaryControl.valid)
-        this.notification.error('Issue name is required');
-      else this.notification.error('Invalid values');
-      return;
-    }
-
     this.task = {
       currentUser: this.currentUser,
       project: this.taskCreateForm.get('projectControl')?.value,
@@ -147,6 +140,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   public clearForm(): void {
     this.taskCreateForm.reset();
-    this.sideBarService.toggle('');
+    this.sideBarService.toggle('task-creation');
   }
 }
