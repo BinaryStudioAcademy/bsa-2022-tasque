@@ -10,6 +10,7 @@ namespace Tasque.Core.Common.DTO.PartialModels
     public class CosmosTaskFields
     {
         public TaskFieldType FieldType { get; set; }
+        public string? FieldName { get; set; }
         public string? FieldValue { get; set; }
     }
 }
