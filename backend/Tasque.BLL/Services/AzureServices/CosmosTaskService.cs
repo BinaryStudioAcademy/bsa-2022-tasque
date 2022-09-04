@@ -9,15 +9,12 @@ namespace Tasque.Core.BLL.Services.AzureServices
     public class CosmosTaskService : ICosmosTaskService
     {
         private readonly Container _container;
-        private readonly IMapper _mapper;
         public CosmosTaskService(
             CosmosClient dbClient,
             string databaseName,
-            string containerName,
-            IMapper mapper)
+            string containerName)
         {
             _container = dbClient.GetContainer(databaseName, containerName);
-            _mapper = mapper;
         }
 
         public async Task<CosmosTaskModel> CreateTask(CosmosTaskModel model)

@@ -169,7 +169,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             }).CreateMapper();
 
             var client = new CosmosClient(cosmosOptions.Account, cosmosOptions.Key);
-            var cosmosTaskService = new CosmosTaskService(client, cosmosOptions.DatabaseName, cosmosOptions.TaskContainer, mapper);
+            var cosmosTaskService = new CosmosTaskService(client, cosmosOptions.DatabaseName, cosmosOptions.TaskContainer);
             var cosmosTemplateService = new CosmosTemplateService(client, cosmosOptions.DatabaseName, cosmosOptions.TemplateContainer, mapper);
 
             services
