@@ -9,6 +9,10 @@ import {
   faMaximize,
   faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
+import { SprintService } from 'src/core/services/sprint.service';
+import { SprintModel } from 'src/core/models/sprint/sprint-model';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { IssueSort } from './models';
 
 @Component({
   selector: 'app-backlog',
@@ -19,20 +23,26 @@ export class BacklogComponent implements OnInit {
   faMaximize = faMaximize;
   faMagnifyingGlass = faMagnifyingGlass;
 
+  //get current user
   @Input() public currentUser: UserModel;
+  public inputSearch = '';
 
   public unsubscribe$ = new Subject<void>();
   public boards: TasqueDropdownOption[];
+  public sprints: SprintModel[];
+  public filterIssue: IssueSort;
 
   constructor(
     public boardService: BoardService,
+    public sprintService: SprintService,
     public currentUserService: GetCurrentUserService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.currentUserService.currentUser.subscribe((user) => {
       this.currentUser = user as UserModel;
       this.getUserBoards();
+      this.getSprints();
     });
   }
 
@@ -49,5 +59,28 @@ export class BacklogComponent implements OnInit {
           }));
         }
       });
+  }
+
+  public getSprints(): void {
+    this.sprintService
+      .getProjectSprints(1)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.sprints = result.body;
+        }
+      });
+  }
+
+  dropSprint(event: CdkDragDrop<string[]>): void {
+    moveItemInArray(this.sprints, event.previousIndex, event.currentIndex);
+  }
+
+  dropSprintBtnClick(position: number): void {
+    moveItemInArray(this.sprints, position, position + 1);
+  }
+
+  taskSort(sort: IssueSort): void {
+    this.filterIssue = sort;
   }
 }

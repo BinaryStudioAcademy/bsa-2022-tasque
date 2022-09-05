@@ -1,9 +1,10 @@
-<tasque-sidebar name="task-creation" btnText="Task creation" btnClass="btn stroke">
+<tasque-sidebar [name]="sidebarName" [btnText]="btnText" [btnClass]="btnClass">
   <div class="task-creation-conteiner">
     <div class="task-creation-header">
       <h4 class="task-creation-header-title">Create issue</h4>
       <div class="task-creation-header-button">
-        <tasque-button class="btn fill disabled" text="Import issues"> </tasque-button>
+        <tasque-button class="btn fill disabled" text="Import issues">
+        </tasque-button>
         <tasque-button class="btn" [icon]="faExpeditedssl"> </tasque-button>
       </div>
     </div>
@@ -50,19 +51,32 @@
             >
             </angular-editor>
           </div>
-          <span class="error" *ngIf="!descriptionControl.valid">{{ editorErrorMessage }}</span>
+          <span class="error" *ngIf="!descriptionControl.valid">{{
+            editorErrorMessage
+          }}</span>
 
           <div class="button-wrapper">
-            <tasque-button class="btn stroke violet-stroke" text="+ Add issues"> </tasque-button>
+            <tasque-button class="btn stroke violet-stroke" text="+ Add issues">
+            </tasque-button>
           </div>
         </form>
       </div>
     </div>
     <div class="task-creation-footer">
       <div class="task-creation-footer-button">
-        <tasque-button type="submit" class="btn stroke" text="Cancel" (click)="clearForm()">
+        <tasque-button
+          type="submit"
+          class="btn stroke"
+          text="Cancel"
+          (click)="clearForm()"
+        >
         </tasque-button>
-        <tasque-button type="submit" class="btn fill" text="Create" (click)="submitForm()">
+        <tasque-button
+          type="submit"
+          class="btn fill"
+          text="Create"
+          (click)="submitForm()"
+        >
         </tasque-button>
       </div>
     </div>

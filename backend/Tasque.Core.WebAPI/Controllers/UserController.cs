@@ -60,5 +60,13 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok(await _service.
                     GetUserById(_userId));
         }
+
+
+        [HttpGet("getUserById/{id}")]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            return Ok(await _service.
+                    GetUserById(id));
+        }
     }
 }
