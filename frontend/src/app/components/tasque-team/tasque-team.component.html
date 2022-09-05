@@ -1,9 +1,13 @@
+<div class="header-container">
+  <h3 class="header">Project team</h3>
+  <tasque-input placeholder="Search team members" [icon]="icon" iconPosition="left"></tasque-input>
+</div>
 <div class="container">
   <div class="user-wrp" *ngFor="let user of teamMembers">
     <tasque-avatar [user]="user"></tasque-avatar>
     <div class="text-wrp">
-      <span>{{ user.name }}</span>
-      <span>User role</span>
+      <h4>{{ user.name }}</h4>
+      <h5>User role</h5>
     </div>
   </div>
 </div>
