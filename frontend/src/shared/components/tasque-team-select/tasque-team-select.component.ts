@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { UserModel } from 'src/core/models/user/user-model';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { UserCircle } from './models';
 
 @Component({
   selector: 'tasque-team-select',
@@ -10,63 +10,63 @@ import { UserCircle } from './models';
 export class TasqueTeamSelectComponent implements OnInit {
   public inputSearch = '';
   //Notify the parent component when the avatar is clicked and pass the selected user to it
-  @Output() selectedUser = new EventEmitter<UserCircle>();
+  @Output() selectedUser = new EventEmitter<UserModel>();
   public searchIcon = faMagnifyingGlass;
   public showPopUp = false;
 
-  @Input() public avatars: UserCircle[] = [
-    // remove when integrated in component with data
+  public avatars: UserModel[] = [
+    // TODO remove when integrated in component with data
     {
+      id: 1,
       email: 'petroporoshenko@gmail.com',
-      username: 'Petro Poroshenko',
-      profileURL: 'https://i.imgur.com/LqDUiIJ.jpeg',
+      name: 'Petro Poroshenko',
       avatarURL: 'https://i.imgur.com/LqDUiIJ.jpeg',
     },
     {
+      id: 2,
       email: 'sibainu@gmail.com',
-      username: 'Siba Inu',
-      profileURL: 'https://i.imgur.com/LqDUiIJ.jpeg',
+      name: 'Siba Inu',
       avatarURL: 'https://i.imgur.com/9YDVogY.jpeg',
     },
     {
+      id: 3,
       email: 'lilyjohanson@gmail.com',
-      username: 'Lily Johanson',
-      profileURL: 'https://i.imgur.com/LqDUiIJ.jpeg',
+      name: 'Lily Johanson',
       avatarURL: '',
     },
     {
+      id: 4,
       email: 'chelchelovich@gmail.com',
-      username: 'Chel Chelovich',
-      profileURL: 'https://i.imgur.com/LqDUiIJ.jpeg',
+      name: 'Chel Chelovich',
       avatarURL: 'https://i.imgur.com/8aXSW6B.jpeg',
     },
     {
+      id: 5,
       email: 'patrickbateman@gmail.com',
-      username: 'Patrick Bateman',
-      profileURL: 'https://i.imgur.com/LqDUiIJ.jpeg',
+      name: 'Patrick Bateman',
       avatarURL: 'https://i.imgur.com/th0HJEk.jpeg',
     },
     {
+      id: 6,
       email: 'meow@gmail.com',
-      username: 'Meow',
-      profileURL: 'https://i.imgur.com/LqDUiIJ.jpeg',
+      name: 'Meow',
       avatarURL: 'https://i.imgur.com/Z6VrcMz.png',
     },
     {
+      id: 7,
       email: 'davidherrmann@gmail.com',
-      username: 'David Herrmann',
-      profileURL: 'https://i.imgur.com/LqDUiIJ.jpeg',
+      name: 'David Herrmann',
       avatarURL: '',
     },
     {
+      id: 8,
       email: 'jessieosborn@gmail.com',
-      username: 'Jessie Osborn',
-      profileURL: 'https://i.imgur.com/LqDUiIJ.jpeg',
+      name: 'Jessie Osborn',
       avatarURL: '',
     },
   ];
 
-  public avatarsShow: UserCircle[] = this.avatars;
+  public avatarsShow: UserModel[] = this.avatars;
 
   public profileColors: string[] = [];
 
@@ -86,11 +86,11 @@ export class TasqueTeamSelectComponent implements OnInit {
 
   filterItems(): void {
     this.avatarsShow = this.avatars.filter((avatar) => {
-      return avatar.username.includes(this.inputSearch);
+      return avatar.name.includes(this.inputSearch);
     });
   }
 
-  selectUser(avatars: UserCircle): void {
+  selectUser(avatars: UserModel): void {
     this.selectedUser.emit(avatars);
   }
 }

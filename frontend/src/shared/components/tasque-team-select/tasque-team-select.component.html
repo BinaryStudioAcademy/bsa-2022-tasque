@@ -1,15 +1,15 @@
 <div class="container">
   <div class="users" *ngIf="avatars.length <= 4">
     <a class="user-avatar" *ngFor="let item of avatars.slice(0, 7); let i = index" [attr.data-index]="i" (click)="selectUser(item)">
-      <img *ngIf="item.avatarURL.length != 0" class="user-avatar-img" [src]="item.avatarURL" [alt]="item.username" />
-      <div *ngIf="item.avatarURL.length == 0" class="user-avatar-img" style="background-color: {{ profileColors[i] }}">
-        <span>{{ item.username[0] }}</span>
+      <img *ngIf="item.avatarURL" class="user-avatar-img" [src]="item.avatarURL" [alt]="item.name" />
+      <div *ngIf="item.avatarURL" class="user-avatar-img" style="background-color: {{ profileColors[i] }}">
+        <span>{{ item.name[0] }}</span>
       </div>
     </a>
   </div>
   <div class="users" *ngIf="avatars.length > 4">
     <a class="user-avatar" *ngFor="let item of avatars.slice(0, 7); let i = index" [attr.data-index]="i" style="left: {{ i * -18 }}px;" (click)="selectUser(item)">
-      <tasque-avatar class="user-avatar-img" [imageURL]="item.avatarURL" [alt]="item.username" [diameter_px]="50"></tasque-avatar>
+      <tasque-avatar class="user-avatar-img" [user]="item" [alt]="item.name" [diameter_px]="50"></tasque-avatar>
       <div class="user-overflow" *ngIf="i == 6" (click)="showPopUp = !showPopUp">+{{ avatars.length - 7 }}</div>
     </a>
   </div>
@@ -30,7 +30,7 @@
       <span>Members:</span>
       <div class="avatars-container">
         <a class="user-avatar" *ngFor="let item of avatarsShow; let i = index" [attr.data-index]="i" (click)="selectUser(item)">
-          <tasque-avatar class="user-avatar-img" [imageURL]="item.avatarURL" [alt]="item.username" [diameter_px]="50"></tasque-avatar>
+          <tasque-avatar class="user-avatar-img" [user]="item" [alt]="item.name" [diameter_px]="50"></tasque-avatar>
         </a>
       </div>
     </div>

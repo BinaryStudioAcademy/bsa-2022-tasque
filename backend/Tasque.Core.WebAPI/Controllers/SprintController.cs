@@ -90,4 +90,13 @@ public class SprintController : EntityController<Sprint, SprintDto, SprintServic
 
         return Ok();
     }
+
+    [HttpPut("order")]
+    public async Task<IActionResult> Order([FromBody] IEnumerable<int> ids)
+    {
+        var sprints = await _service.OrderSprints(ids);
+        var dto = mapper.Map<SprintDto>(sprints);
+        return Ok(dto);
+    }
+}
 }

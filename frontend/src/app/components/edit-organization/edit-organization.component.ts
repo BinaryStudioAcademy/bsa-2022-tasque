@@ -102,6 +102,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
     type: BoardType.Organization,
     users: [
       {
+        id: 1,
         email: 'test@email.com',
         username: 'username 1',
         profileURL: 'null',
