@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from 'src/core/models/user/user-model';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { NotificationService } from 'src/core/services/notification.service';
 import { ProjectModel } from '../../../core/models/project/project-model';
 
 @Component({
@@ -9,11 +11,7 @@ import { ProjectModel } from '../../../core/models/project/project-model';
   styleUrls: ['./project-list.component.sass']
 })
 export class ProjectListComponent implements OnInit {
-  public currentUser: UserModel = {
-    id: 0,
-    name: '',
-    email: ''
-  };
+  public currentUser: UserModel;
 
   public inputSearch = '';
   public searchIcon = faMagnifyingGlass;
@@ -22,7 +20,7 @@ export class ProjectListComponent implements OnInit {
     {
       id: 1,
       name: 'Tasque',
-      authorId: 1,
+      authorId: 2,
       organizationId: 1,
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
@@ -87,7 +85,16 @@ export class ProjectListComponent implements OnInit {
 
   public itemsShow = this.items;
 
-  constructor() { }
+  constructor(
+    private currentUserService: GetCurrentUserService,
+    private notificationService: NotificationService,
+  ) { 
+    this.currentUserService.currentUser.subscribe((res) => {
+      this.currentUser = res as UserModel;
+    }, () => {
+      this.notificationService.error('Something go wrong, try again');
+    });
+  }
 
   ngOnInit(): void {
   }
