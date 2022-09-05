@@ -97,7 +97,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<FileUploadService>()
                 .AddScoped<SprintService>()
                 .AddScoped<BoardService>()
-                .AddScoped<TaskService>();
+                .AddScoped<TaskService>()
+                .AddScoped<BacklogService>();
 
             services.RegisterIdentity(configuration);
         }

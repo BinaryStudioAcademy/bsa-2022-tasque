@@ -1,4 +1,5 @@
 import { TaskModel } from 'src/core/models/task/task-model';
+import { TaskModelDto } from '../task/task-model-dto';
 
 export interface SprintModel {
   id: number;
@@ -9,5 +10,5 @@ export interface SprintModel {
   startAt?: Date;
   endAt?: Date;
   projectId: number;
-  tasks: TaskModel[];
+  tasks: TaskModelDto[];
 }

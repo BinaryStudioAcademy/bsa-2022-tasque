@@ -23,6 +23,8 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
+import { TaskService } from 'src/core/services/task.service';
+import { TaskModelDto } from 'src/core/models/task/task-model-dto';
 
 @Component({
   selector: 'app-sprint',
@@ -44,8 +46,9 @@ export class SprintComponent implements OnInit, OnChanges {
   public sprintUsers: UserModel[];
   public sprintUsersCircle?: UserModel[];
 
-  public tasks: TaskModel[];
-  public tasksShow: TaskModel[];
+  public tasks: TaskModelDto[];
+  public tasksShow: TaskModelDto[];
+  public tasksDto: TaskModelDto;
 
   public unsubscribe$ = new Subject<void>();
 
@@ -55,7 +58,10 @@ export class SprintComponent implements OnInit, OnChanges {
   faAngleDown = faAngleDown;
   faChevronRight = faChevronRight;
 
-  constructor(public sprintService: SprintService) {}
+  constructor(
+    public sprintService: SprintService,
+    public taskService: TaskService,
+  ) {}
 
   ngOnInit(): void {
     this.getSprintTasks();
@@ -105,10 +111,10 @@ export class SprintComponent implements OnInit, OnChanges {
     }
 
     if (this.filterIssue == IssueSort.All) {
-      this.tasks.sort((a) => a.priority?.id);
+      this.tasks.sort((a) => a.id);
     } else if (this.filterIssue == IssueSort.OnlyMyIssues) {
       this.tasks = this.tasks.filter((item) => {
-        return item.author.id == this.currentUser.id;
+        return item.authorId == this.currentUser.id;
       });
     } else if (this.filterIssue == IssueSort.RecentlyUpdated) {
       this.tasks.sort(
@@ -118,7 +124,7 @@ export class SprintComponent implements OnInit, OnChanges {
     }
   }
 
-  drop(event: CdkDragDrop<TaskModel[]>) {
+  drop(event: CdkDragDrop<TaskModelDto[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -132,15 +138,22 @@ export class SprintComponent implements OnInit, OnChanges {
         event.previousIndex,
         event.currentIndex,
       );
-      console.log('moveItemInArray');
-      console.log(event.container.data);
-      console.log(this.sprint);
+
+      this.sprint.tasks[0].sprintId = this.sprint.id;
+
+      this.taskService
+        .updateTask(this.tasks[0].id, this.tasks[0])
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((result) => {
+          if (result.body) {
+          }
+        });
     }
   }
 
   filterUserTasks(user: UserModel): void {
     this.tasks = this.tasksShow.filter((item) => {
-      return item.author.id == user.id;
+      return item.authorId == user.id;
     });
   }
   //+++++++++++++++++++++++++rewrite after the backend part of sprintі sorting is implemented++++++++++++++++

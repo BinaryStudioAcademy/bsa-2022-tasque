@@ -7,6 +7,7 @@ import { EditSprintModel } from '../models/sprint/edit-sprint-model';
 import { SprintModel } from '../models/sprint/sprint-model';
 import { HttpService } from './http.service';
 import { TaskEstimateUpdate } from '../models/task/task-estimate-update';
+import { TaskModelDto } from '../models/task/task-model-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -31,8 +32,8 @@ export class SprintService {
     );
   }
 
-  getSprintTasks(sprintId: number): Observable<HttpResponse<TaskModel[]>> {
-    return this.httpService.getFullRequest<TaskModel[]>(
+  getSprintTasks(sprintId: number): Observable<HttpResponse<TaskModelDto[]>> {
+    return this.httpService.getFullRequest<TaskModelDto[]>(
       this.routePrefix + `/${sprintId}/tasks`,
     );
   }
