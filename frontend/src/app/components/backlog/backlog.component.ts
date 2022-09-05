@@ -11,8 +11,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { SprintService } from 'src/core/services/sprint.service';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { IssueSort } from './models';
+import { TaskModel } from 'src/core/models/task/task-model';
 
 @Component({
   selector: 'app-backlog',
@@ -31,6 +36,8 @@ export class BacklogComponent implements OnInit {
   public boards: TasqueDropdownOption[];
   public sprints: SprintModel[];
   public filterIssue: IssueSort;
+
+  public tasks: TaskModel[] = [];
 
   constructor(
     public boardService: BoardService,
@@ -82,5 +89,22 @@ export class BacklogComponent implements OnInit {
 
   taskSort(sort: IssueSort): void {
     this.filterIssue = sort;
+  }
+
+  drop(event: CdkDragDrop<TaskModel[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
   }
 }

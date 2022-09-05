@@ -1,6 +1,6 @@
 @import 'src/colors.sass'
     
-$standard-side-border: 56px
+$standard-side-border: 40px
 flex
     display: inline-flex
     align-items: center
@@ -30,7 +30,6 @@ span
 ::ng-deep button.mini
     padding-top: 3px !important
     padding-bottom: 3px !important
-
     span
         font-size: 18px
 
@@ -91,16 +90,32 @@ span
     border: solid
     border-color: colorscheme('gray-100')
     border-width: 1px
-
+    border-bottom: 2px solid  colorscheme('gray-300')
     &:hover
         background-color: colorscheme('gray-300')
 
     .issue-data
         width: 65%
         min-width: 150px
+        display: flex
+        fa-icon
+             color: colorscheme('yellow-100')
 
     .issue-actions
         @extend flex
 
 .show
     display: none
+
+.sprints
+    padding-right: 30px 
+
+.issue-type
+    background: colorscheme(yellow-100)
+    border-radius: 20px
+    padding: 4px 12px
+    font-weight: 600
+    font-size: 14px
+    line-height: 130%
+    color: colorscheme(gray-100)
+    margin: 0px 5px

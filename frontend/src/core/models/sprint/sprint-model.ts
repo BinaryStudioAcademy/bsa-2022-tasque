@@ -9,5 +9,5 @@ export interface SprintModel {
   startAt?: Date;
   endAt?: Date;
   projectId: number;
-  tasks?: TaskModel[];
+  tasks: TaskModel[];
 }

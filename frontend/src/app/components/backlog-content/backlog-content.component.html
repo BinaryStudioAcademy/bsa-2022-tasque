@@ -25,10 +25,20 @@
     <div class="empty-tasks row pale" *ngIf="tasks.length == 0">
       <label class="text-center">Your backlog is empty.</label>
     </div>
-    <div class="backlog-issues" id="backlog-issues" *ngIf="tasks.length != 0">
-      <div class="backlog-issue row" *ngFor="let task of tasks">
+    <div
+      class="backlog-issues"
+      id="backlog-issues"
+      *ngIf="tasks.length != 0"
+      cdkDropList
+      #todoList="cdkDropList"
+      [cdkDropListData]="tasks"
+      id="list-one"
+      [cdkDropListConnectedTo]="['list-two']"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <div class="backlog-issue row" *ngFor="let task of tasks" cdkDrag>
         <div class="issue-data">
-          <fa-icon class="ml-15" [icon]="flagIcon"></fa-icon>
+          <p class="issue-type">Issue</p>
           <label class="issue-proj pale ml-10 mr-10">{{
             task.project.key
           }}</label>
@@ -51,10 +61,10 @@
       </div>
     </div>
     <div class="add-issue-wrapper row">
-      <button class="btn-backlog-custom">
+      <tasque-button text="+ Create issues" class="btn mini voilet">
         <fa-icon [icon]="iconPlus"></fa-icon>&nbsp;
         <span class="bold">Create Issue</span>
-      </button>
+      </tasque-button>
     </div>
   </div>
 </section>

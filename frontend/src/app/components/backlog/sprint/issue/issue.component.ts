@@ -6,6 +6,10 @@ import { TaskEstimateUpdate } from 'src/core/models/task/task-estimate-update';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { SprintService } from 'src/core/services/sprint.service';
+import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
+import { TaskType } from 'src/core/models/task/task-type';
+import { TaskState } from 'src/core/models/task/task-state';
+import { faFlag} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-issue',
@@ -19,10 +23,64 @@ export class IssueComponent implements OnInit {
   @Input() public currentUser: UserModel;
   //notifying the parent components about the change in the value of estimate
   @Output() estimate = new EventEmitter<void>();
+  flagIcon = faFlag;
+    // TODO remove when real data is available
+    @Input() public taskTypes: TaskType[] = [
+      {
+        id: 1,
+        name: 'Bug',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        icon: this.flagIcon
+      },
+      {
+        id: 2,
+        name: 'Feature',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        icon: this.flagIcon
+      },
+      {
+        id: 3,
+        name: 'Enhancement',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        icon: this.flagIcon
+      },
+    ];
+
+      // TODO remove when real data is available
+  @Input() public taskStates: TaskState[] = [
+    {
+      id: 1,
+      name: 'To Do',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 2,
+      name: 'In Progress',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 3,
+      name: 'Done',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 4,
+      name: 'Canceled',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+  ];
+
   public issueAuthor: UserModel;
   public taskEstimate: TaskEstimateUpdate;
   public unsubscribe$ = new Subject<void>();
-
+  
   constructor(
     public userServise: UserService,
     public sprintService: SprintService,
@@ -66,5 +124,15 @@ export class IssueComponent implements OnInit {
       .updateTaskEstimate(this.taskEstimate)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe();
+  }
+
+  taskStateToDropdownArray(types: TaskState[]): TasqueDropdownOption[] {
+    return types.map((type) => {
+      return {
+        id: type.id,
+        title: type.name,
+        color: ''
+      };
+    });
   }
 }

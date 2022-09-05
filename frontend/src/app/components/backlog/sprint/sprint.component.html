@@ -3,8 +3,20 @@
     <summary>
       <div class="wrapper">
         <div class="marker">
-          <p class="open">▶</p>
-          <p class="close">▼</p>
+          <p class="open">
+            <fa-icon
+            [icon]="faChevronRight"
+            class="rotatable"
+            id="dropdown-arrow-icon"
+          ></fa-icon>
+          </p>
+          <p class="close">
+            <fa-icon
+            [icon]="faAngleDown"
+            class="rotatable"
+            id="dropdown-arrow-icon"
+          ></fa-icon>
+          </p>
         </div>
         <h4 class="sprint-name">{{ sprint.name }}</h4>
         <div class="sprint-date">
@@ -40,6 +52,7 @@
                 <a (click)="dropSprintClick(1)">Move sprint down</a>
                 <a>Edit sprint </a>
                 <a>Delete sprint </a>
+                <tasque-task-creation></tasque-task-creation>
               </div>
             </div>
           </div>

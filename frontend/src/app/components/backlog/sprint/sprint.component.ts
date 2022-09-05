@@ -6,7 +6,11 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEllipsisV,
+  faAngleDown,
+  faChevronRight,
+} from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
@@ -14,6 +18,11 @@ import { TaskModel } from 'src/core/models/task/task-model';
 import { SprintService } from 'src/core/services/sprint.service';
 import { IssueSort } from '../models';
 import { UserModel } from 'src/core/models/user/user-model';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-sprint',
@@ -43,6 +52,8 @@ export class SprintComponent implements OnInit, OnChanges {
   public createIssueSidebarName = 'createIssue';
   public estimate = 0;
   faEllipsisV = faEllipsisV;
+  faAngleDown = faAngleDown;
+  faChevronRight = faChevronRight;
 
   constructor(public sprintService: SprintService) {}
 
@@ -58,7 +69,7 @@ export class SprintComponent implements OnInit, OnChanges {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          this.tasks = this.tasksShow = result.body;
+          this.sprint.tasks = this.tasks = this.tasksShow = result.body;
           this.estimateCount();
         }
       });
