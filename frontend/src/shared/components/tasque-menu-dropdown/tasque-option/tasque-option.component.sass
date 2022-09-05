@@ -1,0 +1,40 @@
+@import 'src/colors.sass'
+
+$option-height: 35px
+$option-font-size: 14px
+$option-text-color: colorscheme(black-100)
+$option-border: 2px solid colorscheme(gray-300)
+$option-border-radius: 10px
+    
+.option
+  height: var(--option-height, $option-height)
+  display: flex
+  flex-direction: row
+  align-items: center
+  cursor: pointer
+  font-size: var(--option-font-size, $option-font-size)
+  padding: 5px 15px 5px 15px
+  color: var(--option-text-color, $option-text-color)
+  border-radius: var(--option-border-radius, $option-border-radius)
+  &:hover
+    background-color: colorscheme(gray-300)
+
+:host-context(.options-header)
+    .option
+        border-bottom: var(--option-border, $option-border)
+        border-bottom-right-radius: 0px
+        border-bottom-left-radius: 0px
+    .solo
+        .option
+            border: none
+            border-radius: 10px
+
+:host-context(.options-footer)
+    .option
+        border-top: var(--option-border, $option-border)
+        border-top-right-radius: 0px
+        border-top-left-radius: 0px
+    .solo
+        .option
+            border: none
+            border-radius: 10px

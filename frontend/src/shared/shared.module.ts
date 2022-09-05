@@ -28,6 +28,7 @@ import { TaskEditingComponent } from './components/tasque-task-editing/task-edit
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { SelectUsersComponent } from './components/select-users/select-users.component';
 import { MenuDropdownComponent } from './components/tasque-menu-dropdown/menu-dropdown.component';
+import { TasqueOptionComponent } from './components/tasque-menu-dropdown/tasque-option/tasque-option.component';
 
 @NgModule({
   imports: [
@@ -63,6 +64,7 @@ import { MenuDropdownComponent } from './components/tasque-menu-dropdown/menu-dr
     NotFoundPageComponent,
     SelectUsersComponent,
     MenuDropdownComponent,
+    TasqueOptionComponent,
   ],
   exports: [
     CommonModule,
