@@ -1,3 +1,6 @@
+import { ProjectModel } from '../project/project-model';
+import { SprintModel } from '../sprint/sprint-model';
+import { UserModel } from '../user/user-model';
 import { TaskPriority } from './task-priority';
 import { TaskState } from './task-state';
 import { TaskType } from './task-type';
