@@ -21,4 +21,5 @@ export interface TaskModel {
   updatedAt: Date;
   deadline: Date;
   finishedAt?: Date;
+  estimate?: number;
 }
