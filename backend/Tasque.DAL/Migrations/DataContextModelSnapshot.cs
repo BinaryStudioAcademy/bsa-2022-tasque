@@ -461,9 +461,15 @@ namespace Tasque.Core.DAL.Migrations
                     b.Property<DateTime?>("EndAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<bool>("IsComplete")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer");
 
                     b.Property<int>("ProjectId")
                         .HasColumnType("integer");

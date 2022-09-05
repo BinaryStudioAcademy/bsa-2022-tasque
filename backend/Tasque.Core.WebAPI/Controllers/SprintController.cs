@@ -12,7 +12,16 @@ public class SprintController : EntityController<Sprint, SprintDto, SprintServic
     public SprintController(SprintService service, CurrentUserParameters currentUser)
         : base(service, currentUser)
     {
-        
+
+    }
+
+    [Route("complete/{id}")]
+    [HttpPut]
+    public async Task<IActionResult> CompleteSprint(int id)
+    {
+        await _service.CompleteSprint(id);
+
+        return Ok();
     }
 
     [Route("edit")]
@@ -21,6 +30,14 @@ public class SprintController : EntityController<Sprint, SprintDto, SprintServic
     {        
         var entity = await _service.Edit(sprintDto);
         var dto = mapper.Map<SprintDto>(entity);
+        return Ok(dto);
+    }
+
+    [HttpPut("order")]
+    public async Task<IActionResult> Order([FromBody] IEnumerable<int> ids)
+    {
+        var sprints = await _service.OrderSprints(ids);
+        var dto = mapper.Map<SprintDto>(sprints);
         return Ok(dto);
     }
 }

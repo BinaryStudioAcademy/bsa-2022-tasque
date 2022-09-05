@@ -2,7 +2,7 @@
 
 namespace Tasque.Core.Common.Entities;
 
-public class Sprint : BaseEntity
+public class Sprint : OrderableEntity
 {
     public Sprint()
     {
@@ -15,6 +15,7 @@ public class Sprint : BaseEntity
     public DateTime? EndAt { get; set; }
     public int ProjectId { get; set; }
     public Project Project { get; set; } = null!;
+    public bool IsComplete { get; set; } = false;
 
     public virtual ICollection<Task> Tasks { get; set; }
 }

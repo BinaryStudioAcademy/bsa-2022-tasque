@@ -3,7 +3,7 @@
     <tasque-avatar
       *ngIf="hasAvatar"
       (click)="avatarClick()"
-      [imageURL]="avatarUrl"
+      [user]="user"
       [diameter_px]="diameter_px"
     ></tasque-avatar>
     <span class="dropdown-label" *ngIf="label" (click)="labelClick()">{{ label }}</span>

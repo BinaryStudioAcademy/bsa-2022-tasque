@@ -17,10 +17,11 @@ export interface EnumToArrayElement {
 }
 
 export interface IUserCard {
+  id: number,
   email: string;
   username: string;
   profileURL: string;
-  avatarURL: string;
+  avatarURL?: string;
   role: BusinessRole | null;
 }
 
