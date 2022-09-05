@@ -33,7 +33,6 @@
       #todoList="cdkDropList"
       [cdkDropListData]="tasks"
       id="list-one"
-      [cdkDropListConnectedTo]="['list-two']"
       (cdkDropListDropped)="drop($event)"
     >
       <div class="backlog-issue row" *ngFor="let task of tasks" cdkDrag>

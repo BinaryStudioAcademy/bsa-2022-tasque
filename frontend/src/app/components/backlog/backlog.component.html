@@ -1,4 +1,4 @@
-<div class="backlog-conteiner">
+<div class="backlog-conteiner" cdkDropListGroup>
   <div class="header">
     <div class="wrapper title">
       <div>
@@ -37,24 +37,16 @@
     </div>
   </div>
   <div>
-    <div>
+    <div class="body" cdkDropListGroup>
       <app-sprint
         *ngFor="let sprint of sprints"
-        cdkDropList
-        class="body"
-        cdkDropList
-        id="list-two"
-        #doneList="cdkDropList"
-        [cdkDropListData]="sprint.tasks"
-        [cdkDropListConnectedTo]="['list-one']"
-        (cdkDropListDropped)="drop($event)"
         [sprint]="sprint"
         [currentUser]="currentUser"
         [inputSearch]="inputSearch"
         (dropSprint)="dropSprintBtnClick($event)"
         [filterIssue]="filterIssue"
       ></app-sprint>
+      <app-backlog-content></app-backlog-content>
     </div>
   </div>
-  <app-backlog-content></app-backlog-content>
 </div>

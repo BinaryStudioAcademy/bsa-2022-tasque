@@ -118,6 +118,26 @@ export class SprintComponent implements OnInit, OnChanges {
     }
   }
 
+  drop(event: CdkDragDrop<TaskModel[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+      console.log('moveItemInArray');
+      console.log(event.container.data);
+      console.log(this.sprint);
+    }
+  }
+
   filterUserTasks(user: UserModel): void {
     this.tasks = this.tasksShow.filter((item) => {
       return item.author.id == user.id;

@@ -135,7 +135,7 @@ export class BacklogContentComponent implements OnInit {
   public sprints$: Observable<SprintModel[]>;
 
   // TODO remove when real data is available
-  public sprints: SprintModel[] = [
+  @Input() public sprints: SprintModel[] = [
     {
       id: 1,
       projectId: 3,

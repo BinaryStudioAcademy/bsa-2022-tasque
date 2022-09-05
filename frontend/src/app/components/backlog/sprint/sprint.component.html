@@ -1,21 +1,28 @@
-<div class="sprint-conteiner">
+<div
+  class="sprint-conteiner"
+  cdkDropList
+  id="{{ sprint.id }}"
+  #doneList="cdkDropList"
+  [cdkDropListData]="sprint.tasks"
+  (cdkDropListDropped)="drop($event)"
+>
   <details>
     <summary>
       <div class="wrapper">
         <div class="marker">
           <p class="open">
             <fa-icon
-            [icon]="faChevronRight"
-            class="rotatable"
-            id="dropdown-arrow-icon"
-          ></fa-icon>
+              [icon]="faChevronRight"
+              class="rotatable"
+              id="dropdown-arrow-icon"
+            ></fa-icon>
           </p>
           <p class="close">
             <fa-icon
-            [icon]="faAngleDown"
-            class="rotatable"
-            id="dropdown-arrow-icon"
-          ></fa-icon>
+              [icon]="faAngleDown"
+              class="rotatable"
+              id="dropdown-arrow-icon"
+            ></fa-icon>
           </p>
         </div>
         <h4 class="sprint-name">{{ sprint.name }}</h4>
