@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 import { AvailableFields } from 'src/core/models/const-resources/available-fields';
 import { TaskTemplateService } from 'src/core/services/task-template.service';
 import { TaskType } from 'src/core/models/task/task-type';
-import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-issue-template',
