@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UserModel } from 'src/core/models/user/user-model';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { UserCircle } from './models';
 
 @Component({
   selector: 'tasque-team-select',
@@ -13,6 +12,7 @@ export class TasqueTeamSelectComponent implements OnInit {
   public searchIcon = faMagnifyingGlass;
   public showPopUp = false;
 
+  //Show avatar of first user only
   @Input() miniView = false;
 
   public avatars: UserModel[] = [
