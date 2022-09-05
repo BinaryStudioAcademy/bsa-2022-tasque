@@ -36,7 +36,7 @@ export class IssueComponent implements OnInit {
 
   public getIssueAuthor(): void {
     this.userServise
-      .getUserById(this.issue.authorId)
+      .getUserById(this.issue.author.id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
@@ -58,7 +58,7 @@ export class IssueComponent implements OnInit {
 
     this.taskEstimate = {
       taskId: this.issue.id,
-      sprintId: this.issue.sprintId,
+      sprintId: this.issue.sprint.id,
       estimate: this.issue.estimate ?? 0,
     };
 

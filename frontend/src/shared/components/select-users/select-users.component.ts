@@ -41,13 +41,14 @@ export class SelectUsersComponent implements OnInit {
     hasRoles: true,
     users: [
       {
+        id: 1,
         email: 'admin@gmail.com',
         username: 'Admin',
         profileURL: '',
         avatarURL: '',
-        role: BusinessRole.Administrator
-      }
-    ]
+        role: BusinessRole.Administrator,
+      },
+    ],
   };
 
   @Output() onAdd = new EventEmitter<string>();
@@ -92,7 +93,7 @@ export class SelectUsersComponent implements OnInit {
 
   delete(email: string): void {
     this.isLoading = true;
-    
+
     this.onDelete.emit(email);
 
     this.refreshList();
@@ -101,7 +102,7 @@ export class SelectUsersComponent implements OnInit {
   update(user: IUserCard, role: BusinessRole): void {
     this.isLoading = true;
     user.role = role;
-    
+
     this.onUpdate.emit(user);
 
     this.refreshList();
@@ -116,7 +117,7 @@ export class SelectUsersComponent implements OnInit {
       id: user.id,
       email: user.email,
       name: user.username,
-      avatarURL: user.avatarURL
+      avatarURL: user.avatarURL,
     };
   }
 

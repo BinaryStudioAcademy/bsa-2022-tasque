@@ -97,7 +97,7 @@ export class SprintComponent implements OnInit, OnChanges {
       this.tasks.sort((a) => a.priority?.id);
     } else if (this.filterIssue == IssueSort.OnlyMyIssues) {
       this.tasks = this.tasks.filter((item) => {
-        return item.authorId == this.currentUser.id;
+        return item.author.id == this.currentUser.id;
       });
     } else if (this.filterIssue == IssueSort.RecentlyUpdated) {
       this.tasks.sort(
@@ -109,7 +109,7 @@ export class SprintComponent implements OnInit, OnChanges {
 
   filterUserTasks(user: UserModel): void {
     this.tasks = this.tasksShow.filter((item) => {
-      return item.authorId == user.id;
+      return item.author.id == user.id;
     });
   }
   //+++++++++++++++++++++++++rewrite after the backend part of sprintі sorting is implemented++++++++++++++++
