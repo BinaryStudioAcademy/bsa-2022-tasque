@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserModel } from 'src/core/models/user/user-model';
 
 @Component({
   selector: 'app-tasque-project-settings',
@@ -12,13 +13,14 @@ export class TasqueProjectSettingsComponent implements OnInit {
   public columnButtonText = 'Column and statuses';
   public issueTypesText = 'Issue types';
   public issueTemplateText = 'Basic issue template';
+  public currentUser: UserModel;
 
   constructor(
     public router: Router,
   ) { }
 
   ngOnInit(): void {
-    
+
   }
 
   moveToIssueTemplates(): void {
