@@ -180,19 +180,19 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       id: 1,
       name: 'User1Name',
       email: 'email',
-      role: UserRole.organizationMember
+      organizationRoles: [ { organizationId: 1, userId: 2, userRole: UserRole.organizationMember }, { organizationId: 2, userId: 2, userRole: UserRole.organizationMember } ]
     },
     {
       id: 2,
       name: 'User2Name',
       email: 'email',
-      role: UserRole.organizationMember
+      organizationRoles: [ { organizationId: 1, userId: 2, userRole: UserRole.organizationMember }, { organizationId: 2, userId: 2, userRole: UserRole.organizationMember } ]
     },
     {
       id: 3,
       name: 'User3Name',
       email: 'email',
-      role: UserRole.organizationMember
+      organizationRoles: [ { organizationId: 1, userId: 2, userRole: UserRole.organizationMember }, { organizationId: 2, userId: 2, userRole: UserRole.organizationMember } ]
     }
   ];
 

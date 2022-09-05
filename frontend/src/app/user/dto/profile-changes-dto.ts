@@ -1,9 +1,9 @@
-import { UserRole } from 'src/core/models/user/user-roles';
+import { UserRoleModel } from 'src/core/models/user/user-role-model';
 
 export interface ProfileChangesDTO {
   id: number;
   name: string;
   email: string;
   avatarURL?: string;
-  role: UserRole
+  organizationRoles: UserRoleModel[]
 }

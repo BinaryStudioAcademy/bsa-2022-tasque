@@ -13,6 +13,7 @@ import { UserRole } from 'src/core/models/user/user-roles';
 export class OrganizationListItemComponent implements OnInit {
   @Input() public currentUser: UserModel;
   @Input() public organization: OrganizationModel;
+  public role: UserRole;
 
   public organizationAdmin: UserRole.OrganizationAdmin;
 
@@ -21,7 +22,9 @@ export class OrganizationListItemComponent implements OnInit {
     private getCurrentOrganizationService: GetCurrentOrganizationService
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    this.role = this.currentUser?.organizationRoles?.find(m => m.organizationId === this.organization.id)?.userRole as UserRole;
+  }
 
   public openOrganization(): void {
     this.getCurrentOrganizationService.currentOrganizationId = this.organization.id;

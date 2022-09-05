@@ -93,6 +93,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.currentUser);
   }
 
   filterItems(): void {

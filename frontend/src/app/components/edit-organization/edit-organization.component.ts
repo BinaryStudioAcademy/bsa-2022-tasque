@@ -115,7 +115,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
   };
 
   public users: ProfileChangesDTO[] = [
-    { id: 1, name: 'Test user', email: 'test@test.test', avatarURL: 'null', role: UserRole.organizationMember },
+    { id: 1, name: 'Test user', email: 'test@test.test', avatarURL: 'null', organizationRoles: [{organizationId: 1, userId: 2, userRole: UserRole.organizationMember}] },
   ];
 
   public getUsers(): void {

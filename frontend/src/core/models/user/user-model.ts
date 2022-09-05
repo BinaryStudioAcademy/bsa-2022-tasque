@@ -1,9 +1,9 @@
-﻿import { UserRole } from './user-roles';
+﻿import { UserRoleModel } from './user-role-model';
 
 export interface UserModel {
   id: number,
   name: string,
   email: string,
   avatarURL?: string,
-  role: UserRole
+  organizationRoles: UserRoleModel[]
 }

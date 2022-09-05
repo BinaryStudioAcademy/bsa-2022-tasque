@@ -118,7 +118,7 @@ export class SelectUsersComponent implements OnInit {
       email: user.email,
       name: user.username,
       avatarURL: user.avatarURL,
-      role: UserRole.organizationMember
+      organizationRoles: [ { organizationId: 1, userId: 2, userRole: UserRole.organizationMember }, { organizationId: 2, userId: 2, userRole: UserRole.organizationMember } ]
     };
   }
 
