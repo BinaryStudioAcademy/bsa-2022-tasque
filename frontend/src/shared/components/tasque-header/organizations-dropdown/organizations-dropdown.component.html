@@ -2,5 +2,7 @@
   <div class="organizations" *ngFor="let org of availableOrganizations; trackBy: trackByOrganization">
     <tasque-option (click)="selectOrganization(org)"> {{ org.name }}</tasque-option>
   </div>
-  <tasque-option footer (click)="openOrganizationsPage()"> Manage my organizations </tasque-option>
+  <tasque-option [class.solo]="availableOrganizations.length === 0" footer (click)="openOrganizationsPage()">
+    Manage my organizations
+  </tasque-option>
 </tasque-menu-dropdown>

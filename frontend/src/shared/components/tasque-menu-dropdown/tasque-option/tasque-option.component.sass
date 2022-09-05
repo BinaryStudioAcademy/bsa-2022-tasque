@@ -20,21 +20,18 @@ $option-border-radius: 10px
     background-color: colorscheme(gray-300)
 
 :host-context(.options-header)
-    .option
-        border-bottom: var(--option-border, $option-border)
-        border-bottom-right-radius: 0px
-        border-bottom-left-radius: 0px
-    .solo
-        .option
-            border: none
-            border-radius: 10px
+  .option
+    border-bottom: var(--option-border, $option-border)
+    border-bottom-right-radius: 0px
+    border-bottom-left-radius: 0px
 
 :host-context(.options-footer)
-    .option
-        border-top: var(--option-border, $option-border)
-        border-top-right-radius: 0px
-        border-top-left-radius: 0px
-    .solo
-        .option
-            border: none
-            border-radius: 10px
+  .option
+    border-top: var(--option-border, $option-border)
+    border-top-right-radius: 0px
+    border-top-left-radius: 0px
+
+:host-context(.solo)
+  .option
+    border: none !important
+    border-radius: 10px !important
