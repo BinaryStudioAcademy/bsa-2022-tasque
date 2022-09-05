@@ -1,15 +1,15 @@
-.header-container
+.header
   display: flex
+  flex-flow: row
   justify-content: space-between
 
 .container
   padding: 10px 25px
-  display: grid
-  align-content: center
 
-  --grid-layout-gap: 10px
+.grid
+  --grid-layout-gap: 20px
   --grid-column-count: 10
-  --grid-item--min-width: 150px
+  --grid-item--min-width: 100px
 
   --gap-count: calc(var(--grid-column-count) - 1)
   --total-gap-width: calc(var(--gap-count) * var(--grid-layout-gap))
@@ -31,9 +31,6 @@
   flex-flow: column
   padding-top: 5px
   text-align: center
-
-.header
-  margin-left: 25px
 
 .text-16
   font-size: 16px
