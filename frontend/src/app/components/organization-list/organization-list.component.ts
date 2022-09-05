@@ -9,6 +9,7 @@ import { faMagnifyingGlass, faMessage } from '@fortawesome/free-solid-svg-icons'
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { BaseComponent } from 'src/core/base/base.component';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
+import { UserRole } from 'src/core/models/user/user-roles';
 
 @Component({
   selector: 'app-organization-list',
@@ -19,7 +20,8 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
   public currentUser: UserModel = {
     id: 0,
     name: '',
-    email: ''
+    email: '',
+    role: UserRole.organizationMember
   };
 
   public items: OrganizationModel[] = [];

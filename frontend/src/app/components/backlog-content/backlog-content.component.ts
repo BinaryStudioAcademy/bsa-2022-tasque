@@ -9,6 +9,7 @@ import { UserModel } from 'src/core/models/user/user-model';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { TaskPriority } from 'src/core/models/task/task-priority';
+import { UserRole } from 'src/core/models/user/user-roles';
 
 @Component({
   selector: 'app-backlog-content',
@@ -163,17 +164,20 @@ export class BacklogContentComponent implements OnInit {
     {
       id: 1,
       name: 'John Doe',
-      email: 'email'
+      email: 'email',
+      role: UserRole.organizationMember
     },
     {
       id: 2,
       name: 'Jane Doe',
-      email: 'email'
+      email: 'email',
+      role: UserRole.organizationMember
     },
     {
       id: 3,
       name: 'James McGuill',
-      email: 'email'
+      email: 'email',
+      role: UserRole.organizationMember
     }
   ];
 

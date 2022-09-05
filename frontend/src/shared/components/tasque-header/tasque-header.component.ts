@@ -15,7 +15,7 @@ import { MenuDropdownOption } from '../tasque-menu-dropdown/menu-dropdown.compon
 export class HeaderComponent implements OnInit {
 
   public searchIcon = faMagnifyingGlass;
-  public currentUser: UserModel = { id: 1, name: 'John Doe', email: 'johndoe@gmail.com' };
+  public currentUser: UserModel;
   public createOptions: MenuDropdownOption[] = [
     { name: 'Create Organization' }, { name: 'Create Project' },
   ];
@@ -39,7 +39,11 @@ export class HeaderComponent implements OnInit {
     private currentUserService: GetCurrentUserService,
     private authService: AuthService,
     private router: Router
-  ) { }
+  ) { 
+    this.currentUserService.currentUser.subscribe((user) => {
+      this.currentUser = user as UserModel;
+    });
+  }
 
   ngOnInit(): void {
     this.currentUserService.currentUser.subscribe((user) => {

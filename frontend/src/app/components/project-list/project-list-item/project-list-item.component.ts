@@ -14,5 +14,6 @@ export class ProjectListItemComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+  }
 }

@@ -25,14 +25,14 @@ export class GetCurrentUserService {
 
   private currentUser$: Observable<UserModel>;
 
-  get currentUser(): Observable<UserModel | undefined> {
+  get currentUser(): Observable<UserModel> {
     if (this.currentUser$ !== undefined)
       return this.currentUser$;
     return this.userService.getCurrentUser().pipe(
       map((resp) => {
         if (!resp.ok) {
           this.router.navigate(['auth/login']);
-          return;
+          ///return;
         }
         this.currentUser$ = of(resp.body as UserModel);
         return resp.body as UserModel;

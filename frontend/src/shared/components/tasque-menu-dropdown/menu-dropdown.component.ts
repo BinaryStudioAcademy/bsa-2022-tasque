@@ -3,6 +3,7 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from 'src/core/models/user/user-model';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 export interface MenuDropdownOption {
   id?: number,
@@ -37,7 +38,7 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
   @Output() labelClicked = new EventEmitter(); // event that represents click on the dropdown main label
   @Input() toggleDropdownOnLabelClick = true;
 
-  @Input() user: UserModel = { id: 1, name: 'John Doe', email: 'johndoe@gmail.com', avatarURL: 'https://www.w3schools.com/howto/img_avatar.png' }; // url of the avatar
+  @Input() user: UserModel; // url of the avatar
   @Input() diameter_px = 45; // size of the avatar
 
   @Input() public hasAvatar = false; // state of the avatar visibility
@@ -83,7 +84,13 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  constructor() { }
+  constructor(
+    private currentUserService: GetCurrentUserService,
+  ) { 
+    this.currentUserService.currentUser.subscribe((res) => {
+      this.user = res as UserModel;
+    });
+  }
 
   ngOnInit(): void {
     this.currentArrowIcon = this.downArrowIcon;

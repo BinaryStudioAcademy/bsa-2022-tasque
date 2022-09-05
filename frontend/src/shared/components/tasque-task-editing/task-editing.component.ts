@@ -13,6 +13,7 @@ import { TaskState } from 'src/core/models/task/task-state';
 import { TaskPriority } from 'src/core/models/task/task-priority';
 import { TaskType } from 'src/core/models/task/task-type';
 import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
+import { UserRole } from 'src/core/models/user/user-roles';
 
 @Component({
   selector: 'tasque-task-editing',
@@ -178,17 +179,20 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     {
       id: 1,
       name: 'User1Name',
-      email: 'email'
+      email: 'email',
+      role: UserRole.organizationMember
     },
     {
       id: 2,
       name: 'User2Name',
-      email: 'email'
+      email: 'email',
+      role: UserRole.organizationMember
     },
     {
       id: 3,
       name: 'User3Name',
-      email: 'email'
+      email: 'email',
+      role: UserRole.organizationMember
     }
   ];
 

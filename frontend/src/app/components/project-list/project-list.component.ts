@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from 'src/core/models/user/user-model';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
-import { NotificationService } from 'src/core/services/notification.service';
 import { ProjectModel } from '../../../core/models/project/project-model';
 
 @Component({
@@ -86,13 +85,10 @@ export class ProjectListComponent implements OnInit {
   public itemsShow = this.items;
 
   constructor(
-    private currentUserService: GetCurrentUserService,
-    private notificationService: NotificationService,
-  ) { 
+    private currentUserService: GetCurrentUserService
+  ) {
     this.currentUserService.currentUser.subscribe((res) => {
       this.currentUser = res as UserModel;
-    }, () => {
-      this.notificationService.error('Something go wrong, try again');
     });
   }
 
