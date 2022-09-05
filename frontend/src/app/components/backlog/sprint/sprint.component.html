@@ -14,7 +14,9 @@
         </div>
         <div class="issues">
           <p>issues</p>
-          <p class="issues-count">{{ tasks && tasks.length ? tasks.length : 0 }}</p>
+          <p class="issues-count">
+            {{ tasks && tasks.length ? tasks.length : 0 }}
+          </p>
         </div>
         <div class="estimate">
           <p>estimate</p>
@@ -22,11 +24,17 @@
         </div>
 
         <div class="wrapper button">
-          <tasque-button text="Start sprint" class="btn mini voilet"></tasque-button>
+          <tasque-button
+            text="Start sprint"
+            class="btn mini voilet"
+          ></tasque-button>
 
           <div class="dropdown-button">
             <div class="dropdown" style="float: right">
-              <tasque-button class="btn dropbtn" [icon]="faEllipsisV"></tasque-button>
+              <tasque-button
+                class="btn dropbtn"
+                [icon]="faEllipsisV"
+              ></tasque-button>
               <div class="dropdown-content">
                 <a (click)="dropSprintClick(0)">Move sprint up</a>
                 <a (click)="dropSprintClick(1)">Move sprint down</a>
@@ -40,14 +48,27 @@
     </summary>
     <div class="sprint-header">
       <div class="select-user">
-        <tasque-team-select (selectedUser)="filterUserTasks($event)" *ngIf="sprintUsersCircle" [avatars]="sprintUsersCircle"></tasque-team-select>
+        <tasque-team-select
+          (selectedUser)="filterUserTasks($event)"
+          *ngIf="sprintUsersCircle"
+          [avatars]="sprintUsersCircle"
+        ></tasque-team-select>
       </div>
     </div>
     <div class="sprint-body">
-      <app-issue *ngFor="let task of tasks" [issue]="task" [currentUser]="currentUser" (estimate)="estimateCount()"></app-issue>
+      <app-issue
+        *ngFor="let task of tasks"
+        [issue]="task"
+        [currentUser]="currentUser"
+        (estimate)="estimateCount()"
+      ></app-issue>
     </div>
     <div class="sprint-footer">
-      <tasque-task-creation btnText="+ Create issues" btnClass="btn mini voilet" [sidebarName]="createIssueSidebarName"></tasque-task-creation>
+      <tasque-task-creation
+        btnText="+ Create issues"
+        btnClass="btn mini voilet"
+        [sidebarName]="createIssueSidebarName"
+      ></tasque-task-creation>
     </div>
   </details>
 </div>
