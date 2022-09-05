@@ -34,7 +34,7 @@ export class SprintComponent implements OnInit, OnChanges {
   @Output() dropSprint = new EventEmitter<number>();
 
   public sprintUsers: UserModel[];
-  public sprintUsersCircle?: UserCircle[];
+  public sprintUsersCircle?: UserModel[];
 
   public tasks: TaskModel[];
   public tasksShow: TaskModel[];
@@ -73,13 +73,7 @@ export class SprintComponent implements OnInit, OnChanges {
         if (result.body) {
           this.sprintUsers = result.body;
 
-          this.sprintUsersCircle = this.sprintUsers.map((item) => ({
-            id: item.id,
-            username: item.name,
-            email: item.email,
-            avatarURL: item.avatarURL || '',
-            profileURL: '',
-          }));
+          this.sprintUsersCircle = result.body;
         }
       });
   }
@@ -114,7 +108,7 @@ export class SprintComponent implements OnInit, OnChanges {
     }
   }
 
-  filterUserTasks(user: UserCircle): void {
+  filterUserTasks(user: UserModel): void {
     this.tasks = this.tasksShow.filter((item) => {
       return item.authorId == user.id;
     });

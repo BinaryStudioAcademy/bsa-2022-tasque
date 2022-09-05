@@ -14,7 +14,7 @@ export class TasqueTeamSelectComponent implements OnInit {
   public searchIcon = faMagnifyingGlass;
   public showPopUp = false;
 
-  public avatars: UserModel[] = [
+  @Input() public avatars: UserModel[] = [
     // TODO remove when integrated in component with data
     {
       id: 1,
