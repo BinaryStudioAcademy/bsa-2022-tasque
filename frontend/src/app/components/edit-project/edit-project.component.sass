@@ -1,28 +1,22 @@
-.content
-    margin: 10px 30px 10px 10px
-    font-family: 'Nunito'
-    font-style: normal
-    font-weight: 400
-    font-size: 14px
-    color: colorscheme(black-100)
+@import 'src/colors.sass'
 
-.container
-    margin-top: 30px
-    padding: 10px
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px
-    & label
-        font-size: 18px
-        display: flex
-        flex-direction: row-reverse
-    & .submit
-        display: flex
-        flex-direction: row-reverse
+.content
+    margin: 20px 50px
+
+.footer-button
+    display: flex
+    align-items: center
+    flex-direction: row-reverse
+    margin: 20px 10px
+    & > *
+        margin-left: 10px
 
 .projectName-wrapper
     display: flex
     align-items: center
     padding: 5px
     border-radius: 10px
+    border: 2px solid colorscheme(white-100)
     .icon
         vertical-align: middle
         border-radius: 50%
@@ -48,12 +42,15 @@
     outline: 0px solid transparent
     opacity: .88
 
-.task-creation-footer-button
-    margin-top: 30px
-    padding: 0 51px
+.limiter
     margin-left: auto
+
+.edit-header
     display: flex
-    flex-direction: row
-    justify-content: flex-end
-    >.btn
-        margin-left: 15px
+    align-items: center
+
+.select
+    margin-top: 30px
+    & label
+        font-size: 16px
+        font-weight: 600

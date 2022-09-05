@@ -36,6 +36,8 @@ export class ProjectListComponent implements OnInit {
         this.itemsShow = this.projectsModel;
       }
     });
+
+    
   }
 
   filterItems(): void {

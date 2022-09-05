@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 import { NotificationService } from 'src/core/services/notification.service';
 import { ProjectService } from 'src/core/services/project.service';
@@ -29,12 +30,11 @@ export class EditProjectComponent implements OnInit {
 
   get projectNameErrorMessage(): string {
     const ctrl = this.projectNameControl;
-
     if (ctrl.errors?.['minlength']) {
       return 'Summary must be at least 2 characters';
     }
     if (ctrl.errors?.['required']) {
-      return 'Project is required';
+      return 'Project name is required';
     }
     return '';
   }
@@ -46,7 +46,7 @@ export class EditProjectComponent implements OnInit {
   invitedUsersList: IUserCard[];
 
   constructor(private notification: NotificationService,
-    private sideBarService: SideBarService, 
+    private sideBarService: SideBarService,
     public projectService: ProjectService) {
       this.projectNameControl = new FormControl(this.projectName, [
         Validators.required,
@@ -69,8 +69,6 @@ export class EditProjectComponent implements OnInit {
       hasRoles: true
     };
 
-    console.log(this.changeRoleBoard);
-
     this.deleteUserBoard = {
       id: 1,
       type: BoardType.Organization,
@@ -92,19 +90,24 @@ export class EditProjectComponent implements OnInit {
   }
 
   public submitForm(): void {
+    this.project.name = this.projectName;
 
-    //this.project.name = this.projectName;
-
-    this.projectService.editProject({id: this.project.id, name: this.project.name}).subscribe(() => {
-      this.notification.success(
-        'Project data has been updated successfully',
-      );
-      this.editProjectForm.reset();
-      this.sideBarService.toggle(this.sidebarName);
-    });
+    this.projectService
+      .editProject({id: this.project.id, name: this.project.name})
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if(result.status == 200 && result.body !== null) {
+          this.notification.success(
+            'Project data has been updated successfully',
+          );
+          this.editProjectForm.reset();
+          this.sideBarService.toggle(this.sidebarName);
+        }
+      });
   }
 
   public clearForm(): void {
+    this.projectName = this.project.name;
     this.editProjectForm.reset();
     this.sideBarService.toggle(this.sidebarName);
   }
@@ -113,6 +116,5 @@ export class EditProjectComponent implements OnInit {
     const input = event.target as HTMLElement;
     return input.innerText;
   }
-
   
 }

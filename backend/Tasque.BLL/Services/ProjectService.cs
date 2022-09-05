@@ -34,9 +34,13 @@ public class ProjectService : EntityCrudService<Project>
     //    return project;
     //}
 
-    public async Task EditProject(EditProjectDto projectDto)
+    public async Task<ProjectInfoDto> EditProject(EditProjectDto projectDto)
     {
-        var project = await _db.Projects.FirstOrDefaultAsync(proj => proj.Id == projectDto.Id);
+        var project = await _db.Projects
+            .Where(proj => proj.Id == projectDto.Id)
+            .Include(proj => proj.Users)
+            .Include(proj => proj.UserRoles)
+            .FirstOrDefaultAsync();
 
         if (project == null)
             throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
@@ -44,6 +48,8 @@ public class ProjectService : EntityCrudService<Project>
         project.Name = projectDto.Name;
         _db.Update(project);
         _db.SaveChanges();
+
+        return _mapper.Map<ProjectInfoDto>(project);
     }
 
     public async Task<List<ProjectInfoDto>> GetAllProjectsOfOrganization(int organizationId)

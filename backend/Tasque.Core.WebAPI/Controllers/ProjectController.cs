@@ -19,9 +19,9 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
     [HttpPut("edit")]
     public async Task<IActionResult> EditProject([FromBody]EditProjectDto editProjectDto)
     {
-        await _service.EditProject(editProjectDto);
+        var result = await _service.EditProject(editProjectDto);
 
-        return Ok();
+        return Ok(result);
     }
 
     [HttpGet("all/{organizationId}")]

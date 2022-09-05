@@ -1,26 +1,27 @@
 <tasque-sidebar [name]="sidebarName" btnText="Edit" btnClass="btn stroke fixed-height">
   <div class="content" [formGroup]="editProjectForm">
-    <div class="container">
+    <div class="edit-header">
       <div class="projectName-wrapper">
-        <div class="projectName" [textContent]="project.name" (input)="project.name = titleContent($event)" contenteditable="true" [formControl]="projectNameControl" ngDefaultControl></div>
+        <div class="projectName" [textContent]="projectName" (input)="projectName = titleContent($event)" contenteditable="true" [formControl]="projectNameControl" ngDefaultControl></div>
         <tasque-button class="btn icon" [icon]="faPenToSquare"> </tasque-button>
       </div>
+      <div class="limiter"></div>
     </div>
-    <div class="container">
+    <div class="select">
       <label>Change member role</label>
       <tasque-select-users [board]="changeRoleBoard"></tasque-select-users>
     </div>
-    <div class="container">
+    <div class="select">
       <label>Invite member</label>
       <tasque-select-users [board]="inviteUserBoard"></tasque-select-users>
     </div>
-    <div class="container">
+    <div class="select">
       <label>Kick member</label>
       <tasque-select-users [board]="deleteUserBoard"></tasque-select-users>
     </div>
-    <div class="task-creation-footer-button">
-      <tasque-button type="submit" class="btn stroke violet-stroke" text="Cancel" (click)="clearForm()"> </tasque-button>
+    <div class="footer-button">
       <tasque-button type="submit" class="btn stroke violet-stroke" text="Save" (click)="submitForm()"> </tasque-button>
+      <tasque-button type="submit" class="btn stroke violet-stroke" text="Cancel" (click)="clearForm()"> </tasque-button>
     </div>
   </div>
 </tasque-sidebar>
