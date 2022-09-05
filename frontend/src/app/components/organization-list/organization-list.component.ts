@@ -21,7 +21,7 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
     id: 0,
     name: '',
     email: '',
-    organizationRoles: [ { organizationId: 1, userId: 2, userRole: UserRole.organizationMember }, { organizationId: 2, userId: 2, userRole: UserRole.organizationMember } ]
+    organizationRoles: [ { organizationId: 1, userId: 2, role: UserRole.organizationMember }, { organizationId: 2, userId: 2, role: UserRole.organizationMember } ]
   };
 
   public items: OrganizationModel[] = [];

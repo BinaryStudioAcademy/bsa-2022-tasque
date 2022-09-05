@@ -2,7 +2,7 @@
   <a class="project-name" href="#">{{ project.name }}</a>
 
   <div class="buttons-container">
-    <tasque-button *ngIf="project.authorId === currentUser.id || role >= 3" class="btn stroke" text="Edit">
+    <tasque-button *ngIf="project.authorId === currentUser?.id || role >= 3" class="btn stroke" text="Edit">
     </tasque-button>
     <tasque-button class="btn stroke" text="Open"> </tasque-button>
   </div>

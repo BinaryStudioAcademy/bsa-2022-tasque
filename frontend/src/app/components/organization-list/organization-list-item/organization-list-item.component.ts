@@ -23,7 +23,7 @@ export class OrganizationListItemComponent implements OnInit {
   ) { }
 
   ngOnInit(): void { 
-    this.role = this.currentUser?.organizationRoles?.find(m => m.organizationId === this.organization.id)?.userRole as UserRole;
+    this.role = this.currentUser?.organizationRoles?.find(m => m.organizationId === this.organization.id)?.role as UserRole;
   }
 
   public openOrganization(): void {
