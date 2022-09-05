@@ -6,7 +6,6 @@ using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.DTO.Task.TemplateModels.IncomeModels;
 using Tasque.Core.Common.Entities.Abstract;
 using Tasque.Core.DAL;
-using static Amazon.S3.Util.S3EventNotification;
 
 namespace Tasque.Core.BLL.Services
 {
