@@ -210,3 +210,4 @@ export class IssueTemplateComponent implements OnInit {
     });
   }
 }
+
