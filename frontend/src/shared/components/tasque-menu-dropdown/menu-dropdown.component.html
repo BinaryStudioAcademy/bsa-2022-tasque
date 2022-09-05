@@ -1,4 +1,5 @@
 <div class="dropdown-wrapper">
+  <ng-content select="[dropdown-button]"></ng-content>
   <div class="dropdown-button">
     <tasque-avatar
       *ngIf="hasAvatar"
@@ -10,17 +11,15 @@
     <fa-icon class="dropdown-icon" (click)="arrowIconClick()" [icon]="currentArrowIcon"></fa-icon>
   </div>
 
-  <div class="options-container" *ngIf="expanded">
-    <div class="option header" *ngIf="headerLabel" (click)="headerClick()">
-      {{ headerLabel }}
+  <div class="options-container" *ngIf="expanded" (click)="toggleDropdown()">
+    <div class="options-header">
+      <ng-content select="[header]"></ng-content>
     </div>
-    <div class="options" *ngIf="options">
-      <div class="option" *ngFor="let option of options" (click)="select(option)">
-        {{ option.name }}
-      </div>
+    <div class="options">
+      <ng-content></ng-content>
     </div>
-    <div class="option footer" [class.solo]="options.length == 0" *ngIf="footerLabel" (click)="footerClick()">
-      {{ footerLabel }}
+    <div class="options-footer">
+      <ng-content select="[footer]"></ng-content>
     </div>
   </div>
 </div>
