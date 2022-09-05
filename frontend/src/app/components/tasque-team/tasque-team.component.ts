@@ -10,7 +10,7 @@ import { UserModel } from 'src/core/models/user/user-model';
 export class TasqueTeamComponent implements OnInit {
   icon = faMagnifyingGlass;
 
-  public teamMembers: UserModel[] = [
+  public loaded: UserModel[] = [
     {
       id: 1,
       avatarURL:
@@ -96,8 +96,18 @@ export class TasqueTeamComponent implements OnInit {
       email: '',
     },
   ];
+  public visible: UserModel[];
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    //TODO: Load team members here
+    this.visible = this.loaded;
+  }
+
+  public filter(val: string): void {
+    this.visible = this.loaded.filter((user) =>
+      user.name.toLowerCase().includes(val.toLowerCase()),
+    );
+  }
 }
