@@ -24,7 +24,7 @@
           </div>
           <div class="issue-actions">
             <tasque-dropdown [options]="taskStateToDropdownArray(taskStates)" width="150px" [placeholder]="task.state.name"></tasque-dropdown>
-            <tasque-avatar class="ml-15 mr-15" [diameter_px]="36" [imageURL]="task.author.avatarURL ? task.author.avatarURL : ''"></tasque-avatar>
+            <tasque-avatar class="ml-15 mr-15" [diameter_px]="36" [user]="task.author"></tasque-avatar>
           </div>
         </div>
       </div>
