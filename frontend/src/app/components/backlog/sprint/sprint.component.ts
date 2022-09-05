@@ -14,7 +14,6 @@ import { TaskModel } from 'src/core/models/task/task-model';
 import { SprintService } from 'src/core/services/sprint.service';
 import { IssueSort } from '../models';
 import { UserModel } from 'src/core/models/user/user-model';
-import { UserCircle } from 'src/shared/components/tasque-team-select/models';
 
 @Component({
   selector: 'app-sprint',
