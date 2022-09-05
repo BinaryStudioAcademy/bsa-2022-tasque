@@ -12,7 +12,11 @@ namespace Tasque.Core.BLL.Options
 
         public string TaskContainer { get; set; } = null!;
 
+        public string TaskContainerDev { get; set; } = null!;
+
         public string TemplateContainer { get; set; } = null!;
+
+        public string TemplateContainerDev { get; set; } = null!;
 
         public string Account { get; set; } = null!;
 
