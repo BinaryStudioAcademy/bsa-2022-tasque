@@ -1,23 +1,33 @@
 <header>
   <div class="navigation-panel">
-    <tasque-menu-dropdown label="Your work" [options]="yourWorkOptions"> </tasque-menu-dropdown>
+    <tasque-menu-dropdown label="Your work">
+      <tasque-option> One task </tasque-option>
+      <tasque-option> Some task </tasque-option>
+    </tasque-menu-dropdown>
     <tasque-menu-dropdown
       label="My Projects"
-      [options]="projectOptions"
       headerLabel="Recent Projects"
       footerLabel="Manage my projects"
       (footerClicked)="openProjectsPage()"
     >
+      <tasque-option header> Recent Projects </tasque-option>
+      <tasque-option> Last Project </tasque-option>
+      <tasque-option> Previous Project </tasque-option>
+      <tasque-option footer (click)="manageMyProjectsClick()"> Manage my projects </tasque-option>
     </tasque-menu-dropdown>
     <span class="button">Calendar</span>
     <tasque-menu-dropdown
-      class="create-button"
+      class="button-like"
       label="Create task"
-      [options]="createOptions"
       [toggleDropdownOnLabelClick]="false"
       (labelClicked)="openCreateTaskDialog()"
-      [formControl]="createItemControl"
     >
+      <tasque-option>
+        <tasque-task-creation></tasque-task-creation>
+        <!-- <app-create-organization></app-create-organization> -->
+        <!-- <app-create-project></app-create-project> -->
+      </tasque-option>
+      <tasque-option> Create project </tasque-option>
     </tasque-menu-dropdown>
   </div>
   <div class="center-panel">
@@ -34,17 +44,17 @@
       >
       </tasque-input>
     </div>
-    <img class="button" src="\assets\bell_icon.svg" />
-    <img class="button" src="\assets\settings_icon.svg" />
+    <img class="button-icon" src="\assets\bell_icon.svg" />
+    <img class="button-icon" src="\assets\settings_icon.svg" />
     <tasque-menu-dropdown
       class="profile-dropdown"
       [hasAvatar]="true"
       [user]="currentUser"
-      [options]="profileOptions"
       [upArrowIcon]="upArrowIcon"
       [downArrowIcon]="downArrowIcon"
-      [formControl]="profileControl"
     >
+      <tasque-option (click)="profileSettingsClick()"> Profile settings </tasque-option>
+      <tasque-option (click)="logoutClick()"> Log out </tasque-option>
     </tasque-menu-dropdown>
   </div>
 </header>
