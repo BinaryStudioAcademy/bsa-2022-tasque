@@ -46,7 +46,7 @@ export class SelectUsersComponent implements OnInit {
         profileURL: '',
         avatarURL: '',
         role: BusinessRole.Administrator
-      }
+      } as IUserCard
     ]
   };
 
@@ -92,7 +92,7 @@ export class SelectUsersComponent implements OnInit {
 
   delete(email: string): void {
     this.isLoading = true;
-    
+
     this.onDelete.emit(email);
 
     this.refreshList();
@@ -101,7 +101,7 @@ export class SelectUsersComponent implements OnInit {
   update(user: IUserCard, role: BusinessRole): void {
     this.isLoading = true;
     user.role = role;
-    
+
     this.onUpdate.emit(user);
 
     this.refreshList();
