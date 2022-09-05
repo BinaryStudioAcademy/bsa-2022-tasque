@@ -38,7 +38,8 @@ export class BoardService {
 
   public addUser(email: string, board: IBoard): Observable<unknown> {
     // change to HttpClient.getOne
-    const user: IUserCard | null = {
+    const user: IUserCard = {
+      id: 1,
       email: email,
       username: email,
       profileURL: 'something',
