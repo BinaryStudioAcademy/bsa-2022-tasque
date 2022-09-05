@@ -1,6 +1,7 @@
-<div class="avatar-wrapper">
-    <img class="avatar"
-    [src]="imageURL ? imageURL : defaultImage"
+<div class="avatar-wrapper" [ngStyle]="{'width.px' : diameter_px}">
+    <span class="initials" [ngStyle]="{ 'font-size.px' : fontSize }" *ngIf="!user.avatarURL">{{ getInitials(user) }}</span>
+    <img class="avatar" *ngIf="user.avatarURL"
+    [src]="user.avatarURL"
     [alt]="alt ? alt : 'avatar'"
     [ngStyle]="{'width.px' : diameter_px}">
 </div>

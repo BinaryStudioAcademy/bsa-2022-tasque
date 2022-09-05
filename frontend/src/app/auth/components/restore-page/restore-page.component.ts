@@ -174,8 +174,7 @@ export class RestorePageComponent implements OnInit, OnDestroy {
           this.authService.setAuthToken(token);
           this.toastrService.success(
             'You will be redirected to your profile',
-            'Password changed',
-            { disableTimeOut: true },
+            'Password changed'
           );
           this.router.navigate(['../..', 'organizations'], {
             replaceUrl: true,

@@ -5,6 +5,7 @@ using Tasque.Core.Common.DTO.Sprint;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.DAL;
 using Task = System.Threading.Tasks.Task;
+using Tasque.Core.BLL.Extensions;
 
 namespace Tasque.Core.BLL.Services
 {
@@ -12,9 +13,15 @@ namespace Tasque.Core.BLL.Services
     {
         public SprintService(DataContext db) : base(db)
         {
-
         }
 
+        public override Sprint Create(Sprint entity)
+        {
+            entity.Order = _db.Sprints.Max(x => x.Order) + 1;
+            _db.Sprints.Add(entity);
+            _db.SaveChanges();
+            return entity;
+        }
         public async Task<Sprint> Edit(EditSprintDto dto)
         {
             var entity = await _db.Sprints.FirstOrDefaultAsync(s => s.Id == dto.Id)
@@ -46,7 +53,6 @@ namespace Tasque.Core.BLL.Services
             await _db.SaveChangesAsync();
             return entity;
         }
-
         public async Task CompleteSprint(int sprintId)
         {
             var sprint = await _db.Sprints.FirstOrDefaultAsync(s => s.Id == sprintId);
@@ -58,6 +64,13 @@ namespace Tasque.Core.BLL.Services
 
             _db.Update(sprint);
             await _db.SaveChangesAsync();
+        }
+        public async Task<IEnumerable<Sprint>> OrderSprints(IEnumerable<int> ids)
+        {
+            var sprints = _db.Sprints.Where(x => ids.Contains(x.Id));
+            sprints.SetOrder(ids);
+            await _db.SaveChangesAsync();
+            return sprints.OrderBy(x => x.Order);
         }
     }
 }

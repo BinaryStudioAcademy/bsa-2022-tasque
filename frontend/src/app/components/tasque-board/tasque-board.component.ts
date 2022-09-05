@@ -4,6 +4,7 @@ import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { BoardColumnModel } from '../../../core/models/board/board-column-model';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TaskInfoModel } from 'src/core/models/board/task-Info-model';
+import { UserModel } from 'src/core/models/user/user-model';
 import { BoardService } from 'src/core/services/board.service';
 import { NotificationService } from 'src/core/services/notification.service';
 import { BoardModel } from 'src/core/models/board/board-model';
@@ -26,6 +27,11 @@ export class TasqueBoardComponent implements OnInit {
   private projectId: number;
 
   public board: BoardModel = {projectId: 0, id: 0, name: "", columns: []};
+  user: UserModel = {
+    id: 1,
+    name: 'John Doe',
+    email: 'johndoe@gmail.com'
+  };
 
   constructor(formBuilder: FormBuilder, private route: ActivatedRoute, private boardService: BoardService, private notificationService: NotificationService) { 
     this.createColumnForm = formBuilder.group({

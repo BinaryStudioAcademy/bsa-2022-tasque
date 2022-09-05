@@ -1,7 +1,9 @@
+import { UserModel } from '../user/user-model';
+
 export interface TaskInfoModel {
     id: number;
     description: string;
     projectKey: string;
-    userAvatarUrl: string;
+    user: UserModel;
     attachmentUrl: string;
 }

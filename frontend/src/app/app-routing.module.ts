@@ -25,6 +25,8 @@ const routes: Routes = [
       { path: 'organizations', component: OrganizationListComponent },
       { path: 'projects', component: ProjectListComponent },
       { path: 'backlog', component: BacklogComponent },
+      { path: 'backlog', component: BacklogComponent },
+      { path: 'projects', component: ProjectListComponent, },
       ...UserRoutes,
       { path: 'not-found', component: NotFoundPageComponent }
     ],

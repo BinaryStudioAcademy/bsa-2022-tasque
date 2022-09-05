@@ -14,7 +14,7 @@ export class ConfirmEmailPageComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
     private notifService: ToastrService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
@@ -32,7 +32,6 @@ export class ConfirmEmailPageComponent implements OnInit {
         this.notifService.success(
           'You will be redirected to your profile',
           'Email confirmed',
-          { disableTimeOut: true },
         );
         this.router.navigate(['../..', 'organizations'], {
           replaceUrl: true,
