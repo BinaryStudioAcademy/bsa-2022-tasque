@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { BoardService } from 'src/core/services/board.service';
 import {
+  BoardType,
   BusinessRole,
   getRolesAsArray,
   IBoard,
@@ -34,7 +35,20 @@ export class SelectUsersComponent implements OnInit {
   public defaultRowHeight_px = 80;
 
   @Input()
-  public board: IBoard;
+  public board: IBoard = {
+    id: 1,
+    type: BoardType.Board,
+    hasRoles: true,
+    users: [
+      {
+        email: 'admin@gmail.com',
+        username: 'Admin',
+        profileURL: '',
+        avatarURL: '',
+        role: BusinessRole.Administrator
+      }
+    ]
+  };
 
   @Output() onAdd = new EventEmitter<string>();
   @Output() onDelete = new EventEmitter<string>();
