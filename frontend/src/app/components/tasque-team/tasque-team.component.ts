@@ -13,85 +13,85 @@ export class TasqueTeamComponent implements OnInit {
   public loaded: UserModel[] = [
     {
       id: 1,
-      avatarURL:
-        'https://img.freepik.com/free-vector/nature-scene-with-river-and-hills-forest-and-mountain-landscape-flat-cartoon-style-illustration_1150-37326.jpg',
+      avatarURL: 'https://api.tinyfox.dev/img?animal=fox',
       name: 'Test User',
       email: '',
     },
     {
       id: 2,
-      avatarURL: '',
+      avatarURL: 'https://api.tinyfox.dev/img?animal=yeen',
       name: 'Test User 2',
       email: '',
     },
     {
       id: 3,
-      avatarURL:
-        'https://img.freepik.com/free-vector/best-scene-nature-landscape-mountain-river-forest-with-sunset-evening-warm-tone-illustration_1150-39403.jpg',
+      avatarURL: 'https://api.tinyfox.dev/img?animal=snek',
       name: 'Test User 3',
       email: '',
     },
     {
       id: 4,
+      avatarURL: 'https://api.tinyfox.dev/img?animal=poss',
       name: 'Test User 4',
       email: '',
     },
     {
       id: 4,
+      avatarURL: 'https://api.tinyfox.dev/img?animal=leo',
       name: 'Test User 5',
       email: '',
     },
     {
       id: 4,
-      avatarURL:
-        'https://images.unsplash.com/photo-1484591974057-265bb767ef71?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80',
+      avatarURL: 'https://api.tinyfox.dev/img?animal=serval',
       name: 'Test User 6',
       email: '',
     },
     {
       id: 4,
+      avatarURL: 'https://api.tinyfox.dev/img?animal=racc',
       name: 'Test User 7',
       email: '',
     },
     {
       id: 1,
-      avatarURL:
-        'https://img.freepik.com/free-vector/nature-scene-with-river-and-hills-forest-and-mountain-landscape-flat-cartoon-style-illustration_1150-37326.jpg',
+      avatarURL: 'https://api.tinyfox.dev/img?animal=bear',
       name: 'Test User 8',
       email: '',
     },
     {
       id: 2,
-      avatarURL: '',
+      avatarURL: 'https://api.tinyfox.dev/img?animal=caracal',
       name: 'Test User 9',
       email: '',
     },
     {
       id: 3,
-      avatarURL:
-        'https://img.freepik.com/free-vector/best-scene-nature-landscape-mountain-river-forest-with-sunset-evening-warm-tone-illustration_1150-39403.jpg',
+      avatarURL: 'https://api.tinyfox.dev/img?animal=tig',
       name: 'Test User 10',
       email: '',
     },
     {
       id: 4,
+      avatarURL: 'https://api.tinyfox.dev/img?animal=puma',
       name: 'Test User 11',
       email: '',
     },
     {
       id: 4,
+      avatarURL: 'https://api.tinyfox.dev/img?animal=yote',
       name: 'Test User 12',
       email: '',
     },
     {
       id: 4,
-      avatarURL:
-        'https://images.unsplash.com/photo-1484591974057-265bb767ef71?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80',
+      avatarURL: 'https://api.tinyfox.dev/img?animal=jaguar',
       name: 'Test User 13',
       email: '',
     },
     {
       id: 4,
+      avatarURL: 'https://api.tinyfox.dev/img?animal=capy',
       name: 'Test User 14',
       email: '',
     },
