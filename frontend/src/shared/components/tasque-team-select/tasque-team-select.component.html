@@ -37,7 +37,7 @@
       <span>Members:</span>
       <div class="avatars-container">
         <a class="user-avatar" *ngFor="let item of avatarsShow; let i = index" [attr.data-index]="i">
-          <tasque-avatar class="user-avatar-img" [user]="item" [alt]="item.name" [diameter_px]="50"></tasque-avatar>
+          <tasque-avatar class="user-avatar-img" [imageURL]="item.avatarURL" [alt]="item.username" [diameter_px]="50"></tasque-avatar>
         </a>
       </div>
     </div>

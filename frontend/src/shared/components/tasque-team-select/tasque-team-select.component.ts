@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UserModel } from 'src/core/models/user/user-model';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { UserCircle } from './models';
 
 @Component({
   selector: 'tasque-team-select',
