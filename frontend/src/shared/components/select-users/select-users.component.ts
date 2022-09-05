@@ -47,7 +47,7 @@ export class SelectUsersComponent implements OnInit {
         profileURL: '',
         avatarURL: '',
         role: BusinessRole.Administrator,
-      },
+      } as IUserCard,
     ],
   };
 
