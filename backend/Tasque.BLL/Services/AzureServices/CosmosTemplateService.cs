@@ -2,7 +2,8 @@
 using Microsoft.Azure.Cosmos;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.PartialModels;
-using Tasque.Core.Common.DTO.Task.TemplateModels;
+using Tasque.Core.Common.DTO.Task.TemplateModels.CosmosModels;
+using Tasque.Core.Common.DTO.Task.TemplateModels.IncomeModels;
 using Tasque.Core.Common.StaticResources;
 
 namespace Tasque.Core.BLL.Services.AzureServices

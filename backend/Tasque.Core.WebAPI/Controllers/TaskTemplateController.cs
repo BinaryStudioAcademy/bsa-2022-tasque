@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Interfaces;
-using Tasque.Core.Common.DTO.Task.TemplateModels;
+using Tasque.Core.Common.DTO.Task.TemplateModels.IncomeModels;
 
 namespace Tasque.Core.WebAPI.Controllers
 {

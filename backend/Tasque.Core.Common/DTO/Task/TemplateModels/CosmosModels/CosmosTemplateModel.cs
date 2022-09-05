@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Tasque.Core.Common.Enums;
 using Tasque.Core.Common.StaticResources;
 
-namespace Tasque.Core.Common.DTO.Task.TemplateModels
+namespace Tasque.Core.Common.DTO.Task.TemplateModels.CosmosModels
 {
     public class CosmosTemplateModel
     {

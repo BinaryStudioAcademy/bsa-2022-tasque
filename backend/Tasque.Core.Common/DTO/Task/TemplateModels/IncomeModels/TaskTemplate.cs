@@ -5,15 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tasque.Core.Common.Enums;
-using Tasque.Core.Common.StaticResources;
 
-namespace Tasque.Core.Common.DTO.Task.TemplateModels
+namespace Tasque.Core.Common.DTO.Task.TemplateModels.IncomeModels
 {
     public class TaskTemplate
     {
         public string Id { get; set; } = null!;
 
-        public TaskFieldType TypeId { get; set; }
+        public int TypeId { get; set; }
 
         public int ProjectId { get; set; }
 
