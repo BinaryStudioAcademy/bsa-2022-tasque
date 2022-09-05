@@ -21,6 +21,8 @@ export class EditProjectComponent implements OnInit {
   public projectName = '';
   public sidebarName = 'editProject';
 
+  public board: IBoard;
+
   faPenToSquare = faPenToSquare;
   public unsubscribe$ = new Subject<void>();
 
@@ -39,12 +41,6 @@ export class EditProjectComponent implements OnInit {
     return '';
   }
 
-  changeRoleBoard: IBoard;
-  inviteUserBoard: IBoard;
-  deleteUserBoard: IBoard;
-
-  invitedUsersList: IUserCard[];
-
   constructor(private notification: NotificationService,
     private sideBarService: SideBarService,
     public projectService: ProjectService) {
@@ -62,26 +58,12 @@ export class EditProjectComponent implements OnInit {
       projectNameControl: this.projectNameControl,
     });
 
-    this.changeRoleBoard = {
+    this.board = {
       id: 1,
       type: BoardType.Organization,
       users: this.project.users,
       hasRoles: true
     };
-
-    this.deleteUserBoard = {
-      id: 1,
-      type: BoardType.Organization,
-      users: this.project.users,
-      hasRoles: false
-    };
-
-    this.inviteUserBoard = {
-      id: 1,
-      type: BoardType.Organization,
-      users: this.project.users,
-      hasRoles: false
-    }
   }
 
   ngOnDestroy(): void {
@@ -92,8 +74,7 @@ export class EditProjectComponent implements OnInit {
   public submitForm(): void {
     this.project.name = this.projectName;
 
-    this.projectService
-      .editProject({id: this.project.id, name: this.project.name})
+    this.projectService.editProject({ id: this.project.id, name: this.project.name })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if(result.status == 200 && result.body !== null) {
@@ -103,7 +84,7 @@ export class EditProjectComponent implements OnInit {
           this.editProjectForm.reset();
           this.sideBarService.toggle(this.sidebarName);
         }
-      });
+    });
   }
 
   public clearForm(): void {
@@ -117,4 +98,25 @@ export class EditProjectComponent implements OnInit {
     return input.innerText;
   }
   
+  inviteUser(email: string): void {
+    this.projectService.inviteUser({ projectId: this.project.id, email: email })
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe()
+  }
+
+  deleteUser(email: string): void {
+    this.projectService.kickUser({ projectId: this.project.id, email: email })
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.board.users = this.board.users.filter(u => u.email !== email)
+      })
+  }
+
+  changeUserRole(user: IUserCard): void {
+    if(user && user.role) {
+      this.projectService.changeUserRole({ projectId: this.project.id, userId: user.id, roleId: user.role })
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe();
+    }
+  }
 }

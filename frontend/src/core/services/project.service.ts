@@ -7,6 +7,8 @@ import { ProjectModel } from '../models/project/project-model';
 import { EditProjectModel } from '../models/project/edit-project-model';
 import { ProjectInfoModel } from '../models/project/project-info-model';
 import { InviteUserModel } from '../models/project/invite-user-model';
+import { IUserCard } from 'src/shared/components/select-users/Models';
+import { ChangeUserRoleModel } from '../models/project/change-user-role-model';
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +34,13 @@ export class ProjectService {
 
   inviteUser(userInvite: InviteUserModel): Observable<void> {
     return this.httpService.putRequest<void>(this.routePrefix + '/invite', userInvite);
+  }
+
+  kickUser(userKick: InviteUserModel): Observable<void> {
+    return this.httpService.putRequest<void>(this.routePrefix + '/kick', userKick);
+  }
+
+  changeUserRole(user: ChangeUserRoleModel): Observable<void> {
+    return this.httpService.putRequest<void>(this.routePrefix + '/role', user);
   }
 }

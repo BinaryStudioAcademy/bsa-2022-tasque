@@ -36,29 +36,6 @@ export class BoardService {
     });
   }
 
-  public addUser(email: string, board: IBoard): Observable<unknown> {
-    // change to HttpClient.getOne
-    const user: IUserCard | null = {
-      email: email,
-      username: email,
-      profileURL: 'something',
-      avatarURL: 'https://www.w3schools.com/howto/img_avatar.png',
-      role: BusinessRole.Participant,
-    };
-
-    // change to HttpClient.put for Board entity
-    return new Observable((observer) => {
-      // For simulation during the tests. Math random should be removed later
-      if (Math.random() <= 0.5) {
-        board.users.push(user);
-        this.save(board);
-        observer.next('done');
-        observer.complete();
-      }
-      observer.error();
-    });
-  }
-
   public deleteUser(board: IBoard, email: string): Observable<unknown> {
     // change to HttpClient.delete
     board.users = board.users.filter((u) => u.email != email);

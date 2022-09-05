@@ -67,88 +67,90 @@ public class ProjectService : EntityCrudService<Project>
 
     public async Task InviteUserToProject(UserInviteDto usersInviteDto)
     {
-        var users = await _db.Users
-            .Where(u => usersInviteDto.Emails.Contains(u.Email))
-            .ToListAsync();
+        var user = await _db.Users
+            .FirstOrDefaultAsync(u => u.Email == usersInviteDto.Email);
              
         var project = await _db.Projects
-            .Where(proj => proj.Id == usersInviteDto.ProjectId)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(proj => proj.Id == usersInviteDto.ProjectId);
 
-        if (project == null)
-            throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
-
-        var userProjectRole = new List<UserProjectRole>();
-
-        foreach (var user in users)
+        if (user == null)
         {
-            project.Users.Add(user);
-            userProjectRole.Add(new UserProjectRole 
-            { 
-                ProjectId = project.Id, 
-                UserId = user.Id, 
-                RoleId = (int)BaseProjectRole.Dev 
-            });
+            //TO DO: There should be logic for inviting the user if this does not registered now
+            throw new HttpException(System.Net.HttpStatusCode.NotFound, "The user with this email does not exist");
         }
 
-        await _db.UserProjectRoles.AddRangeAsync(userProjectRole);
+        if (project == null) 
+        {
+            throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
+        }
+
+        project.Users.Add(user);
+        var userProjectRole = new UserProjectRole()
+        {
+            ProjectId = project.Id,
+            UserId = user.Id,
+            RoleId = (int)BaseProjectRole.Dev
+        };
+
+        await _db.UserProjectRoles.AddAsync(userProjectRole);
         _db.Projects.Update(project);
+
         await _db.SaveChangesAsync();
     }
 
     public async Task KickUserOfProject(UserInviteDto usersInviteDto)
     {
-        var users = await _db.Users
-            .Where(u => usersInviteDto.Emails.Contains(u.Email))
-            .ToListAsync();
+        var user = await _db.Users
+            .FirstOrDefaultAsync(u => u.Email == usersInviteDto.Email);
 
         var project = await _db.Projects
             .Where(proj => proj.Id == usersInviteDto.ProjectId)
             .Include(proj => proj.Users)
             .FirstOrDefaultAsync();
 
-        if (project == null)
-            throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
-
-        var userProjectRoleRemoveList = new List<UserProjectRole>();
-        var userProjectRole = await _db.UserProjectRoles
-            .Where(x => x.ProjectId == usersInviteDto.ProjectId)
-            .ToListAsync();
-
-        foreach (var user in users)
+        if (user == null)
         {
-            project.Users.Remove(user);
-            userProjectRoleRemoveList.Add(userProjectRole
-                    .Where(x => x.UserId == user.Id)
-                    .First()
-                );
+            throw new HttpException(System.Net.HttpStatusCode.NotFound, "A user with such an email is not a member of the project");
         }
-           
-        _db.UserProjectRoles.RemoveRange(userProjectRoleRemoveList);
+
+        if (project == null)
+        {
+            throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
+        }
+
+        var userProjectRole = await _db.UserProjectRoles
+            .Where(x => x.ProjectId == usersInviteDto.ProjectId
+            && x.UserId == user.Id)
+            .FirstOrDefaultAsync();
+
+        if (userProjectRole == null)
+        {
+            throw new HttpException(System.Net.HttpStatusCode.NotFound, "Make sure that the user is a member of the project");
+        }
+
+        project.Users.Remove(user);
+        _db.UserProjectRoles.RemoveRange(userProjectRole);
+
         _db.Projects.Update(project);
         await _db.SaveChangesAsync();
     }
 
     public async Task ChangeUserRole(ChangeUserRoleDto roleDto)
     {
-        var usersId = roleDto.UserWithRole.Select(x => x.UserId).ToList();
-        var user = await _db.Users
-            .Where(u => usersId.Contains(u.Id))
-            .ToListAsync();
+        var userProjecRole = await _db.UserProjectRoles
+            .FirstOrDefaultAsync(u => u.UserId == roleDto.UserId && u.ProjectId == roleDto.ProjectId);
 
-        var userProjectRole = await _db.UserProjectRoles
-            .Where(x => x.ProjectId == roleDto.ProjectId && usersId.Contains(x.UserId))
-            .ToListAsync();
-
-        _db.UserProjectRoles.RemoveRange(userProjectRole);
-        await _db.SaveChangesAsync();
-
-        foreach (var item in userProjectRole)
+        if(userProjecRole == null)
         {
-            item.RoleId = roleDto.UserWithRole.First(u => u.UserId == item.UserId).RoleId;
+            throw new HttpException(System.Net.HttpStatusCode.NotFound, "Make sure that the user is a member of the project");
         }
 
-        _db.UserProjectRoles.AddRange(userProjectRole);
+        _db.UserProjectRoles.Remove(userProjecRole);
+        await _db.SaveChangesAsync();
+
+        userProjecRole.RoleId = roleDto.RoleId;
+
+        _db.UserProjectRoles.Add(userProjecRole);
         await _db.SaveChangesAsync();
     }
 }

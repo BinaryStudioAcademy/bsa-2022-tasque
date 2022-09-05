@@ -8,16 +8,8 @@
       <div class="limiter"></div>
     </div>
     <div class="select">
-      <label>Change member role</label>
-      <tasque-select-users [board]="changeRoleBoard"></tasque-select-users>
-    </div>
-    <div class="select">
-      <label>Invite member</label>
-      <tasque-select-users [board]="inviteUserBoard"></tasque-select-users>
-    </div>
-    <div class="select">
-      <label>Kick member</label>
-      <tasque-select-users [board]="deleteUserBoard"></tasque-select-users>
+      <label>User managment</label>
+      <tasque-select-users (onAdd)="inviteUser($event)" (onDelete)="deleteUser($event)" (onUpdate)="changeUserRole($event)" [board]="board"></tasque-select-users>
     </div>
     <div class="footer-button">
       <tasque-button type="submit" class="btn stroke violet-stroke" text="Save" (click)="submitForm()"> </tasque-button>

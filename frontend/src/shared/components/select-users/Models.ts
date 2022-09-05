@@ -1,9 +1,9 @@
 import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
 
 export enum BusinessRole {
-  Administrator = 1,
-  Organizer = 2,
-  Participant = 3,
+  Admin = 1,
+  Dev = 2,
+  QA = 3,
 }
 
 export enum BoardType {
@@ -17,6 +17,7 @@ export interface EnumToArrayElement {
 }
 
 export interface IUserCard {
+  id: number;
   email: string;
   username: string;
   profileURL: string;

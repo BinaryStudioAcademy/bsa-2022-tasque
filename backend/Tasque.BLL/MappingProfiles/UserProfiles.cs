@@ -9,6 +9,7 @@ namespace Tasque.Core.BLL.MappingProfiles
         public UserProfiles()
         {
             CreateMap<UserProjectRole, UserInfoDto>()
+                .ForMember(dest => dest.Id, act => act.MapFrom(src => src.User.Id))
                 .ForMember(dest => dest.UserName, act => act.MapFrom(src => src.User.Name))
                 .ForMember(dest => dest.Email, act => act.MapFrom(src => src.User.Email))
                 .ForMember(dest => dest.BusinessRole, act => act.MapFrom(src => src.Role.Name));
