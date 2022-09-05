@@ -80,7 +80,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             services.ConfigureMapper();
             services.ConfigureValidator();
             services.ConfigureEmailServices(configuration);
-            services.AddSwagger();            
+            services.AddSwagger();
             services.ConfigureS3Services(configuration);
             services.AddMvc();
             services.AddControllers();
@@ -96,7 +96,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<UserService>()
                 .AddScoped<FileUploadService>()
                 .AddScoped<SprintService>()
-                .AddScoped<BoardService>();
+                .AddScoped<BoardService>()
+                .AddScoped<TaskService>();
 
             services.RegisterIdentity(configuration);
         }

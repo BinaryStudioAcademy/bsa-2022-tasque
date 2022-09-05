@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using Tasque.Core.DAL;
+using Task = Tasque.Core.Common.Entities.Task;
 
 namespace Tasque.Core.BLL.Services
 {
-    public class TaskService
+    public class TaskService : EntityCrudService<Task>
     {
-        private DataContext _context;
         private IMapper _mapper;
-        private IValidator<User> _validator;
-        private FileUploadService _fileUploadService;
+        public TaskService(DataContext context, IMapper mapper) : base(context)
+        {
+            _mapper = mapper;
+        }
     }
 }

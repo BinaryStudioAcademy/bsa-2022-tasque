@@ -1,25 +1,15 @@
-﻿namespace Tasque.Core.WebAPI.Controllers
-{
-    [Route("api/board")]
-    public class TaskController : EntityController<Board, BoardDto, BoardService>
-    {
-        public BoardController(BoardService service, CurrentUserParameters currentUser)
-            : base(service, currentUser) { }
+﻿using Tasque.Core.Common.DTO.Task;
+using Microsoft.AspNetCore.Mvc;
+using Tasque.Core.BLL.Services;
+using Tasque.Core.Identity.Helpers;
 
-        [Route("getUserBoards/{id}")]
-        [HttpGet]
-        public async virtual Task<IActionResult> GetUserBoards(int id)
-        {
-            var boards = await _service.GetUserBoards(id);
-            if (boards is not null)
-            {
-                return Ok(boards);
-            }
-            else
-            {
-                return BadRequest("Entities not found");
-            }
-        }
+namespace Tasque.Core.WebAPI.Controllers
+{
+    [Route("api/task")]
+    public class TaskController : EntityController<Common.Entities.Task, TaskDto, TaskService>
+    {
+        public TaskController(TaskService service, CurrentUserParameters currentUser)
+            : base(service, currentUser) { }
 
     }
 }
