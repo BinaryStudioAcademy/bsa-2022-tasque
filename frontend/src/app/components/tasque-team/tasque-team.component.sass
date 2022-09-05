@@ -1,0 +1,31 @@
+.container
+  padding: 10px
+  display: grid
+  align-content: center
+
+  --grid-layout-gap: 10px
+  --grid-column-count: 4
+  --grid-item--min-width: 150px
+
+  /**
+   * Calculated values.
+   */
+  --gap-count: calc(var(--grid-column-count) - 1)
+  --total-gap-width: calc(var(--gap-count) * var(--grid-layout-gap))
+  --grid-item--max-width: calc((100% - var(--total-gap-width)) / var(--grid-column-count))
+
+  display: grid
+  grid-template-columns: repeat(auto-fill, minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr))
+  grid-gap: var(--grid-layout-gap)
+
+.user-wrp
+  display: flex
+  flex-flow: column
+  align-content: center
+  span
+    align-self: center
+
+.text-wrp
+  display: flex
+  flex-flow: column
+  padding-top: 5px

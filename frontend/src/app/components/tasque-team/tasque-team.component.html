@@ -1,1 +1,9 @@
-<p>tasque-team works!</p>
+<div class="container">
+  <div class="user-wrp" *ngFor="let user of teamMembers">
+    <tasque-avatar [user]="user"></tasque-avatar>
+    <div class="text-wrp">
+      <span>{{ user.name }}</span>
+      <span>User role</span>
+    </div>
+  </div>
+</div>
