@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Tasque.Core.Common.DTO.Board;
 using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.DAL;
@@ -81,7 +80,8 @@ namespace Tasque.Core.BLL.Services
                         Name = column.ColumnName,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow
-                });
+                    });
+                    await _db.SaveChangesAsync();
                     column.Id = columnEntity.Entity.Id;
                 }
                 else if (column.Tasks != null)

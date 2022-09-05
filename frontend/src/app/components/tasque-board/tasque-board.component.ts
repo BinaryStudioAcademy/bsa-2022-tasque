@@ -62,7 +62,8 @@ export class TasqueBoardComponent implements OnInit {
       this.newColumn = { id: 0, columnName: this.createColumnForm.get('columnName')?.value, tasks: [] };
       this.board.columns.push(this.newColumn);
       this.createColumnForm.reset();
-      this.isOpenColumnAddDialog = false;  
+      this.isOpenColumnAddDialog = false;
+      this.updateColumns();
     }
   }
 
@@ -86,6 +87,7 @@ export class TasqueBoardComponent implements OnInit {
   }
 
   updateColumns(): void {
+    console.log(this.board);
     this.boardService.updateProjectBoard(this.board).subscribe(
       (resp) => {
         if (resp.ok && resp.body != null) {
