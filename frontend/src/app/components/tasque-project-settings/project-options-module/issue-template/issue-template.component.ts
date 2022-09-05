@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { AvailableFields } from 'src/core/models/const-resources/available-fields';
 import { TaskTemplateService } from 'src/core/services/task-template.service';
 import { TaskType } from 'src/core/models/task/task-type';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-issue-template',
@@ -78,6 +79,9 @@ export class IssueTemplateComponent implements OnInit {
               this.type = undefined;
             });
       }));
+    }, () => {
+      this.notificationService.info('No templates found');
+      this.templates = [];
     });
   }
 
@@ -129,6 +133,8 @@ export class IssueTemplateComponent implements OnInit {
     this.taskTemplateService.updateTaskTemplate(template)
     .subscribe(() => {
       this.notificationService.success(`${this.selectedIssue.title} template has been updated successfully`);
+    }, () => {
+      this.notificationService.warning('No changes indicated');
     });
   }
 
