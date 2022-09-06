@@ -1,7 +1,6 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
-import { UserModel } from 'src/core/models/user/user-model';
 
 @Component({
   selector: 'tasque-menu-dropdown',
@@ -10,22 +9,16 @@ import { UserModel } from 'src/core/models/user/user-model';
 })
 export class MenuDropdownComponent implements OnInit {
 
-  @Input() public label?: string; // Main label of the dropdown
-
   @Input() public downArrowIcon = faChevronDown;  // Down State of the arrow (applies when dropdown is not expanded)
 
   @Input() public upArrowIcon = faChevronUp; // Up State of the arrow (applies when dropdown is expanded)
 
   public currentArrowIcon: IconProp;
 
-  @Output() labelClicked = new EventEmitter(); // event that represents click on the dropdown main label
-  @Input() toggleDropdownOnLabelClick = true;
+  @Input() toggleDropdownOnButtonClick = true;
 
-  @Input() user: UserModel = { id: 1, name: 'John Doe', email: 'johndoe@gmail.com', avatarURL: 'https://www.w3schools.com/howto/img_avatar.png' }; // url of the avatar
-  @Input() diameter_px = 45; // size of the avatar
-
-  @Input() public hasAvatar = false; // state of the avatar visibility
-  @Output() avatarClicked = new EventEmitter(); // click on the avatar
+  @Input() separator?: string; // just a text between button and arrow
+  @Input() toggleDropdownOnSeparatorClick = false;
 
   public expanded = false;
   private wasInside = false;
@@ -64,20 +57,18 @@ export class MenuDropdownComponent implements OnInit {
     }
   }
 
-  public labelClick(): void {
-    if (this.toggleDropdownOnLabelClick) {
-      this.toggleDropdown();
-    }
-
-    this.labelClicked.emit();
-  }
-
   public arrowIconClick(): void {
     this.toggleDropdown();
   }
 
-  public avatarClick(): void {
-    this.avatarClicked.emit();
-    this.toggleDropdown();
+  public buttonClick(): void {
+    if (this.toggleDropdownOnButtonClick) {
+      this.toggleDropdown();
+    }
+    else {
+      if (this.expanded) {
+        this.toggleDropdown();
+      }
+    }
   }
 }

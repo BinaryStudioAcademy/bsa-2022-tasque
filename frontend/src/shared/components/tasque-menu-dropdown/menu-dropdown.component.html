@@ -1,13 +1,9 @@
 <div class="dropdown-wrapper">
-  <ng-content select="[dropdown-button]"></ng-content>
   <div class="dropdown-button">
-    <tasque-avatar
-      *ngIf="hasAvatar"
-      (click)="avatarClick()"
-      [user]="user"
-      [diameter_px]="diameter_px"
-    ></tasque-avatar>
-    <span class="dropdown-label" *ngIf="label" (click)="labelClick()">{{ label }}</span>
+    <div class="dropdown-sub-button" (click)="buttonClick()">
+      <ng-content select="[dropdown-button]"></ng-content>
+    </div>
+    <span class="dropdown-separator" *ngIf="separator">{{ separator }}</span>
     <fa-icon class="dropdown-icon" (click)="arrowIconClick()" [icon]="currentArrowIcon"></fa-icon>
   </div>
 
@@ -16,7 +12,7 @@
       <ng-content select="[header]"></ng-content>
     </div>
     <div class="options">
-      <ng-content></ng-content>
+      <ng-content select="[option]"></ng-content>
     </div>
     <div class="options-footer">
       <ng-content select="[footer]"></ng-content>
