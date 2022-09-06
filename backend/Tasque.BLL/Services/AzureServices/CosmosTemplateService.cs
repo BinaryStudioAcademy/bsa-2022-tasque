@@ -43,7 +43,7 @@ namespace Tasque.Core.BLL.Services.AzureServices
             return MapCosmosModelToTaskTemplate(results);
         }
 
-        public async Task<TaskTemplate?> GetTemplateById(string id)
+        public async Task<TaskTemplate> GetTemplateById(string id)
         {
             try
             {

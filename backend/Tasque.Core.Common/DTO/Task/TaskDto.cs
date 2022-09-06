@@ -1,5 +1,6 @@
 ﻿using Tasque.Core.Common.DTO.PartialModels;
 using Tasque.Core.Common.DTO.Project;
+using Tasque.Core.Common.DTO.Task.PartialModels;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Enums;
@@ -36,7 +37,7 @@ namespace Tasque.Core.Common.DTO.Task
         public virtual ICollection<LabelDto>? Labels { get; set; }
         public virtual ICollection<UserDto>? Users { get; set; }
 
-        public List<CosmosTaskFields>? CustomFields { get; set; }
+        public List<TaskCustomFields>? CustomFields { get; set; }
         public TaskDto()
         {
             Attachments = new List<AttachmentDto>();

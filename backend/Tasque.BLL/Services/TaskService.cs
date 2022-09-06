@@ -3,6 +3,7 @@ using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.PartialModels;
 using Tasque.Core.Common.DTO.Task;
+using Tasque.Core.Common.DTO.Task.PartialModels;
 using Tasque.Core.Common.DTO.Task.TemplateModels.IncomeModels;
 using Tasque.Core.Common.Entities.Abstract;
 using Tasque.Core.DAL;
@@ -43,7 +44,7 @@ namespace Tasque.Core.BLL.Services
             var cosmosModel= new CosmosTaskModel()
             {
                 Id = entity.Id.ToString(),
-                CustomFields = actualAttributes
+                CustomFields = _mapper.Map<List<CosmosTaskFields>>(actualAttributes)
             };
 
             var attributes = await _cosmosTaskService.CreateTask(cosmosModel);
@@ -51,7 +52,7 @@ namespace Tasque.Core.BLL.Services
 
             return JoinTaskAttributesWithDto(task, 
                 RenameFieldsWithActualValue(
-                    await GetTaskTemplate(task.ProjectId, task.TypeId), attributes.CustomFields));
+                    await GetTaskTemplate(task.ProjectId, task.TypeId), await MapCosmosTaskFieldsToTaskCustomFields(task, attributes.CustomFields)));
         }
 
         public async Task DeleteTask(int id)
@@ -75,7 +76,8 @@ namespace Tasque.Core.BLL.Services
             return tasks.Join(customFields, t => t.Id, ca => int.Parse(ca.Id), (t, ca) => 
                 JoinTaskAttributesWithDto(t, 
                     RenameFieldsWithActualValue(
-                        GetTaskTemplate(t.ProjectId, t.TypeId).Result, ca.CustomFields))).ToList();
+                        GetTaskTemplate(t.ProjectId, t.TypeId).Result, 
+                            MapCosmosTaskFieldsToTaskCustomFields(t, ca.CustomFields).Result))).ToList();
         }
 
         public async Task<TaskDto> GetTaskById(int id)
@@ -88,7 +90,8 @@ namespace Tasque.Core.BLL.Services
 
             return JoinTaskAttributesWithDto(task, 
                 RenameFieldsWithActualValue(
-                    await GetTaskTemplate(task.ProjectId, task.TypeId), attributes.CustomFields));
+                    await GetTaskTemplate(task.ProjectId, task.TypeId), 
+                        await MapCosmosTaskFieldsToTaskCustomFields(task, attributes.CustomFields)));
         }
 
         public async Task<TaskDto> UpdateTask(TaskDto model)
@@ -104,7 +107,7 @@ namespace Tasque.Core.BLL.Services
             var cosmosModel = new CosmosTaskModel()
             {
                 Id = task.Id.ToString(),
-                CustomFields = actualAttributes,
+                CustomFields = _mapper.Map<List<CosmosTaskFields>>(actualAttributes),
             };
 
             var attributes = await _cosmosTaskService.UpdateTask(cosmosModel);
@@ -113,10 +116,11 @@ namespace Tasque.Core.BLL.Services
 
             return JoinTaskAttributesWithDto(_mapper.Map<TaskDto>(task), 
                 RenameFieldsWithActualValue(
-                    await GetTaskTemplate(task.ProjectId, task.TypeId), attributes.CustomFields));
+                    await GetTaskTemplate(task.ProjectId, task.TypeId), 
+                        await MapCosmosTaskFieldsToTaskCustomFields(_mapper.Map<TaskDto>(task), attributes.CustomFields)));
         }
 
-        private TaskDto JoinTaskAttributesWithDto(TaskDto task, List<CosmosTaskFields> attributes)
+        private TaskDto JoinTaskAttributesWithDto(TaskDto task, List<TaskCustomFields> attributes)
         {
             if (attributes == null)
                 return task;
@@ -131,13 +135,29 @@ namespace Tasque.Core.BLL.Services
             return templates?.FirstOrDefault(t => t.TypeId == typeId);
         }
 
-        private List<CosmosTaskFields> RenameFieldsWithActualValue(TaskTemplate template, List<CosmosTaskFields> fields)
+        private List<TaskCustomFields> RenameFieldsWithActualValue(TaskTemplate template, List<TaskCustomFields> fields)
         {
             if (template == null)
-                return fields;
+                return fields; 
 
             fields.ForEach(f => f.FieldName = template.CustomFields?.Find(t => t.FieldId == f.FieldId)?.Name);
             return fields;
+        }
+
+        public async Task<List<TaskCustomFields>> MapCosmosTaskFieldsToTaskCustomFields(TaskDto task, List<CosmosTaskFields> fields)
+        {
+            var template = await GetTaskTemplate(task.ProjectId, task.TypeId);
+            var result = new List<TaskCustomFields>();
+
+            fields.ForEach(f => result.Add(new()
+            {
+                FieldId = f.FieldId,
+                FieldName = template.CustomFields.Find(t => t.FieldId == f?.FieldId)?.Name,
+                FieldType = template.CustomFields.Find(t => t.FieldId == f?.FieldId).Type,
+                FieldValue = f.FieldValue,
+            }));
+
+            return result;
         }
 
         private void SaveChanges<T>(T entity)

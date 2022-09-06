@@ -2,6 +2,7 @@
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.DTO.PartialModels;
 using Tasque.Core.Common.DTO.Task;
+using Tasque.Core.Common.DTO.Task.PartialModels;
 using Tasque.Core.Common.Entities;
 using Task = Tasque.Core.Common.Entities.Task;
 
@@ -17,6 +18,7 @@ namespace Tasque.Core.BLL.MappingProfiles
             CreateMap<TaskState, TaskStateDto>().ReverseMap();
             CreateMap<Attachment, AttachmentDto>().ReverseMap();
             CreateMap<Label, LabelDto>().ReverseMap();
+            CreateMap<TaskCustomFields, CosmosTaskFields>();
         }
     }
 }
