@@ -79,7 +79,7 @@ export class SelectUsersComponent implements OnInit {
     this.isLoading = true;
     
     this.onDelete.emit(email);
-
+    
     this.refreshList();
   }
 
@@ -93,13 +93,18 @@ export class SelectUsersComponent implements OnInit {
   }
 
   roleToString(role: BusinessRole | null): string {
-    return role ? BusinessRole[role] : '';
+    if(role) {
+      return role.toString()
+    }
+
+    return '';
   }
 
   private refreshList(): void {
     this.users$ = this.service.getUsers(this.board);
     this.service.getUsers(this.board).subscribe((data) => {
       this.usersCount = data.length;
+      console.log(this.usersCount);
       this.rowspan = Math.max(1, Math.min(this.usersCount, 5));
       this.isLoading = false;
     });

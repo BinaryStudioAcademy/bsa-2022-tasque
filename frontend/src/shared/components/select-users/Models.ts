@@ -19,7 +19,7 @@ export interface EnumToArrayElement {
 export interface IUserCard {
   id: number;
   email: string;
-  username: string;
+  userName: string;
   profileURL: string;
   avatarURL: string;
   role: BusinessRole | null;

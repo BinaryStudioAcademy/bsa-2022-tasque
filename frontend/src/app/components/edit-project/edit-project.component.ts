@@ -109,7 +109,7 @@ export class EditProjectComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
         let index = this.board.users.findIndex(x => x.email == email);
-        this.board.users.splice(index, 1);
+        this.board.users = this.board.users.splice(index, 1);
       })
   }
 

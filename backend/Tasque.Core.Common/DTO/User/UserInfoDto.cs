@@ -7,6 +7,6 @@
         public string UserName { get; set; } = null!;
         public string? ProfileURL { get; set; }
         public string? AvatarURL { get; set; }
-        public string? BusinessRole { get; set; }
+        public string? Role { get; set; }
     }
 }
