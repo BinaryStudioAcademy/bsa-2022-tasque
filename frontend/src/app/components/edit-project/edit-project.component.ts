@@ -108,7 +108,7 @@ export class EditProjectComponent implements OnInit {
     this.projectService.kickUser({ projectId: this.project.id, email: email })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
-        const index = this.board.users.findIndex(x => (x.email == email));
+        const index = this.board.users.findIndex(x => { x.email == email });
         this.board.users = this.board.users.splice(index, 1);
       });
   }

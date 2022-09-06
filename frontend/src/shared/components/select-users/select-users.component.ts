@@ -110,7 +110,7 @@ export class SelectUsersComponent implements OnInit {
 
   roleToString(role: BusinessRole | null): string {
     if(role) {
-      return role.toString()
+      return role.toString();
     }
 
     return '';
