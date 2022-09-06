@@ -108,7 +108,8 @@ export class EditProjectComponent implements OnInit {
     this.projectService.kickUser({ projectId: this.project.id, email: email })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
-        this.board.users = this.board.users.filter(u => u.email !== email)
+        let index = this.board.users.findIndex(x => x.email == email);
+        this.board.users.splice(index, 1);
       })
   }
 

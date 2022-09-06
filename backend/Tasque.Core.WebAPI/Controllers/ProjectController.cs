@@ -54,9 +54,9 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         return Ok();
     }
 
-    [Route("create")]
+    [Route("add")]
     [HttpPost]
-    public override IActionResult Create([FromBody] NewProjectDto entityDTO)
+    public async Task<IActionResult> AddProject([FromBody] NewProjectDto entityDTO)
     {
         var entity = new Project()
         {
@@ -66,7 +66,7 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
             AuthorId = _currentUser.Id
         };
 
-        _service.Create(entity);
-        return Ok(entity);
+        var result = await _service.AddProject(entity);
+        return Ok(result);
     }
 }

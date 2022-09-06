@@ -3,6 +3,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { UserModel } from 'src/core/models/user/user-model';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { ProjectService } from 'src/core/services/project.service';
 
 @Component({
@@ -12,11 +13,7 @@ import { ProjectService } from 'src/core/services/project.service';
 })
 export class ProjectListComponent implements OnInit {
   
-  public currentUser: UserModel = {
-    id: 1,
-    name: 'tester',
-    email: 'tester@gmail.com'
-  };
+  public currentUserModel: UserModel;
 
   public inputSearch = '';
   public searchIcon = faMagnifyingGlass;
@@ -26,11 +23,13 @@ export class ProjectListComponent implements OnInit {
 
   public itemsShow = this.projectsModel;
 
-  constructor(public projectService: ProjectService) { 
+  constructor(public projectService: ProjectService, 
+    private currentOrganization: GetCurrentOrganizationService) { 
+      
   }
 
   ngOnInit(): void {
-    this.projectService.getAllProjectsOfThisOrganization(1).subscribe((data) => {
+    this.projectService.getAllProjectsOfThisOrganization(this.currentOrganization.currentOrganizationId).subscribe((data) => {
       if(data.body) {
         this.projectsModel = data.body;
         this.itemsShow = this.projectsModel;

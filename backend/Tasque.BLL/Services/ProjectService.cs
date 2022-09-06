@@ -19,20 +19,30 @@ public class ProjectService : EntityCrudService<Project>
         _mapper = mapper;
     }
 
-    //public override Project Create(Project entity)
-    //{
-    //    var project = _db.Projects.Add(entity).Entity;
+    public async Task<ProjectAfterCreateDto> AddProject(Project entity)
+    {
+        var user = await _db.Users
+            .FirstOrDefaultAsync(u => u.Id == entity.AuthorId);
 
-    //    _db.UserProjectRoles.Add(new UserProjectRole()
-    //    {
-    //        ProjectId = project.Id,
-    //        UserId = project.AuthorId,
-    //        RoleId = (int)BaseProjectRole.Admin
-    //    });
+        if (user == null)
+        {
+            throw new HttpException(System.Net.HttpStatusCode.NotFound, "Something went wrong, the user was not found");
+        }
 
-    //    _db.SaveChanges();
-    //    return project;
-    //}
+        var project = _db.Projects.Add(entity).Entity;
+
+        project.UserRoles.Add(new UserProjectRole
+        {
+            ProjectId = project.Id,
+            UserId = user.Id,
+            RoleId = (int)BaseProjectRole.Admin
+        });
+        project.Users.Add(user);
+
+        await _db.SaveChangesAsync();
+
+        return _mapper.Map<ProjectAfterCreateDto>(project);
+    }
 
     public async Task<ProjectInfoDto> EditProject(EditProjectDto projectDto)
     {
@@ -40,6 +50,7 @@ public class ProjectService : EntityCrudService<Project>
             .Where(proj => proj.Id == projectDto.Id)
             .Include(proj => proj.Users)
             .Include(proj => proj.UserRoles)
+                .ThenInclude(r => r.Role)
             .FirstOrDefaultAsync();
 
         if (project == null)
