@@ -29,7 +29,7 @@
             <hr *ngIf="i != 0" />
             <li role="listitem" class="row" >
               <div class="user-data mr-15">
-                <tasque-avatar [imageURL]="user.avatarURL" alt="user's avatar" [diameter_px]="40"></tasque-avatar>
+                <tasque-avatar [user]="getUserModel(user)" alt="user's avatar" [diameter_px]="40"></tasque-avatar>
                 <a [href]="user.profileURL" class="username">
                   <tasque-button class="btn" [text]="user.userName"></tasque-button>
                 </a>

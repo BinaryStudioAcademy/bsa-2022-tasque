@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Net;
+using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.Identity.Exeptions;
 
@@ -33,15 +35,30 @@ namespace Tasque.Core.WebAPI.Middlewares
                     case ValidationException ex:
                         await HandleValidationException(httpContext, ex);
                         break;
+                    case CustomNotFoundException ex:
+                        await HandleNotFoundException(httpContext, ex);
+                        break;
                     case EmailNotConfirmedException ex:
                         await HandleEmailNotConfirmedException(httpContext, ex);
+                        break;
+                    case DbUpdateException ex:
+                        await HandleDbUpdateException(httpContext, ex);
                         break;
                     default:
                         await HandleGenericException(httpContext, exception);
                         break;
                 }
             }
-        }        
+        }
+
+        private async Task HandleNotFoundException(HttpContext httpContext, CustomNotFoundException ex)
+        {
+            _logger.LogError(ex.Message);
+            if (ex.InnerException != null)
+                _logger.LogError(ex.InnerException.Message);
+            await CreateExceptionAsync(httpContext, HttpStatusCode.NotFound, ex.Message);
+        }
+
         private async Task CreateExceptionAsync(HttpContext context, 
             HttpStatusCode statusCode = HttpStatusCode.InternalServerError,
             object? errorBody = null)
@@ -55,6 +72,8 @@ namespace Tasque.Core.WebAPI.Middlewares
         private async Task HandleGenericException(HttpContext context, Exception ex)
         {
             _logger.LogError("{ex.Message}", ex.Message);
+            if (ex.InnerException != null)
+                _logger.LogError(ex.InnerException.Message);
             await CreateExceptionAsync(context);
         }
         private async Task HandleHttpException(HttpContext context, HttpException ex)
@@ -69,6 +88,12 @@ namespace Tasque.Core.WebAPI.Middlewares
                     ? ex.Errors.Aggregate("", (x, y) => x += $"{y.ErrorMessage}\n")
                     : ex.Message;
             await CreateExceptionAsync(context, HttpStatusCode.BadRequest, message);
+        }
+
+        private async Task HandleDbUpdateException(HttpContext context, DbUpdateException ex)
+        {
+            _logger.LogError("{ex.Message}", ex.Message);
+            await CreateExceptionAsync(context, HttpStatusCode.BadRequest, new { error = ex.Message });
         }
         private async Task HandleEmailNotConfirmedException(HttpContext httpContext, EmailNotConfirmedException ex)
         {

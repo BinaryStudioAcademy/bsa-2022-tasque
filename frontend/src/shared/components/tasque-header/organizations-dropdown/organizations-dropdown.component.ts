@@ -3,10 +3,8 @@ import { OrganizationService } from 'src/core/services/organization.service';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { takeUntil } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
 import { BaseComponent } from 'src/core/base/base.component';
 import { UserModel } from 'src/core/models/user/user-model';
-import { MenuDropdownOption } from '../../tasque-menu-dropdown/menu-dropdown.component';
 import { Router } from '@angular/router';
 
 @Component({
@@ -52,8 +50,6 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
 
   public availableOrganizations: OrganizationModel[] = [];
 
-  public organizationControl = new FormControl<MenuDropdownOption | undefined>(undefined);
-
   constructor(
     private organizationService: OrganizationService,
     private getCurrentOrganizationService: GetCurrentOrganizationService,
@@ -63,7 +59,6 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
 
   ngOnInit(): void {
     this.subscribeToCurrentOrganization();
-    this.subscribeToOrganizationControl();
     this.subscribeToOrganizationsChange();
 
     if (this.getCurrentOrganizationService.currentOrganizationId === -1) {
@@ -98,14 +93,6 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
       );
   }
 
-  get organizationNames(): MenuDropdownOption[] {
-    if (this.availableOrganizations.length > 0) {
-      return this.availableOrganizations as MenuDropdownOption[];
-    }
-
-    return [];
-  }
-
   private subscribeToCurrentOrganization(): void {
     this.getCurrentOrganizationService.currentOrganizationId$.subscribe(
       (result) => {
@@ -128,22 +115,17 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
       });
   }
 
-  private subscribeToOrganizationControl(): void {
-    this.organizationControl.valueChanges.subscribe(
-      (option) => {
-        const searchedOrganization = this.availableOrganizations.find((x) => x.id === option?.id);
+  public selectOrganization(organization: OrganizationModel): void {
+    if (this.currentOrganization === organization &&
+      this.getCurrentOrganizationService.currentOrganizationId === organization.id) {
+      return;
+    }
 
-        if (searchedOrganization) {
-          this.currentOrganization = searchedOrganization;
-          this.getCurrentOrganizationService.currentOrganizationId = this.currentOrganization.id;
-        }
-        else {
-          this.setOrganization();
-        }
-        this.router.navigate(['organizations'], { replaceUrl: true });
-        window.scroll(0, 0);
-      }
-    );
+    this.currentOrganization = organization;
+    this.getCurrentOrganizationService.currentOrganizationId = this.currentOrganization.id;
+
+    this.router.navigate(['/projects'], { replaceUrl: true });
+    window.scroll(0, 0);
   }
 
   private subscribeToOrganizationsChange(): void {
@@ -175,5 +157,9 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
       replaceUrl: true,
     });
     window.scroll(0, 0);
+  }
+
+  public trackByOrganization(index: number, organization: OrganizationModel): number {
+    return organization.id;
   }
 }
