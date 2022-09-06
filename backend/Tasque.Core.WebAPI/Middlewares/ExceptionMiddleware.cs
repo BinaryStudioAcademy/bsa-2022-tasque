@@ -35,7 +35,7 @@ namespace Tasque.Core.WebAPI.Middlewares
                     case ValidationException ex:
                         await HandleValidationException(httpContext, ex);
                         break;
-                    case СгіещьNotFoundException ex:
+                    case CustomNotFoundException ex:
                         await HandleNotFoundException(httpContext, ex);
                         break;
                     case EmailNotConfirmedException ex:
@@ -51,7 +51,7 @@ namespace Tasque.Core.WebAPI.Middlewares
             }
         }
 
-        private async Task HandleNotFoundException(HttpContext httpContext, СгіещьNotFoundException ex)
+        private async Task HandleNotFoundException(HttpContext httpContext, CustomNotFoundException ex)
         {
             _logger.LogError(ex.Message);
             if (ex.InnerException != null)
