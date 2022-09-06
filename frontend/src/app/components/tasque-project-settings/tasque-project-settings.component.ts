@@ -38,7 +38,6 @@ export class TasqueProjectSettingsComponent implements OnInit {
   ngOnInit(): void {
     this.projectService.getProjectById(this.projectId).subscribe((resp) => {
       this.project = resp.body as ProjectModel;
-      console.log(this.project);
     });
 
     this.currentUserService.currentUser.subscribe((user) => {
