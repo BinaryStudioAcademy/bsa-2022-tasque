@@ -17,12 +17,7 @@ import { UserRole } from 'src/core/models/user/user-roles';
   styleUrls: ['./organization-list.component.sass']
 })
 export class OrganizationListComponent extends BaseComponent implements OnInit {
-  public currentUser: UserModel = {
-    id: 0,
-    name: '',
-    email: '',
-    organizationRoles: [ { organizationId: 1, userId: 2, role: UserRole.organizationMember }, { organizationId: 2, userId: 2, role: UserRole.organizationMember } ]
-  };
+  public currentUser: UserModel;
 
   public items: OrganizationModel[] = [];
 
@@ -42,7 +37,7 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.currentUserService.currentUser.subscribe((user) => {
       this.currentUser = user as UserModel;
-
+      
       this.organizationService.getUserOrganizations(this.currentUser.id)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(

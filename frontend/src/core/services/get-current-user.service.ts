@@ -19,7 +19,6 @@ export class GetCurrentUserService {
         this.router.navigate(['auth/login']);
         return;
       }
-      console.log(resp.body)
       this.currentUser$ = of(resp.body as UserModel);
     }));
   }

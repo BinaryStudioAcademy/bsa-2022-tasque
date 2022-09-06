@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { UserModel } from 'src/core/models/user/user-model';
-import { UserRoleModel } from 'src/core/models/user/user-role-model';
 import { UserRole } from 'src/core/models/user/user-roles';
 
 @Component({
@@ -20,5 +19,6 @@ export class ProjectListItemComponent implements OnInit {
   ngOnInit(): void {
     const model = this.currentUser.organizationRoles.find(m => m.organizationId === this.project.organizationId)?.role as UserRole;
     this.role = model;
+    console.log(this.currentUser);
   }
 }
