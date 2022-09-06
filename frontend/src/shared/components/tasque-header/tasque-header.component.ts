@@ -17,7 +17,7 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
 export class HeaderComponent implements OnInit {
 
   public searchIcon = faMagnifyingGlass;
-  public currentUser: UserModel = { id: 1, name: 'John Doe', email: 'johndoe@gmail.com' };
+  public currentUser: UserModel;
   public currentOrganizationId: number;
 
   public upArrowIcon = faCaretUp;

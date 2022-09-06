@@ -12,11 +12,7 @@ import { ProjectModel } from '../../../core/models/project/project-model';
   styleUrls: ['./project-list.component.sass']
 })
 export class ProjectListComponent implements OnInit {
-  public currentUser: UserModel = {
-    id: 0,
-    name: '',
-    email: ''
-  };
+  public currentUser: UserModel;
   public currentOrganizationId: number;
 
   public inputSearch = '';
@@ -26,7 +22,7 @@ export class ProjectListComponent implements OnInit {
     {
       id: 1,
       name: 'Tasque',
-      authorId: 1,
+      authorId: 2,
       organizationId: 1,
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),

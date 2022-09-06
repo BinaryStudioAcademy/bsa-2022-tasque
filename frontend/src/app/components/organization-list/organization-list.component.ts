@@ -16,11 +16,7 @@ import { CreateOrganizationService } from 'src/core/services/create-organization
   styleUrls: ['./organization-list.component.sass']
 })
 export class OrganizationListComponent extends BaseComponent implements OnInit {
-  public currentUser: UserModel = {
-    id: 0,
-    name: '',
-    email: ''
-  };
+  public currentUser: UserModel;
 
   public items: OrganizationModel[] = [];
 
