@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ProjectModel } from 'src/core/models/project/project-model';
 import { UserModel } from 'src/core/models/user/user-model';
+import { UserRole } from 'src/core/models/user/user-roles';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Component({
   selector: 'app-tasque-project-settings',
@@ -9,18 +12,34 @@ import { UserModel } from 'src/core/models/user/user-model';
 })
 export class TasqueProjectSettingsComponent implements OnInit {
 
-  public projectId: number;
+  public projectId: number = 1;
+  public project: ProjectModel = {
+    id: 1,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    name: 'Test project',
+    authorId: 1,
+    organizationId: 2,
+  }
+
   public columnButtonText = 'Column and statuses';
   public issueTypesText = 'Issue types';
   public issueTemplateText = 'Basic issue template';
   public currentUser: UserModel;
+  public userRole: UserRole;
 
   constructor(
     public router: Router,
+    private currentUserService: GetCurrentUserService
   ) { }
 
   ngOnInit(): void {
-
+    this.currentUserService.currentUser.subscribe((user) => {
+      this.currentUser = user as UserModel;
+      this.userRole = this.currentUser.organizationRoles
+        .find((r) => r.organizationId === this.project.organizationId)?.role as UserRole;
+    })
+    console.log(this.currentUser);
   }
 
   moveToIssueTemplates(): void {
