@@ -38,7 +38,7 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentUserService.currentUser.subscribe((user) => {
+    this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user as UserModel;
 
       this.organizationService.getUserOrganizations(this.currentUser.id)
