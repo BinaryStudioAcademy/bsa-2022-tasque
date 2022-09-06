@@ -23,6 +23,7 @@ import { TaskService } from 'src/core/services/task.service';
 import { TaskType } from 'src/core/models/task/task-type';
 import { SpinnerService } from 'src/core/services/spinner.service';
 import { ToastrService } from 'ngx-toastr';
+import { ProjectModel } from 'src/core/models/project/project-model';
 
 @Component({
   selector: 'app-backlog',
@@ -35,6 +36,17 @@ export class BacklogComponent implements OnInit {
 
   //get current user
   @Input() public currentUser: UserModel;
+  //get current project
+  @Input() public currentProject: ProjectModel = {
+    id: 1,
+    name: 'Test project',
+    authorId: 1,
+    organizationId: 1,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    key: 'TIS-1',
+  };
+
   public inputSearch = '';
 
   public unsubscribe$ = new Subject<void>();
@@ -64,6 +76,7 @@ export class BacklogComponent implements OnInit {
     });
   }
 
+  //get all user's boards
   public getUserBoards(): void {
     this.boardService
       .getUserBoards(this.currentUser.id)
@@ -73,15 +86,17 @@ export class BacklogComponent implements OnInit {
           this.boards = result.body.map((item) => ({
             id: item.id,
             title: item.name,
-            color: 'red',
+            color: '',
           }));
         }
       });
   }
 
+  //get sprints for the current project
+  //and sort them by priority (order)
   public getSprints(): void {
     this.sprintService
-      .getProjectSprints(1)
+      .getProjectSprints(this.currentProject.id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
@@ -118,6 +133,8 @@ export class BacklogComponent implements OnInit {
     moveItemInArray(this.sprints, event.previousIndex, event.currentIndex);
   }
 
+  //Change sprint priority,
+  //show user updated sprint order and update DB
   updateSprintPosition(sprint: SprintModel, isUp: boolean): void {
     let currentSprintPosition = sprint.order || 0;
 
@@ -151,10 +168,12 @@ export class BacklogComponent implements OnInit {
       .subscribe();
   }
 
+  //Sort tasks by criteria (All\Only my issues\Recently updated)
   taskSort(sort: IssueSort): void {
     this.filterIssue = sort;
   }
 
+  //Drag a task from the backlog to a sprint
   drop(event: CdkDragDrop<TaskModel[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(

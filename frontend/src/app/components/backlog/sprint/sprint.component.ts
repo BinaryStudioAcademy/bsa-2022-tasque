@@ -27,6 +27,7 @@ import { TaskService } from 'src/core/services/task.service';
 import { TaskModelDto } from 'src/core/models/task/task-model-dto';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskType } from 'src/core/models/task/task-type';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sprint',
@@ -70,6 +71,7 @@ export class SprintComponent implements OnInit, OnChanges {
   constructor(
     public sprintService: SprintService,
     public taskService: TaskService,
+    public toastrService: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -78,6 +80,7 @@ export class SprintComponent implements OnInit, OnChanges {
     this.createIssueSidebarName += this.sprint.id;
   }
 
+  //Get all tasks for the sprint
   public getSprintTasks(): void {
     this.sprintService
       .getSprintTasks(this.sprint.id)
@@ -90,6 +93,7 @@ export class SprintComponent implements OnInit, OnChanges {
       });
   }
 
+  //Get all sprint members
   public getSprintUsers(): void {
     this.sprintService
       .getSprintUsers(this.sprint.id)
@@ -103,11 +107,13 @@ export class SprintComponent implements OnInit, OnChanges {
       });
   }
 
+  //Display total estimate in sprint header
   estimateCount(): void {
     this.estimate = 0;
     this.estimate = this.tasks.reduce((a, b) => a + Number(b.estimate || 0), 0);
   }
 
+  //Sort tasks in a sprint (by keyword or IssueSort)
   filterItems(): void {
     if (this.inputSearch) {
       this.tasks = this.tasksShow.filter((item) => {
@@ -133,6 +139,7 @@ export class SprintComponent implements OnInit, OnChanges {
     }
   }
 
+  //Move the task from the backlog to the sprint, update the task in the database
   drop(event: CdkDragDrop<TaskModelDto[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
@@ -155,11 +162,13 @@ export class SprintComponent implements OnInit, OnChanges {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((result) => {
           if (result.body) {
+            this.toastrService.success('Task moved to sprint');
           }
         });
     }
   }
 
+  //Show only the tasks of the selected user
   filterUserTasks(user: UserModel): void {
     this.tasks = this.tasksShow.filter((item) => {
       return item.authorId == user.id;

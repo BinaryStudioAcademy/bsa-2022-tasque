@@ -91,6 +91,8 @@ export class IssueComponent implements OnInit {
     this.getIssueAuthor();
   }
 
+  //Get the author of the sprint, and display his avatar,
+  //if the author does not have an avatar, display a stub
   public getIssueAuthor(): void {
     this.userServise
       .getUserById(this.issue.authorId)
@@ -110,9 +112,10 @@ export class IssueComponent implements OnInit {
     return new Date(this.issue.deadline);
   }
 
+  //When updating an estimate for a task - update the total estimate for the sprint
+  //and update the estimate value for the task in the database
   estimateChange(): void {
     this.estimate.emit();
-
     this.taskEstimate = {
       taskId: this.issue.id,
       sprintId: this.issue.sprintId,
