@@ -9,6 +9,7 @@ import { BoardService } from 'src/core/services/board.service';
 import { NotificationService } from 'src/core/services/notification.service';
 import { BoardModel } from 'src/core/models/board/board-model';
 import { ActivatedRoute } from '@angular/router';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Component({
   selector: 'tasque-board',
@@ -27,13 +28,17 @@ export class TasqueBoardComponent implements OnInit {
   private projectId: number;
 
   public board: BoardModel = {projectId: 0, id: 0, name: "", columns: []};
-  user: UserModel = {
-    id: 1,
-    name: 'John Doe',
-    email: 'johndoe@gmail.com'
-  };
+  user: UserModel;
 
-  constructor(formBuilder: FormBuilder, private route: ActivatedRoute, private boardService: BoardService, private notificationService: NotificationService) { 
+  constructor(formBuilder: FormBuilder,
+    private route: ActivatedRoute, 
+    private boardService: BoardService, 
+    private notificationService: NotificationService,
+    private currentUserService: GetCurrentUserService) { 
+      this.currentUserService.currentUser.subscribe((res) => {
+        this.user = res as UserModel;
+      });
+
     this.createColumnForm = formBuilder.group({
       'columnName': ['', [Validators.required]]
     });

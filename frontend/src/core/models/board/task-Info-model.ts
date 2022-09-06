@@ -4,6 +4,6 @@ export interface TaskInfoModel {
     id: number;
     description: string;
     projectKey: string;
-    user: UserModel;
+    user?: UserModel;
     attachmentUrl: string;
 }
