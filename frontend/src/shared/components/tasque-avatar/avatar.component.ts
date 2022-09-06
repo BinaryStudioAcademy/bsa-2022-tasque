@@ -26,6 +26,9 @@ export class AvatarComponent implements OnInit {
   }
 
   getInitials(user: UserModel): string {
+    if (!user || !user.name) {
+      return '';
+    }
     const partsOfName = user.name.split(' ');
     if (partsOfName.length >= 2) {
       return partsOfName[0][0] + partsOfName[1][0];
