@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { ProjectService } from 'src/core/services/project.service';
 
 @Component({
   selector: 'app-tasque-project-settings',
@@ -12,15 +13,15 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
 })
 export class TasqueProjectSettingsComponent implements OnInit {
 
-  public projectId: number = 1;
-  public project: ProjectModel = {
-    id: 1,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    name: 'Test project',
-    authorId: 1,
-    organizationId: 2,
-  }
+  @Input() public projectId = 5; // TODO: Replace with number type when project and it's settings page will connected 
+  public project: ProjectModel; //= {
+  //   id: 1,
+  //   authorId: 2,
+  //   organizationId: 1,
+  //   createdAt: new Date(),
+  //   updatedAt: new Date(),
+  //   name: 'test project',
+  // };
 
   public columnButtonText = 'Column and statuses';
   public issueTypesText = 'Issue types';
@@ -30,16 +31,21 @@ export class TasqueProjectSettingsComponent implements OnInit {
 
   constructor(
     public router: Router,
-    private currentUserService: GetCurrentUserService
+    private currentUserService: GetCurrentUserService,
+    private projectService: ProjectService
   ) { }
 
   ngOnInit(): void {
+    this.projectService.getProjectById(this.projectId).subscribe((resp) => {
+      this.project = resp.body as ProjectModel;
+      console.log(this.project);
+    });
+
     this.currentUserService.currentUser.subscribe((user) => {
       this.currentUser = user as UserModel;
       this.userRole = this.currentUser.organizationRoles
         .find((r) => r.organizationId === this.project.organizationId)?.role as UserRole;
-    })
-    console.log(this.currentUser);
+    });
   }
 
   moveToIssueTemplates(): void {
