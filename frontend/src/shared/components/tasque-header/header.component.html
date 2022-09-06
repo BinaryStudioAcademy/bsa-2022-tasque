@@ -19,13 +19,12 @@
         buttonText="Create task"
         btnClass="btn white"
       ></tasque-task-creation>
-      <tasque-option option>
-        <!-- <app-create-organization></app-create-organization> -->
+      <tasque-option option (click)="openCreateProjectDialog()">
+        <p>Create Project</p>
       </tasque-option>
-      <tasque-option option>
-        <!-- <app-create-project></app-create-project> -->
+      <tasque-option option (click)="openCreateOrganizationDialog()">
+        <p>Create Organization</p>
       </tasque-option>
-      <tasque-option> Create project </tasque-option>
     </tasque-menu-dropdown>
   </div>
   <div class="center-panel">

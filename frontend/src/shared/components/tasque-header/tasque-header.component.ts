@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { faCaretDown, faCaretUp, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { AuthService } from 'src/core/services/auth.service';
+import { CreateOrganizationService } from 'src/core/services/create-organization.service';
+import { CreateProjectService } from 'src/core/services/create-project.service';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Component({
@@ -14,27 +18,66 @@ export class HeaderComponent implements OnInit {
 
   public searchIcon = faMagnifyingGlass;
   public currentUser: UserModel = { id: 1, name: 'John Doe', email: 'johndoe@gmail.com' };
+  public currentOrganizationId: number;
 
   public upArrowIcon = faCaretUp;
   public downArrowIcon = faCaretDown;
 
+  // eslint-disable-next-line max-params
   constructor(
-    private currentUserService: GetCurrentUserService,
+    private getCurrentUserService: GetCurrentUserService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private createProjectService: CreateProjectService,
+    private createOrganizationService: CreateOrganizationService,
+    private getCurrentOrganizationService: GetCurrentOrganizationService
   ) { }
 
   ngOnInit(): void {
-    this.currentUserService.currentUser.subscribe((user) => {
-      this.currentUser = user as UserModel;
-    });
+    this.subscribeToCurrentUser();
+    this.subscribeToCurrentOrganization();
 
-    this.currentUserService.userAvatarUpdated$.subscribe((avatar) => {
+    this.getCurrentUserService.userAvatarUpdated$.subscribe((avatar) => {
       this.currentUser.avatarURL = avatar;
     });
   }
 
-  public openCreateTaskDialog(): void { }
+  private subscribeToCurrentOrganization(): void {
+    this.getCurrentOrganizationService.currentOrganizationId$.subscribe(
+      (result) => {
+        this.currentOrganizationId = result;
+      });
+  }
+
+  public subscribeToCurrentUser(): void {
+    this.getCurrentUserService.currentUser.subscribe((user) => {
+      if (!user) {
+        return;
+      }
+
+      this.currentUser = user;
+    });
+  }
+
+  openCreateOrganizationDialog(): void {
+    this.createOrganizationService.openDialog(this.currentUser)
+      .subscribe((result: OrganizationModel) => {
+        if (!result) {
+          return;
+        }
+
+        this.getCurrentOrganizationService.updateOrganizations(result);
+      });
+  }
+
+  public openCreateProjectDialog(): void {
+    this.createProjectService.openDialog(this.currentOrganizationId)
+      .subscribe((result) => {
+        if (!result) {
+          return;
+        }
+      });
+  }
 
   get currentUserAvatar(): string {
     if (!this.currentUser || !this.currentUser.avatarURL) {
