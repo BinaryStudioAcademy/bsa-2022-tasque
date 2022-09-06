@@ -45,7 +45,8 @@
         [taskType]="taskType"
         [currentUser]="currentUser"
         [inputSearch]="inputSearch"
-        (dropSprint)="dropSprintBtnClick($event)"
+        (sprintUp)="updateSprintPosition($event, true)"
+        (sprintDown)="updateSprintPosition($event, false)"
         [filterIssue]="filterIssue"
       ></app-sprint>
       <app-backlog-content

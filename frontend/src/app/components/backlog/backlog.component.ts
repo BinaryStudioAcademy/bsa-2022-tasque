@@ -118,17 +118,26 @@ export class BacklogComponent implements OnInit {
     moveItemInArray(this.sprints, event.previousIndex, event.currentIndex);
   }
 
-  dropSprintBtnClick(sprint: SprintModel): void {
+  updateSprintPosition(sprint: SprintModel, isUp: boolean): void {
     let currentSprintPosition = sprint.order || 0;
 
-    let sprintsSort = this.sprints
-      .filter((el) => (el.order || 0) < currentSprintPosition)
-      .sort((a, b) => (b.order ?? 0) - (a.order ?? 0));
+    let sprintsSort: SprintModel[];
+
+    if (isUp) {
+      sprintsSort = this.sprints
+        .filter((el) => (el.order || 0) < currentSprintPosition)
+        .sort((a, b) => (b.order ?? 0) - (a.order ?? 0));
+    } else {
+      sprintsSort = this.sprints
+        .filter((el) => (el.order || 0) > currentSprintPosition)
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    }
 
     let nextSprint = sprintsSort.length > 0 ? sprintsSort[0] : sprint;
 
     sprint.order = nextSprint.order ?? 0;
     nextSprint.order = currentSprintPosition;
+
     this.updateSprint(sprint.id, sprint);
     this.updateSprint(nextSprint.id, nextSprint);
     this.sprints.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));

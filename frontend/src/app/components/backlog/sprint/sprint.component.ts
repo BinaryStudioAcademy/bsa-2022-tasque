@@ -48,7 +48,9 @@ export class SprintComponent implements OnInit, OnChanges {
   @Input() public taskType: TaskType[];
 
   //Notify parent components of sprint priority change
-  @Output() dropSprint = new EventEmitter<SprintModel>();
+  @Output() sprintUp = new EventEmitter<SprintModel>();
+  //Notify parent components of sprint priority change
+  @Output() sprintDown = new EventEmitter<SprintModel>();
 
   public sprintUsers: UserModel[];
   public sprintUsersCircle?: UserModel[];
@@ -163,13 +165,16 @@ export class SprintComponent implements OnInit, OnChanges {
       return item.authorId == user.id;
     });
   }
-  //+++++++++++++++++++++++++rewrite after the backend part of sprintі sorting is implemented++++++++++++++++
+
   ngOnChanges(): void {
     this.filterItems();
   }
 
-  dropSprintClick(value: SprintModel): void {
-    this.dropSprint.emit(value);
+  $sprintUp(sprint: SprintModel): void {
+    this.sprintUp.emit(sprint);
   }
-  //++++++++++++++++++++++++++++++++++
+
+  $sprintDown(sprint: SprintModel): void {
+    this.sprintDown.emit(sprint);
+  }
 }
