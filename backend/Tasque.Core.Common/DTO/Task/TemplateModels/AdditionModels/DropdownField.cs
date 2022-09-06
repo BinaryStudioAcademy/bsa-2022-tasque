@@ -8,6 +8,6 @@ namespace Tasque.Core.Common.DTO.Task.TemplateModels.AdditionModels
 {
     public class DropdownField
     {
-        public string[] Fields { get; set; }
+        public string[]? Fields { get; set; }
     }
 }

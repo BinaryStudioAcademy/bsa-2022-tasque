@@ -42,7 +42,7 @@ namespace Tasque.Core.BLL.Services.AzureServices
             return results;
         }
 
-        public async Task<CosmosTaskModel> GetTaskById(string id)
+        public async Task<CosmosTaskModel?> GetTaskById(string id)
         {
             try
             {
