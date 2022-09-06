@@ -33,15 +33,18 @@ export class AvatarComponent implements OnInit {
   }
 
   getInitials(user: UserModel): string {
-    if(user.name?.includes(' ')) {
+    if(user.name !== undefined && user.name?.includes(' ')) {
 
       const partsOfName = user.name.split(' ');
       if (partsOfName.length >= 2) {
         return partsOfName[0][0] + partsOfName[1][0];
       }
-    
+      
       return partsOfName[0][0];
+    } else if(user.name !== undefined) {
+      return user.name.charAt(0);
+    } else {
+      return '';
     }
-    return user.name.charAt(0);
   }
 }
