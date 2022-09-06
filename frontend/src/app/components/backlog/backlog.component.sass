@@ -1,64 +1,64 @@
 @import 'src/colors.sass'
 
 .backlog-conteiner
-    display: flex
-    flex-direction: column
-    width: 100%
-    min-height: 100%
-    background: colorscheme(gray-100)
+  display: flex
+  flex-direction: column
+  width: 100%
+  min-height: 100%
+  background: colorscheme(gray-100)
 
 .wrapper
-    display: flex
-    align-items: center
+  display: flex
+  align-items: center
 
 .header
-    display: flex
-    flex-direction: column
-    height: 140px
-    padding: 0 60px
-    background: colorscheme(white-100)
-    border-bottom: 2px solid colorscheme(gray-300)
-    .header-dropdown
-        padding-right: 20px
-        margin-left: auto
-    h3
-        font-weight: 700
-        font-size: 24px
-        line-height: 114.88%
-    p
-        color: colorscheme(gray-500)
-        font-family: 'Nunito'
-        font-style: normal
-        font-weight: 400
-        font-size: 14px
-        line-height: 19px
-    .title
-        flex-grow: 1
-    .search
-        flex-shrink: 0
+  display: flex
+  flex-direction: column
+  height: 140px
+  padding: 0 60px
+  background: colorscheme(white-100)
+  border-bottom: 2px solid colorscheme(gray-300)
+  .header-dropdown
+    padding-right: 20px
+    margin-left: auto
+  h3
+    font-weight: 700
+    font-size: 24px
+    line-height: 114.88%
+  p
+    color: colorscheme(gray-500)
+    font-family: 'Nunito'
+    font-style: normal
+    font-weight: 400
+    font-size: 14px
+    line-height: 19px
+  .title
+    flex-grow: 1
+  .search
+    flex-shrink: 0
 
 .navigation
-    display: flex
-    flex-direction: row
-    p
-        padding: 20px
-        border-bottom: 2px solid colorscheme(white-100)
-        cursor: pointer
-        &:hover
-            color: colorscheme(violet-200)
-            border-bottom: 2px solid colorscheme(violet-200)
-        &.active
-            color: colorscheme(violet-200)
-            border-bottom: 2px solid colorscheme(violet-200)
+  display: flex
+  flex-direction: row
+  p
+    padding: 20px
+    border-bottom: 2px solid colorscheme(white-100)
+    cursor: pointer
+    &:hover
+      color: colorscheme(violet-200)
+      border-bottom: 2px solid colorscheme(violet-200)
+    &.active
+      color: colorscheme(violet-200)
+      border-bottom: 2px solid colorscheme(violet-200)
 
 .backlog-search
-    tasque-input
-    ::ng-deep
-        input
-            width: 120px
-            height: 35px
+  tasque-input ::ng-deep
+    input
+      width: 120px
+      height: 35px
+      
 .body
-    flex-grow: 3
-    margin: 0 60px
-    border-left: 2px solid colorscheme(gray-300)
-    border-right: 2px solid colorscheme(gray-300)
+  flex-grow: 3
+  margin: 0 60px
+  border-left: 2px solid colorscheme(gray-300)
+  border-right: 2px solid colorscheme(gray-300)
