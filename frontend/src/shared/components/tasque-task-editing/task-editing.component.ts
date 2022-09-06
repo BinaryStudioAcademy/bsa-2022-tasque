@@ -13,7 +13,6 @@ import { TaskState } from 'src/core/models/task/task-state';
 import { TaskPriority } from 'src/core/models/task/task-priority';
 import { TaskType } from 'src/core/models/task/task-type';
 import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
-import { UserRole } from 'src/core/models/user/user-roles';
 
 @Component({
   selector: 'tasque-task-editing',
