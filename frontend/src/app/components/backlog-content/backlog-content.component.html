@@ -35,7 +35,13 @@
       id="list-one"
       (cdkDropListDropped)="drop($event)"
     >
-      <app-issue cdkDrag *ngFor="let task of tasks" [issue]="task"></app-issue>
+      <app-issue
+        cdkDrag
+        *ngFor="let task of tasks"
+        [issue]="task"
+        [taskStates]="taskStates"
+        [taskTypes]="taskTypes"
+      ></app-issue>
     </div>
     <div class="add-issue-wrapper row">
       <tasque-button text="+ Create issues" class="btn mini voilet">

@@ -53,6 +53,16 @@ export class SprintService {
     );
   }
 
+  updareSprint(
+    sprintId: number,
+    editedSprint: SprintModel,
+  ): Observable<HttpResponse<SprintModel>> {
+    return this.httpService.putFullRequest<SprintModel>(
+      this.routePrefix + `/update/${sprintId}`,
+      editedSprint,
+    );
+  }
+
   updateTaskEstimate(
     taskEstimateUpdate: TaskEstimateUpdate,
   ): Observable<HttpResponse<void>> {

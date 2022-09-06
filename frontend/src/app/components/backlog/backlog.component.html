@@ -48,7 +48,10 @@
         (dropSprint)="dropSprintBtnClick($event)"
         [filterIssue]="filterIssue"
       ></app-sprint>
-      <app-backlog-content></app-backlog-content>
+      <app-backlog-content
+        [taskStates]="taskState"
+        [taskTypes]="taskType"
+      ></app-backlog-content>
     </div>
   </div>
 </div>

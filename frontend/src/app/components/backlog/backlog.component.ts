@@ -21,6 +21,8 @@ import { TaskModel } from 'src/core/models/task/task-model';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskService } from 'src/core/services/task.service';
 import { TaskType } from 'src/core/models/task/task-type';
+import { SpinnerService } from 'src/core/services/spinner.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-backlog',
@@ -49,6 +51,7 @@ export class BacklogComponent implements OnInit {
     public sprintService: SprintService,
     public taskService: TaskService,
     public currentUserService: GetCurrentUserService,
+    private toastrService: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -82,7 +85,9 @@ export class BacklogComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          this.sprints = result.body;
+          this.sprints = result.body.sort(
+            (a, b) => (a.order ?? 0) - (b.order ?? 0),
+          );
         }
       });
   }
@@ -113,8 +118,28 @@ export class BacklogComponent implements OnInit {
     moveItemInArray(this.sprints, event.previousIndex, event.currentIndex);
   }
 
-  dropSprintBtnClick(position: number): void {
-    moveItemInArray(this.sprints, position, position + 1);
+  dropSprintBtnClick(sprint: SprintModel): void {
+    let currentSprintPosition = sprint.order || 0;
+
+    let sprintsSort = this.sprints
+      .filter((el) => (el.order || 0) < currentSprintPosition)
+      .sort((a, b) => (b.order ?? 0) - (a.order ?? 0));
+
+    let nextSprint = sprintsSort.length > 0 ? sprintsSort[0] : sprint;
+
+    sprint.order = nextSprint.order ?? 0;
+    nextSprint.order = currentSprintPosition;
+    this.updateSprint(sprint.id, sprint);
+    this.updateSprint(nextSprint.id, nextSprint);
+    this.sprints.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    this.toastrService.success('Priority updated');
+  }
+
+  updateSprint(sprintId: number, sprint: SprintModel): void {
+    this.sprintService
+      .updareSprint(sprintId, sprint)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe();
   }
 
   taskSort(sort: IssueSort): void {

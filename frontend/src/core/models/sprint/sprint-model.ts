@@ -11,4 +11,5 @@ export interface SprintModel {
   endAt?: Date;
   projectId: number;
   tasks: TaskModelDto[];
+  order?: number;
 }

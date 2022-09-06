@@ -48,7 +48,7 @@ export class SprintComponent implements OnInit, OnChanges {
   @Input() public taskType: TaskType[];
 
   //Notify parent components of sprint priority change
-  @Output() dropSprint = new EventEmitter<number>();
+  @Output() dropSprint = new EventEmitter<SprintModel>();
 
   public sprintUsers: UserModel[];
   public sprintUsersCircle?: UserModel[];
@@ -168,7 +168,7 @@ export class SprintComponent implements OnInit, OnChanges {
     this.filterItems();
   }
 
-  dropSprintClick(value: number): void {
+  dropSprintClick(value: SprintModel): void {
     this.dropSprint.emit(value);
   }
   //++++++++++++++++++++++++++++++++++
