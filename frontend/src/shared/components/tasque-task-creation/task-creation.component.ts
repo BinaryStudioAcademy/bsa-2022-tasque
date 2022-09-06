@@ -27,7 +27,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   public editorContent = '';
 
   @Input() public buttonText = '';
-  @Input() public btnClass = '';
   @Input() public currentUser: number;
   @Input() public projects: TasqueDropdownOption[];
   @Input() public issueTypes: TasqueDropdownOption[];
