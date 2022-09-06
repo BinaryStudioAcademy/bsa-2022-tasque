@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
@@ -14,7 +14,7 @@ import { BoardType, IBoard, IUserCard } from 'src/shared/components/select-users
   templateUrl: './edit-project.component.html',
   styleUrls: ['./edit-project.component.sass']
 })
-export class EditProjectComponent implements OnInit {
+export class EditProjectComponent implements OnInit, OnDestroy {
 
   @Input() project: ProjectInfoModel;
   
@@ -108,7 +108,7 @@ export class EditProjectComponent implements OnInit {
     this.projectService.kickUser({ projectId: this.project.id, email: email })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
-        const index = this.board.users.findIndex(x => { x.email == email });
+        const index = this.board.users.findIndex((x) => { x.email == email });
         this.board.users = this.board.users.splice(index, 1);
       });
   }

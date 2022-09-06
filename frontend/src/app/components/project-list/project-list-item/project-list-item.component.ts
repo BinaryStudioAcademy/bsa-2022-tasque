@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
-import { UserRole } from 'src/core/models/user/user-roles';
 
 @Component({
   selector: 'app-project-list-item',
@@ -34,9 +33,8 @@ export class ProjectListItemComponent implements OnInit {
   permissionToEdit(): boolean {
     if(this.user.id === this.project.authorId) {
       return true;
-    } 
-    if (this.project.users.every(x => { x.id == this.user.id && x.role === 1 }))
-    {
+    }
+    if (this.project.users.every((x) => { x.id == this.user.id && x.role === 1 })) {
       return true;
     }
 
