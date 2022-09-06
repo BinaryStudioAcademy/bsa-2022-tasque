@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { BoardService } from 'src/core/services/board.service';
 import {
+  BoardType,
   BusinessRole,
   getRolesAsArray,
   IBoard,
@@ -12,6 +13,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
+import { UserModel } from 'src/core/models/user/user-model';
 
 @Component({
   selector: 'tasque-select-users',
@@ -33,7 +35,20 @@ export class SelectUsersComponent implements OnInit {
   public defaultRowHeight_px = 80;
 
   @Input()
-  public board: IBoard;
+  public board: IBoard = {
+    id: 1,
+    type: BoardType.Board,
+    hasRoles: true,
+    users: [
+      {
+        email: 'admin@gmail.com',
+        username: 'Admin',
+        profileURL: '',
+        avatarURL: '',
+        role: BusinessRole.Administrator
+      } as IUserCard
+    ]
+  };
 
   @Output() onAdd = new EventEmitter<string>();
   @Output() onDelete = new EventEmitter<string>();
@@ -77,7 +92,7 @@ export class SelectUsersComponent implements OnInit {
 
   delete(email: string): void {
     this.isLoading = true;
-    
+
     this.onDelete.emit(email);
     
     this.refreshList();
@@ -86,7 +101,7 @@ export class SelectUsersComponent implements OnInit {
   update(user: IUserCard, role: BusinessRole): void {
     this.isLoading = true;
     user.role = role;
-    
+
     this.onUpdate.emit(user);
 
     this.refreshList();
@@ -98,6 +113,15 @@ export class SelectUsersComponent implements OnInit {
     }
 
     return '';
+  }
+
+  getUserModel(user: IUserCard): UserModel {
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.username,
+      avatarURL: user.avatarURL
+    };
   }
 
   private refreshList(): void {

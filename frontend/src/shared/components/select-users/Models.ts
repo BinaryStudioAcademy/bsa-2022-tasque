@@ -21,7 +21,7 @@ export interface IUserCard {
   email: string;
   userName: string;
   profileURL: string;
-  avatarURL: string;
+  avatarURL?: string;
   role: BusinessRole | null;
 }
 

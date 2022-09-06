@@ -3,7 +3,7 @@
         <div class="upper">
             <div class="avatar-container half-width" >
                 <div class="avatar-square">
-                    <tasque-avatar [diameter_px]="200" [imageURL]="originalUser.avatarURL ?? profileChanges.avatarURL ?? defaultUserAvatarUrl" alt="Here should be an avatar"></tasque-avatar>
+                    <tasque-avatar [diameter_px]="200" [user]="originalUser" alt="Here should be an avatar"></tasque-avatar>
                     <div class="img-text">
                         <div class="upload-button" (click)="file.click()" [hidden]="loading">
                             <input hidden class="file-hide" #file accept="image/*" type="file" (change)="handleFileInput($event.target)">

@@ -62,13 +62,14 @@ export class DropdownFieldEditComponent implements OnInit {
       this.notify.error(this.errorMessage);
       return;
     }
-    this.fields.push(this.newField);
-    this.isChanging = false;
     if(this.field.dropdown === undefined || this.field.dropdown?.fields === undefined) {
       this.field.dropdown = {
         fields: this.fields
       };
     }
+    this.fields.push(this.newField);
+    this.isChanging = false;
+    
   }
 
   public addField(): void {
