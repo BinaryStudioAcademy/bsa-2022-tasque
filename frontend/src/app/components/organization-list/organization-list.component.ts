@@ -8,7 +8,7 @@ import { faMagnifyingGlass, faMessage } from '@fortawesome/free-solid-svg-icons'
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { BaseComponent } from 'src/core/base/base.component';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
-import { CreateOrganizationService } from 'src/core/services/create-organization.service';
+import { OpenDialogService } from 'src/core/services/open-dialog.service';
 
 @Component({
   selector: 'app-organization-list',
@@ -30,7 +30,7 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
     private matDialog: MatDialog,
     private organizationService: OrganizationService,
     private getCurrentOrganizationService: GetCurrentOrganizationService,
-    private createOrganizationService: CreateOrganizationService) {
+    private openDialogService: OpenDialogService) {
     super();
   }
 
@@ -67,7 +67,7 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
   }
 
   openCreateOrganizationDialog(): void {
-    this.createOrganizationService.openDialog(this.currentUser)
+    this.openDialogService.openCreateOrganizationDialog(this.currentUser)
       .subscribe((result: OrganizationModel) => {
         if (!result) {
           return;

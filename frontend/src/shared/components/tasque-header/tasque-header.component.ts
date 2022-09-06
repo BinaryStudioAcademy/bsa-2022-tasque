@@ -4,8 +4,7 @@ import { faCaretDown, faCaretUp, faMagnifyingGlass } from '@fortawesome/free-sol
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { AuthService } from 'src/core/services/auth.service';
-import { CreateOrganizationService } from 'src/core/services/create-organization.service';
-import { CreateProjectService } from 'src/core/services/create-project.service';
+import { OpenDialogService } from 'src/core/services/open-dialog.service';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
@@ -23,13 +22,11 @@ export class HeaderComponent implements OnInit {
   public upArrowIcon = faCaretUp;
   public downArrowIcon = faCaretDown;
 
-  // eslint-disable-next-line max-params
   constructor(
     private getCurrentUserService: GetCurrentUserService,
     private authService: AuthService,
     private router: Router,
-    private createProjectService: CreateProjectService,
-    private createOrganizationService: CreateOrganizationService,
+    private openDialogService: OpenDialogService,
     private getCurrentOrganizationService: GetCurrentOrganizationService
   ) { }
 
@@ -60,7 +57,7 @@ export class HeaderComponent implements OnInit {
   }
 
   openCreateOrganizationDialog(): void {
-    this.createOrganizationService.openDialog(this.currentUser)
+    this.openDialogService.openCreateOrganizationDialog(this.currentUser)
       .subscribe((result: OrganizationModel) => {
         if (!result) {
           return;
@@ -71,7 +68,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public openCreateProjectDialog(): void {
-    this.createProjectService.openDialog(this.currentOrganizationId)
+    this.openDialogService.openCreateProjectDialog(this.currentOrganizationId)
       .subscribe((result) => {
         if (!result) {
           return;
