@@ -9,7 +9,6 @@ using NLog.Extensions.Logging;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Logging.ClearProviders();
 builder.Logging.AddNLog();
 
 // Add services to the container.
