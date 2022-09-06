@@ -3,12 +3,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { UserModel } from 'src/core/models/user/user-model';
-import { CreateOrganizationDialogComponent } from '../create-organization/create-organization-dialog/create-organization-dialog.component';
 import { takeUntil } from 'rxjs/operators';
 import { faMagnifyingGlass, faMessage } from '@fortawesome/free-solid-svg-icons';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { BaseComponent } from 'src/core/base/base.component';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
+import { CreateOrganizationService } from 'src/core/services/create-organization.service';
 
 @Component({
   selector: 'app-organization-list',
@@ -33,7 +33,8 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
     private currentUserService: GetCurrentUserService,
     private matDialog: MatDialog,
     private organizationService: OrganizationService,
-    private getCurrentOrganizationService: GetCurrentOrganizationService) {
+    private getCurrentOrganizationService: GetCurrentOrganizationService,
+    private createOrganizationService: CreateOrganizationService) {
     super();
   }
 
@@ -70,18 +71,15 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
   }
 
   openCreateOrganizationDialog(): void {
-    const dialog = this.matDialog.open(CreateOrganizationDialogComponent, {
-      data: this.currentUser,
-    });
-    dialog.afterClosed().subscribe((result: OrganizationModel) => {
-      if (!result) {
-        return;
-      }
+    this.createOrganizationService.openDialog(this.currentUser)
+      .subscribe((result: OrganizationModel) => {
+        if (!result) {
+          return;
+        }
 
-      this.items.push(result);
-      this.itemsShow = this.items;
-      this.getCurrentOrganizationService.updateOrganizations(result);
-    }
-    );
+        this.items.push(result);
+        this.itemsShow = this.items;
+        this.getCurrentOrganizationService.updateOrganizations(result);
+      });
   }
 }
