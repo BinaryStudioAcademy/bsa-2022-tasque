@@ -78,6 +78,7 @@
         *ngFor="let task of tasks"
         [issue]="task"
         [taskStates]="taskState"
+        [taskTypes]="taskType"
         [currentUser]="currentUser"
         (estimate)="estimateCount()"
       ></app-issue>

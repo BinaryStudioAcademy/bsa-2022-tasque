@@ -26,6 +26,7 @@ import {
 import { TaskService } from 'src/core/services/task.service';
 import { TaskModelDto } from 'src/core/models/task/task-model-dto';
 import { TaskState } from 'src/core/models/task/task-state';
+import { TaskType } from 'src/core/models/task/task-type';
 
 @Component({
   selector: 'app-sprint',
@@ -43,6 +44,9 @@ export class SprintComponent implements OnInit, OnChanges {
   @Input() public currentUser: UserModel;
 
   @Input() public taskState: TaskState[];
+
+  @Input() public taskType: TaskType[];
+
   //Notify parent components of sprint priority change
   @Output() dropSprint = new EventEmitter<number>();
 

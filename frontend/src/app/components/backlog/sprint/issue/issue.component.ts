@@ -141,4 +141,10 @@ export class IssueComponent implements OnInit {
       'Task state'
     );
   }
+
+  currentTaskType(): string {
+    return (
+      this.taskTypes.find((el) => el.id == this.issue.typeId)?.name ?? 'issue'
+    );
+  }
 }

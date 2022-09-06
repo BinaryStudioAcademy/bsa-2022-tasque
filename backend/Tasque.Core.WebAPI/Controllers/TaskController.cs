@@ -13,9 +13,15 @@ namespace Tasque.Core.WebAPI.Controllers
             : base(service, currentUser) { }
 
         [HttpGet("getTasksState")]
-        public async Task<IActionResult> GetBacklogTasks()
+        public async Task<IActionResult> GetTasksState()
         {
             return Ok(await _service.GetTasksState());
+        }
+
+        [HttpGet("getTasksType")]
+        public async Task<IActionResult> GetTasksType()
+        {
+            return Ok(await _service.GetTasksType());
         }
     }
 }

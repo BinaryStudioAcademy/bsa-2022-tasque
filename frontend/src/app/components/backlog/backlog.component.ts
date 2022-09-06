@@ -20,6 +20,7 @@ import { IssueSort } from './models';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskService } from 'src/core/services/task.service';
+import { TaskType } from 'src/core/models/task/task-type';
 
 @Component({
   selector: 'app-backlog',
@@ -41,6 +42,7 @@ export class BacklogComponent implements OnInit {
 
   public tasks: TaskModel[] = [];
   public taskState: TaskState[] = [];
+  public taskType: TaskType[] = [];
 
   constructor(
     public boardService: BoardService,
@@ -55,6 +57,7 @@ export class BacklogComponent implements OnInit {
       this.getUserBoards();
       this.getSprints();
       this.getTasksState();
+      this.getTasksType();
     });
   }
 
@@ -91,6 +94,17 @@ export class BacklogComponent implements OnInit {
       .subscribe((result) => {
         if (result.body) {
           this.taskState = result.body;
+        }
+      });
+  }
+
+  public getTasksType(): void {
+    this.taskService
+      .getTasksType()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.taskType = result.body;
         }
       });
   }

@@ -3,7 +3,7 @@ export interface TaskModelDto {
   summary: string;
   description?: string;
   stateId: number;
-  type: number;
+  typeId: number;
   priorityId: number;
   authorId: number;
   projectId: number;
