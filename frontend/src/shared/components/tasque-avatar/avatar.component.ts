@@ -41,7 +41,7 @@ export class AvatarComponent implements OnInit {
       }
 
       return partsOfName[0][0];
-    } else if(user.name !== undefined) {
+    } if(user.name !== undefined) {
       return user.name.charAt(0);
     } 
     return '';
