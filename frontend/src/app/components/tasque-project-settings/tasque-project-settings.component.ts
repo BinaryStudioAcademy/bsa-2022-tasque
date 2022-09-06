@@ -29,27 +29,15 @@ export class TasqueProjectSettingsComponent implements OnInit {
   ) { 
     this.projectService.getProjectById(this.projectId).subscribe((resp) => {
       this.project = resp.body as ProjectModel;
+    });
+  }
 
+  ngOnInit(): void {
       this.currentUserService.currentUser.subscribe((user) => {
       this.currentUser = user as UserModel;
       this.userRole = this.currentUser.organizationRoles
         .find((r) => r.organizationId === this.project.organizationId)?.role as UserRole;
     });
-    
-    });
-  }
-
-  ngOnInit(): void {
-    // this.projectService.getProjectById(this.projectId).subscribe((resp) => {
-    //   this.project = resp.body as ProjectModel;
-
-    //   this.currentUserService.currentUser.subscribe((user) => {
-    //   this.currentUser = user as UserModel;
-    //   this.userRole = this.currentUser.organizationRoles
-    //     .find((r) => r.organizationId === this.project.organizationId)?.role as UserRole;
-    // });
-
-    // });
   }
 
   moveToIssueTemplates(): void {
