@@ -17,12 +17,19 @@ export class AvatarComponent implements OnInit {
   @Input()
   user: UserModel;
 
+  userAvatar: string;
+
   fontSize: number;
 
   constructor() { }
 
   ngOnInit(): void {
     this.fontSize = this.diameter_px / 2;
+    if(this.user.avatarURL === undefined){
+      this.userAvatar = '';
+    } else {
+        this.userAvatar = this.user.avatarURL as string;
+    }
   }
 
   getInitials(user: UserModel): string {
