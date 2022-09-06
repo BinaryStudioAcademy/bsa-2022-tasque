@@ -8,7 +8,7 @@
         <tasque-button style="margin-left: 10px" (btnClick)="deleteField(field)" [icon]="faMinus" class="btn icon"></tasque-button>
     </div>
     <div *ngIf="isChanging" class="edit-dropdown">
-        <tasque-input [formControl]="formControl" class="edit-input" placeholder="Write label name" type="text" (outputValue)="setValue($event)"></tasque-input>
+        <tasque-input [formControl]="formControl" class="edit-input" placeholder="Write field name" type="text" (outputValue)="setValue($event)"></tasque-input>
         <tasque-button class="btn icon" [icon]="faCheck" (keydown.enter)="saveField()" (btnClick)="saveField()"></tasque-button>
     </div>
     <div class="create-dropdown">

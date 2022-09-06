@@ -13,7 +13,7 @@ namespace Tasque.Core.Identity
 {
     public static class Registrations
     {
-        public static void RegisterIdentity(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection RegisterIdentity(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtIssuerOptions = new JwtIssuerOptions();
             configuration.GetSection("JwtIssuerOptions").Bind(jwtIssuerOptions);
@@ -23,6 +23,8 @@ namespace Tasque.Core.Identity
             services.AddScoped<JwtFactory>();
 
             services.ConfigureCurrentUserParameters();
+
+            return services;
         }
 
         public static void ConfigureIdentityMapping(this IMapperConfigurationExpression cfg)

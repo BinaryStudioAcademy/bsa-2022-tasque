@@ -4,8 +4,10 @@
     </div>
     <hr>
     <div *ngFor="let label of labels" class="label">
-        <div class="label-color" [style.background-color]="label.color"></div>
-        <span>{{label.name}}</span>
+        <div class="label-data">
+            <div class="label-color" [style.background-color]="label.color"></div>
+            <span>{{label.name}}</span>
+        </div>
         <tasque-button style="margin-left: 10px" (btnClick)="deleteLabel(label)" [icon]="faMinus" class="btn icon"></tasque-button>
     </div>
     <div *ngIf="isChanging" class="edit-label">
