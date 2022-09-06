@@ -1,4 +1,4 @@
-<tasque-sidebar name="task-creation" btnText="Task creation" btnClass="btn stroke">
+<tasque-sidebar name="task-creation" [btnText]="buttonText" [btnClass]="btnClass">
   <div class="task-creation-conteiner">
     <div class="task-creation-header">
       <h4 class="task-creation-header-title">Create issue</h4>
@@ -60,10 +60,8 @@
     </div>
     <div class="task-creation-footer">
       <div class="task-creation-footer-button">
-        <tasque-button type="submit" class="btn stroke" text="Cancel" (click)="clearForm()">
-        </tasque-button>
-        <tasque-button type="submit" class="btn fill" text="Create" (click)="submitForm()">
-        </tasque-button>
+        <tasque-button type="submit" class="btn stroke" text="Cancel" (click)="clearForm()"> </tasque-button>
+        <tasque-button type="submit" class="btn fill" text="Create" (click)="submitForm()"> </tasque-button>
       </div>
     </div>
   </div>
