@@ -28,6 +28,7 @@ import { TaskModelDto } from 'src/core/models/task/task-model-dto';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskType } from 'src/core/models/task/task-type';
 import { ToastrService } from 'ngx-toastr';
+import { ConfirmationData } from 'src/shared/components/tasque-confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-sprint',

@@ -43,9 +43,16 @@
         </div>
         <div class="wrapper button">
           <tasque-button
+            *ngIf="!sprint.startAt"
             text="Start sprint"
-            class="btn mini voilet"
+            class="btn mini voilet full start-sprint"
           ></tasque-button>
+          <app-complete-sprint
+            *ngIf="sprint.startAt"
+            [sprint]="sprint"
+            class="btn complete-sprint"
+            completeBthClass="btn mini violet-fill full"
+          ></app-complete-sprint>
           <div class="dropdown-button">
             <div class="dropdown" style="float: right">
               <tasque-button
@@ -53,11 +60,32 @@
                 [icon]="faEllipsisV"
               ></tasque-button>
               <div class="dropdown-content">
-                <a (click)="$sprintUp(sprint)">Move sprint up</a>
-                <a (click)="$sprintDown(sprint)">Move sprint down</a>
-                <a>Edit sprint </a>
-                <a>Delete sprint </a>
-                <tasque-task-creation></tasque-task-creation>
+                <a>
+                  <tasque-button
+                    (click)="$sprintUp(sprint)"
+                    text="Move sprint up"
+                    class="btn full black"
+                  ></tasque-button>
+                </a>
+                <a>
+                  <tasque-button
+                    (click)="$sprintDown(sprint)"
+                    text="Move sprint down"
+                    class="btn full black"
+                  ></tasque-button>
+                </a>
+                <a>
+                  <app-edit-sprint
+                    [currentSprint]="sprint"
+                    btnClass="btn full black"
+                  ></app-edit-sprint>
+                </a>
+                <a>
+                  <tasque-button
+                    text="Delete sprint"
+                    class="btn full black"
+                  ></tasque-button>
+                </a>
               </div>
             </div>
           </div>

@@ -11,7 +11,7 @@ import { EditSprintDialogComponent } from './edit-sprint-dialog/edit-sprint-dial
   styleUrls: ['./edit-sprint.component.sass'],
 })
 export class EditSprintComponent implements OnInit {
-  public currentSprint: SprintModel = {
+  @Input() public currentSprint: SprintModel = {
     id: 1,
     name: 'PROJ Sprint 3',
     createdAt: new Date(2000, 1, 1),
@@ -25,7 +25,7 @@ export class EditSprintComponent implements OnInit {
 
   @Input() public isStarting: boolean;
 
-  public btnClass = 'btn mini';
+  @Input() public btnClass = 'btn mini';
 
   constructor(public matDialog: MatDialog) {}
 
