@@ -35,7 +35,7 @@ export class TasqueProjectSettingsComponent implements OnInit {
       this.currentUser = user as UserModel;
       this.userRole = this.currentUser.organizationRoles
         .find((r) => r.organizationId === this.project.organizationId)?.role as UserRole;
-    })
+    });
   }
 
   ngOnInit(): void {
