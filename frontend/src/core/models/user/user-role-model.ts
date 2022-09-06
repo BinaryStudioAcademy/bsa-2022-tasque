@@ -1,4 +1,4 @@
-import { UserRole } from "./user-roles";
+import { UserRole } from './user-roles';
 
 export interface UserRoleModel {
     organizationId: number,

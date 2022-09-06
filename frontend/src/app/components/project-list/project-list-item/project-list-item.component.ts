@@ -17,8 +17,7 @@ export class ProjectListItemComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    const model = this.currentUser.organizationRoles.find(m => m.organizationId === this.project.organizationId)?.role as UserRole;
+    const model = this.currentUser.organizationRoles.find((m) => m.organizationId === this.project.organizationId)?.role as UserRole;
     this.role = model;
-    console.log(this.currentUser);
   }
 }
