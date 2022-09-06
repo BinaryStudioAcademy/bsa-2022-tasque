@@ -2,7 +2,7 @@
   <a class="project-name" href="#">{{ project.name }}</a>
 
   <div class="buttons-container">
-    <app-edit-project *ngIf="permissionToEdit() || role >= 3" [project]="project"></app-edit-project>
+    <app-edit-project *ngIf="permissionToEdit()" [project]="project"></app-edit-project>
     <tasque-button class="btn stroke fixed-height" text="Open" (btnClick)="openProjectBoard()"> </tasque-button>
   </div>
 </div>
