@@ -5,6 +5,8 @@ import { ProjectModel } from 'src/core/models/project/project-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { ProjectService } from 'src/core/services/project.service';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { ProjectModel } from '../../../core/models/project/project-model';
 
 @Component({
   selector: 'app-project-list',
@@ -12,8 +14,8 @@ import { ProjectService } from 'src/core/services/project.service';
   styleUrls: ['./project-list.component.sass']
 })
 export class ProjectListComponent implements OnInit {
-  
-  public currentUserModel: UserModel;
+
+  public currentUser: UserModel;
 
   public inputSearch = '';
   public searchIcon = faMagnifyingGlass;
@@ -21,11 +23,18 @@ export class ProjectListComponent implements OnInit {
   public projectsModel: ProjectInfoModel[] = [];
   public items: ProjectModel[] = [];
 
+
   public itemsShow = this.projectsModel;
 
   constructor(public projectService: ProjectService, 
     private currentOrganization: GetCurrentOrganizationService) { 
-      
+
+  constructor(
+    private currentUserService: GetCurrentUserService
+  ) {
+    this.currentUserService.currentUser.subscribe((res) => {
+      this.currentUser = res as UserModel;
+    });
   }
 
   ngOnInit(): void {

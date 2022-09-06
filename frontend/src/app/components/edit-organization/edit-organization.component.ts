@@ -10,6 +10,7 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { BoardType, IBoard } from 'src/shared/components/select-users/Models';
 import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
+import { UserRole } from 'src/core/models/user/user-roles';
 
 @Component({
   selector: 'app-edit-organization',
@@ -114,7 +115,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
   };
 
   public users: ProfileChangesDTO[] = [
-    { id: 1, name: 'Test user', email: 'test@test.test', avatarURL: 'null' },
+    { id: 1, name: 'Test user', email: 'test@test.test', avatarURL: 'null', organizationRoles: [{ organizationId: 1, userId: 2, role: UserRole.organizationMember }] },
   ];
 
   public getUsers(): void {

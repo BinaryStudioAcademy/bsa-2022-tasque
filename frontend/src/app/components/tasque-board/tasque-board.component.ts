@@ -5,6 +5,7 @@ import { BoardModel } from '../../../core/models/board/board-model';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TaskInfoModel } from 'src/core/models/board/task-Info-model';
 import { UserModel } from 'src/core/models/user/user-model';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Component({
   selector: 'tasque-board',
@@ -19,20 +20,22 @@ export class TasqueBoardComponent implements OnInit {
   public createColumnForm: FormGroup;
   private newBoard: BoardModel;
 
-  user: UserModel = {
-    id: 1,
-    name: 'John Doe',
-    email: 'johndoe@gmail.com'
-  };
+  user: UserModel;
 
   public board: BoardModel[] = [
-    { columnName: 'To Do', tasks: [ { description: 'Create task', attachmentUrl: '', user: this.user, projectKey: 'TO' }, { description: 'Drag task to "In Progress" column', attachmentUrl: '', user: this.user, projectKey: 'TT' }, { description: 'Drag task to "Code Review" column', attachmentUrl: '', user: this.user, projectKey: 'TT' } ] }, 
-    { columnName: 'In Progress', tasks: [ { description: 'Create an issue', attachmentUrl: '', user: this.user, projectKey: 'TF' }] }, 
-    { columnName: 'Code Review', tasks: [ { description: 'Drag task to "Done" column', attachmentUrl: '', user: this.user, projectKey: 'TF' }, { description: 'Smile!', attachmentUrl: '', user: this.user, projectKey: 'TS' }] }, 
+    { columnName: 'To Do', tasks: [ { description: 'Create task', attachmentUrl: '', projectKey: 'TO' }, { description: 'Drag task to "In Progress" column', attachmentUrl: '', projectKey: 'TT' }, { description: 'Drag task to "Code Review" column', attachmentUrl: '', projectKey: 'TT' } ] }, 
+    { columnName: 'In Progress', tasks: [ { description: 'Create an issue', attachmentUrl: '', projectKey: 'TF' }] }, 
+    { columnName: 'Code Review', tasks: [ { description: 'Drag task to "Done" column', attachmentUrl: '', projectKey: 'TF' }, { description: 'Smile!', attachmentUrl: '', projectKey: 'TS' }] }, 
     { columnName: 'Done', tasks: [] },
   ];
 
-  constructor(formBuilder: FormBuilder) { 
+  constructor(
+    formBuilder: FormBuilder,
+    private currentUserService: GetCurrentUserService) { 
+      this.currentUserService.currentUser.subscribe((res) => {
+        this.user = res as UserModel;
+      });
+
     this.createColumnForm = formBuilder.group({
       'columnName': ['', [Validators.required]]
     });

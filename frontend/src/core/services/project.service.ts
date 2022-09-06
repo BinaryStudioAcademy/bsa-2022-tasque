@@ -42,4 +42,8 @@ export class ProjectService {
   changeUserRole(user: ChangeUserRoleModel): Observable<void> {
     return this.httpService.putRequest<void>(this.routePrefix + '/role', user);
   }
+
+  getProjectById(id: number): Observable<HttpResponse<ProjectModel>> {
+    return this.httpService.getFullRequest<ProjectModel>(this.routePrefix + '/getById/' + id);
+  }
 }
