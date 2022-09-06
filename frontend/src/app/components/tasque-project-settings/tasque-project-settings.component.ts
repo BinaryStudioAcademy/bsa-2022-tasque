@@ -13,15 +13,8 @@ import { ProjectService } from 'src/core/services/project.service';
 })
 export class TasqueProjectSettingsComponent implements OnInit {
 
-  @Input() public projectId = 5; // TODO: Replace with number type when project and it's settings page will connected 
-  public project: ProjectModel; //= {
-  //   id: 1,
-  //   authorId: 2,
-  //   organizationId: 1,
-  //   createdAt: new Date(),
-  //   updatedAt: new Date(),
-  //   name: 'test project',
-  // };
+  @Input() public projectId = 5; // TODO: Replace with number type when project page will be implemented 
+  public project: ProjectModel; 
 
   public columnButtonText = 'Column and statuses';
   public issueTypesText = 'Issue types';
@@ -33,18 +26,30 @@ export class TasqueProjectSettingsComponent implements OnInit {
     public router: Router,
     private currentUserService: GetCurrentUserService,
     private projectService: ProjectService
-  ) { }
-
-  ngOnInit(): void {
+  ) { 
     this.projectService.getProjectById(this.projectId).subscribe((resp) => {
       this.project = resp.body as ProjectModel;
-    });
 
-    this.currentUserService.currentUser.subscribe((user) => {
+      this.currentUserService.currentUser.subscribe((user) => {
       this.currentUser = user as UserModel;
       this.userRole = this.currentUser.organizationRoles
         .find((r) => r.organizationId === this.project.organizationId)?.role as UserRole;
     });
+    
+    });
+  }
+
+  ngOnInit(): void {
+    // this.projectService.getProjectById(this.projectId).subscribe((resp) => {
+    //   this.project = resp.body as ProjectModel;
+
+    //   this.currentUserService.currentUser.subscribe((user) => {
+    //   this.currentUser = user as UserModel;
+    //   this.userRole = this.currentUser.organizationRoles
+    //     .find((r) => r.organizationId === this.project.organizationId)?.role as UserRole;
+    // });
+
+    // });
   }
 
   moveToIssueTemplates(): void {
