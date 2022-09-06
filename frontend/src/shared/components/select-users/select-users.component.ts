@@ -41,11 +41,12 @@ export class SelectUsersComponent implements OnInit {
     hasRoles: true,
     users: [
       {
+        id: 1,
         email: 'admin@gmail.com',
-        username: 'Admin',
+        userName: 'Admin',
         profileURL: '',
         avatarURL: '',
-        role: BusinessRole.Administrator
+        role: BusinessRole.Admin
       } as IUserCard
     ]
   };
@@ -119,7 +120,7 @@ export class SelectUsersComponent implements OnInit {
     return {
       id: user.id,
       email: user.email,
-      name: user.username,
+      name: user.userName,
       avatarURL: user.avatarURL
     };
   }
