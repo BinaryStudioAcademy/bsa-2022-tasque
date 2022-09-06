@@ -1,30 +1,13 @@
-import { Component, EventEmitter, forwardRef, HostListener, Input, OnInit, Output } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
-import { UserModel } from 'src/core/models/user/user-model';
-import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
-
-export interface MenuDropdownOption {
-  id?: number,
-  name: string
-}
 
 @Component({
   selector: 'tasque-menu-dropdown',
   templateUrl: './menu-dropdown.component.html',
   styleUrls: ['./menu-dropdown.component.sass'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      multi: true,
-      useExisting: forwardRef(() => MenuDropdownComponent),
-    },
-  ],
 })
-export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
-
-  @Input() public label?: string; // Main label of the dropdown
+export class MenuDropdownComponent implements OnInit {
 
   @Input() public downArrowIcon = faChevronDown;  // Down State of the arrow (applies when dropdown is not expanded)
 
@@ -32,28 +15,13 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
 
   public currentArrowIcon: IconProp;
 
-  @Input() public options: MenuDropdownOption[]; // input data
-  public selectedOption: MenuDropdownOption;
+  @Input() toggleDropdownOnButtonClick = true;
 
-  @Output() labelClicked = new EventEmitter(); // event that represents click on the dropdown main label
-  @Input() toggleDropdownOnLabelClick = true;
-
-  @Input() user: UserModel; // url of the avatar
-  @Input() diameter_px = 45; // size of the avatar
-
-  @Input() public hasAvatar = false; // state of the avatar visibility
-  @Output() avatarClicked = new EventEmitter(); // click on the avatar
-
-  @Input() headerLabel: string; // text of the top label in the options container. Pass it to see this option 
-  @Input() footerLabel: string; // text of the bottom label in the options container. Pass it to see this option 
-  @Output() headerClicked = new EventEmitter(); // click on the top label
-  @Output() footerClicked = new EventEmitter(); // click on the bottom label
+  @Input() separator?: string; // just a text between button and arrow
+  @Input() toggleDropdownOnSeparatorClick = false;
 
   public expanded = false;
   private wasInside = false;
-
-  onChange: (value: MenuDropdownOption) => void = () => { };
-  onTouched: (value: MenuDropdownOption) => void = () => { };
 
   @HostListener('click')
   clickInside(): void {
@@ -72,25 +40,7 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
     this.wasInside = false;
   }
 
-  writeValue(option: MenuDropdownOption): void {
-    this.selectedOption = option;
-  }
-
-  registerOnChange(fn: (value: MenuDropdownOption) => void): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: (value: MenuDropdownOption) => void): void {
-    this.onTouched = fn;
-  }
-
-  constructor(
-    private currentUserService: GetCurrentUserService,
-  ) { 
-    this.currentUserService.currentUser.subscribe((res) => {
-      this.user = res as UserModel;
-    });
-  }
+  constructor() { }
 
   ngOnInit(): void {
     this.currentArrowIcon = this.downArrowIcon;
@@ -107,43 +57,18 @@ export class MenuDropdownComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  public select(option: MenuDropdownOption): void {
-    this.onChange(option);
-
-    if (this.selectedOption != option) {
-      this.selectedOption = option;
-    }
-
-    this.expanded = false;
-    if (this.currentArrowIcon === this.upArrowIcon) {
-      this.currentArrowIcon = this.downArrowIcon;
-    }
-  }
-
-  public labelClick(): void {
-    if (this.toggleDropdownOnLabelClick) {
-      this.toggleDropdown();
-    }
-
-    this.labelClicked.emit();
-  }
-
   public arrowIconClick(): void {
     this.toggleDropdown();
   }
 
-  public avatarClick(): void {
-    this.avatarClicked.emit();
-    this.toggleDropdown();
-  }
-
-  public headerClick(): void {
-    this.headerClicked.emit();
-    this.toggleDropdown();
-  }
-
-  public footerClick(): void {
-    this.footerClicked.emit();
-    this.toggleDropdown();
+  public buttonClick(): void {
+    if (this.toggleDropdownOnButtonClick) {
+      this.toggleDropdown();
+    }
+    else {
+      if (this.expanded) {
+        this.toggleDropdown();
+      }
+    }
   }
 }

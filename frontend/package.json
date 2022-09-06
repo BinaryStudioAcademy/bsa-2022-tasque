@@ -28,6 +28,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@kolkov/angular-editor": "^3.0.0-beta.0",
+    "@types/events": "^3.0.0",
     "@typescript-eslint/parser": "^5.32.0",
     "angular-moment": "^1.3.0",
     "eslint": "^8.21.0",
