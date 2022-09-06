@@ -3,9 +3,9 @@
     <h4 class="login-title">Log In</h4>
     <span class="label-14 link">New to Tasque? <a routerLink="../register">Sign Up</a></span>
   </div>
-  <tasque-input #emailInput (focusout)="showError(emailInput)" (input)="hideError(emailInput)" label="Email" placeholder="Enter your email" formControlName="emailControl"></tasque-input>
+  <tasque-input (keydown.enter)="submitForm()" #emailInput (focusout)="showError(emailInput)" (input)="hideError(emailInput)" label="Email" placeholder="Enter your email" formControlName="emailControl"></tasque-input>
   <div class="password-container">
-    <tasque-input #passwordInput (focusout)="showError(passwordInput)" (input)="hideError(passwordInput)" label="Password" placeholder="Enter your password" type="password" [icon]="faHide" iconPosition="right" (iconClick)="flipPasswordVisible()" formControlName="passwordControl"></tasque-input>
+    <tasque-input (keydown.enter)="submitForm()" #passwordInput (focusout)="showError(passwordInput)" (input)="hideError(passwordInput)" label="Password" placeholder="Enter your password" type="password" [icon]="faHide" iconPosition="right" (iconClick)="flipPasswordVisible()" formControlName="passwordControl"></tasque-input>
     <span class="password-restore-button label-12 link">
       <a routerLink="../restore">Forgot password?</a>
     </span>
