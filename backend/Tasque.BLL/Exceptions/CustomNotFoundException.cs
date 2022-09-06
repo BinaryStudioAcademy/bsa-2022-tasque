@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Tasque.Core.BLL.Exceptions
 {
-    public class NotFoundException : Exception
+    public class CustomNotFoundException : Exception
     {
-        public NotFoundException(string message) : base($"Entity {message} not found") { }
+        public CustomNotFoundException(string message) : base($"Entity {message} not found") { }
     }
 }
