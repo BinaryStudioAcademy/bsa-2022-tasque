@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { HttpService } from 'src/core/services/http.service';
 import { BoardModelDto } from 'src/core/models/board/board-model-dto';
 import {
-  BusinessRole,
   IBoard,
   IBoardKey,
   IUserCard,

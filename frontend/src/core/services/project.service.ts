@@ -7,7 +7,6 @@ import { ProjectModel } from '../models/project/project-model';
 import { EditProjectModel } from '../models/project/edit-project-model';
 import { ProjectInfoModel } from '../models/project/project-info-model';
 import { InviteUserModel } from '../models/project/invite-user-model';
-import { IUserCard } from 'src/shared/components/select-users/Models';
 import { ChangeUserRoleModel } from '../models/project/change-user-role-model';
 
 @Injectable({

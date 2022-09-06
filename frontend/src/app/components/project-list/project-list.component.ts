@@ -34,9 +34,7 @@ export class ProjectListComponent implements OnInit {
         this.projectsModel = data.body;
         this.itemsShow = this.projectsModel;
       }
-    });
-
-    
+    });   
   }
 
   filterItems(): void {

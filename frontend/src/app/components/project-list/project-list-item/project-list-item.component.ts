@@ -33,7 +33,7 @@ export class ProjectListItemComponent implements OnInit {
     if(this.user.id === this.project.authorId) {
       return true;
     } 
-    else if (this.project.users.every(x => x.id == this.user.id && x.role === 1))
+    if (this.project.users.every(x => (x.id == this.user.id && x.role === 1)))
     {
       return true;
     }

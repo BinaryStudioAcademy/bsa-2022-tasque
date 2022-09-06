@@ -1,4 +1,4 @@
-import { IUserCard } from "src/shared/components/select-users/Models";
+import { IUserCard } from 'src/shared/components/select-users/Models';
 
 export interface ProjectInfoModel {
     id: number,

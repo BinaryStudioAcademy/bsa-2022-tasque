@@ -50,7 +50,7 @@ export class EditProjectComponent implements OnInit {
       ]);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.projectName = this.project.name;
     this.sidebarName += this.project.id;
 
@@ -101,16 +101,16 @@ export class EditProjectComponent implements OnInit {
   inviteUser(email: string): void {
     this.projectService.inviteUser({ projectId: this.project.id, email: email })
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe()
+      .subscribe();
   }
 
   deleteUser(email: string): void {
     this.projectService.kickUser({ projectId: this.project.id, email: email })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
-        let index = this.board.users.findIndex(x => x.email == email);
+        const index = this.board.users.findIndex(x => (x.email == email));
         this.board.users = this.board.users.splice(index, 1);
-      })
+      });
   }
 
   changeUserRole(user: IUserCard): void {

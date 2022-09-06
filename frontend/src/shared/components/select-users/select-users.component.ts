@@ -104,9 +104,9 @@ export class SelectUsersComponent implements OnInit {
     this.users$ = this.service.getUsers(this.board);
     this.service.getUsers(this.board).subscribe((data) => {
       this.usersCount = data.length;
-      console.log(this.usersCount);
       this.rowspan = Math.max(1, Math.min(this.usersCount, 5));
       this.isLoading = false;
     });
   }
+
 }
