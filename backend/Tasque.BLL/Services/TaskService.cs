@@ -58,7 +58,7 @@ namespace Tasque.Core.BLL.Services
         {
             var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == id);
             if (task == null)
-                throw new NotFoundException(nameof(Common.Entities.Task));
+                throw new CustomNotFoundException(nameof(Common.Entities.Task));
 
             _dbContext.Tasks.Remove(task);
 
@@ -82,7 +82,7 @@ namespace Tasque.Core.BLL.Services
         {
             var task = _mapper.Map<TaskDto>(_dbContext.Tasks.FirstOrDefault(t => t.Id == id));
             if (task == null)
-                throw new NotFoundException(nameof(Common.Entities.Task));
+                throw new CustomNotFoundException(nameof(Common.Entities.Task));
 
             var attributes = await _cosmosTaskService.GetTaskById(task.Id.ToString());
 
@@ -96,7 +96,7 @@ namespace Tasque.Core.BLL.Services
             var task = _dbContext.Tasks.Update(_mapper.Map<Common.Entities.Task>(model)).Entity;
 
             if (task == null)
-                throw new NotFoundException(nameof(Common.Entities.Task));
+                throw new CustomNotFoundException(nameof(Common.Entities.Task));
 
             var actualAttributes = RenameFieldsWithActualValue(
                 await GetTaskTemplate(task.ProjectId, task.TypeId), model.CustomFields);
