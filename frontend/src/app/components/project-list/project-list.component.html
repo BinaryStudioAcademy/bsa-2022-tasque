@@ -2,7 +2,11 @@
   <div class="project-top">
     <div class="projects-header">
       <h4>List of Projects</h4>
-      <app-create-project></app-create-project>
+      <tasque-button
+        class="btn fill"
+        text="Create Project"
+        (btnClick)="openCreateProjectDialog()"
+      ></tasque-button>
     </div>
     <div class="project-search">
       <tasque-input
