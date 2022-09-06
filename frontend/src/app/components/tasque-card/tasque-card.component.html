@@ -16,7 +16,7 @@
     </div>
     <div class="task-info">
       <span>{{taskInfo.projectKey}}</span>
-      <tasque-avatar [user]="taskInfo.user" alt="user's avatar" [diameter_px]="30"></tasque-avatar>
+      <tasque-avatar *ngIf="user !== undefined" [user]="user" alt="user's avatar" [diameter_px]="30"></tasque-avatar>
     </div>
   </div>
 </div>
