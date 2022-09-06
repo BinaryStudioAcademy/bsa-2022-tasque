@@ -41,6 +41,7 @@
       <app-sprint
         *ngFor="let sprint of sprints"
         [sprint]="sprint"
+        [taskState]="taskState"
         [currentUser]="currentUser"
         [inputSearch]="inputSearch"
         (dropSprint)="dropSprintBtnClick($event)"

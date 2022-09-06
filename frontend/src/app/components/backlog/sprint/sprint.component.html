@@ -41,13 +41,11 @@
           <p>estimate</p>
           <p class="estimate-count">{{ estimate }}</p>
         </div>
-
         <div class="wrapper button">
           <tasque-button
             text="Start sprint"
             class="btn mini voilet"
           ></tasque-button>
-
           <div class="dropdown-button">
             <div class="dropdown" style="float: right">
               <tasque-button
@@ -79,6 +77,7 @@
       <app-issue
         *ngFor="let task of tasks"
         [issue]="task"
+        [taskStates]="taskState"
         [currentUser]="currentUser"
         (estimate)="estimateCount()"
       ></app-issue>

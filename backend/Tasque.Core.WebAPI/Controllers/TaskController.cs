@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Identity.Helpers;
+using Tasque.Core.Common.Entities;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
@@ -11,5 +12,10 @@ namespace Tasque.Core.WebAPI.Controllers
         public TaskController(TaskService service, CurrentUserParameters currentUser)
             : base(service, currentUser) { }
 
+        [HttpGet("getTasksState")]
+        public async Task<IActionResult> GetBacklogTasks()
+        {
+            return Ok(await _service.GetTasksState());
+        }
     }
 }

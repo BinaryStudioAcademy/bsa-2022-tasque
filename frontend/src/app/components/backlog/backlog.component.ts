@@ -18,6 +18,8 @@ import {
 } from '@angular/cdk/drag-drop';
 import { IssueSort } from './models';
 import { TaskModel } from 'src/core/models/task/task-model';
+import { TaskState } from 'src/core/models/task/task-state';
+import { TaskService } from 'src/core/services/task.service';
 
 @Component({
   selector: 'app-backlog',
@@ -38,10 +40,12 @@ export class BacklogComponent implements OnInit {
   public filterIssue: IssueSort;
 
   public tasks: TaskModel[] = [];
+  public taskState: TaskState[] = [];
 
   constructor(
     public boardService: BoardService,
     public sprintService: SprintService,
+    public taskService: TaskService,
     public currentUserService: GetCurrentUserService,
   ) {}
 
@@ -50,6 +54,7 @@ export class BacklogComponent implements OnInit {
       this.currentUser = user as UserModel;
       this.getUserBoards();
       this.getSprints();
+      this.getTasksState();
     });
   }
 
@@ -75,6 +80,17 @@ export class BacklogComponent implements OnInit {
       .subscribe((result) => {
         if (result.body) {
           this.sprints = result.body;
+        }
+      });
+  }
+
+  public getTasksState(): void {
+    this.taskService
+      .getTasksState()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.taskState = result.body;
         }
       });
   }

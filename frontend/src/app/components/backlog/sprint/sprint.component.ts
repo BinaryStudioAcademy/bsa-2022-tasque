@@ -25,6 +25,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { TaskService } from 'src/core/services/task.service';
 import { TaskModelDto } from 'src/core/models/task/task-model-dto';
+import { TaskState } from 'src/core/models/task/task-state';
 
 @Component({
   selector: 'app-sprint',
@@ -40,6 +41,8 @@ export class SprintComponent implements OnInit, OnChanges {
   @Input() public filterIssue: IssueSort;
   //get current user
   @Input() public currentUser: UserModel;
+
+  @Input() public taskState: TaskState[];
   //Notify parent components of sprint priority change
   @Output() dropSprint = new EventEmitter<number>();
 

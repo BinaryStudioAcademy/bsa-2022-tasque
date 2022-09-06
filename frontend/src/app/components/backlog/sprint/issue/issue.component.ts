@@ -88,7 +88,6 @@ export class IssueComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.issue.authorId);
     this.getIssueAuthor();
   }
 
@@ -134,5 +133,12 @@ export class IssueComponent implements OnInit {
         color: '',
       };
     });
+  }
+
+  currentTaskState(): string {
+    return (
+      this.taskStates.find((el) => el.id == this.issue.stateId)?.name ??
+      'Task state'
+    );
   }
 }

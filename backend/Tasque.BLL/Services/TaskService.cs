@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Tasque.Core.Common.Entities;
 using Tasque.Core.DAL;
 using Task = Tasque.Core.Common.Entities.Task;
 
@@ -11,5 +13,15 @@ namespace Tasque.Core.BLL.Services
         {
             _mapper = mapper;
         }
+
+        public async Task<IEnumerable<TaskState>> GetTasksState()
+        {
+            var tasks = await _db.TaskStates
+                .Select(s => s)
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<TaskState>>(tasks);
+        }
+
     }
 }
