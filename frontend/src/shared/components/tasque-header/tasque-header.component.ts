@@ -47,7 +47,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public subscribeToCurrentUser(): void {
-    this.getCurrentUserService.currentUser.subscribe((user) => {
+    this.getCurrentUserService.currentUser$.subscribe((user) => {
       if (!user) {
         return;
       }

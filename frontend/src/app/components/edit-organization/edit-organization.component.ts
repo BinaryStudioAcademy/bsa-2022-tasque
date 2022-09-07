@@ -78,7 +78,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
           this.notification.success(
             'Organization data has been updated successfully',
           );
-          this.getCurrentOrganizationService.updateOrganizations(result.body);
+          this.getCurrentOrganizationService.updateOrganization(result.body);
           this.editOrganizationForm.reset();
           this.sideBarService.toggle(this.sidebarName);
         }

@@ -35,23 +35,13 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentUserService.currentUser.subscribe((user) => {
+    this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user as UserModel;
 
-      this.organizationService.getUserOrganizations(this.currentUser.id)
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe(
-          (result) => {
-            if (result.body) {
-              this.items = result.body;
-              this.itemsShow = this.items;
-            }
-          },
-          (error) => {
-            if (error.status === 400) {
-              this.items = this.itemsShow = [];
-            }
-          });
+    });
+
+    this.getCurrentOrganizationService.organizations$.subscribe((organizations) => {
+      this.items = this.itemsShow = organizations;
     });
   }
 
@@ -75,7 +65,7 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
 
         this.items.push(result);
         this.itemsShow = this.items;
-        this.getCurrentOrganizationService.updateOrganizations(result);
+        this.getCurrentOrganizationService.updateOrganization(result);
       });
   }
 }
