@@ -2,7 +2,7 @@
     <h1>Project options page</h1>
 </div>
 <hr>
-<div class="menu-actions" *ngIf="userRole >= 3 || project.authorId === currentUser.id">
+<div class="menu-actions" *ngIf="userRole >= 3 || project?.authorId === currentUser?.id">
     <div class="test-button">
         <tasque-button
             class="btn stroke"
