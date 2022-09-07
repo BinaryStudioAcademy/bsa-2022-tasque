@@ -1,0 +1,60 @@
+<section class="backlog-wrapper">
+  <div class="backlog-menu row">
+    <div class="toggle">
+      <button (click)="toggleDropdown()" class="btn-backlog-custom">
+        <fa-icon
+          [icon]="iconDown"
+          class="rotatable"
+          id="dropdown-arrow-icon"
+        ></fa-icon
+        >&nbsp;
+        <span class="bold">Backlog</span>
+        <span class="pale pl-5">({{ tasks.length }} issues)</span>
+      </button>
+    </div>
+    <div class="sprints">
+      <tasque-button
+        class="mini"
+        text="Create Sprint"
+        [class]="btnClass"
+        class="mini"
+      ></tasque-button>
+    </div>
+  </div>
+  <div class="backlog-content">
+    <div class="empty-tasks row pale" *ngIf="tasks.length == 0">
+      <label class="text-center">Your backlog is empty.</label>
+    </div>
+    <div class="backlog-issues" id="backlog-issues" *ngIf="tasks.length != 0">
+      <div class="backlog-issue row" *ngFor="let task of tasks">
+        <div class="issue-data">
+          <fa-icon class="ml-15" [icon]="flagIcon"></fa-icon>
+          <label class="issue-proj pale ml-10 mr-10">{{
+            task.project.key
+          }}</label>
+          <button class="btn-backlog-custom issue-title">
+            {{ task.summary }}
+          </button>
+        </div>
+        <div class="issue-actions">
+          <tasque-dropdown
+            [options]="taskStateToDropdownArray(taskStates)"
+            width="150px"
+            [placeholder]="task.state.name"
+          ></tasque-dropdown>
+          <tasque-avatar
+            class="ml-15 mr-15"
+            [diameter_px]="36"
+            [user]="task.author"
+          ></tasque-avatar>
+        </div>
+      </div>
+    </div>
+    <div class="add-issue-wrapper row">
+      <button class="btn-backlog-custom">
+        <fa-icon [icon]="iconPlus"></fa-icon>&nbsp;
+        <span class="bold">Create Issue</span>
+      </button>
+    </div>
+  </div>
+</section>
