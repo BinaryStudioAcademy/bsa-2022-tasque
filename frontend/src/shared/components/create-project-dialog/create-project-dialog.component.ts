@@ -66,7 +66,7 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
   constructor(
     public projectService: ProjectService,
     public notificationService: NotificationService,
-    @Inject(MAT_DIALOG_DATA) public data: NewProjectCredentialsModel,
+    @Inject(MAT_DIALOG_DATA) public data: number,
     private dialogRef: MatDialogRef<CreateProjectDialogComponent>,
   ) {
     this.projectNameControl = new FormControl(this.newProject.name, [
@@ -97,7 +97,7 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     }
 
     this.newProject = {
-      organizationId: this.data.organizationId,
+      organizationId: this.data,
       name: this.createProjectForm.get('projectNameControl')?.value,
       key: this.createProjectForm.get('projectKeyControl')?.value,
     };

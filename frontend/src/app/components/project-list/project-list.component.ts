@@ -29,13 +29,17 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   public itemsShow = this.projects;
   public unsubscribe$ = new Subject<void>();
 
-  constructor(public projectService: ProjectService,
+  constructor(
+    public projectService: ProjectService,
     private createProjectService: CreateProjectService, 
     private currentOrganization: GetCurrentOrganizationService,
     private currentUserService: GetCurrentUserService) {
   }
 
   ngOnInit(): void {
+    this.subscribeToCurrentUser();
+    this.subscribeToCurrentOrganization();
+
     this.projectService.getAllProjectsOfThisOrganization(this.currentOrganizationId)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((data) => {
@@ -44,9 +48,6 @@ export class ProjectListComponent implements OnInit, OnDestroy {
         this.itemsShow = this.projects;
       }
     });
-
-    this.subscribeToCurrentUser();
-    this.subscribeToCurrentOrganization();
   }
 
   ngOnDestroy(): void {
