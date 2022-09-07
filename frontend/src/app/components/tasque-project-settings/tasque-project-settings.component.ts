@@ -32,9 +32,10 @@ export class TasqueProjectSettingsComponent implements OnInit {
     });
 
     this.currentUserService.currentUser$.subscribe((user) => {
-      this.currentUser = user as UserModel;
-      this.userRole = this.currentUser.organizationRoles
-        .find((r) => r.organizationId === this.project.organizationId)?.role as UserRole;
+      this.currentUser = user;
+      this.userRole = this.currentUser.organizationRoles.find(
+        (r) => r.organizationId === this.project.organizationId,
+      )?.role as UserRole;
     });
   }
 

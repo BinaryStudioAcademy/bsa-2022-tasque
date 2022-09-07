@@ -105,7 +105,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
       {
         id: 1,
         email: 'test@email.com',
-        username: 'username 1',
+        userName: 'username 1',
         profileURL: 'null',
         avatarURL: 'https://www.w3schools.com/howto/img_avatar.png',
         role: null,

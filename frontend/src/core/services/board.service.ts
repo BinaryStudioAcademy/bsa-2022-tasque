@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { HttpService } from 'src/core/services/http.service';
 import { BoardInfoModel } from 'src/core/models/board/board-info-model';
 import {
-  BusinessRole,
   IBoard,
   IBoardKey,
   IUserCard,
@@ -34,30 +33,6 @@ export class BoardService {
     return new Observable((observer) => {
       observer.next(users);
       observer.complete();
-    });
-  }
-
-  public addUser(email: string, board: IBoard): Observable<unknown> {
-    // change to HttpClient.getOne
-    const user: IUserCard = {
-      id: 1,
-      email: email,
-      username: email,
-      profileURL: 'something',
-      avatarURL: 'https://www.w3schools.com/howto/img_avatar.png',
-      role: BusinessRole.Participant,
-    };
-
-    // change to HttpClient.put for Board entity
-    return new Observable((observer) => {
-      // For simulation during the tests. Math random should be removed later
-      if (Math.random() <= 0.5) {
-        board.users.push(user);
-        this.save(board);
-        observer.next('done');
-        observer.complete();
-      }
-      observer.error();
     });
   }
 
