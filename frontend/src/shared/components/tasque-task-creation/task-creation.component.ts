@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { SideBarService } from 'src/core/services/sidebar.service';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -20,7 +20,7 @@ import { UserModel } from 'src/core/models/user/user-model';
   templateUrl: './task-creation.component.html',
   styleUrls: ['./task-creation.component.sass'],
 })
-export class TaskCreationComponent implements OnInit, OnDestroy {
+export class TaskCreationComponent implements OnInit, OnDestroy, OnChanges {
   faExpeditedssl = faEllipsisVertical;
 
   public task: TaskCreateViewModel = {};
@@ -141,8 +141,17 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngOnChanges(): void {
+
+  }
+
   setSelectedProjectId(id: number): void {
     this.selectedProjectId = id;
+    this.issueTemplates = [];
+    this.projectUsers = [];
+    this.issueTypes = [];
+    this.customFields = [];
+
 
     this.taskTemplateService.getAllProjectTemplates(this.selectedProjectId).subscribe((resp) => {
       this.issueTemplates = resp.body as TaskTemplate[];
@@ -160,7 +169,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       if(resp.ok) {
         this.projectUsers = resp.body as UserModel[];
       } else {
-        this.notificationService.error('Ensure that there is at least one participant of selected project' ,'Users not found');
+        this.notificationService.error('Something went wrong, try again later');
       }
     })
   }
