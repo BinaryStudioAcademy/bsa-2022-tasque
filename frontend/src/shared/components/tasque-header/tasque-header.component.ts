@@ -32,10 +32,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.subscribeToCurrentUser();
     this.subscribeToCurrentOrganization();
-
-    this.getCurrentUserService.userAvatarUpdated$.subscribe((avatar) => {
-      this.currentUser.avatarURL = avatar;
-    });
+    this.subscribeToCurrentUserAvatar();
   }
 
   private subscribeToCurrentOrganization(): void {
@@ -46,12 +43,20 @@ export class HeaderComponent implements OnInit {
   }
 
   public subscribeToCurrentUser(): void {
+    this.getCurrentUserService.getCurrentUser();
+
     this.getCurrentUserService.currentUser$.subscribe((user) => {
       if (!user) {
         return;
       }
 
       this.currentUser = user;
+    });
+  }
+
+  public subscribeToCurrentUserAvatar(): void {
+    this.getCurrentUserService.userAvatarUpdated$.subscribe((avatar) => {
+      this.currentUser.avatarURL = avatar;
     });
   }
 
