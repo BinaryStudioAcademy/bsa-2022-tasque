@@ -30,7 +30,7 @@ export class TasqueProjectSettingsComponent implements OnInit {
       this.project = resp.body as ProjectModel;
     });
 
-    this.currentUserService.currentUser.subscribe((user) => {
+    this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user as UserModel;
       this.userRole = this.currentUser.organizationRoles.find(
         (r) => r.organizationId === this.project.organizationId,
