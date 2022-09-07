@@ -10,13 +10,13 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
 })
 export class UserPermissionGuard implements CanActivate {
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      if(this.role >= 3){
-        return true;
-      }
-      this.router.navigate(['./not-found']);
-      return false;
+    if (this.role >= 3) {
+      return true;
+    }
+    this.router.navigate(['./not-found']);
+    return false;
   }
-  
+
   private currentUser: UserModel;
   private organizationId: number;
   private role: number;
@@ -25,8 +25,8 @@ export class UserPermissionGuard implements CanActivate {
     private router: Router,
     private currentUserService: GetCurrentUserService,
     private currentOrganizationService: GetCurrentOrganizationService,
-  ) { 
-    this.currentUserService.currentUser.subscribe((user) => {
+  ) {
+    this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user as UserModel;
 
       this.organizationId = this.currentOrganizationService.currentOrganizationId;

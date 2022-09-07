@@ -14,7 +14,7 @@ import { ProjectService } from 'src/core/services/project.service';
 export class TasqueProjectSettingsComponent implements OnInit {
 
   @Input() public projectId = 5; // TODO: Replace with number type when project page will be implemented 
-  public project: ProjectModel; 
+  public project: ProjectModel;
 
   public columnButtonText = 'Column and statuses';
   public issueTypesText = 'Issue types';
@@ -26,12 +26,12 @@ export class TasqueProjectSettingsComponent implements OnInit {
     public router: Router,
     private currentUserService: GetCurrentUserService,
     private projectService: ProjectService
-  ) { 
+  ) {
     this.projectService.getProjectById(this.projectId).subscribe((resp) => {
       this.project = resp.body as ProjectModel;
     });
 
-    this.currentUserService.currentUser.subscribe((user) => {
+    this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user as UserModel;
       this.userRole = this.currentUser.organizationRoles
         .find((r) => r.organizationId === this.project.organizationId)?.role as UserRole;

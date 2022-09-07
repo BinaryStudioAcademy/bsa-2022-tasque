@@ -23,18 +23,18 @@ export class TasqueBoardComponent implements OnInit {
   user: UserModel;
 
   public board: BoardModel[] = [
-    { columnName: 'To Do', tasks: [ { description: 'Create task', attachmentUrl: '', projectKey: 'TO' }, { description: 'Drag task to "In Progress" column', attachmentUrl: '', projectKey: 'TT' }, { description: 'Drag task to "Code Review" column', attachmentUrl: '', projectKey: 'TT' } ] }, 
-    { columnName: 'In Progress', tasks: [ { description: 'Create an issue', attachmentUrl: '', projectKey: 'TF' }] }, 
-    { columnName: 'Code Review', tasks: [ { description: 'Drag task to "Done" column', attachmentUrl: '', projectKey: 'TF' }, { description: 'Smile!', attachmentUrl: '', projectKey: 'TS' }] }, 
+    { columnName: 'To Do', tasks: [{ description: 'Create task', attachmentUrl: '', projectKey: 'TO' }, { description: 'Drag task to "In Progress" column', attachmentUrl: '', projectKey: 'TT' }, { description: 'Drag task to "Code Review" column', attachmentUrl: '', projectKey: 'TT' }] },
+    { columnName: 'In Progress', tasks: [{ description: 'Create an issue', attachmentUrl: '', projectKey: 'TF' }] },
+    { columnName: 'Code Review', tasks: [{ description: 'Drag task to "Done" column', attachmentUrl: '', projectKey: 'TF' }, { description: 'Smile!', attachmentUrl: '', projectKey: 'TS' }] },
     { columnName: 'Done', tasks: [] },
   ];
 
   constructor(
     formBuilder: FormBuilder,
-    private currentUserService: GetCurrentUserService) { 
-      this.currentUserService.currentUser.subscribe((res) => {
-        this.user = res as UserModel;
-      });
+    private currentUserService: GetCurrentUserService) {
+    this.currentUserService.currentUser$.subscribe((res) => {
+      this.user = res as UserModel;
+    });
 
     this.createColumnForm = formBuilder.group({
       'columnName': ['', [Validators.required]]
@@ -49,11 +49,11 @@ export class TasqueBoardComponent implements OnInit {
   }
 
   AddColumn(): void {
-    if(this.createColumnForm.valid) {
+    if (this.createColumnForm.valid) {
       this.newBoard = { columnName: this.createColumnForm.get('columnName')?.value, tasks: [] };
       this.board.push(this.newBoard);
       this.createColumnForm.reset();
-      this.isOpenColumnAddDialog = false;  
+      this.isOpenColumnAddDialog = false;
     }
   }
 

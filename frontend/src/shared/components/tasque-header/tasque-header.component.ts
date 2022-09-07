@@ -63,7 +63,7 @@ export class HeaderComponent implements OnInit {
           return;
         }
 
-        this.getCurrentOrganizationService.updateOrganizations(result);
+        this.getCurrentOrganizationService.updateOrganization(result);
       });
   }
 
