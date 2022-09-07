@@ -12,10 +12,9 @@ export class UserPermissionGuard implements CanActivate {
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this.role >= 3) {
       return true;
-    } else {
+    } 
       this.router.navigate(['./not-found']);
       return false;
-    }
   }
 
   private currentUser: UserModel;
