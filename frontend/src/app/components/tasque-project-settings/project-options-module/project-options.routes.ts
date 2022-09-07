@@ -9,4 +9,3 @@ export const ProjectSettingsRoutes: Routes = [
         canActivate: [UserPermissionGuard],
     },
 ];
-
