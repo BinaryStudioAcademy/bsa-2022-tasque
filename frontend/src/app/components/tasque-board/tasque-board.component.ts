@@ -67,7 +67,7 @@ export class TasqueBoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.pathFromRoot[1].paramMap.get('id');
     if (id == null) {
       return;
     }
