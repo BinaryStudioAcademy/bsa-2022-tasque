@@ -14,6 +14,7 @@ import { ValidationConstants } from 'src/core/models/const-resources/validation-
 import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
 import { UserModel } from 'src/core/models/user/user-model';
+import { UserRole } from 'src/core/models/user/user-roles';
 
 @Component({
   selector: 'tasque-select-users',
@@ -41,13 +42,14 @@ export class SelectUsersComponent implements OnInit {
     hasRoles: true,
     users: [
       {
+        id: 1,
         email: 'admin@gmail.com',
         username: 'Admin',
         profileURL: '',
         avatarURL: '',
-        role: BusinessRole.Administrator
-      } as IUserCard
-    ]
+        role: BusinessRole.Administrator,
+      } as IUserCard,
+    ],
   };
 
   @Output() onAdd = new EventEmitter<string>();
@@ -116,7 +118,11 @@ export class SelectUsersComponent implements OnInit {
       id: user.id,
       email: user.email,
       name: user.username,
-      avatarURL: user.avatarURL
+      avatarURL: user.avatarURL,
+      organizationRoles: [
+        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
+        { organizationId: 2, userId: 2, role: UserRole.organizationMember },
+      ],
     };
   }
 

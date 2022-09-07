@@ -35,9 +35,7 @@
                 "output": "./assets/fonts/"
               }
             ],
-            "styles": [
-              "src/styles.sass"
-            ]
+            "styles": ["src/styles.sass"]
           },
           "configurations": {
             "production": {
@@ -107,9 +105,7 @@
                 "output": "./assets/fonts/"
               }
             ],
-            "styles": [
-              "src/styles.sass"
-            ]
+            "styles": ["src/styles.sass"]
           }
         }
       }

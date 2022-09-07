@@ -1,19 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from 'src/core/models/user/user-model';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { ProjectModel } from '../../../core/models/project/project-model';
 
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
-  styleUrls: ['./project-list.component.sass']
+  styleUrls: ['./project-list.component.sass'],
 })
 export class ProjectListComponent implements OnInit {
-  public currentUser: UserModel = {
-    id: 0,
-    name: '',
-    email: ''
-  };
+  public currentUser: UserModel;
 
   public inputSearch = '';
   public searchIcon = faMagnifyingGlass;
@@ -22,7 +19,7 @@ export class ProjectListComponent implements OnInit {
     {
       id: 1,
       name: 'Tasque',
-      authorId: 1,
+      authorId: 2,
       organizationId: 1,
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
@@ -87,20 +84,21 @@ export class ProjectListComponent implements OnInit {
 
   public itemsShow = this.items;
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(private currentUserService: GetCurrentUserService) {
+    this.currentUserService.currentUser$.subscribe((res) => {
+      this.currentUser = res as UserModel;
+    });
   }
+
+  ngOnInit(): void {}
 
   filterItems(): void {
     if (this.inputSearch) {
       this.itemsShow = this.items.filter((item) => {
         return item.name.toLowerCase().includes(this.inputSearch.toLowerCase());
       });
-    }
-    else {
+    } else {
       this.itemsShow = this.items;
     }
   }
-
 }

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { faCaretDown, faCaretUp, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCaretDown,
+  faCaretUp,
+  faMagnifyingGlass,
+} from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from 'src/core/models/user/user-model';
 import { AuthService } from 'src/core/services/auth.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
@@ -8,12 +12,11 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
 @Component({
   selector: 'tasque-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.sass']
+  styleUrls: ['./header.component.sass'],
 })
 export class HeaderComponent implements OnInit {
-
   public searchIcon = faMagnifyingGlass;
-  public currentUser: UserModel = { id: 1, name: 'John Doe', email: 'johndoe@gmail.com' };
+  public currentUser: UserModel;
 
   public upArrowIcon = faCaretUp;
   public downArrowIcon = faCaretDown;
@@ -21,11 +24,12 @@ export class HeaderComponent implements OnInit {
   constructor(
     private currentUserService: GetCurrentUserService,
     private authService: AuthService,
-    private router: Router
-  ) { }
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
-    this.currentUserService.currentUser.subscribe((user) => {
+    this.currentUserService.getCurrentUser();
+    this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user as UserModel;
     });
 
@@ -34,7 +38,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  public openCreateTaskDialog(): void { }
+  public openCreateTaskDialog(): void {}
 
   get currentUserAvatar(): string {
     if (!this.currentUser || !this.currentUser.avatarURL) {
