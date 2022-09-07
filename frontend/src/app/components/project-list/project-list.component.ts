@@ -17,6 +17,7 @@ import { takeUntil } from 'rxjs/operators';
 export class ProjectListComponent implements OnInit, OnDestroy {
 
   public currentUser: UserModel;
+  public currentOrganizationId: number;
 
   public inputSearch = '';
   public searchIcon = faMagnifyingGlass;
@@ -63,5 +64,31 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     else {
       this.itemsShow = this.projects;
     }
+  }
+
+  private subscribeToCurrentOrganization(): void {
+    this.getCurrentOrganizationService.currentOrganizationId$.subscribe(
+      (result) => {
+        this.currentOrganizationId = result;
+      });
+  }
+
+  public subscribeToCurrentUser(): void {
+    this.getCurrentUserService.currentUser$.subscribe((user) => {
+      if (!user) {
+        return;
+    }
+
+      this.currentUser = user;
+    });
+  }
+
+  public openCreateProjectDialog(): void {
+    this.createProjectService.openDialog(this.currentOrganizationId)
+      .subscribe((result) => {
+        if (!result) {
+          return;
+        }
+      });
   }
 }

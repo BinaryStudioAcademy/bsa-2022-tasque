@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
+import { Component, Input, OnInit } from '@angular/core';
+import { ProjectModel } from 'src/core/models/project/project-model';
 import { UserModel } from 'src/core/models/user/user-model';
 
 @Component({

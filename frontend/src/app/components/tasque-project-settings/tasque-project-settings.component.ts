@@ -12,7 +12,8 @@ import { ProjectService } from 'src/core/services/project.service';
   styleUrls: ['./tasque-project-settings.component.sass'],
 })
 export class TasqueProjectSettingsComponent implements OnInit {
-  @Input() public projectId = 5; // TODO: Replace with number type when project page will be implemented
+
+  @Input() public projectId = 5; // TODO: Replace with number type when project page will be implemented 
   public project: ProjectModel;
 
   public columnButtonText = 'Column and statuses';
@@ -24,7 +25,7 @@ export class TasqueProjectSettingsComponent implements OnInit {
   constructor(
     public router: Router,
     private currentUserService: GetCurrentUserService,
-    private projectService: ProjectService,
+    private projectService: ProjectService
   ) {
     this.projectService.getProjectById(this.projectId).subscribe((resp) => {
       this.project = resp.body as ProjectModel;
@@ -38,7 +39,7 @@ export class TasqueProjectSettingsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   moveToIssueTemplates(): void {
     this.router.navigate(['project/issue-template']);
