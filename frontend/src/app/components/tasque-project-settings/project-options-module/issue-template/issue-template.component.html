@@ -44,18 +44,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- <h2>Context fields</h2>
-                <div cdkDropList class="issue-fields" #contextList="cdkDropList" [cdkDropListData]="contextFields" (cdkDropListDropped)="dropCustomFields($event)">
-                    <div class="issue-field" *ngFor="let item of contextFields" cdkDrag>
-                        <tasque-issue-field [field]="item" (isLabel)="setIsLabel($event)" (isDropDown)="setIsDropdown($event)"></tasque-issue-field>
-                        <tasque-button style="margin-right: 10px" class="btn icon" [icon]="faTrash" (click)="deleteContextItem(item)"></tasque-button>
-                    </div>
-                    <div *ngIf="contextFields.length === 0">
-                        <div class="empty-container">
-                            <span>Drag here your first field!</span>
-                        </div>
-                    </div>
-                </div> -->
             </div>
             <div *ngIf="isLabel !== undefined" class="label-edit-form">
                 <app-label-field-edit [field]="isLabel" (closeEdit)="closeEdit()"></app-label-field-edit>

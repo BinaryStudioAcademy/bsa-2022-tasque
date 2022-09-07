@@ -144,7 +144,9 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   setSelectedProjectId(id: number): void {
     this.selectedProjectId = id;
 
-    this.taskTemplateService.getAllProjectTemplates(String(this.selectedProjectId)).subscribe((resp) => {
+    this.taskTemplateService.getAllProjectTemplates(this.selectedProjectId).subscribe((resp) => {
+      console.log('templates response body');
+      console.log(resp.body);
       this.issueTemplates = resp.body as TaskTemplate[];
     });
 
@@ -154,6 +156,8 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
         title: t.name,
         id: t.id,
       }));
+      console.log('types');
+      console.log(types);
     });
   }
 

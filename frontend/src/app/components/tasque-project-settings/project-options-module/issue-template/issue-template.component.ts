@@ -63,7 +63,7 @@ export class IssueTemplateComponent implements OnInit {
 
   ngOnInit(): void {
     this.taskTemplateService
-    .getAllProjectTemplates(String(this.projectId))
+    .getAllProjectTemplates(this.projectId)
     .subscribe((resp) => {
       this.templates = resp.body as TaskTemplate[];
 
@@ -91,7 +91,7 @@ export class IssueTemplateComponent implements OnInit {
 
       if(event.previousContainer.data === this.availableFields) {
         const toMove: TaskCustomField[] = [];
-        this.availableFields.forEach((f) => toMove.push( { name: f.name, type: f.type } ));
+        this.availableFields.forEach((f) => toMove.push( { name: f.name, type: f.type, fieldId: f.fieldId } ));
         transferArrayItem(
           toMove,
           event.container.data,
