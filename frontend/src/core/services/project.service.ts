@@ -18,4 +18,8 @@ export class ProjectService {
   createProject(newProject: NewProjectModel):Observable<HttpResponse<ProjectModel>>{
     return this.httpService.postFullRequest<ProjectModel>(this.routePrefix + '/create', newProject);
   }
+
+  getProjectById(id: number): Observable<HttpResponse<ProjectModel>> {
+    return this.httpService.getFullRequest<ProjectModel>(this.routePrefix + '/getById/' + id);
+  }
 }

@@ -35,17 +35,15 @@
                 "output": "./assets/fonts/"
               }
             ],
-            "styles": [
-              "src/styles.sass"
-            ]
+            "styles": ["src/styles.sass"]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -107,9 +105,7 @@
                 "output": "./assets/fonts/"
               }
             ],
-            "styles": [
-              "src/styles.sass"
-            ]
+            "styles": ["src/styles.sass"]
           }
         }
       }

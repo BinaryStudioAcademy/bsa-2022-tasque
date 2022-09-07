@@ -31,7 +31,7 @@ export class UserPermissionGuard implements CanActivate {
     private currentOrganizationService: GetCurrentOrganizationService,
   ) {
     this.currentUserService.currentUser$.subscribe((user) => {
-      this.currentUser = user as UserModel;
+      this.currentUser = user;
 
       this.organizationId =
         this.currentOrganizationService.currentOrganizationId;

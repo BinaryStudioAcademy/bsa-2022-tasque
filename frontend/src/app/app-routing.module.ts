@@ -25,8 +25,10 @@ const routes: Routes = [
       { path: 'organizations', component: OrganizationListComponent },
       { path: 'projects', component: ProjectListComponent },
       { path: 'backlog', component: BacklogComponent },
+      { path: 'backlog', component: BacklogComponent },
+      { path: 'projects', component: ProjectListComponent, },
       ...UserRoutes,
-      { path: 'not-found', component: NotFoundPageComponent }
+      { path: 'not-found', component: NotFoundPageComponent },
     ],
   },
   {
@@ -38,7 +40,8 @@ const routes: Routes = [
       { path: 'team', component: TasqueTeamComponent },
       { path: 'settings', component: TasqueProjectSettingsComponent },
       ...ProjectSettingsRoutes,
-    ]
+      { path: 'backlog', component: BacklogComponent },
+    ],
   },
   { path: '**', redirectTo: '/not-found', pathMatch: 'full' },
 ];

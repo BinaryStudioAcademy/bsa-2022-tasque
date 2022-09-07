@@ -1,9 +1,14 @@
-﻿using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Cosmos;
+using Microsoft.OpenApi.Models;
 using SendGrid.Extensions.DependencyInjection;
 using System.Reflection;
+using System.Text.Json.Serialization;
+using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.BLL.MappingProfiles;
 using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services;
+using Tasque.Core.BLL.Services.AzureServices;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Identity;
@@ -14,23 +19,30 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
     public static class AppConfigurationExtension
     {
 
-        public static void ConfigureMapper(this IServiceCollection services)
+        public static IServiceCollection ConfigureMapper(this IServiceCollection services)
         {
             services.AddAutoMapper(cfg =>
             {
+                cfg.AddProfile<TaskProfiles>();
+                cfg.AddProfile<SprintProfiles>();
                 cfg.AddProfile<BoardProfiles>();
                 cfg.AddProfile<OrganizationProfile>();
+                cfg.AddProfile<TaskProfile>();
+                cfg.AddProfile<TaskTemplateProfile>();
                 cfg.ConfigureIdentityMapping();
             },
             Assembly.GetExecutingAssembly());
+
+            return services;
         }
 
-        public static void ConfigureValidator(this IServiceCollection services)
+        public static IServiceCollection ConfigureValidator(this IServiceCollection services)
         {
             services.AddValidatorsFromAssemblyContaining<UserValidator>();
+            return services;
         }
 
-        public static void ConfigureEmailServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection ConfigureEmailServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<EmailConfirmationOptions>(configuration.GetSection(nameof(EmailConfirmationOptions)));
 
@@ -60,9 +72,11 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             });
 
             #endregion
+
+            return services;
         }
 
-        public static void ConfigureS3Services(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection ConfigureS3Services(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<AmazonS3Options>(configuration.GetSection(nameof(AmazonS3Options)));
 
@@ -70,18 +84,24 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
             configuration.GetSection("AmazonS3Options").Bind(amazonS3Options);
 
             services.AddSingleton(amazonS3Options);
+            return services;
         }
 
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
 
-            services.ConfigureMapper();
-            services.ConfigureValidator();
-            services.ConfigureEmailServices(configuration);
-            services.AddSwagger();            
-            services.ConfigureS3Services(configuration);
-            services.AddMvc();
-            services.AddControllers();
+            services
+                .ConfigureMapper()
+                .ConfigureValidator()
+                .ConfigureEmailServices(configuration)
+                .AddSwagger()          
+                .ConfigureS3Services(configuration)
+                .ConfigureAzureCosmosDb(configuration)
+                .AddMvc();
+
+            services.AddControllers().AddJsonOptions(options =>
+            options.JsonSerializerOptions.UnknownTypeHandling = JsonUnknownTypeHandling.JsonElement);
+
             services.AddCors();
 
             services
@@ -94,12 +114,15 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<UserService>()
                 .AddScoped<FileUploadService>()
                 .AddScoped<SprintService>()
-                .AddScoped<BoardService>();
-
-            services.RegisterIdentity(configuration);
+                .AddScoped<TaskPriorityService>()
+                .AddScoped<TaskStateService>()
+                .AddScoped<TaskTypeService>()
+                .AddScoped<ITaskService, TaskService>()
+                .AddScoped<BoardService>()
+                .RegisterIdentity(configuration);
         }
 
-        public static void AddSwagger(this IServiceCollection services)
+        public static IServiceCollection AddSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(c =>
             {
@@ -132,6 +155,30 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
 
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tasque.Core.WebApi", Version = "v1" });
             });
+
+            return services;
+        }
+
+        public static IServiceCollection ConfigureAzureCosmosDb(this IServiceCollection services, IConfiguration configuration)
+        {
+            var cosmosOptions = new CosmosDbOptions();
+            configuration.GetSection(nameof(CosmosDbOptions)).Bind(cosmosOptions);
+
+            var mapper = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<TaskTemplateProfile>();
+                cfg.AddProfile<TaskProfile>();
+            }).CreateMapper();
+
+            var client = new CosmosClient(cosmosOptions.Account, cosmosOptions.Key);
+            var cosmosTaskService = new CosmosTaskService(client, cosmosOptions.DatabaseName, cosmosOptions.TaskContainerDev);
+            var cosmosTemplateService = new CosmosTemplateService(client, cosmosOptions.DatabaseName, cosmosOptions.TemplateContainerDev, mapper);
+
+            services
+                .AddSingleton<ICosmosTaskService>(cosmosTaskService)
+                .AddSingleton<ICosmosTemplateService>(cosmosTemplateService);
+
+            return services;
         }
     }
 }

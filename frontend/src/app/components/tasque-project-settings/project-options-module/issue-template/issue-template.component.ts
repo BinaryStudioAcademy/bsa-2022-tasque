@@ -5,9 +5,10 @@ import { TaskTemplate } from 'src/core/models/task/task-template';
 import { ToastrService } from 'ngx-toastr';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { TaskCustomField } from 'src/core/models/task/task-custom-field';
-import { TaskFieldType } from 'src/core/models/task/task-field-types';
 import { Router } from '@angular/router';
 import { AvailableFields } from 'src/core/models/const-resources/available-fields';
+import { TaskTemplateService } from 'src/core/services/task-template.service';
+import { TaskType } from 'src/core/models/task/task-type';
 
 @Component({
   selector: 'app-issue-template',
@@ -19,37 +20,28 @@ export class IssueTemplateComponent implements OnInit {
   constructor(
     private notificationService: ToastrService,
     private router: Router,
+    private taskTemplateService: TaskTemplateService,
   ) { }
 
-  @Input() public issueTemplate: TaskTemplate;  
-  //fieldsWithDescription and contextFields props should be replaced with this object same properties
+  public issueTemplate: TaskTemplate;
 
-  public fieldsWithDescription: TaskCustomField[] = [ 
-    { name: 'Description', type: TaskFieldType.Paragraph }, 
-    { name: 'Summary', type: TaskFieldType.Text }, 
-    { name: 'State', type: TaskFieldType.State }, 
-    { name: 'Type', type: TaskFieldType.Type }
-  ];
-  public contextFields: TaskCustomField[] = [ 
-    { name:'Assignee', type: TaskFieldType.User }, 
-    { name:'Label', type: TaskFieldType.Label, labels: [ 
-      { color: 'red', name: 'first label' },
-      { color: 'green', name: 'second label' },
-      { color: 'blue', name: 'third label' }, 
-    ] }, 
-    { name:'Sprint', type: TaskFieldType.Type }, 
-    { name:'Story point estimate', type: TaskFieldType.Number }
-  ];
-  public customFields = Object.assign([], AvailableFields) as TaskCustomField[];
+  public customFields: TaskCustomField[] = [];
+
+  public availableFields = Object.assign([], AvailableFields) as TaskCustomField[];
 
   public selectedIssue: TasqueDropdownOption;
   public issueColor: string;
   public fieldName: string;
+
   faTrash = faTrash;
 
-  @Input() public dropdownOptions: TasqueDropdownOption[] = [ //Here will be all project issue types
+  public templates: TaskTemplate[] = [];
+  public types: TaskType[] = [];
+  public type?: TaskType;
+
+  public dropdownOptions: TasqueDropdownOption[] = [ // TODO: Here will be all project issue types
     {
-      id: 0,
+      id: 3,
       color: 'red',
       title: 'Bug'
     },{
@@ -63,11 +55,33 @@ export class IssueTemplateComponent implements OnInit {
     },
   ];
 
+  @Input() projectId = 5; //TODO: Change with number type, when ability to input value will implemented 
+
   public selectedId: number;
   public isLabel: TaskCustomField | undefined;
   public isDropdown: TaskCustomField | undefined;
 
   ngOnInit(): void {
+    this.taskTemplateService
+    .getAllProjectTemplates(String(this.projectId))
+    .subscribe((resp) => {
+      this.templates = resp.body as TaskTemplate[];
+
+      this.templates.forEach(
+        (t) => this.taskTemplateService
+          .getTaskType(t.typeId as number)
+          .subscribe((resp) => {
+            this.types.push(resp.body as TaskType);
+            this.types.forEach((t) => {
+              this.type = t;
+              this.setDropdownOptions();
+              this.type = undefined;
+            });
+      }));
+    }, () => {
+      this.notificationService.info('No templates found');
+      this.templates = [];
+    });
   }
 
   dropCustomFields(event: CdkDragDrop<TaskCustomField[]>): void {
@@ -75,15 +89,16 @@ export class IssueTemplateComponent implements OnInit {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
 
-      if(event.previousContainer.data === this.customFields) {
+      if(event.previousContainer.data === this.availableFields) {
         const toMove: TaskCustomField[] = [];
-        this.customFields.forEach((f) => toMove.push( { name: f.name, type: f.type } ));
+        this.availableFields.forEach((f) => toMove.push( { name: f.name, type: f.type } ));
         transferArrayItem(
           toMove,
           event.container.data,
           event.previousIndex,
           event.currentIndex,
         );
+
       } else
       transferArrayItem(
         event.previousContainer.data,
@@ -94,15 +109,9 @@ export class IssueTemplateComponent implements OnInit {
     }
   }
 
-  deleteContextItem(val: TaskCustomField): void {
-    this.contextFields.forEach((value,index)=>{
-        if(value==val) this.contextFields.splice(index,1);
-    });
-}
-
-  deleteDescriptionItem(val:TaskCustomField): void {
-    this.fieldsWithDescription.forEach((value,index)=>{
-        if(value==val) this.fieldsWithDescription.splice(index,1);
+  deleteItem(val:TaskCustomField): void {
+    this.customFields.forEach((value,index)=>{
+        if(value==val) this.customFields.splice(index,1);
     });
   }
 
@@ -111,12 +120,21 @@ export class IssueTemplateComponent implements OnInit {
       this.notificationService.error('No issue type selected');
       return;
     }
-    // const template: TaskTemplate = { //<-----should be send to backend
-    //   id: this.selectedId,
-    //   customDescriptionFields: this.fieldsWithDescription,
-    //   customContextFields: this.contextFields,
-    // };
-    this.notificationService.success(`${this.selectedIssue.title} template has been updated successfully`);
+
+    const template: TaskTemplate = {
+      typeId: this.selectedId,
+      title: this.issueTemplate.title,
+      id: String(this.selectedId),
+      projectId: this.projectId,
+      customFields: this.customFields,
+    };
+
+    this.taskTemplateService.updateTaskTemplate(template)
+    .subscribe(() => {
+      this.notificationService.success(`${this.selectedIssue.title} template has been updated successfully`);
+    }, () => {
+      this.notificationService.warning('No changes indicated');
+    });
   }
 
   discardChanges(): void {
@@ -125,6 +143,39 @@ export class IssueTemplateComponent implements OnInit {
 
   setSelected(val:number): void {
     this.selectedId = val;
+
+    this.taskTemplateService.getTaskType(val).subscribe((resp) => {
+      this.type = resp.body as TaskType;
+    }, () => {
+      this.type = {
+        name: 'New issue',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        id: this.templates.length + 1,
+      };
+
+      this.issueTemplate = {
+        title: this.type.name,
+        projectId: this.projectId,
+        customFields: [],
+      };
+    });
+
+    this.taskTemplateService.getTemplateById(String(val)).subscribe((resp) => {
+
+      this.issueTemplate = resp.body as TaskTemplate;
+      this.customFields = this.issueTemplate.customFields;
+    }, 
+    () => {
+      this.issueTemplate = {
+        title: 'New issue',
+        projectId: this.projectId,
+        customFields: [],
+        typeId: this.type?.id,
+      };
+      this.customFields = [];
+    });
+
     const issue = this.dropdownOptions.find((i) => i.id === this.selectedId) as TasqueDropdownOption;
     this.issueColor = issue.color as string;
     this.selectedIssue = issue;
@@ -149,4 +200,14 @@ export class IssueTemplateComponent implements OnInit {
     this.isLabel = undefined;
     this.isDropdown = undefined;
   }
+
+  setDropdownOptions(): void {
+    this.templates.forEach((t) => {
+      this.dropdownOptions.push({
+        id: Number(t.id),
+        title: this.type?.name?? 'Undefined', 
+      });
+    });
+  }
 }
+
