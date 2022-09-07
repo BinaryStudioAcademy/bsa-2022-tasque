@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { UserModel } from 'src/core/models/user/user-model';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { UserRole } from 'src/core/models/user/user-roles';
   templateUrl: './organization-list-item.component.html',
   styleUrls: ['./organization-list-item.component.sass']
 })
-export class OrganizationListItemComponent implements OnInit {
+export class OrganizationListItemComponent implements OnInit, OnChanges {
   @Input() public currentUser: UserModel;
   @Input() public organization: OrganizationModel;
   public role: UserRole;
@@ -23,6 +23,13 @@ export class OrganizationListItemComponent implements OnInit {
   ) { }
 
   ngOnInit(): void { 
+    if(this.currentUser === undefined){
+      this.role = 0;
+    }
+    this.role = this.currentUser?.organizationRoles?.find((m) => m.organizationId === this.organization.id)?.role as UserRole;
+  }
+
+  ngOnChanges(): void {
     this.role = this.currentUser?.organizationRoles?.find((m) => m.organizationId === this.organization.id)?.role as UserRole;
   }
 
