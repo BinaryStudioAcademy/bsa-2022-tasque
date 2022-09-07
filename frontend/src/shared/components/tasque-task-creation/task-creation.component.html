@@ -22,6 +22,7 @@
               formControlName="projectControl"
               [errorMessage]="projectErrorMessage"
               [invalid]="!projectControl.valid"
+              (onSelect)="setSelectedProjectId($event)"
             >
             </tasque-dropdown>
           </div>
@@ -32,6 +33,7 @@
               [formControl]="issueTypeControl"
               [errorMessage]="issueTypeErrorMessage"
               [invalid]="!issueTypeControl.valid"
+              (onSelect)="setSelectedTaskType($event)"
             >
             </tasque-dropdown>
           </div>

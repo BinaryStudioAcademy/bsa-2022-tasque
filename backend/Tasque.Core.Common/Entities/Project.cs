@@ -22,4 +22,5 @@ public class Project : BaseEntity
     public virtual ICollection<User> Users { get; set; }
     public virtual ICollection<UserProjectRole> UserRoles { get; set; }
     public virtual ICollection<Sprint> Sprints { get; set; }
+    public virtual ICollection<TaskType> ProjectTaskTypes { get; set; }
 }
