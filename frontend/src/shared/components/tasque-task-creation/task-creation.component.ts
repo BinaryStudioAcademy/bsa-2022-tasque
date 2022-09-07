@@ -12,6 +12,7 @@ import { TaskTemplate } from 'src/core/models/task/task-template';
 import { TaskType } from 'src/core/models/task/task-type';
 import { ProjectService } from 'src/core/services/project.service';
 import { ProjectModel } from 'src/core/models/project/project-model';
+import { TaskCustomField } from 'src/core/models/task/task-custom-field';
 
 @Component({
   selector: 'tasque-task-creation',
@@ -36,6 +37,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   public selectedTaskTypeId: number;
   public template: TaskTemplate;
   public taskType: TaskType;
+  public customFields: TaskCustomField[];
 
   @Input() public buttonText = '';
   @Input() public organizationId = 1;
@@ -163,6 +165,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     this.template = this.issueTemplates
       .find(t => t.projectId === this.selectedProjectId && t.typeId === this.selectedTaskTypeId) as TaskTemplate;
       console.log(this.template);
+      this.customFields = this.template.customFields;
   }
 
   ngOnDestroy(): void {

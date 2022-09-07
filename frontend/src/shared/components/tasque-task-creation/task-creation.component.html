@@ -60,7 +60,9 @@
           <span class="error" *ngIf="!descriptionControl.valid">{{
             editorErrorMessage
           }}</span>
-
+          <div *ngFor="let field of customFields" class="custom-field">
+            <app-task-creation-custom-fields [customField]="field"></app-task-creation-custom-fields>
+          </div>
           <div class="button-wrapper">
             <tasque-button class="btn stroke violet-stroke" text="+ Add issues">
             </tasque-button>
