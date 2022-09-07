@@ -86,7 +86,7 @@ export class ProjectListComponent implements OnInit {
 
   constructor(private currentUserService: GetCurrentUserService) {
     this.currentUserService.currentUser$.subscribe((res) => {
-      this.currentUser = res as UserModel;
+      this.currentUser = res;
     });
   }
 
