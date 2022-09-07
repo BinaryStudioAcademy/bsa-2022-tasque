@@ -1,4 +1,4 @@
-﻿using Tasque.Core.Common.DTO.PartialModels;
+using Tasque.Core.Common.DTO.PartialModels;
 using Tasque.Core.Common.DTO.Project;
 using Tasque.Core.Common.DTO.Task.PartialModels;
 using Tasque.Core.Common.DTO.User;

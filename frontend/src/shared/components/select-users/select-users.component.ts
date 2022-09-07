@@ -42,13 +42,14 @@ export class SelectUsersComponent implements OnInit {
     hasRoles: true,
     users: [
       {
+        id: 1,
         email: 'admin@gmail.com',
         username: 'Admin',
         profileURL: '',
         avatarURL: '',
-        role: BusinessRole.Administrator
-      } as IUserCard
-    ]
+        role: BusinessRole.Administrator,
+      } as IUserCard,
+    ],
   };
 
   @Output() onAdd = new EventEmitter<string>();
@@ -118,7 +119,10 @@ export class SelectUsersComponent implements OnInit {
       email: user.email,
       name: user.username,
       avatarURL: user.avatarURL,
-      organizationRoles: [ { organizationId: 1, userId: 2, role: UserRole.organizationMember }, { organizationId: 2, userId: 2, role: UserRole.organizationMember } ]
+      organizationRoles: [
+        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
+        { organizationId: 2, userId: 2, role: UserRole.organizationMember },
+      ],
     };
   }
 

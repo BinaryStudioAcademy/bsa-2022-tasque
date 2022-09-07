@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { GetCurrentOrganizationService } from './get-current-organization.service';
 import { UserRegisterModel } from '../models/user/user-register-model';
 import { UserResetPasswordModel } from '../models/user/user-reset-password-model';
+import { GetCurrentUserService } from './get-current-user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,8 @@ export class AuthService {
   constructor(
     private httpService: HttpService,
     private router: Router,
-    private getCurrentOrganizationService: GetCurrentOrganizationService
+    private getCurrentOrganizationService: GetCurrentOrganizationService,
+    private getCurrentUserService: GetCurrentUserService
   ) { }
 
   loginUser(credentials: UserLoginModel): Observable<HttpResponse<AccessToken>> {
@@ -60,10 +62,9 @@ export class AuthService {
 
   logout(): void {
     localStorage.clear();
-    this.getCurrentOrganizationService.currentOrganizationId = -1;
-    this.router.navigate(['/auth/login'], {
-      replaceUrl: true,
-    });
+    this.getCurrentUserService.clearCurrentUser();
+    this.getCurrentOrganizationService.clearCurrentOrganizationId();
+    this.router.navigate(['/auth/login'], { replaceUrl: true, });
   }
 
   areTokensExist(): boolean {

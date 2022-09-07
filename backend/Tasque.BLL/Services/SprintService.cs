@@ -1,18 +1,55 @@
-﻿using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Tasque.Core.BLL.Exeptions;
 ﻿using FluentValidation;
 using Tasque.Core.Common.DTO.Sprint;
+using Tasque.Core.Common.DTO.Task;
+using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.DAL;
 using Task = System.Threading.Tasks.Task;
+using Tasque.Core.Common.Models.Task;
 using Tasque.Core.BLL.Extensions;
 
 namespace Tasque.Core.BLL.Services
 {
     public class SprintService : EntityCrudService<Sprint>
     {
-        public SprintService(DataContext db) : base(db)
+        private IMapper _mapper;
+        public SprintService(DataContext db, IMapper mapper) : base(db)
         {
+            _mapper = mapper;
+        }
+
+        public async Task<IEnumerable<SprintDto>> GetProjectSprints(int projectId)
+        {
+            var sprints = await _db.Sprints
+                .Where(s => s.ProjectId == projectId)
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<SprintDto>>(sprints);
+        }
+        public async Task<IEnumerable<TaskDto>> GetSprintTasks(int sprintId)
+        {
+            var tasks = await _db.Tasks
+                .Where(t => t.SprintId == sprintId)
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<TaskDto>>(tasks);
+        }
+
+        public async Task<IEnumerable<UserDto>> GetSprintUsers(int sprintId)
+        {
+            var users = await _db.Tasks
+                .Include(t => t.Author)
+                .Where(t => t.SprintId == sprintId)
+                .Select(t =>t.Author)
+                .GroupBy(x => x.Id)
+                .Select(x => x.First())
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<UserDto>>(users);
         }
 
         public override Sprint Create(Sprint entity)
@@ -71,6 +108,26 @@ namespace Tasque.Core.BLL.Services
             sprints.SetOrder(ids);
             await _db.SaveChangesAsync();
             return sprints.OrderBy(x => x.Order);
+        }
+
+        public async Task UpdateTaskEstimate(TaskEstimateUpdate taskEstimateUpdate)
+        {
+            var sprint = await _db.Sprints
+                .FirstOrDefaultAsync(s => s.Id == taskEstimateUpdate.SprintId);
+
+            if (sprint == null)
+                throw new HttpException(System.Net.HttpStatusCode.NotFound, "Sprinter with this ID does not exist");
+
+            var task = await _db.Tasks
+                .FirstOrDefaultAsync(t => t.Id == taskEstimateUpdate.TaskId);
+
+            if (task == null)
+                throw new HttpException(System.Net.HttpStatusCode.NotFound, "Task with this ID does not exist");
+
+            task.Estimate = taskEstimateUpdate.Estimate;
+
+            _db.Update(task);
+            await _db.SaveChangesAsync();
         }
     }
 }
