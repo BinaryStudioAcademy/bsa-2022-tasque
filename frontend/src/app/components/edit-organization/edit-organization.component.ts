@@ -9,6 +9,7 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { BoardType, IBoard } from 'src/shared/components/select-users/Models';
 import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
+import { UserRole } from 'src/core/models/user/user-roles';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -77,7 +78,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
           this.toastrService.success(
             'Organization data has been updated successfully',
           );
-          this.getCurrentOrganizationService.updateOrganizations(result.body);
+          this.getCurrentOrganizationService.updateOrganization(result.body);
           this.editOrganizationForm.reset();
           this.sideBarService.toggle(this.sidebarName);
         }
@@ -114,7 +115,15 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
   };
 
   public users: ProfileChangesDTO[] = [
-    { id: 1, name: 'Test user', email: 'test@test.test', avatarURL: 'null' },
+    {
+      id: 1,
+      name: 'Test user',
+      email: 'test@test.test',
+      avatarURL: 'null',
+      organizationRoles: [
+        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
+      ],
+    },
   ];
 
   public getUsers(): void {

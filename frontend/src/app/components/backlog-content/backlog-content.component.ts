@@ -156,16 +156,28 @@ export class BacklogContentComponent implements OnInit {
       id: 1,
       name: 'John Doe',
       email: 'email',
+      organizationRoles: [
+        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
+        { organizationId: 2, userId: 2, role: UserRole.organizationMember },
+      ],
     },
     {
       id: 2,
       name: 'Jane Doe',
       email: 'email',
+      organizationRoles: [
+        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
+        { organizationId: 2, userId: 2, role: UserRole.organizationMember },
+      ],
     },
     {
       id: 3,
       name: 'James McGuill',
       email: 'email',
+      organizationRoles: [
+        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
+        { organizationId: 2, userId: 2, role: UserRole.organizationMember },
+      ],
     },
   ];
 

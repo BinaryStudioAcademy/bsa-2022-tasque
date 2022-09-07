@@ -1,18 +1,56 @@
-﻿using Tasque.Core.Common.DTO.Task;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Tasque.Core.BLL.Services;
-using Tasque.Core.Identity.Helpers;
-using Tasque.Core.Common.Entities;
+using Tasque.Core.BLL.Interfaces;
+using Tasque.Core.Common.DTO.Task;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
-    [Route("api/task")]
-    public class TaskController : EntityController<Common.Entities.Task, TaskDto, TaskService>
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
+    public class TaskController : ControllerBase
     {
-        public TaskController(TaskService service, CurrentUserParameters currentUser)
-            : base(service, currentUser) { }
+        private readonly ITaskService _taskService;
 
-        [HttpGet("getTasksState")]
+        public TaskController(ITaskService taskService)
+        {
+            _taskService = taskService;
+        }
+
+        [HttpGet("getAllTasks")]
+        public async Task<IActionResult> GetAllTasks()
+        {
+            return Ok(await _taskService.GetAllTasks());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetTaskById(int id)
+        {
+            return Ok(await _taskService.GetTaskById(id));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateTask([FromBody] TaskDto model)
+        {
+            var task = await _taskService.CreateTask(model);
+            return Created(task.ToString()?? "", task);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateTask([FromBody] TaskDto model)
+        {
+            return Ok(await _taskService.UpdateTask(model));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTask(int id)
+        {
+            await _taskService.DeleteTask(id);
+            return NoContent();
+        }
+
+                [HttpGet("getTasksState")]
         public async Task<IActionResult> GetTasksState()
         {
             return Ok(await _service.GetTasksState());

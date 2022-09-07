@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   faCaretDown,
   faCaretUp,
   faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
+import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { AuthService } from 'src/core/services/auth.service';
+import { OpenDialogService } from 'src/core/services/open-dialog.service';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
-import { MenuDropdownOption } from '../tasque-menu-dropdown/menu-dropdown.component';
 
 @Component({
   selector: 'tasque-header',
@@ -18,81 +19,72 @@ import { MenuDropdownOption } from '../tasque-menu-dropdown/menu-dropdown.compon
 })
 export class HeaderComponent implements OnInit {
   public searchIcon = faMagnifyingGlass;
-  public currentUser: UserModel = {
-    id: 1,
-    name: 'John Doe',
-    email: 'johndoe@gmail.com',
-  };
-  public createOptions: MenuDropdownOption[] = [
-    { name: 'Create Organization' },
-    { name: 'Create Project' },
-  ];
-  public yourWorkOptions: MenuDropdownOption[] = [
-    { name: 'One task' },
-    { name: 'Some task' },
-  ];
-  public projectOptions: MenuDropdownOption[] = [
-    { name: 'Last Project' },
-    { name: 'Previous Project' },
-  ];
-  public profileOptions: MenuDropdownOption[] = [
-    { name: 'Profile settings' },
-    { name: 'Log out' },
-  ];
+  public currentUser: UserModel;
+  public currentOrganizationId: number;
 
   public upArrowIcon = faCaretUp;
   public downArrowIcon = faCaretDown;
 
-  public createItemControl = new FormControl<MenuDropdownOption | undefined>(
-    undefined,
-  );
-  public profileControl = new FormControl<MenuDropdownOption | undefined>(
-    undefined,
-  );
-
   constructor(
-    private currentUserService: GetCurrentUserService,
+    private getCurrentUserService: GetCurrentUserService,
     private authService: AuthService,
     private router: Router,
+    private openDialogService: OpenDialogService,
+    private getCurrentOrganizationService: GetCurrentOrganizationService,
   ) {}
 
   ngOnInit(): void {
-    this.currentUserService.currentUser.subscribe((user) => {
-      this.currentUser = user as UserModel;
-    });
+    this.subscribeToCurrentUser();
+    this.subscribeToCurrentOrganization();
+    this.subscribeToCurrentUserAvatar();
+  }
 
-    this.currentUserService.userAvatarUpdated$.subscribe((avatar) => {
-      this.currentUser.avatarURL = avatar;
-    });
-
-    this.createItemControl.valueChanges.subscribe((option) =>
-      this.createItemOptionChange(option),
-    );
-
-    this.profileControl.valueChanges.subscribe((option) =>
-      this.profileOptionChange(option),
+  private subscribeToCurrentOrganization(): void {
+    this.getCurrentOrganizationService.currentOrganizationId$.subscribe(
+      (result) => {
+        this.currentOrganizationId = result;
+      },
     );
   }
 
-  public openCreateTaskDialog(): void {}
+  public subscribeToCurrentUser(): void {
+    this.getCurrentUserService.getCurrentUser();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public createItemOptionChange(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    option: MenuDropdownOption | null | undefined,
-  ): void {}
+    this.getCurrentUserService.currentUser$.subscribe((user) => {
+      if (!user) {
+        return;
+      }
 
-  public profileOptionChange(
-    option: MenuDropdownOption | null | undefined,
-  ): void {
-    switch (option?.name) {
-      case 'Log out':
-        this.authService.logout();
-        return;
-      case 'Profile settings':
-        this.router.navigate(['/user/profile'], { replaceUrl: true });
-        return;
-    }
+      this.currentUser = user;
+    });
+  }
+
+  public subscribeToCurrentUserAvatar(): void {
+    this.getCurrentUserService.userAvatarUpdated$.subscribe((avatar) => {
+      this.currentUser.avatarURL = avatar;
+    });
+  }
+
+  openCreateOrganizationDialog(): void {
+    this.openDialogService
+      .openCreateOrganizationDialog(this.currentUser)
+      .subscribe((result: OrganizationModel) => {
+        if (!result) {
+          return;
+        }
+
+        this.getCurrentOrganizationService.updateOrganization(result);
+      });
+  }
+
+  public openCreateProjectDialog(): void {
+    this.openDialogService
+      .openCreateProjectDialog(this.currentOrganizationId)
+      .subscribe((result) => {
+        if (!result) {
+          return;
+        }
+      });
   }
 
   get currentUserAvatar(): string {
@@ -106,5 +98,17 @@ export class HeaderComponent implements OnInit {
   public openProjectsPage(): void {
     this.router.navigate(['/projects'], { replaceUrl: true });
     window.scroll(0, 0);
+  }
+
+  public logoutClick(): void {
+    this.authService.logout();
+  }
+
+  public profileSettingsClick(): void {
+    this.router.navigate(['/user/profile'], { replaceUrl: true });
+  }
+
+  public manageMyProjectsClick(): void {
+    this.router.navigate(['/projects'], { replaceUrl: true });
   }
 }

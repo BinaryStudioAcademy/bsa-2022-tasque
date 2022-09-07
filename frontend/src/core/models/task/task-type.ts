@@ -5,5 +5,5 @@ export interface TaskType {
   name: string,
   createdAt: Date,
   updatedAt: Date,
-  icon: IconDefinition
+  icon?: IconDefinition
 }
