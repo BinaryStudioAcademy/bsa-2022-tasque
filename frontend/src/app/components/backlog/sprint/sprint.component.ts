@@ -27,6 +27,8 @@ import { TaskModelDto } from 'src/core/models/task/task-model-dto';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskType } from 'src/core/models/task/task-type';
 import { ToastrService } from 'ngx-toastr';
+import { TaskTypeService } from 'src/core/services/task-type.service';
+import { TaskStateService } from 'src/core/services/task-state.service';
 
 @Component({
   selector: 'app-sprint',
@@ -43,9 +45,9 @@ export class SprintComponent implements OnInit, OnChanges {
   //get current user
   @Input() public currentUser: UserModel;
 
-  @Input() public taskState: TaskState[];
+  public taskState: TaskState[];
 
-  @Input() public taskType: TaskType[];
+  public taskType: TaskType[];
 
   //Notify parent components of sprint priority change
   @Output() sprintUp = new EventEmitter<SprintModel>();
@@ -71,11 +73,16 @@ export class SprintComponent implements OnInit, OnChanges {
     public sprintService: SprintService,
     public taskService: TaskService,
     public toastrService: ToastrService,
+    public taskTypeService: TaskTypeService,
+    public taskStateService: TaskStateService,
   ) {}
 
   ngOnInit(): void {
+    this.getTasksState();
+    this.getTasksType();
     this.getSprintTasks();
     this.getSprintUsers();
+
     this.createIssueSidebarName += this.sprint.id;
   }
 
@@ -184,5 +191,27 @@ export class SprintComponent implements OnInit, OnChanges {
 
   $sprintDown(sprint: SprintModel): void {
     this.sprintDown.emit(sprint);
+  }
+
+  public getTasksState(): void {
+    this.taskStateService
+      .getAll()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.taskState = result.body;
+        }
+      });
+  }
+
+  public getTasksType(): void {
+    this.taskTypeService
+      .getAll()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.taskType = result.body;
+        }
+      });
   }
 }

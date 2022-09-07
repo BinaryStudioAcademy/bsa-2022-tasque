@@ -18,6 +18,8 @@ import { BacklogService } from 'src/core/services/backlog.service';
 import { takeUntil } from 'rxjs/operators';
 import { TaskModelDto } from 'src/core/models/task/task-model-dto';
 import { UserRole } from 'src/core/models/user/user-roles';
+import { TaskTypeService } from 'src/core/services/task-type.service';
+import { TaskStateService } from 'src/core/services/task-state.service';
 
 @Component({
   selector: 'app-backlog-content',
@@ -186,9 +188,15 @@ export class BacklogContentComponent implements OnInit {
 
   // TODO remove when real data is available
   @Input() public tasks: TaskModelDto[] = [];
-  constructor(public backlogService: BacklogService) {}
+  constructor(
+    public backlogService: BacklogService,
+    public taskTypeService: TaskTypeService,
+    public taskStateService: TaskStateService,
+  ) {}
 
   ngOnInit(): void {
+    this.getTasksState();
+    this.getTasksType();
     this.getBacklogTasks();
   }
 
@@ -242,6 +250,28 @@ export class BacklogContentComponent implements OnInit {
       .subscribe((result) => {
         if (result.body) {
           this.tasks = result.body;
+        }
+      });
+  }
+
+  public getTasksState(): void {
+    this.taskStateService
+      .getAll()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.taskStates = result.body;
+        }
+      });
+  }
+
+  public getTasksType(): void {
+    this.taskTypeService
+      .getAll()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.taskTypes = result.body;
         }
       });
   }

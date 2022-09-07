@@ -41,18 +41,13 @@
       <app-sprint
         *ngFor="let sprint of sprints"
         [sprint]="sprint"
-        [taskState]="taskState"
-        [taskType]="taskType"
         [currentUser]="currentUser"
         [inputSearch]="inputSearch"
         (sprintUp)="updateSprintPosition($event, true)"
         (sprintDown)="updateSprintPosition($event, false)"
         [filterIssue]="filterIssue"
       ></app-sprint>
-      <app-backlog-content
-        [taskStates]="taskState"
-        [taskTypes]="taskType"
-      ></app-backlog-content>
+      <app-backlog-content></app-backlog-content>
     </div>
   </div>
 </div>

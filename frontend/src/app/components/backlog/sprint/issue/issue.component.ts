@@ -132,7 +132,7 @@ export class IssueComponent implements OnInit {
   }
 
   taskStateToDropdownArray(types: TaskState[]): TasqueDropdownOption[] {
-    return types.map((type) => {
+    return types?.map((type) => {
       return {
         id: type.id,
         title: type.name,
@@ -143,14 +143,14 @@ export class IssueComponent implements OnInit {
 
   currentTaskState(): string {
     return (
-      this.taskStates.find((el) => el.id == this.issue.stateId)?.name ??
+      this.taskStates?.find((el) => el.id == this.issue.stateId)?.name ??
       'Task state'
     );
   }
 
   currentTaskType(): string {
     return (
-      this.taskTypes.find((el) => el.id == this.issue.typeId)?.name ?? 'issue'
+      this.taskTypes?.find((el) => el.id == this.issue.typeId)?.name ?? 'issue'
     );
   }
 

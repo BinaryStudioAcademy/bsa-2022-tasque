@@ -58,15 +58,11 @@ export class BacklogComponent implements OnInit {
   public filterIssue: IssueSort;
 
   public tasks: TaskModel[] = [];
-  public taskState: TaskState[] = [];
-  public taskType: TaskType[] = [];
 
   constructor(
     public boardService: BoardService,
     public sprintService: SprintService,
     public taskService: TaskService,
-    public taskTypeService: TaskTypeService,
-    public taskStateService: TaskStateService,
     public currentUserService: GetCurrentUserService,
     private toastrService: ToastrService,
   ) {}
@@ -76,8 +72,6 @@ export class BacklogComponent implements OnInit {
       this.currentUser = user as UserModel;
       this.getUserBoards();
       this.getSprints();
-      this.getTasksState();
-      this.getTasksType();
     });
   }
 
@@ -108,28 +102,6 @@ export class BacklogComponent implements OnInit {
           this.sprints = result.body.sort(
             (a, b) => (a.order ?? 0) - (b.order ?? 0),
           );
-        }
-      });
-  }
-
-  public getTasksState(): void {
-    this.taskStateService
-      .getAll()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((result) => {
-        if (result.body) {
-          this.taskState = result.body;
-        }
-      });
-  }
-
-  public getTasksType(): void {
-    this.taskTypeService
-      .getAll()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((result) => {
-        if (result.body) {
-          this.taskType = result.body;
         }
       });
   }
