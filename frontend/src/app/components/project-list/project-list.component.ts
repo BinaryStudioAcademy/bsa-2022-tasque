@@ -118,7 +118,7 @@ export class ProjectListComponent implements OnInit {
     this.getCurrentUserService.currentUser$.subscribe((user) => {
       if (!user) {
         return;
-      }
+    }
 
       this.currentUser = user;
     });
@@ -132,5 +132,4 @@ export class ProjectListComponent implements OnInit {
         }
       });
   }
-
 }
