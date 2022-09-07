@@ -30,4 +30,15 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         _service.Create(entity);
         return Ok(entity);
     }
+
+    [HttpGet("getByOrganizationId/{organizationId}")]
+    public IActionResult GetProjectsByOrganizationId(int organizationId)
+    {
+        var projects = _service.GetProjectsByOrganizationId(organizationId);
+        if (projects == null)
+            return NotFound();
+        return Ok(projects);
+    }
 }
+
+

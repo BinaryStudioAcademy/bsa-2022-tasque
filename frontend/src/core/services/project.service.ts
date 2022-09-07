@@ -22,4 +22,8 @@ export class ProjectService {
   getProjectById(id: number): Observable<HttpResponse<ProjectModel>> {
     return this.httpService.getFullRequest<ProjectModel>(this.routePrefix + '/getById/' + id);
   }
+
+  getProjectsByOrganizationId(id: number): Observable<HttpResponse<ProjectModel[]>> {
+    return this.httpService.getFullRequest<ProjectModel[]>(this.routePrefix + '/getByOrganizationId/' + id);
+  }
 }

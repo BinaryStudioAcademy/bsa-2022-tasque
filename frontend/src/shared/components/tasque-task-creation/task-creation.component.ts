@@ -7,6 +7,11 @@ import { Subject } from 'rxjs';
 import { EditorConfig } from 'src/core/settings/angular-editor-setting';
 import { TaskCreateViewModel } from 'src/core/models/task/task-create-view-model';
 import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
+import { TaskTemplateService } from 'src/core/services/task-template.service';
+import { TaskTemplate } from 'src/core/models/task/task-template';
+import { TaskType } from 'src/core/models/task/task-type';
+import { ProjectService } from 'src/core/services/project.service';
+import { ProjectModel } from 'src/core/models/project/project-model';
 
 @Component({
   selector: 'tasque-task-creation',
@@ -25,11 +30,18 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   public editorConfig = EditorConfig;
   public editorContent = '';
+  public issueTemplates: TaskTemplate[];
+
+  public selectedProjectId: number;
+  public selectedTaskTypeId: number;
+  public template: TaskTemplate;
+  public taskType: TaskType;
 
   @Input() public buttonText = '';
+  @Input() public organizationId = 1;
   @Input() public currentUser: number;
-  @Input() public projects: TasqueDropdownOption[];
-  @Input() public issueTypes: TasqueDropdownOption[];
+  @Input() public projects: TasqueDropdownOption[] = [];
+  @Input() public issueTypes: TasqueDropdownOption[] = [];
   @Input() public btnText = 'Task creation';
   @Input() public btnClass = 'btn stroke';
   @Input() public sidebarName = 'taskCreation';
@@ -88,6 +100,8 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   constructor(
     private sideBarService: SideBarService,
     private notification: NotificationService,
+    private taskTemplateService: TaskTemplateService,
+    private projectService: ProjectService
   ) {
     this.projectControl = new FormControl(this.task.project, [
       Validators.required,
@@ -112,6 +126,45 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       summaryControl: this.summaryControl,
       descriptionControl: this.descriptionControl,
     });
+    
+  this.projectService.getProjectsByOrganizationId(this.organizationId)
+    .subscribe((resp) => {
+      const projects = resp.body as ProjectModel[];
+      console.log(projects);
+      if(projects === null) {
+        return;
+      }
+      projects.forEach(p => this.projects.push({
+        title: p.name,
+        id: p.id
+      }));
+    });
+  }
+
+  setSelectedProjectId(id: number): void {
+    this.selectedProjectId = id;
+
+    this.taskTemplateService.getAllProjectTemplates(String(this.selectedProjectId)).subscribe((resp) => {
+      this.issueTemplates = resp.body as TaskTemplate[];
+    });
+
+    this.taskTemplateService.getAllProjectTaskTypes(this.selectedProjectId).subscribe((resp) => {
+      const types = resp.body as TaskType[];
+      types.forEach(t => this.issueTypes.push({
+        title: t.name,
+        id: t.id,
+      }));
+    });
+  }
+
+  setSelectedTaskType(id: number) {
+    this.selectedTaskTypeId = id;
+    
+    if(this.selectedProjectId === undefined) {
+      return;
+    }
+    this.template = this.issueTemplates
+      .find(t => t.projectId === this.selectedProjectId && t.typeId === this.taskType.id) as TaskTemplate;
   }
 
   ngOnDestroy(): void {
