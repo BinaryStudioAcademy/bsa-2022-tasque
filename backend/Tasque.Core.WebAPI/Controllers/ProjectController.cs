@@ -30,4 +30,15 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         _service.Create(entity);
         return Ok(entity);
     }
+
+    [HttpPost("invite")]
+    public async Task<IActionResult> InviteUser([FromBody] InviteUserDTO dto)
+    {
+        var invited = await _service.InviteUser(dto);
+        if (invited)
+        {
+            return Ok();
+        }
+        return BadRequest("User was not found or has not confirmed its account yet");
+    }
 }

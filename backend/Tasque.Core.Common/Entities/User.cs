@@ -34,6 +34,7 @@ public class User : BaseEntity
     public virtual ICollection<UserOrganizationRole> SystemRoles { get; set; }
     public virtual ICollection<Organization> ParticipatedOrganization { get; set; }
     public virtual ICollection<Organization> OwnedOrganization { get; set; }
+    public virtual ICollection<ProjectInvitation> Invitations { get; set; }
 }
 
 public class UserValidator : AbstractValidator<User>

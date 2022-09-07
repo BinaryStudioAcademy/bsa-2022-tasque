@@ -19,6 +19,8 @@ public class Project : BaseEntity
     public int OrganizationId { get; set; }
     public Organization Organization { get; set; } = null!;
 
+    public virtual ICollection<ProjectInvitation> Invitations { get; set; }
+
     public virtual ICollection<User> Users { get; set; }
     public virtual ICollection<UserProjectRole> UserRoles { get; set; }
     public virtual ICollection<Sprint> Sprints { get; set; }
