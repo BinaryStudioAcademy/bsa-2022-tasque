@@ -5,6 +5,7 @@ export interface BoardModel {
     id: number;
     projectId: number;
     name: string;
+    projectName: string;
     users: UserModel[];
     columns: BoardColumnModel[];
 }

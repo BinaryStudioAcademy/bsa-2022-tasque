@@ -11,6 +11,7 @@ import { BoardModel } from 'src/core/models/board/board-model';
 import { ActivatedRoute } from '@angular/router';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
+import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 
 @Component({
   selector: 'tasque-board',
@@ -29,10 +30,27 @@ export class TasqueBoardComponent implements OnInit {
   private newColumn: BoardColumnModel;
   private projectId: number;
 
-  public board: BoardModel = { projectId: 0, id: 0, name: '', users: [], columns: [] };
+  public board: BoardModel = { projectId: 0, id: 0, name: '', projectName: '', users: [], columns: [] };
   user: UserModel;
   public hasTasks = false;
   public searchParameter = '';
+
+  public projectOptions: TasqueDropdownOption[] = [];
+  public issueTypes: TasqueDropdownOption[] = [ // TODO: Here will be all project issue types
+  {
+    id: 3,
+    color: 'red',
+    title: 'Bug'
+  },{
+    id: 1,
+    color: 'blue',
+    title: 'Task'
+  },{
+    id: 2,
+    color: 'green',
+    title: 'Story'
+  },
+];
 
   constructor(formBuilder: FormBuilder,
     private route: ActivatedRoute, 
@@ -59,6 +77,7 @@ export class TasqueBoardComponent implements OnInit {
         if (resp.ok && resp.body != null) {
           this.board = resp.body;
           this.hasTasks = this.checkIfHasTasks();
+          this.fillOptions();
         } else {
           this.notificationService.error('Something went wrong');
         }
@@ -151,5 +170,12 @@ export class TasqueBoardComponent implements OnInit {
       this.selectedUserId = event.id;
     }
     this.filterTasks();
+  }
+
+  fillOptions(): void {
+    this.projectOptions.push({
+      title: this.board.projectName,
+      id: this.projectId,
+    } as TasqueDropdownOption);
   }
 }

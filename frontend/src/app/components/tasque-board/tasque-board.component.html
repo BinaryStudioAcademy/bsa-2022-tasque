@@ -1,8 +1,8 @@
 <div class="board">
     <div class="board-info">
       <div class="board-title">
-        <span class="project-name">Project / TestProject</span>
-        <span class="board-name">TP Board</span>
+        <span class="project-name">Project / {{board.projectName}}</span>
+        <span class="board-name">{{board.name}}</span>
       </div>
       <div class="board-tools">
         <img src="assets/board/lightning.svg">
@@ -39,7 +39,7 @@
               <span class="column-element-count"> ({{item.tasks.length}})</span>
             </div>
             <div class="column-tools">
-              <span>+</span>
+              <tasque-task-creation buttonText="+" btnClass="column-plus" [projects]="projectOptions" [issueTypes]="issueTypes"></tasque-task-creation>
               <img src="assets/board/column_menu.svg"> 
             </div>  
           </div>

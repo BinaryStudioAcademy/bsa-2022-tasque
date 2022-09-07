@@ -64,6 +64,7 @@ namespace Tasque.Core.BLL.Services
                 Id = board.Id,
                 ProjectId = projectId,
                 Name = board.Name,
+                ProjectName = project.Name,
                 Users = users,
                 Columns = columns.Select(c => new BoardColumnDto
                 {
