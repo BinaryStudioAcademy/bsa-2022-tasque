@@ -8,6 +8,7 @@ import { ProjectService } from 'src/core/services/project.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { CreateProjectService } from 'src/core/services/create-project.service';
 
 @Component({
   selector: 'app-project-list',
@@ -28,13 +29,14 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   public itemsShow = this.projects;
   public unsubscribe$ = new Subject<void>();
 
-  constructor(public projectService: ProjectService, 
+  constructor(public projectService: ProjectService,
+    private createProjectService: CreateProjectService, 
     private currentOrganization: GetCurrentOrganizationService,
     private currentUserService: GetCurrentUserService) {
   }
 
   ngOnInit(): void {
-    this.projectService.getAllProjectsOfThisOrganization(this.currentOrganization.currentOrganizationId)
+    this.projectService.getAllProjectsOfThisOrganization(this.currentOrganizationId)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((data) => {
       if(data.body) {
@@ -43,11 +45,8 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.currentUserService.currentUser
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((res) => {
-      this.currentUser = res as UserModel;
-    });
+    this.subscribeToCurrentUser();
+    this.subscribeToCurrentOrganization();
   }
 
   ngOnDestroy(): void {
@@ -67,18 +66,17 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToCurrentOrganization(): void {
-    this.getCurrentOrganizationService.currentOrganizationId$.subscribe(
+    this.currentOrganization.currentOrganizationId$.subscribe(
       (result) => {
         this.currentOrganizationId = result;
       });
   }
 
   public subscribeToCurrentUser(): void {
-    this.getCurrentUserService.currentUser$.subscribe((user) => {
+    this.currentUserService.currentUser$.subscribe((user) => {
       if (!user) {
         return;
     }
-
       this.currentUser = user;
     });
   }
