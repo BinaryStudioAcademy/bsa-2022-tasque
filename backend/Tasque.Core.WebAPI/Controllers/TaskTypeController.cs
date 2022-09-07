@@ -7,12 +7,14 @@ using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/taskType")]
     [ApiController]
     public class TaskTypeController : EntityController<TaskType, TaskTypeDto, TaskTypeService>
     {
+        private readonly TaskTypeService _service;
         public TaskTypeController(TaskTypeService service, CurrentUserParameters currentUser) : base(service, currentUser)
         {
+            _service = service;
         }
 
         [HttpGet("getAllByProjectId/{projectId}")]
@@ -20,5 +22,12 @@ namespace Tasque.Core.WebAPI.Controllers
         {
             throw new NotImplementedException();
         }
+
+        [HttpGet("getAll")]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _service.GetAll());
+        }
+
     }
 }

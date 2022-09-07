@@ -17,6 +17,7 @@ import {
 import { BacklogService } from 'src/core/services/backlog.service';
 import { takeUntil } from 'rxjs/operators';
 import { TaskModelDto } from 'src/core/models/task/task-model-dto';
+import { UserRole } from 'src/core/models/user/user-roles';
 
 @Component({
   selector: 'app-backlog-content',

@@ -24,6 +24,8 @@ import { TaskType } from 'src/core/models/task/task-type';
 import { SpinnerService } from 'src/core/services/spinner.service';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectModel } from 'src/core/models/project/project-model';
+import { TaskTypeService } from 'src/core/services/task-type.service';
+import { TaskStateService } from 'src/core/services/task-state.service';
 
 @Component({
   selector: 'app-backlog',
@@ -62,6 +64,8 @@ export class BacklogComponent implements OnInit {
     public boardService: BoardService,
     public sprintService: SprintService,
     public taskService: TaskService,
+    public taskTypeService: TaskTypeService,
+    public taskStateService: TaskStateService,
     public currentUserService: GetCurrentUserService,
     private toastrService: ToastrService,
   ) {}
@@ -108,8 +112,8 @@ export class BacklogComponent implements OnInit {
   }
 
   public getTasksState(): void {
-    this.taskService
-      .getTasksState()
+    this.taskStateService
+      .getAll()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
@@ -119,8 +123,8 @@ export class BacklogComponent implements OnInit {
   }
 
   public getTasksType(): void {
-    this.taskService
-      .getTasksType()
+    this.taskTypeService
+      .getAll()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {

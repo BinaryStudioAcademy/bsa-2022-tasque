@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { UserModel } from 'src/core/models/user/user-model';
-import { CreateOrganizationDialogComponent } from '../create-organization/create-organization-dialog/create-organization-dialog.component';
-import { takeUntil } from 'rxjs/operators';
 import {
   faMagnifyingGlass,
   faMessage,

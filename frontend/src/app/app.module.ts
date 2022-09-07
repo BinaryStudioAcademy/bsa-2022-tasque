@@ -35,8 +35,6 @@ import { SprintComponent } from './components/backlog/sprint/sprint.component';
 import { IssueComponent } from './components/backlog/sprint/issue/issue.component';
 import { BacklogContentComponent } from './components/backlog-content/backlog-content.component';
 import { BacklogComponent } from './components/backlog/backlog.component';
-import { SprintComponent } from './components/backlog/sprint/sprint.component';
-import { IssueComponent } from './components/backlog/sprint/issue/issue.component';
 
 @NgModule({
   declarations: [

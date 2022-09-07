@@ -8,13 +8,20 @@ using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/taskState")]
     [ApiController]
     public class TaskStateController : EntityController<TaskState, TaskStateDto, TaskStateService>
     {
+        private readonly TaskStateService _service;
         public TaskStateController(TaskStateService service, CurrentUserParameters currentUser) : base(service, currentUser)
         {
+            _service = service;
+        }
 
+        [HttpGet("getAll")]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _service.GetAll());
         }
     }
 }

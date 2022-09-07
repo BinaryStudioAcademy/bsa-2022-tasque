@@ -50,16 +50,18 @@ namespace Tasque.Core.WebAPI.Controllers
             return NoContent();
         }
 
-                [HttpGet("getTasksState")]
+        [HttpGet("getTasksState")]
         public async Task<IActionResult> GetTasksState()
         {
-            return Ok(await _service.GetTasksState());
+            return Ok();
+         //   return Ok(await _taskService.GetTasksState());
         }
 
         [HttpGet("getTasksType")]
         public async Task<IActionResult> GetTasksType()
         {
-            return Ok(await _service.GetTasksType());
+            return Ok();
+            //   return Ok(await _taskService.GetTasksType());
         }
     }
 }
