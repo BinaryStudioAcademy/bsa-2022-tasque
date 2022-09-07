@@ -39,4 +39,5 @@ export class OrganizationListItemComponent implements OnInit, OnChanges {
     this.router.navigate(['projects'], { replaceUrl: true });
     window.scroll(0, 0);
   }
+  
 }
