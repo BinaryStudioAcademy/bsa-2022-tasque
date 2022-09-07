@@ -25,8 +25,9 @@ export class OrganizationListItemComponent implements OnInit, OnChanges {
   ngOnInit(): void { 
     if(this.currentUser === undefined){
       this.role = 0;
+    } else {
+      this.role = this.currentUser?.organizationRoles?.find((m) => m.organizationId === this.organization.id)?.role as UserRole;
     }
-    this.role = this.currentUser?.organizationRoles?.find((m) => m.organizationId === this.organization.id)?.role as UserRole;
   }
 
   ngOnChanges(): void {
