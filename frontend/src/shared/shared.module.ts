@@ -29,6 +29,8 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
 import { SelectUsersComponent } from './components/select-users/select-users.component';
 import { MenuDropdownComponent } from './components/tasque-menu-dropdown/menu-dropdown.component';
 import { TasqueOptionComponent } from './components/tasque-menu-dropdown/tasque-option/tasque-option.component';
+import { CreateOrganizationDialogComponent } from './components/create-organization-dialog/create-organization-dialog.component';
+import { CreateProjectDialogComponent } from './components/create-project-dialog/create-project-dialog.component';
 
 @NgModule({
   imports: [
@@ -65,6 +67,8 @@ import { TasqueOptionComponent } from './components/tasque-menu-dropdown/tasque-
     SelectUsersComponent,
     MenuDropdownComponent,
     TasqueOptionComponent,
+    CreateOrganizationDialogComponent,
+    CreateProjectDialogComponent,
   ],
   exports: [
     CommonModule,
@@ -97,7 +101,9 @@ import { TasqueOptionComponent } from './components/tasque-menu-dropdown/tasque-
     NotFoundPageComponent,
     SelectUsersComponent,
     MenuDropdownComponent,
+    CreateOrganizationDialogComponent,
+    CreateProjectDialogComponent,
   ],
   providers: [SideBarService],
 })
-export class SharedModule {}
+export class SharedModule { }

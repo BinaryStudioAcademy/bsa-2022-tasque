@@ -1,12 +1,12 @@
 ﻿import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ProjectService } from '../../../../core/services/project.service';
-import { NewProjectModel } from '../../../../core/models/project/new-project-model';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
-import { NewProjectCredentialsModel } from '../../../../core/models/project/new-project-credentials.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from 'src/core/services/notification.service';
+import { NewProjectCredentialsModel } from 'src/core/models/project/new-project-credentials.model';
+import { NewProjectModel } from 'src/core/models/project/new-project-model';
+import { ProjectService } from 'src/core/services/project.service';
 
 @Component({
   selector: 'app-create-project-dialog',

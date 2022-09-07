@@ -14,10 +14,9 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
 @Component({
   selector: 'tasque-board',
   templateUrl: './tasque-board.component.html',
-  styleUrls: ['./tasque-board.component.sass']
+  styleUrls: ['./tasque-board.component.sass'],
 })
 export class TasqueBoardComponent implements OnInit {
-
   public searchIcon = faMagnifyingGlass;
   public plusIcon = faPlus;
 
@@ -36,12 +35,12 @@ export class TasqueBoardComponent implements OnInit {
     private boardService: BoardService, 
     private notificationService: NotificationService,
     private currentUserService: GetCurrentUserService) { 
-      this.currentUserService.currentUser.subscribe((res) => {
+      this.currentUserService.currentUser$.subscribe((res) => {
         this.user = res as UserModel;
       });
 
     this.createColumnForm = formBuilder.group({
-      'columnName': ['', [Validators.required]]
+      'columnName': ['', [Validators.required]],
     });
   }
 
@@ -87,7 +86,11 @@ export class TasqueBoardComponent implements OnInit {
 
   dragDrop(event: CdkDragDrop<TaskInfoModel[]>): void {
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
     } else {
       transferArrayItem(
         event.previousContainer.data,

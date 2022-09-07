@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from 'src/core/models/user/user-model';
+import { CreateProjectService } from 'src/core/services/create-project.service';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { ProjectModel } from '../../../core/models/project/project-model';
 
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
-  styleUrls: ['./project-list.component.sass']
+  styleUrls: ['./project-list.component.sass'],
 })
 export class ProjectListComponent implements OnInit {
   public currentUser: UserModel;
+  public currentOrganizationId: number;
 
   public inputSearch = '';
   public searchIcon = faMagnifyingGlass;
@@ -85,14 +88,13 @@ export class ProjectListComponent implements OnInit {
   public itemsShow = this.items;
 
   constructor(
-    private currentUserService: GetCurrentUserService
-  ) {
-    this.currentUserService.currentUser.subscribe((res) => {
-      this.currentUser = res as UserModel;
-    });
-  }
+    private createProjectService: CreateProjectService,
+    private getCurrentOrganizationService: GetCurrentOrganizationService,
+    private getCurrentUserService: GetCurrentUserService) { }
 
   ngOnInit(): void {
+    this.subscribeToCurrentUser();
+    this.subscribeToCurrentOrganization();
   }
 
   filterItems(): void {
@@ -100,10 +102,35 @@ export class ProjectListComponent implements OnInit {
       this.itemsShow = this.items.filter((item) => {
         return item.name.toLowerCase().includes(this.inputSearch.toLowerCase());
       });
-    }
-    else {
+    } else {
       this.itemsShow = this.items;
     }
+  }
+
+  private subscribeToCurrentOrganization(): void {
+    this.getCurrentOrganizationService.currentOrganizationId$.subscribe(
+      (result) => {
+        this.currentOrganizationId = result;
+      });
+  }
+
+  public subscribeToCurrentUser(): void {
+    this.getCurrentUserService.currentUser$.subscribe((user) => {
+      if (!user) {
+        return;
+      }
+
+      this.currentUser = user;
+    });
+  }
+
+  public openCreateProjectDialog(): void {
+    this.createProjectService.openDialog(this.currentOrganizationId)
+      .subscribe((result) => {
+        if (!result) {
+          return;
+        }
+      });
   }
 
 }

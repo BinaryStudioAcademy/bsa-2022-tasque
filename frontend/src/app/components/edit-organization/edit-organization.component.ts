@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
-import { NotificationService } from 'src/core/services/notification.service';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { SideBarService } from 'src/core/services/sidebar.service';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
@@ -11,6 +10,7 @@ import { BoardType, IBoard } from 'src/shared/components/select-users/Models';
 import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { UserRole } from 'src/core/models/user/user-roles';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-organization',
@@ -42,10 +42,10 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private notification: NotificationService,
+    private toastrService: ToastrService,
     private sideBarService: SideBarService,
     private organizationService: OrganizationService,
-    private getCurrentOrganizationService: GetCurrentOrganizationService
+    private getCurrentOrganizationService: GetCurrentOrganizationService,
   ) {
     this.organizationNameControl = new FormControl(this.organizationName, [
       Validators.required,
@@ -75,10 +75,10 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.status == 200 && result.body !== null) {
-          this.notification.success(
+          this.toastrService.success(
             'Organization data has been updated successfully',
           );
-          this.getCurrentOrganizationService.updateOrganizations(result.body);
+          this.getCurrentOrganizationService.updateOrganization(result.body);
           this.editOrganizationForm.reset();
           this.sideBarService.toggle(this.sidebarName);
         }
@@ -115,7 +115,15 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
   };
 
   public users: ProfileChangesDTO[] = [
-    { id: 1, name: 'Test user', email: 'test@test.test', avatarURL: 'null', organizationRoles: [{ organizationId: 1, userId: 2, role: UserRole.organizationMember }] },
+    {
+      id: 1,
+      name: 'Test user',
+      email: 'test@test.test',
+      avatarURL: 'null',
+      organizationRoles: [
+        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
+      ],
+    },
   ];
 
   public getUsers(): void {
@@ -135,7 +143,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.status == 200) {
-          this.notification.success('The user is added to the organization');
+          this.toastrService.success('The user is added to the organization');
         }
       });
   }
@@ -146,7 +154,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.status == 200) {
-          this.notification.success(
+          this.toastrService.success(
             'The user has been removed from the organization',
           );
         }
