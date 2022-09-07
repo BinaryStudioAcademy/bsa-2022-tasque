@@ -18,13 +18,9 @@ import {
 } from '@angular/cdk/drag-drop';
 import { IssueSort } from './models';
 import { TaskModel } from 'src/core/models/task/task-model';
-import { TaskState } from 'src/core/models/task/task-state';
 import { TaskService } from 'src/core/services/task.service';
-import { TaskType } from 'src/core/models/task/task-type';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectModel } from 'src/core/models/project/project-model';
-import { TaskTypeService } from 'src/core/services/task-type.service';
-import { TaskStateService } from 'src/core/services/task-state.service';
 
 @Component({
   selector: 'app-backlog',
