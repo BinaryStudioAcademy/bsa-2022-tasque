@@ -29,6 +29,7 @@ export class TasqueBoardComponent implements OnInit {
 
   public board: BoardModel = {projectId: 0, id: 0, name: "", columns: []};
   user: UserModel;
+  public hasTasks = false;
 
   constructor(formBuilder: FormBuilder,
     private route: ActivatedRoute, 
@@ -54,6 +55,7 @@ export class TasqueBoardComponent implements OnInit {
       (resp) => {
         if (resp.ok && resp.body != null) {
           this.board = resp.body;
+          this.hasTasks = this.checkIfHasTasks();
         } else {
           this.notificationService.error('Something went wrong');
         }
@@ -111,5 +113,14 @@ export class TasqueBoardComponent implements OnInit {
         this.notificationService.error(error);
       },
     );
+  }
+
+  checkIfHasTasks(): boolean {
+    for(let column of this.board.columns) {
+      if( column.tasks.length > 0) {
+        return true;
+      }
+    }
+    return false;
   }
 }

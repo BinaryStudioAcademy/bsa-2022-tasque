@@ -26,6 +26,9 @@
           <img src="assets/board/filter.svg">           
         </div>
       </div>
+      <div class="no-tasks" *ngIf="!hasTasks">
+        <h4>There are no tasks yet. You can create the first one.</h4>        
+      </div>
       <div class="board-columns" cdkDropListGroup>
         <div cdkDropList *ngFor="let item of board.columns" 
         (cdkDropListDropped)="dragDrop($event)" 
