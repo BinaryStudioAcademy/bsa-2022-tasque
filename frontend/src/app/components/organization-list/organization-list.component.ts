@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { UserModel } from 'src/core/models/user/user-model';
-import { takeUntil } from 'rxjs/operators';
 import { faMagnifyingGlass, faMessage } from '@fortawesome/free-solid-svg-icons';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { BaseComponent } from 'src/core/base/base.component';
