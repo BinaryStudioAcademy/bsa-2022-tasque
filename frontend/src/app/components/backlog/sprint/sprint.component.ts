@@ -14,7 +14,6 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
-import { TaskModel } from 'src/core/models/task/task-model';
 import { SprintService } from 'src/core/services/sprint.service';
 import { IssueSort } from '../models';
 import { UserModel } from 'src/core/models/user/user-model';

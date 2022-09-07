@@ -38,6 +38,8 @@ export class BacklogComponent implements OnInit {
 
   //get current user
   @Input() public currentUser: UserModel;
+
+  // TODO remove when real data is available
   //get current project
   @Input() public currentProject: ProjectModel = {
     id: 1,
