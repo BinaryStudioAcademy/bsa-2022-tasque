@@ -160,6 +160,17 @@ namespace Tasque.Core.BLL.Services
             return result;
         }
 
+        public async Task CommentTask(CommentTaskDTO dto)
+        {
+            var task = _dbContext.Tasks.Single(t => t.Id == dto.TaskId);
+            task.Comments.Add(dto.Comment);
+
+            _dbContext.Update(task);
+            await _dbContext.SaveChangesAsync();
+
+            // TODO send notification
+        }
+
         private void SaveChanges<T>(T entity)
             where T : BaseEntity
         {

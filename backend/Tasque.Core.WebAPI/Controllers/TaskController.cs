@@ -49,5 +49,12 @@ namespace Tasque.Core.WebAPI.Controllers
             await _taskService.DeleteTask(id);
             return NoContent();
         }
+
+        [HttpPost("comment")]
+        public async Task<IActionResult> CommentTask([FromBody] CommentTaskDTO dto)
+        {
+            await _taskService.CommentTask(dto);
+            return Ok();
+        }
     }
 }
