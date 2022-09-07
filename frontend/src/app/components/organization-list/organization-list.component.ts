@@ -4,7 +4,6 @@ import { OrganizationModel } from 'src/core/models/organization/organization-mod
 import { OrganizationService } from 'src/core/services/organization.service';
 import { UserModel } from 'src/core/models/user/user-model';
 import { CreateOrganizationDialogComponent } from '../create-organization/create-organization-dialog/create-organization-dialog.component';
-import { takeUntil } from 'rxjs/operators';
 import { faMagnifyingGlass, faMessage } from '@fortawesome/free-solid-svg-icons';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { BaseComponent } from 'src/core/base/base.component';
@@ -34,23 +33,13 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentUserService.currentUser.subscribe((user) => {
+    this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user as UserModel;
 
-      this.organizationService.getUserOrganizations(this.currentUser.id)
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe(
-          (result) => {
-            if (result.body) {
-              this.items = result.body;
-              this.itemsShow = this.items;
-            }
-          },
-          (error) => {
-            if (error.status === 400) {
-              this.items = this.itemsShow = [];
-            }
-          });
+    });
+
+    this.getCurrentOrganizationService.organizations$.subscribe((organizations) => {
+      this.items = this.itemsShow = organizations;
     });
   }
 
@@ -76,7 +65,7 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
 
       this.items.push(result);
       this.itemsShow = this.items;
-      this.getCurrentOrganizationService.updateOrganizations(result);
+      this.getCurrentOrganizationService.updateOrganization(result);
     }
     );
   }
