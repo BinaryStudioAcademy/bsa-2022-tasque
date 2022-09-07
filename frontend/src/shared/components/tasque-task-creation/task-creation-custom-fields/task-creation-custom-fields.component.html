@@ -2,13 +2,23 @@
     <label class="label">{{customField.name}}</label>
 </div>
 <div *ngIf="fieldType === 0" class="text-field">
-    <span>type 0</span>
+    <tasque-input
+        type="text"
+        class="input"
+        (outputValue)="textValue"
+        >
+    </tasque-input>
 </div>
 <div *ngIf="fieldType === 1" class="paragraph-field">
     <span>type 1</span>
 </div>
 <div *ngIf="fieldType === 2" class="number-field">
-    <span>type 2</span>
+    <tasque-input
+        type="number"
+        class="input"
+        (outputValue)="textValue"
+        >
+    </tasque-input>
 </div>
 <div *ngIf="fieldType === 3" class="label-field">
     <span>type 3</span>
@@ -17,11 +27,32 @@
     <span>type 4</span>
 </div>
 <div *ngIf="fieldType === 5" class="dropdown-field">
-    <span>type 5</span>
+    <tasque-menu-dropdown class="button-like dropdown-values" separator="Select a value |" style="color: black">
+        <tasque-sidebar 
+            btnText="Select a value" 
+            name="dropdown-choose"
+            btnClass="btn stroke">
+        </tasque-sidebar>
+        <tasque-option 
+            option 
+            *ngFor="let val of dropdownField.fields" 
+            (click)="selectDropdownValue(val)"
+        >{{val}}
+        </tasque-option>
+    </tasque-menu-dropdown>
+    <div class="dropdown-choosen">
+        <span style="margin: 0 15px 0 15px">Selected value:</span>
+        <span>{{dropdownValue}}</span>
+    </div>
 </div>
 <div *ngIf="fieldType === 6" class="checkbox-field">
     <span>type 6</span>
 </div>
 <div *ngIf="fieldType === 7" class="date-field">
-    <span>type 7</span>
+    <tasque-input
+        type="date"
+        class="input"
+        (outputValue)="textValue"
+        >
+    </tasque-input>
 </div>

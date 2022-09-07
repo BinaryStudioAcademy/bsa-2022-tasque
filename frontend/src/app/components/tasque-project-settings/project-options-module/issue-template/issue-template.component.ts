@@ -82,6 +82,12 @@ export class IssueTemplateComponent implements OnInit {
       this.notificationService.info('No templates found');
       this.templates = [];
     });
+
+    this.taskTemplateService
+    .getAllProjectTaskTypes(this.projectId)
+    .subscribe((resp) => {
+      this.types = resp.body as TaskType[];
+    });
   }
 
   dropCustomFields(event: CdkDragDrop<TaskCustomField[]>): void {
@@ -163,8 +169,16 @@ export class IssueTemplateComponent implements OnInit {
 
     this.taskTemplateService.getTemplateById(String(val)).subscribe((resp) => {
 
-      this.issueTemplate = resp.body as TaskTemplate;
-      this.customFields = this.issueTemplate.customFields;
+      if(resp.ok) {
+        this.issueTemplate = resp.body as TaskTemplate;
+        this.customFields = this.issueTemplate.customFields;
+      } else {
+        this.issueTemplate = {
+          title: this.type?.name as string,
+          projectId: this.projectId,
+          customFields: []
+        }
+      }
     }, 
     () => {
       this.issueTemplate = {

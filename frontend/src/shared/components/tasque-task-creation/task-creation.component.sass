@@ -9,33 +9,42 @@
     flex-direction: column
     background: colorscheme(gray-100)
     font-family: 'Nunito'
+    overflow: hidden auto
 
-.task-creation-header,
+.task-creation-header
+    height: 145px
+    background: colorscheme(white-100)
+    display: flex
+    align-items: center
+    justify-content: center
+
 .task-creation-footer
     height: 145px
     background: colorscheme(white-100)
     display: flex
     align-items: center
-    padding: 15px 0 15px 0
+    justify-content: center
 
 .task-creation-header
-    padding: 0 51px
+    margin-top: 25px
+    padding-bottom: 15px
+    justify-content: space-between
+    align-items: center
 
 .header-wrapper
     p,h5
         margin: 0px
 
 .task-creation-header-title
-    font-family: 'Nunito'
-    font-style: normal
-    font-weight: 700
-    font-size: 24px
-    line-height: 114%
+    margin: 0 0 0 15px  
 
 .task-creation-header-button
-    margin-left: auto
+    margin: 0 15px 0 0
+    display: flex
+    align-items: center
+    justify-content: space-between
     >.btn
-        margin-left: 15px
+        margin: 0 10px 0 10px
 
 .task-creation-footer-button
     padding: 0 51px
@@ -47,13 +56,30 @@
 .task-creation-body
     max-height: 100%
     flex-grow: 3
+    overflow: hidden auto
+
+::-webkit-scrollbar
+    background-color: colorscheme(gray-100)
+
+::-webkit-scrollbar-thumb
+    background-color: colorscheme(blue-100)
 
 .task-creation-body-wrapper
     padding: 0px 50px
 
 .input-wrapper
     width: 100%
-    padding: 15px 0 0px 0px
+    margin: 15px 0 15px 0
+    display: flex
+    align-items: center
+    label
+        margin-right: 16px !important
+        width: 100px !important
+        min-width: 100px
+        font-weight: 400
+        font-size: 14px !important
+        line-height: 19px !important
+        color: colorscheme(black-100)
 
 tasque-input
     ::ng-deep
