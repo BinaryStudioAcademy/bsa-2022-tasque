@@ -12,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
-  styleUrls: ['./project-list.component.sass']
+  styleUrls: ['./project-list.component.sass'],
 })
 export class ProjectListComponent implements OnInit, OnDestroy {
 
@@ -61,5 +61,4 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       this.itemsShow = this.projects;
     }
   }
-
 }

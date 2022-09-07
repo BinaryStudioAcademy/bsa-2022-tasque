@@ -42,7 +42,7 @@ export function getRolesAsArray(): TasqueDropdownOption[] {
       return {
         color: '',
         title: name,
-        id: BusinessRole[name as keyof typeof BusinessRole]
+        id: BusinessRole[name as keyof typeof BusinessRole],
       };
     });
 }

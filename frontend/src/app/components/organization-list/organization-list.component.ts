@@ -4,8 +4,10 @@ import { OrganizationModel } from 'src/core/models/organization/organization-mod
 import { OrganizationService } from 'src/core/services/organization.service';
 import { UserModel } from 'src/core/models/user/user-model';
 import { CreateOrganizationDialogComponent } from '../create-organization/create-organization-dialog/create-organization-dialog.component';
-import { takeUntil } from 'rxjs/operators';
-import { faMagnifyingGlass, faMessage } from '@fortawesome/free-solid-svg-icons';
+import {
+  faMagnifyingGlass,
+  faMessage,
+} from '@fortawesome/free-solid-svg-icons';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { BaseComponent } from 'src/core/base/base.component';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
@@ -13,7 +15,7 @@ import { GetCurrentOrganizationService } from 'src/core/services/get-current-org
 @Component({
   selector: 'app-organization-list',
   templateUrl: './organization-list.component.html',
-  styleUrls: ['./organization-list.component.sass']
+  styleUrls: ['./organization-list.component.sass'],
 })
 export class OrganizationListComponent extends BaseComponent implements OnInit {
   public currentUser: UserModel;
@@ -29,29 +31,21 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
     private currentUserService: GetCurrentUserService,
     private matDialog: MatDialog,
     private organizationService: OrganizationService,
-    private getCurrentOrganizationService: GetCurrentOrganizationService) {
+    private getCurrentOrganizationService: GetCurrentOrganizationService,
+  ) {
     super();
   }
 
   ngOnInit(): void {
-    this.currentUserService.currentUser.subscribe((user) => {
+    this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user as UserModel;
-
-      this.organizationService.getUserOrganizations(this.currentUser.id)
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe(
-          (result) => {
-            if (result.body) {
-              this.items = result.body;
-              this.itemsShow = this.items;
-            }
-          },
-          (error) => {
-            if (error.status === 400) {
-              this.items = this.itemsShow = [];
-            }
-          });
     });
+
+    this.getCurrentOrganizationService.organizations$.subscribe(
+      (organizations) => {
+        this.items = this.itemsShow = organizations;
+      },
+    );
   }
 
   filterItems(): void {
@@ -59,8 +53,7 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
       this.itemsShow = this.items.filter((item) => {
         return item.name.toLowerCase().includes(this.inputSearch.toLowerCase());
       });
-    }
-    else {
+    } else {
       this.itemsShow = this.items;
     }
   }
@@ -76,8 +69,7 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
 
       this.items.push(result);
       this.itemsShow = this.items;
-      this.getCurrentOrganizationService.updateOrganizations(result);
-    }
-    );
+      this.getCurrentOrganizationService.updateOrganization(result);
+    });
   }
 }
