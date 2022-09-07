@@ -12,12 +12,9 @@ export class TaskService {
 
   constructor(public httpService: HttpService) {}
 
-  updateTask(
-    taskId: number,
-    task: TaskModelDto,
-  ): Observable<HttpResponse<TaskModelDto>> {
+  updateTask(task: TaskModelDto): Observable<HttpResponse<TaskModelDto>> {
     return this.httpService.putFullRequest<TaskModelDto>(
-      this.routePrefix + `/update/${taskId}`,
+      this.routePrefix,
       task,
     );
   }

@@ -11,6 +11,8 @@ import { TaskType } from 'src/core/models/task/task-type';
 import { TaskState } from 'src/core/models/task/task-state';
 import { faFlag } from '@fortawesome/free-solid-svg-icons';
 import { TaskModelDto } from 'src/core/models/task/task-model-dto';
+import { TaskService } from 'src/core/services/task.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-issue',
@@ -84,7 +86,9 @@ export class IssueComponent implements OnInit {
 
   constructor(
     public userServise: UserService,
+    public taskServise: TaskService,
     public sprintService: SprintService,
+    public toastrService: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -149,5 +153,18 @@ export class IssueComponent implements OnInit {
     return (
       this.taskTypes.find((el) => el.id == this.issue.typeId)?.name ?? 'issue'
     );
+  }
+
+  updateTaskState(stateId: number): void {
+    this.issue.stateId = stateId;
+
+    this.taskServise
+      .updateTask(this.issue)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.toastrService.success('Task status updated');
+        }
+      });
   }
 }

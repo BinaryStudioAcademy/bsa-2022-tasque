@@ -6,7 +6,7 @@ using Tasque.Core.Common.DTO.Task;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/task")]
     [ApiController]
     [Authorize]
     public class TaskController : ControllerBase

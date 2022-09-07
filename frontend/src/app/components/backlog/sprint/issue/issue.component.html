@@ -20,6 +20,7 @@
   </div>
   <tasque-dropdown
     [options]="taskStateToDropdownArray(taskStates)"
+    (onSelect)="updateTaskState($event)"
     [placeholder]="currentTaskState()"
     width="150px"
   ></tasque-dropdown>

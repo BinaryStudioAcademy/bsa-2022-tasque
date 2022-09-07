@@ -28,7 +28,8 @@
         <h4 class="sprint-name">{{ sprint.name }}</h4>
         <div class="sprint-date">
           <p class="startAt">{{ sprint.startAt | date: 'mediumDate' }}</p>
-          <p>-</p>
+          <p *ngIf="sprint.startAt">-</p>
+          <p *ngIf="!sprint.startAt">deadline:</p>
           <p class="endAt">{{ sprint.endAt | date: 'mediumDate' }}</p>
         </div>
         <div class="issues">
