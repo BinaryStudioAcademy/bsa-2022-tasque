@@ -6,14 +6,14 @@ using System.Text;
 
 namespace Tasque.Messaging
 {
-    public class MessagingService
+    public class MessagingService : IMessagingService
     {
         private readonly ConnectionFactory _factory;
-        public MessagingService(IConfiguration configuration)
+        public MessagingService(string hostName)
         {
             _factory = new ConnectionFactory()
             {
-                HostName = configuration["ConnectionStrings:RabbitMQ"]
+                HostName = hostName
             };
         }
 
