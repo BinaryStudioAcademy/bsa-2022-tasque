@@ -14,7 +14,7 @@ export class TaskTypeService {
 
   getAll(): Observable<HttpResponse<TaskType[]>> {
     return this.httpService.getFullRequest<TaskType[]>(
-      this.routePrefix + `/getAll`,
+      this.routePrefix + '/getAll',
     );
   }
 }

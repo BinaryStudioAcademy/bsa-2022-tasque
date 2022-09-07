@@ -139,7 +139,7 @@ export class SprintComponent implements OnInit, OnChanges {
   }
 
   //Move the task from the backlog to the sprint, update the task in the database
-  drop(event: CdkDragDrop<TaskModelDto[]>) {
+  drop(event: CdkDragDrop<TaskModelDto[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,

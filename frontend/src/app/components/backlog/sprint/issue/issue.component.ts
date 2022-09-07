@@ -3,7 +3,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UserService } from 'src/app/user/services/user.service';
 import { TaskEstimateUpdate } from 'src/core/models/task/task-estimate-update';
-import { TaskModel } from 'src/core/models/task/task-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { SprintService } from 'src/core/services/sprint.service';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';

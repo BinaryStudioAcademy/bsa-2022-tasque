@@ -21,7 +21,6 @@ import { TaskModel } from 'src/core/models/task/task-model';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskService } from 'src/core/services/task.service';
 import { TaskType } from 'src/core/models/task/task-type';
-import { SpinnerService } from 'src/core/services/spinner.service';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { TaskTypeService } from 'src/core/services/task-type.service';
@@ -142,7 +141,7 @@ export class BacklogComponent implements OnInit {
   //Change sprint priority,
   //show user updated sprint order and update DB
   updateSprintPosition(sprint: SprintModel, isUp: boolean): void {
-    let currentSprintPosition = sprint.order || 0;
+    const currentSprintPosition = sprint.order || 0;
 
     let sprintsSort: SprintModel[];
 
@@ -156,7 +155,7 @@ export class BacklogComponent implements OnInit {
         .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     }
 
-    let nextSprint = sprintsSort.length > 0 ? sprintsSort[0] : sprint;
+    const nextSprint = sprintsSort.length > 0 ? sprintsSort[0] : sprint;
 
     sprint.order = nextSprint.order ?? 0;
     nextSprint.order = currentSprintPosition;
@@ -180,7 +179,7 @@ export class BacklogComponent implements OnInit {
   }
 
   //Drag a task from the backlog to a sprint
-  drop(event: CdkDragDrop<TaskModel[]>) {
+  drop(event: CdkDragDrop<TaskModel[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,

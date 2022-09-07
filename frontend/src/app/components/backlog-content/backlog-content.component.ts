@@ -218,7 +218,7 @@ export class BacklogContentComponent implements OnInit {
     moveItemInArray(this.sprints, event.previousIndex, event.currentIndex);
   }
 
-  drop(event: CdkDragDrop<TaskModelDto[]>) {
+  drop(event: CdkDragDrop<TaskModelDto[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,

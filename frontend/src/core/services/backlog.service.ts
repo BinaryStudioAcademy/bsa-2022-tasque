@@ -1,7 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TaskModel } from '../models/task/task-model';
 import { TaskModelDto } from '../models/task/task-model-dto';
 import { HttpService } from './http.service';
 

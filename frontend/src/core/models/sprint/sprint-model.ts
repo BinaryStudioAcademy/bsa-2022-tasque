@@ -1,4 +1,3 @@
-import { TaskModel } from 'src/core/models/task/task-model';
 import { TaskModelDto } from '../task/task-model-dto';
 
 export interface SprintModel {

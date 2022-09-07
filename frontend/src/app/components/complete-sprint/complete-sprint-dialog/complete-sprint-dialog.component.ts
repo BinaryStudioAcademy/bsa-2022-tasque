@@ -1,6 +1,5 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { SprintInfo } from 'src/core/models/sprint/sprint-info';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import { SprintService } from 'src/core/services/sprint.service';
 
