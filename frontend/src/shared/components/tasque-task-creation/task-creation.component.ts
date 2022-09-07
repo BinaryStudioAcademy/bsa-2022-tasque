@@ -13,6 +13,7 @@ import { TaskType } from 'src/core/models/task/task-type';
 import { ProjectService } from 'src/core/services/project.service';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { TaskCustomField } from 'src/core/models/task/task-custom-field';
+import { UserModel } from 'src/core/models/user/user-model';
 
 @Component({
   selector: 'tasque-task-creation',
@@ -38,6 +39,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   public template: TaskTemplate;
   public taskType: TaskType;
   public customFields: TaskCustomField[];
+  public projectUsers: UserModel[];
 
   @Input() public buttonText = '';
   @Input() public organizationId = 1;
@@ -98,7 +100,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   constructor(
     private sideBarService: SideBarService,
-    private notification: NotificationService,
+    private notificationService: NotificationService,
     private taskTemplateService: TaskTemplateService,
     private projectService: ProjectService
   ) {
@@ -153,6 +155,14 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
         id: t.id,
       }));
     });
+
+    this.projectService.getProjectParticipants(this.selectedProjectId).subscribe((resp) => {
+      if(resp.ok) {
+        this.projectUsers = resp.body as UserModel[];
+      } else {
+        this.notificationService.error('Ensure that there is at least one participant of selected project' ,'Users not found');
+      }
+    })
   }
 
   setSelectedTaskType(id: number) {
@@ -178,8 +188,8 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   public submitForm(): void {
     if (!this.taskCreateForm.valid || !this.taskCreateForm.dirty) {
       if (!this.summaryControl.valid)
-        this.notification.error('Issue name is required');
-      else this.notification.error('Invalid values');
+        this.notificationService.error('Issue name is required');
+      else this.notificationService.error('Invalid values');
       return;
     }
 

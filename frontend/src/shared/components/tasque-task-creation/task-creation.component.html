@@ -13,6 +13,10 @@
     </div>
     <div class="task-creation-body">
       <div class="task-creation-body-wrapper">
+        <div class="body-title">
+          <span>Basic info</span>
+        </div>
+        <hr>
         <form [formGroup]="taskCreateForm">
           <div class="input-wrapper">
             <label class="label">Project</label>
@@ -59,13 +63,17 @@
           <span class="error" *ngIf="!descriptionControl.valid">{{
             editorErrorMessage
           }}</span>
-          <div *ngFor="let field of customFields" class="custom-field">
-            <app-task-creation-custom-fields [customField]="field"></app-task-creation-custom-fields>
+          <div class="body-title" *ngIf="customFields">
+            <span>Additional fields</span>
           </div>
-          <!-- <div class="button-wrapper">
+          <hr>
+          <div *ngFor="let field of customFields" class="custom-field">
+            <app-task-creation-custom-fields [customField]="field" [projectUsers]="projectUsers"></app-task-creation-custom-fields>
+          </div>
+          <div class="button-wrapper">
             <tasque-button class="btn stroke violet-stroke" text="+ Add issues">
             </tasque-button>
-          </div> -->
+          </div>
         </form>
       </div>
     </div>

@@ -10,7 +10,13 @@
     </tasque-input>
 </div>
 <div *ngIf="fieldType === 1" class="paragraph-field">
-    <span>type 1</span>
+    <angular-editor
+      class="editor-conteiner"
+      [(ngModel)]="editorContent"
+      [config]="editorConfig"
+      formControlName="descriptionControl"
+    >
+    </angular-editor>
 </div>
 <div *ngIf="fieldType === 2" class="number-field">
     <tasque-input
@@ -24,7 +30,14 @@
     <span>type 3</span>
 </div>
 <div *ngIf="fieldType === 4" class="user-field">
-    <span>type 4</span>
+    <tasque-team-select *ngIf="projectUsers.length > 0"
+        [avatars]="projectUsers"
+        (selectedUser)="selectedUser"
+    >
+    </tasque-team-select>
+    <div *ngIf="projectUsers.length === 0">
+        <span style="color: black">Participants not found</span>
+    </div>
 </div>
 <div *ngIf="fieldType === 5" class="dropdown-field">
     <tasque-menu-dropdown class="button-like dropdown-values" separator="Select a value |" style="color: black">
@@ -46,7 +59,11 @@
     </div>
 </div>
 <div *ngIf="fieldType === 6" class="checkbox-field">
-    <span>type 6</span>
+    <tasque-checkbox
+        [text]="customField.name"
+        (stateChanged)="checkboxValue"
+    >
+    </tasque-checkbox>
 </div>
 <div *ngIf="fieldType === 7" class="date-field">
     <tasque-input

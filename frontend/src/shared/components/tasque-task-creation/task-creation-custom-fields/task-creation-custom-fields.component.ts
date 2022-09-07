@@ -3,6 +3,7 @@ import { DropdownField } from 'src/core/models/task/dropdown-field';
 import { LabelField } from 'src/core/models/task/label-field';
 import { TaskCustomField } from 'src/core/models/task/task-custom-field';
 import { TaskFieldType } from 'src/core/models/task/task-field-types';
+import { UserModel } from 'src/core/models/user/user-model';
 import { EditorConfig } from 'src/core/settings/angular-editor-setting';
 import { TasqueDropdownOption } from '../../tasque-dropdown/dropdown.component';
 
@@ -16,12 +17,17 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
   constructor() { }
 
   @Input() customField: TaskCustomField;
+  @Input() projectUsers: UserModel[];
   public fieldType: TaskFieldType;
   public dropdownField: DropdownField;
   public dropdownOptions: TasqueDropdownOption[] = [];
   public labelField: LabelField[];
   public textValue: string;
   public dropdownValue: string = '';
+  public editorConfig = EditorConfig;
+  public editorContent = '';
+  public checkboxValue: boolean;
+  public selectedUser: UserModel;
 
   
   ngOnInit(): void {
