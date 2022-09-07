@@ -59,11 +59,15 @@
     </div>
 </div>
 <div *ngIf="fieldType === 6" class="checkbox-field">
-    <tasque-checkbox
-        [text]="customField.name"
-        (stateChanged)="checkboxValue"
-    >
-    </tasque-checkbox>
+    <div 
+        class="checkbox-item"
+        *ngFor="let chk of checkboxField.checkList">
+        <tasque-checkbox 
+            [text]="chk"
+            (stateChanged)="setCheckboxChanged($event)"
+        >
+        </tasque-checkbox>
+    </div>
 </div>
 <div *ngIf="fieldType === 7" class="date-field">
     <tasque-input

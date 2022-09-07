@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { CheckboxField } from 'src/core/models/task/checkbox-field';
 import { DropdownField } from 'src/core/models/task/dropdown-field';
 import { LabelField } from 'src/core/models/task/label-field';
 import { TaskCustomField } from 'src/core/models/task/task-custom-field';
@@ -20,6 +21,7 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
   @Input() projectUsers: UserModel[];
   public fieldType: TaskFieldType;
   public dropdownField: DropdownField;
+  public checkboxField: CheckboxField;
   public dropdownOptions: TasqueDropdownOption[] = [];
   public labelField: LabelField[];
   public textValue: string;
@@ -38,6 +40,9 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
     if(this.fieldType === TaskFieldType.Label) {
       this.labelField = this.customField.labels as LabelField[];
     }
+    if(this.fieldType === TaskFieldType.CheckBox) {
+      this.checkboxField = this.customField.checkbox as CheckboxField;
+    }
     console.log(this.customField);
   }
 
@@ -47,6 +52,11 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
 
   selectLabelValue(label: LabelField): void {
     console.log(label);
+  }
+
+  setCheckboxChanged(val: boolean): void {
+    this.checkboxValue = val;
+    console.log(val);
   }
   
 }

@@ -1,3 +1,4 @@
+import { CheckboxField } from './checkbox-field';
 import { DropdownField } from './dropdown-field';
 import { LabelField } from './label-field';
 import { TaskFieldType } from './task-field-types';
@@ -9,4 +10,5 @@ export interface TaskCustomField {
 
     labels?: LabelField[],
     dropdown?: DropdownField,
+    checkbox?: CheckboxField,
 }

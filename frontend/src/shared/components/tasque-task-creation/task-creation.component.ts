@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { SideBarService } from 'src/core/services/sidebar.service';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -20,7 +20,7 @@ import { UserModel } from 'src/core/models/user/user-model';
   templateUrl: './task-creation.component.html',
   styleUrls: ['./task-creation.component.sass'],
 })
-export class TaskCreationComponent implements OnInit, OnDestroy, OnChanges {
+export class TaskCreationComponent implements OnInit, OnDestroy {
   faExpeditedssl = faEllipsisVertical;
 
   public task: TaskCreateViewModel = {};
@@ -102,7 +102,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy, OnChanges {
     private sideBarService: SideBarService,
     private notificationService: NotificationService,
     private taskTemplateService: TaskTemplateService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
   ) {
     this.projectControl = new FormControl(this.task.project, [
       Validators.required,
@@ -141,17 +141,12 @@ export class TaskCreationComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  ngOnChanges(): void {
-
-  }
-
   setSelectedProjectId(id: number): void {
     this.selectedProjectId = id;
     this.issueTemplates = [];
     this.projectUsers = [];
     this.issueTypes = [];
     this.customFields = [];
-
 
     this.taskTemplateService.getAllProjectTemplates(this.selectedProjectId).subscribe((resp) => {
       this.issueTemplates = resp.body as TaskTemplate[];

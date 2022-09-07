@@ -65,8 +65,8 @@
           }}</span>
           <div class="body-title" *ngIf="customFields">
             <span>Additional fields</span>
+            <hr>
           </div>
-          <hr>
           <div *ngFor="let field of customFields" class="custom-field">
             <app-task-creation-custom-fields [customField]="field" [projectUsers]="projectUsers"></app-task-creation-custom-fields>
           </div>

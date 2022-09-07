@@ -60,6 +60,7 @@ export class IssueTemplateComponent implements OnInit {
   public selectedId: number;
   public isLabel: TaskCustomField | undefined;
   public isDropdown: TaskCustomField | undefined;
+  public isCheckbox: TaskCustomField | undefined;
 
   ngOnInit(): void {
     this.taskTemplateService
@@ -202,17 +203,26 @@ export class IssueTemplateComponent implements OnInit {
 
   setIsLabel(val: TaskCustomField): void {
     this.isDropdown = undefined;
+    this.isCheckbox = undefined;
     this.isLabel = val;
   }
 
   setIsDropdown(val: TaskCustomField): void {
     this.isLabel = undefined;
+    this.isCheckbox = undefined;
     this.isDropdown = val;
+  }
+
+  setIsCheckbox(val: TaskCustomField): void {
+    this.isLabel = undefined;
+    this.isDropdown = undefined;
+    this.isCheckbox = val;
   }
 
   closeEdit(): void {
     this.isLabel = undefined;
     this.isDropdown = undefined;
+    this.isCheckbox = undefined;
   }
 
   setDropdownOptions(): void {
