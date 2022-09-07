@@ -64,8 +64,7 @@ export class TasqueBoardComponent implements OnInit {
 
   constructor(
     formBuilder: FormBuilder,
-    private currentUserService: GetCurrentUserService,
-  ) {
+    private currentUserService: GetCurrentUserService) {
     this.currentUserService.currentUser$.subscribe((res) => {
       this.user = res;
     });
@@ -75,7 +74,7 @@ export class TasqueBoardComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   OpenAddColumn(): void {
     this.isOpenColumnAddDialog = true;
