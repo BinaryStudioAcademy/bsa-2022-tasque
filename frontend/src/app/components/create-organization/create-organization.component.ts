@@ -21,16 +21,16 @@ export class CreateOrganizationComponent implements OnInit {
 
   constructor(
     public currentUserService: GetCurrentUserService,
-    public buttonComponent:ButtonComponent,
+    public buttonComponent: ButtonComponent,
     public matDialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.currentUserService.currentUser.subscribe((user) => {
+    this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user as UserModel;
     });
   }
 
-  openDialog():void {
+  openDialog(): void {
     const dialog = this.matDialog.open(CreateOrganizationDialogComponent, { data: this.currentUser });
     dialog.afterClosed().subscribe();
   }
