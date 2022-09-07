@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 import { UserModel } from 'src/core/models/user/user-model';
-import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Component({
   selector: 'app-project-list-item',
@@ -12,18 +11,12 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
 export class ProjectListItemComponent implements OnInit {
 
   @Input() public project: ProjectInfoModel;
+  @Input() public currentUser: UserModel;
 
-  public user: UserModel;
-
-  constructor(public router: Router, private currentUser: GetCurrentUserService) {
+  constructor(public router: Router) {
   }
 
   ngOnInit(): void {
-    this.currentUser.currentUser.subscribe((data) => {
-      if(data) {
-        this.user = data;
-      }
-    });
   }
 
   openProjectBoard(): void {
@@ -31,10 +24,10 @@ export class ProjectListItemComponent implements OnInit {
   }
 
   permissionToEdit(): boolean {
-    if(this.user.id === this.project.authorId) {
+    if(this.currentUser.id === this.project.authorId) {
       return true;
     }
-    if (this.project.users.every((x) => { x.id == this.user.id && x.role === 1; })) {
+    if (this.project.users.every((x) => { x.id == this.currentUser.id && x.role === 1; })) {
       return true;
     }
 

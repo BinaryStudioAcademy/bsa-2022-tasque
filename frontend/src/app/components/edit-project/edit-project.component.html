@@ -6,6 +6,12 @@
         <tasque-button class="btn icon" [icon]="faPenToSquare"> </tasque-button>
       </div>
       <div class="limiter"></div>
+      <div>
+        <div class="projectName-wrapper">
+          <div class="projectName" [textContent]="projectKey" (input)="projectKey = titleContent($event)" contenteditable="true" [formControl]="projectKeyControl" ngDefaultControl></div>
+          <tasque-button class="btn icon" [icon]="faPenToSquare"> </tasque-button>
+        </div>
+      </div>
     </div>
     <div class="select">
       <label>User managment</label>

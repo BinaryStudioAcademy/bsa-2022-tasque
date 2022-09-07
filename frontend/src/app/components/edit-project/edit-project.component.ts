@@ -19,6 +19,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
   @Input() project: ProjectInfoModel;
   
   public projectName = '';
+  public projectKey = '';
   public sidebarName = 'editProject';
 
   public board: IBoard;
@@ -28,6 +29,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
 
   public editProjectForm: FormGroup = new FormGroup({});
   public projectNameControl: FormControl;
+  public projectKeyControl: FormControl;
   public projectUsersControl: FormControl;
 
   get projectNameErrorMessage(): string {
@@ -41,6 +43,20 @@ export class EditProjectComponent implements OnInit, OnDestroy {
     return '';
   }
 
+  get projectKeyErrorMessage(): string {
+    const ctrl = this.projectNameControl;
+    if (ctrl.errors?.['minlength']) {
+      return 'Summary must be at least 2 characters';
+    }
+    if (ctrl.errors?.['required']) {
+      return 'Project name is required';
+    }
+    if (ctrl.errors?.['maxLength']) {
+      return 'The value cannot be greater than 5';
+    }
+    return '';
+  }
+
   constructor(private notification: NotificationService,
     private sideBarService: SideBarService,
     public projectService: ProjectService) {
@@ -48,10 +64,16 @@ export class EditProjectComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.minLength(2),
       ]);
+      this.projectKeyControl = new FormControl(this.projectKey, [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(5)
+      ]);
   }
 
   ngOnInit(): void {
     this.projectName = this.project.name;
+    this.projectKey = this.project.key;
     this.sidebarName += this.project.id;
 
     this.editProjectForm = new FormGroup({
@@ -73,8 +95,9 @@ export class EditProjectComponent implements OnInit, OnDestroy {
 
   public submitForm(): void {
     this.project.name = this.projectName;
+    this.project.key = this.projectKey;
 
-    this.projectService.editProject({ id: this.project.id, name: this.project.name })
+    this.projectService.editProject({ id: this.project.id, name: this.project.name, key: this.project.key })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if(result.status == 200 && result.body !== null) {
@@ -89,6 +112,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
 
   public clearForm(): void {
     this.projectName = this.project.name;
+    this.projectKey = this.project.key;
     this.editProjectForm.reset();
     this.sideBarService.toggle(this.sidebarName);
   }

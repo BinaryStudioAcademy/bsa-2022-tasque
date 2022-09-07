@@ -57,6 +57,7 @@ public class ProjectService : EntityCrudService<Project>
             throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
 
         project.Name = projectDto.Name;
+        project.Key = projectDto.Key;
         _db.Update(project);
         _db.SaveChanges();
 
