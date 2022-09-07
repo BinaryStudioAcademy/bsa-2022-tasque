@@ -9,7 +9,7 @@ import { ProjectService } from 'src/core/services/project.service';
 @Component({
   selector: 'app-tasque-project-settings',
   templateUrl: './tasque-project-settings.component.html',
-  styleUrls: ['./tasque-project-settings.component.sass']
+  styleUrls: ['./tasque-project-settings.component.sass'],
 })
 export class TasqueProjectSettingsComponent implements OnInit {
 
@@ -38,8 +38,7 @@ export class TasqueProjectSettingsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   moveToIssueTemplates(): void {
     this.router.navigate(['project/issue-template']);

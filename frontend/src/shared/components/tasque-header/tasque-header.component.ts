@@ -11,10 +11,9 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
 @Component({
   selector: 'tasque-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.sass']
+  styleUrls: ['./header.component.sass'],
 })
 export class HeaderComponent implements OnInit {
-
   public searchIcon = faMagnifyingGlass;
   public currentUser: UserModel;
   public currentOrganizationId: number;

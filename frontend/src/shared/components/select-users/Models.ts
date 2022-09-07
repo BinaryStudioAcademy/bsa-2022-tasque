@@ -17,7 +17,7 @@ export interface EnumToArrayElement {
 }
 
 export interface IUserCard {
-  id: number,
+  id: number;
   email: string;
   username: string;
   profileURL: string;
@@ -42,7 +42,7 @@ export function getRolesAsArray(): TasqueDropdownOption[] {
       return {
         color: '',
         title: name,
-        id: BusinessRole[name as keyof typeof BusinessRole]
+        id: BusinessRole[name as keyof typeof BusinessRole],
       };
     });
 }

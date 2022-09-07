@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UserModel } from 'src/core/models/user/user-model';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { UserRole } from 'src/core/models/user/user-roles';
@@ -6,15 +6,17 @@ import { UserRole } from 'src/core/models/user/user-roles';
 @Component({
   selector: 'tasque-team-select',
   templateUrl: './tasque-team-select.component.html',
-  styleUrls: ['./tasque-team-select.component.sass']
+  styleUrls: ['./tasque-team-select.component.sass'],
 })
 export class TasqueTeamSelectComponent implements OnInit {
-
   public inputSearch = '';
+  //Notify the parent component when the avatar is clicked and pass the selected user to it
+  @Output() selectedUser = new EventEmitter<UserModel>();
   public searchIcon = faMagnifyingGlass;
   public showPopUp = false;
 
-  public avatars: UserModel[] = [ // TODO remove when integrated in component with data
+  @Input() public avatars: UserModel[] = [
+    // TODO remove when integrated in component with data
     {
       id: 1,
       email: 'petroporoshenko@gmail.com',
@@ -77,24 +79,27 @@ export class TasqueTeamSelectComponent implements OnInit {
 
   public profileColors: string[] = [];
 
-  constructor() {
-
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.generateColor();
   }
 
   generateColor(): void {
-    for(let i = 0; i < this.avatarsShow.length; i++) {
-      this.profileColors.push('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6));
+    for (let i = 0; i < this.avatarsShow.length; i++) {
+      this.profileColors.push(
+        '#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6),
+      );
     }
   }
 
-  filterItems(): void{
+  filterItems(): void {
     this.avatarsShow = this.avatars.filter((avatar) => {
       return avatar.name.includes(this.inputSearch);
     });
   }
 
+  selectUser(avatars: UserModel): void {
+    this.selectedUser.emit(avatars);
+  }
 }

@@ -5,17 +5,17 @@ import { UserService } from 'src/app/user/services/user.service';
 import { UserModel } from '../models/user/user-model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GetCurrentUserService {
-
   private currentUserSubj = new ReplaySubject<UserModel>(1);
   public currentUser$ = this.currentUserSubj.asObservable();
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   public getCurrentUser(): void {
-    this.userService.getCurrentUser()
+    this.userService
+      .getCurrentUser()
       .pipe(take(1))
       .subscribe((response) => {
         if (response.body) {

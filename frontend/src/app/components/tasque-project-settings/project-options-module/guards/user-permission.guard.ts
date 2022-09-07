@@ -6,7 +6,7 @@ import { GetCurrentOrganizationService } from 'src/core/services/get-current-org
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserPermissionGuard implements CanActivate {
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {

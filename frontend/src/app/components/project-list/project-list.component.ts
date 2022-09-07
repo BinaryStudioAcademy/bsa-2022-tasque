@@ -9,7 +9,7 @@ import { ProjectModel } from '../../../core/models/project/project-model';
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
-  styleUrls: ['./project-list.component.sass']
+  styleUrls: ['./project-list.component.sass'],
 })
 export class ProjectListComponent implements OnInit {
   public currentUser: UserModel;
@@ -102,8 +102,7 @@ export class ProjectListComponent implements OnInit {
       this.itemsShow = this.items.filter((item) => {
         return item.name.toLowerCase().includes(this.inputSearch.toLowerCase());
       });
-    }
-    else {
+    } else {
       this.itemsShow = this.items;
     }
   }

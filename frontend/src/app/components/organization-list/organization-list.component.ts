@@ -13,7 +13,7 @@ import { OpenDialogService } from 'src/core/services/open-dialog.service';
 @Component({
   selector: 'app-organization-list',
   templateUrl: './organization-list.component.html',
-  styleUrls: ['./organization-list.component.sass']
+  styleUrls: ['./organization-list.component.sass'],
 })
 export class OrganizationListComponent extends BaseComponent implements OnInit {
   public currentUser: UserModel;
@@ -37,12 +37,13 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user as UserModel;
-
     });
 
-    this.getCurrentOrganizationService.organizations$.subscribe((organizations) => {
-      this.items = this.itemsShow = organizations;
-    });
+    this.getCurrentOrganizationService.organizations$.subscribe(
+      (organizations) => {
+        this.items = this.itemsShow = organizations;
+      },
+    );
   }
 
   filterItems(): void {
@@ -50,8 +51,7 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
       this.itemsShow = this.items.filter((item) => {
         return item.name.toLowerCase().includes(this.inputSearch.toLowerCase());
       });
-    }
-    else {
+    } else {
       this.itemsShow = this.items;
     }
   }

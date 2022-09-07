@@ -25,7 +25,7 @@ export class AvatarComponent implements OnInit {
 
   ngOnInit(): void {
     this.fontSize = this.diameter_px / 2;
-    if(this.user.avatarURL === undefined) {
+    if(this.user === undefined || this.user.avatarURL === undefined) {
       this.userAvatar = '';
     } else {
         this.userAvatar = this.user.avatarURL as string;
@@ -33,6 +33,9 @@ export class AvatarComponent implements OnInit {
   }
 
   getInitials(user: UserModel): string {
+    if(user === undefined) {
+      return '';
+    }
     if(user.name !== undefined && user.name?.includes(' ')) {
 
       const partsOfName = user.name.split(' ');
