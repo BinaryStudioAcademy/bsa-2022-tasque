@@ -3,11 +3,19 @@
 
   <div class="buttons-container">
     <app-edit-organization
-      *ngIf="organization.authorId === currentUser.id || role === organizationAdmin"
+      *ngIf="
+        currentUser &&
+        (organization.authorId === currentUser.id || role === organizationAdmin)
+      "
       class="btn stroke"
       [organization]="organization"
     ></app-edit-organization>
-    <tasque-button (btnClick)="openOrganization()" class="btn stroke" text="Open"> </tasque-button>
+    <tasque-button
+      (btnClick)="openOrganization()"
+      class="btn stroke"
+      text="Open"
+    >
+    </tasque-button>
   </div>
 </div>
-<hr/>
+<hr />
