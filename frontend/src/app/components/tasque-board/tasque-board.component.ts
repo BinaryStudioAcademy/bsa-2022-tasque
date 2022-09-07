@@ -67,7 +67,7 @@ export class TasqueBoardComponent implements OnInit {
     private currentUserService: GetCurrentUserService,
   ) {
     this.currentUserService.currentUser$.subscribe((res) => {
-      this.user = res as UserModel;
+      this.user = res;
     });
 
     this.createColumnForm = formBuilder.group({
