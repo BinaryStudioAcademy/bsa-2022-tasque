@@ -38,6 +38,8 @@ import { CompleteSprintComponent } from './components/complete-sprint/complete-s
 import { CompleteSprintDialogComponent } from './components/complete-sprint/complete-sprint-dialog/complete-sprint-dialog.component';
 import { BacklogContentComponent } from './components/backlog-content/backlog-content.component';
 import { BacklogComponent } from './components/backlog/backlog.component';
+import { SprintComponent } from './components/backlog/sprint/sprint.component';
+import { IssueComponent } from './components/backlog/sprint/issue/issue.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,8 @@ import { BacklogComponent } from './components/backlog/backlog.component';
     CompleteSprintDialogComponent,
     EditSprintComponent,
     EditSprintDialogComponent,
+    SprintComponent,
+    IssueComponent,
     BacklogContentComponent,
     BacklogComponent,
   ],
@@ -81,7 +85,7 @@ import { BacklogComponent } from './components/backlog/backlog.component';
     AuthModule,
     UserModule,
     ProjectOptionsModule,
-    DragDropModule
+    DragDropModule,
   ],
   providers: [
     BrowserAnimationsModule,
@@ -90,4 +94,4 @@ import { BacklogComponent } from './components/backlog/backlog.component';
   bootstrap: [AppComponent],
   exports: [OrganizationListComponent],
 })
-export class AppModule { }
+export class AppModule {}
