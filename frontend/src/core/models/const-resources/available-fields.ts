@@ -8,5 +8,5 @@ export const AvailableFields: TaskCustomField[] = [
     { name: 'Label', type: TaskFieldType.Label }, 
     { name: 'User', type: TaskFieldType.User }, 
     { name: 'Date', type: TaskFieldType.Date },
-    { name: 'Dropdown', type: TaskFieldType.Dropown },
+    { name: 'Dropdown', type: TaskFieldType.Dropdown },
     { name: 'Check box', type: TaskFieldType.CheckBox } ];

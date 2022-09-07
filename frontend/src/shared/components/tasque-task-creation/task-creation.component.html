@@ -5,7 +5,7 @@
 >
   <div class="task-creation-conteiner">
     <div class="task-creation-header">
-      <h4 class="task-creation-header-title">Create issue</h4>
+      <h4 class="task-creation-header-title" style="color: black">Create issue</h4>
       <div class="task-creation-header-button">
         <tasque-button class="btn fill disabled" text="Import issues">
         </tasque-button>
@@ -63,10 +63,10 @@
           <div *ngFor="let field of customFields" class="custom-field">
             <app-task-creation-custom-fields [customField]="field"></app-task-creation-custom-fields>
           </div>
-          <div class="button-wrapper">
+          <!-- <div class="button-wrapper">
             <tasque-button class="btn stroke violet-stroke" text="+ Add issues">
             </tasque-button>
-          </div>
+          </div> -->
         </form>
       </div>
     </div>

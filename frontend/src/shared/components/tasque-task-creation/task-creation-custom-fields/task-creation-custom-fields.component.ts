@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { DropdownField } from 'src/core/models/task/dropdown-field';
+import { LabelField } from 'src/core/models/task/label-field';
 import { TaskCustomField } from 'src/core/models/task/task-custom-field';
 import { TaskFieldType } from 'src/core/models/task/task-field-types';
 import { EditorConfig } from 'src/core/settings/angular-editor-setting';
@@ -14,12 +16,18 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
 
   @Input() customField: TaskCustomField;
   public fieldType: TaskFieldType;
-  editorConfig = EditorConfig;
-  public editorContent = '';
+  public dropdownField: DropdownField;
+  public labelField: LabelField[];
   
   ngOnInit(): void {
     this.fieldType = this.customField.type;
-    console.log(this.fieldType);
+    if(this.fieldType === TaskFieldType.Dropdown) {
+      this.dropdownField = this.customField.dropdown as DropdownField;
+    }
+    if(this.fieldType === TaskFieldType.Label) {
+      this.labelField = this.customField.labels as LabelField[];
+    }
+    console.log(this.customField);
   }
   
 }

@@ -1,24 +1,27 @@
-<div *ngIf="fieldType === 0">
-    type 0
+<div class="field-label">
+    <label class="label">{{customField.name}}</label>
 </div>
-<div *ngIf="fieldType === 1">
+<div *ngIf="fieldType === 0" class="text-field">
+    <span>type 0</span>
+</div>
+<div *ngIf="fieldType === 1" class="paragraph-field">
     <span>type 1</span>
 </div>
-<div *ngIf="fieldType === 2">
+<div *ngIf="fieldType === 2" class="number-field">
     <span>type 2</span>
 </div>
-<div *ngIf="fieldType === 3">
+<div *ngIf="fieldType === 3" class="label-field">
     <span>type 3</span>
 </div>
-<div *ngIf="fieldType === 4">
+<div *ngIf="fieldType === 4" class="user-field">
     <span>type 4</span>
 </div>
-<div *ngIf="fieldType === 5">
+<div *ngIf="fieldType === 5" class="dropdown-field">
     <span>type 5</span>
 </div>
-<div *ngIf="fieldType === 6">
+<div *ngIf="fieldType === 6" class="checkbox-field">
     <span>type 6</span>
 </div>
-<div *ngIf="fieldType === 7">
+<div *ngIf="fieldType === 7" class="date-field">
     <span>type 7</span>
 </div>
