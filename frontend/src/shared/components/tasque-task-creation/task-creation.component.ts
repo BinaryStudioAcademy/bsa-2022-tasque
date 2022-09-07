@@ -157,14 +157,12 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   setSelectedTaskType(id: number) {
     this.selectedTaskTypeId = id;
-    console.log('typeId ' + id);
     
     if(this.selectedProjectId === undefined) {
       return;
     }
     this.template = this.issueTemplates
       .find(t => t.projectId === this.selectedProjectId && t.typeId === this.selectedTaskTypeId) as TaskTemplate;
-      console.log(this.template);
       this.customFields = this.template.customFields;
   }
 
