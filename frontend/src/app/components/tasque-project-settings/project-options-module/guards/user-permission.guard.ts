@@ -9,11 +9,7 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
   providedIn: 'root',
 })
 export class UserPermissionGuard implements CanActivate {
-  canActivate():
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
+  canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this.role >= 3) {
       return true;
     }
@@ -31,13 +27,10 @@ export class UserPermissionGuard implements CanActivate {
     private currentOrganizationService: GetCurrentOrganizationService,
   ) {
     this.currentUserService.currentUser$.subscribe((user) => {
-      this.currentUser = user;
+      this.currentUser = user as UserModel;
 
-      this.organizationId =
-        this.currentOrganizationService.currentOrganizationId;
-      this.role = this.currentUser.organizationRoles?.find(
-        (r) => r.organizationId === this.organizationId,
-      )?.role as number;
+      this.organizationId = this.currentOrganizationService.currentOrganizationId;
+      this.role = this.currentUser.organizationRoles?.find((r) => r.organizationId === this.organizationId)?.role as number;
     });
   }
 }

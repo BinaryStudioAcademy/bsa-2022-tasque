@@ -12,7 +12,8 @@ import { ProjectService } from 'src/core/services/project.service';
   styleUrls: ['./tasque-project-settings.component.sass'],
 })
 export class TasqueProjectSettingsComponent implements OnInit {
-  @Input() public projectId = 5; // TODO: Replace with number type when project page will be implemented
+
+  @Input() public projectId = 5; // TODO: Replace with number type when project page will be implemented 
   public project: ProjectModel;
 
   public columnButtonText = 'Column and statuses';
@@ -24,21 +25,20 @@ export class TasqueProjectSettingsComponent implements OnInit {
   constructor(
     public router: Router,
     private currentUserService: GetCurrentUserService,
-    private projectService: ProjectService,
+    private projectService: ProjectService
   ) {
     this.projectService.getProjectById(this.projectId).subscribe((resp) => {
       this.project = resp.body as ProjectModel;
     });
 
     this.currentUserService.currentUser$.subscribe((user) => {
-      this.currentUser = user;
-      this.userRole = this.currentUser.organizationRoles.find(
-        (r) => r.organizationId === this.project.organizationId,
-      )?.role as UserRole;
+      this.currentUser = user as UserModel;
+      this.userRole = this.currentUser.organizationRoles
+        .find((r) => r.organizationId === this.project.organizationId)?.role as UserRole;
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   moveToIssueTemplates(): void {
     this.router.navigate(['project/issue-template']);
