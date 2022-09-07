@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { BoardColumnModel } from '../../../core/models/board/board-column-model';
@@ -10,6 +10,7 @@ import { NotificationService } from 'src/core/services/notification.service';
 import { BoardModel } from 'src/core/models/board/board-model';
 import { ActivatedRoute } from '@angular/router';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 
 @Component({
   selector: 'tasque-board',
@@ -22,6 +23,8 @@ export class TasqueBoardComponent implements OnInit {
 
   public isOpenColumnAddDialog: boolean;
   public createColumnForm: FormGroup;
+  @ViewChild('searchInput')
+  public searchInput: InputComponent;
   
   private newColumn: BoardColumnModel;
   private projectId: number;
@@ -29,6 +32,7 @@ export class TasqueBoardComponent implements OnInit {
   public board: BoardModel = {projectId: 0, id: 0, name: "", columns: []};
   user: UserModel;
   public hasTasks = false;
+  public searchParameter = '';
 
   constructor(formBuilder: FormBuilder,
     private route: ActivatedRoute, 
@@ -103,11 +107,11 @@ export class TasqueBoardComponent implements OnInit {
   }
 
   updateColumns(): void {
-    console.log(this.board);
     this.boardService.updateProjectBoard(this.board).subscribe(
       (resp) => {
         if (resp.ok && resp.body != null) {
           this.board = resp.body;
+          this.filterTasks();
         } else {
           this.notificationService.error('Something went wrong');
         }
@@ -125,5 +129,14 @@ export class TasqueBoardComponent implements OnInit {
       }
     }
     return false;
+  }
+
+  filterTasks(): void {
+    const phrase = this.searchInput.inputValue;
+    for(let column of this.board.columns) {
+      for(let task of column.tasks) {
+        task.isHidden = !task.description.toLowerCase().includes(phrase.toLowerCase());
+      }
+    }
   }
 }

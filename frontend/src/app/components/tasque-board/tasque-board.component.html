@@ -16,7 +16,7 @@
       <div class="task-menu">
         <div class="project-team">
           <div class="search-input-container">
-            <tasque-input class="search-input" type="search" [icon]="searchIcon" iconPosition="search" placeholder="Search..."></tasque-input>
+            <tasque-input class="search-input" #searchInput (input)="filterTasks()" type="search" [icon]="searchIcon" iconPosition="search" placeholder="Search..."></tasque-input>
           </div>
           <div>
             <tasque-team-select></tasque-team-select>
@@ -44,7 +44,7 @@
             </div>  
           </div>
           <div class="column" *ngFor="let task of item.tasks" cdkDrag>
-            <tasque-card [taskInfo]="task"></tasque-card>
+            <tasque-card *ngIf="!task.isHidden" [taskInfo]="task"></tasque-card>
           </div>
         </div>
         <div class="create-column" (mouseleave)="onClickedOutside()">

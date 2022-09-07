@@ -6,4 +6,5 @@ export interface TaskInfoModel {
     projectKey: string;
     user?: UserModel;
     attachmentUrl: string;
+    isHidden: boolean;
 }
