@@ -27,5 +27,11 @@ namespace Tasque.Core.WebAPI.Controllers
             }
         }
 
+        [HttpPost("move")]
+        public async Task<IActionResult> MoveTaskToAnotherColumn([FromBody] MoveTaskDTO dto)
+        {
+            await _service.MoveTask(dto);
+            return Ok();
+        }
     }
 }

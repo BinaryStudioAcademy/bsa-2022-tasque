@@ -8,4 +8,5 @@ public class BoardColumn : BaseEntity
 
     public int BoardId { get; set; }
     public Board Board { get; set; } = null!;
+    public IList<Task> Tasks { get; set; } = new List<Task>();
 }
