@@ -73,7 +73,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     if (ctrl.errors?.['maxlength']) {
       return 'Summary must be at less  80 characters';
     }
-
     return '';
   }
 
@@ -83,7 +82,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     if (ctrl.errors?.['maxlength']) {
       return 'Description must be at less  80 characters';
     }
-
     return '';
   }
 
@@ -93,7 +91,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     if (ctrl.errors?.['maxlength']) {
       return 'Description must be at less 5000 characters';
     }
-
     return '';
   }
 
@@ -130,7 +127,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   this.projectService.getProjectsByOrganizationId(this.organizationId)
     .subscribe((resp) => {
       const projects = resp.body as ProjectModel[];
-      console.log(projects);
       if(projects === null) {
         return;
       }
@@ -145,8 +141,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     this.selectedProjectId = id;
 
     this.taskTemplateService.getAllProjectTemplates(this.selectedProjectId).subscribe((resp) => {
-      console.log('templates response body');
-      console.log(resp.body);
       this.issueTemplates = resp.body as TaskTemplate[];
     });
 
@@ -156,19 +150,19 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
         title: t.name,
         id: t.id,
       }));
-      console.log('types');
-      console.log(types);
     });
   }
 
   setSelectedTaskType(id: number) {
     this.selectedTaskTypeId = id;
+    console.log('typeId ' + id);
     
     if(this.selectedProjectId === undefined) {
       return;
     }
     this.template = this.issueTemplates
-      .find(t => t.projectId === this.selectedProjectId && t.typeId === this.taskType.id) as TaskTemplate;
+      .find(t => t.projectId === this.selectedProjectId && t.typeId === this.selectedTaskTypeId) as TaskTemplate;
+      console.log(this.template);
   }
 
   ngOnDestroy(): void {
