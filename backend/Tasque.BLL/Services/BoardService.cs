@@ -3,16 +3,21 @@ using Tasque.Core.Common.DTO.Board;
 using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.DAL;
 using Tasque.Core.Common.Entities;
+using System.Reflection.Metadata.Ecma335;
+using AutoMapper;
+using Tasque.Core.Common.DTO.User;
 
 namespace Tasque.Core.BLL.Services
 {
     public class BoardService
     {
         private DataContext _db;
+        private IMapper _mapper;
 
-        public BoardService(DataContext context)
+        public BoardService(DataContext context, IMapper mapper)
         {
             _db = context;
+            _mapper = mapper;
         }
 
         public async Task<BoardInfoDto?> GetBoardByProjectId(int projectId)
@@ -24,6 +29,13 @@ namespace Tasque.Core.BLL.Services
             {
                 return null;
             }
+            var project = await _db.Projects.Include(p => p.Users)
+                .FirstOrDefaultAsync(p => p.Id == projectId);
+            if (project == null)
+            {
+                return null;
+            }
+            var users = _mapper.Map<List<UserDto>>(project.Users);
 
             var columns = await _db.BoardColumns
                 .Where(c => c.BoardId == board.Id)
@@ -42,7 +54,7 @@ namespace Tasque.Core.BLL.Services
                         AttachmentUrl = (t.Attachments.FirstOrDefault() ?? new Attachment()).URL,
                         Description = t.Description ?? "Task does not have description yet",
                         ProjectKey = t.Project.Key,
-                        UserAvatarUrl = t.Author.AvatarURL
+                        User = _mapper.Map<UserDto>(t.Author)
                     }
                 })
                 .ToListAsync();
@@ -52,6 +64,7 @@ namespace Tasque.Core.BLL.Services
                 Id = board.Id,
                 ProjectId = projectId,
                 Name = board.Name,
+                Users = users,
                 Columns = columns.Select(c => new BoardColumnDto
                 {
                     Id = c.Id,

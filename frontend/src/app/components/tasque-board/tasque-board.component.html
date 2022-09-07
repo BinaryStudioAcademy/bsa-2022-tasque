@@ -18,8 +18,8 @@
           <div class="search-input-container">
             <tasque-input class="search-input" #searchInput (input)="filterTasks()" type="search" [icon]="searchIcon" iconPosition="search" placeholder="Search..."></tasque-input>
           </div>
-          <div>
-            <tasque-team-select></tasque-team-select>
+          <div class="team-container">
+            <tasque-team-select [avatars]="board.users" (selectedUser)="userSelected($event)"></tasque-team-select>
           </div>
         </div>
         <div class="filter">

@@ -1,10 +1,7 @@
 <div class="container">
   <div class="users" *ngIf="avatars.length <= 4">
     <a class="user-avatar" *ngFor="let item of avatars.slice(0, 7); let i = index" [attr.data-index]="i" (click)="selectUser(item)">
-      <img *ngIf="item.avatarURL" class="user-avatar-img" [src]="item.avatarURL" [alt]="item.name" />
-      <div *ngIf="item.avatarURL" class="user-avatar-img" style="background-color: {{ profileColors[i] }}">
-        <span>{{ item.name[0] }}</span>
-      </div>
+      <tasque-avatar class="user-avatar-img" [user]="item" [alt]="item.name" [diameter_px]="50"></tasque-avatar>
     </a>
   </div>
   <div class="users" *ngIf="avatars.length > 4">

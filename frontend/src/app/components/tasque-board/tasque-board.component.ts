@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { BoardColumnModel } from '../../../core/models/board/board-column-model';
@@ -23,13 +23,13 @@ export class TasqueBoardComponent implements OnInit {
 
   public isOpenColumnAddDialog: boolean;
   public createColumnForm: FormGroup;
-  @ViewChild('searchInput')
-  public searchInput: InputComponent;
+  @ViewChild('searchInput') public searchInput: InputComponent;
+  private selectedUserId?: number;
   
   private newColumn: BoardColumnModel;
   private projectId: number;
 
-  public board: BoardModel = {projectId: 0, id: 0, name: "", columns: []};
+  public board: BoardModel = { projectId: 0, id: 0, name: '', users: [], columns: [] };
   user: UserModel;
   public hasTasks = false;
   public searchParameter = '';
@@ -123,7 +123,7 @@ export class TasqueBoardComponent implements OnInit {
   }
 
   checkIfHasTasks(): boolean {
-    for(let column of this.board.columns) {
+    for(const column of this.board.columns) {
       if( column.tasks.length > 0) {
         return true;
       }
@@ -133,10 +133,23 @@ export class TasqueBoardComponent implements OnInit {
 
   filterTasks(): void {
     const phrase = this.searchInput.inputValue;
-    for(let column of this.board.columns) {
-      for(let task of column.tasks) {
+    for(const column of this.board.columns) {
+      for(const task of column.tasks) {
         task.isHidden = !task.description.toLowerCase().includes(phrase.toLowerCase());
+        if(this.selectedUserId) {
+          task.isHidden = task.isHidden || task.user?.id != this.selectedUserId;
+        }        
       }
     }
+  }
+
+  userSelected(event: UserModel): void {
+    if(this.selectedUserId && event.id === this.selectedUserId) {
+      this.selectedUserId = undefined;
+    }
+    else {
+      this.selectedUserId = event.id;
+    }
+    this.filterTasks();
   }
 }
