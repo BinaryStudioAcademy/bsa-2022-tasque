@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.Entities;
@@ -10,6 +11,7 @@ namespace Tasque.Core.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TaskStateController : EntityController<TaskState, TaskStateDto, TaskStateService>
     {
         public TaskStateController(TaskStateService service, CurrentUserParameters currentUser) : base(service, currentUser)

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Task;
@@ -9,16 +9,21 @@ namespace Tasque.Core.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TaskTypeController : EntityController<TaskType, TaskTypeDto, TaskTypeService>
     {
         public TaskTypeController(TaskTypeService service, CurrentUserParameters currentUser) : base(service, currentUser)
         {
+
         }
 
         [HttpGet("getAllByProjectId/{projectId}")]
-        public async Task<IActionResult> GetAllTaskTypesByProjectId(int projectId)
+        public IActionResult GetAllTaskTypesByProjectId(int projectId)
         {
-            throw new NotImplementedException();
+            var types = _service.GetAllTaskTypesByProjectId(projectId);
+            if (types == null)
+                return NotFound();
+            return Ok(types);
         }
     }
 }
