@@ -70,7 +70,7 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         return Ok(result);
     }
 
-    [HttpGet("board/{id:int}")]
+    [HttpGet("board/{projectId:int}")]
     public async Task<IActionResult> GetBoard(int projectId)
     {
         var res = await _service.GetProjectBoard(projectId);
