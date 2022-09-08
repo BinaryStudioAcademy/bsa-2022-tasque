@@ -27,7 +27,12 @@
     </tasque-input>
 </div>
 <div *ngIf="fieldType === 3" class="label-field">
-    <span>type 3</span>
+    <tasque-dropdown 
+        class="dropdown" 
+        placeholder="Select label" 
+        [options]="labelOptions" 
+        (onSelect)="setSelectedLabel($event)">
+    </tasque-dropdown>
 </div>
 <div *ngIf="fieldType === 4" class="user-field">
     <tasque-team-select *ngIf="projectUsers.length > 0"

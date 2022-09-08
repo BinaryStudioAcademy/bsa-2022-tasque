@@ -30,6 +30,7 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
   public editorContent = '';
   public checkboxValue: boolean;
   public selectedUser: UserModel;
+  public labelOptions: TasqueDropdownOption[] = [];
 
   
   ngOnInit(): void {
@@ -39,6 +40,7 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
     }
     if(this.fieldType === TaskFieldType.Label) {
       this.labelField = this.customField.labels as LabelField[];
+      this.setLabelOptions();
     }
     if(this.fieldType === TaskFieldType.CheckBox) {
       this.checkboxField = this.customField.checkbox as CheckboxField;
@@ -56,7 +58,20 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
 
   setCheckboxChanged(val: boolean): void {
     this.checkboxValue = val;
-    console.log(val);
+    console.log(val + ' ' + this.checkboxField.checkList);
   }
   
+  setSelectedLabel(val: number) {
+    console.log(val);
+  }
+
+  setLabelOptions(): void {
+    let index = 0;
+    this.labelField.forEach((l) => this.labelOptions.push({
+      color: l.color,
+      title: l.name,
+      id: index,
+    }), index++);
+  }
+
 }

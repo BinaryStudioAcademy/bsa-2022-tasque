@@ -177,7 +177,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     }
     this.template = this.issueTemplates
       .find(t => t.projectId === this.selectedProjectId && t.typeId === this.selectedTaskTypeId) as TaskTemplate;
-      this.customFields = this.template.customFields;
+      this.customFields = this.template.customFields?? [];
   }
 
   ngOnDestroy(): void {
