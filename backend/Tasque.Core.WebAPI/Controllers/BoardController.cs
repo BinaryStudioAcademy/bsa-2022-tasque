@@ -25,8 +25,12 @@ namespace Tasque.Core.WebAPI.Controllers
         }
 
         [HttpPut("{projectId}")]
-        public async Task<IActionResult> UpdateBoardByProjectId(BoardInfoDto board)
+        public async Task<IActionResult> UpdateBoardByProjectId(int projectId, [FromBody]BoardInfoDto board)
         {
+            if(projectId != board.ProjectId)
+            {
+                return BadRequest("Incorrect project Id");
+            }
             var result = await _boardService.UpdateBoardColumns(board);
             return Ok(result);
         }
