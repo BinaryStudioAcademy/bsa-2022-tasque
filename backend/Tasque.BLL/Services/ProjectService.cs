@@ -175,4 +175,18 @@ public class ProjectService : EntityCrudService<Project>
 
         return _mapper.Map<BoardInfoDto>(project);
     }
+
+    public async Task<BoardInfoDto> UpdateBoard(BoardInfoDto board)
+    {
+        var proj = _db.Projects
+            .Include(x => x.Columns).ThenInclude(x => x.Tasks)
+            .Include(x => x.Users)
+            .FirstOrDefault(x => x.Id == board.Id)
+            ?? throw new CustomNotFoundException("project board");
+        var mapped = _mapper.Map(board, proj);
+        _db.BoardColumns.AddRange(proj.Columns.Where(x => x.Id == 0));
+
+        await _db.SaveChangesAsync();
+        return _mapper.Map<BoardInfoDto>(mapped);
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
+using Tasque.Core.Common.DTO.Board;
 using Tasque.Core.Common.DTO.Project;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
@@ -74,6 +75,13 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
     public async Task<IActionResult> GetBoard(int projectId)
     {
         var res = await _service.GetProjectBoard(projectId);
+        return Ok(res);
+    }
+
+    [HttpPut("board")]
+    public async Task<IActionResult> UpdateBoard(BoardInfoDto board)
+    {
+        var res = await _service.UpdateBoard(board);
         return Ok(res);
     }
 }
