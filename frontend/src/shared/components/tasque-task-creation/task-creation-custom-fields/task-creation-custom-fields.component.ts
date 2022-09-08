@@ -106,6 +106,12 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
     this.emitField();
   }
 
+  setSelectedUser(val: UserModel): void {
+    this.selectedUser = val;
+    this.textValue = JSON.stringify(val);
+    this.emitField();
+  }
+
   //SET OPTIONS
 
   setLabelOptions(): void {
@@ -131,17 +137,17 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
         fieldId: this.customField.fieldId as string,
         fieldValue: this.labelValue.name,
       };
-    } else if(this.fieldType === TaskFieldType.User) { //User =>    Maybe to change? --
+    } else if(this.fieldType === TaskFieldType.User) {
       this.valueField = {
         fieldId: this.customField.fieldId as string,
-        //fieldValue: this.textValue,
+        fieldValue: this.textValue,
       };
     } else if(this.fieldType === TaskFieldType.Dropdown) {
       this.valueField = {
         fieldId: this.customField.fieldId as string,
         fieldValue: this.dropdownValue,
       };
-    } else if(this.fieldType === TaskFieldType.CheckBox) { //   --
+    } else if(this.fieldType === TaskFieldType.CheckBox) {
       this.valueField = {
         fieldId: this.customField.fieldId as string,
         fieldValue: this.textValue,
@@ -151,7 +157,7 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
         fieldId: this.customField.fieldId as string,
         fieldValue: this.textValue,
       };
-    };
+    }
     this.taskCustomField.emit(this.valueField);
   }
 }

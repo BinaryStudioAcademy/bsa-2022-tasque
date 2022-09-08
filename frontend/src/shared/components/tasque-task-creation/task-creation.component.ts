@@ -84,7 +84,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       return 'Summary must be at least 2 characters';
     }
     if (ctrl.errors?.['maxlength'] && (ctrl.touched || ctrl.dirty)) {
-      return 'Summary must be at less  80 characters';
+      return 'Summary must be less than 80 characters';
     }
     if (ctrl.errors?.['required'] && (ctrl.touched || ctrl.dirty)) {
       return 'Summary is required';
@@ -96,7 +96,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     const ctrl = this.descriptionControl;
 
     if (ctrl.errors?.['maxlength']) {
-      return 'Description must be at less  80 characters';
+      return 'Description must be less than 80 characters';
     }
     return '';
   }
@@ -105,7 +105,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     const ctrl = this.descriptionControl;
 
     if (ctrl.errors?.['maxlength']) {
-      return 'Description must be at less 5000 characters';
+      return 'Description must be less than 5000 characters';
     }
     return '';
   }
@@ -117,10 +117,10 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     private projectService: ProjectService,
     private currentUserService: GetCurrentUserService
   ) {
-    this.projectControl = new FormControl(this.task.project, [
+    this.projectControl = new FormControl(this.task.projectId, [
       Validators.required,
     ]);
-    this.issueTypeControl = new FormControl(this.task.issueType, [
+    this.issueTypeControl = new FormControl(this.task.typeId, [
       Validators.required,
     ]);
     this.summaryControl = new FormControl(this.task.summary, [
@@ -180,6 +180,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       types.forEach((t) => this.issueTypes.push({
         title: t.name,
         id: t.id,
+        color: t.color?? '',
       }));
     });
 
@@ -202,6 +203,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     }
     this.template = this.issueTemplates
       .find((t) => t.projectId === this.selectedProjectId && t.typeId === this.selectedTaskTypeId) as TaskTemplate;
+
       this.customFields = this.template.customFields?? [];
       this.customFields.forEach((cf) => this.taskCustomFields.push({
         fieldId: cf.fieldId as string,
@@ -214,7 +216,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   }
 
   public submitForm(): void {
-    if (!this.taskCreateForm.valid || !this.taskCreateForm.dirty) {
+    if (!this.taskCreateForm.valid || !this.taskCreateForm.dirty || !this.taskCreateForm.touched) {
       this.taskCreateForm.markAllAsTouched();
       this.notificationService
         .error('Some values are incorrect. Follow error messages to solve this problem', 'Invalid values');
@@ -222,14 +224,16 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     }
 
     this.task = {
-      currentUserId: this.currentUser.id,
-      project: this.taskCreateForm.get('projectControl')?.value,
-      issueType: this.taskCreateForm.get('issueTypeControl')?.value,
+      authorId: this.currentUser.id,
+      projectId: this.taskCreateForm.get('projectControl')?.value.id,
+      typeId: this.taskCreateForm.get('issueTypeControl')?.value.id,
+
       summary: this.taskCreateForm.get('summaryControl')?.value,
       description: this.taskCreateForm.get('descriptionControl')?.value,
+
+      customFields: this.taskCustomFields,
     };
     console.log(this.task);
-    console.log(this.taskCustomFields);
   }
 
   public clearForm(): void {
