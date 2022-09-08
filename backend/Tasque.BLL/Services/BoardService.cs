@@ -52,7 +52,8 @@ namespace Tasque.Core.BLL.Services
                     {
                         Id = t.Id,
                         AttachmentUrl = (t.Attachments.FirstOrDefault() ?? new Attachment()).URL,
-                        Description = t.Description ?? "Task does not have description yet",
+                        Summary = t.Summary,
+                        Description = t.Description ?? "",
                         ProjectKey = t.Project.Key,
                         User = _mapper.Map<UserDto>(t.Author)
                     }
