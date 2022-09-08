@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.PartialModels;
 using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.DTO.Task.PartialModels;
 using Tasque.Core.Common.DTO.Task.TemplateModels.IncomeModels;
+using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Entities.Abstract;
 using Tasque.Core.DAL;
 
@@ -21,7 +23,7 @@ namespace Tasque.Core.BLL.Services
         private readonly IMapper _mapper;
 
         public TaskService(
-            DataContext dbContext, 
+            DataContext dbContext,
             ICosmosTaskService cosmosTaskService,
             ICosmosTemplateService cosmosTemplateService,
             IMapper mapper)
@@ -41,7 +43,7 @@ namespace Tasque.Core.BLL.Services
             var actualAttributes = RenameFieldsWithActualValue(
                 await GetTaskTemplate(entity.ProjectId, entity.TypeId), model.CustomFields);
 
-            var cosmosModel= new CosmosTaskModel()
+            var cosmosModel = new CosmosTaskModel()
             {
                 Id = entity.Id.ToString(),
                 CustomFields = _mapper.Map<List<CosmosTaskFields>>(actualAttributes)
@@ -50,16 +52,15 @@ namespace Tasque.Core.BLL.Services
             var attributes = await _cosmosTaskService.CreateTask(cosmosModel);
             var task = _mapper.Map<TaskDto>(entity);
 
-            return JoinTaskAttributesWithDto(task, 
+            return JoinTaskAttributesWithDto(task,
                 RenameFieldsWithActualValue(
                     await GetTaskTemplate(task.ProjectId, task.TypeId), await MapCosmosTaskFieldsToTaskCustomFields(task, attributes.CustomFields)));
         }
 
-        public async Task DeleteTask(int id)
+        public async System.Threading.Tasks.Task DeleteTask(int id)
         {
-            var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == id);
-            if (task == null)
-                throw new CustomNotFoundException(nameof(Common.Entities.Task));
+            var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == id) 
+                ?? throw new CustomNotFoundException(nameof(Common.Entities.Task));
 
             _dbContext.Tasks.Remove(task);
 
@@ -73,10 +74,10 @@ namespace Tasque.Core.BLL.Services
             var tasks = _mapper.Map<List<TaskDto>>(_dbContext.Tasks);
             var customFields = await _cosmosTaskService.GetAllTasks();
 
-            return tasks.Join(customFields, t => t.Id, ca => int.Parse(ca.Id), (t, ca) => 
-                JoinTaskAttributesWithDto(t, 
+            return tasks.Join(customFields, t => t.Id, ca => int.Parse(ca.Id), (t, ca) =>
+                JoinTaskAttributesWithDto(t,
                     RenameFieldsWithActualValue(
-                        GetTaskTemplate(t.ProjectId, t.TypeId).Result, 
+                        GetTaskTemplate(t.ProjectId, t.TypeId).Result,
                             MapCosmosTaskFieldsToTaskCustomFields(t, ca.CustomFields).Result))).ToList();
         }
 
@@ -88,9 +89,9 @@ namespace Tasque.Core.BLL.Services
 
             var attributes = await _cosmosTaskService.GetTaskById(task.Id.ToString());
 
-            return JoinTaskAttributesWithDto(task, 
+            return JoinTaskAttributesWithDto(task,
                 RenameFieldsWithActualValue(
-                    await GetTaskTemplate(task.ProjectId, task.TypeId), 
+                    await GetTaskTemplate(task.ProjectId, task.TypeId),
                         await MapCosmosTaskFieldsToTaskCustomFields(task, attributes.CustomFields)));
         }
 
@@ -114,9 +115,9 @@ namespace Tasque.Core.BLL.Services
 
             SaveChanges(task);
 
-            return JoinTaskAttributesWithDto(_mapper.Map<TaskDto>(task), 
+            return JoinTaskAttributesWithDto(_mapper.Map<TaskDto>(task),
                 RenameFieldsWithActualValue(
-                    await GetTaskTemplate(task.ProjectId, task.TypeId), 
+                    await GetTaskTemplate(task.ProjectId, task.TypeId),
                         await MapCosmosTaskFieldsToTaskCustomFields(_mapper.Map<TaskDto>(task), attributes.CustomFields)));
         }
 
@@ -138,7 +139,7 @@ namespace Tasque.Core.BLL.Services
         private List<TaskCustomFields> RenameFieldsWithActualValue(TaskTemplate template, List<TaskCustomFields> fields)
         {
             if (template == null)
-                return fields; 
+                return fields;
 
             fields.ForEach(f => f.FieldName = template.CustomFields?.Find(t => t.FieldId == f.FieldId)?.Name);
             return fields;

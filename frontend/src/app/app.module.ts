@@ -32,10 +32,10 @@ import { EditSprintComponent } from './components/edit-sprint/edit-sprint.compon
 import { EditSprintDialogComponent } from './components/edit-sprint/edit-sprint-dialog/edit-sprint-dialog.component';
 import { CompleteSprintComponent } from './components/complete-sprint/complete-sprint.component';
 import { CompleteSprintDialogComponent } from './components/complete-sprint/complete-sprint-dialog/complete-sprint-dialog.component';
-import { BacklogContentComponent } from './components/backlog-content/backlog-content.component';
-import { BacklogComponent } from './components/backlog/backlog.component';
 import { SprintComponent } from './components/backlog/sprint/sprint.component';
 import { IssueComponent } from './components/backlog/sprint/issue/issue.component';
+import { BacklogContentComponent } from './components/backlog-content/backlog-content.component';
+import { BacklogComponent } from './components/backlog/backlog.component';
 
 @NgModule({
   declarations: [

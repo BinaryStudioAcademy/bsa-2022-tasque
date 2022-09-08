@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Interfaces;
@@ -6,7 +6,7 @@ using Tasque.Core.Common.DTO.Task;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/task")]
     [ApiController]
     [Authorize]
     public class TaskController : ControllerBase
@@ -48,6 +48,20 @@ namespace Tasque.Core.WebAPI.Controllers
         {
             await _taskService.DeleteTask(id);
             return NoContent();
+        }
+
+        [HttpGet("getTasksState")]
+        public async Task<IActionResult> GetTasksState()
+        {
+            return Ok();
+         //   return Ok(await _taskService.GetTasksState());
+        }
+
+        [HttpGet("getTasksType")]
+        public async Task<IActionResult> GetTasksType()
+        {
+            return Ok();
+            //   return Ok(await _taskService.GetTasksType());
         }
     }
 }
