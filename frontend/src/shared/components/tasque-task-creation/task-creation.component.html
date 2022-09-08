@@ -22,7 +22,7 @@
             <label class="label">Project</label>
             <tasque-dropdown
               [options]="projects"
-              formControlName="projectControl"
+              [formControl]="projectControl"
               [errorMessage]="projectErrorMessage"
               [invalid]="!projectControl.valid"
               (onSelect)="setSelectedProjectId($event)"
@@ -56,7 +56,7 @@
               class="editor-conteiner"
               [(ngModel)]="editorContent"
               [config]="editorConfig"
-              formControlName="descriptionControl"
+              [formControl]="descriptionControl"
             >
             </angular-editor>
           </div>
@@ -68,7 +68,12 @@
             <hr>
           </div>
           <div *ngFor="let field of customFields" class="custom-field">
-            <app-task-creation-custom-fields [customField]="field" [projectUsers]="projectUsers"></app-task-creation-custom-fields>
+            <app-task-creation-custom-fields 
+              [customField]="field" 
+              [projectUsers]="projectUsers"
+              (taskCustomField)="getCustomField($event)"
+            >
+            </app-task-creation-custom-fields>
           </div>
           <div class="button-wrapper">
             <tasque-button class="btn stroke violet-stroke disabled" text="+ Add issues">

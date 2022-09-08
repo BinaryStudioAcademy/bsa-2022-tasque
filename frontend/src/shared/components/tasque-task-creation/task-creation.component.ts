@@ -12,8 +12,11 @@ import { TaskTemplate } from 'src/core/models/task/task-template';
 import { TaskType } from 'src/core/models/task/task-type';
 import { ProjectService } from 'src/core/services/project.service';
 import { ProjectModel } from 'src/core/models/project/project-model';
-import { TaskCustomField } from 'src/core/models/task/task-custom-field';
+import { TaskCustomField } from 'src/core/models/task/task-template-models/task-custom-field';
 import { UserModel } from 'src/core/models/user/user-model';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { TaskCustomFieldModel } from 'src/core/models/task/task-creation-models/task-custom-field-model';
+import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 
 @Component({
   selector: 'tasque-task-creation',
@@ -39,11 +42,12 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   public template: TaskTemplate;
   public taskType: TaskType;
   public customFields: TaskCustomField[];
+  public taskCustomFields: TaskCustomFieldModel[] = [];
   public projectUsers: UserModel[];
+  public currentUser: UserModel;
 
   @Input() public buttonText = '';
   @Input() public organizationId = 1;
-  @Input() public currentUser: number;
   @Input() public projects: TasqueDropdownOption[] = [];
   @Input() public issueTypes: TasqueDropdownOption[] = [];
   @Input() public btnText = 'Task creation';
@@ -106,6 +110,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private taskTemplateService: TaskTemplateService,
     private projectService: ProjectService,
+    private currentUserService: GetCurrentUserService
   ) {
     this.projectControl = new FormControl(this.task.project, [
       Validators.required,
@@ -131,7 +136,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       descriptionControl: this.descriptionControl,
     });
     
-  this.projectService.getProjectsByOrganizationId(this.organizationId)
+    this.projectService.getProjectsByOrganizationId(this.organizationId)
     .subscribe((resp) => {
       const projects = resp.body as ProjectModel[];
       if(projects === null) {
@@ -141,6 +146,10 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
         title: p.name,
         id: p.id
       }));
+    });
+
+    this.currentUserService.currentUser$.subscribe((user) => {
+      this.currentUser = user;
     });
   }
 
@@ -181,6 +190,11 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     this.template = this.issueTemplates
       .find((t) => t.projectId === this.selectedProjectId && t.typeId === this.selectedTaskTypeId) as TaskTemplate;
       this.customFields = this.template.customFields?? [];
+      this.customFields.forEach((cf) => this.taskCustomFields.push({
+        fieldId: cf.fieldId as string,
+        type: cf.type,
+      }));
+      console.log(this.taskCustomFields);
   }
 
   ngOnDestroy(): void {
@@ -195,22 +209,41 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   public submitForm(): void {
     if (!this.taskCreateForm.valid || !this.taskCreateForm.dirty) {
       this.taskCreateForm.markAllAsTouched();
-      this.notificationService.error('Some values are incorrect. Follow error messages to solve this problem', 'Invalid values');
+      this.notificationService
+        .error('Some values are incorrect. Follow error messages to solve this problem', 'Invalid values');
       return;
     }
 
     this.task = {
-      currentUser: this.currentUser,
+      currentUserId: this.currentUser.id,
       project: this.taskCreateForm.get('projectControl')?.value,
       issueType: this.taskCreateForm.get('issueTypeControl')?.value,
       summary: this.taskCreateForm.get('summaryControl')?.value,
       description: this.taskCreateForm.get('descriptionControl')?.value,
     };
+    console.log(this.task);
+    console.log(this.taskCustomFields);
   }
 
   public clearForm(): void {
     this.taskCreateForm.reset();
     this.sideBarService.toggle('');
     this.customFields = [];
+  }
+
+  getCustomField(field: TaskCustomFieldModel): void {
+    console.log('get val');
+    console.log(field);
+
+    const isExist = this.taskCustomFields.find((f) => f.fieldId === field.fieldId);
+    if(isExist === undefined){
+      this.taskCustomFields.push(field);
+    }
+    this.taskCustomFields.forEach((val) => {
+      if(val.fieldId === field.fieldId) {
+        val.fieldValue = field.fieldValue
+      }
+    });
+    console.log(this.taskCustomFields);
   }
 }

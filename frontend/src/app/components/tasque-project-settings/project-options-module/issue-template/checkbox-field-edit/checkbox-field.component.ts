@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { TaskCustomField } from 'src/core/models/task/task-custom-field';
+import { TaskCustomField } from 'src/core/models/task/task-template-models/task-custom-field';
 import { faCheck, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FormControl, Validators } from '@angular/forms';
 import { NotificationService } from 'src/core/services/notification.service';
-import { CheckboxField } from 'src/core/models/task/checkbox-field';
+import { CheckboxField } from 'src/core/models/task/task-template-models/checkbox-field';
 
 @Component({
   selector: 'app-checkbox-field',

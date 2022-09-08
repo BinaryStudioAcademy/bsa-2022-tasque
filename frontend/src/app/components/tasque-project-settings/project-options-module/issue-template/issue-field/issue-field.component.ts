@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { faPenToSquare, faCheck, faCode } from '@fortawesome/free-solid-svg-icons';
-import { TaskCustomField } from 'src/core/models/task/task-custom-field';
+import { TaskCustomField } from 'src/core/models/task/task-template-models/task-custom-field';
 
 @Component({
   selector: 'tasque-issue-field',

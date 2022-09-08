@@ -26,7 +26,7 @@
       class="user-avatar"
       *ngFor="let item of avatars.slice(0, 7); let i = index"
       [attr.data-index]="i"
-      style="left: {{ i * -18 }}px;"
+      style="left: {{ i * -18 }}px"
       (click)="selectUser(item)"
     >
       <tasque-avatar

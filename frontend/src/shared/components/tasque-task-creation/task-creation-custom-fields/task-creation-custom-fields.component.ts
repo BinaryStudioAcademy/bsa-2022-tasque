@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { CheckboxField } from 'src/core/models/task/checkbox-field';
-import { DropdownField } from 'src/core/models/task/dropdown-field';
-import { LabelField } from 'src/core/models/task/label-field';
-import { TaskCustomField } from 'src/core/models/task/task-custom-field';
+import { CheckboxField } from 'src/core/models/task/task-template-models/checkbox-field';
+import { DropdownField } from 'src/core/models/task/task-template-models/dropdown-field';
+import { LabelField } from 'src/core/models/task/task-template-models/label-field';
+import { TaskCustomField } from 'src/core/models/task/task-template-models/task-custom-field';
 import { TaskFieldType } from 'src/core/models/task/task-field-types';
 import { UserModel } from 'src/core/models/user/user-model';
 import { EditorConfig } from 'src/core/settings/angular-editor-setting';
 import { TasqueDropdownOption } from '../../tasque-dropdown/dropdown.component';
+import { TaskCustomFieldModel } from 'src/core/models/task/task-creation-models/task-custom-field-model';
 
 @Component({
   selector: 'app-task-creation-custom-fields',
@@ -20,26 +21,35 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
   @Input() customField: TaskCustomField;
   @Input() projectUsers: UserModel[];
 
-  @Output() taskCustomField: EventEmitter<TaskCustomField>;
+  @Output() taskCustomField = new EventEmitter<TaskCustomFieldModel>();
 
-  public fieldType: TaskFieldType;
+  public fieldType: TaskFieldType; //BASIC FIELD
 
+  //SPECIFIC FIELDS
   public dropdownField: DropdownField;
   public checkboxFields: CheckboxField[];
   public labelField: LabelField[];
 
+  //OPTIONS
   public dropdownOptions: TasqueDropdownOption[] = [];
   public labelOptions: TasqueDropdownOption[] = [];
 
+  //ADDITION
   public editorConfig = EditorConfig;
   public editorContent = '';
 
-  public textValue: string;
+  //INCOME VALUES
+  public textValue: string; //use for =>   text, par, num, date 
+
   public dropdownValue: string;
   public labelValue: LabelField;
   public checkboxValue: boolean;
   public selectedUser: UserModel;
+
+  //OUTPUT VALUE
+  public valueField: TaskCustomFieldModel;
   
+  //INIT COMPONENT
   ngOnInit(): void {
     this.fieldType = this.customField.type;
     if(this.fieldType === TaskFieldType.Dropdown) {
@@ -54,17 +64,29 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
     }
   }
 
+  //SET VALUES
+
+  setTextValue(val: string): void {
+    this.textValue = val;
+    this.emitField();
+  }
+
   setDropdownValue(value: string): void {
     this.dropdownValue = value;
+    this.emitField();
   }
 
   setCheckboxChanged(val: boolean, field: CheckboxField): void {
     field.isChecked = val;
+    this.emitField();
   }
   
   setSelectedLabel(val: number): void {
     this.labelValue = this.labelField[val];
+    this.emitField();
   }
+
+  //SET OPTIONS
 
   setLabelOptions(): void {
     let index = 0;
@@ -75,7 +97,42 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
     }));
   }
 
-  emitField(): void {
-    this.taskCustomField.emit(this.customField);
+  //EMIT 
+
+  emitField(): void { 
+    if(this.fieldType === TaskFieldType.Paragraph) { // --
+      this.valueField = {
+        fieldId: this.customField.fieldId as string,
+        fieldValue: this.editorContent,
+      }
+    }
+    if(this.fieldType === TaskFieldType.Label) {
+      this.valueField = {
+        fieldId: this.customField.fieldId as string,
+        fieldValue: this.labelValue.name,
+      }
+    } else if(this.fieldType === TaskFieldType.User) { //User =>    Maybe to change? --
+      this.valueField = {
+        fieldId: this.customField.fieldId as string,
+        //fieldValue: this.textValue,
+      }
+    } else if(this.fieldType === TaskFieldType.Dropdown) {
+      this.valueField = {
+        fieldId: this.customField.fieldId as string,
+        fieldValue: this.dropdownValue,
+      }
+    } else if(this.fieldType === TaskFieldType.CheckBox) { //   --
+      this.valueField = {
+        fieldId: this.customField.fieldId as string,
+        fieldValue: String(this.checkboxValue),
+      }
+      console.log(this.checkboxValue);
+    } else {                    //Used for => Text, number and date fields
+      this.valueField = {
+        fieldId: this.customField.fieldId as string,
+        fieldValue: this.textValue,
+      } 
+    }
+    this.taskCustomField.emit(this.valueField);
   }
 }

@@ -4,7 +4,7 @@ import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/drop
 import { TaskTemplate } from 'src/core/models/task/task-template';
 import { ToastrService } from 'ngx-toastr';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { TaskCustomField } from 'src/core/models/task/task-custom-field';
+import { TaskCustomField } from 'src/core/models/task/task-template-models/task-custom-field';
 import { Router } from '@angular/router';
 import { AvailableFields } from 'src/core/models/const-resources/available-fields';
 import { TaskTemplateService } from 'src/core/services/task-template.service';

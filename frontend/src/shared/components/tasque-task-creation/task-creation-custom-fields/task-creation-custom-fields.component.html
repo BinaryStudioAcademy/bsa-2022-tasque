@@ -5,7 +5,7 @@
     <tasque-input
         type="text"
         class="input"
-        (outputValue)="textValue"
+        (outputValue)="setTextValue($event)"
         >
     </tasque-input>
 </div>
@@ -22,7 +22,7 @@
     <tasque-input
         type="number"
         class="input"
-        (outputValue)="textValue"
+        (outputValue)="setTextValue($event)"
         >
     </tasque-input>
 </div>
@@ -77,7 +77,7 @@
     <tasque-input
         type="date"
         class="input"
-        (outputValue)="textValue"
+        (outputValue)="setTextValue($event)"
         >
     </tasque-input>
 </div>
