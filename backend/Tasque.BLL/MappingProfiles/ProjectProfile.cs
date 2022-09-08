@@ -15,6 +15,8 @@ namespace Tasque.Core.BLL.MappingProfiles
             CreateMap<Project, ProjectAfterCreateDto>();
 
             CreateMap<Project, BoardInfoDto>();
+            CreateMap<BoardInfoDto, Project>().
+                ForMember(x => x.Users, opt => opt.Ignore());
         }
     }
 }
