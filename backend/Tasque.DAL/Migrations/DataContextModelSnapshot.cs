@@ -1057,7 +1057,7 @@ namespace Tasque.Core.DAL.Migrations
             modelBuilder.Entity("Tasque.Core.Common.Entities.UserProjectRole", b =>
                 {
                     b.HasOne("Tasque.Core.Common.Entities.Project", "Project")
-                        .WithMany("UserProjectRole")
+                        .WithMany("UserRoles")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
