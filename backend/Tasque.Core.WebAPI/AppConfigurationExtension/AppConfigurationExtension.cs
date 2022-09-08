@@ -27,6 +27,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 cfg.AddProfile<SprintProfiles>();
                 cfg.AddProfile<BoardProfiles>();
                 cfg.AddProfile<OrganizationProfile>();
+                cfg.AddProfile<ProjectProfile>();
+                cfg.AddProfile<UserProfiles>();
                 cfg.AddProfile<TaskProfile>();
                 cfg.AddProfile<TaskTemplateProfile>();
                 cfg.AddProfile<ProjectProfile>();

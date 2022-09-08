@@ -6,7 +6,7 @@ export const ProjectSettingsRoutes: Routes = [
     {
         path: 'issue-template',
         component: IssueTemplateComponent,
-        canActivate: [UserPermissionGuard],
+        //canActivate: [UserPermissionGuard],
     },
 ];
 

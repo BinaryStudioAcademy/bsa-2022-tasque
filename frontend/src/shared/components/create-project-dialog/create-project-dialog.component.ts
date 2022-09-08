@@ -4,7 +4,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from 'src/core/services/notification.service';
-import { NewProjectCredentialsModel } from 'src/core/models/project/new-project-credentials.model';
 import { NewProjectModel } from 'src/core/models/project/new-project-model';
 import { ProjectService } from 'src/core/services/project.service';
 
@@ -66,7 +65,7 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
   constructor(
     public projectService: ProjectService,
     public notificationService: NotificationService,
-    @Inject(MAT_DIALOG_DATA) public data: NewProjectCredentialsModel,
+    @Inject(MAT_DIALOG_DATA) public data: number,
     private dialogRef: MatDialogRef<CreateProjectDialogComponent>,
   ) {
     this.projectNameControl = new FormControl(this.newProject.name, [
@@ -97,7 +96,7 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     }
 
     this.newProject = {
-      organizationId: this.data.organizationId,
+      organizationId: this.data,
       name: this.createProjectForm.get('projectNameControl')?.value,
       key: this.createProjectForm.get('projectKeyControl')?.value,
     };

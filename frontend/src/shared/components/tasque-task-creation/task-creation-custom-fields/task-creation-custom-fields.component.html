@@ -31,7 +31,6 @@
 </div>
 <div *ngIf="fieldType === 4" class="user-field">
     <tasque-team-select *ngIf="projectUsers.length > 0"
-        [avatars]="projectUsers"
         (selectedUser)="selectedUser"
     >
     </tasque-team-select>
