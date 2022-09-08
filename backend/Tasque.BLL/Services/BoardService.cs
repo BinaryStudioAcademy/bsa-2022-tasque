@@ -6,6 +6,7 @@ using Tasque.Core.Common.Entities;
 using System.Reflection.Metadata.Ecma335;
 using AutoMapper;
 using Tasque.Core.Common.DTO.User;
+using Tasque.Core.BLL.Exceptions;
 
 namespace Tasque.Core.BLL.Services
 {
@@ -23,18 +24,13 @@ namespace Tasque.Core.BLL.Services
         public async Task<BoardInfoDto?> GetBoardByProjectId(int projectId)
         {
             var board = await _db.Boards
-                .FirstOrDefaultAsync(b => b.ProjectId == projectId);
+                .FirstOrDefaultAsync(b => b.ProjectId == projectId)
+                ?? throw new CustomNotFoundException($"board");
 
-            if (board == null)
-            {
-                return null;
-            }
             var project = await _db.Projects.Include(p => p.Users)
-                .FirstOrDefaultAsync(p => p.Id == projectId);
-            if (project == null)
-            {
-                return null;
-            }
+                .FirstOrDefaultAsync(p => p.Id == projectId)
+                ?? throw new CustomNotFoundException($"project with id {projectId}");
+
             var users = _mapper.Map<List<UserDto>>(project.Users);
 
             var columns = await _db.BoardColumns
@@ -82,7 +78,7 @@ namespace Tasque.Core.BLL.Services
         {
             if (board.Columns == null)
             {
-                return null;
+                return board;
             }
             foreach (var column in board.Columns)
             {
