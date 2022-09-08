@@ -53,7 +53,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   get projectErrorMessage(): string {
     const ctrl = this.projectControl;
 
-    if (ctrl.errors?.['required']) {
+    if (ctrl.errors?.['required'] && (ctrl.touched || ctrl.dirty)) {
       return 'Project is required';
     }
     return '';
@@ -62,7 +62,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   get issueTypeErrorMessage(): string {
     const ctrl = this.issueTypeControl;
 
-    if (ctrl.errors?.['required']) {
+    if (ctrl.errors?.['required'] && (ctrl.touched || ctrl.dirty)) {
       return 'Issue type is required';
     }
     return '';
@@ -71,11 +71,14 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   get summaryErrorMessage(): string {
     const ctrl = this.summaryControl;
 
-    if (ctrl.errors?.['minlength']) {
+    if (ctrl.errors?.['minlength'] && (ctrl.touched || ctrl.dirty)) {
       return 'Summary must be at least 2 characters';
     }
-    if (ctrl.errors?.['maxlength']) {
+    if (ctrl.errors?.['maxlength'] && (ctrl.touched || ctrl.dirty)) {
       return 'Summary must be at less  80 characters';
+    }
+    if (ctrl.errors?.['required'] && (ctrl.touched || ctrl.dirty)) {
+      return 'Summary is required';
     }
     return '';
   }
@@ -191,9 +194,8 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   public submitForm(): void {
     if (!this.taskCreateForm.valid || !this.taskCreateForm.dirty) {
-      if (!this.summaryControl.valid)
-        this.notificationService.error('Issue name is required');
-      else this.notificationService.error('Invalid values');
+      this.taskCreateForm.markAllAsTouched();
+      this.notificationService.error('Some values are incorrect. Follow error messages to solve this problem', 'Invalid values');
       return;
     }
 
@@ -209,5 +211,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   public clearForm(): void {
     this.taskCreateForm.reset();
     this.sideBarService.toggle('');
+    this.customFields = [];
   }
 }
