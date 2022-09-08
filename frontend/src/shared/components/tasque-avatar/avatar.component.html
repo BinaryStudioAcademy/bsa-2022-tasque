@@ -2,12 +2,12 @@
   <span
     class="initials"
     [ngStyle]="{ 'font-size.px': fontSize }"
-    *ngIf="userAvatar === ''"
+    *ngIf="!userAvatar"
     >{{ getInitials(user) }}</span
   >
   <img
     class="avatar"
-    *ngIf="userAvatar !== ''"
+    *ngIf="userAvatar"
     [src]="userAvatar"
     [alt]="alt ? alt : getInitials(user)"
     [ngStyle]="{ 'width.px': diameter_px }"
