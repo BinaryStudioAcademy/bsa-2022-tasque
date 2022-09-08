@@ -27,8 +27,8 @@ export class AvatarComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  get initials(): string {
-    const partsOfName = this.user.name.split(' ');
+  getInitials(user: UserModel): string {
+    const partsOfName = user.name.split(' ');
     if (partsOfName.length >= 2) {
       return partsOfName[0][0] + partsOfName[1][0];
     }
