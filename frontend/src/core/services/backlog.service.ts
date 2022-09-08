@@ -1,6 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { TaskModelDto } from '../models/task/task-model-dto';
 import { HttpService } from './http.service';
 
@@ -9,6 +9,12 @@ import { HttpService } from './http.service';
 })
 export class BacklogService {
   public routePrefix = '/api/backlog';
+
+  private changeBacklogSource = new Subject<string>();
+  changeBacklog$ = this.changeBacklogSource.asObservable();
+  changeBacklog() {
+    this.changeBacklogSource.next();
+  }
 
   constructor(public httpService: HttpService) {}
 

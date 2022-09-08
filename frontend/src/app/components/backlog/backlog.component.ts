@@ -61,7 +61,11 @@ export class BacklogComponent implements OnInit {
     public taskService: TaskService,
     public currentUserService: GetCurrentUserService,
     private toastrService: ToastrService,
-  ) {}
+  ) {
+    sprintService.deleteSprint$.subscribe((sprintId) => {
+      this.deleteSprint(sprintId);
+    });
+  }
 
   ngOnInit(): void {
     this.currentUserService.currentUser$.subscribe((user) => {
@@ -162,5 +166,9 @@ export class BacklogComponent implements OnInit {
         event.currentIndex,
       );
     }
+  }
+
+  deleteSprint(sprintId: number) {
+    this.sprints = this.sprints.filter((task) => task.id !== sprintId);
   }
 }
