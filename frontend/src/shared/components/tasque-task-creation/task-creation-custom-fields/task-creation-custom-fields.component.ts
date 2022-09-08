@@ -21,17 +21,16 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
   @Input() projectUsers: UserModel[];
   public fieldType: TaskFieldType;
   public dropdownField: DropdownField;
-  public checkboxField: CheckboxField;
+  public checkboxFields: CheckboxField[];
   public dropdownOptions: TasqueDropdownOption[] = [];
   public labelField: LabelField[];
   public textValue: string;
-  public dropdownValue: string = '';
+  public dropdownValue: string; // TODO: replace with string annotation
   public editorConfig = EditorConfig;
   public editorContent = '';
   public checkboxValue: boolean;
   public selectedUser: UserModel;
   public labelOptions: TasqueDropdownOption[] = [];
-
   
   ngOnInit(): void {
     this.fieldType = this.customField.type;
@@ -43,7 +42,8 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
       this.setLabelOptions();
     }
     if(this.fieldType === TaskFieldType.CheckBox) {
-      this.checkboxField = this.customField.checkbox as CheckboxField;
+      this.checkboxFields = this.customField.checkboxes as CheckboxField[];
+      console.log(this.customField.checkboxes);
     }
     console.log(this.customField);
   }
@@ -58,10 +58,10 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
 
   setCheckboxChanged(val: boolean): void {
     this.checkboxValue = val;
-    console.log(val + ' ' + this.checkboxField.checkList);
+    console.log(this.checkboxFields);
   }
   
-  setSelectedLabel(val: number) {
+  setSelectedLabel(val: number): void {
     console.log(val);
   }
 
@@ -70,8 +70,8 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
     this.labelField.forEach((l) => this.labelOptions.push({
       color: l.color,
       title: l.name,
-      id: index,
-    }), index++);
+      id: index++,
+    }));
   }
 
 }

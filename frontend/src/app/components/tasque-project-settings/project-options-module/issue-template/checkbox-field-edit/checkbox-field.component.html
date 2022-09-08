@@ -4,12 +4,12 @@
     </div>
     <hr>
     <div *ngFor="let field of fields" class="checkbox">
-        <span>{{field}}</span>
+        <span>{{field.checkboxName}}</span>
         <tasque-button style="margin-left: 10px" (btnClick)="deleteField(field)" [icon]="faMinus" class="btn icon"></tasque-button>
     </div>
     <div *ngIf="isChanging" class="edit-checkbox">
-        <tasque-input [formControl]="formControl" class="edit-input" placeholder="Write field name" type="text" (outputValue)="setValue($event)"></tasque-input>
-        <tasque-button class="btn icon" [icon]="faCheck" (keydown.enter)="saveField()" (btnClick)="saveField()"></tasque-button>
+        <tasque-input [formControl]="formControl" (keydown.enter)="saveField()" class="edit-input" placeholder="Write field name" type="text" (outputValue)="setValue($event)"></tasque-input>
+        <tasque-button class="btn icon" [icon]="faCheck" (btnClick)="saveField()"></tasque-button>
     </div>
     <div class="create-checkbox">
         <span>Add new option</span>

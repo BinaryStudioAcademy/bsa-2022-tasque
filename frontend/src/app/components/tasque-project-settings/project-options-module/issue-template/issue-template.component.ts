@@ -178,7 +178,7 @@ export class IssueTemplateComponent implements OnInit {
           title: this.type?.name as string,
           projectId: this.projectId,
           customFields: []
-        }
+        };
       }
     }, 
     () => {

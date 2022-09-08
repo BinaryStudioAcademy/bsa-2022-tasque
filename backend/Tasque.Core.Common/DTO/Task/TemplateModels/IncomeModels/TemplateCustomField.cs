@@ -20,6 +20,6 @@ namespace Tasque.Core.Common.DTO.Task.TemplateModels.IncomeModels
 
         public List<LabelField>? Labels { get; set; }
 
-        public CheckboxField? Checkbox { get; set; }
+        public List<CheckboxField>? Checkboxes { get; set; }
     }
 }

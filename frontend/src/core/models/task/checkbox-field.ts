@@ -1,4 +1,5 @@
 export interface CheckboxField {
-    checkList?: string[]
+    checkboxName: string,
+    isChecked: boolean,
 }
 

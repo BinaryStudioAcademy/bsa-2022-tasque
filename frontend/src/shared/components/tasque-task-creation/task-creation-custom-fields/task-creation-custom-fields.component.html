@@ -65,9 +65,9 @@
 <div *ngIf="fieldType === 6" class="checkbox-field">
     <div 
         class="checkbox-item"
-        *ngFor="let chk of checkboxField.checkList">
+        *ngFor="let chk of checkboxFields">
         <tasque-checkbox 
-            [text]="chk"
+            [text]="chk.checkboxName"
             (stateChanged)="setCheckboxChanged($event)"
         >
         </tasque-checkbox>

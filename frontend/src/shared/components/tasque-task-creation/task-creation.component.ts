@@ -134,7 +134,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       if(projects === null) {
         return;
       }
-      projects.forEach(p => this.projects.push({
+      projects.forEach((p) => this.projects.push({
         title: p.name,
         id: p.id
       }));
@@ -154,7 +154,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
     this.taskTemplateService.getAllProjectTaskTypes(this.selectedProjectId).subscribe((resp) => {
       const types = resp.body as TaskType[];
-      types.forEach(t => this.issueTypes.push({
+      types.forEach((t) => this.issueTypes.push({
         title: t.name,
         id: t.id,
       }));
@@ -166,17 +166,17 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       } else {
         this.notificationService.error('Something went wrong, try again later');
       }
-    })
+    });
   }
 
-  setSelectedTaskType(id: number) {
+  setSelectedTaskType(id: number): void {
     this.selectedTaskTypeId = id;
     
     if(this.selectedProjectId === undefined) {
       return;
     }
     this.template = this.issueTemplates
-      .find(t => t.projectId === this.selectedProjectId && t.typeId === this.selectedTaskTypeId) as TaskTemplate;
+      .find((t) => t.projectId === this.selectedProjectId && t.typeId === this.selectedTaskTypeId) as TaskTemplate;
       this.customFields = this.template.customFields?? [];
   }
 

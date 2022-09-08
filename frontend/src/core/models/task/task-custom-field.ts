@@ -10,5 +10,5 @@ export interface TaskCustomField {
 
     labels?: LabelField[],
     dropdown?: DropdownField,
-    checkbox?: CheckboxField,
+    checkboxes?: CheckboxField[],
 }

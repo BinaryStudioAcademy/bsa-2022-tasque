@@ -1,8 +1,9 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { TaskCustomField } from 'src/core/models/task/task-custom-field';
-import { faCheck, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faLessThanEqual, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FormControl, Validators } from '@angular/forms';
 import { NotificationService } from 'src/core/services/notification.service';
+import { CheckboxField } from 'src/core/models/task/checkbox-field';
 
 @Component({
   selector: 'app-checkbox-field',
@@ -12,12 +13,12 @@ import { NotificationService } from 'src/core/services/notification.service';
 export class CheckboxFieldComponent implements OnInit {
 
   @Input() field: TaskCustomField;
-  public fields: string[];
+  public fields: CheckboxField[];
 
   @Output() closeEdit = new EventEmitter<boolean>();
 
   isChanging = false;
-  newField: string;
+  newField: CheckboxField;
 
   faCheck = faCheck;
   faMinus = faMinus;
@@ -45,16 +46,15 @@ export class CheckboxFieldComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fields = this.field?.checkbox?.checkList as string[];
-    if(this.fields === undefined || this.fields === null || this.fields.length === 0) {
+    this.fields = this.field?.checkboxes as CheckboxField[];
+    if(this.fields === undefined || this.fields === null) {
       this.fields = [];
     }
-    console.log(this.field.checkbox?.checkList);
   }
 
-  public deleteField(val:string): void {
-    this.field.checkbox?.checkList?.forEach((value,index)=>{
-      if(value==val) this.field.checkbox?.checkList?.splice(index,1);
+  public deleteField(val:CheckboxField): void {
+    this.field.checkboxes?.forEach((value,index)=> {
+      if(value.checkboxName === val.checkboxName) this.field.checkboxes?.splice(index,1);
   });
   }
 
@@ -63,10 +63,8 @@ export class CheckboxFieldComponent implements OnInit {
       this.notify.error(this.errorMessage);
       return;
     }
-    if(this.field.checkbox === undefined || this.field.checkbox === null || this.field.checkbox?.checkList === undefined) {
-      this.field.checkbox = {
-        checkList: this.fields
-      };
+    if(this.field.checkboxes === undefined || this.field.checkboxes === null) {
+      this.field.checkboxes = this.fields;
     }
     this.fields.push(this.newField);
     this.isChanging = false;
@@ -81,7 +79,10 @@ export class CheckboxFieldComponent implements OnInit {
   }
 
   setValue(val:string): void {
-    this.newField = val;
+    this.newField = {
+      checkboxName: val,
+      isChecked: false,
+    }
   }
 }
 

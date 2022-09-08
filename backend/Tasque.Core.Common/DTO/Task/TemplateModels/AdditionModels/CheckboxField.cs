@@ -8,6 +8,7 @@ namespace Tasque.Core.Common.DTO.Task.TemplateModels.AdditionModels
 {
     public class CheckboxField
     {
-        public string[]? CheckList { get; set; }
+        public string? CheckboxName { get; set; }
+        public bool IsChecked { get; set; }
     }
 }
