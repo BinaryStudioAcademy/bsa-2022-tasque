@@ -92,10 +92,20 @@ namespace Tasque.Core.BLL.Services
         }
         public async Task CompleteSprint(int sprintId)
         {
-            var sprint = await _db.Sprints.FirstOrDefaultAsync(s => s.Id == sprintId);
+            var sprint = await _db.Sprints
+                .Include(s => s.Tasks)
+                .FirstOrDefaultAsync(s => s.Id == sprintId);
 
             if (sprint == null)
                 throw new HttpException(System.Net.HttpStatusCode.NotFound, "Sprinter with this ID does not exist");
+
+            sprint.Tasks
+                    .Where(t => t.StateId == 1 || t.StateId == 3)
+                    .ToList()
+                    .ForEach(t =>
+                        {
+                           t.SprintId = null;
+                        });
 
             sprint.IsComplete = true;
 

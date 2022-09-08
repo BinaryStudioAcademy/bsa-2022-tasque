@@ -31,6 +31,7 @@ export class CompleteSprintDialogComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.returnIssueTobacklog();
     this.sprintService.completeSprint(this.sprint.id).subscribe();
     this.dialogRef.close();
   }
@@ -43,5 +44,15 @@ export class CompleteSprintDialogComponent implements OnInit {
   completedIssues(): number {
     return this.sprint.tasks.filter((t) => t.stateId == 2 || t.stateId == 4)
       .length;
+  }
+
+  returnIssueTobacklog(): void {
+    console.log(this.sprint);
+    this.sprint.tasks.forEach((t) =>
+      t.stateId === 1 || t.stateId == 3
+        ? (t.sprintId = undefined)
+        : (t.sprintId = t.sprintId),
+    );
+    console.log(this.sprint);
   }
 }
