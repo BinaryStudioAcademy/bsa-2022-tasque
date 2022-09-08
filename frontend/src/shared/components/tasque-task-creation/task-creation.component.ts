@@ -16,7 +16,6 @@ import { TaskCustomField } from 'src/core/models/task/task-template-models/task-
 import { UserModel } from 'src/core/models/user/user-model';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { TaskCustomFieldModel } from 'src/core/models/task/task-creation-models/task-custom-field-model';
-import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 
 @Component({
   selector: 'tasque-task-creation',
@@ -27,24 +26,30 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   faExpeditedssl = faEllipsisVertical;
 
   public task: TaskCreateViewModel = {};
+
   public taskCreateForm: FormGroup = new FormGroup({});
   public projectControl: FormControl;
   public issueTypeControl: FormControl;
   public summaryControl: FormControl;
   public descriptionControl: FormControl;
+
   public unsubscribe$ = new Subject<void>();
+
   public editorConfig = EditorConfig;
   public editorContent = '';
-  public issueTemplates: TaskTemplate[];
 
   public selectedProjectId: number;
   public selectedTaskTypeId: number;
+
   public template: TaskTemplate;
   public taskType: TaskType;
+
   public customFields: TaskCustomField[];
-  public taskCustomFields: TaskCustomFieldModel[] = [];
+  public issueTemplates: TaskTemplate[];
   public projectUsers: UserModel[];
   public currentUser: UserModel;
+
+  public taskCustomFields: TaskCustomFieldModel[] = [];
 
   @Input() public buttonText = '';
   @Input() public organizationId = 1;
@@ -153,12 +158,18 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   setSelectedProjectId(id: number): void {
     this.selectedProjectId = id;
     this.issueTemplates = [];
     this.projectUsers = [];
     this.issueTypes = [];
     this.customFields = [];
+    this.taskCustomFields = [];
 
     this.taskTemplateService.getAllProjectTemplates(this.selectedProjectId).subscribe((resp) => {
       this.issueTemplates = resp.body as TaskTemplate[];
@@ -183,6 +194,8 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   setSelectedTaskType(id: number): void {
     this.selectedTaskTypeId = id;
+    this.customFields = [];
+    this.taskCustomFields = [];
     
     if(this.selectedProjectId === undefined) {
       return;
@@ -194,12 +207,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
         fieldId: cf.fieldId as string,
         type: cf.type,
       }));
-      console.log(this.taskCustomFields);
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 
   openSidebar(): void {
@@ -232,18 +239,16 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   }
 
   getCustomField(field: TaskCustomFieldModel): void {
-    console.log('get val');
-    console.log(field);
-
+    //console.log('get field');
+    //console.log(field);
     const isExist = this.taskCustomFields.find((f) => f.fieldId === field.fieldId);
     if(isExist === undefined){
       this.taskCustomFields.push(field);
     }
     this.taskCustomFields.forEach((val) => {
       if(val.fieldId === field.fieldId) {
-        val.fieldValue = field.fieldValue
+        val.fieldValue = field.fieldValue;
       }
     });
-    console.log(this.taskCustomFields);
   }
 }

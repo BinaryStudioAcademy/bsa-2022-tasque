@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, HostListener, EventEmitter, Output } from '@angular/core';
 import { CheckboxField } from 'src/core/models/task/task-template-models/checkbox-field';
 import { DropdownField } from 'src/core/models/task/task-template-models/dropdown-field';
 import { LabelField } from 'src/core/models/task/task-template-models/label-field';
@@ -38,8 +38,16 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
   public editorConfig = EditorConfig;
   public editorContent = '';
 
+  @HostListener('document:keyup')
+  listenParagraph(): void {
+    if(this.fieldType === TaskFieldType.Paragraph) {
+      this.textValue = this.editorContent;
+      this.emitField();
+    }
+  }
+
   //INCOME VALUES
-  public textValue: string; //use for =>   text, par, num, date 
+  public textValue: string; //use for =>   text, num, date 
 
   public dropdownValue: string;
   public labelValue: LabelField;
@@ -86,6 +94,13 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
     this.emitField();
   }
 
+  setSelectedDate(val: string): void {
+    console.log(val);
+    this.textValue = val;
+    console.log(this.textValue);
+    this.emitField();
+  }
+
   //SET OPTIONS
 
   setLabelOptions(): void {
@@ -100,39 +115,38 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
   //EMIT 
 
   emitField(): void { 
-    if(this.fieldType === TaskFieldType.Paragraph) { // --
+    if(this.fieldType === TaskFieldType.Paragraph) {
       this.valueField = {
         fieldId: this.customField.fieldId as string,
         fieldValue: this.editorContent,
-      }
+      };
     }
     if(this.fieldType === TaskFieldType.Label) {
       this.valueField = {
         fieldId: this.customField.fieldId as string,
         fieldValue: this.labelValue.name,
-      }
+      };
     } else if(this.fieldType === TaskFieldType.User) { //User =>    Maybe to change? --
       this.valueField = {
         fieldId: this.customField.fieldId as string,
         //fieldValue: this.textValue,
-      }
+      };
     } else if(this.fieldType === TaskFieldType.Dropdown) {
       this.valueField = {
         fieldId: this.customField.fieldId as string,
         fieldValue: this.dropdownValue,
-      }
+      };
     } else if(this.fieldType === TaskFieldType.CheckBox) { //   --
       this.valueField = {
         fieldId: this.customField.fieldId as string,
         fieldValue: String(this.checkboxValue),
-      }
-      console.log(this.checkboxValue);
+      };
     } else {                    //Used for => Text, number and date fields
       this.valueField = {
         fieldId: this.customField.fieldId as string,
         fieldValue: this.textValue,
-      } 
-    }
+      };
+    };
     this.taskCustomField.emit(this.valueField);
   }
 }
