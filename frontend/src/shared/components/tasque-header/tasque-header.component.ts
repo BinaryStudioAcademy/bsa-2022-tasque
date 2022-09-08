@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   faCaretDown,
@@ -21,6 +21,7 @@ export class HeaderComponent implements OnInit {
   public searchIcon = faMagnifyingGlass;
   public currentUser: UserModel;
   public currentOrganizationId: number;
+  @Input() hasLogo = false;
 
   public upArrowIcon = faCaretUp;
   public downArrowIcon = faCaretDown;
