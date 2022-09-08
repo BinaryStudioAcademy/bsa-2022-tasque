@@ -59,9 +59,8 @@ namespace Tasque.Core.BLL.Services
 
         public async System.Threading.Tasks.Task DeleteTask(int id)
         {
-            var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == id);
-            if (task == null)
-                throw new CustomNotFoundException(nameof(Common.Entities.Task));
+            var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == id) 
+                ?? throw new CustomNotFoundException(nameof(Common.Entities.Task));
 
             _dbContext.Tasks.Remove(task);
 
