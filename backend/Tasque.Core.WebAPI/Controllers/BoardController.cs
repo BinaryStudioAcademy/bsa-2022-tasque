@@ -17,22 +17,22 @@ namespace Tasque.Core.WebAPI.Controllers
             _boardService = service;
         }
 
-        [HttpGet("{projectId}")]
-        public async Task<IActionResult> GetBoardByProjectId(int projectId)
-        {
-            var result = await _boardService.GetBoardByProjectId(projectId);
-            return Ok(result);
-        }
+        //[HttpGet("{projectId}")]
+        //public async Task<IActionResult> GetBoardByProjectId(int projectId)
+        //{
+        //    var result = await _boardService.GetBoardByProjectId(projectId);
+        //    return Ok(result);
+        //}
 
-        [HttpPut("{projectId}")]
-        public async Task<IActionResult> UpdateBoardByProjectId(int projectId, [FromBody]BoardInfoDto board)
-        {
-            if(projectId != board.ProjectId)
-            {
-                return BadRequest("Incorrect project Id");
-            }
-            var result = await _boardService.UpdateBoardColumns(board);
-            return Ok(result);
-        }
+        //[HttpPut("{projectId}")]
+        //public async Task<IActionResult> UpdateBoardByProjectId(int projectId, [FromBody]BoardInfoDto board)
+        //{
+        //    if(projectId != board.ProjectId)
+        //    {
+        //        return BadRequest("Incorrect project Id");
+        //    }
+        //    var result = await _boardService.UpdateBoardColumns(board);
+        //    return Ok(result);
+        //}
     }
 }
