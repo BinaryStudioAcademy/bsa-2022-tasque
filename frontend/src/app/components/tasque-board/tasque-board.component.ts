@@ -195,7 +195,7 @@ export class TasqueBoardComponent implements OnInit {
 
   fillOptions(): void {
     this.projectOptions.push({
-      title: this.board.projectName,
+      title: this.board.name,
       id: this.projectId,
     } as TasqueDropdownOption);
   }
