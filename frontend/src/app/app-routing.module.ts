@@ -31,7 +31,7 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'project',
+    path: 'project/:id',
     component: PageWithSidebarComponent,
     canActivate: [AuthGuard],
     children: [

@@ -44,12 +44,12 @@ export class SelectUsersComponent implements OnInit {
       {
         id: 1,
         email: 'admin@gmail.com',
-        username: 'Admin',
+        userName: 'Admin',
         profileURL: '',
         avatarURL: '',
-        role: BusinessRole.Administrator,
-      } as IUserCard,
-    ],
+        role: BusinessRole.Admin
+      } as IUserCard
+    ]
   };
 
   @Output() onAdd = new EventEmitter<string>();
@@ -96,7 +96,7 @@ export class SelectUsersComponent implements OnInit {
     this.isLoading = true;
 
     this.onDelete.emit(email);
-
+    
     this.refreshList();
   }
 
@@ -110,14 +110,18 @@ export class SelectUsersComponent implements OnInit {
   }
 
   roleToString(role: BusinessRole | null): string {
-    return role ? BusinessRole[role] : '';
+    if(role) {
+      return role.toString();
+    }
+
+    return '';
   }
 
   getUserModel(user: IUserCard): UserModel {
     return {
       id: user.id,
       email: user.email,
-      name: user.username,
+      name: user.userName,
       avatarURL: user.avatarURL,
       organizationRoles: [
         { organizationId: 1, userId: 2, role: UserRole.organizationMember },
@@ -134,4 +138,5 @@ export class SelectUsersComponent implements OnInit {
       this.isLoading = false;
     });
   }
+
 }
