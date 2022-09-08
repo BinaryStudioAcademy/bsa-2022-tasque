@@ -44,12 +44,12 @@ export class CompleteSprintDialogComponent implements OnInit {
   }
 
   openIssue(): number {
-    return this.sprint.tasks.filter((t) => t.stateId == 1 || t.stateId == 3)
+    return this.sprint.tasks.filter((t) => t.stateId == 1 || t.stateId == 2)
       .length;
   }
 
   completedIssues(): number {
-    return this.sprint.tasks.filter((t) => t.stateId == 2 || t.stateId == 4)
+    return this.sprint.tasks.filter((t) => t.stateId == 3 || t.stateId == 4)
       .length;
   }
 }

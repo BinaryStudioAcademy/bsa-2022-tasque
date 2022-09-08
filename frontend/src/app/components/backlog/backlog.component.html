@@ -36,18 +36,17 @@
       </div>
     </div>
   </div>
-  <div>
-    <div class="body" cdkDropListGroup>
-      <app-sprint
-        *ngFor="let sprint of sprints"
-        [sprint]="sprint"
-        [currentUser]="currentUser"
-        [inputSearch]="inputSearch"
-        (sprintUp)="updateSprintPosition($event, true)"
-        (sprintDown)="updateSprintPosition($event, false)"
-        [filterIssue]="filterIssue"
-      ></app-sprint>
-      <app-backlog-content [project]="currentProject"></app-backlog-content>
-    </div>
+
+  <div class="body" cdkDropListGroup>
+    <app-sprint
+      *ngFor="let sprint of sprints"
+      [sprint]="sprint"
+      [currentUser]="currentUser"
+      [inputSearch]="inputSearch"
+      (sprintUp)="updateSprintPosition($event, true)"
+      (sprintDown)="updateSprintPosition($event, false)"
+      [filterIssue]="filterIssue"
+    ></app-sprint>
+    <app-backlog-content [project]="currentProject"></app-backlog-content>
   </div>
 </div>

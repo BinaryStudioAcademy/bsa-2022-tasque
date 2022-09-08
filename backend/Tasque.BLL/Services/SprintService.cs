@@ -25,7 +25,7 @@ namespace Tasque.Core.BLL.Services
         public async Task<IEnumerable<SprintDto>> GetProjectSprints(int projectId)
         {
             var sprints = await _db.Sprints
-                .Where(s => s.ProjectId == projectId)
+                .Where(s => s.ProjectId == projectId && !s.IsComplete)
                 .ToListAsync();
 
             return _mapper.Map<IEnumerable<SprintDto>>(sprints);
@@ -100,7 +100,7 @@ namespace Tasque.Core.BLL.Services
                 throw new HttpException(System.Net.HttpStatusCode.NotFound, "Sprinter with this ID does not exist");
 
             sprint.Tasks
-                    .Where(t => t.StateId == 1 || t.StateId == 3)
+                    .Where(t => t.StateId == 1 || t.StateId == 2)
                     .ToList()
                     .ForEach(t =>
                         {
