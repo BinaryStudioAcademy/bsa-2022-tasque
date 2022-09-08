@@ -26,6 +26,7 @@ export class TasqueTeamSelectComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
+    console.log(this.avatars);
     this.generateColor();
   }
 
