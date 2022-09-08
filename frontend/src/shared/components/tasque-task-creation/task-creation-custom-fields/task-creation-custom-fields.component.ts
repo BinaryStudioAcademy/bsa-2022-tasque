@@ -29,6 +29,7 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
   public dropdownField: DropdownField;
   public checkboxFields: CheckboxField[];
   public labelField: LabelField[];
+  public taskCheckboxFields: CheckboxField[] = [];
 
   //OPTIONS
   public dropdownOptions: TasqueDropdownOption[] = [];
@@ -86,18 +87,22 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
 
   setCheckboxChanged(val: boolean, field: CheckboxField): void {
     field.isChecked = val;
+    const isExist = this.taskCheckboxFields.find((f) => f.checkboxName === field.checkboxName);
+    if(isExist === undefined) {
+      this.taskCheckboxFields.push(field);
+    } else {
+      this.taskCheckboxFields.forEach((f) => {
+        if(f.checkboxName === field.checkboxName) {
+          f.isChecked = field.isChecked;
+        }
+      });
+    }
+    this.textValue = JSON.stringify(this.checkboxFields);
     this.emitField();
   }
   
   setSelectedLabel(val: number): void {
     this.labelValue = this.labelField[val];
-    this.emitField();
-  }
-
-  setSelectedDate(val: string): void {
-    console.log(val);
-    this.textValue = val;
-    console.log(this.textValue);
     this.emitField();
   }
 
@@ -139,7 +144,7 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
     } else if(this.fieldType === TaskFieldType.CheckBox) { //   --
       this.valueField = {
         fieldId: this.customField.fieldId as string,
-        fieldValue: String(this.checkboxValue),
+        fieldValue: this.textValue,
       };
     } else {                    //Used for => Text, number and date fields
       this.valueField = {

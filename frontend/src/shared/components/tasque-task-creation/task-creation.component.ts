@@ -239,8 +239,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   }
 
   getCustomField(field: TaskCustomFieldModel): void {
-    //console.log('get field');
-    //console.log(field);
     const isExist = this.taskCustomFields.find((f) => f.fieldId === field.fieldId);
     if(isExist === undefined){
       this.taskCustomFields.push(field);
