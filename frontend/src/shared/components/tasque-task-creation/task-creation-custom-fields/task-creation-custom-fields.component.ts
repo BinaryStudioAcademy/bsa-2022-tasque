@@ -56,7 +56,6 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
 
   setDropdownValue(value: string): void {
     this.dropdownValue = value;
-    console.log(this.dropdownValue);
   }
 
   setCheckboxChanged(val: boolean, field: CheckboxField): void {
