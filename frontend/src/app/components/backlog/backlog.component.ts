@@ -168,7 +168,7 @@ export class BacklogComponent implements OnInit {
     }
   }
 
-  deleteSprint(sprintId: number) {
+  deleteSprint(sprintId: number): void {
     this.sprints = this.sprints.filter((task) => task.id !== sprintId);
   }
 }

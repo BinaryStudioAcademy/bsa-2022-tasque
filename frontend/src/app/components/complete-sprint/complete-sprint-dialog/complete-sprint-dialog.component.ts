@@ -38,7 +38,8 @@ export class CompleteSprintDialogComponent implements OnInit {
     });
     this.dialogRef.close();
   }
-  changeOutside() {
+
+  changeOutside(): void {
     this.backlogService.changeBacklog();
     this.sprintService.changeDeleteSprint(this.sprint.id);
   }

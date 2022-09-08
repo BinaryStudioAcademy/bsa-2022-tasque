@@ -12,7 +12,7 @@ export class BacklogService {
 
   private changeBacklogSource = new Subject<string>();
   changeBacklog$ = this.changeBacklogSource.asObservable();
-  changeBacklog() {
+  changeBacklog(): void {
     this.changeBacklogSource.next();
   }
 

@@ -16,7 +16,7 @@ export class SprintService {
 
   private deleteSprintSource = new Subject<number>();
   deleteSprint$ = this.deleteSprintSource.asObservable();
-  changeDeleteSprint(sprintId: number) {
+  changeDeleteSprint(sprintId: number): void {
     this.deleteSprintSource.next(sprintId);
   }
 
