@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Tasque.Core.Common.DTO.Board;
 using Tasque.Core.Common.DTO.Project;
 using Tasque.Core.Common.Entities;
 
@@ -12,6 +13,8 @@ namespace Tasque.Core.BLL.MappingProfiles
                 .ForMember(dest => dest.Users, act => act.MapFrom(src => src.UserRoles));
 
             CreateMap<Project, ProjectAfterCreateDto>();
+
+            CreateMap<Project, BoardInfoDto>();
         }
     }
 }
