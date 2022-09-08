@@ -108,7 +108,6 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<TaskStateService>()
                 .AddScoped<TaskTypeService>()
                 .AddScoped<ITaskService, TaskService>()
-                .AddScoped<BoardService>()
                 .AddScoped<BacklogService>()
                 .RegisterIdentity(configuration);
         }
