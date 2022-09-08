@@ -6,6 +6,6 @@ public class BoardColumn : BaseEntity
 {
     public string Name { get; set; } = null!;
 
-    public int BoardId { get; set; }
-    public Board Board { get; set; } = null!;
+    public int ProjectId { get; set; }
+    public Project Project { get; set; } = null!;
 }
