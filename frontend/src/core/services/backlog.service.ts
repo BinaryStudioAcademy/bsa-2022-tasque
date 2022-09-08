@@ -14,7 +14,7 @@ export class BacklogService {
 
   getBacklogTasks(projectId: number): Observable<HttpResponse<TaskModelDto[]>> {
     return this.httpService.getFullRequest<TaskModelDto[]>(
-      this.routePrefix + `/getBacklogTasks/${projectId}`,
+      this.routePrefix + `/backlogTasks/${projectId}`,
     );
   }
 }

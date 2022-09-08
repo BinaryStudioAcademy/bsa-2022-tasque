@@ -18,7 +18,7 @@ namespace Tasque.Core.WebAPI.Controllers
             _userId = currentUser.Id;
         }
 
-        [HttpGet("getBacklogTasks/{projectId}")]
+        [HttpGet("backlogTasks/{projectId}")]
         public async Task<IActionResult> GetBacklogTasks(int projectId)
         {
             return Ok(await _service.GetBacklogTasks(projectId));

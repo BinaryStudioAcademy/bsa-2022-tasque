@@ -40,7 +40,7 @@ export class CompleteSprintDialogComponent implements OnInit {
       .length;
   }
 
-  complatedIssues(): number {
+  completedIssues(): number {
     return this.sprint.tasks.filter((t) => t.stateId == 2 || t.stateId == 4)
       .length;
   }

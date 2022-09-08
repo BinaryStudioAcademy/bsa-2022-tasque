@@ -17,11 +17,10 @@ namespace Tasque.Core.BLL.Services
 
         public async Task<IEnumerable<TaskState>> GetAll()
         {
-            var tasksState = await _db.TaskStates
-                .Select(s => s)
+            var tasksStates = await _db.TaskStates
                 .ToListAsync();
 
-            return tasksState;
+            return tasksStates;
         }
     }
 }
