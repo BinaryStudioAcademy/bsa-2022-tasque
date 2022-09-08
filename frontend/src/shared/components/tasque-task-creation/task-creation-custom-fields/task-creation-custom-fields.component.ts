@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { CheckboxField } from 'src/core/models/task/checkbox-field';
 import { DropdownField } from 'src/core/models/task/dropdown-field';
 import { LabelField } from 'src/core/models/task/label-field';
@@ -19,18 +19,26 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
 
   @Input() customField: TaskCustomField;
   @Input() projectUsers: UserModel[];
+
+  @Output() taskCustomField: EventEmitter<TaskCustomField>;
+
   public fieldType: TaskFieldType;
+
   public dropdownField: DropdownField;
   public checkboxFields: CheckboxField[];
-  public dropdownOptions: TasqueDropdownOption[] = [];
   public labelField: LabelField[];
-  public textValue: string;
-  public dropdownValue: string; // TODO: replace with string annotation
+
+  public dropdownOptions: TasqueDropdownOption[] = [];
+  public labelOptions: TasqueDropdownOption[] = [];
+
   public editorConfig = EditorConfig;
   public editorContent = '';
+
+  public textValue: string;
+  public dropdownValue: string;
+  public labelValue: LabelField;
   public checkboxValue: boolean;
   public selectedUser: UserModel;
-  public labelOptions: TasqueDropdownOption[] = [];
   
   ngOnInit(): void {
     this.fieldType = this.customField.type;
@@ -43,26 +51,20 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
     }
     if(this.fieldType === TaskFieldType.CheckBox) {
       this.checkboxFields = this.customField.checkboxes as CheckboxField[];
-      console.log(this.customField.checkboxes);
     }
-    console.log(this.customField);
   }
 
-  selectDropdownValue(value: string): void {
+  setDropdownValue(value: string): void {
     this.dropdownValue = value;
+    console.log(this.dropdownValue);
   }
 
-  selectLabelValue(label: LabelField): void {
-    console.log(label);
-  }
-
-  setCheckboxChanged(val: boolean): void {
-    this.checkboxValue = val;
-    console.log(this.checkboxFields);
+  setCheckboxChanged(val: boolean, field: CheckboxField): void {
+    field.isChecked = val;
   }
   
   setSelectedLabel(val: number): void {
-    console.log(val);
+    this.labelValue = this.labelField[val];
   }
 
   setLabelOptions(): void {
@@ -74,4 +76,7 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
     }));
   }
 
+  emitField(): void {
+    this.taskCustomField.emit(this.customField);
+  }
 }

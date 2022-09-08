@@ -53,7 +53,7 @@
         <tasque-option 
             option 
             *ngFor="let val of dropdownField.fields" 
-            (click)="selectDropdownValue(val)"
+            (click)="setDropdownValue(val)"
         >{{val}}
         </tasque-option>
     </tasque-menu-dropdown>
@@ -68,7 +68,7 @@
         *ngFor="let chk of checkboxFields">
         <tasque-checkbox 
             [text]="chk.checkboxName"
-            (stateChanged)="setCheckboxChanged($event)"
+            (stateChanged)="setCheckboxChanged($event, chk)"
         >
         </tasque-checkbox>
     </div>
