@@ -69,4 +69,11 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         var result = await _service.AddProject(entity);
         return Ok(result);
     }
+
+    [HttpGet("board/{id:int}")]
+    public async Task<IActionResult> GetBoard(int projectId)
+    {
+        var res = await _service.GetProjectBoard(projectId);
+        return Ok(res);
+    }
 }

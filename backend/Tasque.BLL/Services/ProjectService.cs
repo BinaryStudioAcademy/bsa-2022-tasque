@@ -1,6 +1,8 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Exeptions;
+using Tasque.Core.Common.DTO.Board;
 using Tasque.Core.Common.DTO.Project;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
@@ -13,7 +15,6 @@ namespace Tasque.Core.BLL.Services;
 public class ProjectService : EntityCrudService<Project>
 {
     private readonly IMapper _mapper;
-
     public ProjectService(DataContext db, IMapper mapper) : base(db)
     {
         _mapper = mapper;
@@ -81,7 +82,7 @@ public class ProjectService : EntityCrudService<Project>
     {
         var user = await _db.Users
             .FirstOrDefaultAsync(u => u.Email == usersInviteDto.Email);
-             
+
         var project = await _db.Projects
             .FirstOrDefaultAsync(proj => proj.Id == usersInviteDto.ProjectId);
 
@@ -91,7 +92,7 @@ public class ProjectService : EntityCrudService<Project>
             throw new HttpException(System.Net.HttpStatusCode.NotFound, "The user with this email does not exist");
         }
 
-        if (project == null) 
+        if (project == null)
         {
             throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
         }
@@ -152,7 +153,7 @@ public class ProjectService : EntityCrudService<Project>
         var userProjecRole = await _db.UserProjectRoles
             .FirstOrDefaultAsync(u => u.UserId == roleDto.UserId && u.ProjectId == roleDto.ProjectId);
 
-        if(userProjecRole == null)
+        if (userProjecRole == null)
         {
             throw new HttpException(System.Net.HttpStatusCode.NotFound, "Make sure that the user is a member of the project");
         }
@@ -164,5 +165,16 @@ public class ProjectService : EntityCrudService<Project>
 
         _db.UserProjectRoles.Add(userProjecRole);
         await _db.SaveChangesAsync();
+    }
+
+    public async Task<BoardInfoDto> GetProjectBoard(int projectId)
+    {
+        var project = await _db.Projects
+            .Include(x => x.Columns).ThenInclude(x => x.Tasks)
+            .Include(x => x.Users)
+            .FirstOrDefaultAsync(x => x.Id == projectId)
+            ?? throw new CustomNotFoundException("project");
+
+        return _mapper.Map<BoardInfoDto>(project);
     }
 }
