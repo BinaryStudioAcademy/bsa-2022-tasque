@@ -70,7 +70,7 @@ export class BacklogComponent implements OnInit {
   ngOnInit(): void {
     this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user as UserModel;
-      this.getUserBoards();
+      // this.getUserBoards();
       this.getSprints();
     });
   }
