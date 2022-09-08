@@ -41,8 +41,20 @@ public class ProjectService : EntityCrudService<Project>
         project.Users.Add(user);
 
         await _db.SaveChangesAsync();
+        await CreateBoardForProject(project);
 
         return _mapper.Map<ProjectAfterCreateDto>(project);
+    }
+
+    public async Task CreateBoardForProject(Project project)
+    {
+        _db.Boards.Add(new Board
+        {
+            ProjectId = project.Id,
+            Name = $"{project.Name} Board"
+        });
+
+        await _db.SaveChangesAsync();
     }
 
     public async Task<ProjectInfoDto> EditProject(EditProjectDto projectDto)

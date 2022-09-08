@@ -11,30 +11,33 @@ namespace Tasque.Core.DAL.SeedData
             SeedProjectRole(builder);
         }
 
-        public static void SeedProjectRole(ModelBuilder builder) =>
+        public static void SeedProjectRole(ModelBuilder builder)
+        {
+            var creationDate = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             builder.Entity<Role>().HasData
                 (
                     new Role()
                     {
                         Id = (int)BaseProjectRole.Admin,
                         Name = BaseProjectRole.Admin.ToString(),
-                        CreatedAt = DateTime.UtcNow,
-                        UpdatedAt = DateTime.UtcNow
+                        CreatedAt = creationDate,
+                        UpdatedAt = creationDate
                     },
                     new Role()
                     {
                         Id = (int)BaseProjectRole.Dev,
                         Name = BaseProjectRole.Dev.ToString(),
-                        CreatedAt = DateTime.UtcNow,
-                        UpdatedAt = DateTime.UtcNow
+                        CreatedAt = creationDate,
+                        UpdatedAt = creationDate
                     },
                     new Role()
                     {
                         Id = (int)BaseProjectRole.QA,
                         Name = BaseProjectRole.QA.ToString(),
-                        CreatedAt = DateTime.UtcNow,
-                        UpdatedAt = DateTime.UtcNow
+                        CreatedAt = creationDate,
+                        UpdatedAt = creationDate
                     }
                 );
+        }
     }
 }
