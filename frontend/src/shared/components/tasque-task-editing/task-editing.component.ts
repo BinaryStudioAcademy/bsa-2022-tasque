@@ -1,7 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { UserModel } from 'src/core/models/user/user-model';
-import { faCheckToSlot, faXmark, faLink, faPaperclip, faShareNodes, faEllipsisVertical, faFaceSmile, faPen, faFlag } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCheckToSlot,
+  faXmark,
+  faLink,
+  faPaperclip,
+  faShareNodes,
+  faEllipsisVertical,
+  faFaceSmile,
+  faPen,
+  faFlag,
+} from '@fortawesome/free-solid-svg-icons';
 import { BaseComponent } from 'src/core/base/base.component';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -17,10 +27,9 @@ import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
 @Component({
   selector: 'tasque-task-editing',
   templateUrl: './task-editing.component.html',
-  styleUrls: ['./task-editing.component.sass']
+  styleUrls: ['./task-editing.component.sass'],
 })
 export class TaskEditingComponent extends BaseComponent implements OnInit {
-
   @Input() public task: TaskModel;
   @Input() public currentUser: UserModel;
   public taskUser: UserModel;
@@ -48,149 +57,14 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public projectOptions: TasqueDropdownOption[] = [];
   public sprintOptions: TasqueDropdownOption[] = [];
 
-  @Input() public taskPriorities: TaskPriority[] = [
-    {
-      id: 1,
-      name: 'Low',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 2,
-      name: 'Middle',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 3,
-      name: 'High',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-  ];
-  @Input() public taskStates: TaskState[] = [
-    {
-      id: 1,
-      name: 'To Do',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 2,
-      name: 'In Progress',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 3,
-      name: 'Done',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 4,
-      name: 'Canceled',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-  ];
-  @Input() public taskTypes: TaskType[] = [
-    {
-      id: 1,
-      name: 'Bug',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      icon: this.flagIcon
-    },
-    {
-      id: 2,
-      name: 'Feature',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      icon: this.flagIcon
-    },
-    {
-      id: 3,
-      name: 'Enhancement',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      icon: this.flagIcon
-    },
-  ];
+  @Input() public taskPriorities: TaskPriority[] = [];
+  @Input() public taskStates: TaskState[] = [];
+  @Input() public taskTypes: TaskType[] = [];
 
-  @Input() public projects: ProjectModel[] = [
-    {
-      id: 1,
-      name: 'project 1',
-      key: 'PR-1',
-      authorId: 0,
-      organizationId: 0,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 2,
-      name: 'project 2',
-      key: 'PR-2',
-      authorId: 0,
-      organizationId: 0,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 3,
-      name: 'project 3',
-      key: 'PR-3',
-      authorId: 0,
-      organizationId: 0,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-  ];
+  @Input() public projects: ProjectModel[] = [];
 
-  @Input() public sprints: SprintModel[] = [
-    {
-      id: 1,
-      name: 'spr1',
-      description: 'sprint desc',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      projectId: 1
-    },
-    {
-      id: 2,
-      name: 'spr2',
-      description: 'sprint desc',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      projectId: 2
-    },
-    {
-      id: 3,
-      name: 'spr3',
-      description: 'sprint desc',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      projectId: 3
-    }
-  ];
-  @Input() public users: UserModel[] = [
-    {
-      id: 1,
-      name: 'User1Name',
-      email: 'email'
-    },
-    {
-      id: 2,
-      name: 'User2Name',
-      email: 'email'
-    },
-    {
-      id: 3,
-      name: 'User3Name',
-      email: 'email'
-    }
-  ];
+  @Input() public sprints: SprintModel[] = [];
+  @Input() public users: UserModel[] = [];
 
   public editorConfig: AngularEditorConfig = EditorConfig;
 
@@ -205,20 +79,20 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         id: 1,
         name: 'To Do',
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
       type: {
         id: 1,
         name: 'Bug',
         createdAt: new Date(),
         updatedAt: new Date(),
-        icon: this.flagIcon
+        icon: this.flagIcon,
       },
       priority: {
         id: 1,
         name: 'Low',
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
       author: this.users.filter((u) => u.id == 1)[0],
       project: this.projects.filter((p) => p.id == 2)[0],
@@ -227,7 +101,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       parentTaskId: 5,
       createdAt: new Date(),
       updatedAt: new Date(),
-      deadline: new Date()
+      deadline: new Date(),
     };
     this.currentUser = this.users[1];
     this.taskReporter = this.users[2];
@@ -242,15 +116,16 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       taskSummary: new FormControl(this.task.summary, [
         Validators.required,
         Validators.minLength(2),
-        Validators.maxLength(80)
+        Validators.maxLength(80),
       ]),
       taskStatus: new FormControl(this.convertToOption(this.task.state)),
       taskPriority: new FormControl(this.convertToOption(this.task.priority)),
       taskType: new FormControl(this.convertToOption(this.task.type)),
       taskSprint: new FormControl(this.convertToOption(this.taskSprint)),
-      taskDescription: new FormControl<SafeHtml | undefined>(this.task.description, [
-        Validators.maxLength(5000)
-      ]),
+      taskDescription: new FormControl<SafeHtml | undefined>(
+        this.task.description,
+        [Validators.maxLength(5000)],
+      ),
       taskAssignees: new FormControl(),
     });
 
@@ -310,12 +185,14 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     return '';
   }
 
-  private convertToOption(item: SprintModel | ProjectModel | TaskState | TaskPriority | TaskType): TasqueDropdownOption {
+  private convertToOption(
+    item: SprintModel | ProjectModel | TaskState | TaskPriority | TaskType,
+  ): TasqueDropdownOption {
     if (item.id === 0) {
       return {
         color: 'lightgray',
         title: '-',
-        id: 0
+        id: 0,
       };
     }
 
@@ -324,32 +201,32 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         return {
           color: 'green',
           title: item.name,
-          id: item.id
+          id: item.id,
         };
       case 2:
         return {
           color: 'yellow',
           title: item.name,
-          id: item.id
+          id: item.id,
         };
       case 3:
         return {
           color: 'orange',
           title: item.name,
-          id: item.id
+          id: item.id,
         };
       case 0:
         return {
           color: 'red',
           title: item.name,
-          id: item.id
+          id: item.id,
         };
     }
 
     return {
       color: 'pink',
       title: 'error',
-      id: -1
+      id: -1,
     };
   }
 
@@ -361,11 +238,13 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   }
 
   private fillSprintOptions(sprints: SprintModel[]): void {
-    this.sprintOptions = [{
-      color: 'lightgray',
-      title: '-',
-      id: 0
-    }];
+    this.sprintOptions = [
+      {
+        color: 'lightgray',
+        title: '-',
+        id: 0,
+      },
+    ];
 
     sprints.forEach((element) => {
       this.sprintOptions.push(this.convertToOption(element));

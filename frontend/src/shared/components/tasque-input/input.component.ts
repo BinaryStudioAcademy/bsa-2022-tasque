@@ -23,10 +23,9 @@ export type IconPosition = 'right' | 'left' | 'search' | 'mini-search';
   ],
 })
 export class InputComponent implements ControlValueAccessor {
-
   public inputClass = 'input';
   public inputType = 'text';
-  public inputValue = '';
+  @Input() public inputValue = '';
   public inputLabel = '';
   public inputPlaceholder = '';
   public inputErrorMessage = 'error';
@@ -34,7 +33,7 @@ export class InputComponent implements ControlValueAccessor {
 
   public iconPos: IconPosition;
   public inputIcon?: IconProp = undefined;
-  
+
   @Input() value: string;
 
   @Input()

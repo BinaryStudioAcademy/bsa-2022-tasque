@@ -25,22 +25,22 @@ const routes: Routes = [
       { path: 'organizations', component: OrganizationListComponent },
       { path: 'projects', component: ProjectListComponent },
       { path: 'backlog', component: BacklogComponent },
-      { path: 'backlog', component: BacklogComponent },
-      { path: 'projects', component: ProjectListComponent, },
+      { path: 'projects', component: ProjectListComponent },
+      { path: 'not-found', component: NotFoundPageComponent },
       ...UserRoutes,
-      { path: 'not-found', component: NotFoundPageComponent }
     ],
   },
   {
-    path: 'project',
+    path: 'project/:id',
     component: PageWithSidebarComponent,
     canActivate: [AuthGuard],
     children: [
       { path: 'board', component: TasqueBoardComponent },
       { path: 'team', component: TasqueTeamComponent },
       { path: 'settings', component: TasqueProjectSettingsComponent },
+      { path: 'backlog', component: BacklogComponent },
       ...ProjectSettingsRoutes,
-    ]
+    ],
   },
   { path: '**', redirectTo: '/not-found', pathMatch: 'full' },
 ];

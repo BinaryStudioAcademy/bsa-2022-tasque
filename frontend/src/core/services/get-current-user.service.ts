@@ -1,42 +1,33 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable, of, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { ReplaySubject, Subject } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { UserService } from 'src/app/user/services/user.service';
 import { UserModel } from '../models/user/user-model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GetCurrentUserService {
+  private currentUserSubj = new ReplaySubject<UserModel>(1);
+  public currentUser$ = this.currentUserSubj.asObservable();
 
-  constructor(
-    private userService: UserService,
-    private router: Router
-  ) {
-    this.userService.getCurrentUser().pipe(map((resp) => {
-      if (!resp.ok) {
-        this.router.navigate(['auth/login']);
-        return;
-      }
-      this.currentUser$ = of(resp.body as UserModel);
-    }));
+  constructor(private userService: UserService) {}
+
+  public getCurrentUser(): void {
+    this.userService
+      .getCurrentUser()
+      .pipe(take(1))
+      .subscribe((response) => {
+        if (response.body) {
+          this.currentUserSubj.next(response.body);
+        }
+      });
   }
 
-  private currentUser$: Observable<UserModel>;
-
-  get currentUser(): Observable<UserModel | undefined> {
-    if (this.currentUser$ !== undefined)
-      return this.currentUser$;
-    return this.userService.getCurrentUser().pipe(
-      map((resp) => {
-        if (!resp.ok) {
-          this.router.navigate(['auth/login']);
-          return;
-        }
-        this.currentUser$ = of(resp.body as UserModel);
-        return resp.body as UserModel;
-      }));
+  public clearCurrentUser(): void {
+    this.currentUserSubj.complete();
+    this.currentUserSubj = new ReplaySubject<UserModel>(1);
+    this.currentUser$ = this.currentUserSubj.asObservable();
   }
 
   public userAvatarUpdated$ = new Subject<string>();

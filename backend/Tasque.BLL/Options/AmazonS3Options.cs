@@ -1,5 +1,4 @@
-﻿
-namespace Tasque.Core.BLL.Options
+﻿namespace Tasque.Core.BLL.Options
 {
     public class AmazonS3Options
     {

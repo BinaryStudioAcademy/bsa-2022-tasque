@@ -1,0 +1,122 @@
+<div
+  class="sprint-conteiner"
+  cdkDropList
+  id="{{ sprint.id }}"
+  #doneList="cdkDropList"
+  [cdkDropListData]="sprint.tasks"
+  (cdkDropListDropped)="drop($event)"
+>
+  <details>
+    <summary>
+      <div class="wrapper">
+        <div class="marker">
+          <p class="open">
+            <fa-icon
+              [icon]="faChevronRight"
+              class="rotatable"
+              id="dropdown-arrow-icon"
+            ></fa-icon>
+          </p>
+          <p class="close">
+            <fa-icon
+              [icon]="faAngleDown"
+              class="rotatable"
+              id="dropdown-arrow-icon"
+            ></fa-icon>
+          </p>
+        </div>
+        <h4 class="sprint-name">{{ sprint.name }}</h4>
+        <div class="sprint-date">
+          <p class="startAt">{{ sprint.startAt | date: 'mediumDate' }}</p>
+          <p *ngIf="sprint.startAt">-</p>
+          <p *ngIf="!sprint.startAt">deadline:</p>
+          <p class="endAt">{{ sprint.endAt | date: 'mediumDate' }}</p>
+        </div>
+        <div class="issues">
+          <p>issues</p>
+          <p class="issues-count">
+            {{ tasks && tasks.length ? tasks.length : 0 }}
+          </p>
+        </div>
+        <div class="estimate">
+          <p>estimate</p>
+          <p class="estimate-count">{{ estimate }}</p>
+        </div>
+        <div class="wrapper button">
+          <tasque-button
+            *ngIf="!sprint.startAt"
+            text="Start sprint"
+            class="btn mini voilet full start-sprint"
+          ></tasque-button>
+          <app-complete-sprint
+            *ngIf="sprint.startAt"
+            [sprint]="sprint"
+            class="btn complete-sprint"
+            completeBthClass="btn mini violet-fill full"
+          ></app-complete-sprint>
+          <div class="dropdown-button">
+            <div class="dropdown" style="float: right">
+              <tasque-button
+                class="btn dropbtn"
+                [icon]="faEllipsisV"
+              ></tasque-button>
+              <div class="dropdown-content">
+                <a>
+                  <tasque-button
+                    (click)="$sprintUp(sprint)"
+                    text="Move sprint up"
+                    class="btn full black"
+                  ></tasque-button>
+                </a>
+                <a>
+                  <tasque-button
+                    (click)="$sprintDown(sprint)"
+                    text="Move sprint down"
+                    class="btn full black"
+                  ></tasque-button>
+                </a>
+                <a>
+                  <app-edit-sprint
+                    [currentSprint]="sprint"
+                    btnClass="btn full black"
+                  ></app-edit-sprint>
+                </a>
+                <a>
+                  <tasque-button
+                    text="Delete sprint"
+                    class="btn full black"
+                  ></tasque-button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </summary>
+    <div class="sprint-header">
+      <div class="select-user">
+        <tasque-team-select
+          (selectedUser)="filterUserTasks($event)"
+          *ngIf="sprintUsersCircle"
+        ></tasque-team-select>
+      </div>
+    </div>
+    <div class="sprint-body">
+      <app-issue
+        *ngFor="let task of tasks"
+        [issue]="task"
+        [taskStates]="taskState"
+        [taskTypes]="taskType"
+        [currentUser]="currentUser"
+        (estimate)="estimateCount()"
+      ></app-issue>
+    </div>
+    <div class="sprint-footer">
+      <tasque-task-creation
+        btnText="+ Create issues"
+        btnClass="btn mini voilet"
+        [sidebarName]="createIssueSidebarName"
+      ></tasque-task-creation>
+    </div>
+  </details>
+</div>

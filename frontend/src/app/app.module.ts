@@ -9,10 +9,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CreateOrganizationComponent } from './components/create-organization/create-organization.component';
-import { CreateProjectComponent } from './components/create-project/create-project.component';
-import { CreateOrganizationDialogComponent } from './components/create-organization/create-organization-dialog/create-organization-dialog.component';
-import { CreateProjectDialogComponent } from './components/create-project/create-project-dialog/create-project-dialog.component';
 import { AuthModule } from './auth/auth.module';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProjectListItemComponent } from './components/project-list/project-list-item/project-list-item.component';
@@ -28,6 +24,7 @@ import { TasqueProjectSettingsComponent } from './components/tasque-project-sett
 import { ToastrConfig } from 'src/core/models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
 import { EditOrganizationComponent } from './components/edit-organization/edit-organization.component';
+import { EditProjectComponent } from './components/edit-project/edit-project.component';
 import { ProjectOptionsModule } from './components/tasque-project-settings/project-options-module/project-options-module.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TasqueCardComponent } from './components/tasque-card/tasque-card.component';
@@ -35,16 +32,14 @@ import { EditSprintComponent } from './components/edit-sprint/edit-sprint.compon
 import { EditSprintDialogComponent } from './components/edit-sprint/edit-sprint-dialog/edit-sprint-dialog.component';
 import { CompleteSprintComponent } from './components/complete-sprint/complete-sprint.component';
 import { CompleteSprintDialogComponent } from './components/complete-sprint/complete-sprint-dialog/complete-sprint-dialog.component';
+import { SprintComponent } from './components/backlog/sprint/sprint.component';
+import { IssueComponent } from './components/backlog/sprint/issue/issue.component';
 import { BacklogContentComponent } from './components/backlog-content/backlog-content.component';
 import { BacklogComponent } from './components/backlog/backlog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CreateOrganizationComponent,
-    CreateOrganizationDialogComponent,
-    CreateProjectComponent,
-    CreateProjectDialogComponent,
     ProjectListComponent,
     ProjectListItemComponent,
     OrganizationListComponent,
@@ -58,12 +53,15 @@ import { BacklogComponent } from './components/backlog/backlog.component';
     TasqueBoardComponent,
     EditOrganizationComponent,
     TasqueProjectSettingsComponent,
+    EditProjectComponent,
     TasqueCardComponent,
     BacklogComponent,
     CompleteSprintComponent,
     CompleteSprintDialogComponent,
     EditSprintComponent,
     EditSprintDialogComponent,
+    SprintComponent,
+    IssueComponent,
     BacklogContentComponent,
     BacklogComponent,
   ],
@@ -79,7 +77,7 @@ import { BacklogComponent } from './components/backlog/backlog.component';
     AuthModule,
     UserModule,
     ProjectOptionsModule,
-    DragDropModule
+    DragDropModule,
   ],
   providers: [
     BrowserAnimationsModule,
@@ -88,4 +86,4 @@ import { BacklogComponent } from './components/backlog/backlog.component';
   bootstrap: [AppComponent],
   exports: [OrganizationListComponent],
 })
-export class AppModule { }
+export class AppModule {}

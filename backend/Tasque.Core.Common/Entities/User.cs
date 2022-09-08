@@ -31,6 +31,7 @@ public class User : BaseEntity
     public virtual ICollection<Task> OwnedTasks { get; set; }
     public virtual ICollection<Task> ParticipatedTasks { get; set; }
     public virtual ICollection<UserProjectRole> Roles { get; set; }
+    public virtual ICollection<UserOrganizationRole> SystemRoles { get; set; }
     public virtual ICollection<Organization> ParticipatedOrganization { get; set; }
     public virtual ICollection<Organization> OwnedOrganization { get; set; }
 }

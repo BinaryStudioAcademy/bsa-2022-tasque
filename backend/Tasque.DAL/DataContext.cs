@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.DAL.EntityConfiguration;
+using Tasque.Core.DAL.SeedData;
 using Task = Tasque.Core.Common.Entities.Task;
 
 namespace Tasque.Core.DAL;
@@ -17,6 +18,8 @@ public class DataContext : DbContext
         modelBuilder.ApplyConfiguration(new ProjectConfiguration());
         modelBuilder.ApplyConfiguration(new OrganizationConfiguration());
         modelBuilder.ApplyConfiguration(new UserProjectRoleConfiguration());
+        modelBuilder.ApplyConfiguration(new UserOrganizationRoleConfiguration());
+        modelBuilder.Seed();
     }
 
     public DbSet<Organization> Organizations { get; set; } = null!;
@@ -36,6 +39,7 @@ public class DataContext : DbContext
     public DbSet<TaskState> TaskStates { get; set; } = null!;
     public DbSet<TaskType> TaskTypes { get; set; } = null!;
     public DbSet<UserProjectRole> UserProjectRoles { get; set; } = null!;
+    public DbSet<UserOrganizationRole> UserOrganizationRoles { get; set; } = null!;
     public DbSet<Sprint> Sprints { get; set; } = null!;
     public DbSet<ConfirmationToken> ConfirmationTokens { get; set; } = null!;
 }

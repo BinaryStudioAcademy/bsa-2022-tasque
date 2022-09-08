@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tasque.Core.Common.DTO.User;
+using Tasque.Core.Common.DTO.User.UserRoles;
 using Tasque.Core.Common.Entities;
 
 namespace Tasque.Core.Identity.MappingProfiles
@@ -15,6 +11,8 @@ namespace Tasque.Core.Identity.MappingProfiles
         {
             CreateMap<UserRegisterDto, User>();
             CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<User, UserInfoDto>();
+            CreateMap<UserOrganizationRole, UserOrganizationRoleDto>();
         }
     }
 }

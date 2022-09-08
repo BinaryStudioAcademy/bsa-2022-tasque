@@ -16,6 +16,8 @@ public class Sprint : OrderableEntity
     public int ProjectId { get; set; }
     public Project Project { get; set; } = null!;
     public bool IsComplete { get; set; } = false;
-
     public virtual ICollection<Task> Tasks { get; set; }
+
+    public int Order { get; set; }
+
 }

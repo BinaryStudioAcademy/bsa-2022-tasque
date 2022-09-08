@@ -26,9 +26,13 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   public editorConfig = EditorConfig;
   public editorContent = '';
 
+  @Input() public buttonText = '';
   @Input() public currentUser: number;
   @Input() public projects: TasqueDropdownOption[];
   @Input() public issueTypes: TasqueDropdownOption[];
+  @Input() public btnText = 'Task creation';
+  @Input() public btnClass = 'btn stroke';
+  @Input() public sidebarName = 'taskCreation';
 
   get projectErrorMessage(): string {
     const ctrl = this.projectControl;

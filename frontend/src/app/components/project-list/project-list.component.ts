@@ -1,106 +1,93 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
+import { ProjectModel } from 'src/core/models/project/project-model';
 import { UserModel } from 'src/core/models/user/user-model';
-import { ProjectModel } from '../../../core/models/project/project-model';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
+import { ProjectService } from 'src/core/services/project.service';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { CreateProjectService } from 'src/core/services/create-project.service';
 
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
-  styleUrls: ['./project-list.component.sass']
+  styleUrls: ['./project-list.component.sass'],
 })
-export class ProjectListComponent implements OnInit {
-  public currentUser: UserModel = {
-    id: 0,
-    name: '',
-    email: ''
-  };
+export class ProjectListComponent implements OnInit, OnDestroy {
+
+  public currentUser: UserModel;
+  public currentOrganizationId: number;
 
   public inputSearch = '';
   public searchIcon = faMagnifyingGlass;
 
-  public items: ProjectModel[] = [
-    {
-      id: 1,
-      name: 'Tasque',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 2,
-      name: 'Youtube',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 3,
-      name: 'Facebook',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 4,
-      name: 'Twitch',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 5,
-      name: 'AWS',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 6,
-      name: 'Dia',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 7,
-      name: 'Spotify',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-    {
-      id: 8,
-      name: 'Google Chrome',
-      authorId: 1,
-      organizationId: 1,
-      createdAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    },
-  ];
+  public projects: ProjectInfoModel[] = [];
+  public items: ProjectModel[] = [];
 
-  public itemsShow = this.items;
+  public itemsShow = this.projects;
+  public unsubscribe$ = new Subject<void>();
 
-  constructor() { }
+  constructor(
+    public projectService: ProjectService,
+    private createProjectService: CreateProjectService, 
+    private currentOrganization: GetCurrentOrganizationService,
+    private currentUserService: GetCurrentUserService) {
+  }
 
   ngOnInit(): void {
+    this.subscribeToCurrentUser();
+    this.subscribeToCurrentOrganization();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   filterItems(): void {
     if (this.inputSearch) {
-      this.itemsShow = this.items.filter((item) => {
+      this.itemsShow = this.projects.filter((item) => {
         return item.name.toLowerCase().includes(this.inputSearch.toLowerCase());
       });
     }
     else {
-      this.itemsShow = this.items;
+      this.itemsShow = this.projects;
     }
   }
 
+  private subscribeToCurrentOrganization(): void {
+    this.currentOrganization.currentOrganizationId$.subscribe(
+      (result) => {
+        this.currentOrganizationId = result;
+        
+        this.projectService.getAllProjectsOfThisOrganization(this.currentOrganizationId)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((data) => {
+          if(data.body) {
+            this.projects = data.body;
+            this.itemsShow = this.projects;
+          }
+        });
+      });
+  }
+
+  public subscribeToCurrentUser(): void {
+    this.currentUserService.currentUser$.subscribe((user) => {
+      if (!user) {
+        return;
+    }
+      this.currentUser = user;
+    });
+  }
+
+  public openCreateProjectDialog(): void {
+    this.createProjectService.openDialog(this.currentOrganizationId)
+      .subscribe((result) => {
+        if (!result) {
+          return;
+        }
+      });
+  }
 }

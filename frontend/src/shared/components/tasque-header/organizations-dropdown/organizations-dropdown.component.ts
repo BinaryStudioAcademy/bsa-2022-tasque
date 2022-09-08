@@ -1,13 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { takeUntil } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
 import { BaseComponent } from 'src/core/base/base.component';
 import { UserModel } from 'src/core/models/user/user-model';
-import { MenuDropdownOption } from '../../tasque-menu-dropdown/menu-dropdown.component';
 import { Router } from '@angular/router';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Component({
   selector: 'tasque-organizations-dropdown',
@@ -16,31 +15,7 @@ import { Router } from '@angular/router';
 })
 export class OrganizationsDropdownComponent extends BaseComponent implements OnInit {
 
-  private user: UserModel;
-
-  @Input()
-  set currentUser(user: UserModel) {
-    if (!user) {
-      return;
-    }
-
-    this.user = user;
-
-    this.organizationService.getUserOrganizations(this.currentUser.id)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (result) => {
-          this.availableOrganizations = result.body as OrganizationModel[];
-
-          if (this.getCurrentOrganizationService.currentOrganizationId === -1 && this.availableOrganizations.length > 0) {
-            this.getCurrentOrganizationService.currentOrganizationId = this.availableOrganizations[0].id;
-          }
-        }
-      );
-  }
-  get currentUser(): UserModel {
-    return this.user;
-  }
+  public currentUser: UserModel;
 
   public currentOrganization: OrganizationModel = {
     id: -1,
@@ -52,37 +27,22 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
 
   public availableOrganizations: OrganizationModel[] = [];
 
-  public organizationControl = new FormControl<MenuDropdownOption | undefined>(undefined);
-
   constructor(
     private organizationService: OrganizationService,
     private getCurrentOrganizationService: GetCurrentOrganizationService,
+    private getCurrentUserService: GetCurrentUserService,
     private router: Router) {
     super();
   }
 
   ngOnInit(): void {
+    this.subscribeToCurrentUser();
     this.subscribeToCurrentOrganization();
-    this.subscribeToOrganizationControl();
-    this.subscribeToOrganizationsChange();
-
-    if (this.getCurrentOrganizationService.currentOrganizationId === -1) {
-      return;
-    }
-
-    const searchedOrganization = this.availableOrganizations
-      .find((x) => x.id === this.getCurrentOrganizationService.currentOrganizationId);
-
-    if (searchedOrganization) {
-      this.currentOrganization = searchedOrganization;
-    }
-    else {
-      this.setOrganization();
-    }
+    this.subscribeToOrganizationChange();
   }
 
   private setOrganization(): void {
-    if (this.getCurrentOrganizationService.currentOrganizationId === -1) {
+    if (this.currentOrganization.id === -1) {
       return;
     }
 
@@ -96,14 +56,6 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
           }
         }
       );
-  }
-
-  get organizationNames(): MenuDropdownOption[] {
-    if (this.availableOrganizations.length > 0) {
-      return this.availableOrganizations as MenuDropdownOption[];
-    }
-
-    return [];
   }
 
   private subscribeToCurrentOrganization(): void {
@@ -128,26 +80,20 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
       });
   }
 
-  private subscribeToOrganizationControl(): void {
-    this.organizationControl.valueChanges.subscribe(
-      (option) => {
-        const searchedOrganization = this.availableOrganizations.find((x) => x.id === option?.id);
+  public selectOrganization(organization: OrganizationModel): void {
+    if (this.currentOrganization.id === organization.id &&
+      this.getCurrentOrganizationService.currentOrganizationId === organization.id) {
+      return;
+    }
 
-        if (searchedOrganization) {
-          this.currentOrganization = searchedOrganization;
-          this.getCurrentOrganizationService.currentOrganizationId = this.currentOrganization.id;
-        }
-        else {
-          this.setOrganization();
-        }
-        this.router.navigate(['organizations'], { replaceUrl: true });
-        window.scroll(0, 0);
-      }
-    );
+    this.getCurrentOrganizationService.currentOrganizationId = organization.id;
+
+    this.router.navigate(['/projects'], { replaceUrl: true });
+    window.scroll(0, 0);
   }
 
-  private subscribeToOrganizationsChange(): void {
-    this.getCurrentOrganizationService.organizationsUpdated$.subscribe(
+  private subscribeToOrganizationChange(): void {
+    this.getCurrentOrganizationService.organizationUpdated$.subscribe(
       (organization) => {
         const index = this.availableOrganizations.findIndex((org) => org.id === organization.id);
 
@@ -175,5 +121,54 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
       replaceUrl: true,
     });
     window.scroll(0, 0);
+  }
+
+  public trackByOrganization(index: number, organization: OrganizationModel): number {
+    return organization.id;
+  }
+
+  public subscribeToCurrentUser(): void {
+    this.getCurrentUserService.currentUser$.subscribe((user) => {
+      this.currentUser = user;
+
+      this.organizationService.getUserOrganizations(user.id)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((response) => {
+
+          this.availableOrganizations = response.body as OrganizationModel[];
+
+          if (this.availableOrganizations.length === 0) {
+            this.currentOrganization = {
+              id: -1,
+              name: 'My Organizations',
+              authorId: -1,
+              createdAt: new Date(),
+              updatedAt: new Date()
+            };
+
+            this.getCurrentOrganizationService.setOrganizations(this.availableOrganizations);
+            return;
+          }
+
+          const searchedOrganization = this.availableOrganizations
+            .find((x) => x.id === this.getCurrentOrganizationService.currentOrganizationId);
+
+          if (searchedOrganization) {
+            this.currentOrganization = searchedOrganization;
+
+            this.getCurrentOrganizationService.setOrganizations(this.availableOrganizations);
+            return;
+          }
+
+          if (this.getCurrentOrganizationService.currentOrganizationId === -1
+            && this.availableOrganizations.length > 0) {
+
+            this.getCurrentOrganizationService.currentOrganizationId = this.availableOrganizations[0].id;
+
+            this.getCurrentOrganizationService.setOrganizations(this.availableOrganizations);
+            return;
+          }
+        });
+    });
   }
 }

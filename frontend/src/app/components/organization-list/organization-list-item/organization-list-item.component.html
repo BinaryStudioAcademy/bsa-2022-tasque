@@ -3,7 +3,7 @@
 
   <div class="buttons-container">
     <app-edit-organization
-      *ngIf="organization.authorId === currentUser.id"
+      *ngIf="organization.authorId === currentUser?.id || role === organizationAdmin"
       class="btn stroke"
       [organization]="organization"
     ></app-edit-organization>

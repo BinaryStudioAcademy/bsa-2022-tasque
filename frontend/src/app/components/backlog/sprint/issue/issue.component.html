@@ -1,0 +1,39 @@
+<div class="issue">
+  <p class="issue-type">{{ currentTaskType() }}</p>
+  <p class="issue-key">TIS-1</p>
+  <p
+    class="issue-title"
+    [matTooltipShowDelay]="1500"
+    matTooltip=" {{ issue.description }}"
+  >
+    {{ issue.summary }}
+  </p>
+  <div class="issue-estimate">
+    <tasque-input
+      class="input estimate-input"
+      type="number"
+      [(ngModel)]="issue.estimate"
+      (inputValue)="(issue.estimate)"
+      (change)="estimateChange()"
+    >
+    </tasque-input>
+  </div>
+  <tasque-dropdown
+    [options]="taskStateToDropdownArray(taskStates)"
+    (onSelect)="updateTaskState($event)"
+    [placeholder]="currentTaskState()"
+    width="150px"
+  ></tasque-dropdown>
+
+  <div class="issue-users">
+    <img
+      src="{{
+        issueAuthor && issueAuthor.avatarURL
+          ? issueAuthor.avatarURL
+          : '\\assets\\avatar.png'
+      }}"
+      alt="avatar"
+      title="{{ issueAuthor && issueAuthor.name ? issueAuthor.name : 'user' }}"
+    />
+  </div>
+</div>

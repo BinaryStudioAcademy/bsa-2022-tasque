@@ -14,6 +14,7 @@ import { ValidationConstants } from 'src/core/models/const-resources/validation-
 import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
 import { UserModel } from 'src/core/models/user/user-model';
+import { UserRole } from 'src/core/models/user/user-roles';
 
 @Component({
   selector: 'tasque-select-users',
@@ -41,11 +42,12 @@ export class SelectUsersComponent implements OnInit {
     hasRoles: true,
     users: [
       {
+        id: 1,
         email: 'admin@gmail.com',
-        username: 'Admin',
+        userName: 'Admin',
         profileURL: '',
         avatarURL: '',
-        role: BusinessRole.Administrator
+        role: BusinessRole.Admin
       } as IUserCard
     ]
   };
@@ -94,7 +96,7 @@ export class SelectUsersComponent implements OnInit {
     this.isLoading = true;
 
     this.onDelete.emit(email);
-
+    
     this.refreshList();
   }
 
@@ -108,15 +110,23 @@ export class SelectUsersComponent implements OnInit {
   }
 
   roleToString(role: BusinessRole | null): string {
-    return role ? BusinessRole[role] : '';
+    if(role) {
+      return role.toString();
+    }
+
+    return '';
   }
 
   getUserModel(user: IUserCard): UserModel {
     return {
       id: user.id,
       email: user.email,
-      name: user.username,
-      avatarURL: user.avatarURL
+      name: user.userName,
+      avatarURL: user.avatarURL,
+      organizationRoles: [
+        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
+        { organizationId: 2, userId: 2, role: UserRole.organizationMember },
+      ],
     };
   }
 
@@ -128,4 +138,5 @@ export class SelectUsersComponent implements OnInit {
       this.isLoading = false;
     });
   }
+
 }
