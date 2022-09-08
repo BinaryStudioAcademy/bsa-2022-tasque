@@ -16,6 +16,7 @@ import { TaskCustomField } from 'src/core/models/task/task-template-models/task-
 import { UserModel } from 'src/core/models/user/user-model';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { TaskCustomFieldModel } from 'src/core/models/task/task-creation-models/task-custom-field-model';
+import { TaskService } from 'src/core/services/task-service.service';
 
 @Component({
   selector: 'tasque-task-creation',
@@ -115,7 +116,8 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private taskTemplateService: TaskTemplateService,
     private projectService: ProjectService,
-    private currentUserService: GetCurrentUserService
+    private currentUserService: GetCurrentUserService,
+    private taskService: TaskService
   ) {
     this.projectControl = new FormControl(this.task.projectId, [
       Validators.required,
@@ -223,10 +225,13 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.task = {
+    this.task = { //TODO: Replace stateId and priorityId with dropdown select when ability to create this entities will implemented
       authorId: this.currentUser.id,
       projectId: this.taskCreateForm.get('projectControl')?.value.id,
+
       typeId: this.taskCreateForm.get('issueTypeControl')?.value.id,
+      stateId: 1, // <----
+      priorityId: 1, // <----
 
       summary: this.taskCreateForm.get('summaryControl')?.value,
       description: this.taskCreateForm.get('descriptionControl')?.value,
@@ -234,6 +239,9 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       customFields: this.taskCustomFields,
     };
     console.log(this.task);
+    this.taskService.createTask(this.task).subscribe((resp) => {
+      console.log(resp.body);
+    });
   }
 
   public clearForm(): void {

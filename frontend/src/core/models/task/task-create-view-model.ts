@@ -9,6 +9,8 @@ export interface TaskCreateViewModel {
     projectId?: number;
 
     typeId?: number;
+    priorityId?: number;
+    stateId?: number;
 
     customFields?: TaskCustomFieldModel[],
 }
