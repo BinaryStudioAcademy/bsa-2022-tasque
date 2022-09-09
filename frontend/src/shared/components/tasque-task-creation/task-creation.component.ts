@@ -147,7 +147,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     ]);
     this.priorityControl = new FormControl(this.task.priorityId, [
       Validators.required,
-    ])
+    ]);
   }
 
   ngOnInit(): void {

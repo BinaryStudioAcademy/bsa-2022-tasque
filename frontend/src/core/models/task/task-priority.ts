@@ -1,4 +1,4 @@
-import { TaskPriorityType } from "./enums/task-priority-types";
+import { TaskPriorityType } from './enums/task-priority-types';
 
 export interface TaskPriority {
   id: number,

@@ -73,7 +73,7 @@ export class IssueTemplateComponent implements OnInit {
 
   ngOnInit(): void {
     this.projectId = parseInt(
-        this.route.snapshot.pathFromRoot[1].paramMap.get('id') as string);
+      this.route.snapshot.pathFromRoot[1].paramMap.get('id') as string);
 
     this.taskTemplateService
       .getAllProjectTemplates(this.projectId)

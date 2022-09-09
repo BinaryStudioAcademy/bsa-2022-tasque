@@ -62,6 +62,6 @@ export class ProjectService {
   }
 
   getProjectPriorities(id: number): Observable<HttpResponse<TaskPriority[]>> {
-    return this.httpService.getFullRequest(this.routePrefix + '/getProjectPriorities/' + id)
+    return this.httpService.getFullRequest(this.routePrefix + '/getProjectPriorities/' + id);
   }
 }
