@@ -69,4 +69,24 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         var result = await _service.AddProject(entity);
         return Ok(result);
     }
+
+    [HttpGet("getByOrganizationId/{organizationId}")]
+    public IActionResult GetProjectsByOrganizationId(int organizationId)
+    {
+        var projects = _service.GetProjectsByOrganizationId(organizationId);
+        if (projects == null)
+            return NotFound();
+        return Ok(projects);
+    }
+
+    [HttpGet("getParticipants/{projectId}")]
+    public IActionResult GetProjectParticipants(int projectId)
+    {
+        var participants = _service.GetProjectParticipants(projectId);
+        if (participants == null)
+            return NotFound();
+        return Ok(participants);
+    }
 }
+
+

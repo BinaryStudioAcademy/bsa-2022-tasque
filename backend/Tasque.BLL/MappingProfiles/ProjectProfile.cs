@@ -8,6 +8,7 @@ namespace Tasque.Core.BLL.MappingProfiles
     {
         public ProjectProfile()
         {
+            CreateMap<Project, ProjectDto>().ReverseMap();
             CreateMap<Project, ProjectInfoDto>()
                 .ForMember(dest => dest.Users, act => act.MapFrom(src => src.UserRoles));
 

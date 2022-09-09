@@ -13,8 +13,8 @@ namespace Tasque.Core.BLL.MappingProfiles
         public TaskProfile()
         {
             CreateMap<Task, TaskDto>().ReverseMap();
-            CreateMap<TaskTypeDto, TaskTypeDto>().ReverseMap();
-            CreateMap<TaskPriorityDto, TaskPriorityDto>().ReverseMap();
+            CreateMap<TaskTypeDto, TaskType>().ReverseMap();
+            CreateMap<TaskPriorityDto, TaskPriority>().ReverseMap();
             CreateMap<TaskState, TaskStateDto>().ReverseMap();
             CreateMap<Attachment, AttachmentDto>().ReverseMap();
             CreateMap<Label, LabelDto>().ReverseMap();

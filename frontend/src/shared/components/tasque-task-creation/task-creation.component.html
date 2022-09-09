@@ -1,39 +1,44 @@
 <tasque-sidebar name="task-creation" [btnText]="btnText" [btnClass]="btnClass">
   <div class="task-creation-conteiner">
     <div class="task-creation-header">
-      <h4 class="task-creation-header-title">Create issue</h4>
+      <h4 class="task-creation-header-title" style="color: black">Create issue</h4>
       <div class="task-creation-header-button">
-        <tasque-button class="btn fill disabled" text="Import issues">
-        </tasque-button>
-        <tasque-button class="btn" [icon]="faExpeditedssl"> </tasque-button>
+        <tasque-button class="btn mini disabled" text="Import issues"></tasque-button>
+        <tasque-button class="btn icon" [icon]="faExpeditedssl"></tasque-button>
       </div>
     </div>
     <div class="task-creation-body">
       <div class="task-creation-body-wrapper">
+        <div class="body-title">
+          <span>Basic info</span>
+        </div>
+        <hr>
         <form [formGroup]="taskCreateForm">
           <div class="input-wrapper">
+            <label class="label">Project</label>
             <tasque-dropdown
-              label="Project"
               [options]="projects"
-              formControlName="projectControl"
+              [formControl]="projectControl"
               [errorMessage]="projectErrorMessage"
               [invalid]="!projectControl.valid"
+              (onSelect)="setSelectedProjectId($event)"
             >
             </tasque-dropdown>
           </div>
           <div class="input-wrapper">
+            <label class="label">Issue type</label>
             <tasque-dropdown
-              label="Issue type"
               [options]="issueTypes"
               [formControl]="issueTypeControl"
               [errorMessage]="issueTypeErrorMessage"
               [invalid]="!issueTypeControl.valid"
+              (onSelect)="setSelectedTaskType($event)"
             >
             </tasque-dropdown>
           </div>
           <div class="input-wrapper">
+            <label class="label">Summary</label>
             <tasque-input
-              label="Summary"
               [formControl]="summaryControl"
               [errorMessage]="summaryErrorMessage"
               [invalid]="!summaryControl.valid"
@@ -47,16 +52,27 @@
               class="editor-conteiner"
               [(ngModel)]="editorContent"
               [config]="editorConfig"
-              formControlName="descriptionControl"
+              [formControl]="descriptionControl"
             >
             </angular-editor>
           </div>
           <span class="error" *ngIf="!descriptionControl.valid">{{
             editorErrorMessage
           }}</span>
-
+          <div class="body-title" *ngIf="customFields !== undefined && customFields.length > 0">
+            <span>Additional fields</span>
+            <hr>
+          </div>
+          <div *ngFor="let field of customFields" class="custom-field">
+            <app-task-creation-custom-fields 
+              [customField]="field" 
+              [projectUsers]="projectUsers"
+              (taskCustomField)="getCustomField($event)"
+            >
+            </app-task-creation-custom-fields>
+          </div>
           <div class="button-wrapper">
-            <tasque-button class="btn stroke violet-stroke" text="+ Add issues">
+            <tasque-button class="btn stroke violet-stroke disabled" text="+ Add issues">
             </tasque-button>
           </div>
         </form>

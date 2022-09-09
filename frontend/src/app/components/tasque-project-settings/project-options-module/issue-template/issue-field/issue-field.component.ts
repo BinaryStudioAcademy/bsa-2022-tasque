@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { faPenToSquare, faCheck, faCode } from '@fortawesome/free-solid-svg-icons';
-import { TaskCustomField } from 'src/core/models/task/task-custom-field';
+import { TaskCustomField } from 'src/core/models/task/task-template-models/task-custom-field';
 
 @Component({
   selector: 'tasque-issue-field',
@@ -26,8 +26,10 @@ export class IssueFieldComponent implements OnInit {
   isChanging = false;
   isFieldLabel = false;
   isFieldDropdown = false;
+  isFieldCheckbox = false;
   @Output() isLabel = new EventEmitter<TaskCustomField>();
   @Output() isDropDown = new EventEmitter<TaskCustomField>();
+  @Output() isCheckbox = new EventEmitter<TaskCustomField>();
 
   @Input() field: TaskCustomField;
 
@@ -60,6 +62,11 @@ export class IssueFieldComponent implements OnInit {
   public toogleDropdownChanging(): void {
     this.isFieldDropdown = !this.isFieldDropdown;
     this.isDropDown.emit(this.field);
+  }
+
+  public toogleCheckboxChanging(): void {
+    this.isFieldCheckbox = !this.isFieldCheckbox;
+    this.isCheckbox.emit(this.field);
   }
 }
 

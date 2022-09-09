@@ -30,6 +30,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 cfg.AddProfile<UserProfiles>();
                 cfg.AddProfile<TaskProfile>();
                 cfg.AddProfile<TaskTemplateProfile>();
+                cfg.AddProfile<ProjectProfile>();
                 cfg.ConfigureIdentityMapping();
             },
             Assembly.GetExecutingAssembly());
