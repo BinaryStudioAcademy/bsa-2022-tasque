@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
+import { TaskStateTypes } from 'src/core/models/task/task-state-types';
 import { BacklogService } from 'src/core/services/backlog.service';
 import { SprintService } from 'src/core/services/sprint.service';
 
@@ -45,12 +46,18 @@ export class CompleteSprintDialogComponent implements OnInit {
   }
 
   openIssue(): number {
-    return this.sprint.tasks.filter((t) => t.stateId == 1 || t.stateId == 2)
-      .length;
+    return this.sprint.tasks.filter(
+      (t) =>
+        t.stateId == TaskStateTypes.ToDo ||
+        t.stateId == TaskStateTypes.InProgress,
+    ).length;
   }
 
   completedIssues(): number {
-    return this.sprint.tasks.filter((t) => t.stateId == 3 || t.stateId == 4)
-      .length;
+    return this.sprint.tasks.filter(
+      (t) =>
+        t.stateId == TaskStateTypes.Done ||
+        t.stateId == TaskStateTypes.Canceled,
+    ).length;
   }
 }
