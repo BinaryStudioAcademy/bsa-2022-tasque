@@ -52,7 +52,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   public taskCustomFields: TaskCustomFieldModel[] = [];
 
   @Input() public buttonText = '';
-  @Input() public organizationId = 1;
+  @Input() public organizationId: number;
   @Input() public projects: TasqueDropdownOption[] = [];
   @Input() public issueTypes: TasqueDropdownOption[] = [];
   @Input() public btnText = 'Task creation';

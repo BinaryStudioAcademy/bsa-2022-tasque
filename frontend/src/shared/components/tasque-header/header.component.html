@@ -15,7 +15,7 @@
     </tasque-menu-dropdown>
     <span class="button">Calendar</span>
     <tasque-menu-dropdown class="button-like" [toggleDropdownOnButtonClick]="false" separator="|">
-      <tasque-task-creation dropdown-button btnText="Create task" btnClass="btn white"></tasque-task-creation>
+      <tasque-task-creation dropdown-button btnText="Create task" btnClass="btn white" [organizationId]="currentOrganizationId"></tasque-task-creation>
       <tasque-option option (click)="openCreateProjectDialog()">
         <p>Create Project</p>
       </tasque-option>
