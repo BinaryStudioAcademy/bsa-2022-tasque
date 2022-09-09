@@ -19,8 +19,8 @@ export class ProjectService {
     public httpService: HttpService
   ) { }
 
-  createProject(newProject: NewProjectModel): Observable<HttpResponse<ProjectModel>> {
-    return this.httpService.postFullRequest<ProjectModel>(this.routePrefix + '/add', newProject);
+  createProject(newProject: NewProjectModel): Observable<HttpResponse<ProjectInfoModel>> {
+    return this.httpService.postFullRequest<ProjectInfoModel>(this.routePrefix + '/add', newProject);
   }
 
   editProject(editProject: EditProjectModel): Observable<HttpResponse<ProjectInfoModel>> {

@@ -19,7 +19,7 @@ public class ProjectService : EntityCrudService<Project>
         _mapper = mapper;
     }
 
-    public async Task<ProjectAfterCreateDto> AddProject(Project entity)
+    public async Task<ProjectInfoDto> AddProject(Project entity)
     {
         var user = await _db.Users
             .FirstOrDefaultAsync(u => u.Id == entity.AuthorId);
@@ -41,7 +41,15 @@ public class ProjectService : EntityCrudService<Project>
 
         await _db.SaveChangesAsync();
 
-        return _mapper.Map<ProjectAfterCreateDto>(project);
+        var projectAfterCreate = await _db.Projects
+            .Where(proj => proj.Id == project.Id)
+            .Include(p => p.UserRoles)
+                .ThenInclude(u => u.User)
+            .Include(p => p.UserRoles)
+                .ThenInclude(r => r.Role)
+            .FirstOrDefaultAsync();
+
+        return _mapper.Map<ProjectInfoDto>(projectAfterCreate);
     }
 
     public async Task<ProjectInfoDto> EditProject(EditProjectDto projectDto)

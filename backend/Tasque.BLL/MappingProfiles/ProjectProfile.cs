@@ -10,8 +10,6 @@ namespace Tasque.Core.BLL.MappingProfiles
         {
             CreateMap<Project, ProjectInfoDto>()
                 .ForMember(dest => dest.Users, act => act.MapFrom(src => src.UserRoles));
-
-            CreateMap<Project, ProjectAfterCreateDto>();
         }
     }
 }

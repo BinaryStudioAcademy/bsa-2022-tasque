@@ -107,7 +107,7 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
       .subscribe((resp) => {
         if (resp.status == 200) {
           this.notificationService.success('The project has been created');
-          this.dialogRef.close();
+          this.dialogRef.close(resp.body);
         }
       });
   }

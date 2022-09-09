@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { CreateOrganizationDialogComponent } from 'src/shared/components/create-organization-dialog/create-organization-dialog.component';
 import { CreateProjectDialogComponent } from 'src/shared/components/create-project-dialog/create-project-dialog.component';
 import { OrganizationModel } from '../models/organization/organization-model';
-import { ProjectModel } from '../models/project/project-model';
+import { ProjectInfoModel } from '../models/project/project-info-model';
 import { UserModel } from '../models/user/user-model';
 
 @Injectable({ providedIn: 'root' })
@@ -19,7 +19,7 @@ export class OpenDialogService {
         return dialog.afterClosed();
     }
 
-    public openCreateProjectDialog(currentOrganizationId: number): Observable<ProjectModel> {
+    public openCreateProjectDialog(currentOrganizationId: number): Observable<ProjectInfoModel> {
         const dialog = this.matDialog.open(CreateProjectDialogComponent, {
             data: currentOrganizationId,
         });
