@@ -18,7 +18,6 @@ import { SideBarService } from 'src/core/services/sidebar.service';
 import { HeaderComponent } from './components/tasque-header/tasque-header.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { TasqueTeamSelectComponent } from './components/tasque-team-select/tasque-team-select.component';
-import { TaskCreationComponent } from 'src/shared/components/tasque-task-creation/task-creation.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { TasqueSidebarComponent } from './components/tasque-sidebar/tasque-sidebar.component';
 import { TasqueSideBarModalComponent } from './components/tasque-sidebar/tasque-sidebar-modal/sidebar-modal.component';
@@ -31,6 +30,8 @@ import { MenuDropdownComponent } from './components/tasque-menu-dropdown/menu-dr
 import { TasqueOptionComponent } from './components/tasque-menu-dropdown/tasque-option/tasque-option.component';
 import { CreateOrganizationDialogComponent } from './components/create-organization-dialog/create-organization-dialog.component';
 import { CreateProjectDialogComponent } from './components/create-project-dialog/create-project-dialog.component';
+import { TaskCreationCustomFieldsComponent } from './components/tasque-task-creation/task-creation-custom-fields/task-creation-custom-fields.component';
+import { TaskCreationComponent } from './components/tasque-task-creation/task-creation.component';
 
 @NgModule({
   imports: [
@@ -69,6 +70,7 @@ import { CreateProjectDialogComponent } from './components/create-project-dialog
     TasqueOptionComponent,
     CreateOrganizationDialogComponent,
     CreateProjectDialogComponent,
+    TaskCreationCustomFieldsComponent,
   ],
   exports: [
     CommonModule,

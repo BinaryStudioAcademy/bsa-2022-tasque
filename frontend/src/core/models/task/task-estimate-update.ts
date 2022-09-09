@@ -1,5 +1,5 @@
 export interface TaskEstimateUpdate {
   taskId: number;
-  sprintId: number;
+  sprintId?: number;
   estimate: number;
 }

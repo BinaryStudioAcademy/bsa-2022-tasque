@@ -7,7 +7,7 @@ export interface TaskModelDto {
   priorityId: number;
   authorId: number;
   projectId: number;
-  sprintId: number;
+  sprintId?: number;
   lastUpdatedById: number;
   parentTaskId: number;
   createdAt: Date;

@@ -3,21 +3,22 @@ import { TaskCustomField } from 'src/core/models/task/task-template-models/task-
 import { faCheck, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FormControl, Validators } from '@angular/forms';
 import { NotificationService } from 'src/core/services/notification.service';
+import { CheckboxField } from 'src/core/models/task/task-template-models/checkbox-field';
 
 @Component({
-  selector: 'app-dropdown-field-edit',
-  templateUrl: './dropdown-field-edit.component.html',
-  styleUrls: ['./dropdown-field-edit.component.sass']
+  selector: 'app-checkbox-field',
+  templateUrl: './checkbox-field.component.html',
+  styleUrls: ['./checkbox-field.component.sass']
 })
-export class DropdownFieldEditComponent implements OnInit {
+export class CheckboxFieldComponent implements OnInit {
 
-@Input() field: TaskCustomField;
-  public fields: string[];
+  @Input() field: TaskCustomField;
+  public fields: CheckboxField[];
 
-@Output() closeEdit = new EventEmitter<boolean>();
+  @Output() closeEdit = new EventEmitter<boolean>();
 
   isChanging = false;
-  newField: string;
+  newField: CheckboxField;
 
   faCheck = faCheck;
   faMinus = faMinus;
@@ -45,15 +46,15 @@ export class DropdownFieldEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fields = this.field?.dropdown?.fields as string[];
-    if(this.fields === undefined || this.fields.length === 0) {
+    this.fields = this.field?.checkboxes as CheckboxField[];
+    if(this.fields === undefined || this.fields === null) {
       this.fields = [];
     }
   }
 
-  public deleteField(val:string): void {
-    this.field.dropdown?.fields.forEach((value,index)=>{
-      if(value==val) this.field.dropdown?.fields.splice(index,1);
+  public deleteField(val:CheckboxField): void {
+    this.field.checkboxes?.forEach((value,index)=> {
+      if(value.checkboxName === val.checkboxName) this.field.checkboxes?.splice(index,1);
   });
   }
 
@@ -62,14 +63,11 @@ export class DropdownFieldEditComponent implements OnInit {
       this.notify.error(this.errorMessage);
       return;
     }
-    if(this.field.dropdown === undefined || this.field.dropdown?.fields === undefined) {
-      this.field.dropdown = {
-        fields: this.fields
-      };
+    if(this.field.checkboxes === undefined || this.field.checkboxes === null) {
+      this.field.checkboxes = this.fields;
     }
     this.fields.push(this.newField);
     this.isChanging = false;
-    
   }
 
   public addField(): void {
@@ -81,7 +79,10 @@ export class DropdownFieldEditComponent implements OnInit {
   }
 
   setValue(val:string): void {
-    this.newField = val;
+    this.newField = {
+      checkboxName: val,
+      isChecked: false,
+    };
   }
 }
 

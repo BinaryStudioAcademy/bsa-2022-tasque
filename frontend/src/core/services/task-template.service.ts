@@ -28,7 +28,7 @@ export class TaskTemplateService {
     return this.httpService.getFullRequest(this.routePrefix + '/' + id);
   }
 
-  public getAllProjectTemplates(projectId: string): Observable<HttpResponse<TaskTemplate[]>> {
+  public getAllProjectTemplates(projectId: number): Observable<HttpResponse<TaskTemplate[]>> {
     return this.httpService.getFullRequest(this.routePrefix + '/all/' + projectId);
   }
 
@@ -41,6 +41,6 @@ export class TaskTemplateService {
   }
 
   public getAllProjectTaskTypes(id: number): Observable<HttpResponse<TaskType[]>> {
-    return this.httpService.getFullRequest('api/tasktype/getAllByProjectId/' + id);
+    return this.httpService.getFullRequest('/api/tasktype/getAllByProjectId/' + id);
   }
 }

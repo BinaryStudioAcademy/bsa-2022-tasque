@@ -19,5 +19,7 @@ namespace Tasque.Core.Common.DTO.Task.TemplateModels.IncomeModels
         public DropdownField? Dropdown { get; set; }
 
         public List<LabelField>? Labels { get; set; }
+
+        public List<CheckboxField>? Checkboxes { get; set; }
     }
 }
