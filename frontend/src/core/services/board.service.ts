@@ -2,12 +2,13 @@ import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpService } from 'src/core/services/http.service';
-import { BoardModelDto } from 'src/core/models/board/board-model-dto';
+import { BoardInfoModel } from 'src/core/models/board/board-info-model';
 import {
   IBoard,
   IBoardKey,
   IUserCard,
 } from 'src/shared/components/select-users/Models';
+import { BoardModel } from '../models/board/board-model';
 
 @Injectable({
   providedIn: 'root',
@@ -73,9 +74,17 @@ export class BoardService {
     localStorage.setItem(key, JSON.stringify(board));
   }
 
-  getUserBoards(userId: number): Observable<HttpResponse<BoardModelDto[]>> {
-    return this.httpService.getFullRequest<BoardModelDto[]>(
+  getUserBoards(userId: number): Observable<HttpResponse<BoardInfoModel[]>> {
+    return this.httpService.getFullRequest<BoardInfoModel[]>(
       this.routePrefix + `/getUserBoards/${userId}`,
     );
+  }
+
+  getProjectBoard(projectId: number): Observable<HttpResponse<BoardModel>> {
+    return this.httpService.getFullRequest<BoardModel>( this.routePrefix + `/${projectId}`);
+  }
+
+  updateProjectBoard(board: BoardModel): Observable<HttpResponse<BoardModel>> {
+    return this.httpService.putFullRequest<BoardModel>( this.routePrefix + `/${board.projectId}`, board);
   }
 }

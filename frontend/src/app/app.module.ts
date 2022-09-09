@@ -20,7 +20,6 @@ import { JwtInterceptor } from '../core/interceptors/jwt.interceptor';
 import { PageWithoutSidebarComponent } from './components/page-without-sidebar/page-without-sidebar.component';
 import { PageWithSidebarComponent } from './components/page-with-sidebar/page-with-sidebar.component';
 import { TasqueTeamComponent } from './components/tasque-team/tasque-team.component';
-import { TasqueProjectSettingsComponent } from './components/tasque-project-settings/tasque-project-settings.component';
 import { ToastrConfig } from 'src/core/models/const-resources/toastr-config';
 import { UserModule } from './user/user.module';
 import { EditOrganizationComponent } from './components/edit-organization/edit-organization.component';
@@ -32,11 +31,11 @@ import { EditSprintComponent } from './components/edit-sprint/edit-sprint.compon
 import { EditSprintDialogComponent } from './components/edit-sprint/edit-sprint-dialog/edit-sprint-dialog.component';
 import { CompleteSprintComponent } from './components/complete-sprint/complete-sprint.component';
 import { CompleteSprintDialogComponent } from './components/complete-sprint/complete-sprint-dialog/complete-sprint-dialog.component';
-import { BacklogContentComponent } from './components/backlog-content/backlog-content.component';
-import { BacklogComponent } from './components/backlog/backlog.component';
 import { SprintComponent } from './components/backlog/sprint/sprint.component';
 import { IssueComponent } from './components/backlog/sprint/issue/issue.component';
 import { AccessControlGuard } from 'src/core/guards/access-control.guard';
+import { BacklogContentComponent } from './components/backlog-content/backlog-content.component';
+import { BacklogComponent } from './components/backlog/backlog.component';
 
 @NgModule({
   declarations: [
@@ -50,10 +49,8 @@ import { AccessControlGuard } from 'src/core/guards/access-control.guard';
     TasqueBoardComponent,
     PageWithSidebarComponent,
     TasqueTeamComponent,
-    TasqueProjectSettingsComponent,
     TasqueBoardComponent,
     EditOrganizationComponent,
-    TasqueProjectSettingsComponent,
     EditProjectComponent,
     TasqueCardComponent,
     BacklogComponent,
@@ -88,4 +85,4 @@ import { AccessControlGuard } from 'src/core/guards/access-control.guard';
   bootstrap: [AppComponent],
   exports: [OrganizationListComponent],
 })
-export class AppModule {}
+export class AppModule { }

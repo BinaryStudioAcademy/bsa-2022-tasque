@@ -8,12 +8,12 @@ import { UserRoutes } from './user/user.routes';
 import { PageWithSidebarComponent } from './components/page-with-sidebar/page-with-sidebar.component';
 import { TasqueBoardComponent } from './components/tasque-board/tasque-board.component';
 import { TasqueTeamComponent } from './components/tasque-team/tasque-team.component';
-import { TasqueProjectSettingsComponent } from './components/tasque-project-settings/tasque-project-settings.component';
 import { AuthGuard } from './auth/guards/auth.guard';
-import { ProjectSettingsRoutes } from './components/tasque-project-settings/project-options-module/project-options-routes';
 import { BacklogComponent } from './components/backlog/backlog.component';
 import { NotFoundPageComponent } from 'src/shared/components/not-found-page/not-found-page.component';
 import { AccessControlGuard } from 'src/core/guards/access-control.guard';
+import { ProjectSettingsRoutes } from './components/tasque-project-settings/project-options-module/project-options.routes';
+
 
 const routes: Routes = [
   ...AuthRoutes,
@@ -26,10 +26,9 @@ const routes: Routes = [
       { path: 'organizations', component: OrganizationListComponent },
       { path: 'projects', component: ProjectListComponent },
       { path: 'backlog', component: BacklogComponent },
-      { path: 'backlog', component: BacklogComponent },
-      { path: 'projects', component: ProjectListComponent, },
-      ...UserRoutes,
+      { path: 'projects', component: ProjectListComponent },
       { path: 'not-found', component: NotFoundPageComponent },
+      ...UserRoutes,
     ],
   },
   {
@@ -51,4 +50,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

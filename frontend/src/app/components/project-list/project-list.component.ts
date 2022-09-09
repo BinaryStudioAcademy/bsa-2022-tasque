@@ -60,16 +60,21 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   private subscribeToCurrentOrganization(): void {
     this.currentOrganization.currentOrganizationId$.subscribe(
       (result) => {
+        if (result === -1) {
+          this.projects = this.itemsShow = [];
+          return;
+        }
+
         this.currentOrganizationId = result;
 
         this.projectService.getAllProjectsOfThisOrganization(this.currentOrganizationId)
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((data) => {
-          if(data.body) {
-            this.projects = data.body;
-            this.itemsShow = this.projects;
-          }
-        });
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe((data) => {
+            if (data.body) {
+              this.projects = data.body;
+              this.itemsShow = this.projects;
+            }
+          });
       });
   }
 
@@ -77,7 +82,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     this.currentUserService.currentUser$.subscribe((user) => {
       if (!user) {
         return;
-    }
+      }
       this.currentUser = user;
     });
   }

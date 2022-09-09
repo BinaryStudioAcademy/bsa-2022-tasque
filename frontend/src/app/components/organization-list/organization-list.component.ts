@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { UserModel } from 'src/core/models/user/user-model';
-import { faMagnifyingGlass, faMessage } from '@fortawesome/free-solid-svg-icons';
+import {
+  faMagnifyingGlass,
+  faMessage,
+} from '@fortawesome/free-solid-svg-icons';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { BaseComponent } from 'src/core/base/base.component';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
@@ -25,7 +28,8 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
   constructor(
     private currentUserService: GetCurrentUserService,
     private getCurrentOrganizationService: GetCurrentOrganizationService,
-    private openDialogService: OpenDialogService) {
+    private openDialogService: OpenDialogService,
+  ) {
     super();
   }
 
@@ -53,7 +57,8 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
   }
 
   openCreateOrganizationDialog(): void {
-    this.openDialogService.openCreateOrganizationDialog(this.currentUser)
+    this.openDialogService
+      .openCreateOrganizationDialog(this.currentUser)
       .subscribe((result: OrganizationModel) => {
         if (!result) {
           return;
