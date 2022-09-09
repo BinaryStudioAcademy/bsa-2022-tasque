@@ -72,33 +72,34 @@ export class IssueTemplateComponent implements OnInit {
   public isCheckbox: TaskCustomField | undefined;
 
   ngOnInit(): void {
-    this.projectId = parseInt(this.route.snapshot.pathFromRoot[1].paramMap.get('id') as string);
+    this.projectId = parseInt(
+        this.route.snapshot.pathFromRoot[1].paramMap.get('id') as string);
 
     this.taskTemplateService
-    .getAllProjectTemplates(this.projectId)
-    .subscribe((resp) => {
-      this.templates = resp.body as TaskTemplate[];
+      .getAllProjectTemplates(this.projectId)
+      .subscribe((resp) => {
+        this.templates = resp.body as TaskTemplate[];
 
-      this.templates.forEach(
-        (t) => this.taskTemplateService
-          .getTaskType(t.typeId as number)
-          .subscribe((resp) => {
-            this.types.push(resp.body as TaskType);
-            this.types.forEach((t) => {
-              this.type = t;
-              this.setDropdownOptions();
-              this.type = undefined;
-            });
-      }));
-    }, () => {
-      this.notificationService.info('No templates found');
-      this.templates = [];
-    });
+        this.templates.forEach(
+          (t) => this.taskTemplateService
+            .getTaskType(t.typeId as number)
+            .subscribe((resp) => {
+              this.types.push(resp.body as TaskType);
+              this.types.forEach((t) => {
+                this.type = t;
+                this.setDropdownOptions();
+                this.type = undefined;
+              });
+        }));
+      }, () => {
+        this.notificationService.info('No templates found');
+        this.templates = [];
+      });
 
     this.taskTemplateService
-    .getAllProjectTaskTypes(this.projectId)
-    .subscribe((resp) => {
-      this.types = resp.body as TaskType[];
+      .getAllProjectTaskTypes(this.projectId)
+      .subscribe((resp) => {
+        this.types = resp.body as TaskType[];
     });
   }
 
