@@ -10,4 +10,5 @@ public class SprintDto
     public DateTime? StartAt { get; set; }
     public DateTime? EndAt { get; set; }
     public int ProjectId { get; set; }
+    public int Order { get; set; }
 }

@@ -1,8 +1,8 @@
 <div class="board">
     <div class="board-info">
       <div class="board-title">
-        <span class="project-name">Project / TestProject</span>
-        <span class="board-name">TP Board</span>
+        <span class="project-name">Project / {{board.projectName}}</span>
+        <span class="board-name">{{board.name}}</span>
       </div>
       <div class="board-tools">
         <img src="assets/board/lightning.svg">
@@ -16,19 +16,22 @@
       <div class="task-menu">
         <div class="project-team">
           <div class="search-input-container">
-            <tasque-input class="search-input" type="search" [icon]="searchIcon" iconPosition="search" placeholder="Search..."></tasque-input>
+            <tasque-input class="search-input" #searchInput (input)="filterTasks()" type="search" [icon]="searchIcon" iconPosition="search" placeholder="Search..."></tasque-input>
           </div>
-          <div>
-            <tasque-team-select></tasque-team-select>
+          <div class="team-container">
+            <tasque-team-select [avatars]="board.users" (selectedUser)="userSelected($event)"></tasque-team-select>
           </div>
         </div>
         <div class="filter">
           <img src="assets/board/filter.svg">           
         </div>
       </div>
+      <div class="no-tasks" *ngIf="!hasTasks">
+        <h4>There are no tasks yet. You can create the first one.</h4>        
+      </div>
       <div class="board-columns" cdkDropListGroup>
-        <div cdkDropList *ngFor="let item of board" 
-        (cdkDropListDropped)="drop($event)" 
+        <div cdkDropList *ngFor="let item of board.columns" 
+        (cdkDropListDropped)="dragDrop($event)" 
         [cdkDropListData]="item.tasks">
           <div class="column-title">
             <div class="board-list">
@@ -36,19 +39,19 @@
               <span class="column-element-count"> ({{item.tasks.length}})</span>
             </div>
             <div class="column-tools">
-              <span>+</span>
+              <tasque-task-creation buttonText="+" btnClass="column-plus" [projects]="projectOptions" [issueTypes]="issueTypes"></tasque-task-creation>
               <img src="assets/board/column_menu.svg"> 
             </div>  
           </div>
           <div class="column" *ngFor="let task of item.tasks" cdkDrag>
-            <tasque-card [taskInfo]="task"></tasque-card>
+            <tasque-card *ngIf="!task.isHidden" [taskInfo]="task"></tasque-card>
           </div>
         </div>
         <div class="create-column" (mouseleave)="onClickedOutside()">
-          <span *ngIf="!isOpenColumnAddDialog" (click)="OpenAddColumn()">+ Add Section</span>
+          <span *ngIf="!isOpenColumnAddDialog" (click)="openAddColumn()">+ Add Section</span>
           <div *ngIf="isOpenColumnAddDialog">
-            <form [formGroup]="createColumnForm" (ngSubmit)="AddColumn()">
-              <tasque-input type="text" placeholder="Type name" formControlName="columnName" [invalid]="!createColumnForm.valid && createColumnForm.touched" errorMessage="required" [icon]="plusIcon" iconPosition="right" (iconClick)="AddColumn()"></tasque-input>
+            <form [formGroup]="createColumnForm" (ngSubmit)="addColumn()">
+              <tasque-input type="text" placeholder="Type name" formControlName="columnName" [invalid]="!createColumnForm.valid && createColumnForm.touched" errorMessage="required" [icon]="plusIcon" iconPosition="right" (iconClick)="addColumn()"></tasque-input>
             </form>
           </div>
         </div>

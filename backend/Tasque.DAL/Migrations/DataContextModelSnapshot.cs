@@ -442,6 +442,29 @@ namespace Tasque.Core.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Name = "Admin",
+                            UpdatedAt = new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Name = "Dev",
+                            UpdatedAt = new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Name = "QA",
+                            UpdatedAt = new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        });
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Sprint", b =>

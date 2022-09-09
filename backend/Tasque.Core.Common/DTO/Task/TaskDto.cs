@@ -33,6 +33,8 @@ namespace Tasque.Core.Common.DTO.Task
 
         public int? ParentTaskId { get; set; }
 
+        public int? Estimate { get; set; }
+
         public virtual ICollection<AttachmentDto>? Attachments { get; set; }
         public virtual ICollection<LabelDto>? Labels { get; set; }
         public virtual ICollection<UserDto>? Users { get; set; }

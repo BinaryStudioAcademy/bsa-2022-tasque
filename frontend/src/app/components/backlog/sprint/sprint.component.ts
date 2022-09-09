@@ -6,14 +6,29 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEllipsisV,
+  faAngleDown,
+  faChevronRight,
+} from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
-import { TaskModel } from 'src/core/models/task/task-model';
 import { SprintService } from 'src/core/services/sprint.service';
 import { IssueSort } from '../models';
 import { UserModel } from 'src/core/models/user/user-model';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
+import { TaskService } from 'src/core/services/task.service';
+import { TaskModelDto } from 'src/core/models/task/task-model-dto';
+import { TaskState } from 'src/core/models/task/task-state';
+import { TaskType } from 'src/core/models/task/task-type';
+import { ToastrService } from 'ngx-toastr';
+import { TaskTypeService } from 'src/core/services/task-type.service';
+import { TaskStateService } from 'src/core/services/task-state.service';
 
 @Component({
   selector: 'app-sprint',
@@ -29,41 +44,62 @@ export class SprintComponent implements OnInit, OnChanges {
   @Input() public filterIssue: IssueSort;
   //get current user
   @Input() public currentUser: UserModel;
+
+  public taskState: TaskState[];
+
+  public taskType: TaskType[];
+
   //Notify parent components of sprint priority change
-  @Output() dropSprint = new EventEmitter<number>();
+  @Output() sprintUp = new EventEmitter<SprintModel>();
+  //Notify parent components of sprint priority change
+  @Output() sprintDown = new EventEmitter<SprintModel>();
 
   public sprintUsers: UserModel[];
   public sprintUsersCircle?: UserModel[];
 
-  public tasks: TaskModel[];
-  public tasksShow: TaskModel[];
+  public tasks: TaskModelDto[];
+  public tasksShow: TaskModelDto[];
+  public tasksDto: TaskModelDto;
 
   public unsubscribe$ = new Subject<void>();
 
   public createIssueSidebarName = 'createIssue';
   public estimate = 0;
   faEllipsisV = faEllipsisV;
+  faAngleDown = faAngleDown;
+  faChevronRight = faChevronRight;
 
-  constructor(public sprintService: SprintService) {}
+  constructor(
+    public sprintService: SprintService,
+    public taskService: TaskService,
+    public toastrService: ToastrService,
+    public taskTypeService: TaskTypeService,
+    public taskStateService: TaskStateService,
+  ) {}
 
   ngOnInit(): void {
+    this.getTasksState();
+    this.getTasksType();
     this.getSprintTasks();
     this.getSprintUsers();
+
     this.createIssueSidebarName += this.sprint.id;
   }
 
+  //Get all tasks for the sprint
   public getSprintTasks(): void {
     this.sprintService
       .getSprintTasks(this.sprint.id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          this.tasks = this.tasksShow = result.body;
+          this.sprint.tasks = this.tasks = this.tasksShow = result.body;
           this.estimateCount();
         }
       });
   }
 
+  //Get all sprint members
   public getSprintUsers(): void {
     this.sprintService
       .getSprintUsers(this.sprint.id)
@@ -77,11 +113,13 @@ export class SprintComponent implements OnInit, OnChanges {
       });
   }
 
+  //Display total estimate in sprint header
   estimateCount(): void {
     this.estimate = 0;
     this.estimate = this.tasks.reduce((a, b) => a + Number(b.estimate || 0), 0);
   }
 
+  //Sort tasks in a sprint (by keyword or IssueSort)
   filterItems(): void {
     if (this.inputSearch) {
       this.tasks = this.tasksShow.filter((item) => {
@@ -94,10 +132,10 @@ export class SprintComponent implements OnInit, OnChanges {
     }
 
     if (this.filterIssue == IssueSort.All) {
-      this.tasks.sort((a) => a.priority?.id);
+      this.tasks.sort((a) => a.id);
     } else if (this.filterIssue == IssueSort.OnlyMyIssues) {
       this.tasks = this.tasks.filter((item) => {
-        return item.author.id == this.currentUser.id;
+        return item.authorId == this.currentUser.id;
       });
     } else if (this.filterIssue == IssueSort.RecentlyUpdated) {
       this.tasks.sort(
@@ -107,18 +145,73 @@ export class SprintComponent implements OnInit, OnChanges {
     }
   }
 
+  //Move the task from the backlog to the sprint, update the task in the database
+  drop(event: CdkDragDrop<TaskModelDto[]>): void {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+
+      this.sprint.tasks[0].sprintId = this.sprint.id;
+
+      this.taskService
+        .updateTask(this.tasks[0])
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((result) => {
+          if (result.body) {
+            this.toastrService.success('Task moved to sprint');
+          }
+        });
+    }
+  }
+
+  //Show only the tasks of the selected user
   filterUserTasks(user: UserModel): void {
     this.tasks = this.tasksShow.filter((item) => {
-      return item.author.id == user.id;
+      return item.authorId == user.id;
     });
   }
-  //+++++++++++++++++++++++++rewrite after the backend part of sprintі sorting is implemented++++++++++++++++
+
   ngOnChanges(): void {
     this.filterItems();
   }
 
-  dropSprintClick(value: number): void {
-    this.dropSprint.emit(value);
+  $sprintUp(sprint: SprintModel): void {
+    this.sprintUp.emit(sprint);
   }
-  //++++++++++++++++++++++++++++++++++
+
+  $sprintDown(sprint: SprintModel): void {
+    this.sprintDown.emit(sprint);
+  }
+
+  public getTasksState(): void {
+    this.taskStateService
+      .getAll()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.taskState = result.body;
+        }
+      });
+  }
+
+  public getTasksType(): void {
+    this.taskTypeService
+      .getAll()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.taskType = result.body;
+        }
+      });
+  }
 }
