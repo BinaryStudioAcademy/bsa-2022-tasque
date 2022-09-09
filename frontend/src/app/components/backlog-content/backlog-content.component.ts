@@ -30,7 +30,7 @@ export class BacklogContentComponent implements OnInit {
   iconDown = faAngleDown;
   iconPlus = faPlus;
   flagIcon = faFlag;
-  btnClass = 'bold';
+  btnClass = 'btn mini voilet full';
 
   public unsubscribe$ = new Subject<void>();
   subscription: Subscription;

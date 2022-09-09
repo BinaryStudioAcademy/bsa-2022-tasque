@@ -1,18 +1,16 @@
 <tasque-sidebar name="task-creation" [btnText]="btnText" [btnClass]="btnClass">
   <div class="task-creation-conteiner">
     <div class="task-creation-header">
-      <h4 class="task-creation-header-title" style="color: black">Create issue</h4>
-      <div class="task-creation-header-button">
-        <tasque-button class="btn mini disabled" text="Import issues"></tasque-button>
-        <tasque-button class="btn icon" [icon]="faExpeditedssl"></tasque-button>
-      </div>
+      <h4 class="task-creation-header-title" style="color: black">
+        Create issue
+      </h4>
     </div>
     <div class="task-creation-body">
       <div class="task-creation-body-wrapper">
         <div class="body-title">
           <span>Basic info</span>
         </div>
-        <hr>
+        <hr />
         <form [formGroup]="taskCreateForm">
           <div class="input-wrapper">
             <label class="label">Project</label>
@@ -59,20 +57,26 @@
           <span class="error" *ngIf="!descriptionControl.valid">{{
             editorErrorMessage
           }}</span>
-          <div class="body-title" *ngIf="customFields !== undefined && customFields.length > 0">
+          <div
+            class="body-title"
+            *ngIf="customFields !== undefined && customFields.length > 0"
+          >
             <span>Additional fields</span>
-            <hr>
+            <hr />
           </div>
           <div *ngFor="let field of customFields" class="custom-field">
-            <app-task-creation-custom-fields 
-              [customField]="field" 
+            <app-task-creation-custom-fields
+              [customField]="field"
               [projectUsers]="projectUsers"
               (taskCustomField)="getCustomField($event)"
             >
             </app-task-creation-custom-fields>
           </div>
           <div class="button-wrapper">
-            <tasque-button class="btn stroke violet-stroke disabled" text="+ Add issues">
+            <tasque-button
+              class="btn stroke violet-stroke disabled"
+              text="+ Add issues"
+            >
             </tasque-button>
           </div>
         </form>
