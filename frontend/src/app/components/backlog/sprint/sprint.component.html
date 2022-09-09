@@ -1,9 +1,9 @@
 <div
   class="sprint-conteiner"
   cdkDropList
-  id="{{ sprint.id }}"
+  id="{{ currentSprint.id }}"
   #doneList="cdkDropList"
-  [cdkDropListData]="sprint.tasks"
+  [cdkDropListData]="currentSprint.tasks"
   (cdkDropListDropped)="drop($event)"
 >
   <details>
@@ -25,12 +25,14 @@
             ></fa-icon>
           </p>
         </div>
-        <h4 class="sprint-name">{{ sprint.name }}</h4>
+        <h4 class="sprint-name">{{ currentSprint.name }}</h4>
         <div class="sprint-date">
-          <p class="startAt">{{ sprint.startAt | date: 'mediumDate' }}</p>
-          <p *ngIf="sprint.startAt">-</p>
-          <p *ngIf="!sprint.startAt">deadline:</p>
-          <p class="endAt">{{ sprint.endAt | date: 'mediumDate' }}</p>
+          <p class="startAt">
+            {{ currentSprint.startAt | date: 'mediumDate' }}
+          </p>
+          <p *ngIf="currentSprint.startAt">-</p>
+          <p *ngIf="!currentSprint.startAt">deadline:</p>
+          <p class="endAt">{{ currentSprint.endAt | date: 'mediumDate' }}</p>
         </div>
         <div class="issues">
           <p>issues</p>
@@ -44,15 +46,15 @@
         </div>
         <div class="wrapper button">
           <app-edit-sprint
-            *ngIf="!sprint.startAt"
-            [currentSprint]="sprint"
+            *ngIf="!currentSprint.startAt && sprintIndex == 0"
+            [currentSprint]="currentSprint"
             class="btn mini voilet full start-sprint"
             [isStarting]="true"
           ></app-edit-sprint>
 
           <app-complete-sprint
-            *ngIf="sprint.startAt"
-            [sprint]="sprint"
+            *ngIf="currentSprint.startAt"
+            [sprint]="currentSprint"
             class="btn complete-sprint"
             completeBthClass="btn mini violet-fill full"
             completeBtnText="Complete sprint"
@@ -65,23 +67,28 @@
                 [icon]="faEllipsisV"
               ></tasque-button>
               <div class="dropdown-content">
-                <a>
+                <a
+                  *ngIf="
+                    sprintIndex != 0 &&
+                    (sprintIndex != 1 || !sprints[0].startAt)
+                  "
+                >
                   <tasque-button
-                    (click)="$sprintUp(sprint)"
+                    (click)="$sprintUp(currentSprint)"
                     text="Move sprint up"
                     class="btn full black"
                   ></tasque-button>
                 </a>
-                <a>
+                <a *ngIf="sprintIndex != 0 || !currentSprint.startAt">
                   <tasque-button
-                    (click)="$sprintDown(sprint)"
+                    (click)="$sprintDown(currentSprint)"
                     text="Move sprint down"
                     class="btn full black"
                   ></tasque-button>
                 </a>
                 <a>
                   <app-edit-sprint
-                    [currentSprint]="sprint"
+                    [currentSprint]="currentSprint"
                     btnClass="btn full black"
                   ></app-edit-sprint>
                 </a>
@@ -122,6 +129,7 @@
         btnClass="btn mini voilet"
         [sidebarName]="createIssueSidebarName"
         [organizationId]="1"
+        (click)="test()"
       ></tasque-task-creation>
     </div>
   </details>

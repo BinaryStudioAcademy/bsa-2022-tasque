@@ -37,13 +37,17 @@ import { TaskStateService } from 'src/core/services/task-state.service';
 })
 export class SprintComponent implements OnInit, OnChanges {
   //Get the sprint to display it in the component
-  @Input() public sprint: SprintModel;
+  @Input() public sprints: SprintModel[];
+  //Get the sprint to display it in the component
+  @Input() public currentSprint: SprintModel;
   //Get the string by which issue will be searched
   @Input() public inputSearch = '';
   //Get the criteria by which the issue will be sorted
   @Input() public filterIssue: IssueSort;
   //get current user
   @Input() public currentUser: UserModel;
+
+  @Input() public sprintIndex: number;
 
   public taskState: TaskState[];
 
@@ -77,23 +81,27 @@ export class SprintComponent implements OnInit, OnChanges {
     public taskStateService: TaskStateService,
   ) {}
 
+  test() {
+    console.log(this.sprintIndex);
+    console.log(this.currentSprint);
+  }
   ngOnInit(): void {
     this.getTasksState();
     this.getTasksType();
     this.getSprintTasks();
     this.getSprintUsers();
 
-    this.createIssueSidebarName += this.sprint.id;
+    this.createIssueSidebarName += this.currentSprint.id;
   }
 
   //Get all tasks for the sprint
   public getSprintTasks(): void {
     this.sprintService
-      .getSprintTasks(this.sprint.id)
+      .getSprintTasks(this.currentSprint.id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          this.sprint.tasks = this.tasks = this.tasksShow = result.body;
+          this.currentSprint.tasks = this.tasks = this.tasksShow = result.body;
           this.estimateCount();
         }
       });
@@ -102,7 +110,7 @@ export class SprintComponent implements OnInit, OnChanges {
   //Get all sprint members
   public getSprintUsers(): void {
     this.sprintService
-      .getSprintUsers(this.sprint.id)
+      .getSprintUsers(this.currentSprint.id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
@@ -161,7 +169,7 @@ export class SprintComponent implements OnInit, OnChanges {
         event.currentIndex,
       );
 
-      this.sprint.tasks[0].sprintId = this.sprint.id;
+      this.currentSprint.tasks[0].sprintId = this.currentSprint.id;
 
       this.taskService
         .updateTask(this.tasks[0])

@@ -39,13 +39,15 @@
 
   <div class="body" cdkDropListGroup>
     <app-sprint
-      *ngFor="let sprint of sprints"
-      [sprint]="sprint"
+      *ngFor="let sprint of sprints; let index = index"
+      [currentSprint]="sprint"
+      [sprints]="sprints"
       [currentUser]="currentUser"
       [inputSearch]="inputSearch"
       (sprintUp)="updateSprintPosition($event, true)"
       (sprintDown)="updateSprintPosition($event, false)"
       [filterIssue]="filterIssue"
+      [sprintIndex]="index"
     ></app-sprint>
     <app-backlog-content [project]="currentProject"></app-backlog-content>
   </div>

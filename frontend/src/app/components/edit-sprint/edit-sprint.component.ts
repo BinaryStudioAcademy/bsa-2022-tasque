@@ -11,15 +11,7 @@ import { EditSprintDialogComponent } from './edit-sprint-dialog/edit-sprint-dial
   styleUrls: ['./edit-sprint.component.sass'],
 })
 export class EditSprintComponent implements OnInit {
-  @Input() public currentSprint: SprintModel = {
-    id: 1,
-    name: 'PROJ Sprint 3',
-    createdAt: new Date(2000, 1, 1),
-    updatedAt: new Date(2001, 1, 1),
-    projectId: 2,
-    description: '',
-    tasks: [],
-  };
+  @Input() public currentSprint: SprintModel;
 
   public tasks: number[];
 
@@ -49,6 +41,11 @@ export class EditSprintComponent implements OnInit {
     const dialog = this.matDialog.open(EditSprintDialogComponent, {
       data: editSprint,
     });
-    dialog.afterClosed().subscribe();
+
+    dialog.afterClosed().subscribe((result: SprintModel) => {
+      if (this.isStarting && result.startAt) {
+        this.currentSprint.startAt = result.startAt;
+      }
+    });
   }
 }
