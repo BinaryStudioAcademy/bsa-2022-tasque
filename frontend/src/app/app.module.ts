@@ -33,9 +33,9 @@ import { CompleteSprintComponent } from './components/complete-sprint/complete-s
 import { CompleteSprintDialogComponent } from './components/complete-sprint/complete-sprint-dialog/complete-sprint-dialog.component';
 import { SprintComponent } from './components/backlog/sprint/sprint.component';
 import { IssueComponent } from './components/backlog/sprint/issue/issue.component';
-import { AccessControlGuard } from 'src/core/guards/access-control.guard';
 import { BacklogContentComponent } from './components/backlog-content/backlog-content.component';
 import { BacklogComponent } from './components/backlog/backlog.component';
+import { AccessControlGuard } from './components/tasque-project-settings/project-options-module/guards/access-control.guard';
 
 @NgModule({
   declarations: [
