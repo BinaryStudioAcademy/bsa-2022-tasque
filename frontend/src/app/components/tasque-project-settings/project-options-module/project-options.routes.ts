@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { BasicIssueTemplateComponent } from '../basic-issue-template/basic-issue-template.component';
+import { BasicIssueTemplateComponent } from './basic-issue-template/basic-issue-template.component';
 import { UserPermissionGuard } from './guards/user-permission.guard';
 import { IssueTemplateComponent } from './issue-template/issue-template.component';
 
