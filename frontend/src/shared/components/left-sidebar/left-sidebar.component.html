@@ -16,7 +16,9 @@
     <div class="menu-item">
       <a (click)="hideSettings()" routerLink="./backlog">
         <img src="assets/backlog_icon.svg" alt="" />
-        <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Backlog</span>
+        <span *ngIf="!sideBarMinimized" routerLinkActive="selected"
+          >Backlog</span
+        >
       </a>
     </div>
     <div class="menu-item">
@@ -28,7 +30,9 @@
     <div class="menu-item">
       <a (click)="hideSettings()" routerLink="./wiki">
         <img src="assets/wiki_icon.svg" alt="" />
-        <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Project wiki</span>
+        <span *ngIf="!sideBarMinimized" routerLinkActive="selected"
+          >Project wiki</span
+        >
       </a>
     </div>
     <div class="menu-item">
@@ -40,18 +44,31 @@
         <div class="menu-actions" *ngIf="isProjectAdmin()">
           <ul>
             <li>
-              <p routerLink="settings/columns-and-statuses" routerLinkActive="selected">
+              <p
+                routerLink="settings/columns-and-statuses"
+                routerLinkActive="selected"
+              >
                 Columns and statuses
               </p>
             </li>
             <li>
-              <p routerLink="settings/issue-types" routerLinkActive="selected">Issue types</p>
+              <p routerLink="settings/issue-types" routerLinkActive="selected">
+                Issue types
+              </p>
             </li>
             <li>
-              <p routerLink="settings/issue-template" routerLinkActive="selected">Issue template</p>
+              <p
+                routerLink="settings/issue-template"
+                routerLinkActive="selected"
+              >
+                Issue template
+              </p>
             </li>
             <li>
-              <p routerLink="settings/basic-issue-template" routerLinkActive="selected">
+              <p
+                routerLink="settings/basic-issue-template"
+                routerLinkActive="selected"
+              >
                 Basic issue template
               </p>
             </li>
@@ -59,8 +76,8 @@
         </div>
         <div *ngIf="!isProjectAdmin()" class="no-permission">
           <p>
-            You don't have enough permission. Ask your supervisor to give you access to change project
-            settings
+            You don't have enough permission. Ask your supervisor to give you
+            access to change project settings
           </p>
         </div>
       </div>

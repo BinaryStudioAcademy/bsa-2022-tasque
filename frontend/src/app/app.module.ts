@@ -35,6 +35,7 @@ import { SprintComponent } from './components/backlog/sprint/sprint.component';
 import { IssueComponent } from './components/backlog/sprint/issue/issue.component';
 import { BacklogContentComponent } from './components/backlog-content/backlog-content.component';
 import { BacklogComponent } from './components/backlog/backlog.component';
+import { AccessControlGuard } from './components/tasque-project-settings/project-options-module/guards/access-control.guard';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { BacklogComponent } from './components/backlog/backlog.component';
   ],
   providers: [
     BrowserAnimationsModule,
+    AccessControlGuard,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

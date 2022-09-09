@@ -28,7 +28,7 @@ public class ProjectService : EntityCrudService<Project>
         return _mapper.Map<List<UserDto>>(_db.Projects.FirstOrDefault(p => p.Id == projectId)?.Users); 
     }
 
-    public async Task<ProjectAfterCreateDto> AddProject(Project entity)
+    public async Task<ProjectInfoDto> AddProject(Project entity)
     {
         var user = await _db.Users
             .FirstOrDefaultAsync(u => u.Id == entity.AuthorId);
@@ -51,7 +51,15 @@ public class ProjectService : EntityCrudService<Project>
         await _db.SaveChangesAsync();
         await CreateBoardForProject(project);
 
-        return _mapper.Map<ProjectAfterCreateDto>(project);
+        var projectAfterCreate = await _db.Projects
+            .Where(proj => proj.Id == project.Id)
+            .Include(p => p.UserRoles)
+                .ThenInclude(u => u.User)
+            .Include(p => p.UserRoles)
+                .ThenInclude(r => r.Role)
+            .FirstOrDefaultAsync();
+
+        return _mapper.Map<ProjectInfoDto>(projectAfterCreate);
     }
 
     public async Task CreateBoardForProject(Project project)
@@ -185,5 +193,23 @@ public class ProjectService : EntityCrudService<Project>
 
         _db.UserProjectRoles.Add(userProjecRole);
         await _db.SaveChangesAsync();
+    }
+
+    public async Task<ProjectInfoDto> CurrentProjectInfo(int projectId)
+    {
+        var project = await _db.Projects
+            .Where(proj => proj.Id == projectId)
+            .Include(p => p.UserRoles)
+                .ThenInclude(u => u.User)
+            .Include(p => p.UserRoles)
+                .ThenInclude(r => r.Role)
+            .FirstOrDefaultAsync();
+
+        if(project == null)
+        {
+            throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
+        }
+
+        return _mapper.Map<ProjectInfoDto>(project);
     }
 }
