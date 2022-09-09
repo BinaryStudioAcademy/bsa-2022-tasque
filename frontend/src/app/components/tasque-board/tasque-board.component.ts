@@ -75,8 +75,9 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.pathFromRoot[1].paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('id');
     if (id == null) {
+      this.notificationService.error('Path id is null');
       return;
     }
     this.projectId = parseInt(id);
