@@ -9,6 +9,7 @@ public class Project : BaseEntity
         Users = new List<User>();
         UserRoles = new List<UserProjectRole>();
         Sprints = new List<Sprint>();
+        ProjectTaskTypes = new List<TaskType>();
     }
     public string Name { get; set; } = null!;
     public string Key { get; set; } = null!;
