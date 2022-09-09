@@ -8,7 +8,7 @@ namespace Tasque.Core.Common.Enums
 {
     public enum TaskStateTypes
     {
-        ToDo = 1
+        ToDo = 1,
         InProgress = 2,
         Done = 3,
         Canceled = 4,
