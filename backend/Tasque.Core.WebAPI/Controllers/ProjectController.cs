@@ -70,6 +70,15 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         return Ok(result);
     }
 
+    [Route("current/{id}")]
+    [HttpGet]
+    public async Task<IActionResult> CurrentProjectInfo(int id)
+    {
+        var result = await _service.CurrentProjectInfo(id);
+
+        return Ok(result);
+    }
+    
     [HttpGet("getByOrganizationId/{organizationId}")]
     public IActionResult GetProjectsByOrganizationId(int organizationId)
     {
