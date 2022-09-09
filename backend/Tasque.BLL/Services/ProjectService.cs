@@ -196,4 +196,26 @@ public class ProjectService : EntityCrudService<Project>
         await _db.SaveChangesAsync();
         return await GetProjectBoard(board.Id);
     }
+
+    public async Task<BoardInfoDto> UpdateColumns(BoardInfoDto board)
+    {
+        var mapped = _mapper.Map<Project>(board).Columns;
+        var columns = _db.Projects
+            .Include(x => x.Columns)
+            .FirstOrDefault(x => x.Id == board.Id)?
+            .Columns
+            ?? throw new CustomNotFoundException("project board");
+
+        foreach (var column in mapped)
+        {
+            if (column.Id == 0)
+            {
+                _db.BoardColumns.Add(column);
+                continue;
+            }
+        }
+
+        await _db.SaveChangesAsync();
+        return await GetProjectBoard(board.Id);
+    }
 }

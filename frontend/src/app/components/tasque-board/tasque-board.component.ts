@@ -16,6 +16,7 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import { ProjectService } from 'src/core/services/project.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'tasque-board',
@@ -141,24 +142,28 @@ export class TasqueBoardComponent implements OnInit {
         event.previousIndex,
         event.currentIndex,
       );
-      this.updateColumns();
+      this.updateTasks();
     }
   }
 
   updateColumns(): void {
-    this.boardService.updateBoardTasks(this.board).subscribe(
-      (resp) => {
-        if (resp.ok && resp.body != null) {
-          this.board = resp.body;
-          this.filterTasks();
-        } else {
-          this.notificationService.error('Something went wrong');
-        }
-      },
-      (error) => {
-        this.notificationService.error(error);
-      },
-    );
+    this.boardService
+      .updateBoardColumns(this.board)
+      .pipe(filter((resp) => resp.body != null))
+      .subscribe((resp) => {
+        this.board = resp.body as BoardModel;
+        this.filterTasks();
+      });
+  }
+
+  updateTasks(): void {
+    this.boardService
+      .updateBoardTasks(this.board)
+      .pipe(filter((resp) => resp.body != null))
+      .subscribe((resp) => {
+        this.board = resp.body as BoardModel;
+        this.filterTasks();
+      });
   }
 
   checkIfHasTasks(): boolean {

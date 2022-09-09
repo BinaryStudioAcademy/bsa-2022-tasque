@@ -55,4 +55,8 @@ export class ProjectService {
   updateBoardTasks(boardInfo: BoardModel): Observable<HttpResponse<BoardModel>> {
     return this.httpService.putFullRequest(this.routePrefix + '/board/tasks', boardInfo);
   }
+
+  updateBoardColumns(boardInfo: BoardModel): Observable<HttpResponse<BoardModel>> {
+    return this.httpService.putFullRequest(this.routePrefix + '/board/columns', boardInfo);
+  }
 }

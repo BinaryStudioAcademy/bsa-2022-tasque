@@ -20,11 +20,14 @@ namespace Tasque.Core.BLL.MappingProfiles
                 .AfterMap((dto, project) =>
                 {
                     foreach (var column in project.Columns)
+                    {
+                        column.ProjectId = dto.Id;
                         foreach (var task in column.Tasks)
                         {
                             task.ProjectId = dto.Id;
                             task.BoardColumnId = column.Id;
                         }
+                    }
                 });
         }
     }
