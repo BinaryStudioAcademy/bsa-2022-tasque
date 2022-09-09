@@ -11,6 +11,7 @@ using Tasque.Core.DAL;
 using Task = System.Threading.Tasks.Task;
 using Tasque.Core.Common.Models.Task;
 using Tasque.Core.BLL.Extensions;
+using Tasque.Core.Common.Enums;
 
 namespace Tasque.Core.BLL.Services
 {
@@ -100,7 +101,8 @@ namespace Tasque.Core.BLL.Services
                 throw new HttpException(System.Net.HttpStatusCode.NotFound, "Sprinter with this ID does not exist");
 
             sprint.Tasks
-                    .Where(t => t.StateId == 1 || t.StateId == 2)
+                    .Where(t => t.StateId == (int)TaskStateTypes.ToDo 
+                        || t.StateId == (int)TaskStateTypes.InProgress)
                     .ToList()
                     .ForEach(t =>
                         {
