@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UserModel } from 'src/core/models/user/user-model';
+import { UserRole } from 'src/core/models/user/user-roles';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
@@ -12,9 +13,9 @@ export class UserPermissionGuard implements CanActivate {
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this.role >= 3) {
       return true;
-    } 
-      this.router.navigate(['./not-found']);
-      return false;
+    }
+    this.router.navigate(['./not-found']);
+    return false;
   }
 
   private currentUser: UserModel;
@@ -30,7 +31,9 @@ export class UserPermissionGuard implements CanActivate {
       this.currentUser = user;
 
       this.organizationId = this.currentOrganizationService.currentOrganizationId;
-      this.role = this.currentUser.organizationRoles?.find((r) => r.organizationId === this.organizationId)?.role as number;
+      this.role = this.currentUser
+        .organizationRoles
+        ?.find((r) => r.organizationId === this.organizationId)?.role ?? UserRole.OrganizationAdmin; // TODO: change to registeredUser
     });
   }
 }

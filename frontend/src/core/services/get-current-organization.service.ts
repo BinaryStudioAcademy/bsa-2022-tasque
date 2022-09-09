@@ -21,6 +21,9 @@ export class GetCurrentOrganizationService {
 
     public clearCurrentOrganizationId(): void {
         this.currentOrganizationIdSubj.next(-1);
+        this.currentOrganizationIdSubj.complete();
+        this.currentOrganizationIdSubj = new BehaviorSubject<number>(this.currentOrganizationId);
+        this.currentOrganizationId$ = this.currentOrganizationIdSubj.asObservable();
     }
 
     private organizationUpdatedSubj = new Subject<OrganizationModel>();
