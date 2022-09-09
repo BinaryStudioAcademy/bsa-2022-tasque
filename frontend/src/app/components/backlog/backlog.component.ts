@@ -18,10 +18,10 @@ import {
 } from '@angular/cdk/drag-drop';
 import { IssueSort } from './models';
 import { TaskModel } from 'src/core/models/task/task-model';
-import { TaskService } from 'src/core/services/task.service';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { ActivatedRoute } from '@angular/router';
+import { TaskService } from 'src/core/services/task-service.service';
 
 @Component({
   selector: 'app-backlog',
@@ -71,13 +71,15 @@ export class BacklogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.pathFromRoot[1].paramMap.get('id');
-    if (id == null) {
-      return;
-    }
-    this.projectId = parseInt(id);
+    // const id = this.route.snapshot.pathFromRoot[1].paramMap.get('id');
+    // if (id == null) {
+    //    return;
+    //  }
+    this.projectId = 1;
+
     this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user as UserModel;
+      console.log(this.currentUser);
       // this.getUserBoards();
       this.getSprints(this.projectId);
     });
