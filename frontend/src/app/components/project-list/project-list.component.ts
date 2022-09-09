@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faMessage } from '@fortawesome/free-solid-svg-icons';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
@@ -21,6 +21,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   public currentOrganizationId: number;
 
   public inputSearch = '';
+  public warningIcon = faMessage;
   public searchIcon = faMagnifyingGlass;
 
   public projects: ProjectInfoModel[] = [];
