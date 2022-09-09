@@ -25,7 +25,7 @@ export class EditSprintComponent implements OnInit {
 
   @Input() public isStarting: boolean;
 
-  @Input() public btnClass = 'btn mini';
+  @Input() public btnClass = 'btn mini voilet full ';
 
   constructor(public matDialog: MatDialog) {}
 

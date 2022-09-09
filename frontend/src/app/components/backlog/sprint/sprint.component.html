@@ -43,17 +43,21 @@
           <p class="estimate-count">{{ estimate }}</p>
         </div>
         <div class="wrapper button">
-          <tasque-button
+          <app-edit-sprint
             *ngIf="!sprint.startAt"
-            text="Start sprint"
+            [currentSprint]="sprint"
             class="btn mini voilet full start-sprint"
-          ></tasque-button>
+            [isStarting]="true"
+          ></app-edit-sprint>
+
           <app-complete-sprint
             *ngIf="sprint.startAt"
             [sprint]="sprint"
             class="btn complete-sprint"
             completeBthClass="btn mini violet-fill full"
+            completeBtnText="Complete sprint"
           ></app-complete-sprint>
+
           <div class="dropdown-button">
             <div class="dropdown" style="float: right">
               <tasque-button
