@@ -28,6 +28,8 @@ namespace Tasque.Core.BLL.MappingProfiles
                     x => x.AttachmentUrl,
                     opt => opt.MapFrom(t => (t.Attachments.FirstOrDefault() ?? new Attachment()).URL)
                 );
+            CreateMap<TaskInfoDto, Task>()
+                .ForMember(x => x.Author, opt => opt.Ignore());
         }
     }
 }

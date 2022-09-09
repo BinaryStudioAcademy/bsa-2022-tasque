@@ -15,8 +15,17 @@ namespace Tasque.Core.BLL.MappingProfiles
             CreateMap<Project, ProjectAfterCreateDto>();
 
             CreateMap<Project, BoardInfoDto>();
-            CreateMap<BoardInfoDto, Project>().
-                ForMember(x => x.Users, opt => opt.Ignore());
+            CreateMap<BoardInfoDto, Project>()
+                .ForMember(x => x.Users, opt => opt.Ignore())
+                .AfterMap((dto, project) =>
+                {
+                    foreach (var column in project.Columns)
+                        foreach (var task in column.Tasks)
+                        {
+                            task.ProjectId = dto.Id;
+                            task.BoardColumnId = column.Id;
+                        }
+                });
         }
     }
 }
