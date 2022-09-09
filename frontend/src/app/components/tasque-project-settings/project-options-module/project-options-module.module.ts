@@ -6,13 +6,15 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { IssueFieldComponent } from './issue-template/issue-field/issue-field.component';
 import { LabelFieldEditComponent } from './issue-template/label-field-edit/label-field-edit.component';
 import { DropdownFieldEditComponent } from './issue-template/dropdown-field-edit/dropdown-field-edit.component';
+import { BasicIssueTemplateComponent } from './basic-issue-template/basic-issue-template.component';
 
 @NgModule({
   declarations: [
     IssueTemplateComponent,
     IssueFieldComponent,
     LabelFieldEditComponent,
-    DropdownFieldEditComponent
+    DropdownFieldEditComponent,
+    BasicIssueTemplateComponent
   ],
   imports: [
     CommonModule,
