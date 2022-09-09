@@ -146,7 +146,7 @@ export class TasqueBoardComponent implements OnInit {
   }
 
   updateColumns(): void {
-    this.boardService.updateBoard(this.board).subscribe(
+    this.boardService.updateBoardTasks(this.board).subscribe(
       (resp) => {
         if (resp.ok && resp.body != null) {
           this.board = resp.body;

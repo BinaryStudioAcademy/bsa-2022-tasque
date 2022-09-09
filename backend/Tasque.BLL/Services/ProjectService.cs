@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Exeptions;
@@ -176,17 +177,23 @@ public class ProjectService : EntityCrudService<Project>
         return _mapper.Map<BoardInfoDto>(project);
     }
 
-    public async Task<BoardInfoDto> UpdateBoard(BoardInfoDto board)
+    public async Task<BoardInfoDto> UpdateTasks(BoardInfoDto board)
     {
-        var proj = _db.Projects
+        var mapped = _mapper.Map<Project>(board).Columns.SelectMany(x => x.Tasks);
+        var tasks = _db.Projects
             .Include(x => x.Columns).ThenInclude(x => x.Tasks)
-            .Include(x => x.Users)
-            .FirstOrDefault(x => x.Id == board.Id)
+            .FirstOrDefault(x => x.Id == board.Id)?
+            .Columns.SelectMany(x => x.Tasks)
             ?? throw new CustomNotFoundException("project board");
-        var mapped = _mapper.Map(board, proj);
-        _db.BoardColumns.AddRange(proj.Columns.Where(x => x.Id == 0));
 
+        foreach (var task in mapped)
+        {
+            var entity = tasks.FirstOrDefault(x => x.Id == task.Id);
+            if (entity == null) continue;
+
+            entity.BoardColumnId = task.BoardColumnId;
+        }
         await _db.SaveChangesAsync();
-        return _mapper.Map<BoardInfoDto>(mapped);
+        return await GetProjectBoard(board.Id);
     }
 }

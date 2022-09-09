@@ -52,7 +52,7 @@ export class ProjectService {
     return this.httpService.getFullRequest(this.routePrefix + `/board/${projectId}`);
   }
 
-  updateBoard(boardInfo: BoardModel): Observable<HttpResponse<BoardModel>> {
-    return this.httpService.putFullRequest(this.routePrefix + '/board', boardInfo);
+  updateBoardTasks(boardInfo: BoardModel): Observable<HttpResponse<BoardModel>> {
+    return this.httpService.putFullRequest(this.routePrefix + '/board/tasks', boardInfo);
   }
 }

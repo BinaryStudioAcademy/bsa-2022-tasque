@@ -78,10 +78,10 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         return Ok(res);
     }
 
-    [HttpPut("board")]
-    public async Task<IActionResult> UpdateBoard(BoardInfoDto board)
+    [HttpPut("board/tasks")]
+    public async Task<IActionResult> UpdateBoardTasks(BoardInfoDto board)
     {
-        var res = await _service.UpdateBoard(board);
+        var res = await _service.UpdateTasks(board);
         return Ok(res);
     }
 }
