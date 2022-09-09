@@ -55,6 +55,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   @Input() public organizationId: number;
   @Input() public projects: TasqueDropdownOption[] = [];
   @Input() public issueTypes: TasqueDropdownOption[] = [];
+
   @Input() public btnText = 'Task creation';
   @Input() public btnClass = 'btn stroke';
   @Input() public sidebarName = 'taskCreation';
@@ -191,6 +192,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
             color: t.color ?? '',
           }),
         );
+        this.setBasicOptions();
       });
 
     this.projectService
@@ -204,6 +206,29 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
           );
         }
       });
+  }
+
+  setBasicOptions(): void {
+    //TODO: REMOVE AFTER DEMO
+    if (this.issueTypes.length === 0) {
+      this.issueTypes = [
+        {
+          id: 3,
+          color: 'red',
+          title: 'Bug',
+        },
+        {
+          id: 1,
+          color: 'blue',
+          title: 'Task',
+        },
+        {
+          id: 2,
+          color: 'green',
+          title: 'Story',
+        },
+      ];
+    }
   }
 
   setSelectedTaskType(id: number): void {
@@ -220,7 +245,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
         t.typeId === this.selectedTaskTypeId,
     ) as TaskTemplate;
 
-    this.customFields = this.template.customFields ?? [];
+    this.customFields = this.template?.customFields ?? [];
     this.customFields.forEach((cf) =>
       this.taskCustomFields.push({
         fieldId: cf.fieldId as string,
