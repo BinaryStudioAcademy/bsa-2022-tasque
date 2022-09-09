@@ -21,6 +21,7 @@ import { TaskModel } from 'src/core/models/task/task-model';
 import { TaskService } from 'src/core/services/task.service';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectModel } from 'src/core/models/project/project-model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-backlog',
@@ -45,6 +46,7 @@ export class BacklogComponent implements OnInit {
     updatedAt: new Date(),
     key: 'TIS-1',
   };
+  public projectId: number;
 
   public inputSearch = '';
 
@@ -61,6 +63,7 @@ export class BacklogComponent implements OnInit {
     public taskService: TaskService,
     public currentUserService: GetCurrentUserService,
     private toastrService: ToastrService,
+    private route: ActivatedRoute,
   ) {
     sprintService.deleteSprint$.subscribe((sprintId) => {
       this.deleteSprint(sprintId);
@@ -68,10 +71,15 @@ export class BacklogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const id = this.route.snapshot.pathFromRoot[1].paramMap.get('id');
+    if (id == null) {
+      return;
+    }
+    this.projectId = parseInt(id);
     this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user as UserModel;
       // this.getUserBoards();
-      this.getSprints();
+      this.getSprints(this.projectId);
     });
   }
 
@@ -93,9 +101,9 @@ export class BacklogComponent implements OnInit {
 
   //get sprints for the current project
   //and sort them by priority (order)
-  public getSprints(): void {
+  public getSprints(projectId: number): void {
     this.sprintService
-      .getProjectSprints(this.currentProject.id)
+      .getProjectSprints(projectId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {

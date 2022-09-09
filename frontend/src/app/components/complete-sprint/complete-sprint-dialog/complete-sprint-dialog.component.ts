@@ -34,9 +34,11 @@ export class CompleteSprintDialogComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log(this.sprint);
     this.sprintService.completeSprint(this.sprint.id).subscribe(() => {
       this.changeOutside();
     });
+    console.log(this.sprint);
     this.dialogRef.close();
   }
 
