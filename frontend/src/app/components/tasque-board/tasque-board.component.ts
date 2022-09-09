@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { BoardModel } from '../../../core/models/board/board-model';
@@ -10,18 +10,21 @@ import {
 import { TaskInfoModel } from 'src/core/models/board/task-Info-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'tasque-board',
   templateUrl: './tasque-board.component.html',
   styleUrls: ['./tasque-board.component.sass'],
 })
-export class TasqueBoardComponent implements OnInit {
+export class TasqueBoardComponent implements OnInit, OnDestroy {
   public searchIcon = faMagnifyingGlass;
   public plusIcon = faPlus;
   public isOpenColumnAddDialog: boolean;
   public createColumnForm: FormGroup;
   private newBoard: BoardModel;
+
+  public unsubscribe$ = new Subject<void>();
 
   user: UserModel;
 
@@ -73,8 +76,15 @@ export class TasqueBoardComponent implements OnInit {
       'columnName': ['', [Validators.required]],
     });
   }
+  
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {   
+    
+  }
 
   OpenAddColumn(): void {
     this.isOpenColumnAddDialog = true;

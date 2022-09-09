@@ -165,4 +165,22 @@ public class ProjectService : EntityCrudService<Project>
         _db.UserProjectRoles.Add(userProjecRole);
         await _db.SaveChangesAsync();
     }
+
+    public async Task<ProjectInfoDto> CurrentProjectInfo(int projectId)
+    {
+        var project = await _db.Projects
+            .Where(proj => proj.Id == projectId)
+            .Include(p => p.UserRoles)
+                .ThenInclude(u => u.User)
+            .Include(p => p.UserRoles)
+                .ThenInclude(r => r.Role)
+            .FirstOrDefaultAsync();
+
+        if(project == null)
+        {
+            throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
+        }
+
+        return _mapper.Map<ProjectInfoDto>(project);
+    }
 }
