@@ -106,7 +106,9 @@ export class SprintComponent implements OnInit, OnChanges {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          this.sprintUsers = this.sprintUsersCircle = result.body;
+          this.sprintUsers = result.body;
+
+          this.sprintUsersCircle = result.body;
         }
       });
   }
