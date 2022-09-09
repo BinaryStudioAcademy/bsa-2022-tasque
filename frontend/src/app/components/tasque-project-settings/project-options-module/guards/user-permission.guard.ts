@@ -3,7 +3,6 @@ import { CanActivate, Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { UserModel } from 'src/core/models/user/user-model';
-import { UserRole } from 'src/core/models/user/user-roles';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { OrganizationService } from 'src/core/services/organization.service';

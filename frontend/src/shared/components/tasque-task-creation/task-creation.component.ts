@@ -112,7 +112,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private sideBarService: SideBarService,
     private notificationService: NotificationService,
     private taskTemplateService: TaskTemplateService,
     private projectService: ProjectService,
@@ -213,10 +212,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       }));
   }
 
-  openSidebar(): void {
-    this.sideBarService.toggle('');
-  }
-
   public submitForm(): void {
     if (!this.taskCreateForm.valid || !this.taskCreateForm.dirty || !this.taskCreateForm.touched) {
       this.taskCreateForm.markAllAsTouched();
@@ -238,15 +233,15 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
       customFields: this.taskCustomFields,
     };
-    console.log(this.task);
-    this.taskService.createTask(this.task).subscribe((resp) => {
-      console.log(resp.body);
+    this.taskService.createTask(this.task).subscribe(() => {
+      this.notificationService.success('Task has been created successfully');
+    }, () => {
+      this.notificationService.error('Something go wrong. Try again later');
     });
   }
 
   public clearForm(): void {
     this.taskCreateForm.reset();
-    this.sideBarService.toggle('');
     this.customFields = [];
   }
 

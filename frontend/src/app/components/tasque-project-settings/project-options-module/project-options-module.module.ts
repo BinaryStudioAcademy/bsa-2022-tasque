@@ -15,7 +15,7 @@ import { BasicIssueTemplateComponent } from './basic-issue-template/basic-issue-
     IssueFieldComponent,
     LabelFieldEditComponent,
     DropdownFieldEditComponent,
-    CheckboxFieldComponent
+    CheckboxFieldComponent,
     BasicIssueTemplateComponent
   ],
   imports: [
