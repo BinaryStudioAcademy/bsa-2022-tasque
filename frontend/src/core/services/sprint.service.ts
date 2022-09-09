@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserModel } from '../models/user/user-model';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { EditSprintModel } from '../models/sprint/edit-sprint-model';
 import { SprintModel } from '../models/sprint/sprint-model';
 import { HttpService } from './http.service';
@@ -13,6 +13,12 @@ import { TaskModelDto } from '../models/task/task-model-dto';
 })
 export class SprintService {
   public routePrefix = '/api/sprint';
+
+  private deleteSprintSource = new Subject<number>();
+  deleteSprint$ = this.deleteSprintSource.asObservable();
+  changeDeleteSprint(sprintId: number): void {
+    this.deleteSprintSource.next(sprintId);
+  }
 
   constructor(public httpService: HttpService) {}
 

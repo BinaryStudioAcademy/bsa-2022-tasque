@@ -4,6 +4,7 @@ import { NewProjectModel } from '../models/project/new-project-model';
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { ProjectModel } from '../models/project/project-model';
+import { UserModel } from '../models/user/user-model';
 import { EditProjectModel } from '../models/project/edit-project-model';
 import { ProjectInfoModel } from '../models/project/project-info-model';
 import { InviteUserModel } from '../models/project/invite-user-model';
@@ -49,5 +50,13 @@ export class ProjectService {
 
   getCurrentProjectInfoById(id: number): Observable<HttpResponse<ProjectInfoModel>> {
     return this.httpService.getFullRequest<ProjectInfoModel>(this.routePrefix + '/current/' + id);
+  }
+
+  getProjectsByOrganizationId(id: number): Observable<HttpResponse<ProjectModel[]>> {
+    return this.httpService.getFullRequest<ProjectModel[]>(this.routePrefix + '/getByOrganizationId/' + id);
+  }
+
+  getProjectParticipants(id: number): Observable<HttpResponse<UserModel[]>> {
+    return this.httpService.getFullRequest<UserModel[]>(this.routePrefix + '/getParticipants/' + id);
   }
 }

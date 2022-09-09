@@ -1,4 +1,4 @@
-import { TaskCustomField } from 'src/core/models/task/task-custom-field';
+import { TaskCustomField } from 'src/core/models/task/task-template-models/task-custom-field';
 import { TaskFieldType } from 'src/core/models/task/task-field-types';
 
 export const AvailableFields: TaskCustomField[] = [
@@ -8,5 +8,5 @@ export const AvailableFields: TaskCustomField[] = [
     { name: 'Label', type: TaskFieldType.Label }, 
     { name: 'User', type: TaskFieldType.User }, 
     { name: 'Date', type: TaskFieldType.Date },
-    { name: 'Dropdown', type: TaskFieldType.Dropown },
+    { name: 'Dropdown', type: TaskFieldType.Dropdown },
     { name: 'Check box', type: TaskFieldType.CheckBox } ];

@@ -102,6 +102,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       createdAt: new Date(),
       updatedAt: new Date(),
       deadline: new Date(),
+      custmFields: [],
     };
     this.currentUser = this.users[1];
     this.taskReporter = this.users[2];

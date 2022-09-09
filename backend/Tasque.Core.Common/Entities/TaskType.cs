@@ -10,5 +10,9 @@ public class TaskType : BaseEntity
     }
     public string Name { get; set; } = null!;
 
+    public int ProjectId { get; set; }
+    
+    public Project Project { get; set; }
+
     public virtual ICollection<Task> Tasks { get; set; }
 }
