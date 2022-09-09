@@ -154,7 +154,7 @@ export class TasqueBoardComponent implements OnInit {
     const phrase = this.searchInput.inputValue;
     for(const column of this.board.columns) {
       for(const task of column.tasks) {
-        task.isHidden = !task.description.toLowerCase().includes(phrase.toLowerCase());
+        task.isHidden = !task.summary.toLowerCase().includes(phrase.toLowerCase());
         if(this.selectedUserId) {
           task.isHidden = task.isHidden || task.user?.id != this.selectedUserId;
         }        
