@@ -7,6 +7,7 @@ import { IssueFieldComponent } from './issue-template/issue-field/issue-field.co
 import { LabelFieldEditComponent } from './issue-template/label-field-edit/label-field-edit.component';
 import { DropdownFieldEditComponent } from './issue-template/dropdown-field-edit/dropdown-field-edit.component';
 import { CheckboxFieldComponent } from './issue-template/checkbox-field-edit/checkbox-field.component';
+import { BasicIssueTemplateComponent } from './basic-issue-template/basic-issue-template.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { CheckboxFieldComponent } from './issue-template/checkbox-field-edit/che
     LabelFieldEditComponent,
     DropdownFieldEditComponent,
     CheckboxFieldComponent
+    BasicIssueTemplateComponent
   ],
   imports: [
     CommonModule,

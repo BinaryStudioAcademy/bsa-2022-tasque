@@ -1,4 +1,4 @@
-<div class="backlog-conteiner">
+<div class="backlog-conteiner" cdkDropListGroup>
   <div class="header">
     <div class="wrapper title">
       <div>
@@ -36,16 +36,18 @@
       </div>
     </div>
   </div>
-  <div cdkDropList class="body" (cdkDropListDropped)="dropSprint($event)">
-    <app-sprint
-      *ngFor="let sprint of sprints"
-      [sprint]="sprint"
-      [currentUser]="currentUser"
-      [inputSearch]="inputSearch"
-      cdkDrag
-      cdkDragBoundary=".body"
-      (dropSprint)="dropSprintBtnClick($event)"
-      [filterIssue]="filterIssue"
-    ></app-sprint>
+  <div>
+    <div class="body" cdkDropListGroup>
+      <app-sprint
+        *ngFor="let sprint of sprints"
+        [sprint]="sprint"
+        [currentUser]="currentUser"
+        [inputSearch]="inputSearch"
+        (sprintUp)="updateSprintPosition($event, true)"
+        (sprintDown)="updateSprintPosition($event, false)"
+        [filterIssue]="filterIssue"
+      ></app-sprint>
+      <app-backlog-content></app-backlog-content>
+    </div>
   </div>
 </div>

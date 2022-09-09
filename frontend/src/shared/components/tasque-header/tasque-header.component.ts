@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { faCaretDown, faCaretUp, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCaretDown,
+  faCaretUp,
+  faMagnifyingGlass,
+} from '@fortawesome/free-solid-svg-icons';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { AuthService } from 'src/core/services/auth.service';
@@ -17,6 +21,7 @@ export class HeaderComponent implements OnInit {
   public searchIcon = faMagnifyingGlass;
   public currentUser: UserModel;
   public currentOrganizationId: number;
+  @Input() hasLogo = false;
 
   public upArrowIcon = faCaretUp;
   public downArrowIcon = faCaretDown;
@@ -26,8 +31,8 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private openDialogService: OpenDialogService,
-    private getCurrentOrganizationService: GetCurrentOrganizationService
-  ) { }
+    private getCurrentOrganizationService: GetCurrentOrganizationService,
+  ) {}
 
   ngOnInit(): void {
     this.subscribeToCurrentUser();
@@ -39,7 +44,8 @@ export class HeaderComponent implements OnInit {
     this.getCurrentOrganizationService.currentOrganizationId$.subscribe(
       (result) => {
         this.currentOrganizationId = result;
-      });
+      },
+    );
   }
 
   public subscribeToCurrentUser(): void {
@@ -61,7 +67,8 @@ export class HeaderComponent implements OnInit {
   }
 
   openCreateOrganizationDialog(): void {
-    this.openDialogService.openCreateOrganizationDialog(this.currentUser)
+    this.openDialogService
+      .openCreateOrganizationDialog(this.currentUser)
       .subscribe((result: OrganizationModel) => {
         if (!result) {
           return;
@@ -72,7 +79,8 @@ export class HeaderComponent implements OnInit {
   }
 
   public openCreateProjectDialog(): void {
-    this.openDialogService.openCreateProjectDialog(this.currentOrganizationId)
+    this.openDialogService
+      .openCreateProjectDialog(this.currentOrganizationId)
       .subscribe((result) => {
         if (!result) {
           return;

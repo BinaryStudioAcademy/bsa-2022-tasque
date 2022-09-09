@@ -1,4 +1,4 @@
-export interface BoardModelDto {
+export interface BoardInfoModel {
   id: number;
   name: string;
   projectId: number;

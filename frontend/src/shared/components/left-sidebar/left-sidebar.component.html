@@ -1,53 +1,69 @@
-<div class="left-sidebar" [style.width.px]="containerWidth" >
+<div class="left-sidebar" [style.width.px]="containerWidth">
   <a routerLink="./board"><tasque-logo class="logo" [isLight]="sideBarMinimized"></tasque-logo></a>
   <div class="icon">
     <a (click)="minimize()">
-      <img *ngIf="!sideBarMinimized" src="assets/burger_menu.svg" alt="">
-      <img *ngIf="sideBarMinimized" src="assets/kebab_menu.svg" alt="">
+      <img *ngIf="!sideBarMinimized" src="assets/burger_menu.svg" alt="" />
+      <img *ngIf="sideBarMinimized" src="assets/kebab_menu.svg" alt="" />
     </a>
   </div>
   <div class="menu">
-    <ul>
-      <li>
-        <div class="menu-item">
-          <a routerLink="./board" >
-            <img src="assets/board_icon.svg" alt="">
-            <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Board</span>
-          </a>
+    <div class="menu-item">
+      <a (click)="hideSettings()" routerLink="./board">
+        <img src="assets/board_icon.svg" alt="" />
+        <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Board</span>
+      </a>
+    </div>
+    <div class="menu-item">
+      <a (click)="hideSettings()" routerLink="./backlog">
+        <img src="assets/backlog_icon.svg" alt="" />
+        <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Backlog</span>
+      </a>
+    </div>
+    <div class="menu-item">
+      <a (click)="hideSettings()" routerLink="./team">
+        <img src="assets/team_icon.svg" alt="" />
+        <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Team</span>
+      </a>
+    </div>
+    <div class="menu-item">
+      <a (click)="hideSettings()" routerLink="./wiki">
+        <img src="assets/wiki_icon.svg" alt="" />
+        <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Project wiki</span>
+      </a>
+    </div>
+    <div class="menu-item">
+      <div class="button" (click)="toggleSettings()">
+        <img src="assets/settings_icon_sidebarmenu.svg" alt="" />
+        <span *ngIf="!sideBarMinimized">Settings</span>
+      </div>
+      <div *ngIf="!sideBarMinimized && showSettings">
+        <div class="menu-actions" *ngIf="isProjectAdmin()">
+          <ul>
+            <li>
+              <p routerLink="settings/columns-and-statuses" routerLinkActive="selected">
+                Columns and statuses
+              </p>
+            </li>
+            <li>
+              <p routerLink="settings/issue-types" routerLinkActive="selected">Issue types</p>
+            </li>
+            <li>
+              <p routerLink="settings/issue-template" routerLinkActive="selected">Issue template</p>
+            </li>
+            <li>
+              <p routerLink="settings/basic-issue-template" routerLinkActive="selected">
+                Basic issue template
+              </p>
+            </li>
+          </ul>
         </div>
-      </li>
-      <li>
-        <div class="menu-item">
-          <a routerLink="./backlog">
-            <img src="assets/backlog_icon.svg" alt="">
-            <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Backlog</span>
-          </a>
+        <div *ngIf="!isProjectAdmin()" class="no-permission">
+          <p>
+            You don't have enough permission. Ask your supervisor to give you access to change project
+            settings
+          </p>
         </div>
-      </li>
-      <li>
-        <div class="menu-item">
-          <a routerLink="./team">
-            <img src="assets/team_icon.svg" alt="">
-            <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Team</span>
-          </a>
-        </div>
-      </li>
-      <li>
-        <div class="menu-item">
-          <a routerLink="./wiki">
-            <img src="assets/wiki_icon.svg" alt="">
-            <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Project wiki</span>
-          </a>
-        </div>
-      </li>
-      <li>
-        <div class="menu-item">
-          <a routerLink="./settings">
-            <img src="assets/settings_icon_sidebarmenu.svg" alt="">
-            <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Settings</span>
-          </a>
-        </div>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 </div>

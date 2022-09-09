@@ -11,8 +11,16 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { SprintService } from 'src/core/services/sprint.service';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { IssueSort } from './models';
+import { TaskModel } from 'src/core/models/task/task-model';
+import { TaskService } from 'src/core/services/task.service';
+import { ToastrService } from 'ngx-toastr';
+import { ProjectModel } from 'src/core/models/project/project-model';
 
 @Component({
   selector: 'app-backlog',
@@ -25,6 +33,19 @@ export class BacklogComponent implements OnInit {
 
   //get current user
   @Input() public currentUser: UserModel;
+
+  // TODO remove when real data is available
+  //get current project
+  @Input() public currentProject: ProjectModel = {
+    id: 1,
+    name: 'Test project',
+    authorId: 1,
+    organizationId: 1,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    key: 'TIS-1',
+  };
+
   public inputSearch = '';
 
   public unsubscribe$ = new Subject<void>();
@@ -32,10 +53,14 @@ export class BacklogComponent implements OnInit {
   public sprints: SprintModel[];
   public filterIssue: IssueSort;
 
+  public tasks: TaskModel[] = [];
+
   constructor(
     public boardService: BoardService,
     public sprintService: SprintService,
+    public taskService: TaskService,
     public currentUserService: GetCurrentUserService,
+    private toastrService: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +71,7 @@ export class BacklogComponent implements OnInit {
     });
   }
 
+  //get all user's boards
   public getUserBoards(): void {
     this.boardService
       .getUserBoards(this.currentUser.id)
@@ -55,19 +81,23 @@ export class BacklogComponent implements OnInit {
           this.boards = result.body.map((item) => ({
             id: item.id,
             title: item.name,
-            color: 'red',
+            color: '',
           }));
         }
       });
   }
 
+  //get sprints for the current project
+  //and sort them by priority (order)
   public getSprints(): void {
     this.sprintService
-      .getProjectSprints(1)
+      .getProjectSprints(this.currentProject.id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          this.sprints = result.body;
+          this.sprints = result.body.sort(
+            (a, b) => (a.order ?? 0) - (b.order ?? 0),
+          );
         }
       });
   }
@@ -76,11 +106,61 @@ export class BacklogComponent implements OnInit {
     moveItemInArray(this.sprints, event.previousIndex, event.currentIndex);
   }
 
-  dropSprintBtnClick(position: number): void {
-    moveItemInArray(this.sprints, position, position + 1);
+  //Change sprint priority,
+  //show user updated sprint order and update DB
+  updateSprintPosition(sprint: SprintModel, isUp: boolean): void {
+    const currentSprintPosition = sprint.order || 0;
+
+    let sprintsSort: SprintModel[];
+
+    if (isUp) {
+      sprintsSort = this.sprints
+        .filter((el) => (el.order || 0) < currentSprintPosition)
+        .sort((a, b) => (b.order ?? 0) - (a.order ?? 0));
+    } else {
+      sprintsSort = this.sprints
+        .filter((el) => (el.order || 0) > currentSprintPosition)
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    }
+
+    const nextSprint = sprintsSort.length > 0 ? sprintsSort[0] : sprint;
+
+    sprint.order = nextSprint.order ?? 0;
+    nextSprint.order = currentSprintPosition;
+
+    this.updateSprint(sprint.id, sprint);
+    this.updateSprint(nextSprint.id, nextSprint);
+    this.sprints.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    this.toastrService.success('Priority updated');
   }
 
+  updateSprint(sprintId: number, sprint: SprintModel): void {
+    this.sprintService
+      .updareSprint(sprintId, sprint)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe();
+  }
+
+  //Sort tasks by criteria (All\Only my issues\Recently updated)
   taskSort(sort: IssueSort): void {
     this.filterIssue = sort;
+  }
+
+  //Drag a task from the backlog to a sprint
+  drop(event: CdkDragDrop<TaskModel[]>): void {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
   }
 }
