@@ -62,6 +62,8 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
     this.getCurrentOrganizationService.currentOrganizationId$.subscribe(
       (result) => {
         if (result === -1) {
+          this.availableOrganizations = [];
+          this.getCurrentOrganizationService.setOrganizations(this.availableOrganizations);
           return;
         }
 
