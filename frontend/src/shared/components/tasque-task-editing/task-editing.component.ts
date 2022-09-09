@@ -91,6 +91,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       priority: {
         id: 1,
         name: 'Low',
+        type: 0,
+        projectId: 5,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

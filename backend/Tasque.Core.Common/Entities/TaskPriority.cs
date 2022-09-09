@@ -14,7 +14,9 @@ public class TaskPriority : BaseEntity
 
     public int ProjectId { get; set; } 
 
-    public Project Project { get; set; }
+    public string? Color { get; set; }
+
+    public Project? Project { get; set; }
 
     public BasicTaskPriorityTypes Type { get; set; }
 

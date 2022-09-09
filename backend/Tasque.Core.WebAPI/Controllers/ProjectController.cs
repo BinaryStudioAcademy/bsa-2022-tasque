@@ -96,6 +96,15 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
             return NotFound();
         return Ok(participants);
     }
+
+    [HttpGet("getProjectPriorities/{projectId}")]
+    public IActionResult GetProjectPriorities(int projectId)
+    {
+        var priorities = _service.GetProjectPrioritiesById(projectId);
+        if (priorities == null)
+            return BadRequest();
+        return Ok(priorities);
+    }
 }
 
 

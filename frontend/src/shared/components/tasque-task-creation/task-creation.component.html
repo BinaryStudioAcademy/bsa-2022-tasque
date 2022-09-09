@@ -37,6 +37,17 @@
             </tasque-dropdown>
           </div>
           <div class="input-wrapper">
+            <label class="label">Priority</label>
+            <tasque-dropdown
+              [options]="projectPriorities"
+              [formControl]="priorityControl"
+              [errorMessage]="priorityErrorMessage"
+              [invalid]="!priorityControl.valid"
+              (onSelect)="setPriority($event)"
+            >
+            </tasque-dropdown>
+          </div>
+          <div class="input-wrapper">
             <label class="label">Summary</label>
             <tasque-input
               [formControl]="summaryControl"

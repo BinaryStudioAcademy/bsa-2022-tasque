@@ -16,6 +16,7 @@ import { UserModel } from 'src/core/models/user/user-model';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { TaskCustomFieldModel } from 'src/core/models/task/task-creation-models/task-custom-field-model';
 import { TaskService } from 'src/core/services/task-service.service';
+import { TaskPriority } from 'src/core/models/task/task-priority';
 
 @Component({
   selector: 'tasque-task-creation',
@@ -32,6 +33,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   public issueTypeControl: FormControl;
   public summaryControl: FormControl;
   public descriptionControl: FormControl;
+  public priorityControl: FormControl;
 
   public unsubscribe$ = new Subject<void>();
 
@@ -40,12 +42,14 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   public selectedProjectId: number;
   public selectedTaskTypeId: number;
+  public selectedPriorityId: number;
 
   public template: TaskTemplate;
   public taskType: TaskType;
 
   public customFields: TaskCustomField[];
   public issueTemplates: TaskTemplate[];
+  public projectPriorities: TasqueDropdownOption[] = [];
   public projectUsers: UserModel[];
   public currentUser: UserModel;
 
@@ -111,6 +115,15 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     return '';
   }
 
+  get priorityErrorMessage(): string {
+    const ctrl = this.priorityControl;
+
+    if(ctrl.errors?.['required'] && (ctrl.touched || ctrl.dirty)) {
+      return 'Priority is required';
+    }
+    return '';
+  }
+
   constructor(
     private notificationService: NotificationService,
     private taskTemplateService: TaskTemplateService,
@@ -132,6 +145,9 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     this.descriptionControl = new FormControl(this.task.description, [
       Validators.maxLength(5000),
     ]);
+    this.priorityControl = new FormControl(this.task.priorityId, [
+      Validators.required,
+    ])
   }
 
   ngOnInit(): void {
@@ -193,6 +209,19 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
         this.notificationService.error('Something went wrong, try again later');
       }
     });
+
+    this.projectService.getProjectPriorities(this.selectedProjectId).subscribe((resp) => {
+      if(resp.ok) {
+        const priorities = resp.body as TaskPriority[];
+        priorities.forEach((p) => this.projectPriorities.push({
+          title: p.name,
+          id: p.id,
+          color: p.color,
+        }));
+      } else {
+        this.notificationService.error('Something went wrong, try again later');
+      }
+    });
   }
 
   setBasicOptions(): void { //TODO: REMOVE AFTER DEMO
@@ -247,7 +276,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
       typeId: this.taskCreateForm.get('issueTypeControl')?.value.id,
       stateId: 1, // <----
-      priorityId: 1, // <----
+      priorityId: this.selectedPriorityId, 
 
       summary: this.taskCreateForm.get('summaryControl')?.value,
       description: this.taskCreateForm.get('descriptionControl')?.value,
@@ -259,6 +288,10 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     }, () => {
       this.notificationService.error('Something go wrong. Try again later');
     });
+  }
+
+  setPriority(id: number): void {
+    this.selectedPriorityId = id;
   }
 
   public clearForm(): void {

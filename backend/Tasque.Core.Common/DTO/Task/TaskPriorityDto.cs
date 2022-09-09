@@ -13,7 +13,9 @@ namespace Tasque.Core.Common.DTO.Task
 
         public string Name { get; set; } = null!;
 
-        public int projectId { get; set; }
+        public int ProjectId { get; set; }
+
+        public string? Color { get; set; }
 
         public BasicTaskPriorityTypes Type { get; set; }
     }
