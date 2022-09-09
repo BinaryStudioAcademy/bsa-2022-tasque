@@ -195,7 +195,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     });
   }
 
-  setBasicOptions(): void {
+  setBasicOptions(): void { //TODO: REMOVE AFTER DEMO
     if(this.issueTypes.length === 0){ 
       this.issueTypes = [{
       id: 3,
