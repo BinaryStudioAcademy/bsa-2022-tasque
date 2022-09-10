@@ -156,6 +156,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       issueTypeControl: this.issueTypeControl,
       summaryControl: this.summaryControl,
       descriptionControl: this.descriptionControl,
+      priorityControl: this.priorityControl,
     });
     
     this.projectService.getProjectsByOrganizationId(this.organizationId)
@@ -199,7 +200,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
         id: t.id,
         color: t.color?? '',
       }));
-      this.setBasicOptions();
     });
 
     this.projectService.getProjectParticipants(this.selectedProjectId).subscribe((resp) => {
@@ -222,26 +222,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
         this.notificationService.error('Something went wrong, try again later');
       }
     });
-  }
-
-  setBasicOptions(): void { //TODO: REMOVE AFTER DEMO
-    if(this.issueTypes.length === 0){ 
-      this.issueTypes = [{
-      id: 3,
-      color: 'red',
-      title: 'Bug',
-    },
-    {
-      id: 1,
-      color: 'blue',
-      title: 'Task',
-    },
-    {
-      id: 2,
-      color: 'green',
-      title: 'Story',
-    }];
-    }
   }
 
   setSelectedTaskType(id: number): void {
@@ -270,7 +250,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.task = { //TODO: Replace stateId and priorityId with dropdown select when ability to create this entities will implemented
+    this.task = { //TODO: Replace stateId with dropdown select when ability to create this entity will implemented
       authorId: this.currentUser.id,
       projectId: this.taskCreateForm.get('projectControl')?.value.id,
 

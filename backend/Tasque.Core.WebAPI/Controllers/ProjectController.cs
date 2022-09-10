@@ -105,15 +105,6 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
             return NotFound("Project or it's task priorities not found");
         return Ok(priorities);
     }
-
-    [HttpGet("getProjectTaskTypes/{projectId}")]
-    public IActionResult GetProjectTaskTypes(int projectId)
-    {
-        var types = _service.GetProjectTaskTypesById(projectId);
-        if (types == null)
-            return NotFound("Project or it's task types not found");
-        return Ok(types);
-    }
 }
 
 

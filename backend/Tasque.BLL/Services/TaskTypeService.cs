@@ -22,11 +22,10 @@ namespace Tasque.Core.BLL.Services
 
         public List<TaskTypeDto> GetAllTaskTypesByProjectId(int projectId)
         {
-            var types = _mapper.Map<List<TaskTypeDto>>(_db.TaskTypes.Where(t => t.ProjectId == projectId));
-            return types;
+            return _mapper.Map<List<TaskTypeDto>>(_db.TaskTypes.Where(t => t.ProjectId == projectId));
         }
 
-        public async Task<IEnumerable<TaskType>> GetAll()
+        public new async Task<IEnumerable<TaskType>> GetAll()
         {
             var tasksTypes = await _db.TaskTypes
                 .ToListAsync();
