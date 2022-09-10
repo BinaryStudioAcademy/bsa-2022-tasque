@@ -85,7 +85,6 @@ export class SprintComponent implements OnInit, OnChanges {
     public taskStateService: TaskStateService,
   ) {}
 
-  test() {}
   ngOnInit(): void {
     if (this.currentUser === undefined) {
       this.role = 0;
@@ -117,6 +116,7 @@ export class SprintComponent implements OnInit, OnChanges {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
+          console.log(result.body);
           this.currentSprint.tasks = this.tasks = this.tasksShow = result.body;
           this.estimateCount();
         }
