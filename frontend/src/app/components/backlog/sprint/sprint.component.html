@@ -46,21 +46,23 @@
         </div>
         <div class="wrapper button">
           <app-edit-sprint
-            *ngIf="!currentSprint.startAt && sprintIndex == 0"
+            *ngIf="
+              !currentSprint.startAt && sprintIndex == 0 && isCurrentUserAdmin
+            "
             [currentSprint]="currentSprint"
             class="btn mini voilet full start-sprint"
             [isStarting]="true"
           ></app-edit-sprint>
 
           <app-complete-sprint
-            *ngIf="currentSprint.startAt"
+            *ngIf="currentSprint.startAt && isCurrentUserAdmin"
             [sprint]="currentSprint"
             class="btn complete-sprint"
             completeBthClass="btn mini violet-fill full"
             completeBtnText="Complete sprint"
           ></app-complete-sprint>
 
-          <div class="dropdown-button">
+          <div class="dropdown-button" *ngIf="isCurrentUserAdmin">
             <div class="dropdown" style="float: right">
               <tasque-button
                 class="btn dropbtn"

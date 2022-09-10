@@ -30,6 +30,7 @@ import { ToastrService } from 'ngx-toastr';
 import { TaskTypeService } from 'src/core/services/task-type.service';
 import { TaskStateService } from 'src/core/services/task-state.service';
 import { ProjectModel } from 'src/core/models/project/project-model';
+import { UserRole } from 'src/core/models/user/user-roles';
 
 @Component({
   selector: 'app-sprint',
@@ -52,7 +53,6 @@ export class SprintComponent implements OnInit, OnChanges {
   @Input() public sprintIndex: number;
 
   public taskState: TaskState[];
-
   public taskType: TaskType[];
 
   //Notify parent components of sprint priority change
@@ -66,6 +66,8 @@ export class SprintComponent implements OnInit, OnChanges {
   public tasks: TaskModelDto[];
   public tasksShow: TaskModelDto[];
   public tasksDto: TaskModelDto;
+  public role: UserRole;
+  public isCurrentUserAdmin: boolean;
 
   public unsubscribe$ = new Subject<void>();
 
@@ -83,10 +85,23 @@ export class SprintComponent implements OnInit, OnChanges {
     public taskStateService: TaskStateService,
   ) {}
 
-  test() {
-    console.log(this.sprintIndex);
-  }
+  test() {}
   ngOnInit(): void {
+    if (this.currentUser === undefined) {
+      this.role = 0;
+    } else {
+      this.role =
+        (this.currentUser?.organizationRoles?.find(
+          (m) =>
+            m.organizationId === this.currentProject.organizationId &&
+            m.userId === this.currentUser.id,
+        )?.role as UserRole) || 0;
+
+      if (UserRole.OrganizationAdmin === this.role) {
+        this.isCurrentUserAdmin = true;
+      }
+    }
+
     this.getTasksState();
     this.getTasksType();
     this.getSprintTasks();

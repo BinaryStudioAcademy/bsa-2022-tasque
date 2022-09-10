@@ -32,8 +32,14 @@ export class BacklogContentComponent implements OnInit {
   flagIcon = faFlag;
   btnClass = 'btn mini voilet full';
 
+  public role: UserRole;
+  public isCurrentUserAdmin: boolean;
+
   public unsubscribe$ = new Subject<void>();
   subscription: Subscription;
+
+  @Input() public currentUser: UserModel;
+  @Input() public project: ProjectModel;
 
   // TODO remove when real data is available
   @Input() public taskStates: TaskState[] = [
@@ -116,8 +122,6 @@ export class BacklogContentComponent implements OnInit {
     },
   ];
 
-  @Input() public project: ProjectModel;
-
   public sprints$: Observable<SprintModel[]>;
 
   // TODO remove when real data is available
@@ -197,8 +201,21 @@ export class BacklogContentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('this.project');
-    console.log(this.project);
+    if (this.currentUser === undefined) {
+      this.role = 0;
+    } else {
+      this.role =
+        (this.currentUser?.organizationRoles?.find(
+          (m) =>
+            m.organizationId === this.project.organizationId &&
+            m.userId === this.currentUser.id,
+        )?.role as UserRole) || 0;
+
+      if (UserRole.OrganizationAdmin === this.role) {
+        this.isCurrentUserAdmin = true;
+      }
+    }
+
     this.getTasksState();
     this.getTasksType();
     this.getBacklogTasks();
