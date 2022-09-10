@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { UserModel } from 'src/core/models/user/user-model';
 import { NewOrganizationModel } from 'src/core/models/organization/new-organization-model';
-import { FormControl, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, Validators } from '@angular/forms';
 import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
@@ -19,6 +19,8 @@ export class CreateOrganizationDialogComponent implements OnInit {
   public createBtnClass = 'fill';
   public cancelBtnName = 'Cancel';
   public cancelBtnClass = 'fill gray';
+
+  public notAllowedCHaracters = [' ', '-', '.', '_'];
 
   public inputType = 'text';
   public showError = false;
@@ -38,6 +40,9 @@ export class CreateOrganizationDialogComponent implements OnInit {
     }
     if(ctrl.errors?.['maxlength'] && (ctrl.dirty || ctrl.touched)) {
       return 'Organization name should be less than 50 characters';
+    }
+    if(this.isLastAndFirstCharacterCorrect()) {
+      return 'Name should not starts or ends with special characters';
     }
     return '';
   }
@@ -62,11 +67,20 @@ export class CreateOrganizationDialogComponent implements OnInit {
     ]);
   }
 
+  public isLastAndFirstCharacterCorrect(): boolean {
+    const lastChar = this.organizationName.length - 1;
+    if(this.notAllowedCHaracters.includes(this.organizationName.charAt(0)) ||
+      this.notAllowedCHaracters.includes(this.organizationName.charAt(lastChar))){
+      return false;
+    }
+    return true;
+  }
+
   ngOnInit(): void {
   }
 
   createOrganization(): void {
-    if (!this.createOrganizationForm.valid) {
+    if (!this.createOrganizationForm.valid || this.isLastAndFirstCharacterCorrect()) {
       this.createOrganizationForm.markAllAsTouched();
       this.isSuccessful = false;
       this.notificationService.error('Follow suggestion under input field', 'Something go wrong');
