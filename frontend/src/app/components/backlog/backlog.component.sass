@@ -40,15 +40,20 @@
 .navigation
   display: flex
   flex-direction: row
-  p
+  width: 100%
+  li
     padding: 20px
     border-bottom: 2px solid colorscheme(white-100)
     cursor: pointer
+    list-style-type: none
     &:hover
       color: colorscheme(violet-200)
     &.active
       color: colorscheme(violet-200)
       border-bottom: 2px solid colorscheme(violet-200)
+    &:last-child
+      padding-right: 20px
+      margin-left: auto
 
 .backlog-search
   tasque-input
@@ -68,6 +73,11 @@ app-sprint
   display: flex
   flex-direction: column
   padding: 20px 20px 0 20px
+
+.sprint-archive
+  .title
+    text-align: center
+    padding: 20px
 
 .cdk-drag-preview
   box-sizing: border-box

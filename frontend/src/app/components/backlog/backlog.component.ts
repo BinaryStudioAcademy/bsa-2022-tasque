@@ -23,11 +23,25 @@ import { ProjectModel } from 'src/core/models/project/project-model';
 import { ActivatedRoute } from '@angular/router';
 import { TaskService } from 'src/core/services/task-service.service';
 import { ProjectService } from 'src/core/services/project.service';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-backlog',
   templateUrl: './backlog.component.html',
   styleUrls: ['./backlog.component.sass'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        // :enter is alias to 'void => *'
+        style({ opacity: 0 }),
+        animate(600, style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        // :leave is alias to '* => void'
+        animate(0, style({ opacity: 0 })),
+      ]),
+    ]),
+  ],
 })
 export class BacklogComponent implements OnInit {
   faMaximize = faMaximize;
@@ -44,8 +58,9 @@ export class BacklogComponent implements OnInit {
   public unsubscribe$ = new Subject<void>();
   public boards: TasqueDropdownOption[];
   public sprints: SprintModel[];
+  public archiveSprints: SprintModel[];
+  public isShowArchive: boolean;
   public filterIssue: IssueSort;
-
   public tasks: TaskModel[] = [];
 
   constructor(
@@ -110,6 +125,19 @@ export class BacklogComponent implements OnInit {
           this.sprints = result.body.sort(
             (a, b) => (a.order ?? 0) - (b.order ?? 0),
           );
+        }
+      });
+  }
+
+  public getArchiveSprints(projectId: number): void {
+    this.isShowArchive = !this.isShowArchive;
+
+    this.sprintService
+      .getArchiveProjectSprints(projectId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.archiveSprints = result.body;
         }
       });
   }
