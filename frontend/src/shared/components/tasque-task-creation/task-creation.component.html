@@ -16,6 +16,7 @@
             <label class="label">Project</label>
             <tasque-dropdown
               [options]="projects"
+              [placeholder]="currentProject ? currentProject.name : ''"
               [formControl]="projectControl"
               [errorMessage]="projectErrorMessage"
               [invalid]="!projectControl.valid"

@@ -53,6 +53,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   @Input() public buttonText = '';
   @Input() public organizationId: number;
+  @Input() public currentProject: ProjectModel;
   @Input() public projects: TasqueDropdownOption[] = [];
   @Input() public issueTypes: TasqueDropdownOption[] = [];
 
@@ -71,7 +72,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   get issueTypeErrorMessage(): string {
     const ctrl = this.issueTypeControl;
-
     if (ctrl.errors?.['required'] && (ctrl.touched || ctrl.dirty)) {
       return 'Issue type is required';
     }
