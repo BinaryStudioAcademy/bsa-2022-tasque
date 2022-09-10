@@ -48,8 +48,6 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit {
           this.sideBarMinimized = false;
         }
       });
-
-    this.subsribeToCurrentUser();
   }
 
   minimize(): void {
@@ -70,6 +68,7 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((resp) => {
           this.project = resp.body as ProjectModel;
+          this.subsribeToCurrentUser();
         });
     }
   }

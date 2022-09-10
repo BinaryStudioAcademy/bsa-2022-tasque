@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -9,7 +9,7 @@ import { TaskTemplate } from 'src/core/models/task/task-template';
 import { ToastrService } from 'ngx-toastr';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { TaskCustomField } from 'src/core/models/task/task-template-models/task-custom-field';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AvailableFields } from 'src/core/models/const-resources/available-fields';
 import { TaskType } from 'src/core/models/task/task-type';
 import { TaskTemplateService } from 'src/core/services/task-template.service';
@@ -24,7 +24,8 @@ export class IssueTemplateComponent implements OnInit {
     private notificationService: ToastrService,
     private router: Router,
     private taskTemplateService: TaskTemplateService,
-  ) {}
+    private route: ActivatedRoute
+  ) { }
 
   public issueTemplate: TaskTemplate;
 
@@ -64,39 +65,41 @@ export class IssueTemplateComponent implements OnInit {
     },
   ];
 
-  @Input() projectId = 5; //TODO: Change with number type, when ability to input value will implemented
-
+  public projectId: number;
   public selectedId: number;
   public isLabel: TaskCustomField | undefined;
   public isDropdown: TaskCustomField | undefined;
   public isCheckbox: TaskCustomField | undefined;
 
   ngOnInit(): void {
-    this.taskTemplateService
-    .getAllProjectTemplates(this.projectId)
-    .subscribe((resp) => {
-      this.templates = resp.body as TaskTemplate[];
-
-      this.templates.forEach(
-        (t) => this.taskTemplateService
-          .getTaskType(t.typeId as number)
-          .subscribe((resp) => {
-            this.types.push(resp.body as TaskType);
-            this.types.forEach((t) => {
-              this.type = t;
-              this.setDropdownOptions();
-              this.type = undefined;
-            });
-      }));
-    }, () => {
-      this.notificationService.info('No templates found');
-      this.templates = [];
-    });
+    this.projectId = parseInt(
+      this.route.snapshot.pathFromRoot[1].paramMap.get('id') as string);
 
     this.taskTemplateService
-    .getAllProjectTaskTypes(this.projectId)
-    .subscribe((resp) => {
-      this.types = resp.body as TaskType[];
+      .getAllProjectTemplates(this.projectId)
+      .subscribe((resp) => {
+        this.templates = resp.body as TaskTemplate[];
+
+        this.templates.forEach(
+          (t) => this.taskTemplateService
+            .getTaskType(t.typeId as number)
+            .subscribe((resp) => {
+              this.types.push(resp.body as TaskType);
+              this.types.forEach((t) => {
+                this.type = t;
+                this.setDropdownOptions();
+                this.type = undefined;
+              });
+        }));
+      }, () => {
+        this.notificationService.info('No templates found');
+        this.templates = [];
+      });
+
+    this.taskTemplateService
+      .getAllProjectTaskTypes(this.projectId)
+      .subscribe((resp) => {
+        this.types = resp.body as TaskType[];
     });
   }
 
@@ -160,7 +163,7 @@ export class IssueTemplateComponent implements OnInit {
   }
 
   discardChanges(): void {
-    this.router.navigate(['/project/settings']);
+    this.router.navigate([`/project/${this.projectId}/board`]);
   }
 
   setSelected(val: number): void {

@@ -9,6 +9,7 @@ import { EditProjectModel } from '../models/project/edit-project-model';
 import { ProjectInfoModel } from '../models/project/project-info-model';
 import { InviteUserModel } from '../models/project/invite-user-model';
 import { ChangeUserRoleModel } from '../models/project/change-user-role-model';
+import { TaskPriority } from '../models/task/task-priority';
 
 @Injectable({
   providedIn: 'root'
@@ -58,5 +59,9 @@ export class ProjectService {
 
   getProjectParticipants(id: number): Observable<HttpResponse<UserModel[]>> {
     return this.httpService.getFullRequest<UserModel[]>(this.routePrefix + '/getParticipants/' + id);
+  }
+
+  getProjectPriorities(id: number): Observable<HttpResponse<TaskPriority[]>> {
+    return this.httpService.getFullRequest(this.routePrefix + '/getProjectPriorities/' + id);
   }
 }
