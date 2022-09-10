@@ -128,7 +128,8 @@
         btnText="+ Create issues"
         btnClass="btn mini voilet"
         [sidebarName]="createIssueSidebarName"
-        [organizationId]="1"
+        [organizationId]="currentProject.organizationId"
+        [currentProject]="currentProject"
         (click)="test()"
       ></tasque-task-creation>
     </div>

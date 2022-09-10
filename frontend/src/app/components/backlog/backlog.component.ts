@@ -63,6 +63,7 @@ export class BacklogComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.url[0].path;
+
     if (id) {
       this.currentProjectId = parseInt(id);
       this.projectService
@@ -72,7 +73,6 @@ export class BacklogComponent implements OnInit {
           this.currentProject = resp.body as ProjectModel;
         });
     }
-
     this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user as UserModel;
 

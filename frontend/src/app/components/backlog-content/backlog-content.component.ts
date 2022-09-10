@@ -110,16 +110,7 @@ export class BacklogContentComponent implements OnInit {
     },
   ];
 
-  // TODO remove when real data is available
-  @Input() public project: ProjectModel = {
-    id: 1,
-    name: 'project 1',
-    key: 'PR-1',
-    authorId: 0,
-    organizationId: 0,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+  @Input() public project: ProjectModel;
 
   public sprints$: Observable<SprintModel[]>;
 
@@ -200,6 +191,8 @@ export class BacklogContentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('this.project');
+    console.log(this.project);
     this.getTasksState();
     this.getTasksType();
     this.getBacklogTasks();

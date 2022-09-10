@@ -29,6 +29,7 @@ import { TaskType } from 'src/core/models/task/task-type';
 import { ToastrService } from 'ngx-toastr';
 import { TaskTypeService } from 'src/core/services/task-type.service';
 import { TaskStateService } from 'src/core/services/task-state.service';
+import { ProjectModel } from 'src/core/models/project/project-model';
 
 @Component({
   selector: 'app-sprint',
@@ -46,6 +47,7 @@ export class SprintComponent implements OnInit, OnChanges {
   @Input() public filterIssue: IssueSort;
   //get current user
   @Input() public currentUser: UserModel;
+  @Input() public currentProject: ProjectModel;
 
   @Input() public sprintIndex: number;
 
@@ -83,7 +85,6 @@ export class SprintComponent implements OnInit, OnChanges {
 
   test() {
     console.log(this.sprintIndex);
-    console.log(this.currentSprint);
   }
   ngOnInit(): void {
     this.getTasksState();

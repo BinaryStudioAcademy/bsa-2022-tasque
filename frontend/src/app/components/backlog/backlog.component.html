@@ -48,7 +48,11 @@
       (sprintDown)="updateSprintPosition($event, false)"
       [filterIssue]="filterIssue"
       [sprintIndex]="index"
+      [currentProject]="currentProject"
     ></app-sprint>
-    <app-backlog-content [project]="currentProject"></app-backlog-content>
+    <app-backlog-content
+      *ngIf="currentProject"
+      [project]="currentProject"
+    ></app-backlog-content>
   </div>
 </div>
