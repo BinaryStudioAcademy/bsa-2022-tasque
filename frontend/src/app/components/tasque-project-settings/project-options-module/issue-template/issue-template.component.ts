@@ -141,6 +141,11 @@ export class IssueTemplateComponent implements OnInit {
     this.selectedId = val;
     this.type = this.types.find((t) => t.id === val);
     this.issueTemplate = this.templates.find((t) => t.typeId === val) as TaskTemplate;
+    if(this.issueTemplate?.customFields !== undefined) {
+      this.customFields = this.issueTemplate.customFields;
+    } else {
+      this.customFields = [];
+    }
 
     const issue = this.dropdownOptions.find((i) => i.id === this.selectedId) as TasqueDropdownOption;
     this.issueColor = issue.color as string;

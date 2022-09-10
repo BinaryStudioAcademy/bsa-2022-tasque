@@ -19,9 +19,9 @@ namespace Tasque.Core.BLL.MappingProfiles
             CreateMap<TemplateCustomField, CosmosTemplateCustomField>()
                 .ForMember(ct => ct.Content, opt => opt
                     .MapFrom(
-                        tt => tt.Dropdown != null ? JsonConvert.SerializeObject(tt.Dropdown) : 
-                        tt.Labels != null ? JsonConvert.SerializeObject(tt.Labels) : 
-                        tt.Checkboxes != null? JsonConvert.SerializeObject(tt.Checkboxes) : null));
+                        tt => tt.Type == TaskFieldType.Dropown ? JsonConvert.SerializeObject(tt.Dropdown) :
+                        tt.Type == TaskFieldType.Label ? JsonConvert.SerializeObject(tt.Labels) :
+                        tt.Type == TaskFieldType.CheckBox ? JsonConvert.SerializeObject(tt.Checkboxes) : null));
 
             CreateMap<CosmosTemplateCustomField, TemplateCustomField>()
                 .ForMember(tt => tt.Dropdown, opt => opt
