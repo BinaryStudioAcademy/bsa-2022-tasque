@@ -231,9 +231,13 @@ erDiagram
         updated_at datetime
     }
 
+
+    TaskPriority ||--o{ Project : projectId_id
     TaskPriority {
         id int PK
+	      projectId int FK
         name string
+	      color string
         created_at datetime
         updated_at datetime
     }
