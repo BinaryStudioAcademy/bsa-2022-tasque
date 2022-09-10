@@ -7,7 +7,7 @@ using Polly;
 
 namespace Tasque.Messaging.Connections
 {
-    public class PersistentConnection
+    public class PersistentConnection : IPersistentConnection
     {
         private readonly IConnectionFactory _connectionFactory;
         private readonly ILogger<PersistentConnection> _logger;

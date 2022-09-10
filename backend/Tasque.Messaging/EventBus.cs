@@ -12,32 +12,31 @@ using Tasque.Messaging.Connections;
 using Tasque.Messaging.SubscriptionManagement;
 using RabbitMQ.Client;
 using Polly;
-using Autofac;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Tasque.Messaging
 {
     public class EventBus : IEventBus, IDisposable
     {
         const string BROKER_NAME = "event_bus";
-        const string AUTOFAC_SCOPE_NAME = "event_bus";
 
         private readonly IPersistentConnection _persistentConnection;
         private readonly ILogger<EventBus> _logger;
         private readonly ISubscriptionsManager _subsManager;
-        private readonly ILifetimeScope _autofac;
         private readonly int _retryCount;
+        IServiceProvider _sp;
 
         private IModel _consumerChannel;
         private string _queueName;
 
-        public EventBus(IPersistentConnection persistentConnection, ILogger<EventBus> logger, ILifetimeScope autofac, ISubscriptionsManager subsManager, string queueName = null, int retryCount = 5)
+        public EventBus(IPersistentConnection persistentConnection, ILogger<EventBus> logger, IServiceProvider sp, ISubscriptionsManager subsManager, int retryCount = 5, string queueName = "event_queue")
         {
             _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _subsManager = subsManager ?? new InMemorySubscriptionsManager();
             _queueName = queueName;
             _consumerChannel = CreateConsumerChannel();
-            _autofac = autofac;
+            _sp = sp;
             _retryCount = retryCount;
             _subsManager.OnEventRemoved += SubsManager_OnEventRemoved;
         }
@@ -225,20 +224,17 @@ namespace Tasque.Messaging
 
             if (_subsManager.EventHasSubscribers(eventName))
             {
-                using (var scope = _autofac.BeginLifetimeScope(AUTOFAC_SCOPE_NAME))
+                var subscriptions = _subsManager.GetHandlersForEvent(eventName);
+                foreach (var subscription in subscriptions)
                 {
-                    var subscriptions = _subsManager.GetHandlersForEvent(eventName);
-                    foreach (var subscription in subscriptions)
-                    {
-                        var handler = scope.ResolveOptional(subscription.HandlerType);
-                        if (handler == null) continue;
-                        var eventType = _subsManager.GetEventTypeByName(eventName);
-                        var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
-                        var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
+                    var handler = _sp.GetRequiredService(subscription.HandlerType);
+                    if (handler == null) continue;
+                    var eventType = _subsManager.GetEventTypeByName(eventName);
+                    var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
+                    var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
 
-                        await Task.Yield();
-                        await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
-                    }
+                    await Task.Yield();
+                    await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
                 }
             }
             else
