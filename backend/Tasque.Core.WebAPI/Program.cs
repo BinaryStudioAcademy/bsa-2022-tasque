@@ -6,7 +6,6 @@ using Tasque.Core.WebAPI.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using NLog.Extensions.Logging;
 using Tasque.Messaging;
-using Tasque.Notifications;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +15,7 @@ builder.Logging.AddNLog();
 // Add services to the container.
 
 AppConfigurationExtension.RegisterServices(builder.Services, builder.Configuration);
-builder.Services.AddMessaging(builder.Configuration);
+builder.Services.RegisterEventBus(builder.Configuration);
 builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<DataContext>(
@@ -67,7 +66,6 @@ app.UseMigrationsEndPoint();
 
 app.UseEndpoints(cfg =>
 {
-    cfg.MapHubs();
     cfg.MapControllers();
 });
 
