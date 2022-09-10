@@ -10,14 +10,14 @@ namespace Tasque.Core.WebAPI.Controllers;
 [Route("api/project/")]
 public class ProjectController : EntityController<Project, NewProjectDto, ProjectService>
 {
-    public ProjectController(ProjectService service, CurrentUserParameters currentUser) 
+    public ProjectController(ProjectService service, CurrentUserParameters currentUser)
         : base(service, currentUser)
     {
-        
+
     }
 
     [HttpPut("edit")]
-    public async Task<IActionResult> EditProject([FromBody]EditProjectDto editProjectDto)
+    public async Task<IActionResult> EditProject([FromBody] EditProjectDto editProjectDto)
     {
         var result = await _service.EditProject(editProjectDto);
 
@@ -31,7 +31,7 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
     }
 
     [HttpPut("invite")]
-    public async Task<IActionResult> InviteUserToProject([FromBody]UserInviteDto userInviteDto)
+    public async Task<IActionResult> InviteUserToProject([FromBody] UserInviteDto userInviteDto)
     {
         await _service.InviteUserToProject(userInviteDto);
 
@@ -78,7 +78,7 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
 
         return Ok(result);
     }
-    
+
     [HttpGet("getByOrganizationId/{organizationId}")]
     public IActionResult GetProjectsByOrganizationId(int organizationId)
     {
@@ -102,8 +102,17 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
     {
         var priorities = _service.GetProjectPrioritiesById(projectId);
         if (priorities == null)
-            return BadRequest();
+            return NotFound("Project or it's task priorities not found");
         return Ok(priorities);
+    }
+
+    [HttpGet("getProjectTaskTypes/{projectId}")]
+    public IActionResult GetProjectTaskTypes(int projectId)
+    {
+        var types = _service.GetProjectTaskTypesById(projectId);
+        if (types == null)
+            return NotFound("Project or it's task types not found");
+        return Ok(types);
     }
 }
 

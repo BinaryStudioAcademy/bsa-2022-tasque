@@ -289,4 +289,9 @@ public class ProjectService : EntityCrudService<Project>
     {
         return _mapper.Map<List<TaskPriorityDto>>(_db.TaskPriorities.Where(p => p.ProjectId == projectId));
     }
+
+    public List<TaskTypeDto> GetProjectTaskTypesById(int projectId)
+    {
+        return _mapper.Map<List<TaskTypeDto>>(_db.TaskTypes.Where(t => t.ProjectId == projectId));
+    }
 }
