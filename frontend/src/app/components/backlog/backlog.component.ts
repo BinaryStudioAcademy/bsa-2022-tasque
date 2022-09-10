@@ -22,6 +22,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { ActivatedRoute } from '@angular/router';
 import { TaskService } from 'src/core/services/task-service.service';
+import { ProjectService } from 'src/core/services/project.service';
 
 @Component({
   selector: 'app-backlog',
@@ -35,18 +36,8 @@ export class BacklogComponent implements OnInit {
   //get current user
   @Input() public currentUser: UserModel;
 
-  // TODO remove when real data is available
-  //get current project
-  @Input() public currentProject: ProjectModel = {
-    id: 1,
-    name: 'Test project',
-    authorId: 1,
-    organizationId: 1,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    key: 'TIS-1',
-  };
-  public projectId: number;
+  public currentProject: ProjectModel;
+  public currentProjectId: number;
 
   public inputSearch = '';
 
@@ -58,7 +49,7 @@ export class BacklogComponent implements OnInit {
   public tasks: TaskModel[] = [];
 
   constructor(
-    public boardService: BoardService,
+    public projectService: ProjectService,
     public sprintService: SprintService,
     public taskService: TaskService,
     public currentUserService: GetCurrentUserService,
@@ -71,21 +62,27 @@ export class BacklogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // const id = this.route.snapshot.pathFromRoot[1].paramMap.get('id');
-    // if (id == null) {
-    //    return;
-    //  }
-    this.projectId = 1;
+    const id = this.route.snapshot.url[0].path;
+    if (id) {
+      this.currentProjectId = parseInt(id);
+      this.projectService
+        .getProjectById(this.currentProjectId)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((resp) => {
+          this.currentProject = resp.body as ProjectModel;
+        });
+    }
 
     this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user as UserModel;
-      console.log(this.currentUser);
+
       // this.getUserBoards();
-      this.getSprints(this.projectId);
+      this.getSprints(this.currentProjectId);
     });
   }
 
   //get all user's boards
+  /*
   public getUserBoards(): void {
     this.boardService
       .getUserBoards(this.currentUser.id)
@@ -100,6 +97,7 @@ export class BacklogComponent implements OnInit {
         }
       });
   }
+  */
 
   //get sprints for the current project
   //and sort them by priority (order)
