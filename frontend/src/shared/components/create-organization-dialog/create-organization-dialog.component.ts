@@ -21,11 +21,26 @@ export class CreateOrganizationDialogComponent implements OnInit {
   public cancelBtnClass = 'fill gray';
 
   public inputType = 'text';
+  public showError = false;
   public inputNameClass = 'input';
   public inputNameId = 'organizationName';
   public inputNamePlaceholder = 'Write the name of your organization';
   public inputNameLabel = 'Name';
-  public createOrgErrorMessage = 'Organization name is required';
+
+  public get createOrgErrorMessage(): string {
+    const ctrl = this.createOrganizationForm;
+
+    if(ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Organization name is required';
+    }
+    if(ctrl.errors?.['minlength'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Organization name should contain at least 3 characters';
+    }
+    if(ctrl.errors?.['maxlength'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Organization name should be less than 50 characters';
+    }
+    return '';
+  }
   public inputNameRequired = true;
 
   public isSuccessful: boolean;
@@ -42,6 +57,8 @@ export class CreateOrganizationDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public currentUser: UserModel) {
     this.createOrganizationForm = new FormControl(this.organizationName, [
       Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(50),
     ]);
   }
 
@@ -52,7 +69,8 @@ export class CreateOrganizationDialogComponent implements OnInit {
     if (!this.createOrganizationForm.valid) {
       this.createOrganizationForm.markAllAsTouched();
       this.isSuccessful = false;
-      this.notificationService.error('Something go wrong');
+      this.notificationService.error('Follow suggestion under input field', 'Something go wrong');
+      this.showError = true;
       return;
     }
 

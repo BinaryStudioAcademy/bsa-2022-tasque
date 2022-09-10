@@ -46,6 +46,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   public template: TaskTemplate;
   public taskType: TaskType;
+  public showError = false;
 
   public customFields: TaskCustomField[];
   public issueTemplates: TaskTemplate[];
@@ -245,6 +246,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   public submitForm(): void {
     if (!this.taskCreateForm.valid || !this.taskCreateForm.dirty || !this.taskCreateForm.touched) {
       this.taskCreateForm.markAllAsTouched();
+      this.showError = true;
       this.notificationService
         .error('Some values are incorrect. Follow error messages to solve this problem', 'Invalid values');
       return;
