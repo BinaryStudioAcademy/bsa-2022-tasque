@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
 using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.Common.DTO.Project;
 using Tasque.Core.Common.DTO.Task;
@@ -52,7 +53,7 @@ public class ProjectService : EntityCrudService<Project>
 
         await _db.SaveChangesAsync();
         await CreateBoardForProject(project);
-        await SetBasicPrioritiesToProject(project);
+        await SetBasicPrioritiesAndTypesToProject(project);
 
         var projectAfterCreate = await _db.Projects
             .Where(proj => proj.Id == project.Id)
@@ -76,7 +77,7 @@ public class ProjectService : EntityCrudService<Project>
         await _db.SaveChangesAsync();
     }
 
-    public async Task SetBasicPrioritiesToProject(Project project)
+    public async Task SetBasicPrioritiesAndTypesToProject(Project project)
     {
         var priorities = new List<TaskPriority>()
         {
@@ -84,39 +85,62 @@ public class ProjectService : EntityCrudService<Project>
             {
                 Type = BasicTaskPriorityTypes.Highest,
                 Name = BasicTaskPriorityTypes.Highest.ToString(),
-                Color = TaskPriorityColors.Highest,
+                Color = TaskColors.Highest,
                 ProjectId = project.Id,
             },
             new()
             {
                 Type = BasicTaskPriorityTypes.High,
                 Name = BasicTaskPriorityTypes.High.ToString(),
-                Color = TaskPriorityColors.High,
+                Color = TaskColors.High,
                 ProjectId = project.Id,
             },
             new()
             {
                 Type = BasicTaskPriorityTypes.Medium,
                 Name = BasicTaskPriorityTypes.Medium.ToString(),
-                Color = TaskPriorityColors.Medium,
+                Color = TaskColors.Medium,
                 ProjectId = project.Id,
             },
             new()
             {
                 Type = BasicTaskPriorityTypes.Low,
                 Name = BasicTaskPriorityTypes.Low.ToString(),
-                Color = TaskPriorityColors.Low,
+                Color = TaskColors.Low,
                 ProjectId = project.Id,
             },
             new()
             {
                 Type = BasicTaskPriorityTypes.Lowest,
                 Name = BasicTaskPriorityTypes.Lowest.ToString(),
-                Color = TaskPriorityColors.Lowest,
+                Color = TaskColors.Lowest,
                 ProjectId = project.Id,
             },
         };
 
+        var types = new List<TaskType>()
+        {
+            new()
+            {
+                Color = TaskColors.Bug,
+                Name = "Bug",
+                ProjectId = project.Id,
+            },
+            new()
+            {
+                Color = TaskColors.Story,
+                Name = "Story",
+                ProjectId = project.Id,
+            },
+            new()
+            {
+                Color = TaskColors.Task,
+                Name = "Task",
+                ProjectId = project.Id,
+            }
+        };
+
+        await _db.TaskTypes.AddRangeAsync(types);
         await _db.TaskPriorities.AddRangeAsync(priorities);
         await _db.SaveChangesAsync();
     }
