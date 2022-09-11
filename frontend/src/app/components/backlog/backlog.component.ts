@@ -51,6 +51,8 @@ export class BacklogComponent implements OnInit {
   faLock = faLock;
   //get current user
   @Input() public currentUser: UserModel;
+  //Get the criteria by which the issue will be sorted
+  @Input() public filterIssue: IssueSort;
 
   public currentProject: ProjectModel;
   public currentProjectId: number;
@@ -62,7 +64,6 @@ export class BacklogComponent implements OnInit {
   public sprints: SprintModel[];
   public archiveSprints: SprintModel[];
   public isShowArchive: boolean;
-  public filterIssue: IssueSort;
   public tasks: TaskModel[] = [];
 
   constructor(

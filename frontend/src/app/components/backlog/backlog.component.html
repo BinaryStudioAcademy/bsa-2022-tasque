@@ -79,6 +79,8 @@
       *ngIf="currentProject && currentUser && !isShowArchive"
       [project]="currentProject"
       [currentUser]="currentUser"
+      [filterIssue]="filterIssue"
+      [inputSearch]="inputSearch"
       [@fadeInOut]
     ></app-backlog-content>
   </div>
