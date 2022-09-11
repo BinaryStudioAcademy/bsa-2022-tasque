@@ -1,10 +1,4 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { faAngleDown, faFlag, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { TaskType } from 'src/core/models/task/task-type';

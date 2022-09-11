@@ -12,7 +12,6 @@ import { faFlag } from '@fortawesome/free-solid-svg-icons';
 import { TaskModelDto } from 'src/core/models/task/task-model-dto';
 import { TaskService } from 'src/core/services/task.service';
 import { ToastrService } from 'ngx-toastr';
-import { UserRole } from 'src/core/models/user/user-roles';
 
 @Component({
   selector: 'app-issue',
