@@ -9,6 +9,7 @@ namespace Tasque.Core.Common.DTO.Project
     public class InviteUserDTO
     {
         public int ProjectId { get; set; }
-        public string UserEmail { get; set; }
+        public string InviteeEmail { get; set; }
+        public string InvitorEmail { get; set; }
     }
 }
