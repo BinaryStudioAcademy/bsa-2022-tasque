@@ -315,27 +315,29 @@ export class BacklogContentComponent implements OnInit, OnChanges {
 
   //Sort tasks in a sprint (by keyword or IssueSort)
   filterItems(): void {
-    if (this.inputSearch) {
-      this.tasks = this.tasksShow.filter((item) => {
-        return item.summary
-          .toLowerCase()
-          .includes(this.inputSearch.toLowerCase());
-      });
-    } else {
-      this.tasks = this.tasksShow;
-    }
+    if (this.tasksShow) {
+      if (this.inputSearch) {
+        this.tasks = this.tasksShow.filter((item) => {
+          return item.summary
+            .toLowerCase()
+            .includes(this.inputSearch.toLowerCase());
+        });
+      } else {
+        this.tasks = this.tasksShow;
+      }
 
-    if (this.filterIssue == IssueSort.All) {
-      this.tasks.sort((a) => a.id);
-    } else if (this.filterIssue == IssueSort.OnlyMyIssues) {
-      this.tasks = this.tasks.filter((item) => {
-        return item.authorId == this.currentUser.id;
-      });
-    } else if (this.filterIssue == IssueSort.RecentlyUpdated) {
-      this.tasks.sort(
-        (a, b) =>
-          new Date(b.deadline).getTime() - new Date(a.deadline).getTime(),
-      );
+      if (this.filterIssue == IssueSort.All) {
+        this.tasks.sort((a) => a.id);
+      } else if (this.filterIssue == IssueSort.OnlyMyIssues) {
+        this.tasks = this.tasks.filter((item) => {
+          return item.authorId == this.currentUser.id;
+        });
+      } else if (this.filterIssue == IssueSort.RecentlyUpdated) {
+        this.tasks.sort(
+          (a, b) =>
+            new Date(b.deadline).getTime() - new Date(a.deadline).getTime(),
+        );
+      }
     }
   }
 }

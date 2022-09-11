@@ -47,7 +47,7 @@
 
   <div class="body" cdkDropListGroup cdkScrollable>
     <div class="sprint-archive" *ngIf="isShowArchive" [@fadeInOut]>
-      <h3 class="title">Sprint archive</h3>
+      <h3 class="title">Sprints archive</h3>
       <app-sprint
         *ngFor="let sprint of archiveSprints; let index = index"
         [currentSprint]="sprint"
