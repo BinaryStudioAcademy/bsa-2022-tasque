@@ -1,6 +1,9 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Exeptions;
+using Tasque.Core.Common.DTO.Board;
 using Tasque.Core.Common.DTO.Project;
 using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.DTO.User;
@@ -49,9 +52,7 @@ public class ProjectService : EntityCrudService<Project>
             RoleId = (int)BaseProjectRole.Admin
         });
         project.Users.Add(user);
-
         await _db.SaveChangesAsync();
-        await CreateBoardForProject(project);
         await SetBasicPrioritiesToProject(project);
 
         var projectAfterCreate = await _db.Projects
@@ -63,17 +64,6 @@ public class ProjectService : EntityCrudService<Project>
             .FirstOrDefaultAsync();
 
         return _mapper.Map<ProjectInfoDto>(projectAfterCreate);
-    }
-
-    public async Task CreateBoardForProject(Project project)
-    {
-        _db.Boards.Add(new Board
-        {
-            ProjectId = project.Id,
-            Name = $"{project.Name} Board"
-        });
-
-        await _db.SaveChangesAsync();
     }
 
     public async Task SetBasicPrioritiesToProject(Project project)
@@ -158,7 +148,7 @@ public class ProjectService : EntityCrudService<Project>
     {
         var user = await _db.Users
             .FirstOrDefaultAsync(u => u.Email == usersInviteDto.Email);
-             
+
         var project = await _db.Projects
             .FirstOrDefaultAsync(proj => proj.Id == usersInviteDto.ProjectId);
 
@@ -168,7 +158,7 @@ public class ProjectService : EntityCrudService<Project>
             throw new HttpException(System.Net.HttpStatusCode.NotFound, "The user with this email does not exist");
         }
 
-        if (project == null) 
+        if (project == null)
         {
             throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
         }
@@ -229,7 +219,7 @@ public class ProjectService : EntityCrudService<Project>
         var userProjecRole = await _db.UserProjectRoles
             .FirstOrDefaultAsync(u => u.UserId == roleDto.UserId && u.ProjectId == roleDto.ProjectId);
 
-        if(userProjecRole == null)
+        if (userProjecRole == null)
         {
             throw new HttpException(System.Net.HttpStatusCode.NotFound, "Make sure that the user is a member of the project");
         }
@@ -264,5 +254,58 @@ public class ProjectService : EntityCrudService<Project>
     public List<TaskPriorityDto> GetProjectPrioritiesById(int projectId)
     {
         return _mapper.Map<List<TaskPriorityDto>>(_db.TaskPriorities.Where(p => p.ProjectId == projectId));
+    }
+
+    public async Task<BoardInfoDto> GetProjectBoard(int projectId)
+    {
+        var project = await _db.Projects
+            .Include(x => x.Columns).ThenInclude(x => x.Tasks)
+            .Include(x => x.Users)
+            .FirstOrDefaultAsync(x => x.Id == projectId)
+            ?? throw new CustomNotFoundException("project");
+
+        return _mapper.Map<BoardInfoDto>(project);
+    }
+
+    public async Task<BoardInfoDto> UpdateTasks(BoardInfoDto board)
+    {
+        var mapped = _mapper.Map<Project>(board).Columns.SelectMany(x => x.Tasks);
+        var tasks = _db.Projects
+            .Include(x => x.Columns).ThenInclude(x => x.Tasks)
+            .FirstOrDefault(x => x.Id == board.Id)?
+            .Columns.SelectMany(x => x.Tasks)
+            ?? throw new CustomNotFoundException("project board");
+
+        foreach (var task in mapped)
+        {
+            var entity = tasks.FirstOrDefault(x => x.Id == task.Id);
+            if (entity == null) continue;
+
+            entity.BoardColumnId = task.BoardColumnId;
+        }
+        await _db.SaveChangesAsync();
+        return await GetProjectBoard(board.Id);
+    }
+
+    public async Task<BoardInfoDto> UpdateColumns(BoardInfoDto board)
+    {
+        var mapped = _mapper.Map<Project>(board).Columns;
+        var columns = _db.Projects
+            .Include(x => x.Columns)
+            .FirstOrDefault(x => x.Id == board.Id)?
+            .Columns
+            ?? throw new CustomNotFoundException("project board");
+
+        foreach (var column in mapped)
+        {
+            if (column.Id == 0)
+            {
+                _db.BoardColumns.Add(column);
+                continue;
+            }
+        }
+
+        await _db.SaveChangesAsync();
+        return await GetProjectBoard(board.Id);
     }
 }

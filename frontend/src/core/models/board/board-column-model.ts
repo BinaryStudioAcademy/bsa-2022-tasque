@@ -2,6 +2,6 @@ import { TaskInfoModel } from './task-Info-model';
 
 export interface BoardColumnModel {
     id: number;
-    columnName: string;
+    name: string;
     tasks: TaskInfoModel[];
 }
