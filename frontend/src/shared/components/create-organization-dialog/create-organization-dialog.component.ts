@@ -41,7 +41,7 @@ export class CreateOrganizationDialogComponent implements OnInit {
     if(ctrl.errors?.['maxlength'] && (ctrl.dirty || ctrl.touched)) {
       return 'Organization name should be less than 50 characters';
     }
-    if(this.isLastAndFirstCharacterCorrect()) {
+    if(!this.isLastAndFirstCharacterCorrect()) {
       return 'Name should not starts or ends with special characters';
     }
     return '';
@@ -68,9 +68,9 @@ export class CreateOrganizationDialogComponent implements OnInit {
   }
 
   public isLastAndFirstCharacterCorrect(): boolean {
-    const lastChar = this.organizationName.length - 1;
-    if(this.notAllowedCHaracters.includes(this.organizationName.charAt(0)) ||
-      this.notAllowedCHaracters.includes(this.organizationName.charAt(lastChar))){
+    const lastChar = this.createOrganizationForm.value - 1;
+    if(this.notAllowedCHaracters.includes(this.createOrganizationForm.value.charAt(0)) ||
+      this.notAllowedCHaracters.includes(this.createOrganizationForm.value.charAt(lastChar))){
       return false;
     }
     return true;
@@ -80,7 +80,7 @@ export class CreateOrganizationDialogComponent implements OnInit {
   }
 
   createOrganization(): void {
-    if (!this.createOrganizationForm.valid || this.isLastAndFirstCharacterCorrect()) {
+    if (!this.createOrganizationForm.valid || !this.isLastAndFirstCharacterCorrect()) {
       this.createOrganizationForm.markAllAsTouched();
       this.isSuccessful = false;
       this.notificationService.error('Follow suggestion under input field', 'Something go wrong');
