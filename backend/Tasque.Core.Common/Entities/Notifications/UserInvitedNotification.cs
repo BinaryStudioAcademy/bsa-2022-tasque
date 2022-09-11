@@ -4,7 +4,7 @@
     {
         public override string Type => "UserInvited";
         public int ProjectId { get; set; }
-        public string InviteeName { get; set; }
-        public string InvitorName { get; set; }
+        public int InviteeId { get; set; }
+        public int InvitorId { get; set; }
     }
 }

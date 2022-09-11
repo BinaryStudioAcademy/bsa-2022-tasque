@@ -14,6 +14,6 @@ namespace Tasque.Core.Common.Models.Events
         public int PreviousColumnId { get; set; }
         public int NewColumnId { get; set; }
         public int TaskId { get; set; }
-        public string authorName { get; set; }
+        public int TaskAuthorId { get; set; }
     }
 }
