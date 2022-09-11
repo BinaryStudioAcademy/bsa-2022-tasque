@@ -8,15 +8,12 @@
         <tasque-button style="margin-left: 10px" (btnClick)="deleteField(field)" [icon]="faMinus" class="btn icon"></tasque-button>
     </div>
     <div *ngIf="isChanging" class="edit-dropdown">
-        <tasque-input [formControl]="formControl" class="edit-input" placeholder="Write field name" type="text" (outputValue)="setValue($event)"></tasque-input>
-        <tasque-button class="btn icon" [icon]="faCheck" (keydown.enter)="saveField()" (btnClick)="saveField()"></tasque-button>
+        <tasque-input [formControl]="formControl" (keydown.enter)="saveField()" class="edit-input" placeholder="Write field name" type="text" (outputValue)="setValue($event)"></tasque-input>
+        <tasque-button class="btn icon" [icon]="faCheck" (btnClick)="saveField()"></tasque-button>
     </div>
     <div class="create-dropdown">
         <span>Add new option</span>
         <tasque-button style="margin-left: 10px" class="btn icon" [icon]="faPlus" (btnClick)="addField()"></tasque-button>
     </div>
-    <tasque-button style="margin-left: 10px" class="btn mini" text="Finish editing" (btnClick)="finishEdit()"></tasque-button>
-    <div class="data-save">
-        <span>Data will be saved</span>
-    </div>
+    <tasque-button style="margin-left: 10px" class="btn mini" text="Save and finish editing" (btnClick)="finishEdit()"></tasque-button>
 </div>

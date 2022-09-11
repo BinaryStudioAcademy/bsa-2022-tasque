@@ -10,18 +10,9 @@
   background: colorscheme(white-100)
   box-shadow: 3px 4px 9px rgba(223, 223, 223, 0.25)
 
-.logo
-  width: 138px
-  height: 26px
-  margin-left: 47px
-  margin-top: 32px
-  display: flex
-  align-items: center
-  justify-content: center
-
 .icon
   margin-left: 47px
-  margin-top: 76px
+  margin-top: 32px
 
 .menu
   margin-left: 49px
@@ -37,9 +28,15 @@
 .menu-item
   margin-bottom: 37px
 
+.menu-actions
+  padding-top: 15px
+  padding-left: 40px
+
 ul
-  list-style: none
   padding-left: 0
+
+li > p
+  cursor: pointer
 
 span
   font-family: 'Nunito', sans-serif
@@ -62,3 +59,16 @@ img
 .selected
   font-weight: 700
   color: colorscheme(pink-200)
+
+.button
+  cursor: pointer
+  user-select: none
+  -moz-user-select: none
+  -webkit-user-select: none
+  -ms-user-select: none
+
+.no-permission
+  padding-top: 15px
+  display: flex
+  justify-content: center
+  align-items: center

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { BoardColumnModel } from '../../../core/models/board/board-column-model';
@@ -13,6 +13,7 @@ import { NotificationService } from 'src/core/services/notification.service';
 import { BoardModel } from 'src/core/models/board/board-model';
 import { ActivatedRoute } from '@angular/router';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { Subject } from 'rxjs';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import { ProjectService } from 'src/core/services/project.service';
@@ -23,7 +24,7 @@ import { filter } from 'rxjs/operators';
   templateUrl: './tasque-board.component.html',
   styleUrls: ['./tasque-board.component.sass'],
 })
-export class TasqueBoardComponent implements OnInit {
+export class TasqueBoardComponent implements OnInit, OnDestroy {
   public searchIcon = faMagnifyingGlass;
   public plusIcon = faPlus;
 
@@ -35,14 +36,9 @@ export class TasqueBoardComponent implements OnInit {
   private newColumn: BoardColumnModel;
   private projectId: number;
 
-  public board: BoardModel = {
-    projectId: 0,
-    id: 0,
-    name: '',
-    projectName: '',
-    users: [],
-    columns: [],
-  };
+  public unsubscribe$ = new Subject<void>();
+
+  public board: BoardModel = { projectId: 0, id: 0, name: '', projectName: '', users: [], columns: [] };
   user: UserModel;
   public hasTasks = false;
   public searchParameter = '';
@@ -82,10 +78,16 @@ export class TasqueBoardComponent implements OnInit {
       'columnName': ['', [Validators.required]],
     });
   }
+  
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.pathFromRoot[1].paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('id');
     if (id == null) {
+      this.notificationService.error('Path id is null');
       return;
     }
     this.projectId = parseInt(id);
@@ -98,9 +100,6 @@ export class TasqueBoardComponent implements OnInit {
         } else {
           this.notificationService.error('Something went wrong');
         }
-      },
-      (error) => {
-        this.notificationService.error(error);
       },
     );
   }
@@ -177,12 +176,10 @@ export class TasqueBoardComponent implements OnInit {
 
   filterTasks(): void {
     const phrase = this.searchInput.inputValue;
-    for (const column of this.board.columns) {
-      for (const task of column.tasks) {
-        task.isHidden = !task.description
-          .toLowerCase()
-          .includes(phrase.toLowerCase());
-        if (this.selectedUserId) {
+    for(const column of this.board.columns) {
+      for(const task of column.tasks) {
+        task.isHidden = !task.summary.toLowerCase().includes(phrase.toLowerCase());
+        if(this.selectedUserId) {
           task.isHidden = task.isHidden || task.user?.id != this.selectedUserId;
         }
       }

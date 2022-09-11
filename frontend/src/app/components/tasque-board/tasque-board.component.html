@@ -39,9 +39,12 @@
               <span class="column-element-count"> ({{item.tasks.length}})</span>
             </div>
             <div class="column-tools">
-              <tasque-task-creation buttonText="+" btnClass="column-plus" [projects]="projectOptions" [issueTypes]="issueTypes"></tasque-task-creation>
-              <img src="assets/board/column_menu.svg">
-            </div>
+              <span>+</span>
+              <!--<tasque-task-creation btnText="+" btnClass="column-plus" [projects]="projectOptions" [issueTypes]="issueTypes"></tasque-task-creation>
+                TODO: Uncoment for creating new task
+              -->
+              <img src="assets/board/column_menu.svg"> 
+            </div>  
           </div>
           <div class="column" *ngFor="let task of item.tasks" cdkDrag>
             <tasque-card *ngIf="!task.isHidden" [taskInfo]="task"></tasque-card>

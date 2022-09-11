@@ -4,7 +4,7 @@ import { TaskModel } from 'src/core/models/task/task-model';
 import { TaskType } from 'src/core/models/task/task-type';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import { TaskState } from 'src/core/models/task/task-state';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { UserModel } from 'src/core/models/user/user-model';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import { ProjectModel } from 'src/core/models/project/project-model';
@@ -33,6 +33,7 @@ export class BacklogContentComponent implements OnInit {
   btnClass = 'bold';
 
   public unsubscribe$ = new Subject<void>();
+  subscription: Subscription;
 
   // TODO remove when real data is available
   @Input() public taskStates: TaskState[] = [
@@ -67,18 +68,24 @@ export class BacklogContentComponent implements OnInit {
     {
       id: 1,
       name: 'Low',
+      projectId: 5,
+      type: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
       id: 2,
       name: 'Normal',
+      projectId: 5,
+      type: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
       id: 3,
       name: 'High',
+      projectId: 5,
+      type: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
@@ -192,7 +199,11 @@ export class BacklogContentComponent implements OnInit {
     public backlogService: BacklogService,
     public taskTypeService: TaskTypeService,
     public taskStateService: TaskStateService,
-  ) {}
+  ) {
+    this.subscription = backlogService.changeBacklog$.subscribe(() => {
+      this.getBacklogTasks();
+    });
+  }
 
   ngOnInit(): void {
     this.getTasksState();

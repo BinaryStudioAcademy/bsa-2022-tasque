@@ -5,9 +5,11 @@ using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.Common.DTO.Board;
 using Tasque.Core.Common.DTO.Project;
+using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Enums;
+using Tasque.Core.Common.StaticResources;
 using Tasque.Core.DAL;
 using Task = System.Threading.Tasks.Task;
 
@@ -21,7 +23,17 @@ public class ProjectService : EntityCrudService<Project>
         _mapper = mapper;
     }
 
-    public async Task<ProjectAfterCreateDto> AddProject(Project entity)
+    public List<ProjectDto> GetProjectsByOrganizationId(int organizationId)
+    {
+        return _mapper.Map<List<ProjectDto>>(_db.Projects.Where(p => p.OrganizationId == organizationId));
+    }
+
+    public List<UserDto> GetProjectParticipants(int projectId)
+    {
+        return _mapper.Map<List<UserDto>>(_db.Projects.FirstOrDefault(p => p.Id == projectId)?.Users); 
+    }
+
+    public async Task<ProjectInfoDto> AddProject(Project entity)
     {
         var user = await _db.Users
             .FirstOrDefaultAsync(u => u.Id == entity.AuthorId);
@@ -41,7 +53,62 @@ public class ProjectService : EntityCrudService<Project>
         });
         project.Users.Add(user);
         await _db.SaveChangesAsync();
-        return _mapper.Map<ProjectAfterCreateDto>(project);
+        await SetBasicPrioritiesToProject(project);
+
+        var projectAfterCreate = await _db.Projects
+            .Where(proj => proj.Id == project.Id)
+            .Include(p => p.UserRoles)
+                .ThenInclude(u => u.User)
+            .Include(p => p.UserRoles)
+                .ThenInclude(r => r.Role)
+            .FirstOrDefaultAsync();
+
+        return _mapper.Map<ProjectInfoDto>(projectAfterCreate);
+    }
+
+    public async Task SetBasicPrioritiesToProject(Project project)
+    {
+        var priorities = new List<TaskPriority>()
+        {
+            new()
+            {
+                Type = BasicTaskPriorityTypes.Highest,
+                Name = BasicTaskPriorityTypes.Highest.ToString(),
+                Color = TaskPriorityColors.Highest,
+                ProjectId = project.Id,
+            },
+            new()
+            {
+                Type = BasicTaskPriorityTypes.High,
+                Name = BasicTaskPriorityTypes.High.ToString(),
+                Color = TaskPriorityColors.High,
+                ProjectId = project.Id,
+            },
+            new()
+            {
+                Type = BasicTaskPriorityTypes.Medium,
+                Name = BasicTaskPriorityTypes.Medium.ToString(),
+                Color = TaskPriorityColors.Medium,
+                ProjectId = project.Id,
+            },
+            new()
+            {
+                Type = BasicTaskPriorityTypes.Low,
+                Name = BasicTaskPriorityTypes.Low.ToString(),
+                Color = TaskPriorityColors.Low,
+                ProjectId = project.Id,
+            },
+            new()
+            {
+                Type = BasicTaskPriorityTypes.Lowest,
+                Name = BasicTaskPriorityTypes.Lowest.ToString(),
+                Color = TaskPriorityColors.Lowest,
+                ProjectId = project.Id,
+            },
+        };
+
+        await _db.TaskPriorities.AddRangeAsync(priorities);
+        await _db.SaveChangesAsync();
     }
 
     public async Task<ProjectInfoDto> EditProject(EditProjectDto projectDto)
@@ -164,6 +231,29 @@ public class ProjectService : EntityCrudService<Project>
 
         _db.UserProjectRoles.Add(userProjecRole);
         await _db.SaveChangesAsync();
+    }
+
+    public async Task<ProjectInfoDto> CurrentProjectInfo(int projectId)
+    {
+        var project = await _db.Projects
+            .Where(proj => proj.Id == projectId)
+            .Include(p => p.UserRoles)
+                .ThenInclude(u => u.User)
+            .Include(p => p.UserRoles)
+                .ThenInclude(r => r.Role)
+            .FirstOrDefaultAsync();
+
+        if(project == null)
+        {
+            throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
+        }
+
+        return _mapper.Map<ProjectInfoDto>(project);
+    }
+
+    public List<TaskPriorityDto> GetProjectPrioritiesById(int projectId)
+    {
+        return _mapper.Map<List<TaskPriorityDto>>(_db.TaskPriorities.Where(p => p.ProjectId == projectId));
     }
 
     public async Task<BoardInfoDto> GetProjectBoard(int projectId)

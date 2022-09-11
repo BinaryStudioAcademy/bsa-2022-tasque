@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -8,8 +8,8 @@ import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/drop
 import { TaskTemplate } from 'src/core/models/task/task-template';
 import { ToastrService } from 'ngx-toastr';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { TaskCustomField } from 'src/core/models/task/task-custom-field';
-import { Router } from '@angular/router';
+import { TaskCustomField } from 'src/core/models/task/task-template-models/task-custom-field';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AvailableFields } from 'src/core/models/const-resources/available-fields';
 import { TaskType } from 'src/core/models/task/task-type';
 import { TaskTemplateService } from 'src/core/services/task-template.service';
@@ -24,7 +24,8 @@ export class IssueTemplateComponent implements OnInit {
     private notificationService: ToastrService,
     private router: Router,
     private taskTemplateService: TaskTemplateService,
-  ) {}
+    private route: ActivatedRoute
+  ) { }
 
   public issueTemplate: TaskTemplate;
 
@@ -64,37 +65,42 @@ export class IssueTemplateComponent implements OnInit {
     },
   ];
 
-  @Input() projectId = 5; //TODO: Change with number type, when ability to input value will implemented
-
+  public projectId: number;
   public selectedId: number;
   public isLabel: TaskCustomField | undefined;
   public isDropdown: TaskCustomField | undefined;
+  public isCheckbox: TaskCustomField | undefined;
 
   ngOnInit(): void {
-    this.taskTemplateService
-      .getAllProjectTemplates(String(this.projectId))
-      .subscribe(
-        (resp) => {
-          this.templates = resp.body as TaskTemplate[];
+    this.projectId = parseInt(
+      this.route.snapshot.pathFromRoot[1].paramMap.get('id') as string);
 
-          this.templates.forEach((t) =>
-            this.taskTemplateService
-              .getTaskType(t.typeId as number)
-              .subscribe((resp) => {
-                this.types.push(resp.body as TaskType);
-                this.types.forEach((t) => {
-                  this.type = t;
-                  this.setDropdownOptions();
-                  this.type = undefined;
-                });
-              }),
-          );
-        },
-        () => {
-          this.notificationService.info('No templates found');
-          this.templates = [];
-        },
-      );
+    this.taskTemplateService
+      .getAllProjectTemplates(this.projectId)
+      .subscribe((resp) => {
+        this.templates = resp.body as TaskTemplate[];
+
+        this.templates.forEach(
+          (t) => this.taskTemplateService
+            .getTaskType(t.typeId as number)
+            .subscribe((resp) => {
+              this.types.push(resp.body as TaskType);
+              this.types.forEach((t) => {
+                this.type = t;
+                this.setDropdownOptions();
+                this.type = undefined;
+              });
+        }));
+      }, () => {
+        this.notificationService.info('No templates found');
+        this.templates = [];
+      });
+
+    this.taskTemplateService
+      .getAllProjectTaskTypes(this.projectId)
+      .subscribe((resp) => {
+        this.types = resp.body as TaskType[];
+    });
   }
 
   dropCustomFields(event: CdkDragDrop<TaskCustomField[]>): void {
@@ -107,9 +113,7 @@ export class IssueTemplateComponent implements OnInit {
     } else {
       if (event.previousContainer.data === this.availableFields) {
         const toMove: TaskCustomField[] = [];
-        this.availableFields.forEach((f) =>
-          toMove.push({ name: f.name, type: f.type }),
-        );
+        this.availableFields.forEach((f) => toMove.push( { name: f.name, type: f.type, fieldId: f.fieldId } ));
         transferArrayItem(
           toMove,
           event.container.data,
@@ -159,51 +163,53 @@ export class IssueTemplateComponent implements OnInit {
   }
 
   discardChanges(): void {
-    this.router.navigate(['/project/settings']);
+    this.router.navigate([`/project/${this.projectId}/board`]);
   }
 
   setSelected(val: number): void {
     this.selectedId = val;
 
-    this.taskTemplateService.getTaskType(val).subscribe(
-      (resp) => {
-        this.type = resp.body as TaskType;
-      },
-      () => {
-        this.type = {
-          name: 'New issue',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          id: this.templates.length + 1,
-        };
+    this.taskTemplateService.getTaskType(val).subscribe((resp) => {
+      this.type = resp.body as TaskType;
+    }, () => {
+      this.type = {
+        name: 'New issue',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        id: this.templates.length + 1,
+      };
 
-        this.issueTemplate = {
-          title: this.type.name,
-          projectId: this.projectId,
-          customFields: [],
-        };
-      },
-    );
+      this.issueTemplate = {
+        title: this.type.name,
+        projectId: this.projectId,
+        customFields: [],
+      };
+    });
 
-    this.taskTemplateService.getTemplateById(String(val)).subscribe(
-      (resp) => {
+    this.taskTemplateService.getTemplateById(String(val)).subscribe((resp) => {
+
+      if(resp.ok) {
         this.issueTemplate = resp.body as TaskTemplate;
         this.customFields = this.issueTemplate.customFields;
-      },
-      () => {
+      } else {
         this.issueTemplate = {
-          title: 'New issue',
+          title: this.type?.name as string,
           projectId: this.projectId,
-          customFields: [],
-          typeId: this.type?.id,
+          customFields: []
         };
-        this.customFields = [];
-      },
-    );
+      }
+    }, 
+    () => {
+      this.issueTemplate = {
+        title: 'New issue',
+        projectId: this.projectId,
+        customFields: [],
+        typeId: this.type?.id,
+      };
+      this.customFields = [];
+    });
 
-    const issue = this.dropdownOptions.find(
-      (i) => i.id === this.selectedId,
-    ) as TasqueDropdownOption;
+    const issue = this.dropdownOptions.find((i) => i.id === this.selectedId) as TasqueDropdownOption;
     this.issueColor = issue.color as string;
     this.selectedIssue = issue;
   }
@@ -215,17 +221,26 @@ export class IssueTemplateComponent implements OnInit {
 
   setIsLabel(val: TaskCustomField): void {
     this.isDropdown = undefined;
+    this.isCheckbox = undefined;
     this.isLabel = val;
   }
 
   setIsDropdown(val: TaskCustomField): void {
     this.isLabel = undefined;
+    this.isCheckbox = undefined;
     this.isDropdown = val;
+  }
+
+  setIsCheckbox(val: TaskCustomField): void {
+    this.isLabel = undefined;
+    this.isDropdown = undefined;
+    this.isCheckbox = val;
   }
 
   closeEdit(): void {
     this.isLabel = undefined;
     this.isDropdown = undefined;
+    this.isCheckbox = undefined;
   }
 
   setDropdownOptions(): void {

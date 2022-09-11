@@ -92,4 +92,42 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         var res = await _service.UpdateColumns(board);
         return Ok(res);
     }
+
+    [Route("current/{id}")]
+    [HttpGet]
+    public async Task<IActionResult> CurrentProjectInfo(int id)
+    {
+        var result = await _service.CurrentProjectInfo(id);
+
+        return Ok(result);
+    }
+    
+    [HttpGet("getByOrganizationId/{organizationId}")]
+    public IActionResult GetProjectsByOrganizationId(int organizationId)
+    {
+        var projects = _service.GetProjectsByOrganizationId(organizationId);
+        if (projects == null)
+            return NotFound();
+        return Ok(projects);
+    }
+
+    [HttpGet("getParticipants/{projectId}")]
+    public IActionResult GetProjectParticipants(int projectId)
+    {
+        var participants = _service.GetProjectParticipants(projectId);
+        if (participants == null)
+            return NotFound();
+        return Ok(participants);
+    }
+
+    [HttpGet("getProjectPriorities/{projectId}")]
+    public IActionResult GetProjectPriorities(int projectId)
+    {
+        var priorities = _service.GetProjectPrioritiesById(projectId);
+        if (priorities == null)
+            return BadRequest();
+        return Ok(priorities);
+    }
 }
+
+
