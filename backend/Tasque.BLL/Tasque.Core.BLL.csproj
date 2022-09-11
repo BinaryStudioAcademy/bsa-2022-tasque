@@ -35,6 +35,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Tasque.Core.Common\Tasque.Core.Common.csproj" />
     <ProjectReference Include="..\Tasque.DAL\Tasque.Core.DAL.csproj" />
+    <ProjectReference Include="..\Tasque.Messaging\Tasque.Messaging.csproj" />
   </ItemGroup>
 
 </Project>
