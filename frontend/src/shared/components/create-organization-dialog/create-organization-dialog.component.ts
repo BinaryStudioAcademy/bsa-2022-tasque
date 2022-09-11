@@ -42,7 +42,7 @@ export class CreateOrganizationDialogComponent implements OnInit {
     if(ctrl.errors?.['maxlength'] && (ctrl.dirty || ctrl.touched)) {
       return 'Organization name should be less than 50 characters';
     }
-    if(!this.isLastAndFirstCharacterCorrect()) {
+    if(!this.areLastAndFirstCharactersCorrect()) {
       return 'Name should not starts or ends with special characters';
     }
     return '';
@@ -68,7 +68,7 @@ export class CreateOrganizationDialogComponent implements OnInit {
     ]);
   }
 
-  public isLastAndFirstCharacterCorrect(): boolean {
+  public areLastAndFirstCharactersCorrect(): boolean {
     const lastChar = this.createOrganizationForm.value.length - 1;
     if(this.notAllowedCharacters.includes(this.createOrganizationForm.value.charAt(0)) ||
       this.notAllowedCharacters.includes(this.createOrganizationForm.value.charAt(lastChar))){
@@ -81,7 +81,7 @@ export class CreateOrganizationDialogComponent implements OnInit {
   }
 
   createOrganization(): void {
-    if (!this.createOrganizationForm.valid || !this.isLastAndFirstCharacterCorrect()) {
+    if (!this.createOrganizationForm.valid || !this.areLastAndFirstCharactersCorrect()) {
       this.createOrganizationForm.markAllAsTouched();
       this.isSuccessful = false;
       this.notificationService.error('Follow suggestion under input field', 'Something go wrong');
