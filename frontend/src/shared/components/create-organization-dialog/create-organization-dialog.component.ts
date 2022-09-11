@@ -21,7 +21,7 @@ export class CreateOrganizationDialogComponent implements OnInit {
   public cancelBtnName = 'Cancel';
   public cancelBtnClass = 'fill gray';
 
-  public notAllowedCHaracters = ValidationConstants.notAllowedCharacters;
+  public notAllowedCharacters = ValidationConstants.notAllowedCharacters;
 
   public inputType = 'text';
   public showError = false;
@@ -70,8 +70,8 @@ export class CreateOrganizationDialogComponent implements OnInit {
 
   public isLastAndFirstCharacterCorrect(): boolean {
     const lastChar = this.createOrganizationForm.value.length - 1;
-    if(this.notAllowedCHaracters.includes(this.createOrganizationForm.value.charAt(0)) ||
-      this.notAllowedCHaracters.includes(this.createOrganizationForm.value.charAt(lastChar))){
+    if(this.notAllowedCharacters.includes(this.createOrganizationForm.value.charAt(0)) ||
+      this.notAllowedCharacters.includes(this.createOrganizationForm.value.charAt(lastChar))){
       return false;
     }
     return true;
