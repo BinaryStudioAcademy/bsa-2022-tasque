@@ -50,16 +50,16 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   public customFields: TaskCustomField[];
   public issueTemplates: TaskTemplate[];
-  public projectPriorities: TasqueDropdownOption[] = [];
   public projectUsers: UserModel[];
   public currentUser: UserModel;
 
   public taskCustomFields: TaskCustomFieldModel[] = [];
+  public projects: TasqueDropdownOption[] = [];
+  public issueTypes: TasqueDropdownOption[] = [];
+  public projectPriorities: TasqueDropdownOption[] = [];
 
   @Input() public buttonText = '';
   @Input() public organizationId: number;
-  @Input() public projects: TasqueDropdownOption[] = [];
-  @Input() public issueTypes: TasqueDropdownOption[] = []; 
 
   @Input() public btnText = 'Task creation';
   @Input() public btnClass = 'btn stroke';
