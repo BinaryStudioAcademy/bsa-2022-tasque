@@ -3,11 +3,12 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { UserModel } from 'src/core/models/user/user-model';
-import { BoardService } from 'src/core/services/board.service';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import {
   faMaximize,
   faMagnifyingGlass,
+  faUnlockKeyhole,
+  faLock,
 } from '@fortawesome/free-solid-svg-icons';
 import { SprintService } from 'src/core/services/sprint.service';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
@@ -46,7 +47,8 @@ import { animate, style, transition, trigger } from '@angular/animations';
 export class BacklogComponent implements OnInit {
   faMaximize = faMaximize;
   faMagnifyingGlass = faMagnifyingGlass;
-
+  faUnlockKeyhole = faUnlockKeyhole;
+  faLock = faLock;
   //get current user
   @Input() public currentUser: UserModel;
 

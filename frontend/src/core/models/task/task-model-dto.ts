@@ -1,3 +1,5 @@
+import { UserModel } from '../user/user-model';
+
 export interface TaskModelDto {
   id: number;
   summary: string;
@@ -15,4 +17,5 @@ export interface TaskModelDto {
   deadline: Date;
   finishedAt?: Date;
   estimate?: number;
+  users: UserModel[];
 }

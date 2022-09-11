@@ -62,6 +62,7 @@ export class SprintComponent implements OnInit, OnChanges {
 
   public sprintUsers: UserModel[];
   public sprintUsersCircle?: UserModel[];
+  public filterTaskByUser?: UserModel;
 
   public tasks: TaskModelDto[];
   public tasksShow: TaskModelDto[];
@@ -116,7 +117,7 @@ export class SprintComponent implements OnInit, OnChanges {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          console.log(result.body);
+          //    console.log(result.body);
           this.currentSprint.tasks = this.tasks = this.tasksShow = result.body;
           this.estimateCount();
         }
@@ -130,9 +131,7 @@ export class SprintComponent implements OnInit, OnChanges {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          this.sprintUsers = result.body;
-
-          this.sprintUsersCircle = result.body;
+          this.sprintUsers = this.sprintUsersCircle = result.body;
         }
       });
   }
@@ -200,9 +199,16 @@ export class SprintComponent implements OnInit, OnChanges {
 
   //Show only the tasks of the selected user
   filterUserTasks(user: UserModel): void {
-    this.tasks = this.tasksShow.filter((item) => {
-      return item.authorId == user.id;
-    });
+    if (this.filterTaskByUser == user) {
+      this.tasks = this.tasksShow;
+      this.filterTaskByUser = undefined;
+    } else {
+      this.filterTaskByUser = user;
+
+      this.tasks = this.tasksShow.filter((item) => {
+        return item.users.find((u) => u.id === user.id);
+      });
+    }
   }
 
   ngOnChanges(): void {

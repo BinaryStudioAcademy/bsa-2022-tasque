@@ -12,6 +12,7 @@ import { faFlag } from '@fortawesome/free-solid-svg-icons';
 import { TaskModelDto } from 'src/core/models/task/task-model-dto';
 import { TaskService } from 'src/core/services/task.service';
 import { ToastrService } from 'ngx-toastr';
+import { UserRole } from 'src/core/models/user/user-roles';
 
 @Component({
   selector: 'app-issue',
@@ -80,6 +81,9 @@ export class IssueComponent implements OnInit {
   ];
 
   public issueAuthor: UserModel;
+
+  public issueUsers: UserModel[];
+
   public taskEstimate: TaskEstimateUpdate;
   public unsubscribe$ = new Subject<void>();
 
@@ -103,7 +107,6 @@ export class IssueComponent implements OnInit {
       .subscribe((result) => {
         if (result.body) {
           this.issueAuthor = result.body;
-
           if (this.issueAuthor.avatarURL == undefined) {
             this.issueAuthor.avatarURL = '\\assets\\avatar.png';
           }

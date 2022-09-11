@@ -44,6 +44,7 @@ namespace Tasque.Core.BLL.Services
         public async Task<IEnumerable<TaskDto>> GetSprintTasks(int sprintId)
         {
             var tasks = await _db.Tasks
+                .Include(t => t.Users)
                 .Where(t => t.SprintId == sprintId)
                 .ToListAsync();
 
@@ -53,9 +54,9 @@ namespace Tasque.Core.BLL.Services
         public async Task<IEnumerable<UserDto>> GetSprintUsers(int sprintId)
         {
             var users = await _db.Tasks
-                .Include(t => t.Author)
+                .Include(t => t.Users)
                 .Where(t => t.SprintId == sprintId)
-                .Select(t =>t.Author)
+                .SelectMany(t =>t.Users)
                 .GroupBy(x => x.Id)
                 .Select(x => x.First())
                 .ToListAsync();
