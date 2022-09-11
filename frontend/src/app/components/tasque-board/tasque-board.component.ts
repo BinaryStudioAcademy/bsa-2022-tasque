@@ -19,7 +19,6 @@ import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/drop
 import { ProjectService } from 'src/core/services/project.service';
 import { filter } from 'rxjs/operators';
 import { TaskType } from 'src/core/models/task/task-type';
-import { TaskTypeService } from 'src/core/services/task-type.service';
 
 @Component({
   selector: 'tasque-board',
