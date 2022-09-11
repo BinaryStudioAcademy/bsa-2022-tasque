@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Tasque.Core.Common.Models
+namespace Tasque.Core.Common.Models.Events
 {
     public class IntegrationEvent
     {

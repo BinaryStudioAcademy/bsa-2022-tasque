@@ -7,13 +7,13 @@ using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Models;
 using Task = Tasque.Core.Common.Entities.Task;
 
-namespace Tasque.Notifications.Events
+namespace Tasque.Core.Common.Models.Events
 {
     public class TaskMovedEvent : IntegrationEvent
     {
-        public BoardColumn PreviousColumn { get; set; }
-        public BoardColumn NewColumn { get; set; }
-        public Task Task { get; set; }
+        public int PreviousColumnId { get; set; }
+        public int NewColumnId { get; set; }
+        public int TaskId { get; set; }
         public string authorName { get; set; }
     }
 }

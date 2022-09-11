@@ -1,13 +1,12 @@
 ﻿using Tasque.Core.Common.Entities;
-using Tasque.Core.Common.Models;
 using Task = Tasque.Core.Common.Entities.Task;
 
-namespace Tasque.Notifications.Events
+namespace Tasque.Core.Common.Models.Events
 {
     public class TaskCommentedEvent : IntegrationEvent
     {
-        public Task Task { get; set; }
-        public Comment Comment { get; set; }
+        public int TaskId { get; set; }
+        public int CommentId { get; set; }
         public string CommentatorName { get; set; }
         public string AuthorName { get; set; }
     }
