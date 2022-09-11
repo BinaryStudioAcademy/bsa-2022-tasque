@@ -7,6 +7,7 @@ import { UserModel } from 'src/core/models/user/user-model';
 import { NewOrganizationModel } from 'src/core/models/organization/new-organization-model';
 import { FormControl, Validators } from '@angular/forms';
 import { NotificationService } from 'src/core/services/notification.service';
+import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 
 @Component({
   selector: 'app-create-organization-dialog',
@@ -20,7 +21,7 @@ export class CreateOrganizationDialogComponent implements OnInit {
   public cancelBtnName = 'Cancel';
   public cancelBtnClass = 'fill gray';
 
-  public notAllowedCHaracters = [' ', '-', '.', '_'];
+  public notAllowedCHaracters = ValidationConstants.notAllowedCharacters;
 
   public inputType = 'text';
   public showError = false;
