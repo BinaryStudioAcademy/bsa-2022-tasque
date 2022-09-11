@@ -13,12 +13,7 @@ public class DataContext : DbContext
     {
         modelBuilder.UseSerialColumns();
 
-        modelBuilder.ApplyConfiguration(new UserConfiguration());
-        modelBuilder.ApplyConfiguration(new TaskConfiguration());
-        modelBuilder.ApplyConfiguration(new ProjectConfiguration());
-        modelBuilder.ApplyConfiguration(new OrganizationConfiguration());
-        modelBuilder.ApplyConfiguration(new UserProjectRoleConfiguration());
-        modelBuilder.ApplyConfiguration(new UserOrganizationRoleConfiguration());
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
         modelBuilder.Seed();
     }
 
@@ -28,7 +23,6 @@ public class DataContext : DbContext
     public DbSet<Task> Tasks { get; set; } = null!;
     public DbSet<Comment> Comments { get; set; } = null!;
     public DbSet<Attachment> Attachments { get; set; } = null!;
-    public DbSet<Board> Boards { get; set; } = null!;
     public DbSet<BoardColumn> BoardColumns { get; set; } = null!;
     public DbSet<Calendar> Calendars { get; set; } = null!;
     public DbSet<Label> Labels { get; set; } = null!;

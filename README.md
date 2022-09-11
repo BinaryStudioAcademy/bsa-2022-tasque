@@ -27,210 +27,200 @@ Tasque is a task tracking system that unites all the good parts of the common ta
 
 ```mermaid
 erDiagram
-      Project ||--o{ User : authorId_id
-      Project ||--|| Board : id_projectId
-      Project ||--o{ User_Project_Role : id_projectId
-      Project }o--|| Organization : organizationId_id
-      Project ||--o{ Sprint : id_projectId
-      Project {
-        id int PK
-        name string
-        key string
-        author_id int FK
-        organization_id int FK
-        created_at datetime
-        updated_at datetime
-    }
-      User ||--o{ User_Task : id_userId
-      User ||--o{ User_Project_Role : id_userId
-      User ||--|| Calendar : id_userId
-      User ||--o{ Meeting_User : id_userId
-      User ||--o{ Notification : id_userId
-      User ||--o{ Organization_User : id_userId
-      User {
-        id int PK
-        name string
-        email string
-        password string
-        salt string
-        created_at datetime
-        updated_at datetime
-	    isEmailConfirmed boolean
-        avatarURL string
-    }
-      Task }o--|| User : authorId_id
-      Task }o--|| Project : projectId_id
-      Task }o--|| BoardColumn : boardColumnId_id
-      Task }o--|| TaskState : stateId_id
-      Task }o--|| TaskType : typeId_id
-      Task }o--|| TaskPriority : priorityId_id
-      Task ||--o{ User_Task : id_taskId
-      Task ||--o{ Sprint : sprintId_id
-      Task ||--o{ Task_Attachment : id_taskId
-      Task ||--o{ User : lastUpdatedBy_id
-      Task {
-        id int PK
-        summary string
-        description string
-        created_at datetime
-        updated_at datetime
-        deadline datetime
-        finished_at datetime
-        stateId int FK
-        typeId int FK
-        priorityId int FK
-        author_id int FK
-        project_id int FK
-        board_column_id int FK
-        sprint_id int FK
-        last_updated_by int FK
-        parent_task_id int FK
+    Users {
+        integer Id
+        text Password
+        text Salt
+        text Email
+        timestamp_with_time_zone UpdatedAt
+        timestamp_with_time_zone CreatedAt
+        text Name
+        boolean IsEmailConfirmed
+        text AvatarURL
     }
 
-      Comment }o--|| User : authorId_id
-      Comment }o--|| Task : taskId_id
-      Comment {
-        id int PK
-        author_id int FK
-        task_id int  FK
-        message string
-        created_at datetime
-        updated_at datetime
+    Projects {
+        integer Id
+        text Name
+        integer AuthorId
+        timestamp_with_time_zone CreatedAt
+        timestamp_with_time_zone UpdatedAt
+        integer OrganizationId
+        text Key
     }
 
-      Sprint {
-        id int PK
-        name string
-        description string
-        created_at datetime
-        updated_at datetime
-        start_at datetime
-        end_at datetime
-        project_id int FK
+    Notifications {
+        integer Id
+        text Message
+        integer UserId
+        timestamp_with_time_zone CreatedAt
+        timestamp_with_time_zone UpdatedAt
     }
 
-      Organization ||--o{ Organization_User : id_organizationId
-      Organization {
-        id int PK
-        name string
-        author_id int FK
-        created_at datetime
-        updated_at datetime
+    TaskPriorities {
+        integer Id
+        text Name
+        timestamp_with_time_zone CreatedAt
+        timestamp_with_time_zone UpdatedAt
     }
 
-      Organization_User {
-	      organization_id int FK
-	      user_id int FK
-    }
-      Label }o--|| Project : projectId_id
-      Label {
-        id int PK
-        name string
-        project_id int FK
+    TaskStates {
+        integer Id
+        text Name
+        timestamp_with_time_zone CreatedAt
+        timestamp_with_time_zone UpdatedAt
     }
 
-      Attachment ||--o{ Task_Attachment : id_attachmentId
-      Attachment{
-	      id int PK
-	      url string
+    TaskTypes {
+        integer Id
+        text Name
+        timestamp_with_time_zone CreatedAt
+        timestamp_with_time_zone UpdatedAt
     }
 
-      Board {
-        id int PK
-        name string
-        project_id int FK
-    }
-      BoardColumn }o--|| Board : boardId_id
-      BoardColumn {
-        id int PK
-        name string
-        board_id int FK
+    Comments {
+        integer Id
+        text Message
+        integer AuthorId
+        integer TaskId
+        timestamp_with_time_zone CreatedAt
+        timestamp_with_time_zone UpdatedAt
     }
 
-    User_Project {
-        project_id int FK
-        user_id int FK
+    Roles {
+        integer Id
+        text Name
+        timestamp_with_time_zone CreatedAt
+        timestamp_with_time_zone UpdatedAt
     }
 
-      User_Project_Role {
-        project_id int FK
-        user_id int FK
-        role_id int FK
+    MeetingUser {
+        integer MeetingsId
+        integer UsersId
     }
 
-      User_Task {
-        task_id int FK
-        user_id int FK
+    BoardColumns {
+        integer Id
+        text Name
+        integer ProjectId
+        timestamp_with_time_zone CreatedAt
+        timestamp_with_time_zone UpdatedAt
     }
 
-      Calendar ||--o{ Meeting : id_calendarId
-      Calendar {
-	      id int PK
-	      user_id int FK
+    Attachments {
+        integer Id
+        text URL
+        timestamp_with_time_zone CreatedAt
+        timestamp_with_time_zone UpdatedAt
     }
 
-      Meeting_User {
-	      meeting_id int FK
-	      user_id int FK
+    Sprints {
+        integer Id
+        text Name
+        text Description
+        timestamp_with_time_zone CreatedAt
+        timestamp_with_time_zone UpdatedAt
+        timestamp_with_time_zone EndAt
+        integer ProjectId
+        timestamp_with_time_zone StartAt
+        boolean IsComplete
+        integer Order
     }
 
-      Notification {
-	      id int PK
-	      message string
-	      user_id int FK
+    Tasks {
+        integer Id
+        text Description
+        text Summary
+        integer StateId
+        integer TypeId
+        integer PriorityId
+        timestamp_with_time_zone Deadline
+        timestamp_with_time_zone FinishedAt
+        integer AuthorId
+        integer ProjectId
+        integer BoardColumnId
+        integer SprintId
+        integer LastUpdatedById
+        integer ParentTaskId
+        timestamp_with_time_zone CreatedAt
+        timestamp_with_time_zone UpdatedAt
+        integer Estimate
     }
 
-      Task_Attachment {
-	      task_id int FK
-	      attachment_id int FK
+    OrganizationUser {
+        integer ParticipatedOrganizationId
+        integer UsersId
     }
 
-      Role }o--|| User_Project_Role : id_roleId
-      Role {
-        id int PK
-        name string
-        created_at datetime
-        updated_at datetime
+    UserOrganizationRoles {
+        integer OrganizationId
+        integer UserId
+        integer Role
     }
 
-      Task_Label }o--|| Task : taskId_id
-      Task_Label }o--|| Label : labelId_id
-      Task_Label {
-        task_id int FK
-        label_id int FK
+    Calendars {
+        integer Id
+        integer UserId
+        timestamp_with_time_zone CreatedAt
+        timestamp_with_time_zone UpdatedAt
     }
 
-      Meeting ||--o{ Meeting_User : id_meetingId
-      Meeting {
-	      id int PK
-	      starting_time datetime
-	      ending_time datetime
-	      created_at datetime
-	      updated_at datetime
-	      calendar_id int
+    Organizations {
+        integer Id
+        text Name
+        integer AuthorId
+        timestamp_with_time_zone CreatedAt
+        timestamp_with_time_zone UpdatedAt
     }
 
-      EmailConfirmationToken ||--o{ User : token_userId
-      EmailConfirmationToken {
-        token uuid PK
-        user_id int FK
-        expiring_at datetime
+    ProjectUser {
+        integer ParticipatedProjectsId
+        integer UsersId
     }
 
-    TaskState {
-        id int PK
-        name string
-        created_at datetime
-        updated_at datetime
+    TaskUser {
+        integer ParticipatedTasksId
+        integer UsersId
     }
 
-    TaskType {
-        id int PK
-        name string
-        created_at datetime
-        updated_at datetime
+    ConfirmationTokens {
+        uuid Token
+        integer UserId
+        timestamp_with_time_zone ExpiringAt
+        integer Kind
     }
 
+    UserProjectRoles {
+        integer RoleId
+        integer UserId
+        integer ProjectId
+    }
+
+    Labels {
+        integer Id
+        text Name
+        integer ProjectId
+        timestamp_with_time_zone CreatedAt
+        timestamp_with_time_zone UpdatedAt
+    }
+
+    Meetings {
+        integer Id
+        timestamp_with_time_zone StartingTime
+        timestamp_with_time_zone EndingTime
+        integer CalendarId
+        timestamp_with_time_zone CreatedAt
+        timestamp_with_time_zone UpdatedAt
+    }
+
+    LabelTask {
+        integer LabelsId
+        integer TasksId
+    }
+
+    AttachmentTask {
+        integer AttachmentsId
+        integer TasksId
 
     TaskPriority ||--o{ Project : projectId_id
     TaskPriority {
@@ -241,5 +231,44 @@ erDiagram
         created_at datetime
         updated_at datetime
     }
+
+    Calendars }o--|| Users : "UserId"
+    Notifications }o--|| Users : "UserId"
+    Organizations }o--|| Users : "AuthorId"
+    Tasks }o--|| Users : "AuthorId"
+    Tasks }o--|| Users : "LastUpdatedById"
+    MeetingUser }o--|| Users : "UsersId"
+    Comments }o--|| Users : "AuthorId"
+    Projects }o--|| Users : "AuthorId"
+    ProjectUser }o--|| Users : "UsersId"
+    TaskUser }o--|| Users : "UsersId"
+    ConfirmationTokens }o--|| Users : "UserId"
+    UserProjectRoles }o--|| Users : "UserId"
+    OrganizationUser }o--|| Users : "UsersId"
+    UserOrganizationRoles }o--|| Users : "UserId"
+    Labels }o--|| Projects : "ProjectId"
+    Tasks }o--|| Projects : "ProjectId"
+    Projects }o--|| Organizations : "OrganizationId"
+    ProjectUser }o--|| Projects : "ParticipatedProjectsId"
+    UserProjectRoles }o--|| Projects : "ProjectId"
+    Sprints }o--|| Projects : "ProjectId"
+    BoardColumns }o--|| Projects : "ProjectId"
+    Tasks }o--|| TaskPriorities : "PriorityId"
+    Tasks }o--|| TaskStates : "StateId"
+    Tasks }o--|| TaskTypes : "TypeId"
+    Comments }o--|| Tasks : "TaskId"
+    UserProjectRoles }o--|| Roles : "RoleId"
+    MeetingUser }o--|| Meetings : "MeetingsId"
+    Tasks }o--|| BoardColumns : "BoardColumnId"
+    AttachmentTask }o--|| Attachments : "AttachmentsId"
+    Tasks }o--|| Sprints : "SprintId"
+    Tasks }o--|| Tasks : "ParentTaskId"
+    AttachmentTask }o--|| Tasks : "TasksId"
+    LabelTask }o--|| Tasks : "TasksId"
+    TaskUser }o--|| Tasks : "ParticipatedTasksId"
+    OrganizationUser }o--|| Organizations : "ParticipatedOrganizationId"
+    UserOrganizationRoles }o--|| Organizations : "OrganizationId"
+    Meetings }o--|| Calendars : "CalendarId"
+    LabelTask }o--|| Labels : "LabelsId"
 
 ```
