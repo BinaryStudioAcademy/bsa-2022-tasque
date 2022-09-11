@@ -1,4 +1,5 @@
 ﻿using Tasque.Core.Common.Models;
+using Tasque.Core.Common.Models.Events;
 
 namespace Tasque.Messaging.Abstractions
 {

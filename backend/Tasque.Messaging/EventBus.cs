@@ -5,7 +5,6 @@ using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 using System.Net.Sockets;
 using System.Text;
-using Tasque.Core.Common.Models;
 using Tasque.Messaging.Abstractions;
 using Tasque.Messaging.Extensions;
 using Tasque.Messaging.Connections;
@@ -13,6 +12,7 @@ using Tasque.Messaging.SubscriptionManagement;
 using RabbitMQ.Client;
 using Polly;
 using Microsoft.Extensions.DependencyInjection;
+using Tasque.Core.Common.Models.Events;
 
 namespace Tasque.Messaging
 {

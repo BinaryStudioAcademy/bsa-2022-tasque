@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tasque.Core.Common.Models;
+﻿using Tasque.Core.Common.Models.Events;
 
 namespace Tasque.Messaging.Abstractions
 {

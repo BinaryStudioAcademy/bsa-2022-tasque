@@ -1,5 +1,5 @@
 ﻿using Tasque.Core.Common.Entities;
-using Tasque.Core.Common.Models;
+using Tasque.Core.Common.Models.Events;
 using Tasque.Messaging.Abstractions;
 
 namespace Tasque.Messaging.SubscriptionManagement
