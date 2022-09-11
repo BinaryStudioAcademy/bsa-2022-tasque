@@ -172,6 +172,7 @@ export class UserProfileComponent implements OnInit {
         this.originalUser = resp.body as ProfileChangesDTO;
         this.profileChanges = Object.assign({}, this.originalUser);
         this.notificationService.success('Profile was successfully updated');
+        this.isProfileChanged = false;
       });
   }
 
