@@ -68,7 +68,7 @@ export class CreateOrganizationDialogComponent implements OnInit {
   }
 
   public isLastAndFirstCharacterCorrect(): boolean {
-    const lastChar = this.createOrganizationForm.value - 1;
+    const lastChar = this.createOrganizationForm.value.length - 1;
     if(this.notAllowedCHaracters.includes(this.createOrganizationForm.value.charAt(0)) ||
       this.notAllowedCHaracters.includes(this.createOrganizationForm.value.charAt(lastChar))){
       return false;
