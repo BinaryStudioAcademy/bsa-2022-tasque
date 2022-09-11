@@ -18,6 +18,8 @@ import { InputComponent } from 'src/shared/components/tasque-input/input.compone
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import { ProjectService } from 'src/core/services/project.service';
 import { filter } from 'rxjs/operators';
+import { TaskType } from 'src/core/models/task/task-type';
+import { TaskTypeService } from 'src/core/services/task-type.service';
 
 @Component({
   selector: 'tasque-board',
@@ -44,24 +46,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   public searchParameter = '';
 
   public projectOptions: TasqueDropdownOption[] = [];
-  public issueTypes: TasqueDropdownOption[] = [
-    // TODO: Here will be all project issue types
-    {
-      id: 3,
-      color: 'red',
-      title: 'Bug',
-    },
-    {
-      id: 1,
-      color: 'blue',
-      title: 'Task',
-    },
-    {
-      id: 2,
-      color: 'green',
-      title: 'Story',
-    },
-  ];
+  public projectTaskTypes: TaskType[] = [];
 
   constructor(
     formBuilder: FormBuilder,
@@ -75,7 +60,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     });
 
     this.createColumnForm = formBuilder.group({
-      'columnName': ['', [Validators.required]],
+      'columnName': ['', [Validators.required]], 
     });
   }
   
@@ -91,6 +76,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       return;
     }
     this.projectId = parseInt(id);
+
     this.boardService.getBoard(this.projectId).subscribe(
       (resp) => {
         if (resp.ok && resp.body != null) {
