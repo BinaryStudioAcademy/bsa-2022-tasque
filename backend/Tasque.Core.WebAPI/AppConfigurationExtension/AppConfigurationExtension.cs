@@ -12,6 +12,7 @@ using Tasque.Core.BLL.Services.AzureServices;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Identity;
+using Tasque.Core.Identity.MappingProfiles;
 using Tasque.Core.Identity.Services;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
@@ -21,20 +22,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
 
         public static IServiceCollection ConfigureMapper(this IServiceCollection services)
         {
-            services.AddAutoMapper(cfg =>
-            {
-                cfg.AddProfile<TaskProfiles>();
-                cfg.AddProfile<SprintProfiles>();
-                cfg.AddProfile<OrganizationProfile>();
-                cfg.AddProfile<ProjectProfile>();
-                cfg.AddProfile<UserProfiles>();
-                cfg.AddProfile<TaskProfile>();
-                cfg.AddProfile<TaskTemplateProfile>();
-                cfg.AddProfile<ProjectProfile>();
-                cfg.ConfigureIdentityMapping();
-            },
-            Assembly.GetExecutingAssembly());
-
+            services.AddAutoMapper(typeof(UserProfiles).Assembly, typeof(UserMappingProfile).Assembly);
             return services;
         }
 
@@ -120,7 +108,6 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<TaskStateService>()
                 .AddScoped<TaskTypeService>()
                 .AddScoped<ITaskService, TaskService>()
-                .AddScoped<BoardService>()
                 .AddScoped<BacklogService>()
                 .RegisterIdentity(configuration);
         }

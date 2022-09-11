@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Amazon.Runtime.Internal;
+using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
+using Tasque.Core.Common.DTO.Board;
 using Tasque.Core.Common.DTO.Project;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
@@ -68,6 +70,27 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
 
         var result = await _service.AddProject(entity);
         return Ok(result);
+    }
+
+    [HttpGet("board/{projectId:int}")]
+    public async Task<IActionResult> GetBoard(int projectId)
+    {
+        var res = await _service.GetProjectBoard(projectId);
+        return Ok(res);
+    }
+
+    [HttpPut("board/tasks")]
+    public async Task<IActionResult> UpdateBoardTasks(BoardInfoDto board)
+    {
+        var res = await _service.UpdateTasks(board);
+        return Ok(res);
+    }
+
+    [HttpPut("board/columns")]
+    public async Task<IActionResult> UpdateBoardColumns(BoardInfoDto board)
+    {
+        var res = await _service.UpdateColumns(board);
+        return Ok(res);
     }
 
     [Route("current/{id}")]

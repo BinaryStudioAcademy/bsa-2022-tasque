@@ -23,19 +23,19 @@
           </div>
         </div>
         <div class="filter">
-          <img src="assets/board/filter.svg">           
+          <img src="assets/board/filter.svg">
         </div>
       </div>
       <div class="no-tasks" *ngIf="!hasTasks">
-        <h4>There are no tasks yet. You can create the first one.</h4>        
+        <h4>There are no tasks yet. You can create the first one.</h4>
       </div>
       <div class="board-columns" cdkDropListGroup>
-        <div cdkDropList *ngFor="let item of board.columns" 
-        (cdkDropListDropped)="dragDrop($event)" 
+        <div cdkDropList *ngFor="let item of board.columns"
+        (cdkDropListDropped)="dragDrop($event)"
         [cdkDropListData]="item.tasks">
           <div class="column-title">
             <div class="board-list">
-              <span class="column-name">{{item.columnName}}</span>
+              <span class="column-name">{{item.name}}</span>
               <span class="column-element-count"> ({{item.tasks.length}})</span>
             </div>
             <div class="column-tools">

@@ -8,7 +8,7 @@ namespace Tasque.Core.Common.DTO.Task
         public string Summary { get; set; } = null!;
         public string Description { get; set; } = null!;
         public string ProjectKey { get; set; } = null!;
-        public UserDto? User { get; set; }
+        public UserDto? Author { get; set; }
         public string? AttachmentUrl { get; set; }
     }
 }
