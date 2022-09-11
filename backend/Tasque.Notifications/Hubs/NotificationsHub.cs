@@ -1,18 +1,15 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
-using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Entities.Notifications;
 using Task = System.Threading.Tasks.Task;
 
 namespace Tasque.Notifications.Hubs
 {
-    public abstract class NotificationsHub<TNotification> : Hub where TNotification : Notification
+    public class NotificationsHub : Hub
     {
-        public abstract string Name { get; }
-
-        public async Task NotifySingleUser(TNotification notification, int userId)
+        public async Task NotifySingleUser<TNotification>(TNotification notification, int userId) where TNotification : Notification
         {
-            await Clients.User(userId.ToString()).SendAsync(Name, JsonConvert.SerializeObject(notification));
+            await Clients.User(userId.ToString()).SendAsync(notification.Type, JsonConvert.SerializeObject(notification));
         }
     }
 }
