@@ -46,7 +46,11 @@
         [alt]="avatars[0].name"
         [diameter_px]="40"
       ></tasque-avatar>
-      <div class="user-overflow" (click)="showPopUp = !showPopUp">
+      <div
+        class="user-overflow"
+        *ngIf="avatars.length > 1"
+        (click)="showPopUp = !showPopUp"
+      >
         +{{ avatars.length - 1 }}
       </div>
     </a>

@@ -287,7 +287,6 @@ export class BacklogContentComponent implements OnInit, OnChanges {
       .subscribe((result) => {
         if (result.body) {
           this.tasksShow = this.tasks = result.body;
-          console.log(this.tasks);
         }
       });
   }
