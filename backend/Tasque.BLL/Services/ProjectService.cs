@@ -67,7 +67,7 @@ public class ProjectService : EntityCrudService<Project>
         return _mapper.Map<ProjectInfoDto>(projectAfterCreate);
     }
     
-    public async Task SetBasicPrioritiesToProject(Project project)
+    public async Task SetBasicPrioritiesAndTypesToProject(Project project)
     {
         var priorities = new List<TaskPriority>()
         {
