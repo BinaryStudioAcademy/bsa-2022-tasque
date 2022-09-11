@@ -22,7 +22,6 @@ import { TaskModel } from 'src/core/models/task/task-model';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { ActivatedRoute } from '@angular/router';
-import { TaskService } from 'src/core/services/task-service.service';
 import { ProjectService } from 'src/core/services/project.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 
@@ -69,7 +68,6 @@ export class BacklogComponent implements OnInit {
   constructor(
     public projectService: ProjectService,
     public sprintService: SprintService,
-    public taskService: TaskService,
     public currentUserService: GetCurrentUserService,
     private toastrService: ToastrService,
     private route: ActivatedRoute,
