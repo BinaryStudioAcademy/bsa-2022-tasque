@@ -6,6 +6,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from 'src/core/services/notification.service';
 import { NewProjectModel } from 'src/core/models/project/new-project-model';
 import { ProjectService } from 'src/core/services/project.service';
+import { Router } from '@angular/router';
+import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 
 @Component({
   selector: 'app-create-project-dialog',
@@ -67,6 +69,7 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     public notificationService: NotificationService,
     @Inject(MAT_DIALOG_DATA) public data: number,
     private dialogRef: MatDialogRef<CreateProjectDialogComponent>,
+    private router: Router,
   ) {
     this.projectNameControl = new FormControl(this.newProject.name, [
       Validators.required,
@@ -107,7 +110,9 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
       .subscribe((resp) => {
         if (resp.status == 200) {
           this.notificationService.success('The project has been created');
+          const project = resp.body as ProjectInfoModel;
           this.dialogRef.close(resp.body);
+          this.router.navigate([`/project/${project.id}/board`]);
         }
       });
   }
