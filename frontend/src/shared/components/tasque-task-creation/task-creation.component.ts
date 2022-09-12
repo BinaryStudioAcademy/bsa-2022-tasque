@@ -116,15 +116,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  get priorityErrorMessage(): string {
-    const ctrl = this.priorityControl;
-
-    if(ctrl.errors?.['required'] && (ctrl.touched || ctrl.dirty)) {
-      return 'Priority is required';
-    }
-    return '';
-  }
-
   constructor(
     private notificationService: NotificationService,
     private taskTemplateService: TaskTemplateService,
@@ -146,9 +137,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     this.descriptionControl = new FormControl(this.task.description, [
       Validators.maxLength(5000),
     ]);
-    this.priorityControl = new FormControl(this.task.priorityId, [
-      Validators.required,
-    ]);
+    this.priorityControl = new FormControl(this.task.priorityId);
   }
 
   ngOnInit(): void {
@@ -270,6 +259,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     }, () => {
       this.notificationService.error('Something go wrong. Try again later');
     });
+    this.clearForm();
   }
 
   setPriority(id: number): void {
