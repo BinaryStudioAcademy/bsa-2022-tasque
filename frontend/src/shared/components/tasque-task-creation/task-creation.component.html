@@ -41,8 +41,6 @@
             <tasque-dropdown
               [options]="projectPriorities"
               [formControl]="priorityControl"
-              [errorMessage]="priorityErrorMessage"
-              [invalid]="showError"
               (onSelect)="setPriority($event)"
             >
             </tasque-dropdown>
