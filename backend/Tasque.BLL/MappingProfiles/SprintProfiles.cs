@@ -9,6 +9,8 @@ namespace Tasque.Core.BLL.MappingProfiles
         public SprintProfiles()
         {
             CreateMap<Sprint, SprintDto>().ReverseMap();
+
+            CreateMap<Sprint, NewSprintDto>().ReverseMap();
         }
     }
 }

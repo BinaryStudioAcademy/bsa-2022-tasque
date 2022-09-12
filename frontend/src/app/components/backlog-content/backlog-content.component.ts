@@ -20,6 +20,8 @@ import { TaskModelDto } from 'src/core/models/task/task-model-dto';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { TaskTypeService } from 'src/core/services/task-type.service';
 import { TaskStateService } from 'src/core/services/task-state.service';
+import { SprintService } from 'src/core/services/sprint.service';
+import { NewSprintModel } from 'src/core/models/sprint/new-sprint-model';
 
 @Component({
   selector: 'app-backlog-content',
@@ -170,6 +172,7 @@ export class BacklogContentComponent implements OnInit {
     public backlogService: BacklogService,
     public taskTypeService: TaskTypeService,
     public taskStateService: TaskStateService,
+    public sprintService: SprintService,
   ) {
     this.subscription = backlogService.changeBacklog$.subscribe(() => {
       this.getBacklogTasks();
@@ -258,18 +261,23 @@ export class BacklogContentComponent implements OnInit {
       });
   }
 
+  // TODO add current user
   test() {
-    let sprint: SprintModel;
-    sprint = {
-      id: 31,
-      projectId: 1,
+    let newSprint: NewSprintModel;
+    newSprint = {
+      projectId: this.project.id,
       name: `${this.project.key} Sprint ${this.sprints.length + 1}`,
-      description: 'test',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      endAt: new Date(),
-      tasks: [],
+      authorId: 1,
     };
-    this.sprints.push(sprint);
+
+    this.sprintService
+      .create(newSprint)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          console.log(result.body);
+          this.sprints.push(result.body);
+        }
+      });
   }
 }
