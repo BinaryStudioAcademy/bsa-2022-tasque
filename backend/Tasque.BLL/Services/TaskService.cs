@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.PartialModels;
+using Tasque.Core.Common.DTO.Project;
 using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.DTO.Task.PartialModels;
 using Tasque.Core.Common.DTO.Task.TemplateModels.IncomeModels;
-using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Entities.Abstract;
 using Tasque.Core.DAL;
 
@@ -37,6 +37,10 @@ namespace Tasque.Core.BLL.Services
         public async Task<TaskDto> CreateTask(TaskDto model)
         {
             var entity = _mapper.Map<Common.Entities.Task>(model);
+            var key = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId)?.Key;
+            var count = _dbContext.Tasks.Where(t => t.ProjectId == model.ProjectId).Count();
+            entity.Key = key + '-' + count;
+
             _dbContext.Add(entity);
             _dbContext.SaveChanges();
 
@@ -57,7 +61,7 @@ namespace Tasque.Core.BLL.Services
                     await GetTaskTemplate(task.ProjectId, task.TypeId), await MapCosmosTaskFieldsToTaskCustomFields(task, attributes.CustomFields)));
         }
 
-        public async System.Threading.Tasks.Task DeleteTask(int id)
+        public async Task DeleteTask(int id)
         {
             var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == id) 
                 ?? throw new CustomNotFoundException(nameof(Common.Entities.Task));
