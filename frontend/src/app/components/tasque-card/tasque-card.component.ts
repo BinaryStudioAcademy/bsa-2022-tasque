@@ -28,15 +28,6 @@ export class TasqueCardComponent implements OnInit {
   currentOrganization: OrganizationModel;
   
   assignees: UserModel[];
-  kebabOptions : TasqueDropdownOption[] = [
-    {
-      id: 1,
-      title: 'Copy issue link',
-    },{
-      id: 2,
-      title: 'Delete',
-    }
-  ];
 
   constructor(
     private currentUserService: GetCurrentUserService,
