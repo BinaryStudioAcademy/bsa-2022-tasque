@@ -20,6 +20,8 @@ export class AvatarComponent implements OnInit {
   userAvatar: string;
 
   fontSize: number;
+  colors = ['#D47500', '#00AA55', '#E3BC01', '#009FD4', '#B281B3', '#D47500', '#DC2929'];
+  public background: string;
 
   constructor() { }
 
@@ -29,6 +31,9 @@ export class AvatarComponent implements OnInit {
       this.userAvatar = '';
     } else {
         this.userAvatar = this.user.avatarURL as string;
+    }
+    if(this.user) {
+      this.background = this.colors[this.user.id % this.colors.length];
     }
   }
 
