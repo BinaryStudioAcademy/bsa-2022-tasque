@@ -221,6 +221,7 @@ erDiagram
     AttachmentTask {
         integer AttachmentsId
         integer TasksId
+		}
 
     TaskPriority ||--o{ Project : projectId_id
     TaskPriority {

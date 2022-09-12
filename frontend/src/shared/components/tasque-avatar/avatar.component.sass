@@ -1,20 +1,28 @@
 @mixin random-bgr()
-    background-color: rgb(random(255), random(255), random(255))
+  background-color: rgb(random(255), random(255), random(255))
 
 .avatar-wrapper
-    @include random-bgr()
-    display: flex
-    aspect-ratio: 1 / 1
-    border-radius: 100%
-    justify-content: center
-    align-items: center
+  display: flex
+  height: 100%
 
-    .initials
-        font-weight: 600
-        -webkit-user-select: none     
-        -moz-user-select: none
-        -ms-user-select: none
-        user-select: none
+.avatar
+  width: 100%
+  aspect-ratio: 1 / 1
+  border-radius: 50%
+  object-fit: cover
 
-    .avatar
-        border-radius: 100%
+.background
+  @include random-bgr
+  width: 100%
+  display: flex
+  justify-content: center
+  border-radius: 100%
+  aspect-ratio: 1 / 1
+
+.initials
+  align-self: center
+  font-weight: 600
+  color: #fff
+  -webkit-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
