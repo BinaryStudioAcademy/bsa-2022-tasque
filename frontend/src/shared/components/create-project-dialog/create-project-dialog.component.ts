@@ -81,9 +81,13 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
   ) {
     this.projectNameControl = new FormControl(this.newProject.name, [
       Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(50),
     ]);
     this.projectKeyControl = new FormControl(this.newProject.key, [
       Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(10),
     ]);
   }
 
@@ -124,7 +128,7 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     this.newProject = {
       organizationId: this.data,
       name: this.createProjectForm.get('projectNameControl')?.value,
-      key: this.createProjectForm.get('projectKeyControl')?.value,
+      key: this.createProjectForm.get('projectKeyControl')?.value.toUpper(),
     };
 
     this.projectService
