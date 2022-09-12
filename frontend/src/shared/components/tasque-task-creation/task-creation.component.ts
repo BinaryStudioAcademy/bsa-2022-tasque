@@ -146,7 +146,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       issueTypeControl: this.issueTypeControl,
       summaryControl: this.summaryControl,
       descriptionControl: this.descriptionControl,
-      priorityConstrol: this.priorityControl,
+      priorityControl: this.priorityControl,
     });
     
     this.projectService.getProjectsByOrganizationId(this.organizationId)
