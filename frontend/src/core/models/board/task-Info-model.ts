@@ -4,7 +4,7 @@ export interface TaskInfoModel {
     id: number;
     summary: string;
     description: string;
-    projectKey: string;
+    key: string;
     user?: UserModel;
     attachmentUrl: string;
     isHidden: boolean;

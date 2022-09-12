@@ -44,6 +44,33 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   public hasTasks = false;
   public searchParameter = '';
 
+  public tasks: TaskInfoModel[] = [  //TODO: Remove
+  {
+    id: 1,
+    summary: 'Summary',
+    description: 'Description',
+    key: 'TP-1',
+    attachmentUrl: 'https://media.istockphoto.com/photos/-picture-id1143678440?k=20&m=1143678440&s=612x612&w=0&h=sUtNPqEaCNVSHyCDwxjj8Yy2qY6siPPQ5AWTfu2_GeA=',
+    isHidden: false,
+  },
+  {
+    id: 2,
+    summary: 'Summary2',
+    description: 'Description2',
+    key: 'TP-2',
+    attachmentUrl: 'http://englishbookgeorgia.com/blogebg/wp-content/uploads/2018/02/outsourcing-product-development.jpg',
+    isHidden: false,
+  },
+  ];
+
+  public columns: BoardColumnModel[] = [
+    {
+      id: 1,
+      name: 'To Do',
+      tasks: this.tasks,
+    }
+  ];
+
   public projectOptions: TasqueDropdownOption[] = [];
   public projectTaskTypes: TaskType[] = [];
 
