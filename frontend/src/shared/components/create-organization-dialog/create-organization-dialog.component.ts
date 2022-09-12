@@ -7,7 +7,6 @@ import { UserModel } from 'src/core/models/user/user-model';
 import { NewOrganizationModel } from 'src/core/models/organization/new-organization-model';
 import { FormControl, Validators } from '@angular/forms';
 import { NotificationService } from 'src/core/services/notification.service';
-import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 
 @Component({
   selector: 'app-create-organization-dialog',
@@ -20,8 +19,6 @@ export class CreateOrganizationDialogComponent implements OnInit {
   public createBtnClass = 'fill';
   public cancelBtnName = 'Cancel';
   public cancelBtnClass = 'fill gray';
-
-  public notAllowedCharacters = ValidationConstants.notAllowedCharacters;
 
   public inputType = 'text';
   public showError = false;
@@ -69,11 +66,12 @@ export class CreateOrganizationDialogComponent implements OnInit {
   }
 
   public areLastAndFirstCharactersCorrect(): boolean {
+    const regex = new RegExp('^[a-zA-Z0-9]+$');
     const lastChar = this.createOrganizationForm.value.length - 1;
-    if(this.notAllowedCharacters.includes(this.createOrganizationForm.value.charAt(0)) ||
-      this.notAllowedCharacters.includes(this.createOrganizationForm.value.charAt(lastChar))){
-      return false;
-    }
+    if(!regex.test(this.createOrganizationForm.value.charAt(0)) || 
+      !regex.test(this.createOrganizationForm.value.charAt(lastChar))) {
+        return false;
+      }
     return true;
   }
 

@@ -44,6 +44,14 @@ export class SprintService {
     );
   }
 
+  getArchiveProjectSprints(
+    projectId: number,
+  ): Observable<HttpResponse<SprintModel[]>> {
+    return this.httpService.getFullRequest<SprintModel[]>(
+      this.routePrefix + `/getArchiveSprintsByProjectId/${projectId}`,
+    );
+  }
+
   getSprintTasks(sprintId: number): Observable<HttpResponse<TaskModelDto[]>> {
     return this.httpService.getFullRequest<TaskModelDto[]>(
       this.routePrefix + `/${sprintId}/tasks`,

@@ -9,11 +9,12 @@
         ></fa-icon
         >&nbsp;
         <span class="bold">Backlog</span>
-        <span class="pale pl-5">({{ tasks.length }} issues)</span>
+        <span class="pale pl-5" *ngIf="tasks">({{ tasks.length }} issues)</span>
       </button>
     </div>
     <div class="sprints">
       <tasque-button
+        *ngIf="isCurrentUserAdmin"
         class="mini"
         text="Create Sprint"
         [class]="btnClass"
@@ -23,13 +24,13 @@
     </div>
   </div>
   <div class="backlog-content">
-    <div class="empty-tasks row pale" *ngIf="tasks.length == 0">
+    <div class="empty-tasks row pale" *ngIf="tasks && tasks.length == 0">
       <label class="text-center">Your backlog is empty.</label>
     </div>
     <div
       class="backlog-issues"
       id="backlog-issues"
-      *ngIf="tasks.length != 0"
+      *ngIf="tasks && tasks.length != 0"
       cdkDropList
       #todoList="cdkDropList"
       [cdkDropListData]="tasks"
@@ -48,6 +49,8 @@
       <tasque-task-creation
         btnText="+ Create issues"
         btnClass="btn mini voilet"
+        [currentProject]="project"
+        [organizationId]="project.organizationId"
       ></tasque-task-creation>
     </div>
   </div>
