@@ -50,19 +50,22 @@
                 Columns and statuses
               </p>
             </li>
+            <hr>
             <li>
               <p routerLink="settings/issue-types" routerLinkActive="selected">
                 Issue types
               </p>
             </li>
+            <hr>
             <li>
               <p
-                routerLink="settings/issue-template"
+                (click)="navigateToIssueTemplate()"
                 routerLinkActive="selected"
               >
                 Issue template
               </p>
             </li>
+            <hr>
             <li>
               <p
                 routerLink="settings/basic-issue-template"

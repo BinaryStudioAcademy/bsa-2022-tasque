@@ -46,24 +46,7 @@ export class IssueTemplateComponent implements OnInit {
   public types: TaskType[] = [];
   public type?: TaskType;
 
-  public dropdownOptions: TasqueDropdownOption[] = [
-    // TODO: Here will be all project issue types
-    {
-      id: 3,
-      color: 'red',
-      title: 'Bug',
-    },
-    {
-      id: 1,
-      color: 'blue',
-      title: 'Task',
-    },
-    {
-      id: 2,
-      color: 'green',
-      title: 'Story',
-    },
-  ];
+  public dropdownOptions: TasqueDropdownOption[] = [];
 
   public projectId: number;
   public selectedId: number;
@@ -72,25 +55,13 @@ export class IssueTemplateComponent implements OnInit {
   public isCheckbox: TaskCustomField | undefined;
 
   ngOnInit(): void {
-    this.projectId = parseInt(
-      this.route.snapshot.pathFromRoot[1].paramMap.get('id') as string);
+     this.projectId = parseInt(
+      this.route.snapshot.paramMap.get('id') as string);
 
     this.taskTemplateService
       .getAllProjectTemplates(this.projectId)
       .subscribe((resp) => {
         this.templates = resp.body as TaskTemplate[];
-
-        this.templates.forEach(
-          (t) => this.taskTemplateService
-            .getTaskType(t.typeId as number)
-            .subscribe((resp) => {
-              this.types.push(resp.body as TaskType);
-              this.types.forEach((t) => {
-                this.type = t;
-                this.setDropdownOptions();
-                this.type = undefined;
-              });
-        }));
       }, () => {
         this.notificationService.info('No templates found');
         this.templates = [];
@@ -100,6 +71,7 @@ export class IssueTemplateComponent implements OnInit {
       .getAllProjectTaskTypes(this.projectId)
       .subscribe((resp) => {
         this.types = resp.body as TaskType[];
+        this.setDropdownOptions();
     });
   }
 
@@ -144,7 +116,6 @@ export class IssueTemplateComponent implements OnInit {
 
     const template: TaskTemplate = {
       typeId: this.selectedId,
-      title: this.issueTemplate.title,
       id: String(this.selectedId),
       projectId: this.projectId,
       customFields: this.customFields,
@@ -168,46 +139,13 @@ export class IssueTemplateComponent implements OnInit {
 
   setSelected(val: number): void {
     this.selectedId = val;
-
-    this.taskTemplateService.getTaskType(val).subscribe((resp) => {
-      this.type = resp.body as TaskType;
-    }, () => {
-      this.type = {
-        name: 'New issue',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        id: this.templates.length + 1,
-      };
-
-      this.issueTemplate = {
-        title: this.type.name,
-        projectId: this.projectId,
-        customFields: [],
-      };
-    });
-
-    this.taskTemplateService.getTemplateById(String(val)).subscribe((resp) => {
-
-      if(resp.ok) {
-        this.issueTemplate = resp.body as TaskTemplate;
-        this.customFields = this.issueTemplate.customFields;
-      } else {
-        this.issueTemplate = {
-          title: this.type?.name as string,
-          projectId: this.projectId,
-          customFields: []
-        };
-      }
-    }, 
-    () => {
-      this.issueTemplate = {
-        title: 'New issue',
-        projectId: this.projectId,
-        customFields: [],
-        typeId: this.type?.id,
-      };
+    this.type = this.types.find((t) => t.id === val);
+    this.issueTemplate = this.templates.find((t) => t.typeId === val) as TaskTemplate;
+    if(this.issueTemplate?.customFields !== undefined) {
+      this.customFields = this.issueTemplate.customFields;
+    } else {
       this.customFields = [];
-    });
+    }
 
     const issue = this.dropdownOptions.find((i) => i.id === this.selectedId) as TasqueDropdownOption;
     this.issueColor = issue.color as string;
@@ -244,11 +182,10 @@ export class IssueTemplateComponent implements OnInit {
   }
 
   setDropdownOptions(): void {
-    this.templates.forEach((t) => {
-      this.dropdownOptions.push({
-        id: Number(t.id),
-        title: this.type?.name ?? 'Undefined',
-      });
-    });
+    this.types.forEach((t) => this.dropdownOptions.push({
+      id: t.id,
+      color: t.color,
+      title: t.name,
+    }));
   }
 }

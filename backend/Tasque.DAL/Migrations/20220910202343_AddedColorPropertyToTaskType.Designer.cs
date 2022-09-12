@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Tasque.Core.DAL;
@@ -11,9 +12,10 @@ using Tasque.Core.DAL;
 namespace Tasque.Core.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220910202343_AddedColorPropertyToTaskType")]
+    partial class AddedColorPropertyToTaskType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,7 +137,7 @@ namespace Tasque.Core.DAL.Migrations
                     b.ToTable("Attachments");
                 });
 
-            modelBuilder.Entity("Tasque.Core.Common.Entities.BoardColumn", b =>
+            modelBuilder.Entity("Tasque.Core.Common.Entities.Board", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -160,7 +162,35 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("BoardColumns", (string)null);
+                    b.ToTable("Boards");
+                });
+
+            modelBuilder.Entity("Tasque.Core.Common.Entities.BoardColumn", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BoardId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BoardId");
+
+                    b.ToTable("BoardColumns");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Calendar", b =>
@@ -822,15 +852,26 @@ namespace Tasque.Core.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tasque.Core.Common.Entities.BoardColumn", b =>
+            modelBuilder.Entity("Tasque.Core.Common.Entities.Board", b =>
                 {
                     b.HasOne("Tasque.Core.Common.Entities.Project", "Project")
-                        .WithMany("Columns")
+                        .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Tasque.Core.Common.Entities.BoardColumn", b =>
+                {
+                    b.HasOne("Tasque.Core.Common.Entities.Board", "Board")
+                        .WithMany()
+                        .HasForeignKey("BoardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Board");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Calendar", b =>
@@ -957,7 +998,7 @@ namespace Tasque.Core.DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("Tasque.Core.Common.Entities.BoardColumn", "BoardColumn")
-                        .WithMany("Tasks")
+                        .WithMany()
                         .HasForeignKey("BoardColumnId");
 
                     b.HasOne("Tasque.Core.Common.Entities.User", "LastUpdatedBy")
@@ -1083,15 +1124,8 @@ namespace Tasque.Core.DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Tasque.Core.Common.Entities.BoardColumn", b =>
-                {
-                    b.Navigation("Tasks");
-                });
-
             modelBuilder.Entity("Tasque.Core.Common.Entities.Project", b =>
                 {
-                    b.Navigation("Columns");
-
                     b.Navigation("ProjectTaskPriorities");
 
                     b.Navigation("ProjectTaskTypes");

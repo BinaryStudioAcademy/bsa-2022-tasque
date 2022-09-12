@@ -37,8 +37,8 @@ const routes: Routes = [
     children: [
       { path: ':id/board', component: TasqueBoardComponent, canActivate: [AccessControlGuard] },
       { path: ':id/team', component: TasqueTeamComponent },
-      ...ProjectSettingsRoutes,
       { path: ':id/backlog', component: BacklogComponent },
+      ...ProjectSettingsRoutes,
     ],
   },
   { path: '**', redirectTo: '/not-found', pathMatch: 'full' },

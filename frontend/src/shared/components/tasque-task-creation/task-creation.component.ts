@@ -46,20 +46,20 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   public template: TaskTemplate;
   public taskType: TaskType;
+  public showError = false;
 
   public customFields: TaskCustomField[];
   public issueTemplates: TaskTemplate[];
-  public projectPriorities: TasqueDropdownOption[] = [];
   public projectUsers: UserModel[];
   public currentUser: UserModel;
 
   public taskCustomFields: TaskCustomFieldModel[] = [];
+  public projects: TasqueDropdownOption[] = [];
+  public issueTypes: TasqueDropdownOption[] = [];
+  public projectPriorities: TasqueDropdownOption[] = [];
 
   @Input() public buttonText = '';
   @Input() public organizationId: number;
-  @Input() public currentProject: ProjectModel;
-  @Input() public projects: TasqueDropdownOption[] = [];
-  @Input() public issueTypes: TasqueDropdownOption[] = [];
 
   @Input() public btnText = 'Task creation';
   @Input() public btnClass = 'btn stroke';
@@ -156,6 +156,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       issueTypeControl: this.issueTypeControl,
       summaryControl: this.summaryControl,
       descriptionControl: this.descriptionControl,
+      priorityControl: this.priorityControl,
     });
 
     this.projectService
@@ -208,7 +209,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
             color: t.color ?? '',
           }),
         );
-        this.setBasicOptions();
       });
 
     this.projectService
@@ -243,29 +243,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       });
   }
 
-  setBasicOptions(): void {
-    //TODO: REMOVE AFTER DEMO
-    if (this.issueTypes.length === 0) {
-      this.issueTypes = [
-        {
-          id: 3,
-          color: 'red',
-          title: 'Bug',
-        },
-        {
-          id: 1,
-          color: 'blue',
-          title: 'Task',
-        },
-        {
-          id: 2,
-          color: 'green',
-          title: 'Story',
-        },
-      ];
-    }
-  }
-
   setSelectedTaskType(id: number): void {
     this.selectedTaskTypeId = id;
     this.customFields = [];
@@ -296,6 +273,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       !this.taskCreateForm.touched
     ) {
       this.taskCreateForm.markAllAsTouched();
+      this.showError = true;
       this.notificationService.error(
         'Some values are incorrect. Follow error messages to solve this problem',
         'Invalid values',
@@ -304,7 +282,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     }
 
     this.task = {
-      //TODO: Replace stateId and priorityId with dropdown select when ability to create this entities will implemented
+      //TODO: Replace stateId with dropdown select when ability to create this entity will implemented
       authorId: this.currentUser.id,
       projectId: this.taskCreateForm.get('projectControl')?.value.id,
 

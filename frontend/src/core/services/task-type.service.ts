@@ -17,4 +17,8 @@ export class TaskTypeService {
       this.routePrefix + '/getAll',
     );
   }
+
+  getAllTaskTypesByProjectId(id: number) : Observable<HttpResponse<TaskType[]>> {
+    return this.httpService.getFullRequest<TaskType[]>(this.routePrefix + '/getAllByProjectId/' + id);
+  }
 }
