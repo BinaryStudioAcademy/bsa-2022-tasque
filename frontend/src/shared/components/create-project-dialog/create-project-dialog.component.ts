@@ -119,7 +119,6 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
   checkNameFirstAndLastCharacters(): boolean {
     const regex = new RegExp('^[a-zA-Z0-9]+$');
     const lastCharName = this.projectNameControl.value?.length - 1;
-    const lastCharKey = this.projectKeyControl.value?.length - 1;
     if(!regex.test(this.projectNameControl.value?.charAt(0)) ||
     !regex.test(this.projectNameControl.value?.charAt(lastCharName))) {
       return false;
