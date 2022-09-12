@@ -10,6 +10,8 @@ public class TaskType : BaseEntity
     }
     public string Name { get; set; } = null!;
 
+    public string? Color { get; set; }
+
     public int ProjectId { get; set; }
     
     public Project Project { get; set; }

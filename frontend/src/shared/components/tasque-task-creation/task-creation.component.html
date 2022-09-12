@@ -20,7 +20,7 @@
               [options]="projects"
               [formControl]="projectControl"
               [errorMessage]="projectErrorMessage"
-              [invalid]="!projectControl.valid"
+              [invalid]="showError"
               (onSelect)="setSelectedProjectId($event)"
             >
             </tasque-dropdown>
@@ -31,7 +31,7 @@
               [options]="issueTypes"
               [formControl]="issueTypeControl"
               [errorMessage]="issueTypeErrorMessage"
-              [invalid]="!issueTypeControl.valid"
+              [invalid]="showError"
               (onSelect)="setSelectedTaskType($event)"
             >
             </tasque-dropdown>
@@ -42,7 +42,7 @@
               [options]="projectPriorities"
               [formControl]="priorityControl"
               [errorMessage]="priorityErrorMessage"
-              [invalid]="!priorityControl.valid"
+              [invalid]="showError"
               (onSelect)="setPriority($event)"
             >
             </tasque-dropdown>
@@ -52,7 +52,7 @@
             <tasque-input
               [formControl]="summaryControl"
               [errorMessage]="summaryErrorMessage"
-              [invalid]="!summaryControl.valid"
+              [invalid]="showError"
               ngDefaultControl
             >
             </tasque-input>
@@ -94,7 +94,7 @@
         <tasque-button
           type="submit"
           class="btn stroke"
-          text="Cancel"
+          text="Clear form"
           (click)="clearForm()"
         >
         </tasque-button>

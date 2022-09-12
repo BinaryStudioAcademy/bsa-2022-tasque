@@ -7,7 +7,7 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
 import { ProjectService } from 'src/core/services/project.service';
 import { takeUntil } from 'rxjs/operators';
 import { BaseComponent } from 'src/core/base/base.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-left-sidebar',
@@ -29,6 +29,7 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
+    private router: Router,
     private currentUserService: GetCurrentUserService,
     private projectService: ProjectService) {
     super();
@@ -60,7 +61,8 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit {
   }
 
   public getProject(): void {
-    const id = this.route.snapshot.pathFromRoot[1].paramMap.get('id');
+    const id = this.route.children
+      .find((r) => r.snapshot.paramMap.has('id'))?.snapshot.paramMap.get('id');
     if (id) {
       this.projectId = parseInt(id);
 
@@ -80,6 +82,10 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit {
         (r) => r.organizationId === this.project.organizationId,
       )?.role ?? UserRole.projectMember;
     });
+  }
+
+  navigateToIssueTemplate():void {
+    this.router.navigate(['project/' + this.projectId + '/settings/issue-template']);
   }
 
   public toggleSettings(): void {
