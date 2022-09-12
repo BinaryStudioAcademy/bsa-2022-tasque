@@ -5,10 +5,10 @@
       <span class="dialog-info">You can change these details anytime in your project settings.</span>
     </h3>
     <div class="tasque-input">
-      <tasque-input [class]="this.inputNameClass" [id]="this.inputNameId" [placeholder]="this.inputNamePlaceholder" [label]="this.inputNameLabel" name="fieldName" [formControl]="projectNameControl" [invalid]="!projectNameControl.valid" [errorMessage]="projectNameErrorMessage"> </tasque-input>
+      <tasque-input [class]="this.inputNameClass" [id]="this.inputNameId" [placeholder]="this.inputNamePlaceholder" [label]="this.inputNameLabel" name="fieldName" [formControl]="projectNameControl" [invalid]="showError" [errorMessage]="projectNameErrorMessage"> </tasque-input>
     </div>
     <div class="tasque-input">
-      <tasque-input [class]="this.inputKeyClass" [id]="this.inputKeyId" [placeholder]="this.inputKeyPlaceholder" [label]="this.inputKeyLabel" [(ngModel)]="newProjectKey" name="fieldName" [formControl]="projectKeyControl" [invalid]="!projectKeyControl.valid" [errorMessage]="projectKeyErrorMessage"> </tasque-input>
+      <tasque-input [class]="this.inputKeyClass" [id]="this.inputKeyId" [placeholder]="this.inputKeyPlaceholder" [label]="this.inputKeyLabel" [(ngModel)]="newProjectKey" name="fieldName" [formControl]="projectKeyControl" [invalid]="showError" [errorMessage]="projectKeyErrorMessage"> </tasque-input>
     </div>
   </mat-dialog-content>
   <mat-divider></mat-divider>

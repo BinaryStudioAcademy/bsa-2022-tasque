@@ -21,6 +21,9 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
       return 'Project name is required';
     }
+    if(!this.checkFirstAndLastCharacters()) {
+      return 'Name should not starts or ends with special characters';
+    }
     return '';
   }
 
@@ -29,6 +32,9 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
 
     if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
       return 'Project key is required';
+    }
+    if(!this.checkFirstAndLastCharacters()) {
+      return 'Key should not starts or ends with special characters';
     }
     return '';
   }
@@ -56,6 +62,8 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
 
   public isSuccessful: boolean;
   public newProjectKey = '';
+
+  public showError = false;
 
   public unsubscribe$ = new Subject<void>();
   public newProject: NewProjectModel = {
@@ -91,10 +99,25 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  checkFirstAndLastCharacters(): boolean {
+    const regex = new RegExp('^[a-zA-Z0-9]+$');
+    const lastCharName = this.projectNameControl.value?.length - 1;
+    const lastCharKey = this.projectKeyControl.value?.length - 1;
+    if(!regex.test(this.projectNameControl.value?.charAt(0)) ||
+    !regex.test(this.projectNameControl.value?.charAt(lastCharName)) ||
+    !regex.test(this.projectKeyControl.value?.charAt(0)) ||
+    !regex.test(this.projectKeyControl.value?.charAt(lastCharKey))) {
+      return false;
+    }
+    return true;
+  }
+
   onSubmit(): void {
-    if (!this.createProjectForm.valid) {
+    if (!this.createProjectForm.valid || !this.checkFirstAndLastCharacters()) {
       this.createProjectForm.markAllAsTouched();
       this.projectKeyControl.markAllAsTouched();
+      this.notificationService.error('Follow suggestion under input field', 'Something go wrong');
+      this.showError = true;
       return;
     }
 
