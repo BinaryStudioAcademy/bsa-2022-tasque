@@ -44,7 +44,7 @@
         class="user-avatar-img"
         [user]="avatars[0]"
         [alt]="avatars[0].name"
-        [diameter_px]="50"
+        [diameter_px]="miniViewDiameter"
       ></tasque-avatar>
       <div class="user-overflow" (click)="showPopUp = !showPopUp">
         +{{ avatars.length - 1 }}

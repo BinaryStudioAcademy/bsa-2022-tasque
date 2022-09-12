@@ -16,9 +16,18 @@
 .task-content
     display: flex
     justify-content: space-between
+    margin: 0 0 10px 0
+
+.card-header
+    display: flex
+    justify-content: space-between
+    align-items: center
+    > img
+        margin: 0 0 0 10px
+        &:hover
+            cursor: pointer
 
 .task-status
-    margin-top: 14px
     font-weight: 600
     font-size: 14px
     line-height: 130%
@@ -32,7 +41,6 @@
         width: auto
         height: 24px
         padding: 3px 12px
-        background: #F8A70B
         border-radius: 20px
 
 .task-info
@@ -51,3 +59,12 @@
 .attach
     max-width: 100%
     height: auto
+    margin: 10px 0 0 0
+
+.task-status-container
+    display: flex
+    flex-direction: row
+
+.user-overflow
+    margin: 0 0 0 10px
+

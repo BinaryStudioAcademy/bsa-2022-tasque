@@ -12,11 +12,13 @@ export class TasqueCardComponent implements OnInit {
   //Gets information about the task
   @Input() taskInfo: TaskInfoModel; 
   user: UserModel;
+  assignees: UserModel[];
 
   constructor() { }
 
   ngOnInit(): void {
-    this.user = this.taskInfo.user as UserModel;
+    this.user = this.taskInfo.assignees?.[0] as UserModel;
+    this.assignees = this.taskInfo.assignees as UserModel[];
   }
 
 }
