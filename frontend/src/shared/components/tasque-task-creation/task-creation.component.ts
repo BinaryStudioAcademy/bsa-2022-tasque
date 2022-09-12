@@ -215,7 +215,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   }
 
   setSelectedTaskType(id: number): void {
-    console.log(id);
     this.selectedTaskTypeId = id;
     this.customFields = [];
     this.taskCustomFields = [];

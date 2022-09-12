@@ -49,15 +49,13 @@
     display: flex
     align-items: center
 
-.board-columns
+.board-columns 
     height: calc( 100% - 145px )
-    width: calc(100% - 145px)
     display: grid
     grid-auto-flow: column
     grid-auto-columns: 288px
     grid-gap: 30px
-    overflow-x: auto
-    overflow-y: scroll
+    overflow: scroll hidden
 
 .column-title
     display: flex
