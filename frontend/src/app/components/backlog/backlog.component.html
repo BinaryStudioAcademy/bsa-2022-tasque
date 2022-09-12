@@ -47,6 +47,9 @@
       (sprintDown)="updateSprintPosition($event, false)"
       [filterIssue]="filterIssue"
     ></app-sprint>
-    <app-backlog-content [project]="currentProject"></app-backlog-content>
+    <app-backlog-content
+      [project]="currentProject"
+      [sprints]="sprints"
+    ></app-backlog-content>
   </div>
 </div>

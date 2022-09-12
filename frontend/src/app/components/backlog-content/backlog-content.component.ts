@@ -129,36 +129,7 @@ export class BacklogContentComponent implements OnInit {
 
   public sprints$: Observable<SprintModel[]>;
 
-  // TODO remove when real data is available
-  @Input() public sprints: SprintModel[] = [
-    {
-      id: 1,
-      projectId: 3,
-      name: 'spr1',
-      description: 'sprint desc',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      tasks: [],
-    },
-    {
-      id: 2,
-      projectId: 3,
-      name: 'spr2',
-      description: 'sprint desc',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      tasks: [],
-    },
-    {
-      id: 3,
-      projectId: 3,
-      name: 'spr3',
-      description: 'sprint desc',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      tasks: [],
-    },
-  ];
+  @Input() public sprints: SprintModel[];
 
   // TODO remove when real data is available
   @Input() public users: UserModel[] = [
@@ -285,5 +256,20 @@ export class BacklogContentComponent implements OnInit {
           this.taskTypes = result.body;
         }
       });
+  }
+
+  test() {
+    let sprint: SprintModel;
+    sprint = {
+      id: 31,
+      projectId: 1,
+      name: `${this.project.key} Sprint ${this.sprints.length + 1}`,
+      description: 'test',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      endAt: new Date(),
+      tasks: [],
+    };
+    this.sprints.push(sprint);
   }
 }
