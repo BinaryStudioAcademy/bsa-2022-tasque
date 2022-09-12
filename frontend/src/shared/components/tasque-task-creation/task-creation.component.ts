@@ -65,6 +65,8 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   @Input() public btnClass = 'btn stroke';
   @Input() public sidebarName = 'taskCreation';
 
+  @Input() public currentProject: ProjectModel;
+
   get projectErrorMessage(): string {
     const ctrl = this.projectControl;
 
