@@ -10,5 +10,11 @@ public class TaskState : BaseEntity
     }
     public string Name { get; set; } = null!;
 
+    public string? Color { get; set; }
+
+    public int ProjectId { get; set; }
+
+    public Project Project { get; set; } = null!;
+
     public virtual ICollection<Task> Tasks { get; set; }
 }
