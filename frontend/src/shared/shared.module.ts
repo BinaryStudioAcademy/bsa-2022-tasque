@@ -109,4 +109,4 @@ import { TaskCreationComponent } from './components/tasque-task-creation/task-cr
   ],
   providers: [SideBarService],
 })
-export class SharedModule { }
+export class SharedModule {}

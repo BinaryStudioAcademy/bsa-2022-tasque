@@ -50,6 +50,22 @@ namespace Tasque.Core.WebAPI.Controllers
             }
         }
 
+        [Route("getArchiveSprintsByProjectId/{id}")]
+        [HttpGet]
+        public async virtual Task<IActionResult> GetArchiveSprintsByProjectId(int id)
+        {
+            var sprints = await _service.GetProjectArchiveSprints(id);
+
+            if (sprints is not null)
+            {
+                return Ok(sprints);
+            }
+            else
+            {
+                return BadRequest("Entities not found");
+            }
+        }
+
         [Route("{id}/tasks")]
         [HttpGet]
         public async virtual Task<IActionResult> GetSprintTasks(int id)
