@@ -66,7 +66,7 @@ export class CreateOrganizationDialogComponent implements OnInit {
   }
 
   public areLastAndFirstCharactersCorrect(): boolean {
-    const regex = new RegExp("^[a-zA-Z0-9]+$");
+    const regex = new RegExp('^[a-zA-Z0-9]+$');
     const lastChar = this.createOrganizationForm.value.length - 1;
     if(!regex.test(this.createOrganizationForm.value.charAt(0)) || 
       !regex.test(this.createOrganizationForm.value.charAt(lastChar))) {
