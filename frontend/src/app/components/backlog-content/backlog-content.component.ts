@@ -213,17 +213,16 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     if (this.currentUser === undefined) {
       return;
-    } else {
-      this.role =
-        (this.currentUser?.organizationRoles?.find(
-          (m) =>
-            m.organizationId === this.project.organizationId &&
-            m.userId === this.currentUser.id,
-        )?.role as UserRole) || 0;
+    }
+    this.role =
+      (this.currentUser?.organizationRoles?.find(
+        (m) =>
+          m.organizationId === this.project.organizationId &&
+          m.userId === this.currentUser.id,
+      )?.role as UserRole) || 0;
 
-      if (UserRole.OrganizationAdmin <= this.role) {
-        this.isCurrentUserAdmin = true;
-      }
+    if (UserRole.OrganizationAdmin <= this.role) {
+      this.isCurrentUserAdmin = true;
     }
 
     this.getTasksState();
