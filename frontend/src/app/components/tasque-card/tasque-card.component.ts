@@ -8,7 +8,6 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
 import { NotificationService } from 'src/core/services/notification.service';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { TaskService } from 'src/core/services/task-service.service';
-import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 
 @Component({
   selector: 'tasque-card',
