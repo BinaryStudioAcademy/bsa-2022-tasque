@@ -10,6 +10,7 @@ export interface TaskModel {
   id: number;
   summary: string;
   description?: string;
+  key?: string;
   state: TaskState;
   type: TaskType;
   priority: TaskPriority;
