@@ -21,7 +21,13 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
       return 'Project name is required';
     }
-    if(!this.checkFirstAndLastCharacters()) {
+    if(ctrl.errors?.['minlength'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Project name should contain at least 3 characters';
+    }
+    if(ctrl.errors?.['maxlength'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Project name should be less then 50 characters';
+    }
+    if(!this.checkNameFirstAndLastCharacters()) {
       return 'Name should not starts or ends with special characters';
     }
     return '';
@@ -33,7 +39,13 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
       return 'Project key is required';
     }
-    if(!this.checkFirstAndLastCharacters()) {
+    if(ctrl.errors?.['minlength'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Key should contain at least 2 characters';
+    }
+    if(ctrl.errors?.['maxlength'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Key should contain less then 10 characters';
+    }
+    if(!this.checkKeyFirstAndLastCharacters()) {
       return 'Key should not starts or ends with special characters';
     }
     return '';
@@ -63,7 +75,8 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
   public isSuccessful: boolean;
   public newProjectKey = '';
 
-  public showError = false;
+  public showErrorName = false;
+  public showErrorKey = false;
 
   public unsubscribe$ = new Subject<void>();
   public newProject: NewProjectModel = {
@@ -103,25 +116,42 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  checkFirstAndLastCharacters(): boolean {
+  checkNameFirstAndLastCharacters(): boolean {
     const regex = new RegExp('^[a-zA-Z0-9]+$');
     const lastCharName = this.projectNameControl.value?.length - 1;
     const lastCharKey = this.projectKeyControl.value?.length - 1;
     if(!regex.test(this.projectNameControl.value?.charAt(0)) ||
-    !regex.test(this.projectNameControl.value?.charAt(lastCharName)) ||
-    !regex.test(this.projectKeyControl.value?.charAt(0)) ||
-    !regex.test(this.projectKeyControl.value?.charAt(lastCharKey))) {
+    !regex.test(this.projectNameControl.value?.charAt(lastCharName))) {
+      return false;
+    }
+    return true;
+  }
+
+  checkKeyFirstAndLastCharacters(): boolean {
+    const regex = new RegExp('^[a-zA-Z0-9]+$');
+    const lastCharKey = this.projectKeyControl.value?.length - 1;
+    if(!regex.test(this.projectKeyControl.value?.charAt(0)) ||
+    !regex.test(this.projectKeyControl.value?.charAt(lastCharKey))){
       return false;
     }
     return true;
   }
 
   onSubmit(): void {
-    if (!this.createProjectForm.valid || !this.checkFirstAndLastCharacters()) {
-      this.createProjectForm.markAllAsTouched();
+    if (!this.projectNameControl.valid || !this.checkNameFirstAndLastCharacters()) {
+      this.projectNameControl.markAllAsTouched();
+      this.notificationService.error('Follow suggestion under input field', 'Something go wrong');
+      this.showErrorName = true;
+      if(!this.projectKeyControl.valid || !this.checkKeyFirstAndLastCharacters()){
+        this.projectKeyControl.markAllAsTouched();
+        this.showErrorKey = true;
+      }
+      return;
+    }
+    if(!this.projectKeyControl.valid || !this.checkKeyFirstAndLastCharacters()){
       this.projectKeyControl.markAllAsTouched();
       this.notificationService.error('Follow suggestion under input field', 'Something go wrong');
-      this.showError = true;
+      this.showErrorKey = true;
       return;
     }
 
