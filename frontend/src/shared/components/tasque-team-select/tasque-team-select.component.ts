@@ -26,6 +26,7 @@ export class TasqueTeamSelectComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
+    this.avatarsShow = this.avatars;
     this.generateColor();
     if(!this.miniViewDiameter){
       this.miniViewDiameter = 40;

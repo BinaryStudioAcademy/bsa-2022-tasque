@@ -10,6 +10,7 @@ import { CompleteSprintDialogComponent } from './complete-sprint-dialog/complete
 })
 export class CompleteSprintComponent implements OnInit {
   @Input() public completeBthClass = 'fill gray';
+  @Input() public completeBtnText = 'Start sprint';
   @Input() public sprint: SprintModel;
 
   constructor(public matDialog: MatDialog) {}

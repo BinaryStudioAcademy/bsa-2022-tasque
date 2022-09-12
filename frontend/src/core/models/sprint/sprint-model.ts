@@ -11,4 +11,5 @@ export interface SprintModel {
   projectId: number;
   tasks: TaskModelDto[];
   order?: number;
+  isComplete?: boolean;
 }

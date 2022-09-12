@@ -65,6 +65,8 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   @Input() public btnClass = 'btn stroke';
   @Input() public sidebarName = 'taskCreation';
 
+  @Input() public currentProject: ProjectModel;
+
   get projectErrorMessage(): string {
     const ctrl = this.projectControl;
 
@@ -76,7 +78,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   get issueTypeErrorMessage(): string {
     const ctrl = this.issueTypeControl;
-
     if (ctrl.errors?.['required'] && (ctrl.touched || ctrl.dirty)) {
       return 'Issue type is required';
     }
@@ -121,7 +122,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     private taskTemplateService: TaskTemplateService,
     private projectService: ProjectService,
     private currentUserService: GetCurrentUserService,
-    private taskService: TaskService
+    private taskService: TaskService,
   ) {
     this.projectControl = new FormControl(this.task.projectId, [
       Validators.required,
@@ -148,18 +149,21 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       descriptionControl: this.descriptionControl,
       priorityControl: this.priorityControl,
     });
-    
-    this.projectService.getProjectsByOrganizationId(this.organizationId)
-    .subscribe((resp) => {
-      const projects = resp.body as ProjectModel[];
-      if(projects === null) {
-        return;
-      }
-      projects.forEach((p) => this.projects.push({
-        title: p.name,
-        id: p.id
-      }));
-    });
+
+    this.projectService
+      .getProjectsByOrganizationId(this.organizationId)
+      .subscribe((resp) => {
+        const projects = resp.body as ProjectModel[];
+        if (projects === null) {
+          return;
+        }
+        projects.forEach((p) =>
+          this.projects.push({
+            title: p.name,
+            id: p.id,
+          }),
+        );
+      });
 
     this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user;
@@ -179,86 +183,117 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     this.customFields = [];
     this.taskCustomFields = [];
 
-    this.taskTemplateService.getAllProjectTemplates(this.selectedProjectId).subscribe((resp) => {
-      this.issueTemplates = resp.body as TaskTemplate[];
-    });
+    this.taskTemplateService
+      .getAllProjectTemplates(this.selectedProjectId)
+      .subscribe((resp) => {
+        this.issueTemplates = resp.body as TaskTemplate[];
+      });
 
-    this.taskTemplateService.getAllProjectTaskTypes(this.selectedProjectId).subscribe((resp) => {
-      const types = resp.body as TaskType[];
-      types.forEach((t) => this.issueTypes.push({
-        title: t.name,
-        id: t.id,
-        color: t.color?? '',
-      }));
-    });
+    this.taskTemplateService
+      .getAllProjectTaskTypes(this.selectedProjectId)
+      .subscribe((resp) => {
+        const types = resp.body as TaskType[];
+        types.forEach((t) =>
+          this.issueTypes.push({
+            title: t.name,
+            id: t.id,
+            color: t.color ?? '',
+          }),
+        );
+      });
 
-    this.projectService.getProjectParticipants(this.selectedProjectId).subscribe((resp) => {
-      if(resp.ok) {
-        this.projectUsers = resp.body as UserModel[];
-      } else {
-        this.notificationService.error('Something went wrong, try again later');
-      }
-    });
+    this.projectService
+      .getProjectParticipants(this.selectedProjectId)
+      .subscribe((resp) => {
+        if (resp.ok) {
+          this.projectUsers = resp.body as UserModel[];
+        } else {
+          this.notificationService.error(
+            'Something went wrong, try again later',
+          );
+        }
+      });
 
-    this.projectService.getProjectPriorities(this.selectedProjectId).subscribe((resp) => {
-      if(resp.ok) {
-        const priorities = resp.body as TaskPriority[];
-        priorities.forEach((p) => this.projectPriorities.push({
-          title: p.name,
-          id: p.id,
-          color: p.color,
-        }));
-      } else {
-        this.notificationService.error('Something went wrong, try again later');
-      }
-    });
+    this.projectService
+      .getProjectPriorities(this.selectedProjectId)
+      .subscribe((resp) => {
+        if (resp.ok) {
+          const priorities = resp.body as TaskPriority[];
+          priorities.forEach((p) =>
+            this.projectPriorities.push({
+              title: p.name,
+              id: p.id,
+              color: p.color,
+            }),
+          );
+        } else {
+          this.notificationService.error(
+            'Something went wrong, try again later',
+          );
+        }
+      });
   }
 
   setSelectedTaskType(id: number): void {
     this.selectedTaskTypeId = id;
     this.customFields = [];
     this.taskCustomFields = [];
-    
-    if(this.selectedProjectId === undefined) {
+
+    if (this.selectedProjectId === undefined) {
       return;
     }
-    this.template = this.issueTemplates
-      .find((t) => t.projectId === this.selectedProjectId && t.typeId === this.selectedTaskTypeId) as TaskTemplate;
+    this.template = this.issueTemplates.find(
+      (t) =>
+        t.projectId === this.selectedProjectId &&
+        t.typeId === this.selectedTaskTypeId,
+    ) as TaskTemplate;
 
-      this.customFields = this.template?.customFields?? [];
-      this.customFields.forEach((cf) => this.taskCustomFields.push({
+    this.customFields = this.template?.customFields ?? [];
+    this.customFields.forEach((cf) =>
+      this.taskCustomFields.push({
         fieldId: cf.fieldId as string,
         type: cf.type,
-      }));
+      }),
+    );
   }
 
   public submitForm(): void {
-    if (!this.taskCreateForm.valid || !this.taskCreateForm.dirty || !this.taskCreateForm.touched) {
+    if (
+      !this.taskCreateForm.valid ||
+      !this.taskCreateForm.dirty ||
+      !this.taskCreateForm.touched
+    ) {
       this.taskCreateForm.markAllAsTouched();
       this.showError = true;
-      this.notificationService
-        .error('Some values are incorrect. Follow error messages to solve this problem', 'Invalid values');
+      this.notificationService.error(
+        'Some values are incorrect. Follow error messages to solve this problem',
+        'Invalid values',
+      );
       return;
     }
 
-    this.task = { //TODO: Replace stateId with dropdown select when ability to create this entity will implemented
+    this.task = {
+      //TODO: Replace stateId with dropdown select when ability to create this entity will implemented
       authorId: this.currentUser.id,
       projectId: this.taskCreateForm.get('projectControl')?.value.id,
 
       typeId: this.taskCreateForm.get('issueTypeControl')?.value.id,
       stateId: 1, // <----
-      priorityId: this.selectedPriorityId, 
+      priorityId: this.selectedPriorityId,
 
       summary: this.taskCreateForm.get('summaryControl')?.value,
       description: this.taskCreateForm.get('descriptionControl')?.value,
 
       customFields: this.taskCustomFields,
     };
-    this.taskService.createTask(this.task).subscribe(() => {
-      this.notificationService.success('Task has been created successfully');
-    }, () => {
-      this.notificationService.error('Something go wrong. Try again later');
-    });
+    this.taskService.createTask(this.task).subscribe(
+      () => {
+        this.notificationService.success('Task has been created successfully');
+      },
+      () => {
+        this.notificationService.error('Something go wrong. Try again later');
+      },
+    );
     this.clearForm();
   }
 
@@ -272,12 +307,14 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   }
 
   getCustomField(field: TaskCustomFieldModel): void {
-    const isExist = this.taskCustomFields.find((f) => f.fieldId === field.fieldId);
-    if(isExist === undefined){
+    const isExist = this.taskCustomFields.find(
+      (f) => f.fieldId === field.fieldId,
+    );
+    if (isExist === undefined) {
       this.taskCustomFields.push(field);
     }
     this.taskCustomFields.forEach((val) => {
-      if(val.fieldId === field.fieldId) {
+      if (val.fieldId === field.fieldId) {
         val.fieldValue = field.fieldValue;
       }
     });

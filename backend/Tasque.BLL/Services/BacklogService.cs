@@ -19,6 +19,7 @@ namespace Tasque.Core.BLL.Services
         public async Task<IEnumerable<TaskDto>> GetBacklogTasks(int projectId)
         {
             var tasks = await _context.Tasks
+                .Include(t=> t.Users)
                 .Where(t => t.ProjectId == projectId && t.SprintId == null)
                 .ToListAsync();
 
