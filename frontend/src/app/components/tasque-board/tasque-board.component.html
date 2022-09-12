@@ -30,7 +30,7 @@
         <h4>There are no tasks yet. You can create the first one.</h4>
       </div>
       <div class="board-columns" cdkDropListGroup>
-        <div cdkDropList *ngFor="let item of columns"
+        <div cdkDropList *ngFor="let item of board.columns"
         (cdkDropListDropped)="dragDrop($event)"
         [cdkDropListData]="item.tasks" class="column-with-tasks">
           <div class="column-title">

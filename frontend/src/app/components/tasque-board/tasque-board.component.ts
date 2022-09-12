@@ -19,7 +19,6 @@ import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/drop
 import { ProjectService } from 'src/core/services/project.service';
 import { filter } from 'rxjs/operators';
 import { TaskType } from 'src/core/models/task/task-type';
-import { TaskPriorityType } from 'src/core/models/task/enums/task-priority-types';
 
 @Component({
   selector: 'tasque-board',
@@ -44,105 +43,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   user: UserModel;
   public hasTasks = false;
   public searchParameter = '';
-
-  public tasks: TaskInfoModel[] = [  //TODO: Remove
-  {
-    id: 1,
-    type: {
-      id: 1,
-      name: 'type1',
-      color: 'black',
-    },
-    priority: {
-      id: 1,
-      name: 'priority1',
-      type: TaskPriorityType.Heghest,
-      color: 'red',
-      projectId: 1,
-
-    },
-    summary: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-    key: 'TP-1',
-    attachmentUrl: 'https://media.istockphoto.com/photos/-picture-id1143678440?k=20&m=1143678440&s=612x612&w=0&h=sUtNPqEaCNVSHyCDwxjj8Yy2qY6siPPQ5AWTfu2_GeA=',
-    isHidden: false,
-    customLabels: [{
-      name: 'CusLab1',
-      color: 'orange',
-    }, {
-      name: 'CusLab1-2',
-      color: 'blue',
-    }],
-    user: {
-      id: 1,
-      name: 'Daniil Poyarkov',
-      email: '',
-      organizationRoles: [],
-    },
-    assignees: [{
-      id: 1,
-      name: 'Loren Ipsum',
-      email: '',
-      organizationRoles: [],
-    }, {
-      id: 1,
-      name: 'Loren Ipsum',
-      email: '',
-      organizationRoles: [],
-    }]
-  },
-  {
-    id: 2,
-    type: {
-      id: 1,
-      name: 'type2',
-      color: 'black',
-    },
-    priority: {
-      id: 1,
-      name: 'priority2',
-      type: TaskPriorityType.Heghest,
-      color: 'red',
-      projectId: 1,
-
-    },
-    summary: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-    key: 'TP-2',
-    attachmentUrl: 'http://englishbookgeorgia.com/blogebg/wp-content/uploads/2018/02/outsourcing-product-development.jpg',
-    isHidden: false,
-    customLabels: [{
-      name: 'CusLab2',
-      color: 'orange',
-    }, {
-      name: 'CusLab2-2',
-      color: 'blue',
-    }],
-    user: {
-      id: 1,
-      name: 'Daniil Poyarkov',
-      email: '',
-      organizationRoles: [],
-    },
-    assignees: [{
-      id: 1,
-      name: 'Loren Ipsum',
-      email: '',
-      organizationRoles: [],
-    }, {
-      id: 1,
-      name: 'Loren Ipsum',
-      email: '',
-      organizationRoles: [],
-    }]
-  },
-  ];
-
-  public columns: BoardColumnModel[] = [
-    {
-      id: 1,
-      name: 'To Do',
-      tasks: this.tasks,
-    }
-  ];
 
   public projectOptions: TasqueDropdownOption[] = [];
   public projectTaskTypes: TaskType[] = [];
