@@ -51,7 +51,7 @@
         </tasque-sidebar>
         <tasque-option 
             option 
-            *ngFor="let val of dropdownField.fields" 
+            *ngFor="let val of dropdownField?.fields" 
             (click)="setDropdownValue(val)"
         >{{val}}
         </tasque-option>
