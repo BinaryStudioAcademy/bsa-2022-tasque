@@ -158,7 +158,7 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     this.newProject = {
       organizationId: this.data,
       name: this.createProjectForm.get('projectNameControl')?.value,
-      key: this.createProjectForm.get('projectKeyControl')?.value.toUpper(),
+      key: this.createProjectForm.get('projectKeyControl')?.value.toUpperCase(),
     };
 
     this.projectService
