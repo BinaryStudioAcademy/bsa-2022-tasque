@@ -2,7 +2,6 @@ using AutoMapper;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.BLL.Exeptions;
-﻿using FluentValidation;
 using Tasque.Core.Common.DTO.Sprint;
 using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.DTO.User;
