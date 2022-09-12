@@ -33,7 +33,7 @@
             {{ currentSprint.startAt | date: 'mediumDate' }}
           </p>
           <p *ngIf="currentSprint.startAt">-</p>
-          <p *ngIf="!currentSprint.startAt">deadline:</p>
+          <p *ngIf="!currentSprint.startAt && currentSprint.endAt">deadline:</p>
           <p class="endAt">{{ currentSprint.endAt | date: 'mediumDate' }}</p>
         </div>
         <div class="issues">
@@ -138,6 +138,7 @@
         [taskTypes]="taskType"
         [currentUser]="currentUser"
         (estimate)="estimateCount()"
+        [currentProject]="currentProject"
       ></app-issue>
     </div>
     <div class="sprint-footer">

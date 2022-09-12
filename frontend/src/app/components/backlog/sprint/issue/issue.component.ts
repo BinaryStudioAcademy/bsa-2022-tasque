@@ -12,6 +12,7 @@ import { faFlag } from '@fortawesome/free-solid-svg-icons';
 import { TaskModelDto } from 'src/core/models/task/task-model-dto';
 import { TaskService } from 'src/core/services/task.service';
 import { ToastrService } from 'ngx-toastr';
+import { ProjectModel } from 'src/core/models/project/project-model';
 
 @Component({
   selector: 'app-issue',
@@ -23,6 +24,8 @@ export class IssueComponent implements OnInit {
   @Input() public issue: TaskModelDto;
   //get current user
   @Input() public currentUser: UserModel;
+  //get current project
+  @Input() public currentProject: ProjectModel;
   //notifying the parent components about the change in the value of estimate
   @Output() estimate = new EventEmitter<void>();
   flagIcon = faFlag;

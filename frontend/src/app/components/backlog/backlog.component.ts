@@ -127,7 +127,7 @@ export class BacklogComponent implements OnInit {
       .subscribe((result) => {
         if (result.body) {
           this.sprints = result.body.sort(
-            (a, b) => (b.order ?? 0) - (a.order ?? 0),
+            (a, b) => (a.order ?? 0) - (b.order ?? 0),
           );
         }
       });

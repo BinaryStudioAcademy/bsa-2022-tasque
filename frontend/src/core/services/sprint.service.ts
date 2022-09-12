@@ -25,7 +25,7 @@ export class SprintService {
 
   create(sprint: NewSprintModel): Observable<HttpResponse<SprintModel>> {
     return this.httpService.postFullRequest<SprintModel>(
-      this.routePrefix + '/create',
+      this.routePrefix,
       sprint,
     );
   }

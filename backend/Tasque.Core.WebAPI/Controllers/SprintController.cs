@@ -16,6 +16,12 @@ namespace Tasque.Core.WebAPI.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] NewSprintDto sprintDto)
+        {
+            return Ok(await _service.Create(sprintDto));
+        }
+
         [Route("complete/{id}")]
         [HttpPut]
         public async Task<IActionResult> CompleteSprint(int id)
@@ -39,22 +45,6 @@ namespace Tasque.Core.WebAPI.Controllers
         public async virtual Task<IActionResult> GetSprintsByProjectId(int id)
         {
             var sprints = await _service.GetProjectSprints(id);
-
-            if (sprints is not null)
-            {
-                return Ok(sprints);
-            }
-            else
-            {
-                return BadRequest("Entities not found");
-            }
-        }
-
-        [Route("getArchiveSprintsByProjectId/{id}")]
-        [HttpGet]
-        public async virtual Task<IActionResult> GetArchiveSprintsByProjectId(int id)
-        {
-            var sprints = await _service.GetProjectArchiveSprints(id);
 
             if (sprints is not null)
             {

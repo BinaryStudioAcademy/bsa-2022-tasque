@@ -37,6 +37,7 @@ namespace Tasque.Core.BLL.Services
             {
                 Name = sprintDto.Name,
                 ProjectId = sprintDto.ProjectId,
+                CreatedAt =  DateTime.UtcNow,
             };
             newSprint.Order = _db.Sprints.Max(x => x.Order) + 1;
 
