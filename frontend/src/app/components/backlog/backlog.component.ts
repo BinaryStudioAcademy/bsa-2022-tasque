@@ -92,6 +92,9 @@ export class BacklogComponent implements OnInit {
     this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user as UserModel;
 
+      if (this.currentUser === undefined) {
+        return;
+      }
       // this.getUserBoards();
       this.getSprints(this.currentProjectId);
     });
