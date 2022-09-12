@@ -45,12 +45,12 @@ export class AvatarComponent implements OnInit {
 
       const partsOfName = user.name.split(' ');
       if (partsOfName.length >= 2) {
-        return partsOfName[0][0] + partsOfName[1][0];
+        return (partsOfName[0][0] + partsOfName[1][0]).toLocaleUpperCase();
       }
 
       return partsOfName[0][0];
     } if(user.name !== undefined) {
-      return user.name.charAt(0);
+      return user.name.charAt(0).toLocaleUpperCase();
     } 
     return '';
   }
