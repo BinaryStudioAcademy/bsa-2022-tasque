@@ -11,6 +11,7 @@ export class TasqueTeamSelectComponent implements OnInit {
   public inputSearch = '';
   //Notify the parent component when the avatar is clicked and pass the selected user to it
   @Output() selectedUser = new EventEmitter<UserModel>();
+  public selectedUserId: number;
   public searchIcon = faMagnifyingGlass;
   public showPopUp = false;
 
@@ -43,7 +44,14 @@ export class TasqueTeamSelectComponent implements OnInit {
     });
   }
 
-  selectUser(avatars: UserModel): void {
-    this.selectedUser.emit(avatars);
+  selectUser(user: UserModel): void {
+    this.selectedUser.emit(user);
+    if (this.selectedUserId != user.id){
+      this.selectedUserId = user.id;
+    }
+    else {
+      this.selectedUserId = 0;
+    }
+    
   }
 }
