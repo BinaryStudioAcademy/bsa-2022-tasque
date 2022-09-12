@@ -1,7 +1,5 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Drawing;
 using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Exeptions;
 using Tasque.Core.Common.DTO.Board;
@@ -31,7 +29,7 @@ public class ProjectService : EntityCrudService<Project>
 
     public List<UserDto> GetProjectParticipants(int projectId)
     {
-        return _mapper.Map<List<UserDto>>(_db.Projects.FirstOrDefault(p => p.Id == projectId)?.Users); 
+        return _mapper.Map<List<UserDto>>(_db.Projects.FirstOrDefault(p => p.Id == projectId)?.Users);
     }
 
     public async Task<ProjectInfoDto> AddProject(Project entity)
@@ -54,7 +52,7 @@ public class ProjectService : EntityCrudService<Project>
         });
         project.Users.Add(user);
         await _db.SaveChangesAsync();
-        await SetBasicPrioritiesAndTypesToProject(project);
+        await SetBasicPrioritiesAndTypesAndStatesToProject(project);
 
         var projectAfterCreate = await _db.Projects
             .Where(proj => proj.Id == project.Id)
@@ -66,8 +64,8 @@ public class ProjectService : EntityCrudService<Project>
 
         return _mapper.Map<ProjectInfoDto>(projectAfterCreate);
     }
-    
-    public async Task SetBasicPrioritiesAndTypesToProject(Project project)
+
+    public async Task SetBasicPrioritiesAndTypesAndStatesToProject(Project project)
     {
         var priorities = new List<TaskPriority>()
         {
@@ -130,8 +128,37 @@ public class ProjectService : EntityCrudService<Project>
             }
         };
 
+        var states = new List<TaskState>()
+        {
+            new()
+            {
+                Color = TaskColors.ToDo,
+                Name = BasicTaskStateTypes.ToDo.ToString().ToLower(),
+                ProjectId = project.Id,
+            },
+            new()
+            {
+                Color = TaskColors.InProgress,
+                Name = BasicTaskStateTypes.InProgress.ToString().ToLower(),
+                ProjectId = project.Id,
+            },
+            new()
+            {
+                Color = TaskColors.Done,
+                Name = BasicTaskStateTypes.Done.ToString().ToLower(),
+                ProjectId = project.Id,
+            },
+            new()
+            {
+                Color = TaskColors.Canceled,
+                Name = BasicTaskStateTypes.Canceled.ToString().ToLower(),
+                ProjectId = project.Id,
+            },
+        };
+
         await _db.TaskTypes.AddRangeAsync(types);
         await _db.TaskPriorities.AddRangeAsync(priorities);
+        await _db.TaskStates.AddRangeAsync(states);
         await _db.SaveChangesAsync();
     }
 
@@ -267,7 +294,7 @@ public class ProjectService : EntityCrudService<Project>
                 .ThenInclude(r => r.Role)
             .FirstOrDefaultAsync();
 
-        if(project == null)
+        if (project == null)
         {
             throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
         }
