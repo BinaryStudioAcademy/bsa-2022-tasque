@@ -22,25 +22,14 @@ export class TasqueTeamSelectComponent implements OnInit {
 
   public avatarsShow: UserModel[] = this.avatars;
 
-  public profileColors: string[] = [];
-
   constructor() {}
 
   ngOnInit(): void {
-    this.generateColor();
-  }
-
-  generateColor(): void {
-    for (let i = 0; i < this.avatarsShow.length; i++) {
-      this.profileColors.push(
-        '#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6),
-      );
-    }
   }
 
   filterItems(): void {
     this.avatarsShow = this.avatars.filter((avatar) => {
-      return avatar.name.includes(this.inputSearch);
+      return avatar.name.toLocaleLowerCase().includes(this.inputSearch.toLocaleLowerCase());
     });
   }
 
@@ -53,5 +42,10 @@ export class TasqueTeamSelectComponent implements OnInit {
       this.selectedUserId = 0;
     }
     
+  }
+
+  switchPopUp(): void {
+    this.avatarsShow = this.avatars;
+    this.showPopUp = !this.showPopUp;
   }
 }
