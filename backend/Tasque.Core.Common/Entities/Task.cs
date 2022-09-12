@@ -12,6 +12,7 @@ public class Task : BaseEntity
     }
     public string Summary { get; set; } = null!;
     public string? Description { get; set; }
+    public string? Key { get; set; }
 
     public DateTime Deadline { get; set; }
     public DateTime? FinishedAt { get; set; }
