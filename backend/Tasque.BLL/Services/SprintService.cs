@@ -2,7 +2,6 @@ using AutoMapper;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.BLL.Exeptions;
-﻿using FluentValidation;
 using Tasque.Core.Common.DTO.Sprint;
 using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.DTO.User;
@@ -31,9 +30,20 @@ namespace Tasque.Core.BLL.Services
 
             return _mapper.Map<IEnumerable<SprintDto>>(sprints);
         }
+
+        public async Task<IEnumerable<SprintDto>> GetProjectArchiveSprints(int projectId)
+        {
+            var sprints = await _db.Sprints
+                .Where(s => s.ProjectId == projectId && s.IsComplete)
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<SprintDto>>(sprints);
+        }
+
         public async Task<IEnumerable<TaskDto>> GetSprintTasks(int sprintId)
         {
             var tasks = await _db.Tasks
+                .Include(t => t.Users)
                 .Where(t => t.SprintId == sprintId)
                 .ToListAsync();
 
@@ -43,9 +53,9 @@ namespace Tasque.Core.BLL.Services
         public async Task<IEnumerable<UserDto>> GetSprintUsers(int sprintId)
         {
             var users = await _db.Tasks
-                .Include(t => t.Author)
+                .Include(t => t.Users)
                 .Where(t => t.SprintId == sprintId)
-                .Select(t =>t.Author)
+                .SelectMany(t =>t.Users)
                 .GroupBy(x => x.Id)
                 .Select(x => x.First())
                 .ToListAsync();
@@ -101,8 +111,8 @@ namespace Tasque.Core.BLL.Services
                 throw new HttpException(System.Net.HttpStatusCode.NotFound, "Sprinter with this ID does not exist");
 
             sprint.Tasks
-                    .Where(t => t.StateId == (int)TaskStateTypes.ToDo 
-                        || t.StateId == (int)TaskStateTypes.InProgress)
+                    .Where(t => t.StateId == ((int)BasicTaskStateTypes.ToDo)
+                        || t.StateId == ((int)BasicTaskStateTypes.InProgress))
                     .ToList()
                     .ForEach(t =>
                         {

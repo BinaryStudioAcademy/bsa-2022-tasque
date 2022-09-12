@@ -24,8 +24,7 @@ export class TasqueTeamSelectComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   filterItems(): void {
     this.avatarsShow = this.avatars.filter((avatar) => {
