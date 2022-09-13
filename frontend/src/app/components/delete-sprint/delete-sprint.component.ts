@@ -10,6 +10,7 @@ import { DeleteSprintDialogComponent } from './delete-sprint-dialog/delete-sprin
 })
 export class DeleteSprintComponent implements OnInit {
   @Input() public sprint: SprintModel;
+  @Input() public btnClass = 'btn mini voilet full ';
 
   constructor(public matDialog: MatDialog) {}
 

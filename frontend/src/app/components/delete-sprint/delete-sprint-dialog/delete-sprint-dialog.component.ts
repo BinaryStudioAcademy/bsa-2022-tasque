@@ -25,6 +25,7 @@ export class DeleteSprintDialogComponent implements OnInit {
     this.sprintService.delete(this.sprint.id).subscribe(
       (resp) => {
         if (resp.status == 204) {
+          this.dialogRef.close();
           this.notificationService.success('Sprint has been removed');
           this.backlogService.changeBacklog();
           this.sprintService.changeDeleteSprint(this.sprint.id);
