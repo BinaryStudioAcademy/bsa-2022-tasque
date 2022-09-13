@@ -37,7 +37,7 @@ import { BacklogContentComponent } from './components/backlog-content/backlog-co
 import { BacklogComponent } from './components/backlog/backlog.component';
 import { AccessControlGuard } from './components/tasque-project-settings/project-options-module/guards/access-control.guard';
 import { DeleteSprintComponent } from './components/delete-sprint/delete-sprint.component';
-import { DeleteSprintDialogComponent } from './components/delete-sprint-dialog/delete-sprint-dialog.component';
+import { DeleteSprintDialogComponent } from './components/delete-sprint/delete-sprint-dialog/delete-sprint-dialog.component';
 
 @NgModule({
   declarations: [
@@ -89,4 +89,4 @@ import { DeleteSprintDialogComponent } from './components/delete-sprint-dialog/d
   bootstrap: [AppComponent],
   exports: [OrganizationListComponent],
 })
-export class AppModule { }
+export class AppModule {}

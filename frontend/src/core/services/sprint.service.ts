@@ -84,4 +84,10 @@ export class SprintService {
       taskEstimateUpdate,
     );
   }
+
+  delete(sprintId: number): Observable<HttpResponse<void>> {
+    return this.httpService.deleteFullRequest<void>(
+      this.routePrefix + `/delete/${sprintId}`,
+    );
+  }
 }
