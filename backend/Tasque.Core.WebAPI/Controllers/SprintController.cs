@@ -114,5 +114,14 @@ namespace Tasque.Core.WebAPI.Controllers
             var dto = mapper.Map<SprintDto>(sprints);
             return Ok(dto);
         }
+
+        [Route("deleteSprint/{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteSprint(int id)
+        {
+            await _service.Delete(id, _currentUser.Id);
+
+            return NoContent();
+        }
     }
 }

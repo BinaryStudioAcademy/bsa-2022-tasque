@@ -87,7 +87,7 @@ export class SprintService {
 
   delete(sprintId: number): Observable<HttpResponse<void>> {
     return this.httpService.deleteFullRequest<void>(
-      this.routePrefix + `/delete/${sprintId}`,
+      this.routePrefix + `/deleteSprint/${sprintId}`,
     );
   }
 }

@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
+import { BacklogService } from 'src/core/services/backlog.service';
 import { NotificationService } from 'src/core/services/notification.service';
 import { SprintService } from 'src/core/services/sprint.service';
 
@@ -15,6 +16,7 @@ export class DeleteSprintDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<DeleteSprintDialogComponent>,
     private sprintService: SprintService,
     private notificationService: NotificationService,
+    private backlogService: BacklogService,
   ) {}
 
   ngOnInit(): void {}
@@ -22,8 +24,10 @@ export class DeleteSprintDialogComponent implements OnInit {
   deleteSprint(): void {
     this.sprintService.delete(this.sprint.id).subscribe(
       (resp) => {
-        if (resp.ok && resp.body != null) {
-          this.notificationService.success('Sprint was successfully changed');
+        if (resp.status == 204) {
+          this.notificationService.success('Sprint has been removed');
+          this.backlogService.changeBacklog();
+          this.sprintService.changeDeleteSprint(this.sprint.id);
         } else {
           this.notificationService.error('Something went wrong');
         }
