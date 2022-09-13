@@ -22,7 +22,7 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
 
   public warningIcon = faMessage;
   public inputSearch = '';
-  public itemsShow: OrganizationModel[];
+  public itemsShow: OrganizationModel[] = [];
   public faMagnifyingGlass = faMagnifyingGlass;
 
   constructor(
@@ -36,6 +36,7 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user;
+      this.currentUserService.currentUserId = this.currentUser.id;
     });
 
     this.getCurrentOrganizationService.organizations$.subscribe(

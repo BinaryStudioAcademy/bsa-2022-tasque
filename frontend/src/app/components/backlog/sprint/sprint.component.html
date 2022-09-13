@@ -1,12 +1,14 @@
 <div
   class="sprint-conteiner"
   cdkDropList
-  id="{{ sprint.id }}"
+  id="{{ currentSprint.id }}"
   #doneList="cdkDropList"
-  [cdkDropListData]="sprint.tasks"
+  [cdkDropListData]="currentSprint.tasks"
   (cdkDropListDropped)="drop($event)"
 >
-  <details>
+  <details
+    [open]="currentSprint.startAt && !currentSprint.isComplete ? true : false"
+  >
     <summary>
       <div class="wrapper">
         <div class="marker">
@@ -25,12 +27,14 @@
             ></fa-icon>
           </p>
         </div>
-        <h4 class="sprint-name">{{ sprint.name }}</h4>
+        <h4 class="sprint-name">{{ currentSprint.name }}</h4>
         <div class="sprint-date">
-          <p class="startAt">{{ sprint.startAt | date: 'mediumDate' }}</p>
-          <p *ngIf="sprint.startAt">-</p>
-          <p *ngIf="!sprint.startAt">deadline:</p>
-          <p class="endAt">{{ sprint.endAt | date: 'mediumDate' }}</p>
+          <p class="startAt">
+            {{ currentSprint.startAt | date: 'mediumDate' }}
+          </p>
+          <p *ngIf="currentSprint.startAt">-</p>
+          <p *ngIf="!currentSprint.startAt">deadline:</p>
+          <p class="endAt">{{ currentSprint.endAt | date: 'mediumDate' }}</p>
         </div>
         <div class="issues">
           <p>issues</p>
@@ -43,41 +47,62 @@
           <p class="estimate-count">{{ estimate }}</p>
         </div>
         <div class="wrapper button">
-          <tasque-button
-            *ngIf="!sprint.startAt"
-            text="Start sprint"
+          <app-edit-sprint
+            *ngIf="
+              !currentSprint.startAt &&
+              sprintIndex == 0 &&
+              isCurrentUserAdmin &&
+              !currentSprint.isComplete
+            "
+            [currentSprint]="currentSprint"
             class="btn mini voilet full start-sprint"
-          ></tasque-button>
+            [isStarting]="true"
+          ></app-edit-sprint>
+
           <app-complete-sprint
-            *ngIf="sprint.startAt"
-            [sprint]="sprint"
+            *ngIf="
+              currentSprint.startAt &&
+              isCurrentUserAdmin &&
+              !currentSprint.isComplete
+            "
+            [sprint]="currentSprint"
             class="btn complete-sprint"
             completeBthClass="btn mini violet-fill full"
+            completeBtnText="Complete sprint"
           ></app-complete-sprint>
-          <div class="dropdown-button">
+
+          <div
+            class="dropdown-button"
+            *ngIf="isCurrentUserAdmin && !currentSprint.isComplete"
+          >
             <div class="dropdown" style="float: right">
               <tasque-button
                 class="btn dropbtn"
                 [icon]="faEllipsisV"
               ></tasque-button>
               <div class="dropdown-content">
-                <a>
+                <a
+                  *ngIf="
+                    sprintIndex != 0 &&
+                    (sprintIndex != 1 || !sprints[0].startAt)
+                  "
+                >
                   <tasque-button
-                    (click)="$sprintUp(sprint)"
+                    (click)="$sprintUp(currentSprint)"
                     text="Move sprint up"
                     class="btn full black"
                   ></tasque-button>
                 </a>
-                <a>
+                <a *ngIf="sprintIndex != 0 || !currentSprint.startAt">
                   <tasque-button
-                    (click)="$sprintDown(sprint)"
+                    (click)="$sprintDown(currentSprint)"
                     text="Move sprint down"
                     class="btn full black"
                   ></tasque-button>
                 </a>
                 <a>
                   <app-edit-sprint
-                    [currentSprint]="sprint"
+                    [currentSprint]="currentSprint"
                     btnClass="btn full black"
                   ></app-edit-sprint>
                 </a>
@@ -90,12 +115,16 @@
               </div>
             </div>
           </div>
+          <div class="completed" *ngIf="currentSprint.isComplete">
+            completed
+          </div>
         </div>
       </div>
     </summary>
     <div class="sprint-header">
       <div class="select-user">
         <tasque-team-select
+          [avatars]="sprintUsers"
           (selectedUser)="filterUserTasks($event)"
           *ngIf="sprintUsersCircle"
         ></tasque-team-select>
@@ -113,9 +142,12 @@
     </div>
     <div class="sprint-footer">
       <tasque-task-creation
+        *ngIf="!currentSprint.isComplete"
         btnText="+ Create issues"
         btnClass="btn mini voilet"
         [sidebarName]="createIssueSidebarName"
+        [organizationId]="currentProject.organizationId"
+        [currentProject]="currentProject"
       ></tasque-task-creation>
     </div>
   </details>

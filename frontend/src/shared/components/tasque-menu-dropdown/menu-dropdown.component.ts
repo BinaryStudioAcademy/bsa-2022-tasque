@@ -13,6 +13,8 @@ export class MenuDropdownComponent implements OnInit {
 
   @Input() public upArrowIcon = faChevronUp; // Up State of the arrow (applies when dropdown is expanded)
 
+  @Input() public left: number;
+
   public currentArrowIcon: IconProp;
 
   @Input() toggleDropdownOnButtonClick = true;

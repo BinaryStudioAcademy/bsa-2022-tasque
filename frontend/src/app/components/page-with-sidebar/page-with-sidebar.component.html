@@ -1,10 +1,10 @@
 <div class="container">
-  <div class="menu">
-    <app-left-sidebar></app-left-sidebar>
+  <div class="header">
+    <tasque-header [hasLogo]="true"></tasque-header>
   </div>
   <div class="main">
-    <div class="header">
-      <tasque-header></tasque-header>
+    <div class="menu">
+      <app-left-sidebar></app-left-sidebar>
     </div>
     <div class="content">
       <router-outlet></router-outlet>

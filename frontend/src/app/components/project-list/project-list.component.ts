@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faMessage } from '@fortawesome/free-solid-svg-icons';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
-import { ProjectModel } from 'src/core/models/project/project-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { ProjectService } from 'src/core/services/project.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { CreateProjectService } from 'src/core/services/create-project.service';
+import { OpenDialogService } from 'src/core/services/open-dialog.service';
+import { GetCurrentProjectService } from 'src/core/services/get-current-project.service';
 
 @Component({
   selector: 'app-project-list',
@@ -21,19 +21,20 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   public currentOrganizationId: number;
 
   public inputSearch = '';
+  public warningIcon = faMessage;
   public searchIcon = faMagnifyingGlass;
 
   public projects: ProjectInfoModel[] = [];
-  public items: ProjectModel[] = [];
 
   public itemsShow = this.projects;
   public unsubscribe$ = new Subject<void>();
 
   constructor(
     public projectService: ProjectService,
-    private createProjectService: CreateProjectService, 
     private currentOrganization: GetCurrentOrganizationService,
-    private currentUserService: GetCurrentUserService) {
+    private currentUserService: GetCurrentUserService,
+    private currentProjectService: GetCurrentProjectService,
+    private openDialogService: OpenDialogService) {
   }
 
   ngOnInit(): void {
@@ -60,16 +61,21 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   private subscribeToCurrentOrganization(): void {
     this.currentOrganization.currentOrganizationId$.subscribe(
       (result) => {
+        if (result === -1) {
+          this.projects = this.itemsShow = [];
+          return;
+        }
+
         this.currentOrganizationId = result;
-        
+
         this.projectService.getAllProjectsOfThisOrganization(this.currentOrganizationId)
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((data) => {
-          if(data.body) {
-            this.projects = data.body;
-            this.itemsShow = this.projects;
-          }
-        });
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe((data) => {
+            if (data.body) {
+              this.projects = data.body;
+              this.itemsShow = this.projects;
+            }
+          });
       });
   }
 
@@ -77,17 +83,22 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     this.currentUserService.currentUser$.subscribe((user) => {
       if (!user) {
         return;
-    }
+      }
       this.currentUser = user;
     });
   }
 
   public openCreateProjectDialog(): void {
-    this.createProjectService.openDialog(this.currentOrganizationId)
+    this.openDialogService.openCreateProjectDialog(this.currentOrganizationId)
       .subscribe((result) => {
         if (!result) {
           return;
         }
+
+        this.projects.push(result);
+        this.itemsShow = this.projects;
+        this.currentProjectService.setCurrentProject(result);
       });
   }
+
 }

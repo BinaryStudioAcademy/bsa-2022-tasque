@@ -22,17 +22,37 @@ export class AvatarComponent implements OnInit {
       : this.el.nativeElement.offsetWidth / 2.5;
   }
 
-  constructor(private el: ElementRef) {}
+  fontSize: number;
+  colors = ['#D47500', '#00AA55', '#E3BC01', '#009FD4', '#B281B3', '#D47500', '#DC2929'];
+  public background: string;
 
   ngOnInit(): void {
+    this.fontSize = this.diameter_px / 2;
+    if(this.user === undefined || this.user.avatarURL === undefined) {
+      this.userAvatar = '';
+    } else {
+        this.userAvatar = this.user.avatarURL as string;
+    }
+    if(this.user) {
+      this.background = this.colors[this.user.id % this.colors.length];
+    }
   }
 
   getInitials(user: UserModel): string {
-    const partsOfName = user.name.split(' ');
-    if (partsOfName.length >= 2) {
-      return partsOfName[0][0] + partsOfName[1][0];
+    if(user === undefined) {
+      return '';
     }
+    if(user.name !== undefined && user.name?.includes(' ')) {
 
-    return partsOfName[0][0];
+      const partsOfName = user.name.split(' ');
+      if (partsOfName.length >= 2) {
+        return (partsOfName[0][0] + partsOfName[1][0]).toLocaleUpperCase();
+      }
+
+      return partsOfName[0][0];
+    } if(user.name !== undefined) {
+      return user.name.charAt(0).toLocaleUpperCase();
+    } 
+    return '';
   }
 }

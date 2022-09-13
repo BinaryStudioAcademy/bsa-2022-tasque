@@ -9,6 +9,10 @@ public class Project : BaseEntity
         Users = new List<User>();
         UserRoles = new List<UserProjectRole>();
         Sprints = new List<Sprint>();
+        Columns = new List<BoardColumn>();
+        ProjectTaskTypes = new List<TaskType>();
+        ProjectTaskPriorities = new List<TaskPriority>();
+        ProjectTaskStates = new List<TaskState>();
     }
     public string Name { get; set; } = null!;
     public string Key { get; set; } = null!;
@@ -22,4 +26,8 @@ public class Project : BaseEntity
     public virtual ICollection<User> Users { get; set; }
     public virtual ICollection<UserProjectRole> UserRoles { get; set; }
     public virtual ICollection<Sprint> Sprints { get; set; }
+    public virtual ICollection<BoardColumn> Columns { get; set; }
+    public virtual ICollection<TaskType> ProjectTaskTypes { get; set; }
+    public virtual ICollection<TaskPriority> ProjectTaskPriorities { get; set; }
+    public virtual ICollection<TaskState> ProjectTaskStates { get; set; }
 }

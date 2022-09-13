@@ -3,11 +3,12 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { UserModel } from 'src/core/models/user/user-model';
-import { BoardService } from 'src/core/services/board.service';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import {
   faMaximize,
   faMagnifyingGlass,
+  faUnlockKeyhole,
+  faLock,
 } from '@fortawesome/free-solid-svg-icons';
 import { SprintService } from 'src/core/services/sprint.service';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
@@ -18,60 +19,89 @@ import {
 } from '@angular/cdk/drag-drop';
 import { IssueSort } from './models';
 import { TaskModel } from 'src/core/models/task/task-model';
-import { TaskService } from 'src/core/services/task.service';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectModel } from 'src/core/models/project/project-model';
+import { ActivatedRoute } from '@angular/router';
+import { ProjectService } from 'src/core/services/project.service';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-backlog',
   templateUrl: './backlog.component.html',
   styleUrls: ['./backlog.component.sass'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        // :enter is alias to 'void => *'
+        style({ opacity: 0 }),
+        animate(600, style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        // :leave is alias to '* => void'
+        animate(0, style({ opacity: 0 })),
+      ]),
+    ]),
+  ],
 })
 export class BacklogComponent implements OnInit {
   faMaximize = faMaximize;
   faMagnifyingGlass = faMagnifyingGlass;
-
+  faUnlockKeyhole = faUnlockKeyhole;
+  faLock = faLock;
   //get current user
   @Input() public currentUser: UserModel;
+  //Get the criteria by which the issue will be sorted
+  @Input() public filterIssue: IssueSort;
 
-  // TODO remove when real data is available
-  //get current project
-  @Input() public currentProject: ProjectModel = {
-    id: 1,
-    name: 'Test project',
-    authorId: 1,
-    organizationId: 1,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    key: 'TIS-1',
-  };
+  public currentProject: ProjectModel;
+  public currentProjectId: number;
 
   public inputSearch = '';
 
   public unsubscribe$ = new Subject<void>();
   public boards: TasqueDropdownOption[];
   public sprints: SprintModel[];
-  public filterIssue: IssueSort;
-
+  public archiveSprints: SprintModel[];
+  public isShowArchive: boolean;
   public tasks: TaskModel[] = [];
 
   constructor(
-    public boardService: BoardService,
+    public projectService: ProjectService,
     public sprintService: SprintService,
-    public taskService: TaskService,
     public currentUserService: GetCurrentUserService,
     private toastrService: ToastrService,
-  ) {}
+    private route: ActivatedRoute,
+  ) {
+    sprintService.deleteSprint$.subscribe((sprintId) => {
+      this.deleteSprint(sprintId);
+    });
+  }
 
   ngOnInit(): void {
+    const id = this.route.snapshot.url[0].path;
+
+    if (id) {
+      this.currentProjectId = parseInt(id);
+      this.projectService
+        .getProjectById(this.currentProjectId)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((resp) => {
+          this.currentProject = resp.body as ProjectModel;
+        });
+    }
     this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user as UserModel;
-      this.getUserBoards();
-      this.getSprints();
+
+      if (this.currentUser === undefined) {
+        return;
+      }
+      // this.getUserBoards();
+      this.getSprints(this.currentProjectId);
     });
   }
 
   //get all user's boards
+  /*
   public getUserBoards(): void {
     this.boardService
       .getUserBoards(this.currentUser.id)
@@ -86,18 +116,32 @@ export class BacklogComponent implements OnInit {
         }
       });
   }
+  */
 
   //get sprints for the current project
   //and sort them by priority (order)
-  public getSprints(): void {
+  public getSprints(projectId: number): void {
     this.sprintService
-      .getProjectSprints(this.currentProject.id)
+      .getProjectSprints(projectId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
           this.sprints = result.body.sort(
             (a, b) => (a.order ?? 0) - (b.order ?? 0),
           );
+        }
+      });
+  }
+
+  public getArchiveSprints(projectId: number): void {
+    this.isShowArchive = !this.isShowArchive;
+
+    this.sprintService
+      .getArchiveProjectSprints(projectId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.archiveSprints = result.body;
         }
       });
   }
@@ -162,5 +206,9 @@ export class BacklogComponent implements OnInit {
         event.currentIndex,
       );
     }
+  }
+
+  deleteSprint(sprintId: number): void {
+    this.sprints = this.sprints.filter((task) => task.id !== sprintId);
   }
 }

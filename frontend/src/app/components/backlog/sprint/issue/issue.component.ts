@@ -80,6 +80,9 @@ export class IssueComponent implements OnInit {
   ];
 
   public issueAuthor: UserModel;
+
+  public issueUsers: UserModel[];
+
   public taskEstimate: TaskEstimateUpdate;
   public unsubscribe$ = new Subject<void>();
 
@@ -103,7 +106,6 @@ export class IssueComponent implements OnInit {
       .subscribe((result) => {
         if (result.body) {
           this.issueAuthor = result.body;
-
           if (this.issueAuthor.avatarURL == undefined) {
             this.issueAuthor.avatarURL = '\\assets\\avatar.png';
           }

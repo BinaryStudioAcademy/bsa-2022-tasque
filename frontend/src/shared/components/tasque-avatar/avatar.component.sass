@@ -1,5 +1,4 @@
-@mixin random-bgr()
-  background-color: rgb(random(255), random(255), random(255))
+@import 'src/colors.sass'
 
 .avatar-wrapper
   display: flex
@@ -12,7 +11,6 @@
   object-fit: cover
 
 .background
-  @include random-bgr
   width: 100%
   display: flex
   justify-content: center
@@ -22,3 +20,7 @@
 .initials
   align-self: center
   font-weight: 600
+  color: colorscheme(white-100)
+  -webkit-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none

@@ -91,6 +91,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       priority: {
         id: 1,
         name: 'Low',
+        type: 0,
+        projectId: 5,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -102,6 +104,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       createdAt: new Date(),
       updatedAt: new Date(),
       deadline: new Date(),
+      custmFields: [],
     };
     this.currentUser = this.users[1];
     this.taskReporter = this.users[2];

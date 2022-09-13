@@ -4,10 +4,13 @@ import { NewProjectModel } from '../models/project/new-project-model';
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { ProjectModel } from '../models/project/project-model';
+import { UserModel } from '../models/user/user-model';
 import { EditProjectModel } from '../models/project/edit-project-model';
 import { ProjectInfoModel } from '../models/project/project-info-model';
 import { InviteUserModel } from '../models/project/invite-user-model';
 import { ChangeUserRoleModel } from '../models/project/change-user-role-model';
+import { TaskPriority } from '../models/task/task-priority';
+import { BoardModel } from '../models/board/board-model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +22,8 @@ export class ProjectService {
     public httpService: HttpService
   ) { }
 
-  createProject(newProject: NewProjectModel): Observable<HttpResponse<ProjectModel>> {
-    return this.httpService.postFullRequest<ProjectModel>(this.routePrefix + '/add', newProject);
+  createProject(newProject: NewProjectModel): Observable<HttpResponse<ProjectInfoModel>> {
+    return this.httpService.postFullRequest<ProjectInfoModel>(this.routePrefix + '/add', newProject);
   }
 
   editProject(editProject: EditProjectModel): Observable<HttpResponse<ProjectInfoModel>> {
@@ -45,5 +48,33 @@ export class ProjectService {
 
   getProjectById(id: number): Observable<HttpResponse<ProjectModel>> {
     return this.httpService.getFullRequest<ProjectModel>(this.routePrefix + '/getById/' + id);
+  }
+
+  getBoard(projectId: number): Observable<HttpResponse<BoardModel>> {
+    return this.httpService.getFullRequest(this.routePrefix + `/board/${projectId}`);
+  }
+
+  updateBoardTasks(boardInfo: BoardModel): Observable<HttpResponse<BoardModel>> {
+    return this.httpService.putFullRequest(this.routePrefix + '/board/tasks', boardInfo);
+  }
+
+  updateBoardColumns(boardInfo: BoardModel): Observable<HttpResponse<BoardModel>> {
+    return this.httpService.putFullRequest(this.routePrefix + '/board/columns', boardInfo);
+  }
+
+  getCurrentProjectInfoById(id: number): Observable<HttpResponse<ProjectInfoModel>> {
+    return this.httpService.getFullRequest<ProjectInfoModel>(this.routePrefix + '/current/' + id);
+  }
+
+  getProjectsByOrganizationId(id: number): Observable<HttpResponse<ProjectModel[]>> {
+    return this.httpService.getFullRequest<ProjectModel[]>(this.routePrefix + '/getByOrganizationId/' + id);
+  }
+
+  getProjectParticipants(id: number): Observable<HttpResponse<UserModel[]>> {
+    return this.httpService.getFullRequest<UserModel[]>(this.routePrefix + '/getParticipants/' + id);
+  }
+
+  getProjectPriorities(id: number): Observable<HttpResponse<TaskPriority[]>> {
+    return this.httpService.getFullRequest(this.routePrefix + '/getProjectPriorities/' + id);
   }
 }

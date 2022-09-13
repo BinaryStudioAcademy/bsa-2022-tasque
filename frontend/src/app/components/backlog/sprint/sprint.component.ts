@@ -29,6 +29,8 @@ import { TaskType } from 'src/core/models/task/task-type';
 import { ToastrService } from 'ngx-toastr';
 import { TaskTypeService } from 'src/core/services/task-type.service';
 import { TaskStateService } from 'src/core/services/task-state.service';
+import { ProjectModel } from 'src/core/models/project/project-model';
+import { UserRole } from 'src/core/models/user/user-roles';
 
 @Component({
   selector: 'app-sprint',
@@ -37,16 +39,20 @@ import { TaskStateService } from 'src/core/services/task-state.service';
 })
 export class SprintComponent implements OnInit, OnChanges {
   //Get the sprint to display it in the component
-  @Input() public sprint: SprintModel;
+  @Input() public sprints: SprintModel[];
+  //Get the sprint to display it in the component
+  @Input() public currentSprint: SprintModel;
   //Get the string by which issue will be searched
   @Input() public inputSearch = '';
   //Get the criteria by which the issue will be sorted
   @Input() public filterIssue: IssueSort;
   //get current user
   @Input() public currentUser: UserModel;
+  @Input() public currentProject: ProjectModel;
+
+  @Input() public sprintIndex: number;
 
   public taskState: TaskState[];
-
   public taskType: TaskType[];
 
   //Notify parent components of sprint priority change
@@ -56,10 +62,13 @@ export class SprintComponent implements OnInit, OnChanges {
 
   public sprintUsers: UserModel[];
   public sprintUsersCircle?: UserModel[];
+  public filterTaskByUser?: UserModel;
 
   public tasks: TaskModelDto[];
   public tasksShow: TaskModelDto[];
   public tasksDto: TaskModelDto;
+  public role: UserRole;
+  public isCurrentUserAdmin: boolean;
 
   public unsubscribe$ = new Subject<void>();
 
@@ -78,22 +87,38 @@ export class SprintComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
+    if (this.currentUser === undefined) {
+      this.role = 0;
+    } else {
+      this.role =
+        (this.currentUser?.organizationRoles?.find(
+          (m) =>
+            m.organizationId === this.currentProject.organizationId &&
+            m.userId === this.currentUser.id,
+        )?.role as UserRole) || 0;
+
+      if (UserRole.OrganizationAdmin <= this.role) {
+        this.isCurrentUserAdmin = true;
+      }
+    }
+
     this.getTasksState();
     this.getTasksType();
     this.getSprintTasks();
     this.getSprintUsers();
 
-    this.createIssueSidebarName += this.sprint.id;
+    this.createIssueSidebarName += this.currentSprint.id;
   }
 
   //Get all tasks for the sprint
   public getSprintTasks(): void {
     this.sprintService
-      .getSprintTasks(this.sprint.id)
+      .getSprintTasks(this.currentSprint.id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          this.sprint.tasks = this.tasks = this.tasksShow = result.body;
+          //    console.log(result.body);
+          this.currentSprint.tasks = this.tasks = this.tasksShow = result.body;
           this.estimateCount();
         }
       });
@@ -102,13 +127,11 @@ export class SprintComponent implements OnInit, OnChanges {
   //Get all sprint members
   public getSprintUsers(): void {
     this.sprintService
-      .getSprintUsers(this.sprint.id)
+      .getSprintUsers(this.currentSprint.id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          this.sprintUsers = result.body;
-
-          this.sprintUsersCircle = result.body;
+          this.sprintUsers = this.sprintUsersCircle = result.body;
         }
       });
   }
@@ -121,27 +144,29 @@ export class SprintComponent implements OnInit, OnChanges {
 
   //Sort tasks in a sprint (by keyword or IssueSort)
   filterItems(): void {
-    if (this.inputSearch) {
-      this.tasks = this.tasksShow.filter((item) => {
-        return item.summary
-          .toLowerCase()
-          .includes(this.inputSearch.toLowerCase());
-      });
-    } else {
-      this.tasks = this.tasksShow;
-    }
+    if (this.tasksShow) {
+      if (this.inputSearch) {
+        this.tasks = this.tasksShow.filter((item) => {
+          return item.summary
+            .toLowerCase()
+            .includes(this.inputSearch.toLowerCase());
+        });
+      } else {
+        this.tasks = this.tasksShow;
+      }
 
-    if (this.filterIssue == IssueSort.All) {
-      this.tasks.sort((a) => a.id);
-    } else if (this.filterIssue == IssueSort.OnlyMyIssues) {
-      this.tasks = this.tasks.filter((item) => {
-        return item.authorId == this.currentUser.id;
-      });
-    } else if (this.filterIssue == IssueSort.RecentlyUpdated) {
-      this.tasks.sort(
-        (a, b) =>
-          new Date(b.deadline).getTime() - new Date(a.deadline).getTime(),
-      );
+      if (this.filterIssue == IssueSort.All) {
+        this.tasks.sort((a) => a.id);
+      } else if (this.filterIssue == IssueSort.OnlyMyIssues) {
+        this.tasks = this.tasks.filter((item) => {
+          return item.authorId == this.currentUser.id;
+        });
+      } else if (this.filterIssue == IssueSort.RecentlyUpdated) {
+        this.tasks.sort(
+          (a, b) =>
+            new Date(b.deadline).getTime() - new Date(a.deadline).getTime(),
+        );
+      }
     }
   }
 
@@ -161,7 +186,7 @@ export class SprintComponent implements OnInit, OnChanges {
         event.currentIndex,
       );
 
-      this.sprint.tasks[0].sprintId = this.sprint.id;
+      this.currentSprint.tasks[0].sprintId = this.currentSprint.id;
 
       this.taskService
         .updateTask(this.tasks[0])
@@ -176,9 +201,16 @@ export class SprintComponent implements OnInit, OnChanges {
 
   //Show only the tasks of the selected user
   filterUserTasks(user: UserModel): void {
-    this.tasks = this.tasksShow.filter((item) => {
-      return item.authorId == user.id;
-    });
+    if (this.filterTaskByUser == user) {
+      this.tasks = this.tasksShow;
+      this.filterTaskByUser = undefined;
+    } else {
+      this.filterTaskByUser = user;
+
+      this.tasks = this.tasksShow.filter((item) => {
+        return item.users.find((u) => u.id === user.id);
+      });
+    }
   }
 
   ngOnChanges(): void {

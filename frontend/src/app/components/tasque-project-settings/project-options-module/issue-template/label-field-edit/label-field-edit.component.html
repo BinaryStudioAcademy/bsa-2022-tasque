@@ -12,16 +12,13 @@
     </div>
     <div *ngIf="isChanging" class="edit-label">
         <tasque-input [formControl]="formColorControl" class="edit-input" type="color" (outputValue)="setValue($event, 'color')"></tasque-input>
-        <tasque-input [formControl]="formNameControl" class="edit-input" placeholder="Write label name" type="text" (outputValue)="setValue($event, 'name')"></tasque-input>
+        <tasque-input [formControl]="formNameControl" (keydown.enter)="saveLabel()" class="edit-input" placeholder="Write label name" type="text" (outputValue)="setValue($event, 'name')"></tasque-input>
         <tasque-button class="btn icon" [icon]="faCheck" (btnClick)="saveLabel()"></tasque-button>
     </div>
     <div class="create-label">
         <span>Add new label</span>
         <tasque-button style="margin-left: 10px" class="btn icon" [icon]="faPlus" (btnClick)="addLabel()"></tasque-button>
     </div>
-    <tasque-button style="margin-left: 10px" class="btn mini" text="Finish editing" (btnClick)="finishEdit()"></tasque-button>
-    <div class="data-save">
-        <span>Data will be saved</span>
-    </div>
+    <tasque-button style="margin-left: 10px" class="btn mini" text="Save and finish editing" (btnClick)="finishEdit()"></tasque-button>
 </div>
 
