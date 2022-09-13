@@ -37,6 +37,7 @@ import { BacklogContentComponent } from './components/backlog-content/backlog-co
 import { BacklogComponent } from './components/backlog/backlog.component';
 import { AccessControlGuard } from './components/tasque-project-settings/project-options-module/guards/access-control.guard';
 import { WikiComponent } from './components/wiki/wiki.component';
+import { YourWorkComponent } from './components/your-work/your-work.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { WikiComponent } from './components/wiki/wiki.component';
     BacklogContentComponent,
     BacklogComponent,
     WikiComponent,
+    YourWorkComponent,
   ],
   imports: [
     BrowserModule,
