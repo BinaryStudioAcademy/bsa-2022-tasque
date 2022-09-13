@@ -83,7 +83,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
       this.deleteSprint(sprintId);
     });
   }
-  ngAfterContentChecked() {
+  ngAfterContentChecked(): void {
     this.cdref.detectChanges();
   }
 

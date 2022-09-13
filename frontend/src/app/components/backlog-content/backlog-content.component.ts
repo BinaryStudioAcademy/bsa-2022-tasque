@@ -309,9 +309,8 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   }
 
   // TODO add current user
-  test() {
-    let newSprint: NewSprintModel;
-    newSprint = {
+  createSprint(): void {
+    const newSprint: NewSprintModel = {
       projectId: this.project.id,
       name: `${this.project.key} Sprint ${this.sprints.length + 1}`,
       authorId: 1,
@@ -322,7 +321,6 @@ export class BacklogContentComponent implements OnInit, OnChanges {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          console.log(result.body);
           this.sprints.push(result.body);
         }
       });
