@@ -105,6 +105,7 @@ import { TaskCreationComponent } from './components/tasque-task-creation/task-cr
     MenuDropdownComponent,
     CreateOrganizationDialogComponent,
     CreateProjectDialogComponent,
+    TasqueOptionComponent,
   ],
   providers: [SideBarService],
 })

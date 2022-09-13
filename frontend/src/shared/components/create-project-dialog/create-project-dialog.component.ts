@@ -6,6 +6,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from 'src/core/services/notification.service';
 import { NewProjectModel } from 'src/core/models/project/new-project-model';
 import { ProjectService } from 'src/core/services/project.service';
+import { Router } from '@angular/router';
+import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 
 @Component({
   selector: 'app-create-project-dialog',
@@ -19,6 +21,15 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
       return 'Project name is required';
     }
+    if(ctrl.errors?.['minlength'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Project name should contain at least 3 characters';
+    }
+    if(ctrl.errors?.['maxlength'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Project name should be less then 50 characters';
+    }
+    if(!this.checkNameFirstAndLastCharacters()) {
+      return 'Name should not starts or ends with special characters';
+    }
     return '';
   }
 
@@ -27,6 +38,15 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
 
     if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
       return 'Project key is required';
+    }
+    if(ctrl.errors?.['minlength'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Key should contain at least 2 characters';
+    }
+    if(ctrl.errors?.['maxlength'] && (ctrl.dirty || ctrl.touched)) {
+      return 'Key should contain less then 10 characters';
+    }
+    if(!this.checkKeyFirstAndLastCharacters()) {
+      return 'Key should not starts or ends with special characters';
     }
     return '';
   }
@@ -55,6 +75,9 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
   public isSuccessful: boolean;
   public newProjectKey = '';
 
+  public showErrorName = false;
+  public showErrorKey = false;
+
   public unsubscribe$ = new Subject<void>();
   public newProject: NewProjectModel = {
     name: '',
@@ -67,12 +90,17 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     public notificationService: NotificationService,
     @Inject(MAT_DIALOG_DATA) public data: number,
     private dialogRef: MatDialogRef<CreateProjectDialogComponent>,
+    private router: Router,
   ) {
     this.projectNameControl = new FormControl(this.newProject.name, [
       Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(50),
     ]);
     this.projectKeyControl = new FormControl(this.newProject.key, [
       Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(10),
     ]);
   }
 
@@ -88,17 +116,48 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  checkNameFirstAndLastCharacters(): boolean {
+    const regex = new RegExp('^[a-zA-Z0-9]+$');
+    const lastCharName = this.projectNameControl.value?.length - 1;
+    if(!regex.test(this.projectNameControl.value?.charAt(0)) ||
+    !regex.test(this.projectNameControl.value?.charAt(lastCharName))) {
+      return false;
+    }
+    return true;
+  }
+
+  checkKeyFirstAndLastCharacters(): boolean {
+    const regex = new RegExp('^[a-zA-Z0-9]+$');
+    const lastCharKey = this.projectKeyControl.value?.length - 1;
+    if(!regex.test(this.projectKeyControl.value?.charAt(0)) ||
+    !regex.test(this.projectKeyControl.value?.charAt(lastCharKey))){
+      return false;
+    }
+    return true;
+  }
+
   onSubmit(): void {
-    if (!this.createProjectForm.valid) {
-      this.createProjectForm.markAllAsTouched();
+    if (!this.projectNameControl.valid || !this.checkNameFirstAndLastCharacters()) {
+      this.projectNameControl.markAllAsTouched();
+      this.notificationService.error('Follow suggestion under input field', 'Something go wrong');
+      this.showErrorName = true;
+      if(!this.projectKeyControl.valid || !this.checkKeyFirstAndLastCharacters()){
+        this.projectKeyControl.markAllAsTouched();
+        this.showErrorKey = true;
+      }
+      return;
+    }
+    if(!this.projectKeyControl.valid || !this.checkKeyFirstAndLastCharacters()){
       this.projectKeyControl.markAllAsTouched();
+      this.notificationService.error('Follow suggestion under input field', 'Something go wrong');
+      this.showErrorKey = true;
       return;
     }
 
     this.newProject = {
       organizationId: this.data,
       name: this.createProjectForm.get('projectNameControl')?.value,
-      key: this.createProjectForm.get('projectKeyControl')?.value,
+      key: this.createProjectForm.get('projectKeyControl')?.value.toUpperCase(),
     };
 
     this.projectService
@@ -107,7 +166,9 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
       .subscribe((resp) => {
         if (resp.status == 200) {
           this.notificationService.success('The project has been created');
+          const project = resp.body as ProjectInfoModel;
           this.dialogRef.close(resp.body);
+          this.router.navigate([`/project/${project.id}/board`]);
         }
       });
   }

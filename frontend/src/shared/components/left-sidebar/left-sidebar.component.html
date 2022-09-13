@@ -8,13 +8,19 @@
   <div class="menu">
     <div class="menu-item">
       <a (click)="hideSettings()" routerLink="./board">
-        <img src="assets/board_icon.svg" alt="" />
+        <img src="assets/board_icon.svg" alt="" matTooltip="Board" matTooltipPosition="after" [matTooltipDisabled]="!sideBarMinimized"/>
         <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Board</span>
       </a>
     </div>
     <div class="menu-item">
       <a (click)="hideSettings()" routerLink="./backlog">
-        <img src="assets/backlog_icon.svg" alt="" />
+        <img
+          src="assets/backlog_icon.svg"
+          alt=""
+          matTooltip="Backlog"
+          matTooltipPosition="after"
+          [matTooltipDisabled]="!sideBarMinimized"
+        />
         <span *ngIf="!sideBarMinimized" routerLinkActive="selected"
           >Backlog</span
         >
@@ -22,13 +28,25 @@
     </div>
     <div class="menu-item">
       <a (click)="hideSettings()" routerLink="./team">
-        <img src="assets/team_icon.svg" alt="" />
+        <img
+          src="assets/team_icon.svg"
+          alt=""
+          matTooltip="Team"
+          matTooltipPosition="after"
+          [matTooltipDisabled]="!sideBarMinimized"
+        />
         <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Team</span>
       </a>
     </div>
     <div class="menu-item">
       <a (click)="hideSettings()" routerLink="./wiki">
-        <img src="assets/wiki_icon.svg" alt="" />
+        <img
+          src="assets/wiki_icon.svg"
+          alt=""
+          matTooltip="Project wiki"
+          matTooltipPosition="after"
+          [matTooltipDisabled]="!sideBarMinimized"
+        />
         <span *ngIf="!sideBarMinimized" routerLinkActive="selected"
           >Project wiki</span
         >
@@ -36,7 +54,13 @@
     </div>
     <div class="menu-item">
       <div class="button" (click)="toggleSettings()">
-        <img src="assets/settings_icon_sidebarmenu.svg" alt="" />
+        <img
+          src="assets/settings_icon_sidebarmenu.svg"
+          alt=""
+          matTooltip="Settings"
+          matTooltipPosition="after"
+          [matTooltipDisabled]="!sideBarMinimized"
+        />
         <span *ngIf="!sideBarMinimized">Settings</span>
       </div>
       <div *ngIf="!sideBarMinimized && showSettings">

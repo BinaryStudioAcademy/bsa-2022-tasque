@@ -16,7 +16,7 @@ export class TasqueTeamSelectComponent implements OnInit {
 
   //Show avatar of first user only
   @Input() miniView = false;
-
+  @Input() miniViewDiameter: number;
   @Input() public avatars: UserModel[] = [];
 
   public avatarsShow: UserModel[] = this.avatars;
@@ -28,6 +28,9 @@ export class TasqueTeamSelectComponent implements OnInit {
   ngOnInit(): void {
     this.avatarsShow = this.avatars;
     this.generateColor();
+    if(!this.miniViewDiameter){
+      this.miniViewDiameter = 40;
+    }
   }
 
   generateColor(): void {

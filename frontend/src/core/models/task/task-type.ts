@@ -4,7 +4,7 @@ export interface TaskType {
   id: number,
   name: string,
   color?: string,
-  createdAt: Date,
-  updatedAt: Date,
+  createdAt?: Date,
+  updatedAt?: Date,
   icon?: IconDefinition
 }

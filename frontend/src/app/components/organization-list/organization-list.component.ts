@@ -22,7 +22,7 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
 
   public warningIcon = faMessage;
   public inputSearch = '';
-  public itemsShow: OrganizationModel[];
+  public itemsShow: OrganizationModel[] = [];
   public faMagnifyingGlass = faMagnifyingGlass;
 
   constructor(
