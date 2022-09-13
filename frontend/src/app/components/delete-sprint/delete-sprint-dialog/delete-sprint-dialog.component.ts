@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import { NotificationService } from 'src/core/services/notification.service';
 import { SprintService } from 'src/core/services/sprint.service';
@@ -12,6 +12,7 @@ import { SprintService } from 'src/core/services/sprint.service';
 export class DeleteSprintDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public sprint: SprintModel,
+    private dialogRef: MatDialogRef<DeleteSprintDialogComponent>,
     private sprintService: SprintService,
     private notificationService: NotificationService,
   ) {}
@@ -31,5 +32,9 @@ export class DeleteSprintDialogComponent implements OnInit {
         this.notificationService.error(error);
       },
     );
+  }
+
+  onClose(): void {
+    this.dialogRef.close();
   }
 }
