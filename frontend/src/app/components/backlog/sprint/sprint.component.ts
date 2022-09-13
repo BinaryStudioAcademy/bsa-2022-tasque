@@ -81,7 +81,7 @@ export class SprintComponent implements OnInit, OnChanges {
   constructor(
     public sprintService: SprintService,
     public taskService: TaskService,
-    public toastrService: NotificationService,
+    public notificationService: NotificationService,
     public taskTypeService: TaskTypeService,
     public taskStateService: TaskStateService,
   ) {}
@@ -193,7 +193,7 @@ export class SprintComponent implements OnInit, OnChanges {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((result) => {
           if (result.body) {
-            this.toastrService.success('Task moved to sprint');
+            this.notificationService.success('Task moved to sprint');
           }
         });
     }

@@ -90,7 +90,7 @@ export class IssueComponent implements OnInit {
     public userServise: UserService,
     public taskServise: TaskService,
     public sprintService: SprintService,
-    public toastrService: NotificationService,
+    public notificationService: NotificationService,
   ) {}
 
   ngOnInit(): void {
@@ -164,7 +164,7 @@ export class IssueComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          this.toastrService.success('Task status updated');
+          this.notificationService.success('Task status updated');
         }
       });
   }

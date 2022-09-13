@@ -69,7 +69,7 @@ export class BacklogComponent implements OnInit {
     public projectService: ProjectService,
     public sprintService: SprintService,
     public currentUserService: GetCurrentUserService,
-    private toastrService: NotificationService,
+    private notificationService: NotificationService,
     private route: ActivatedRoute,
   ) {
     sprintService.deleteSprint$.subscribe((sprintId) => {
@@ -175,7 +175,7 @@ export class BacklogComponent implements OnInit {
     this.updateSprint(sprint.id, sprint);
     this.updateSprint(nextSprint.id, nextSprint);
     this.sprints.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-    this.toastrService.success('Priority updated');
+    this.notificationService.success('Priority updated');
   }
 
   updateSprint(sprintId: number, sprint: SprintModel): void {
