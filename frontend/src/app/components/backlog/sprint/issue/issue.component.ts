@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UserService } from 'src/app/user/services/user.service';
@@ -94,10 +101,13 @@ export class IssueComponent implements OnInit {
     public taskServise: TaskService,
     public sprintService: SprintService,
     public toastrService: ToastrService,
+    private cdRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this.getIssueAuthor();
+    this.estimateUpdate();
+    this.cdRef.detectChanges();
   }
 
   //Get the author of the sprint, and display his avatar,
@@ -118,6 +128,9 @@ export class IssueComponent implements OnInit {
 
   public deadline(): Date {
     return new Date(this.issue.deadline);
+  }
+  estimateUpdate(): void {
+    this.estimate.emit();
   }
 
   //When updating an estimate for a task - update the total estimate for the sprint
@@ -158,7 +171,11 @@ export class IssueComponent implements OnInit {
       this.taskTypes?.find((el) => el.id == this.issue.typeId)?.name ?? 'issue'
     );
   }
-
+  currentTaskTypeColor(): string {
+    return (
+      this.taskTypes?.find((el) => el.id == this.issue.typeId)?.color ?? 'red'
+    );
+  }
   updateTaskState(stateId: number): void {
     this.issue.stateId = stateId;
 

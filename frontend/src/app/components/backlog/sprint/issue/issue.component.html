@@ -1,6 +1,17 @@
 <div class="issue">
-  <p class="issue-type">{{ currentTaskType() }}</p>
-  <p class="issue-key">{{ currentProject.key }}</p>
+  <p
+    class="issue-type"
+    style="background: {{
+      currentTaskTypeColor()
+        ? currentTaskTypeColor()
+        : 'colorscheme(yellow-100)'
+    }}"
+  >
+    {{ currentTaskType() }}
+  </p>
+  <p class="issue-key">
+    {{ currentProject.key }}
+  </p>
   <p
     class="issue-title"
     [matTooltipShowDelay]="1500"
