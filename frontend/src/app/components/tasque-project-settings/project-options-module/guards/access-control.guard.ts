@@ -31,7 +31,7 @@ export class AccessControlGuard implements CanActivate {
         if(data.body) {
           const isUserExist = data.body.users.find((x) => x.id == this.userId);
           if(isUserExist) {
-            this.currentProjectService.setCurrentProject(this.currentProject);
+            this.currentProjectService.updateProject(this.currentProject);
             this.isGrantedAccess = true;
           } else {
             this.router.navigate(['/projects']);

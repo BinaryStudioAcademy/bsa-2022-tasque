@@ -11,6 +11,7 @@ import { AuthService } from 'src/core/services/auth.service';
 import { OpenDialogService } from 'src/core/services/open-dialog.service';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { GetCurrentProjectService } from 'src/core/services/get-current-project.service';
 
 @Component({
   selector: 'tasque-header',
@@ -32,6 +33,7 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private openDialogService: OpenDialogService,
     private getCurrentOrganizationService: GetCurrentOrganizationService,
+    private getCurrentProjectService: GetCurrentProjectService
   ) {}
 
   ngOnInit(): void {
@@ -85,6 +87,8 @@ export class HeaderComponent implements OnInit {
         if (!result) {
           return;
         }
+
+        this.getCurrentProjectService.updateProject(result);
       });
   }
 
@@ -109,7 +113,4 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/user/profile'], { replaceUrl: true });
   }
 
-  public manageMyProjectsClick(): void {
-    this.router.navigate(['/projects'], { replaceUrl: true });
-  }
 }
