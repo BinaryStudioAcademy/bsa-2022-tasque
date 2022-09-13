@@ -10,7 +10,7 @@ import { BoardType, IBoard } from 'src/shared/components/select-users/Models';
 import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { UserRole } from 'src/core/models/user/user-roles';
-import { ToastrService } from 'ngx-toastr';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-edit-organization',
@@ -42,7 +42,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private toastrService: ToastrService,
+    private notificationService: NotificationService,
     private sideBarService: SideBarService,
     private organizationService: OrganizationService,
     private getCurrentOrganizationService: GetCurrentOrganizationService,
@@ -75,7 +75,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.status == 200 && result.body !== null) {
-          this.toastrService.success(
+          this.notificationService.success(
             'Organization data has been updated successfully',
           );
           this.getCurrentOrganizationService.updateOrganization(result.body);
@@ -143,7 +143,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.status == 200) {
-          this.toastrService.success('The user is added to the organization');
+          this.notificationService.success('The user is added to the organization');
         }
       });
   }
@@ -154,7 +154,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.status == 200) {
-          this.toastrService.success(
+          this.notificationService.success(
             'The user has been removed from the organization',
           );
         }

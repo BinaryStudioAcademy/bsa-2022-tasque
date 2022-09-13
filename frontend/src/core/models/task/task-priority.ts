@@ -7,6 +7,6 @@ export interface TaskPriority {
   color?: string,
 
   name: string,
-  createdAt: Date,
-  updatedAt: Date
+  createdAt?: Date,
+  updatedAt?: Date
 }

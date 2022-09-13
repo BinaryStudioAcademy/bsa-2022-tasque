@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 export class NotificationService {
   public constructor(private toastr: ToastrService) {}
 
-  position = 'toast-bottom-center';
+  position = 'toast-top-right';
   timeOut = 3000;
 
   public error(msg: string, title = ''): void {

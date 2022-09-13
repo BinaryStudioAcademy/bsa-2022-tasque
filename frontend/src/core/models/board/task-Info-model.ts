@@ -1,11 +1,17 @@
+import { TaskPriority } from '../task/task-priority';
+import { LabelField } from '../task/task-template-models/label-field';
+import { TaskType } from '../task/task-type';
 import { UserModel } from '../user/user-model';
 
 export interface TaskInfoModel {
     id: number;
-    summary: string;
-    description: string;
-    projectKey: string;
-    user?: UserModel;
+    type: TaskType;
+    priority: TaskPriority;
     attachmentUrl: string;
+    summary: string;
+    customLabels: LabelField[];
+    key: string;
+    user?: UserModel;
+    assignees?: UserModel[];
     isHidden: boolean;
 }
