@@ -78,7 +78,7 @@ export class BacklogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.url[0].path;
+    const id = this.route.parent?.snapshot.paramMap.get('id');
 
     if (id) {
       this.currentProjectId = parseInt(id);

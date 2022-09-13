@@ -31,13 +31,13 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'project',
+    path: 'project/:id',
     component: PageWithSidebarComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, AccessControlGuard],
     children: [
-      { path: ':id/board', component: TasqueBoardComponent, canActivate: [AccessControlGuard] },
-      { path: ':id/team', component: TasqueTeamComponent },
-      { path: ':id/backlog', component: BacklogComponent },
+      { path: 'board', component: TasqueBoardComponent },
+      { path: 'team', component: TasqueTeamComponent },
+      { path: 'backlog', component: BacklogComponent },
       ...ProjectSettingsRoutes,
     ],
   },
