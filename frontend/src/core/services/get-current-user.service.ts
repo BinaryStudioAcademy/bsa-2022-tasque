@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { UserService } from 'src/app/user/services/user.service';
-import { LocalStorageKeys } from '../models/local-storage-keys';
 import { UserModel } from '../models/user/user-model';
 
 @Injectable({
@@ -11,22 +10,6 @@ import { UserModel } from '../models/user/user-model';
 export class GetCurrentUserService {
 
   constructor(private userService: UserService) {}
-
-  private currentUserIdSubj = new BehaviorSubject<number>(this.currentUserId);
-  public currentUserId$ = this.currentUserIdSubj.asObservable();
-
-  public set currentUserId(value: number) {
-      this.currentUserIdSubj.next(value);
-      localStorage.setItem(LocalStorageKeys.selectedUser, value.toString());
-  }
-
-  public get currentUserId(): number {
-      return +(localStorage.getItem(LocalStorageKeys.selectedUser) ?? '-1');
-  }
-
-  public clearCurrentUserId(): void {
-      this.currentUserIdSubj.next(-1);
-  }
 
   private currentUserSubj = new ReplaySubject<UserModel>(1);
   public currentUser$ = this.currentUserSubj.asObservable();
