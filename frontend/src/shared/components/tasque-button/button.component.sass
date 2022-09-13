@@ -138,15 +138,20 @@ button
   width: 100% !important
   &.black
     color: colorscheme(black-100)
+  &.disabled
+    color: colorscheme(gray-400)
+    border-color: colorscheme(gray-400)
+    background: none
+    cursor: not-allowed
 
 .icon-right
   margin-left: 5px
 
 .column-plus
-    color: colorscheme(violet-200)
-    cursor: pointer
-    border: none
-    display: inline
-    font-size: 16px
-    padding-right: 10px
-    background: none
+  color: colorscheme(violet-200)
+  cursor: pointer
+  border: none
+  display: inline
+  font-size: 16px
+  padding-right: 10px
+  background: none

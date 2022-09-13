@@ -50,9 +50,13 @@
           <app-edit-sprint
             *ngIf="
               !currentSprint.startAt &&
-              sprintIndex == 0 &&
               isCurrentUserAdmin &&
               !currentSprint.isComplete
+            "
+            [btnClass]="
+              sprintIndex != 0
+                ? 'btn mini voilet full disabled'
+                : 'btn mini voilet full'
             "
             [currentSprint]="currentSprint"
             class="btn mini voilet full start-sprint"
