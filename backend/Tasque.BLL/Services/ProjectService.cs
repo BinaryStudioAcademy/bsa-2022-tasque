@@ -368,12 +368,4 @@ public class ProjectService : EntityCrudService<Project>
         await _db.SaveChangesAsync();
         return await GetProjectBoard(board.Id);
     }
-
-    public async Task<IEnumerable<User>> GetProjectTeam(int projectId)
-    {
-        var users = _db.UserProjectRoles
-            .Include(x => x.User).ThenInclude(x => x.Roles)
-            .Where(x => x.ProjectId == projectId).Select(x => x.User);
-        return await users.ToListAsync();
-    }
 }

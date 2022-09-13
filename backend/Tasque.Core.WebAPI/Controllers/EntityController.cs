@@ -15,16 +15,13 @@ namespace Tasque.Core.WebAPI.Controllers
     {
         protected readonly TService _service;
         protected readonly IMapper mapper;
-        //TODO: Get mapper from DI container instead of creating it locally
-        protected readonly IMapper? diMapper;
         protected readonly CurrentUserParameters _currentUser;
 
-        public EntityController(TService service, CurrentUserParameters currentUser, IMapper? diMapper = null)
+        public EntityController(TService service, CurrentUserParameters currentUser)
         {
             _service = service;
             var config = new MapperConfiguration(cfg => cfg.CreateMap<TDto, TModel>().ReverseMap());
             mapper = new Mapper(config);
-            this.diMapper = diMapper;
             _currentUser = currentUser;
         }
 
