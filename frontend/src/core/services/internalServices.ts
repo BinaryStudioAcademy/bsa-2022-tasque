@@ -1,6 +1,6 @@
-import { Injectable, OnInit } from "@angular/core";
-import { GetCurrentOrganizationService } from "./get-current-organization.service";
-import { GetCurrentProjectService } from "./get-current-project.service";
+import { Injectable } from '@angular/core';
+import { GetCurrentOrganizationService } from './get-current-organization.service';
+import { GetCurrentProjectService } from './get-current-project.service';
 
 @Injectable({ providedIn: 'root' })
 export class InternalServices {
