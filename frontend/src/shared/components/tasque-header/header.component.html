@@ -44,7 +44,7 @@
       [upArrowIcon]="upArrowIcon"
       [downArrowIcon]="downArrowIcon"
     >
-      <tasque-avatar dropdown-button [user]="currentUser" [diameter_px]="45"></tasque-avatar>
+      <tasque-avatar dropdown-button *ngIf="currentUser" [alt]="currentUser.name" [user]="currentUser" [diameter_px]="45"></tasque-avatar>
       <tasque-option option (click)="profileSettingsClick()"> Profile settings </tasque-option>
       <tasque-option option (click)="logoutClick()"> Log out </tasque-option>
     </tasque-menu-dropdown>
