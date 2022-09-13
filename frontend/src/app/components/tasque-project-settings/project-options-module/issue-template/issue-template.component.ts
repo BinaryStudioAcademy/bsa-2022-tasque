@@ -6,13 +6,13 @@ import {
 } from '@angular/cdk/drag-drop';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import { TaskTemplate } from 'src/core/models/task/task-template';
-import { ToastrService } from 'ngx-toastr';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { TaskCustomField } from 'src/core/models/task/task-template-models/task-custom-field';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AvailableFields } from 'src/core/models/const-resources/available-fields';
 import { TaskType } from 'src/core/models/task/task-type';
 import { TaskTemplateService } from 'src/core/services/task-template.service';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-issue-template',
@@ -21,7 +21,7 @@ import { TaskTemplateService } from 'src/core/services/task-template.service';
 })
 export class IssueTemplateComponent implements OnInit {
   constructor(
-    private notificationService: ToastrService,
+    private notificationService: NotificationService,
     private router: Router,
     private taskTemplateService: TaskTemplateService,
     private route: ActivatedRoute

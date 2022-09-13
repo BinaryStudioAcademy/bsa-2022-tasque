@@ -128,6 +128,15 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
             return NotFound("Project or it's task priorities not found");
         return Ok(priorities);
     }
+
+    [HttpGet("getProjectStates/{projectId}")]
+    public IActionResult GetProjectStates(int projectId)
+    {
+        var states = _service.GetProjectStatesById(projectId);
+        if (states == null)
+            return NotFound("Project or it's task states not found");
+        return Ok(states);
+    }
 }
 
 

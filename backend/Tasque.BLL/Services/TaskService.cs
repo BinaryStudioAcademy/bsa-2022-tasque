@@ -40,7 +40,7 @@ namespace Tasque.Core.BLL.Services
             var entity = _mapper.Map<Common.Entities.Task>(model);
             var key = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId)?.Key;
             var count = _dbContext.Tasks.Where(t => t.ProjectId == model.ProjectId).Count();
-            entity.Key = key + '-' + count;
+            entity.Key = key + '-' + count++;
 
             _dbContext.Add(entity);
             _dbContext.SaveChanges();
@@ -107,7 +107,7 @@ namespace Tasque.Core.BLL.Services
             if(model.ProjectId != currentProjectId)
             {
                 var project = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId);
-                model.Key = project?.Key + "-" + _dbContext.Tasks.Where(t => t.ProjectId == model.ProjectId).Count();
+                model.Key = project?.Key + "-" + _dbContext.Tasks.Where(t => t.ProjectId == model.ProjectId).Count() + 1;
             }
 
             var task = _dbContext.Tasks.Update(_mapper.Map<Common.Entities.Task>(model)).Entity;

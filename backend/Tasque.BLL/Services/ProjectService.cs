@@ -363,4 +363,9 @@ public class ProjectService : EntityCrudService<Project>
         await _db.SaveChangesAsync();
         return await GetProjectBoard(board.Id);
     }
+
+    public List<TaskStateDto> GetProjectStatesById(int projectId)
+    {
+        return _mapper.Map<List<TaskStateDto>>(_db.TaskStates.Where(s => s.ProjectId == projectId));
+    }
 }
