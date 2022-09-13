@@ -308,12 +308,11 @@ export class BacklogContentComponent implements OnInit, OnChanges {
     }
   }
 
-  // TODO add current user
   createSprint(): void {
     const newSprint: NewSprintModel = {
       projectId: this.project.id,
       name: `${this.project.key} Sprint ${this.sprints.length + 1}`,
-      authorId: 1,
+      authorId: this.currentUser.id,
     };
 
     this.sprintService
