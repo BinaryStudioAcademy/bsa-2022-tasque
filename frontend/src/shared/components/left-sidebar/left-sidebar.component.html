@@ -109,7 +109,7 @@
         </div>
       </div>
     </div>
-    <tasque-menu-dropdown *ngIf="sideBarMinimized" [left]="50" class="menu-item min-settings">
+    <tasque-menu-dropdown *ngIf="sideBarMinimized" [left]="50" class="menu-item min-settings" [style.background-color]="isSettings">
       <div 
         dropdown-button 
         (click)="toggleSettings()" 
