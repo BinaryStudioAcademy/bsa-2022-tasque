@@ -314,6 +314,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
       customFields: this.taskCustomFields,
     };
+    console.log(this.task);
     this.taskService.createTask(this.task).subscribe(
       () => {
         this.notificationService.success('Task has been created successfully');
@@ -331,6 +332,8 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   public clearForm(): void {
     this.taskCreateForm.reset();
+    this.projectPriorities = [];
+    this.taskStateOptions = [];
     this.customFields = [];
   }
 
