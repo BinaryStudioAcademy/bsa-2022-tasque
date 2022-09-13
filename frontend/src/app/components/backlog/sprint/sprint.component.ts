@@ -5,7 +5,6 @@ import {
   OnChanges,
   Output,
   EventEmitter,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import {
   faEllipsisV,
@@ -37,7 +36,6 @@ import { UserRole } from 'src/core/models/user/user-roles';
   selector: 'app-sprint',
   templateUrl: './sprint.component.html',
   styleUrls: ['./sprint.component.sass'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SprintComponent implements OnInit, OnChanges {
   //Get the sprint to display it in the component

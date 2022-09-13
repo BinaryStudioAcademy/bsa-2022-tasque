@@ -44,7 +44,7 @@
         </div>
         <div class="estimate">
           <p>estimate</p>
-          <p class="estimate-count">{{ estimate }}</p>
+          <p class="estimate-count">{{ estimate ? estimate : 0 }}</p>
         </div>
         <div class="wrapper button">
           <app-edit-sprint
