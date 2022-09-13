@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Interfaces;
@@ -101,6 +102,14 @@ namespace Tasque.Core.BLL.Services
 
         public async Task<TaskDto> UpdateTask(TaskDto model)
         {
+            var currentProjectId = _dbContext.Projects.FirstOrDefault(p => p.Id == _dbContext.Tasks.FirstOrDefault(t => t.Id == model.Id).ProjectId).Id;
+
+            if(model.ProjectId != currentProjectId)
+            {
+                var project = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId);
+                model.Key = project?.Key + "-" + _dbContext.Tasks.Where(t => t.ProjectId == model.ProjectId).Count();
+            }
+
             var task = _dbContext.Tasks.Update(_mapper.Map<Common.Entities.Task>(model)).Entity;
 
             if (task == null)

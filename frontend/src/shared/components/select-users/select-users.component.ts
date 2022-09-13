@@ -56,7 +56,9 @@ export class SelectUsersComponent implements OnInit {
   @Output() onDelete = new EventEmitter<string>();
   @Output() onUpdate = new EventEmitter<IUserCard>();
 
-  constructor(private service: BoardService, private toastr: NotificationService) {
+  constructor(
+    private service: BoardService, 
+    private nontificationService: NotificationService) {
     this.roles = getRolesAsArray();
   }
 
@@ -72,7 +74,7 @@ export class SelectUsersComponent implements OnInit {
 
   public add(): void {
     if (!this.searchForm.valid) {
-      this.toastr.error('Invalid email');
+      this.nontificationService.error('Invalid email');
       return;
     }
 
