@@ -12,6 +12,7 @@ import { OpenDialogService } from 'src/core/services/open-dialog.service';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { GetCurrentProjectService } from 'src/core/services/get-current-project.service';
+import { InternalServices } from 'src/core/services/internalServices';
 
 @Component({
   selector: 'tasque-header',
@@ -32,8 +33,7 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private openDialogService: OpenDialogService,
-    private getCurrentOrganizationService: GetCurrentOrganizationService,
-    private getCurrentProjectService: GetCurrentProjectService
+    private internalServices: InternalServices
   ) {}
 
   ngOnInit(): void {
@@ -43,7 +43,7 @@ export class HeaderComponent implements OnInit {
   }
 
   private subscribeToCurrentOrganization(): void {
-    this.getCurrentOrganizationService.currentOrganizationId$.subscribe(
+    this.internalServices.getCurrentOrganizationService.currentOrganizationId$.subscribe(
       (result) => {
         this.currentOrganizationId = result;
       },
@@ -76,7 +76,7 @@ export class HeaderComponent implements OnInit {
           return;
         }
 
-        this.getCurrentOrganizationService.updateOrganization(result);
+        this.internalServices.getCurrentOrganizationService.updateOrganization(result);
       });
   }
 
@@ -88,7 +88,7 @@ export class HeaderComponent implements OnInit {
           return;
         }
 
-        this.getCurrentProjectService.updateProject(result);
+        this.internalServices.getCurrentProjectService.updateProject(result);
       });
   }
 
