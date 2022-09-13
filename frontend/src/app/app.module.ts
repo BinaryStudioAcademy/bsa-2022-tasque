@@ -36,6 +36,7 @@ import { IssueComponent } from './components/backlog/sprint/issue/issue.componen
 import { BacklogContentComponent } from './components/backlog-content/backlog-content.component';
 import { BacklogComponent } from './components/backlog/backlog.component';
 import { AccessControlGuard } from './components/tasque-project-settings/project-options-module/guards/access-control.guard';
+import { WikiComponent } from './components/wiki/wiki.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { AccessControlGuard } from './components/tasque-project-settings/project
     IssueComponent,
     BacklogContentComponent,
     BacklogComponent,
+    WikiComponent,
   ],
   imports: [
     BrowserModule,
