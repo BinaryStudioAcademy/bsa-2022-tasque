@@ -15,18 +15,25 @@
   margin-top: 32px
 
 .menu
-  margin-left: 49px
-  margin-top: 48px
-  margin-right: 48px
+  margin-top: 35px
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-content: center
 
 .menu-item a
   text-decoration: none
   color: colorscheme(black-100)
-  width: 100%
   display: block
 
 .menu-item
-  margin-bottom: 37px
+  padding: 18px 0 18px 0
+  width: 100%
+  align-items: center
+  &:hover
+    background-color: colorscheme(gray-200)
+  > a
+    margin-left: 49px
 
 .menu-actions
   padding-top: 15px
@@ -66,6 +73,7 @@ img
   -moz-user-select: none
   -webkit-user-select: none
   -ms-user-select: none
+  margin-left: 49px
 
 .no-permission
   padding-top: 15px
