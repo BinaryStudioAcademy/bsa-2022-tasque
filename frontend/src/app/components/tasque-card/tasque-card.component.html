@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" *ngIf="!isDeleted">
   <div class="card-header">
     <div class="task-status">
       <img *ngIf="isDone" class="is-done" src="assets/success_icon.svg">
@@ -24,7 +24,7 @@
     </div>
     <div class="task-status-container">
       <div class="task-status" *ngFor="let item of taskInfo.customLabels">
-        <span [style.background-color]="item.color">{{item.name}}</span>
+        <span [style.background-color]="item?.color">{{item.name}}</span>
       </div>
     </div>
     <div class="task-info">

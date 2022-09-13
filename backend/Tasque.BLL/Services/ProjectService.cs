@@ -27,6 +27,17 @@ public class ProjectService : EntityCrudService<Project>
         return _mapper.Map<List<ProjectDto>>(_db.Projects.Where(p => p.OrganizationId == organizationId));
     }
 
+    public ProjectDto GetProjectById(int id)
+    {
+        return _mapper.Map<ProjectDto>(_db.Projects
+            .Where(p => p.Id == id)
+                .Include(p => p.ProjectTaskTypes)
+                .Include(p => p.ProjectTaskStates)
+                .Include(p => p.ProjectTaskPriorities)
+                .Include(p => p.Users)
+                .FirstOrDefault());
+    }
+
     public List<UserDto> GetProjectParticipants(int projectId)
     {
         return _mapper.Map<List<UserDto>>(_db.Projects.FirstOrDefault(p => p.Id == projectId)?.Users);

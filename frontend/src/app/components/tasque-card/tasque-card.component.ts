@@ -22,6 +22,7 @@ export class TasqueCardComponent implements OnInit {
   user: UserModel;
   hasAccess: boolean;
   organizationId: number;
+  isDeleted = false;
 
   currentUser: UserModel;
   currentOrganization: OrganizationModel;
@@ -64,6 +65,7 @@ export class TasqueCardComponent implements OnInit {
     }
     this.taskService.deleteTask(this.taskInfo.id).subscribe(() => {
       this.notificationService.success('Task has been deleted successfully', 'Success');
+      this.isDeleted = true;
     });
   }
 

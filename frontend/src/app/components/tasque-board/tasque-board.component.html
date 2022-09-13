@@ -1,8 +1,8 @@
-<div class="board">
+<div class="board" *ngIf="isShow && project !== undefined">
     <div class="board-info">
       <div class="board-title">
-        <span class="project-name">Project / {{board.projectName}}</span>
-        <span class="board-name">{{board.name}}</span>
+        <span class="project-name">Project / {{project.name}}</span>
+        <span class="board-name">{{project.name}}</span>
       </div>
       <div class="board-tools">
         <img src="assets/board/lightning.svg">
@@ -19,7 +19,7 @@
             <tasque-input class="search-input" #searchInput (input)="filterTasks()" type="search" [icon]="searchIcon" iconPosition="search" placeholder="Search..."></tasque-input>
           </div>
           <div class="team-container">
-            <tasque-team-select [avatars]="board.users" (selectedUser)="userSelected($event)"></tasque-team-select>
+            <tasque-team-select [avatars]="project.users" (selectedUser)="userSelected($event)"></tasque-team-select>
           </div>
         </div>
         <div class="filter">
