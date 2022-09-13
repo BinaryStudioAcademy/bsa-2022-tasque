@@ -6,14 +6,15 @@
     </a>
   </div>
   <div class="menu">
-    <div class="menu-item">
-      <a (click)="hideSettings()" routerLink="./board">
+    <div class="menu-item" [style.background-color]="isBoard">
+      <a (click)="hideSettings(); 
+      navigateToBoard();">
         <img src="assets/board_icon.svg" alt="" matTooltip="Board" matTooltipPosition="after" [matTooltipDisabled]="!sideBarMinimized"/>
         <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Board</span>
       </a>
     </div>
-    <div class="menu-item">
-      <a (click)="hideSettings()" routerLink="./backlog">
+    <div class="menu-item"  [style.background-color]="isBacklog">
+      <a (click)="hideSettings(); navigateToBacklog();">
         <img
           src="assets/backlog_icon.svg"
           alt=""
@@ -26,8 +27,8 @@
         >
       </a>
     </div>
-    <div class="menu-item">
-      <a (click)="hideSettings()" routerLink="./team">
+    <div class="menu-item"  [style.background-color]="isTeam">
+      <a (click)="hideSettings(); navigateToTeam()">
         <img
           src="assets/team_icon.svg"
           alt=""
@@ -38,8 +39,8 @@
         <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Team</span>
       </a>
     </div>
-    <div class="menu-item">
-      <a (click)="hideSettings()" routerLink="./wiki">
+    <div class="menu-item"  [style.background-color]="isWiki">
+      <a (click)="hideSettings(); navigateToWiki()">
         <img
           src="assets/wiki_icon.svg"
           alt=""
@@ -52,7 +53,7 @@
         >
       </a>
     </div>
-    <div class="menu-item" (click)="toggleSettings()">
+    <div class="menu-item" (click)="toggleSettings()"  [style.background-color]="isSettings">
       <div class="button">
         <img
           src="assets/settings_icon_sidebarmenu.svg"

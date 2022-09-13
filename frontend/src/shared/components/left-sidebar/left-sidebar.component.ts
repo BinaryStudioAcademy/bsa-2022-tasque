@@ -26,6 +26,12 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit {
   public sideBarMinimized: boolean;
   public showSettings = false;
 
+  isBoard: string | undefined;
+  isBacklog: string | undefined;
+  isTeam: string | undefined;
+  isWiki: string | undefined;
+  isSettings: string | undefined;
+
   constructor(
     private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
@@ -37,6 +43,7 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProject();
+    this.checkActivatedRoute();
 
     this.breakpointObserver
       .observe(['(max-width: 1200px)'])
@@ -86,6 +93,32 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit {
 
   navigateToIssueTemplate():void {
     this.router.navigate(['project/' + this.projectId + '/settings/issue-template']);
+    this.setAllStylesUndefined();
+    this.isSettings = '#F0F3F9';
+  }
+
+  navigateToBoard():void {
+    this.router.navigate(['project/' + this.projectId + '/board']);
+    this.setAllStylesUndefined();
+    this.isBoard = '#F0F3F9';
+  }
+
+  navigateToBacklog():void {
+    this.router.navigate(['project/' + this.projectId + '/backlog']);
+    this.setAllStylesUndefined();
+    this.isBacklog = '#F0F3F9';
+  }
+
+  navigateToTeam():void {
+    this.router.navigate(['project/' + this.projectId + '/team']);
+    this.setAllStylesUndefined();
+    this.isTeam = '#F0F3F9';
+  }
+
+  navigateToWiki():void {
+    this.router.navigate(['project/' + this.projectId + '/wiki']);
+    this.setAllStylesUndefined();
+    this.isWiki = '#F0F3F9';
   }
 
   public toggleSettings(): void {
@@ -100,5 +133,29 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit {
 
   public isProjectAdmin(): boolean {
     return this.userRole >= 3 || this.project?.authorId === this.currentUser?.id;
+  }
+
+  checkActivatedRoute(): void {
+    this.setAllStylesUndefined();
+    
+    if(this.router.url.includes('board')) {
+      this.isBoard = '#F0F3F9';
+    } else if(this.router.url.includes('backlog')) {
+      this.isBacklog = '#F0F3F9';
+    } else if(this.router.url.includes('wiki')) {
+      this.isWiki = '#F0F3F9';
+    } else if(this.router.url.includes('settings')) {
+      this.isSettings = '#F0F3F9';
+    } else if(this.router.url.includes('team')) {
+      this.isTeam = '#F0F3F9';
+    }
+  }
+
+  setAllStylesUndefined(): void {
+    this.isBacklog = undefined;
+    this.isBoard = undefined;
+    this.isSettings = undefined;
+    this.isTeam = undefined;
+    this.isWiki = undefined;
   }
 }
