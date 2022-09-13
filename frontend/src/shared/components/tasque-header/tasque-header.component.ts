@@ -9,9 +9,7 @@ import { OrganizationModel } from 'src/core/models/organization/organization-mod
 import { UserModel } from 'src/core/models/user/user-model';
 import { AuthService } from 'src/core/services/auth.service';
 import { OpenDialogService } from 'src/core/services/open-dialog.service';
-import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
-import { GetCurrentProjectService } from 'src/core/services/get-current-project.service';
 import { InternalServices } from 'src/core/services/internalServices';
 
 @Component({
