@@ -111,12 +111,10 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         return Ok(projects);
     }
 
-    [HttpGet("getParticipants/{projectId}")]
+    [HttpGet("{projectId}/participants")]
     public IActionResult GetProjectParticipants(int projectId)
     {
         var participants = _service.GetProjectParticipants(projectId);
-        if (participants == null)
-            return NotFound();
         return Ok(participants);
     }
 

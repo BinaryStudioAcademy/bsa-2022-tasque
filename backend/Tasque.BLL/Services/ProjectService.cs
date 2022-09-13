@@ -27,9 +27,14 @@ public class ProjectService : EntityCrudService<Project>
         return _mapper.Map<List<ProjectDto>>(_db.Projects.Where(p => p.OrganizationId == organizationId));
     }
 
-    public List<UserDto> GetProjectParticipants(int projectId)
+    public IEnumerable<UserDto> GetProjectParticipants(int projectId)
     {
-        return _mapper.Map<List<UserDto>>(_db.Projects.FirstOrDefault(p => p.Id == projectId)?.Users);
+        var proj = _db.Projects
+            .Include(x => x.Users)
+            .Include(x => x.UserRoles)
+            .FirstOrDefault(x => x.Id == projectId)
+            ?? throw new CustomNotFoundException("project");
+        return _mapper.Map<IEnumerable<UserDto>>(proj.Users);
     }
 
     public async Task<ProjectInfoDto> AddProject(Project entity)
