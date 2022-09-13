@@ -1,22 +1,36 @@
 <div class="card">
+  <div class="card-header">
+    <div class="task-status">
+      <img *ngIf="isDone" class="is-done" src="assets/success_icon.svg">
+      <span [style.background-color]="taskInfo.type.color">{{taskInfo.type.name}}</span>
+      <span [style.background-color]="taskInfo.priority.color">{{taskInfo.priority.name}}</span>
+    </div>
+    <tasque-menu-dropdown class="card-settings" [left]="-80">
+      <img src="assets/board/column_menu.svg" dropdown-button>
+      <tasque-option option (click)="notImplementetNotification()">Copy issue link</tasque-option>
+      <tasque-option option (click)="notImplementetNotification()">Move up</tasque-option>
+      <tasque-option option (click)="notImplementetNotification()">Move down</tasque-option>
+      <tasque-option option (click)="deleteTask()">Delete issue</tasque-option>
+    </tasque-menu-dropdown>
+  </div>
   <div *ngIf="taskInfo.attachmentUrl">
-    <img class="attach" src="{{taskInfo.attachmentUrl}}" />
+    <img class="attach" [src]="taskInfo.attachmentUrl"/>
   </div>
   <div>
     <div class="task-content">
       <span>
         {{taskInfo.summary}}
       </span>
-      <img src="assets/board/column_menu.svg">
     </div>
-    <div class="task-status">
-      <span>Issue</span>
-      <span>High</span>
-      <span>5 days</span>
+    <div class="task-status-container">
+      <div class="task-status" *ngFor="let item of taskInfo.customLabels">
+        <span [style.background-color]="item.color">{{item.name}}</span>
+      </div>
     </div>
     <div class="task-info">
-      <span>{{taskInfo.projectKey}}</span>
+      <span>{{taskInfo.key}}</span>
       <tasque-avatar *ngIf="user !== undefined" [user]="user" alt="user's avatar" [diameter_px]="30"></tasque-avatar>
+      <span class="user-overflow">+{{assignees.length - 1}}</span>
     </div>
   </div>
 </div>

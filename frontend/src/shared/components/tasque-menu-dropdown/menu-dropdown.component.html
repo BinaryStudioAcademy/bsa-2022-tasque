@@ -7,7 +7,7 @@
     <fa-icon class="dropdown-icon" (click)="arrowIconClick()" [icon]="currentArrowIcon"></fa-icon>
   </div>
 
-  <div class="options-container" *ngIf="expanded" (click)="toggleDropdown()">
+  <div class="options-container" [style.left.px]="left" *ngIf="expanded" (click)="toggleDropdown()">
     <div class="options-header">
       <ng-content select="[header]"></ng-content>
     </div>
