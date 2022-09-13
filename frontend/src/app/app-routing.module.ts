@@ -39,7 +39,7 @@ const routes: Routes = [
       { path: ':id/board', component: TasqueBoardComponent, canActivate: [AccessControlGuard] },
       { path: ':id/team', component: TasqueTeamComponent },
       { path: ':id/backlog', component: BacklogComponent },
-      { path: ':id/wiki', component: WikiComponent},
+      { path: ':id/wiki', component: WikiComponent },
       ...ProjectSettingsRoutes,
     ],
   },
