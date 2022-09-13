@@ -19,11 +19,11 @@ import {
 } from '@angular/cdk/drag-drop';
 import { IssueSort } from './models';
 import { TaskModel } from 'src/core/models/task/task-model';
-import { ToastrService } from 'ngx-toastr';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from 'src/core/services/project.service';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-backlog',
@@ -69,7 +69,7 @@ export class BacklogComponent implements OnInit {
     public projectService: ProjectService,
     public sprintService: SprintService,
     public currentUserService: GetCurrentUserService,
-    private toastrService: ToastrService,
+    private toastrService: NotificationService,
     private route: ActivatedRoute,
   ) {
     sprintService.deleteSprint$.subscribe((sprintId) => {
