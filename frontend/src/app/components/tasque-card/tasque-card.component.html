@@ -30,7 +30,7 @@
     <div class="task-info">
       <span>{{taskInfo.key}}</span>
       <tasque-avatar *ngIf="user !== undefined" [user]="user" alt="user's avatar" [diameter_px]="30"></tasque-avatar>
-      <span class="user-overflow">+{{assignees.length - 1}}</span>
+      <span *ngIf="assignees !== undefined && assignees.length > 1" class="user-overflow">+{{assignees.length - 1}}</span>
     </div>
   </div>
 </div>

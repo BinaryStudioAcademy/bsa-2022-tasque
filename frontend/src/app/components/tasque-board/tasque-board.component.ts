@@ -19,6 +19,9 @@ import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/drop
 import { ProjectService } from 'src/core/services/project.service';
 import { filter } from 'rxjs/operators';
 import { TaskType } from 'src/core/models/task/task-type';
+import { TaskState } from 'src/core/models/task/task-state';
+import { TaskModel } from 'src/core/models/task/task-model';
+import { reduceEachLeadingCommentRange } from 'typescript';
 
 @Component({
   selector: 'tasque-board',
@@ -43,6 +46,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   user: UserModel;
   public hasTasks = false;
   public searchParameter = '';
+  public columns: BoardColumnModel[] = [];
 
   public projectOptions: TasqueDropdownOption[] = [];
   public projectTaskTypes: TaskType[] = [];
@@ -50,7 +54,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   constructor(
     formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private boardService: ProjectService,
+    private projectService: ProjectService,
     private notificationService: NotificationService,
     private currentUserService: GetCurrentUserService,
   ) {
@@ -76,7 +80,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     }
     this.projectId = parseInt(id);
 
-    this.boardService.getBoard(this.projectId).subscribe(
+    this.projectService.getBoard(this.projectId).subscribe(
       (resp) => {
         if (resp.ok && resp.body != null) {
           this.board = resp.body;
@@ -87,6 +91,38 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         }
       },
     );
+
+    this.projectService.getProjectStates(this.projectId).subscribe((resp) => {
+      if(resp.ok){
+        const states = resp.body as TaskState[];
+        states.forEach((s) => this.columns.push({
+          id: s.id,
+          name: s.name,
+          tasks: [{
+            id: 1,
+            priority: {
+              id: 1,
+              projectId: 1,
+              color: 'orange',
+              type: 1,
+              name: 'high',
+            },
+            type: {
+              id: 1,
+              name: 'bug',
+              color: 'red',
+            },
+            attachmentUrl: 'https://ssir.org/images/blog/iStockmachinelearning592x333.jpg',
+            summary: 'Sum',
+            isHidden: false,
+            key: 'TP-2',
+            customLabels: [],
+          }],
+        }));
+      } else {
+        this.notificationService.error('Something went wrong');
+      }
+    });
   }
 
   openAddColumn(): void {
@@ -131,7 +167,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   }
 
   updateColumns(): void {
-    this.boardService
+    this.projectService
       .updateBoardColumns(this.board)
       .pipe(filter((resp) => resp.body != null))
       .subscribe((resp) => {
@@ -141,7 +177,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   }
 
   updateTasks(): void {
-    this.boardService
+    this.projectService
       .updateBoardTasks(this.board)
       .pipe(filter((resp) => resp.body != null))
       .subscribe((resp) => {
@@ -152,7 +188,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
   checkIfHasTasks(): boolean {
     for (const column of this.board.columns) {
-      if (column.tasks.length > 0) {
+      if (column.tasks?.length > 0) {
         return true;
       }
     }

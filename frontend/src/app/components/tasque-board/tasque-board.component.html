@@ -30,7 +30,7 @@
         <h4>There are no tasks yet. You can create the first one.</h4>
       </div>
       <div class="board-columns" cdkDropListGroup>
-        <div cdkDropList *ngFor="let item of board.columns"
+        <div cdkDropList *ngFor="let item of columns"
         (cdkDropListDropped)="dragDrop($event)"
         [cdkDropListData]="item.tasks" class="column-with-tasks">
           <div class="column-title">
@@ -43,8 +43,15 @@
               <img src="assets/board/column_menu.svg"> 
             </div>  
           </div>
-          <div class="column" *ngFor="let task of item.tasks" cdkDrag> 
-            <tasque-card *ngIf="!task.isHidden" [taskInfo]="task"></tasque-card>
+          <div *ngIf="item.name !== 'done'">
+            <div class="column" *ngFor="let task of item.tasks" cdkDrag> 
+              <tasque-card *ngIf="!task.isHidden" [taskInfo]="task"></tasque-card>
+            </div>
+          </div>
+          <div *ngIf="item.name === 'done'">
+            <div class="column" *ngFor="let task of item.tasks" cdkDrag> 
+              <tasque-card *ngIf="!task.isHidden" [taskInfo]="task" [isDone]="true"></tasque-card>
+            </div>
           </div>
         </div>
         <div class="create-column" (mouseleave)="onClickedOutside()">

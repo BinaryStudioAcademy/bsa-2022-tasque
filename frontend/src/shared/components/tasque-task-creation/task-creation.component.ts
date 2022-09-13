@@ -251,7 +251,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
                 title: ts.name,
                 color: ts.color,
               });
-            })
+            });
           } else {
             this.notificationService
               .error('Something went wrong, try again later');

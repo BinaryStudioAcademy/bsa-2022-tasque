@@ -12,6 +12,7 @@ export interface TaskModel {
   description?: string;
   key?: string;
   state: TaskState;
+  stateId: number;
   type: TaskType;
   priority: TaskPriority;
   author: UserModel;
