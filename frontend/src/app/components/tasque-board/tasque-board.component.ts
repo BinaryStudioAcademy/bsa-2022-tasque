@@ -63,17 +63,17 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     });
 
     this.createColumnForm = formBuilder.group({
-      'columnName': ['', [Validators.required]], 
+      'columnName': ['', [Validators.required]],
     });
   }
-  
+
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.parent?.snapshot.paramMap.get('id');
     if (id == null) {
       this.notificationService.error('Path id is null');
       return;
