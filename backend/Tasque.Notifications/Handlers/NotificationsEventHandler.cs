@@ -20,6 +20,10 @@ namespace Tasque.Notifications.Handlers
             _mapper = config.CreateMapper();
         }
 
-        public abstract Task Handle(TEvent @event);
+        public async virtual Task Handle(TEvent @event)
+        {
+            var notification = _mapper.Map<TNotification>(@event);
+            await _hub.NotifySingleUser(notification, notification.RecieverId);
+        }
     }
 }

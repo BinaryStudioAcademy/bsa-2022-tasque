@@ -8,11 +8,5 @@ namespace Tasque.Notifications.Handlers
     {
         public UserInvitedEventHandler(NotificationsHub hub) : base(hub)
         { }
-
-        public override async Task Handle(UserInvitedEvent @event)
-        {
-            var notification = _mapper.Map<UserInvitedNotification>(@event);
-            await _hub.NotifySingleUser(notification, notification.InviteeId);
-        }
     }
 }

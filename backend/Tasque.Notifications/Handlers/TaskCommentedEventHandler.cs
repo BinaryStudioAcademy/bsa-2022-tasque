@@ -8,11 +8,5 @@ namespace Tasque.Notifications.Handlers
     {
         public TaskCommentedEventHandler(NotificationsHub hub) : base(hub)
         { }
-
-        public override async Task Handle(TaskCommentedEvent @event)
-        {
-            var notification = _mapper.Map<TaskCommentedNotification>(@event);
-            await _hub.NotifySingleUser(notification, notification.TaskAuthorId);
-        }
     }
 }
