@@ -156,7 +156,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         name: this.newColumn.name,
         tasks: [],
       });
-      console.log(this.newColumn);
       this.createColumnForm.reset();
       this.isOpenColumnAddDialog = false;
       this.updateColumns();
