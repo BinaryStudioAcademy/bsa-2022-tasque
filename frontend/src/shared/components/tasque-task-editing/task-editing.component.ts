@@ -292,7 +292,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   }
 
   public submitForm(): void {
-    if (this.editTaskForm.invalid || this.editTaskForm.pristine || this.editTaskForm.untouched) {
+    if (this.editTaskForm.invalid || this.editTaskForm.pristine) {
       this.editTaskForm.markAllAsTouched();
       this.notificationService.error(
         'Some values are incorrect. Follow error messages to solve this problem',
