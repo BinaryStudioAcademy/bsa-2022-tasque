@@ -13,8 +13,11 @@
       </button>
     </div>
     <div class="sprints">
+      <! -- 
+      TODO  Add ngIf to task button when roles will work
+      *ngIf="isCurrentUserAdmin"
+    -->
       <tasque-button
-        *ngIf="isCurrentUserAdmin"
         class="mini"
         text="Create Sprint"
         [class]="btnClass"
