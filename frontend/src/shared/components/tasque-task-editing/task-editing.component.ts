@@ -18,6 +18,7 @@ import { TaskTemplateService } from 'src/core/services/task-template.service';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { SprintService } from 'src/core/services/sprint.service';
 import { TaskService } from 'src/core/services/task.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'tasque-task-editing',
@@ -120,12 +121,13 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
       this.projectService
         .getProjectsByOrganizationId(this.organizationId)
+        .pipe(takeUntil(this.unsubscribe$))
         .subscribe((resp) => {
           if (!resp.body) {
             return;
           }
           this.fillProjectOptions(resp.body);
-          this.getProjectInfo(this.task.project as ProjectModel);
+          this.getProjectInfo(this.task.projectId);
         });
     });
 
@@ -275,33 +277,45 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     });
   }
 
-  private getProjectInfo(project: ProjectModel): void {
-    this.sprintService.getProjectSprints(project.id).subscribe((sprints) => {
-      if (!sprints.body) {
-        return;
-      }
-      this.fillSprintOptions(sprints.body);
-    });
+  private getProjectInfo(projectId: number | undefined): void {
+    if (!projectId) {
+      return;
+    }
 
-    this.taskTemplateService.getAllProjectTaskTypes(project.id).subscribe((taskTypes) => {
-      if (!taskTypes.body) {
-        return;
-      }
-      this.fillTaskTypeOptions(taskTypes.body);
-    });
+    this.sprintService.getProjectSprints(projectId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((sprints) => {
+        if (!sprints.body) {
+          return;
+        }
+        this.fillSprintOptions(sprints.body);
+      });
 
-    this.projectService.getProjectPriorities(project.id).subscribe((taskPriorities) => {
-      if (!taskPriorities.body) {
-        return;
-      }
-      this.fillTaskPriorityOptions(taskPriorities.body);
-    });
+    this.taskTemplateService.getAllProjectTaskTypes(projectId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((taskTypes) => {
+        if (!taskTypes.body) {
+          return;
+        }
+        this.fillTaskTypeOptions(taskTypes.body);
+      });
 
-    this.taskTemplateService.getAllProjectTaskStates(project.id).subscribe((taskStates) => {
-      if (!taskStates.body) {
-        return;
-      }
-      this.fillTaskStateOptions(taskStates.body);
-    });
+    this.projectService.getProjectPriorities(projectId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((taskPriorities) => {
+        if (!taskPriorities.body) {
+          return;
+        }
+        this.fillTaskPriorityOptions(taskPriorities.body);
+      });
+
+    this.taskTemplateService.getAllProjectTaskStates(projectId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((taskStates) => {
+        if (!taskStates.body) {
+          return;
+        }
+        this.fillTaskStateOptions(taskStates.body);
+      });
   }
 }
