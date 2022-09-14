@@ -21,6 +21,6 @@ export class DeleteSprintComponent implements OnInit {
       data: this.sprint,
     });
 
-    dialog.afterClosed().subscribe((result: SprintModel) => {});
+    dialog.afterClosed().subscribe(() => {});
   }
 }
