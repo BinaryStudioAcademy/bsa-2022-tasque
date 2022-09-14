@@ -1,27 +1,53 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { faAngleDown, faFlag, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { TaskType } from 'src/core/models/task/task-type';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import { TaskState } from 'src/core/models/task/task-state';
-import { Observable } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { UserModel } from 'src/core/models/user/user-model';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { TaskPriority } from 'src/core/models/task/task-priority';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
+import { BacklogService } from 'src/core/services/backlog.service';
+import { takeUntil } from 'rxjs/operators';
+import { TaskModelDto } from 'src/core/models/task/task-model-dto';
 import { UserRole } from 'src/core/models/user/user-roles';
+import { TaskTypeService } from 'src/core/services/task-type.service';
+import { TaskStateService } from 'src/core/services/task-state.service';
+import { SprintService } from 'src/core/services/sprint.service';
+import { NewSprintModel } from 'src/core/models/sprint/new-sprint-model';
+import { IssueSort } from '../backlog/models';
 
 @Component({
   selector: 'app-backlog-content',
   templateUrl: './backlog-content.component.html',
-  styleUrls: ['./backlog-content.component.sass']
+  styleUrls: ['./backlog-content.component.sass'],
 })
-export class BacklogContentComponent implements OnInit {
-
+export class BacklogContentComponent implements OnInit, OnChanges {
   iconDown = faAngleDown;
   iconPlus = faPlus;
   flagIcon = faFlag;
-  btnClass = 'bold';
+  btnClass = 'btn mini voilet full';
+
+  public role: UserRole;
+  public isCurrentUserAdmin: boolean;
+
+  public unsubscribe$ = new Subject<void>();
+  subscription: Subscription;
+  public tasksShow: TaskModelDto[];
+
+  @Input() public currentUser: UserModel;
+  @Input() public project: ProjectModel;
+  //Get the criteria by which the issue will be sorted
+  @Input() public filterIssue: IssueSort;
+  //Get the string by which issue will be searched
+  @Input() public inputSearch = '';
 
   // TODO remove when real data is available
   @Input() public taskStates: TaskState[] = [
@@ -29,25 +55,25 @@ export class BacklogContentComponent implements OnInit {
       id: 1,
       name: 'To Do',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     },
     {
       id: 2,
       name: 'In Progress',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     },
     {
       id: 3,
       name: 'Done',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     },
     {
       id: 4,
       name: 'Canceled',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     },
   ];
 
@@ -56,20 +82,26 @@ export class BacklogContentComponent implements OnInit {
     {
       id: 1,
       name: 'Low',
+      projectId: 5,
+      type: 1,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     },
     {
       id: 2,
       name: 'Normal',
+      projectId: 5,
+      type: 1,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     },
     {
       id: 3,
       name: 'High',
+      projectId: 5,
+      type: 1,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     },
   ];
 
@@ -80,84 +112,27 @@ export class BacklogContentComponent implements OnInit {
       name: 'Bug',
       createdAt: new Date(),
       updatedAt: new Date(),
-      icon: this.flagIcon
+      icon: this.flagIcon,
     },
     {
       id: 2,
       name: 'Feature',
       createdAt: new Date(),
       updatedAt: new Date(),
-      icon: this.flagIcon
+      icon: this.flagIcon,
     },
     {
       id: 3,
       name: 'Enhancement',
       createdAt: new Date(),
       updatedAt: new Date(),
-      icon: this.flagIcon
-    },
-  ];
-
-  // TODO remove when real data is available
-  @Input() public projects: ProjectModel[] = [
-    {
-      id: 1,
-      name: 'project 1',
-      key: 'PR-1',
-      authorId: 0,
-      organizationId: 0,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 2,
-      name: 'project 2',
-      key: 'PR-2',
-      authorId: 0,
-      organizationId: 0,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 3,
-      name: 'project 3',
-      key: 'PR-3',
-      authorId: 0,
-      organizationId: 0,
-      createdAt: new Date(),
-      updatedAt: new Date()
+      icon: this.flagIcon,
     },
   ];
 
   public sprints$: Observable<SprintModel[]>;
 
-  // TODO remove when real data is available
-  public sprints: SprintModel[] = [
-    {
-      id: 1,
-      projectId: 3,
-      name: 'spr1',
-      description: 'sprint desc',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 2,
-      projectId: 3,
-      name: 'spr2',
-      description: 'sprint desc',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 3,
-      projectId: 3,
-      name: 'spr3',
-      description: 'sprint desc',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }
-  ];
+  @Input() public sprints: SprintModel[];
 
   // TODO remove when real data is available
   @Input() public users: UserModel[] = [
@@ -165,65 +140,68 @@ export class BacklogContentComponent implements OnInit {
       id: 1,
       name: 'John Doe',
       email: 'email',
-      organizationRoles: [ { organizationId: 1, userId: 2, role: UserRole.organizationMember }, { organizationId: 2, userId: 2, role: UserRole.organizationMember } ]
+      organizationRoles: [
+        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
+        { organizationId: 2, userId: 2, role: UserRole.organizationMember },
+      ],
     },
     {
       id: 2,
       name: 'Jane Doe',
       email: 'email',
-      organizationRoles: [ { organizationId: 1, userId: 2, role: UserRole.organizationMember }, { organizationId: 2, userId: 2, role: UserRole.organizationMember } ]
+      organizationRoles: [
+        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
+        { organizationId: 2, userId: 2, role: UserRole.organizationMember },
+      ],
     },
     {
       id: 3,
       name: 'James McGuill',
       email: 'email',
-      organizationRoles: [ { organizationId: 1, userId: 2, role: UserRole.organizationMember }, { organizationId: 2, userId: 2, role: UserRole.organizationMember } ]
-    }
+      organizationRoles: [
+        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
+        { organizationId: 2, userId: 2, role: UserRole.organizationMember },
+      ],
+    },
   ];
 
   public tasks$: Observable<TaskModel[]>;
 
   // TODO remove when real data is available
-  public tasks: TaskModel[] = 
-  // []
-  [
-    {
-      id: 1,
-      summary: 'Create Backlog',
-      description: 'Lorem ipsum',
-      state: this.taskStates.filter((s) => s.name == 'In Progress')[0],
-      type: this.taskTypes.filter((t) => t.name == 'Feature')[0],
-      priority: this.taskPriorities.filter((p) => p.name == 'High')[0],
-      author: this.users.filter((u) => u.id == 1)[0],
-      project: this.projects.filter((p) => p.key == 'PR-1')[0],
-      sprint: this.sprints.filter((s) => s.id == 1)[0],
-      lastUpdatedBy: this.users.filter((u) => u.id == 1)[0],
-      parentTaskId: 100,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      deadline: new Date()
-    },
-    {
-      id: 2,
-      summary: 'Merge Backlog',
-      description: 'Lorem ipsum',
-      state: this.taskStates.filter((s) => s.name == 'To Do')[0],
-      type: this.taskTypes.filter((t) => t.name == 'Feature')[0],
-      priority: this.taskPriorities.filter((p) => p.name == 'High')[0],
-      author: this.users.filter((u) => u.id == 1)[0],
-      project: this.projects.filter((p) => p.key == 'PR-2')[0],
-      sprint: this.sprints.filter((s) => s.id == 1)[0],
-      lastUpdatedBy: this.users.filter((u) => u.id == 1)[0],
-      parentTaskId: 100,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      deadline: new Date()
-    }
-  ];
+  @Input() public tasks: TaskModelDto[] = [];
+  constructor(
+    public backlogService: BacklogService,
+    public taskTypeService: TaskTypeService,
+    public taskStateService: TaskStateService,
+    public sprintService: SprintService,
+  ) {
+    this.subscription = backlogService.changeBacklog$.subscribe(() => {
+      this.getBacklogTasks();
+    });
+  }
 
-  constructor() { }
+  ngOnChanges(): void {
+    this.filterItems();
+  }
 
   ngOnInit(): void {
+    if (this.currentUser === undefined) {
+      return;
+    }
+    this.role =
+      (this.currentUser?.organizationRoles?.find(
+        (m) =>
+          m.organizationId === this.project.organizationId &&
+          m.userId === this.currentUser.id,
+      )?.role as UserRole) || 0;
+
+    if (UserRole.OrganizationAdmin <= this.role) {
+      this.isCurrentUserAdmin = true;
+    }
+
+    this.getTasksState();
+    this.getTasksType();
+    this.getBacklogTasks();
   }
 
   toggleDropdown(): void {
@@ -243,9 +221,107 @@ export class BacklogContentComponent implements OnInit {
       return {
         id: type.id,
         title: type.name,
-        color: ''
+        color: '',
       };
     });
   }
 
+  dropSprint(event: CdkDragDrop<string[]>): void {
+    moveItemInArray(this.sprints, event.previousIndex, event.currentIndex);
+  }
+
+  drop(event: CdkDragDrop<TaskModelDto[]>): void {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
+  }
+
+  getBacklogTasks(): void {
+    this.backlogService
+      .getBacklogTasks(this.project.id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.tasksShow = this.tasks = result.body;
+        }
+      });
+  }
+
+  public getTasksState(): void {
+    this.taskStateService
+      .getAll()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.taskStates = result.body;
+        }
+      });
+  }
+
+  public getTasksType(): void {
+    this.taskTypeService
+      .getAll()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.taskTypes = result.body;
+        }
+      });
+  }
+
+  //Sort tasks in a sprint (by keyword or IssueSort)
+  filterItems(): void {
+    if (this.tasksShow) {
+      if (this.inputSearch) {
+        this.tasks = this.tasksShow.filter((item) => {
+          return item.summary
+            .toLowerCase()
+            .includes(this.inputSearch.toLowerCase());
+        });
+      } else {
+        this.tasks = this.tasksShow;
+      }
+
+      if (this.filterIssue == IssueSort.All) {
+        this.tasks.sort((a) => a.id);
+      } else if (this.filterIssue == IssueSort.OnlyMyIssues) {
+        this.tasks = this.tasks.filter((item) => {
+          return item.authorId == this.currentUser.id;
+        });
+      } else if (this.filterIssue == IssueSort.RecentlyUpdated) {
+        this.tasks.sort(
+          (a, b) =>
+            new Date(b.deadline).getTime() - new Date(a.deadline).getTime(),
+        );
+      }
+    }
+  }
+
+  createSprint(): void {
+    const newSprint: NewSprintModel = {
+      projectId: this.project.id,
+      name: `${this.project.key} Sprint ${this.sprints.length + 1}`,
+      authorId: this.currentUser.id,
+    };
+
+    this.sprintService
+      .create(newSprint)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.sprints.push(result.body);
+        }
+      });
+  }
 }

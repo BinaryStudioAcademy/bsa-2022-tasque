@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.Entities;
@@ -8,13 +9,21 @@ using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/taskState")]
     [ApiController]
+    [Authorize]
     public class TaskStateController : EntityController<TaskState, TaskStateDto, TaskStateService>
     {
+        private readonly TaskStateService _service;
         public TaskStateController(TaskStateService service, CurrentUserParameters currentUser) : base(service, currentUser)
         {
+            _service = service;
+        }
 
+        [HttpGet("getAll")]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _service.GetAll());
         }
     }
 }

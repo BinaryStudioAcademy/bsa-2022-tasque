@@ -14,6 +14,8 @@ namespace Tasque.Core.BLL.Interfaces
 
         Task<List<TaskDto>> GetAllTasks();
 
+        Task<List<TaskDto>> GetAllProjectTasks(int projectId);
+
         Task<TaskDto> GetTaskById(int id);
 
         Task<TaskDto> UpdateTask(TaskDto model);

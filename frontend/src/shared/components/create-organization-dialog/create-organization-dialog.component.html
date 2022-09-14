@@ -1,0 +1,16 @@
+<form class="create-project-dialog" onSubmit="createOrganization()">
+    <mat-dialog-content class="dialog-content">
+      <h3>
+        Create organization
+        <span class="dialog-info">You can change these details anytime in your organization settings.</span>
+      </h3>
+      <div class="tasque-input">
+        <tasque-input [class]="this.inputNameClass" (keydown.enter)="createOrganization()" [id]="this.inputNameId" [placeholder]="this.inputNamePlaceholder" [label]="this.inputNameLabel" name="fieldName" [formControl]="createOrganizationForm" [invalid]="showError" [errorMessage]="createOrgErrorMessage"> </tasque-input>
+      </div>
+    </mat-dialog-content>
+    <mat-divider></mat-divider>
+    <mat-dialog-actions class="dialog-options" align="end">
+      <tasque-button [text]="this.cancelBtnName" [class]="this.cancelBtnClass" [mat-dialog-close]="false"> </tasque-button>
+      <tasque-button type="submit" [text]="this.createBtnName" [class]="this.createBtnClass" (btnClick)="createOrganization()"> </tasque-button>
+    </mat-dialog-actions>
+  </form>

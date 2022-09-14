@@ -1,8 +1,11 @@
-﻿using System;
+using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.DAL;
 
@@ -10,9 +13,24 @@ namespace Tasque.Core.BLL.Services
 {
     public class TaskTypeService : EntityCrudService<TaskType>
     {
-        public TaskTypeService(DataContext db) : base(db)
+        private readonly IMapper _mapper;
+        
+        public TaskTypeService(DataContext db, IMapper mapper) : base(db)
         {
+            _mapper = mapper;
+        }
 
+        public List<TaskTypeDto> GetAllTaskTypesByProjectId(int projectId)
+        {
+            return _mapper.Map<List<TaskTypeDto>>(_db.TaskTypes.Where(t => t.ProjectId == projectId));
+        }
+
+        public new async Task<IEnumerable<TaskType>> GetAll()
+        {
+            var tasksTypes = await _db.TaskTypes
+                .ToListAsync();
+
+            return tasksTypes;
         }
     }
 }

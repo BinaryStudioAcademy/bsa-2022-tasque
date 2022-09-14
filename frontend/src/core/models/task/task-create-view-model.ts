@@ -1,9 +1,15 @@
-import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
+import { TaskCustomFieldModel } from './task-creation-models/task-custom-field-model';
 
 export interface TaskCreateViewModel {
-    currentUser?: number;
-    project?: TasqueDropdownOption;
-    issueType?: TasqueDropdownOption;
     summary?: string;
     description?: string;
+
+    authorId?: number;
+    projectId?: number;
+
+    typeId?: number;
+    priorityId?: number;
+    stateId?: number;
+
+    customFields?: TaskCustomFieldModel[],
 }

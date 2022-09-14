@@ -1,42 +1,47 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable, of, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { ReplaySubject, Subject } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { UserService } from 'src/app/user/services/user.service';
 import { UserModel } from '../models/user/user-model';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GetCurrentUserService {
 
-  constructor(
-    private userService: UserService,
-    private router: Router
-  ) {
-    this.userService.getCurrentUser().pipe(map((resp) => {
-      if (!resp.ok) {
-        this.router.navigate(['auth/login']);
-        return;
-      }
-      this.currentUser$ = of(resp.body as UserModel);
-    }));
+  private jwtHelperService = new JwtHelperService();
+
+  constructor(private userService: UserService) {}
+
+  getUserId(): number {
+    const token = localStorage.getItem('token');
+
+    if(token) {
+      const decodedToken = this.jwtHelperService.decodeToken(token);
+      return decodedToken.id;
+    }
+    return -1;
   }
 
-  private currentUser$: Observable<UserModel>;
+  private currentUserSubj = new ReplaySubject<UserModel>(1);
+  public currentUser$ = this.currentUserSubj.asObservable();
 
-  get currentUser(): Observable<UserModel | undefined> {
-    if (this.currentUser$ !== undefined)
-      return this.currentUser$;
-    return this.userService.getCurrentUser().pipe(
-      map((resp) => {
-        if (!resp.ok) {
-          this.router.navigate(['auth/login']);
-          return;
+  public getCurrentUser(): void {
+    this.userService
+      .getCurrentUser()
+      .pipe(take(1))
+      .subscribe((response) => {
+        if (response.body) {
+          this.currentUserSubj.next(response.body);
         }
-        this.currentUser$ = of(resp.body as UserModel);
-        return resp.body as UserModel;
-      }));
+      });
+  }
+
+  public clearCurrentUser(): void {
+    this.currentUserSubj.complete();
+    this.currentUserSubj = new ReplaySubject<UserModel>(1);
+    this.currentUser$ = this.currentUserSubj.asObservable();
   }
 
   public userAvatarUpdated$ = new Subject<string>();

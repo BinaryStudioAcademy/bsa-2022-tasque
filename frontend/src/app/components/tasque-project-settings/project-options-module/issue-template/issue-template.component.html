@@ -35,7 +35,7 @@
                 <h2>Manage your fields</h2>
                 <div cdkDropList class="issue-fields" #descriptionList="cdkDropList" [cdkDropListData]="customFields" (cdkDropListDropped)="dropCustomFields($event)">
                     <div class="issue-field" *ngFor="let item of customFields" cdkDrag>
-                        <tasque-issue-field [field]="item" (isLabel)="setIsLabel($event)" (isDropDown)="setIsDropdown($event)"></tasque-issue-field>
+                        <tasque-issue-field [field]="item" (isLabel)="setIsLabel($event)" (isCheckbox)="setIsCheckbox($event)" (isDropDown)="setIsDropdown($event)"></tasque-issue-field>
                         <tasque-button style="margin-right: 10px" class="btn icon" [icon]="faTrash" (btnClick)="deleteItem(item)"></tasque-button>
                     </div>
                     <div *ngIf="customFields.length === 0">
@@ -44,24 +44,15 @@
                         </div>
                     </div>
                 </div>
-                <!-- <h2>Context fields</h2>
-                <div cdkDropList class="issue-fields" #contextList="cdkDropList" [cdkDropListData]="contextFields" (cdkDropListDropped)="dropCustomFields($event)">
-                    <div class="issue-field" *ngFor="let item of contextFields" cdkDrag>
-                        <tasque-issue-field [field]="item" (isLabel)="setIsLabel($event)" (isDropDown)="setIsDropdown($event)"></tasque-issue-field>
-                        <tasque-button style="margin-right: 10px" class="btn icon" [icon]="faTrash" (click)="deleteContextItem(item)"></tasque-button>
-                    </div>
-                    <div *ngIf="contextFields.length === 0">
-                        <div class="empty-container">
-                            <span>Drag here your first field!</span>
-                        </div>
-                    </div>
-                </div> -->
             </div>
             <div *ngIf="isLabel !== undefined" class="label-edit-form">
                 <app-label-field-edit [field]="isLabel" (closeEdit)="closeEdit()"></app-label-field-edit>
             </div>
             <div *ngIf="isDropdown !== undefined" class="dropdown-edit-form">
                 <app-dropdown-field-edit [field]="isDropdown" (closeEdit)="closeEdit()"></app-dropdown-field-edit>
+            </div>
+            <div *ngIf="isCheckbox !== undefined" class="checkbox-edit-form">
+                <app-checkbox-field [field]="isCheckbox" (closeEdit)="closeEdit()"></app-checkbox-field>
             </div>
             <div class="custom-fields">
                 <h2>Available fields</h2>

@@ -4,7 +4,7 @@ export enum TaskFieldType {
     Number,
     Label,
     User,
-    Dropown,
+    Dropdown,
     CheckBox,
     Date,
     State,

@@ -3,10 +3,25 @@
 .container
   display: flex
   width: 265px
-  height: 45px
+  height: 50px
   box-sizing: border-box
   font-family: 'Nunito', sans-serif
   font-style: normal
+  &.mini-view
+    width: 100%
+    margin-right: 50px
+    .user-avatar
+      height: 40px
+      width: 40px
+      img
+        height: 40px
+        width: 40px
+    .user-avatar-img
+      height: 40px
+      width: 40px
+    .avatar-wrapper
+      height: 40px
+      width: 40px
 
 .add-users
   height: 100%
@@ -20,7 +35,6 @@
 .users
   display: flex
   max-width: 207px
-
 
 .user-avatar-img
   font-weight: 700
@@ -36,17 +50,17 @@
   color: colorscheme(white-100)
   opacity: 1
   &:hover
-    opacity: 0.8
+    opacity: 0.9
 
 .user-overflow
-  height: 100%
+  height: 46px
   border-radius: 100%
   aspect-ratio: 1 / 1
   object-fit: cover
   position: absolute
-  top: 0
+  top: 2px
   left: 0
-  background: rgba(29,29,29,0.4)
+  background: rgba(29,29,29,0.8)
   color: colorscheme(white-100)
   display: flex
   align-items: center
@@ -102,3 +116,19 @@
   justify-content: flex-start
   .user-avatar
     height: 50px
+
+.mini-view
+  .user-overflow
+    margin-left: 50px
+    height: 35px
+  &.pop-up
+    margin-left: -150px
+
+.selected
+  border-radius: 50%
+  border: 3px solid colorscheme(pink-300)
+  z-index: 2
+
+.transparent-border
+  border-radius: 50%
+  border: 2px solid #ffffff00

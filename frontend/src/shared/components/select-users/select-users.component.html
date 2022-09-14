@@ -1,5 +1,4 @@
 <div class="global-wrapper">
-  <h3 class="text-center">Select Users</h3>
   <div class="select-users-wrapper">
     <div class="row b-b select-users-header container">
       <form [formGroup]="searchForm" (ngSubmit)="add()">
@@ -32,7 +31,7 @@
               <div class="user-data mr-15">
                 <tasque-avatar [user]="getUserModel(user)" alt="user's avatar" [diameter_px]="40"></tasque-avatar>
                 <a [href]="user.profileURL" class="username">
-                  <tasque-button class="btn" [text]="user.username"></tasque-button>
+                  <tasque-button class="btn" [text]="user.userName"></tasque-button>
                 </a>
               </div>
               <div class="user-actions ml-15">

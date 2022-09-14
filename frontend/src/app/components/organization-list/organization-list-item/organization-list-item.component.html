@@ -1,9 +1,9 @@
 <div class="organization-card">
-  <p class="organization-name" href="#">{{ organization.name }}</p>
+  <p class="organization-name" (click)="openOrganization()">{{ organization.name }}</p>
 
   <div class="buttons-container">
     <app-edit-organization
-      *ngIf="organization.authorId === currentUser.id || role === organizationAdmin"
+      *ngIf="organization.authorId === currentUser?.id || role === organizationAdmin"
       class="btn stroke"
       [organization]="organization"
     ></app-edit-organization>

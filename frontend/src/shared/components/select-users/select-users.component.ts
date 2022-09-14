@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
 import { BoardService } from 'src/core/services/board.service';
 import {
   BoardType,
@@ -15,6 +14,7 @@ import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
 import { UserModel } from 'src/core/models/user/user-model';
 import { UserRole } from 'src/core/models/user/user-roles';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'tasque-select-users',
@@ -42,11 +42,12 @@ export class SelectUsersComponent implements OnInit {
     hasRoles: true,
     users: [
       {
+        id: 1,
         email: 'admin@gmail.com',
-        username: 'Admin',
+        userName: 'Admin',
         profileURL: '',
         avatarURL: '',
-        role: BusinessRole.Administrator
+        role: BusinessRole.Admin
       } as IUserCard
     ]
   };
@@ -55,7 +56,9 @@ export class SelectUsersComponent implements OnInit {
   @Output() onDelete = new EventEmitter<string>();
   @Output() onUpdate = new EventEmitter<IUserCard>();
 
-  constructor(private service: BoardService, private toastr: ToastrService) {
+  constructor(
+    private service: BoardService, 
+    private nontificationService: NotificationService) {
     this.roles = getRolesAsArray();
   }
 
@@ -71,7 +74,7 @@ export class SelectUsersComponent implements OnInit {
 
   public add(): void {
     if (!this.searchForm.valid) {
-      this.toastr.error('Invalid email');
+      this.nontificationService.error('Invalid email');
       return;
     }
 
@@ -95,7 +98,7 @@ export class SelectUsersComponent implements OnInit {
     this.isLoading = true;
 
     this.onDelete.emit(email);
-
+    
     this.refreshList();
   }
 
@@ -109,16 +112,23 @@ export class SelectUsersComponent implements OnInit {
   }
 
   roleToString(role: BusinessRole | null): string {
-    return role ? BusinessRole[role] : '';
+    if(role) {
+      return role.toString();
+    }
+
+    return '';
   }
 
   getUserModel(user: IUserCard): UserModel {
     return {
       id: user.id,
       email: user.email,
-      name: user.username,
+      name: user.userName,
       avatarURL: user.avatarURL,
-      organizationRoles: [ { organizationId: 1, userId: 2, role: UserRole.organizationMember }, { organizationId: 2, userId: 2, role: UserRole.organizationMember } ]
+      organizationRoles: [
+        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
+        { organizationId: 2, userId: 2, role: UserRole.organizationMember },
+      ],
     };
   }
 
@@ -130,4 +140,5 @@ export class SelectUsersComponent implements OnInit {
       this.isLoading = false;
     });
   }
+
 }

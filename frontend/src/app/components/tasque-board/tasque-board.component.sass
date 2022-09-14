@@ -14,7 +14,7 @@
 .board-panel
     background-color: colorscheme(gray-100)
     padding: 44px 10px 0px 37px
-    height: calc( 100% - 96px )
+    height: calc( 100% - 36px )
 
 .board-title
     display: flex
@@ -49,14 +49,13 @@
     display: flex
     align-items: center
 
-.board-columns
-    height: calc( 100% - 70px )
+.board-columns 
+    height: 400px
     display: grid
     grid-auto-flow: column
     grid-auto-columns: 288px
     grid-gap: 30px
-    overflow-x: scroll
-    overflow-y: scroll
+    overflow: scroll hidden
 
 .column-title
     display: flex
@@ -111,7 +110,6 @@
   border-radius: 10px
 
 .board-list
-    background: colorscheme(white-100)
     overflow: hidden
     display: block
 
@@ -130,4 +128,15 @@
 .column
     cursor: move
     background: colorscheme(white-100)
+
+.no-tasks
+    text-align: center
+    padding: 20px
+
+.team-container
+    margin-left: 25px
+
+.column-with-tasks
+     overflow: hidden auto
+     padding-right: 10px
 

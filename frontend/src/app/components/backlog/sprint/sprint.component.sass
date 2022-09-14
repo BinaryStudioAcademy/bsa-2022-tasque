@@ -1,0 +1,161 @@
+@import 'src/colors.sass'
+
+.sprint-conteiner
+    width: 100%
+    display: flex
+    flex-direction: column
+    background: colorscheme(white-100)
+    border-radius: 10px
+    border: 2px solid colorscheme(white-100)
+    &:hover
+        border: 2px solid colorscheme(gray-300)
+
+.wrapper
+    display: flex
+    align-items: center
+
+.sprint-conteiner
+    width: 100%
+    display: flex
+    flex-direction: column
+    padding: 20px 20px
+    .button
+        padding-right: 10px
+        margin-left: auto
+        .btn
+            padding-right: 10px
+    .select-user
+        display: flex
+        align-items: center
+        padding: 10px 0
+
+tasque-button
+    ::ng-deep
+        .add-users
+            background: colorscheme(gray-100)
+            padding: 15px
+            border-radius: 50%
+            font-weight: 700
+            font-size: 38px
+
+.sprint-name
+    font-weight: 700
+    font-size: 18px
+    line-height: 114.88%
+    padding-right: 15px
+
+.issues, .estimate
+    display: flex
+    padding: 0 5px
+    font-weight: 400
+    font-size: 14px
+    line-height: 19px
+    color: colorscheme(gray-500)
+    .issues-count, .estimate-count
+        color: colorscheme(violet-200)
+        padding-left: 5px
+
+.sprint-date
+    display: flex
+    padding: 0 5px
+    color: colorscheme(gray-500)
+    font-weight: 400
+    font-size: 14px
+    line-height: 19px
+
+app-issue
+    display: flex
+    padding: 0px 10px
+
+.sprint-footer
+    padding: 20px 10px
+
+.dropbtn
+    cursor: pointer
+
+.dropdown
+    position: relative
+    display: inline-block
+    &-content
+        display: none
+        position: absolute
+        right: 0
+        background-color: colorscheme(gray-100)
+        min-width: 180px
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2)
+        z-index: 1
+    &-content a
+        color: black
+        padding: 12px 16px
+        font-size: 15px
+        text-decoration: none
+        display: block
+    tasque-button
+        display: flex
+
+.dropdown-content
+    a:hover
+        background-color: #f1f1f1
+.dropdown:hover
+    .dropdown-content
+        display: block
+
+details
+    summary
+        list-style: none
+
+.marker
+    padding-right: 10px
+summary::-webkit-details-marker
+    display: none
+
+details[open]
+    summary
+        cursor: default
+    .marker
+        .open
+            display: none
+        .close
+            display: inline
+
+details
+    summary
+        cursor: pointer
+    .marker
+        .open
+            display: inline
+        .close
+            display: none
+
+.cdk-drop-list-dragging
+    background: colorscheme(gray-100)
+    -moz-transition: all .3s linear
+    -o-transition: all .3s linear
+    -webkit-transition: all .3s linear
+
+// .cdk-drag-preview
+//     app-backlog-content
+//     background: red
+
+.complete-sprint, .start-sprint
+    width: 180px
+
+.completed
+    border: 3px solid red
+    border-radius: 5px
+    padding: 5px
+    text-transform: uppercase
+    font-weight: 700
+
+.empty-tasks
+    border: dashed
+    border-color: colorscheme('gray-400')
+    &.pale
+        color: colorscheme('dark-grey-100')
+    &.row
+        display: inline-flex
+        align-items: center
+        height: 80px
+        width: 100%
+    label
+        margin: auto

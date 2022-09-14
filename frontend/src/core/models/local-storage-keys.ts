@@ -1,4 +1,6 @@
 export const LocalStorageKeys = {
     token: 'token',
-    selectedOrganization: 'selectedOrganization'
+    selectedOrganization: 'selectedOrganization',
+    selectedProject: 'selectedProject',
+    selectedUser: 'selectedUser'
 };

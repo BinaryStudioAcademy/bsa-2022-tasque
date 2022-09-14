@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Interfaces;
@@ -6,7 +6,7 @@ using Tasque.Core.Common.DTO.Task;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/task")]
     [ApiController]
     [Authorize]
     public class TaskController : ControllerBase
@@ -22,6 +22,15 @@ namespace Tasque.Core.WebAPI.Controllers
         public async Task<IActionResult> GetAllTasks()
         {
             return Ok(await _taskService.GetAllTasks());
+        }
+
+        [HttpGet("getAllProjectTasks/{projectId}")]
+        public async Task<IActionResult> GetAllProjectTasks(int projectId)
+        {
+            var tasks = await _taskService.GetAllProjectTasks(projectId);
+            if (tasks == null)
+                return NotFound("Project or it's tasks not found");
+            return Ok(tasks);
         }
 
         [HttpGet("{id}")]
@@ -50,6 +59,20 @@ namespace Tasque.Core.WebAPI.Controllers
             return NoContent();
         }
 
+        [HttpGet("getTasksState")]
+        public async Task<IActionResult> GetTasksState()
+        {
+            return Ok();
+         //   return Ok(await _taskService.GetTasksState());
+        }
+
+        [HttpGet("getTasksType")]
+        public async Task<IActionResult> GetTasksType()
+        {
+            return Ok();
+            //   return Ok(await _taskService.GetTasksType());
+        }
+        
         [HttpPost("comment")]
         public async Task<IActionResult> CommentTask([FromBody] CommentTaskDTO dto)
         {
