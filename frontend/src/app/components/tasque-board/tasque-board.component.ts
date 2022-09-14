@@ -10,18 +10,14 @@ import {
 import { TaskInfoModel } from 'src/core/models/board/task-Info-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { NotificationService } from 'src/core/services/notification.service';
-import { BoardModel } from 'src/core/models/board/board-model';
 import { ActivatedRoute } from '@angular/router';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { Subject } from 'rxjs';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import { ProjectService } from 'src/core/services/project.service';
-import { filter } from 'rxjs/operators';
 import { TaskType } from 'src/core/models/task/task-type';
-import { TaskState } from 'src/core/models/task/task-state';
 import { TaskModel } from 'src/core/models/task/task-model';
-import { LabelField } from 'src/core/models/task/task-template-models/label-field';
 import { ProjectModel } from 'src/core/models/project/project-model';
 
 @Component({
@@ -112,11 +108,10 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     this.columns.forEach((c) => {
 
       const tasks = this.projectTasks.filter((t) => t.stateId === c.id);
-
       const taskInfo: TaskInfoModel[] = [];
 
       tasks.forEach((t) => {
-        
+
         taskInfo.push({
           id: t.id,
           type: t.type,
@@ -126,9 +121,8 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           customLabels: [],
           key: t.key as string,
           isHidden: false,
-        })
+        });
       });
-
       c.tasks = taskInfo;
     });
     this.isShow = true;
@@ -233,11 +227,4 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     }
     this.filterTasks();
   }
-
-  // fillOptions(): void {
-  //   this.projectOptions.push({
-  //     title: this.board.name,
-  //     id: this.projectId,
-  //   } as TasqueDropdownOption);
-  // }
 }

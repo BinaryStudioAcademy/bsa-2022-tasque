@@ -44,8 +44,8 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   public selectedProjectId: number;
   public selectedTaskTypeId: number;
-  public selectedPriorityId: number;
-  public selectedStateId: number;
+  public selectedPriorityId: number | undefined;
+  public selectedStateId: number | undefined;
 
   public template: TaskTemplate;
   public taskType: TaskType;
@@ -314,7 +314,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
       customFields: this.taskCustomFields,
     };
-    console.log(this.task);
     this.taskService.createTask(this.task).subscribe(
       () => {
         this.notificationService.success('Task has been created successfully');
@@ -332,6 +331,8 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   public clearForm(): void {
     this.taskCreateForm.reset();
+    this.selectedPriorityId = undefined;
+    this.selectedStateId = undefined;
     this.projectPriorities = [];
     this.taskStateOptions = [];
     this.customFields = [];

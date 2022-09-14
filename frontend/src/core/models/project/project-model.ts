@@ -1,6 +1,6 @@
-﻿import { TaskPriority } from "../task/task-priority";
-import { TaskState } from "../task/task-state";
-import { UserModel } from "../user/user-model";
+﻿import { TaskPriority } from '../task/task-priority';
+import { TaskState } from '../task/task-state';
+import { UserModel } from '../user/user-model';
 
 export interface ProjectModel {
   id: number,
