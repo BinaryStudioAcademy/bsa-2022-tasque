@@ -33,6 +33,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public organizationId: number;
 
   public editTaskForm = {} as FormGroup;
+  public editTaskFormDefaultValues: unknown;
 
   public closeIcon = faXmark;
   public linkIcon = faLink;
@@ -107,6 +108,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       description: [this.task.description, [Validators.maxLength(5000)]],
       assignees: [this.task.users],
     });
+
+    this.editTaskFormDefaultValues = this.editTaskForm.value;
 
     this.editTaskForm.controls.project.valueChanges.subscribe((option: TasqueDropdownOption) => {
       this.getProjectInfo(option.id);
