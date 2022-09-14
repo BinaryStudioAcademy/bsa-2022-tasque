@@ -2,36 +2,43 @@
   <div class="users" *ngIf="avatars.length <= 4 && !miniView">
     <a
       class="user-avatar"
+      [ngClass]="item.id == selectedUserId ? 'selected': 'transparent-border'"
       *ngFor="let item of avatars.slice(0, 7); let i = index"
       [attr.data-index]="i"
       (click)="selectUser(item)"
     >
-      <tasque-avatar
-        class="user-avatar-img"
-        [user]="item"
-        [alt]="item.name"
-        [diameter_px]="50"
-      ></tasque-avatar>
+    <tasque-avatar
+      class="user-avatar-img"
+      [user]="item"
+      [alt]="item.name"
+      [diameter_px]="45"
+    ></tasque-avatar>
     </a>
   </div>
   <div class="users" *ngIf="avatars.length > 4 && !miniView">
     <a
       class="user-avatar"
+      [ngClass]="item.id == selectedUserId ? 'selected': 'transparent-border'"
       *ngFor="let item of avatars.slice(0, 7); let i = index"
       [attr.data-index]="i"
-      style="left: {{ i * -18 }}px"
+      [ngStyle]="{'left.px': i * -18 }"
       (click)="selectUser(item)"
     >
       <tasque-avatar
         class="user-avatar-img"
         [user]="item"
         [alt]="item.name"
-        [diameter_px]="50"
+        [diameter_px]="45"        
       ></tasque-avatar>
+    </a>
+    <a
+      class="user-avatar"
+      *ngIf="avatars.length > 6"
+      [ngStyle]="{'left.px': 7 * -18 }"
+    >
       <div
         class="user-overflow"
-        *ngIf="i == 6"
-        (click)="showPopUp = !showPopUp"
+        (click)="switchPopUp()"
       >
         +{{ avatars.length - 7 }}
       </div>
@@ -82,6 +89,7 @@
       <div class="avatars-container">
         <a
           class="user-avatar"
+          [ngClass]="item.id == selectedUserId ? 'selected': 'transparent-border'"
           *ngFor="let item of avatarsShow; let i = index"
           [attr.data-index]="i"
           (click)="selectUser(item)"
@@ -90,7 +98,7 @@
             class="user-avatar-img"
             [user]="item"
             [alt]="item.name"
-            [diameter_px]="50"
+            [diameter_px]="45"
           ></tasque-avatar>
         </a>
       </div>

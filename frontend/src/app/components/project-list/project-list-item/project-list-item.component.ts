@@ -14,14 +14,16 @@ export class ProjectListItemComponent implements OnInit {
   @Input() public project: ProjectInfoModel;
   @Input() public currentUser: UserModel;
 
-  constructor(public router: Router, private currentProject: GetCurrentProjectService) {
-  }
+  constructor(
+    public router: Router, 
+    private currentProject: GetCurrentProjectService
+  ) { }
 
   ngOnInit(): void {
   }
 
   openProjectBoard(): void {
-    this.currentProject.setProjects(this.project);
+    this.currentProject.currentProjectId = this.project.id;
     this.router.navigate(['/project/' + this.project.id.toString() + '/board']);
   }
 

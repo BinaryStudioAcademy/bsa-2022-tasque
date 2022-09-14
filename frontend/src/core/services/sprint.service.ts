@@ -6,7 +6,12 @@ import { EditSprintModel } from '../models/sprint/edit-sprint-model';
 import { SprintModel } from '../models/sprint/sprint-model';
 import { HttpService } from './http.service';
 import { TaskEstimateUpdate } from '../models/task/task-estimate-update';
+<<<<<<< HEAD
 import { TaskModel } from '../models/task/task-model';
+=======
+import { TaskModelDto } from '../models/task/task-model-dto';
+import { NewSprintModel } from '../models/sprint/new-sprint-model';
+>>>>>>> 5099a8a217cc1316f9c9ff96e25a368125750e29
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +27,12 @@ export class SprintService {
 
   constructor(public httpService: HttpService) { }
 
+  create(sprint: NewSprintModel): Observable<HttpResponse<SprintModel>> {
+    return this.httpService.postFullRequest<SprintModel>(
+      this.routePrefix,
+      sprint,
+    );
+  }
   completeSprint(sprintId: number): Observable<void> {
     return this.httpService.putRequest<void>(
       this.routePrefix + `/complete/${sprintId}`,

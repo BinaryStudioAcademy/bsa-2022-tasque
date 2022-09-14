@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UserService } from 'src/app/user/services/user.service';
@@ -12,6 +19,7 @@ import { faFlag } from '@fortawesome/free-solid-svg-icons';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { TaskService } from 'src/core/services/task.service';
 import { NotificationService } from 'src/core/services/notification.service';
+import { ProjectModel } from 'src/core/models/project/project-model';
 
 @Component({
   selector: 'app-issue',
@@ -23,6 +31,8 @@ export class IssueComponent implements OnInit {
   @Input() public issue: TaskModel;
   //get current user
   @Input() public currentUser: UserModel;
+  //get current project
+  @Input() public currentProject: ProjectModel;
   //notifying the parent components about the change in the value of estimate
   @Output() estimate = new EventEmitter<void>();
   flagIcon = faFlag;
@@ -53,6 +63,7 @@ export class IssueComponent implements OnInit {
 
   // TODO remove when real data is available
   @Input() public taskStates: TaskState[] = [
+<<<<<<< HEAD
     {
       id: 1,
       name: 'To Do',
@@ -81,6 +92,32 @@ export class IssueComponent implements OnInit {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+=======
+    // {
+    //   id: 1,
+    //   name: 'To Do',
+    //   createdAt: new Date(),
+    //   updatedAt: new Date(),
+    // },
+    // {
+    //   id: 2,
+    //   name: 'In Progress',
+    //   createdAt: new Date(),
+    //   updatedAt: new Date(),
+    // },
+    // {
+    //   id: 3,
+    //   name: 'Done',
+    //   createdAt: new Date(),
+    //   updatedAt: new Date(),
+    // },
+    // {
+    //   id: 4,
+    //   name: 'Canceled',
+    //   createdAt: new Date(),
+    //   updatedAt: new Date(),
+    // },
+>>>>>>> 5099a8a217cc1316f9c9ff96e25a368125750e29
   ];
 
   public taskEstimate: TaskEstimateUpdate;
@@ -91,13 +128,42 @@ export class IssueComponent implements OnInit {
     public taskServise: TaskService,
     public sprintService: SprintService,
     public notificationService: NotificationService,
+<<<<<<< HEAD
   ) { }
 
   ngOnInit(): void {
+=======
+    private cdRef: ChangeDetectorRef,
+  ) {}
+
+  ngOnInit(): void {
+    this.getIssueAuthor();
+    this.estimateUpdate();
+    this.cdRef.detectChanges();
+  }
+
+  //Get the author of the sprint, and display his avatar,
+  //if the author does not have an avatar, display a stub
+  public getIssueAuthor(): void {
+    this.userServise
+      .getUserById(this.issue.authorId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.issueAuthor = result.body;
+          if (this.issueAuthor.avatarURL == undefined) {
+            this.issueAuthor.avatarURL = '\\assets\\avatar.png';
+          }
+        }
+      });
+>>>>>>> 5099a8a217cc1316f9c9ff96e25a368125750e29
   }
 
   public deadline(): Date {
     return new Date(this.issue.deadline);
+  }
+  estimateUpdate(): void {
+    this.estimate.emit();
   }
 
   //When updating an estimate for a task - update the total estimate for the sprint
@@ -138,7 +204,11 @@ export class IssueComponent implements OnInit {
       this.taskTypes?.find((el) => el.id == this.issue.type.id)?.name ?? 'issue'
     );
   }
-
+  currentTaskTypeColor(): string {
+    return (
+      this.taskTypes?.find((el) => el.id == this.issue.typeId)?.color ?? 'red'
+    );
+  }
   updateTaskState(stateId: number): void {
     this.issue.state.id = stateId;
 

@@ -4,6 +4,7 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
+import { GetCurrentProjectService } from 'src/core/services/get-current-project.service';
 import { NotificationService } from 'src/core/services/notification.service';
 import { ProjectService } from 'src/core/services/project.service';
 import { SideBarService } from 'src/core/services/sidebar.service';
@@ -59,7 +60,8 @@ export class EditProjectComponent implements OnInit, OnDestroy {
 
   constructor(private notification: NotificationService,
     private sideBarService: SideBarService,
-    public projectService: ProjectService) {
+    public projectService: ProjectService,
+    public currentProjectService: GetCurrentProjectService) {
       this.projectNameControl = new FormControl(this.projectName, [
         Validators.required,
         Validators.minLength(2),
@@ -104,6 +106,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
           this.notification.success(
             'Project data has been updated successfully',
           );
+          this.currentProjectService.updateProject(result.body);
           this.editProjectForm.reset();
           this.sideBarService.toggle(this.sidebarName);
         }

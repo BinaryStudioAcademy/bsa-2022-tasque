@@ -1,4 +1,9 @@
 ﻿using AutoMapper;
+<<<<<<< HEAD
+=======
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+>>>>>>> 5099a8a217cc1316f9c9ff96e25a368125750e29
 using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.PartialModels;
@@ -7,6 +12,7 @@ using Tasque.Core.Common.DTO.Task.PartialModels;
 using Tasque.Core.Common.DTO.Task.TemplateModels.IncomeModels;
 using Tasque.Core.Common.Entities.Abstract;
 using Tasque.Core.DAL;
+using static Amazon.S3.Util.S3EventNotification;
 
 namespace Tasque.Core.BLL.Services
 {
@@ -35,9 +41,16 @@ namespace Tasque.Core.BLL.Services
         public async Task<TaskDto> CreateTask(TaskDto model)
         {
             var entity = _mapper.Map<Common.Entities.Task>(model);
+<<<<<<< HEAD
             var key = _dbContext.Projects.FirstOrDefault(p => p.Id == model.Project.Id)?.Key;
             var count = _dbContext.Tasks.Where(t => t.ProjectId == model.Project.Id).Count();
             entity.Key = key + '-' + count;
+=======
+            var project = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId)?? throw new CustomNotFoundException("project");
+
+            entity.Key = project.Key + '-' + UpdateProjectCounter(project.Id);
+
+>>>>>>> 5099a8a217cc1316f9c9ff96e25a368125750e29
 
             _dbContext.Add(entity);
             _dbContext.SaveChanges();
@@ -83,6 +96,26 @@ namespace Tasque.Core.BLL.Services
                             MapCosmosTaskFieldsToTaskCustomFields(t, ca.CustomFields).Result))).ToList();
         }
 
+        public async Task<List<TaskDto>> GetAllProjectTasks(int projectId)
+        {
+            var tasks = _mapper.Map<List<TaskDto>>(_dbContext.Tasks
+                .Where(t => t.ProjectId == projectId)
+                    .Include(t => t.Priority)
+                    .Include(t => t.State)
+                    .Include(t => t.Type));
+
+            var customFields = await _cosmosTaskService.GetAllProjectTasks(projectId);
+
+            if (!customFields.Any())
+                return tasks;
+
+            return tasks.Join(customFields, t => t.Id, ca => int.Parse(ca.Id), (t, ca) =>
+                JoinTaskAttributesWithDto(t,
+                    RenameFieldsWithActualValue(
+                        GetTaskTemplate(t.ProjectId, t.TypeId).Result,
+                            MapCosmosTaskFieldsToTaskCustomFields(t, ca.CustomFields).Result))).ToList();
+        }
+
         public async Task<TaskDto> GetTaskById(int id)
         {
             var task = _mapper.Map<TaskDto>(_dbContext.Tasks.FirstOrDefault(t => t.Id == id));
@@ -99,7 +132,21 @@ namespace Tasque.Core.BLL.Services
 
         public async Task<TaskDto> UpdateTask(TaskDto model)
         {
-            var task = _dbContext.Tasks.Update(_mapper.Map<Common.Entities.Task>(model)).Entity;
+            var currentProjectId = _dbContext.Projects.FirstOrDefault(p => p.Id == _dbContext.Tasks.FirstOrDefault(t => t.Id == model.Id).ProjectId).Id;
+
+            if(model.ProjectId != currentProjectId)
+            {
+                var project = await _dbContext.Projects.FirstOrDefaultAsync(p => p.Id == model.ProjectId)?? throw new CustomNotFoundException("project");
+                model.Key = project.Key + '-' + UpdateProjectCounter(project.Id);
+            }
+
+            var entityTask = await _dbContext.Tasks
+                .FirstOrDefaultAsync(t => t.Id == model.Id)
+                ?? throw new CustomNotFoundException("task");
+
+            var task = _mapper.Map<Common.Entities.Task>(model);
+
+            _dbContext.Entry(entityTask).CurrentValues.SetValues(task);
 
             if (task == null)
                 throw new CustomNotFoundException(nameof(Common.Entities.Task));
@@ -161,6 +208,14 @@ namespace Tasque.Core.BLL.Services
             }));
 
             return result;
+        }
+
+        private int UpdateProjectCounter(int projectId)
+        {
+            var project = _dbContext.Projects.FirstOrDefault(p => p.Id == projectId)?? throw new CustomNotFoundException("project");
+            project.ProjectTaskCounter += 1;
+            _dbContext.SaveChanges();
+            return project.ProjectTaskCounter;
         }
 
         private void SaveChanges<T>(T entity)
