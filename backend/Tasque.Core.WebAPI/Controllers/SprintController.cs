@@ -16,7 +16,7 @@ namespace Tasque.Core.WebAPI.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost("createSprint")]
         public async Task<IActionResult> Create([FromBody] NewSprintDto sprintDto)
         {
             return Ok(await _service.Create(sprintDto));
@@ -119,6 +119,15 @@ namespace Tasque.Core.WebAPI.Controllers
             var sprints = await _service.OrderSprints(ids);
             var dto = mapper.Map<SprintDto>(sprints);
             return Ok(dto);
+        }
+
+        [Route("deleteSprint/{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteSprint(int id)
+        {
+            await _service.Delete(id, _currentUser.Id);
+
+            return NoContent();
         }
     }
 }

@@ -31,6 +31,7 @@ import { TaskStateService } from 'src/core/services/task-state.service';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { NotificationService } from 'src/core/services/notification.service';
+import { OpenDialogService } from 'src/core/services/open-dialog.service';
 
 @Component({
   selector: 'app-sprint',
@@ -84,6 +85,7 @@ export class SprintComponent implements OnInit, OnChanges {
     public notificationService: NotificationService,
     public taskTypeService: TaskTypeService,
     public taskStateService: TaskStateService,
+    public openDialogService: OpenDialogService,
   ) {}
 
   ngOnInit(): void {
@@ -244,5 +246,9 @@ export class SprintComponent implements OnInit, OnChanges {
           this.taskType = result.body;
         }
       });
+  }
+
+  public deleteSprint(sprint: SprintModel): void {
+    this.openDialogService.openDeleteSprintDialog(sprint);
   }
 }
