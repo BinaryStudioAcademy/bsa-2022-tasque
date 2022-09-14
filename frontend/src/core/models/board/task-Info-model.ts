@@ -18,4 +18,5 @@ export interface TaskInfoModel {
     user?: UserModel;
     assignees?: UserModel[];
     isHidden: boolean;
+    stateId: number;
 }

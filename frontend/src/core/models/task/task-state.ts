@@ -1,6 +1,6 @@
 export interface TaskState {
   id: number,
-  projectId: number,
+  projectId?: number,
   color?: string,
   name: string,
   createdAt?: Date,
