@@ -21,6 +21,7 @@ import { TaskService } from 'src/core/services/task.service';
 import { takeUntil } from 'rxjs/operators';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
 import { NotificationService } from 'src/core/services/notification.service';
+import { TaskUpdateModel } from 'src/core/models/task/task-update-model';
 
 @Component({
   selector: 'tasque-task-editing',
@@ -311,7 +312,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       typeId: this.editTaskForm.controls.type.value.id,
       projectId: this.editTaskForm.controls.project.value.id,
       //sprintId: this.editTaskForm.controls.sprint.value.id,
-    };
+    } as TaskUpdateModel;
 
     this.taskService.updateTask(updatedTask)
       .pipe(takeUntil(this.unsubscribe$))
