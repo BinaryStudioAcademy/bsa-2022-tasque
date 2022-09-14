@@ -18,13 +18,13 @@ public class Task : BaseEntity
     public DateTime? FinishedAt { get; set; }
 
     public int? StateId { get; set; }
-    public TaskState? State { get; set; } = null!;
+    public TaskState? State { get; set; } 
 
     public int TypeId { get; set; }
     public TaskType Type { get; set; } = null!;
 
     public int? PriorityId { get; set; }
-    public TaskPriority? Priority { get; set; } = null!;
+    public TaskPriority? Priority { get; set; }
 
     public int AuthorId { get; set; }
     public User Author { get; set; } = null!;
