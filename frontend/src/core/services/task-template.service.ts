@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { TaskTemplate } from '../models/task/task-template';
 import { TaskType } from '../models/task/task-type';
 import { HttpService } from './http.service';
+import { TaskState } from '../models/task/task-state';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class TaskTemplateService {
 
   constructor(
     private httpService: HttpService,
-    ) { }
+  ) { }
 
   private routePrefix = '/api/TaskTemplate';
 
@@ -42,5 +43,9 @@ export class TaskTemplateService {
 
   public getAllProjectTaskTypes(id: number): Observable<HttpResponse<TaskType[]>> {
     return this.httpService.getFullRequest('/api/tasktype/getAllByProjectId/' + id);
+  }
+
+  public getAllProjectTaskStates(id: number): Observable<HttpResponse<TaskState[]>> {
+    return this.httpService.getFullRequest('/api/taskstate/getAllByProjectId/' + id);
   }
 }

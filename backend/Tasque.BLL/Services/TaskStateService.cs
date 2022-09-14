@@ -10,17 +10,24 @@ namespace Tasque.Core.BLL.Services
     {
         private readonly IMapper _mapper;
 
-        public TaskStateService(DataContext db) : base(db)
+        public TaskStateService(DataContext db, IMapper mapper) : base(db)
         {
-
+            this._mapper = mapper;
         }
 
-        public async Task<IEnumerable<TaskState>> GetAll()
+        public new async Task<IEnumerable<TaskState>> GetAll()
         {
             var tasksStates = await _db.TaskStates
                 .ToListAsync();
 
             return tasksStates;
+        }
+
+        public async Task<IEnumerable<TaskStateDto>> GetAllTaskStatesByProjectId(int projectId)
+        {
+            var taskStates = await _db.TaskStates.Where(t => t.ProjectId == projectId).ToListAsync();
+
+            return _mapper.Map<IEnumerable<TaskStateDto>>(taskStates);
         }
     }
 }

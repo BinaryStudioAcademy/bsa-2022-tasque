@@ -23,7 +23,7 @@ export class CompleteSprintDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<CompleteSprintDialogComponent>,
     public sprintService: SprintService,
     public backlogService: BacklogService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.openIssue();

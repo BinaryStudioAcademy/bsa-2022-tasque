@@ -1,28 +1,29 @@
-<tasque-sidebar name="task-editing" btnText="Edit Task" btnClass="btn stroke">
+<tasque-sidebar
+  name="task-editing-{{ task.id }}"
+  [btnText]="btnText"
+  [btnClass]="btnClass"
+  [btnIcon]="btnIcon"
+>
   <form class="edit-task-dialog" [formGroup]="editTaskForm">
     <div class="task-summary-container">
-      <span class="item-label"> {{ task.project?.key }}</span>
+      <span class="item-label"> {{ task.key }}</span>
       <h5>
-        <div class="summary-text-wrapper" *ngIf="!this.taskSummaryInputShow">
-          <span class="summary-text" [innerHTML]="safeHTML(task.summary)"> </span>
-          <tasque-button
-            class="btn icon edit"
-            [icon]="editIcon"
-            (click)="summaryClick()"
-          ></tasque-button>
+        <div class="summary-text-wrapper" *ngIf="!this.summaryInputShow">
+          <span class="summary-text" [innerHTML]="editTaskForm.controls.summary.value"> </span>
+          <tasque-button class="btn icon edit" [icon]="editIcon" (click)="summaryClick()"></tasque-button>
         </div>
 
         <div
           class="input-wrapper"
-          *ngIf="this.taskSummaryInputShow"
+          *ngIf="this.summaryInputShow"
           (clickOutside)="summaryInputOutsideClick()"
           [delayClickOutsideInit]="true"
         >
           <tasque-input
             placeholder="Type some text"
-            formControlName="taskSummary"
+            formControlName="summary"
             errorMessage=""
-            [invalid]="!editTaskForm.controls.taskSummary.valid"
+            [invalid]="editTaskForm.controls.summary.valid"
           >
           </tasque-input>
         </div>
@@ -35,9 +36,7 @@
           <tasque-button class="btn icon" [icon]="ellipsisIcon"></tasque-button>
         </div>
       </h5>
-      <span class="error" *ngIf="!this.editTaskForm.controls.taskSummary.valid">{{
-        summaryErrorMessage
-      }}</span>
+      <span class="error" *ngIf="this.editTaskForm.controls.summary.invalid">{{ summaryErrorMessage }}</span>
     </div>
 
     <div class="task-main-container">
@@ -48,35 +47,27 @@
             class="red"
             width="200px"
             [options]="projectOptions"
-            formControlName="taskProject"
+            formControlName="project"
           ></tasque-dropdown>
         </div>
 
         <div class="item-wrapper">
           <span class="item-label">Status</span>
-          <tasque-dropdown
-            width="200px"
-            [options]="taskStatusOptions"
-            formControlName="taskStatus"
-          ></tasque-dropdown>
+          <tasque-dropdown width="200px" [options]="statusOptions" formControlName="status"></tasque-dropdown>
         </div>
 
         <div class="item-wrapper">
           <span class="item-label">Priority</span>
           <tasque-dropdown
             width="200px"
-            [options]="taskPriorityOptions"
-            formControlName="taskPriority"
+            [options]="priorityOptions"
+            formControlName="priority"
           ></tasque-dropdown>
         </div>
 
         <div class="item-wrapper">
           <span class="item-label">Type</span>
-          <tasque-dropdown
-            width="200px"
-            [options]="taskTypeOptions"
-            formControlName="taskType"
-          ></tasque-dropdown>
+          <tasque-dropdown width="200px" [options]="typeOptions" formControlName="type"></tasque-dropdown>
         </div>
 
         <div class="item-wrapper">
@@ -85,7 +76,7 @@
             width="80px"
             optionsWidth="max-content"
             [options]="sprintOptions"
-            formControlName="taskSprint"
+            formControlName="sprint"
           ></tasque-dropdown>
         </div>
 
@@ -95,17 +86,9 @@
         </div>
         <div class="item-wrapper">
           <span class="item-label">Reporter</span>
-          <div class="user-info">
-            <tasque-avatar [diameter_px]="30" alt="avatar"></tasque-avatar>
-            <span> {{ taskReporter.name }}</span>
-          </div>
-        </div>
-
-        <div class="item-wrapper">
-          <span class="item-label">Author</span>
-          <div class="user-info">
-            <tasque-avatar [diameter_px]="30" alt="avatar"></tasque-avatar>
-            <span> {{ taskUser.name }}</span>
+          <div class="user-info" *ngIf="task.author">
+            <tasque-avatar [user]="task.author" [diameter_px]="30" alt="avatar"></tasque-avatar>
+            <span> {{ task.author.name }}</span>
           </div>
         </div>
 
@@ -113,13 +96,8 @@
           <span class="item-label">Description</span>
 
           <div class="fill-description-width">
-            <div class="description-text-wrapper" *ngIf="!this.taskDescriptionEditorShow">
-              <span
-                class="description-text"
-                *ngIf="task.description"
-                [innerHTML]="safeHTML(task.description)"
-              >
-              </span>
+            <div class="description-text-wrapper" *ngIf="!this.descriptionEditorShow">
+              <span class="description-text" [innerHTML]="editTaskForm.controls.description.value"> </span>
               <tasque-button
                 class="btn icon edit"
                 [icon]="editIcon"
@@ -128,18 +106,18 @@
             </div>
 
             <angular-editor
-              *ngIf="this.taskDescriptionEditorShow"
+              *ngIf="this.descriptionEditorShow"
               (clickOutside)="descriptionEditorOutsideClick()"
               [delayClickOutsideInit]="true"
-              id="taskDescriptionEditor"
-              formControlName="taskDescription"
+              id="descriptionEditor"
+              formControlName="description"
               [config]="editorConfig"
               placeholder="Type some text..."
               class="description-editor"
             >
             </angular-editor>
 
-            <span class="error" *ngIf="!this.editTaskForm.controls.taskDescription.valid">{{
+            <span class="error" *ngIf="editTaskForm.controls.description.invalid">{{
               descriptionErrorMessage
             }}</span>
           </div>
@@ -151,13 +129,19 @@
         <tasque-button class="btn mini" text="+ Add issues"></tasque-button>
       </div>
 
+      <div class="submit-buttons">
+        <tasque-button type="submit" class="btn stroke" text="Clear form" (click)="clearForm()">
+        </tasque-button>
+        <tasque-button type="submit" class="btn fill" text="Update" (click)="submitForm()"> </tasque-button>
+      </div>
+
       <div class="comments-container">
         <h5>Comments</h5>
       </div>
     </div>
 
     <div class="user-comment-container">
-      <tasque-avatar [diameter_px]="45" alt="avatar"></tasque-avatar>
+      <tasque-avatar [user]="currentUser" [diameter_px]="45" alt="avatar"></tasque-avatar>
 
       <div class="input-wrapper">
         <tasque-input placeholder="Type a comment"></tasque-input>

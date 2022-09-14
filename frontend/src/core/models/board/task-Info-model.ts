@@ -5,8 +5,12 @@ import { UserModel } from '../user/user-model';
 
 export interface TaskInfoModel {
     id: number;
-    type: TaskType;
-    priority: TaskPriority;
+    type?: TaskType;
+    typeId: number;
+    priority?: TaskPriority;
+    priorityId?: number;
+    state?: TaskState;
+    stateId?: number;
     attachmentUrl: string;
     summary: string;
     customLabels: LabelField[];
@@ -14,5 +18,4 @@ export interface TaskInfoModel {
     user?: UserModel;
     assignees?: UserModel[];
     isHidden: boolean;
-    stateId: number;
 }

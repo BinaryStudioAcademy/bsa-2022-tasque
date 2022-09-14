@@ -9,7 +9,6 @@ using Tasque.Core.Common.DTO.Task.PartialModels;
 using Tasque.Core.Common.DTO.Task.TemplateModels.IncomeModels;
 using Tasque.Core.Common.Entities.Abstract;
 using Tasque.Core.DAL;
-using static Amazon.S3.Util.S3EventNotification;
 
 namespace Tasque.Core.BLL.Services
 {
@@ -38,10 +37,9 @@ namespace Tasque.Core.BLL.Services
         public async Task<TaskDto> CreateTask(TaskDto model)
         {
             var entity = _mapper.Map<Common.Entities.Task>(model);
-            var project = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId)?? throw new CustomNotFoundException("project");
+            var project = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId) ?? throw new CustomNotFoundException("project");
 
             entity.Key = project.Key + '-' + UpdateProjectCounter(project.Id);
-
 
             _dbContext.Add(entity);
             _dbContext.SaveChanges();
@@ -65,7 +63,7 @@ namespace Tasque.Core.BLL.Services
 
         public async Task DeleteTask(int id)
         {
-            var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == id) 
+            var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == id)
                 ?? throw new CustomNotFoundException(nameof(Common.Entities.Task));
 
             _dbContext.Tasks.Remove(task);
@@ -125,9 +123,9 @@ namespace Tasque.Core.BLL.Services
         {
             var currentProjectId = _dbContext.Projects.FirstOrDefault(p => p.Id == _dbContext.Tasks.FirstOrDefault(t => t.Id == model.Id).ProjectId).Id;
 
-            if(model.ProjectId != currentProjectId)
+            if (model.ProjectId != currentProjectId)
             {
-                var project = await _dbContext.Projects.FirstOrDefaultAsync(p => p.Id == model.ProjectId)?? throw new CustomNotFoundException("project");
+                var project = await _dbContext.Projects.FirstOrDefaultAsync(p => p.Id == model.ProjectId) ?? throw new CustomNotFoundException("project");
                 model.Key = project.Key + '-' + UpdateProjectCounter(project.Id);
             }
 
@@ -155,7 +153,19 @@ namespace Tasque.Core.BLL.Services
 
             SaveChanges(task);
 
-            return JoinTaskAttributesWithDto(_mapper.Map<TaskDto>(task),
+            var response = await _dbContext.Tasks
+                .Include(t => t.Users)
+                .Include(t => t.Author)
+                .Include(t => t.Sprint)
+                .Include(t => t.LastUpdatedBy)
+                .Include(t => t.Priority)
+                .Include(t => t.State)
+                .Include(t => t.Project)
+                .Include(t => t.Type)
+                .FirstOrDefaultAsync(t => t.Id == model.Id)
+                ?? throw new CustomNotFoundException("task"); ;
+
+            return JoinTaskAttributesWithDto(_mapper.Map<TaskDto>(response),
                 RenameFieldsWithActualValue(
                     await GetTaskTemplate(task.ProjectId, task.TypeId),
                         await MapCosmosTaskFieldsToTaskCustomFields(_mapper.Map<TaskDto>(task), attributes.CustomFields)));
@@ -203,7 +213,7 @@ namespace Tasque.Core.BLL.Services
 
         private int UpdateProjectCounter(int projectId)
         {
-            var project = _dbContext.Projects.FirstOrDefault(p => p.Id == projectId)?? throw new CustomNotFoundException("project");
+            var project = _dbContext.Projects.FirstOrDefault(p => p.Id == projectId) ?? throw new CustomNotFoundException("project");
             project.ProjectTaskCounter += 1;
             _dbContext.SaveChanges();
             return project.ProjectTaskCounter;

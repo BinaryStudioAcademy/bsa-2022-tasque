@@ -20,6 +20,7 @@ import { TaskModel } from 'src/core/models/task/task-model';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
 import { TaskState } from 'src/core/models/task/task-state';
+import { TaskStorageService } from 'src/core/services/task-storage.service';
 
 @Component({
   selector: 'tasque-board',
@@ -59,6 +60,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     private boardService: ScopeBoardService,
     private notificationService: NotificationService,
     private currentUserService: GetCurrentUserService,
+    private taskStorageService: TaskStorageService
   ) {
     this.currentUserService.currentUser$.subscribe((res) => {
       this.user = res as UserModel;
@@ -84,24 +86,80 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
     this.boardService.projectService.getProjectById(this.projectId)
       .subscribe(
-      (resp) => {
-        if (resp.ok) {
-          this.project = resp.body as ProjectModel;
-          this.setColumns();
-        } else {
-          this.notificationService.error('Something went wrong');
-        }
-      },
-    );
+        (resp) => {
+          if (resp.ok) {
+            this.project = resp.body as ProjectModel;
+            this.setColumns();
+          } else {
+            this.notificationService.error('Something went wrong');
+          }
+        },
+      );
 
     this.boardService.projectService.getAllProjectTasks(this.projectId)
       .subscribe((resp) => {
-      if(resp.ok){
-        this.projectTasks = resp.body as TaskModel[];
-        this.hasTasks = this.checkIfHasTasks();
-        this.sortTasksByColumns();
-      } else {
-        this.notificationService.error('Something went wrong');
+        if (resp.ok) {
+          this.projectTasks = resp.body as TaskModel[];
+          this.hasTasks = this.checkIfHasTasks();
+          this.sortTasksByColumns();
+        } else {
+          this.notificationService.error('Something went wrong');
+        }
+      });
+
+    this.taskStorageService.taskUpdated$.subscribe((task) => {
+      let isTaskFound = false;
+
+      for (const col of this.columns) {
+        if (isTaskFound) {
+          return;
+        }
+
+        const index = col.tasks.findIndex((t) => task.id === t.id);
+
+        if (index !== -1) {
+          isTaskFound = true;
+
+          col.tasks[index] = {
+            id: task.id,
+            typeId: task.typeId,
+            type: task.type,
+            priority: task.priority,
+            attachmentUrl: task.attachments[0]?.uri,
+            summary: task.summary,
+            customLabels: [],
+            key: task.key as string,
+            isHidden: false,
+          };
+        }
+      }
+    });
+
+    this.taskStorageService.taskUpdated$.subscribe((task) => {
+      let isTaskFound = false;
+
+      for (const col of this.columns) {
+        if (isTaskFound) {
+          return;
+        }
+
+        const index = col.tasks.findIndex((t) => task.id === t.id);
+
+        if (index !== -1) {
+          isTaskFound = true;
+
+          col.tasks[index] = {
+            id: task.id,
+            typeId: task.typeId,
+            type: task.type,
+            priority: task.priority,
+            attachmentUrl: task.attachments[0]?.uri,
+            summary: task.summary,
+            customLabels: [],
+            key: task.key as string,
+            isHidden: false,
+          };
+        }
       }
     });
   }
@@ -113,9 +171,9 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       const taskInfo: TaskInfoModel[] = [];
 
       tasks.forEach((t) => {
-
         taskInfo.push({
           id: t.id,
+          typeId: t.typeId,
           type: t.type,
           stateId: t.stateId,
           priority: t.priority,
@@ -182,40 +240,40 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         event.previousIndex,
         event.currentIndex,
       );
-     this.updateTasks(event); 
+      this.updateTasks(event);
     }
   }
 
-  updateColumns(): void { 
+  updateColumns(): void {
     this.boardService.taskStateService
       .createTaskState(this.newColumn)
-        .subscribe(() => {
-          this.notificationService.success('Column has been created successfully');
-          this.filterTasks();
-    }, () => {
-      this.notificationService.error('Something went wrong, try again later');
-    });
+      .subscribe(() => {
+        this.notificationService.success('Column has been created successfully');
+        this.filterTasks();
+      }, () => {
+        this.notificationService.error('Something went wrong, try again later');
+      });
   }
 
   updateTasks(event: CdkDragDrop<TaskInfoModel[]>): void {
     const model = event.container.data[event.currentIndex];
-      this.columns.forEach((c) => {
-        if(c.tasks === event.container.data) {
-          const task = this.projectTasks.find((t) => t.id === model.id) as TaskModel;
-          task.stateId = c.id;
-          this.boardService.taskService
-            .updateTask(task)
-            .subscribe((resp) => {
-              if(!resp.ok) {
-                this.notificationService.error('Something went wrong, try again later');
-              }
+    this.columns.forEach((c) => {
+      if (c.tasks === event.container.data) {
+        const task = this.projectTasks.find((t) => t.id === model.id) as TaskModel;
+        task.stateId = c.id;
+        this.boardService.taskService
+          .updateTask(task)
+          .subscribe((resp) => {
+            if (!resp.ok) {
+              this.notificationService.error('Something went wrong, try again later');
+            }
           });
-        }
-      });
+      }
+    });
   }
 
   checkIfHasTasks(): boolean {
-    if(this.projectTasks.length > 0){
+    if (this.projectTasks.length > 0) {
       return true;
     }
     return false;
@@ -223,11 +281,11 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
   filterTasks(): void {
     const phrase = this.searchInput.inputValue;
-    for(const column of this.columns) {
-      if(column.tasks){
-        for(const task of column.tasks) {
+    for (const column of this.columns) {
+      if (column.tasks) {
+        for (const task of column.tasks) {
           task.isHidden = !task.summary.toLowerCase().includes(phrase.toLowerCase());
-          if(this.selectedUserId) {
+          if (this.selectedUserId) {
             task.isHidden = task.isHidden || task.user?.id != this.selectedUserId;
           }
         }

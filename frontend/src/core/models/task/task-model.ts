@@ -13,20 +13,28 @@ export interface TaskModel {
   description?: string;
   key?: string;
   attachments: Attachment[];
-  state: TaskState;
+  state?: TaskState;
   stateId: number;
-  type: TaskType;
-  priority: TaskPriority;
-  author: UserModel;
+  type?: TaskType;
+  typeId: number;
+  priority?: TaskPriority
+  priorityId?: number;
+  author?: UserModel;
+  authorId?: number;
   project?: ProjectModel;
+  projectId?: number;
   sprint?: SprintModel;
-  lastUpdatedBy: UserModel;
-  parentTaskId: number;
+  sprintId?: number;
+  lastUpdatedBy?: UserModel;
+  lastUpdatedById?: number;
+  parentTask?: UserModel;
+  parentTaskId?: number;
   createdAt: Date;
   updatedAt: Date;
   deadline: Date;
   finishedAt?: Date;
   estimate?: number;
 
-  custmFields: TaskCustomFieldModel[];
+  users?: UserModel[];
+  custmFields?: TaskCustomFieldModel[];
 }
