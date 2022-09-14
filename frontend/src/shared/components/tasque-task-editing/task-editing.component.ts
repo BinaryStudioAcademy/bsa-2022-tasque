@@ -20,6 +20,7 @@ import { SprintService } from 'src/core/services/sprint.service';
 import { TaskService } from 'src/core/services/task.service';
 import { takeUntil } from 'rxjs/operators';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'tasque-task-editing',
@@ -70,8 +71,9 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     private projectService: ProjectService,
     private currentOrganizationService: GetCurrentOrganizationService,
     private taskService: TaskService,
-    private taskStorage: TaskStorageService,
-    private sprintService: SprintService) {
+    private taskStorageService: TaskStorageService,
+    private sprintService: SprintService,
+    private notificationService: NotificationService) {
     super();
   }
 
