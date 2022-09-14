@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { TaskModelDto } from '../models/task/task-model-dto';
+import { TaskModel } from '../models/task/task-model';
 import { HttpService } from './http.service';
 
 @Injectable({
@@ -16,10 +16,10 @@ export class BacklogService {
     this.changeBacklogSource.next();
   }
 
-  constructor(public httpService: HttpService) {}
+  constructor(public httpService: HttpService) { }
 
-  getBacklogTasks(projectId: number): Observable<HttpResponse<TaskModelDto[]>> {
-    return this.httpService.getFullRequest<TaskModelDto[]>(
+  getBacklogTasks(projectId: number): Observable<HttpResponse<TaskModel[]>> {
+    return this.httpService.getFullRequest<TaskModel[]>(
       this.routePrefix + `/backlogTasks/${projectId}`,
     );
   }

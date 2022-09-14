@@ -1,13 +1,10 @@
 <div class="issue">
-  <p class="issue-type">{{ currentTaskType() }}</p>
-  <p class="issue-key">TIS-1</p>
-  <p
-    class="issue-title"
-    [matTooltipShowDelay]="1500"
-    matTooltip=" {{ issue.description }}"
-  >
+  <p class="issue-type">{{ issue.type.name }}</p>
+  <p class="issue-key">{{ issue.key }}</p>
+  <p class="issue-title" [matTooltipShowDelay]="1500" matTooltip=" {{ issue.description }}">
     {{ issue.summary }}
   </p>
+  <tasque-task-editing [task]="issue"></tasque-task-editing>
   <div class="issue-estimate">
     <tasque-input
       class="input estimate-input"
@@ -21,13 +18,13 @@
   <tasque-dropdown
     [options]="taskStateToDropdownArray(taskStates)"
     (onSelect)="updateTaskState($event)"
-    [placeholder]="currentTaskState()"
+    [placeholder]="issue.state && issue.state.name"
     width="150px"
   ></tasque-dropdown>
 
   <div class="issue-users">
     <tasque-team-select
-      *ngIf="issue.users.length > 0"
+      *ngIf="issue.users && issue.users.length > 0"
       class="users"
       [miniView]="true"
       [avatars]="issue.users"

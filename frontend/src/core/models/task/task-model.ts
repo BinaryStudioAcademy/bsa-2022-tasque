@@ -16,7 +16,7 @@ export interface TaskModel {
   priority: TaskPriority;
   author: UserModel;
   project: ProjectModel;
-  sprint: SprintModel;
+  sprint?: SprintModel;
   lastUpdatedBy: UserModel;
   parentTaskId: number;
   createdAt: Date;
@@ -25,5 +25,6 @@ export interface TaskModel {
   finishedAt?: Date;
   estimate?: number;
 
-  custmFields: TaskCustomFieldModel[];
+  users?: UserModel[];
+  custmFields?: TaskCustomFieldModel[];
 }

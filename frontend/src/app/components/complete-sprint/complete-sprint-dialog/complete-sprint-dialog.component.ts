@@ -23,7 +23,7 @@ export class CompleteSprintDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<CompleteSprintDialogComponent>,
     public sprintService: SprintService,
     public backlogService: BacklogService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.openIssue();
@@ -48,16 +48,16 @@ export class CompleteSprintDialogComponent implements OnInit {
   openIssue(): number {
     return this.sprint.tasks.filter(
       (t) =>
-        t.stateId == TaskStateTypes.ToDo ||
-        t.stateId == TaskStateTypes.InProgress,
+        t.state.id == TaskStateTypes.ToDo ||
+        t.state.id == TaskStateTypes.InProgress,
     ).length;
   }
 
   completedIssues(): number {
     return this.sprint.tasks.filter(
       (t) =>
-        t.stateId == TaskStateTypes.Done ||
-        t.stateId == TaskStateTypes.Canceled,
+        t.state.id == TaskStateTypes.Done ||
+        t.state.id == TaskStateTypes.Canceled,
     ).length;
   }
 }
