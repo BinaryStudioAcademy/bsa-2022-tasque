@@ -117,6 +117,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         taskInfo.push({
           id: t.id,
           type: t.type,
+          stateId: t.stateId,
           priority: t.priority,
           attachmentUrl: t.attachments[0]?.uri,
           summary: t.summary,
@@ -181,12 +182,11 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         event.previousIndex,
         event.currentIndex,
       );
-      
-      //this.updateTasks(); 
+     this.updateTasks(event); 
     }
   }
 
-  updateColumns(): void { //TODO: Rework as for current db scheme
+  updateColumns(): void { 
     this.boardService.taskStateService
       .createTaskState(this.newColumn)
         .subscribe(() => {
@@ -197,15 +197,22 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     });
   }
 
-  // updateTasks(): void {
-  //   this.projectService
-  //     .updateBoardTasks(this.board)
-  //     .pipe(filter((resp) => resp.body != null))
-  //     .subscribe((resp) => {
-  //       this.board = resp.body as BoardModel;
-  //       this.filterTasks();
-  //     });
-  // }
+  updateTasks(event: CdkDragDrop<TaskInfoModel[]>): void {
+    const model = event.container.data[event.currentIndex];
+      console.log(model);
+      this.columns.forEach((c) => {
+        if(c.tasks === event.container.data) {
+          const task = this.projectTasks.find((t) => t.id === model.id) as TaskModel;
+          task.stateId = c.id;
+          this.boardService.taskService.updateTask(task)
+            .subscribe((resp) => {
+              if(!resp.ok){
+                this.notificationService.error('Something go wrong. Try again later');
+              }
+          })
+        }
+      });
+  }
 
   checkIfHasTasks(): boolean {
     if(this.projectTasks.length > 0){

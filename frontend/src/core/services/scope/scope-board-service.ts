@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ProjectService } from '../project.service';
+import { TaskService } from '../task-service.service';
 import { TaskStateService } from '../task-state.service';
 
 @Injectable({
@@ -10,5 +11,6 @@ import { TaskStateService } from '../task-state.service';
     constructor(
         public projectService: ProjectService,
         public taskStateService: TaskStateService,
+        public taskService: TaskService
     ) { }
   }
