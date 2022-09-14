@@ -20,17 +20,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-RegisterHandlers(builder.Services);
-builder.Services.RegisterEventBus(builder.Configuration);
-
-builder.Services.AddServices();
-
-builder.Services.AddDbContext<NotificationsContext>(
-    o => o.UseNpgsql(builder.Configuration["ConnectionStrings:NotificationsDb"],
-        b => b.MigrationsAssembly(typeof(NotificationsContext).Assembly.FullName))
-        .EnableDetailedErrors());
-
-builder.Services.ConfigureSignalR();
+builder.Services.RegisterInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
@@ -46,7 +36,7 @@ using (var scope = app.Services.CreateScope())
 
 using (var scope = app.Services.CreateScope())
 {
-    AddSubscriptions(scope.ServiceProvider);
+    scope.ServiceProvider.ConfigureSubscriptions();
 }
 
 // Configure the HTTP request pipeline.
@@ -66,10 +56,7 @@ app.MapControllers();
 
 app.Run();
 
-static void RegisterHandlers(IServiceCollection services)
-{
-    services.AddSingleton<UserInvitedEventHandler>();
-}
+
 
 static void AddSubscriptions(IServiceProvider services)
 {

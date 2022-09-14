@@ -7,9 +7,15 @@ namespace Tasque.Notifications.Hubs
 {
     public class NotificationsHub : Hub
     {
-        public async Task NotifySingleUser<TNotification>(TNotification notification, int userId) where TNotification : Notification
+        protected IHubContext<NotificationsHub> _context;
+        public NotificationsHub(IHubContext<NotificationsHub> context)
         {
-            await Clients.User(userId.ToString()).SendAsync(notification.Type.ToString(), JsonConvert.SerializeObject(notification));
+            _context=context;
+        }
+
+        public Task NotifySingleUser(Notification notification, int userId)
+        {
+            return _context.Clients.User(userId.ToString()).SendAsync(notification.Type.ToString(), JsonConvert.SerializeObject(notification));
         }
     }
 }

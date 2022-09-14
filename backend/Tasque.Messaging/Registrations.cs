@@ -26,7 +26,7 @@ namespace Tasque.Messaging
 
                 var factory = new ConnectionFactory()
                 {
-                    HostName = configuration["EventBusConnection"],
+                    HostName = configuration["ConnectionStrings:EventBus"],
                     DispatchConsumersAsync = true
                 };
 
