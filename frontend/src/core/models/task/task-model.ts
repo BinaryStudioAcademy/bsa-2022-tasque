@@ -1,4 +1,3 @@
-import { NumberLiteralType } from 'typescript';
 import { ProjectModel } from '../project/project-model';
 import { SprintModel } from '../sprint/sprint-model';
 import { UserModel } from '../user/user-model';
