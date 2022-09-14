@@ -199,17 +199,17 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
   updateTasks(event: CdkDragDrop<TaskInfoModel[]>): void {
     const model = event.container.data[event.currentIndex];
-      console.log(model);
       this.columns.forEach((c) => {
         if(c.tasks === event.container.data) {
           const task = this.projectTasks.find((t) => t.id === model.id) as TaskModel;
           task.stateId = c.id;
-          this.boardService.taskService.updateTask(task)
+          this.boardService.taskService
+            .updateTask(task)
             .subscribe((resp) => {
-              if(!resp.ok){
-                this.notificationService.error('Something go wrong. Try again later');
+              if(!resp.ok) {
+                this.notificationService.error('Something went wrong, try again later');
               }
-          })
+          });
         }
       });
   }

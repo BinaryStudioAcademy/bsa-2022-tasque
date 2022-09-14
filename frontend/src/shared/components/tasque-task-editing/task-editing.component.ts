@@ -23,11 +23,6 @@ import { TaskState } from 'src/core/models/task/task-state';
 import { TaskPriority } from 'src/core/models/task/task-priority';
 import { TaskType } from 'src/core/models/task/task-type';
 import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
-import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
-import { ProjectService } from 'src/core/services/project.service';
-import { TaskTemplateService } from 'src/core/services/task-template.service';
-import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
-import { SprintService } from 'src/core/services/sprint.service';
 
 @Component({
   selector: 'tasque-task-editing',
