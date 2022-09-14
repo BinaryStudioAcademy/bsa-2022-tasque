@@ -188,7 +188,7 @@ namespace Tasque.Core.BLL.Services
 
         private List<TaskCustomFields> RenameFieldsWithActualValue(TaskTemplate template, List<TaskCustomFields> fields)
         {
-            if (template == null)
+            if (template == null || fields == null)
                 return fields;
 
             fields.ForEach(f => f.FieldName = template.CustomFields?.Find(t => t.FieldId == f.FieldId)?.Name);
