@@ -18,7 +18,7 @@ import { TaskState } from 'src/core/models/task/task-state';
 import { faFlag } from '@fortawesome/free-solid-svg-icons';
 import { TaskModelDto } from 'src/core/models/task/task-model-dto';
 import { TaskService } from 'src/core/services/task.service';
-import { ToastrService } from 'ngx-toastr';
+import { NotificationService } from 'src/core/services/notification.service';
 import { ProjectModel } from 'src/core/models/project/project-model';
 
 @Component({
@@ -100,7 +100,7 @@ export class IssueComponent implements OnInit {
     public userServise: UserService,
     public taskServise: TaskService,
     public sprintService: SprintService,
-    public toastrService: ToastrService,
+    public notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
   ) {}
 
@@ -184,7 +184,7 @@ export class IssueComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          this.toastrService.success('Task status updated');
+          this.notificationService.success('Task status updated');
         }
       });
   }

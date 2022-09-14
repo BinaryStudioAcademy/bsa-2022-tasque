@@ -26,11 +26,11 @@ import { TaskService } from 'src/core/services/task.service';
 import { TaskModelDto } from 'src/core/models/task/task-model-dto';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskType } from 'src/core/models/task/task-type';
-import { ToastrService } from 'ngx-toastr';
 import { TaskTypeService } from 'src/core/services/task-type.service';
 import { TaskStateService } from 'src/core/services/task-state.service';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { UserRole } from 'src/core/models/user/user-roles';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-sprint',
@@ -81,7 +81,7 @@ export class SprintComponent implements OnInit, OnChanges {
   constructor(
     public sprintService: SprintService,
     public taskService: TaskService,
-    public toastrService: ToastrService,
+    public notificationService: NotificationService,
     public taskTypeService: TaskTypeService,
     public taskStateService: TaskStateService,
   ) {}
@@ -192,7 +192,7 @@ export class SprintComponent implements OnInit, OnChanges {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((result) => {
           if (result.body) {
-            this.toastrService.success('Task moved to sprint');
+            this.notificationService.success('Task moved to sprint');
           }
         });
     }

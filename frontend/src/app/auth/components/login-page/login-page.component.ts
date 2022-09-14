@@ -120,7 +120,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
             this.authService.setAuthToken(resp.body);
             this.toastrService.success(
               'You will be redirected to your profile',
-              'Login successful',
+              'Login successful', { positionClass: 'toast-top-right' }
             );
             this.router.navigate(['../..', 'organizations'], {
               replaceUrl: true,

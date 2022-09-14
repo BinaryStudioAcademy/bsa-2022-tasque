@@ -25,11 +25,11 @@ import {
 } from '@angular/cdk/drag-drop';
 import { IssueSort } from './models';
 import { TaskModel } from 'src/core/models/task/task-model';
-import { ToastrService } from 'ngx-toastr';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from 'src/core/services/project.service';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-backlog',
@@ -75,7 +75,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
     public projectService: ProjectService,
     public sprintService: SprintService,
     public currentUserService: GetCurrentUserService,
-    private toastrService: ToastrService,
+    private notificationService: NotificationService,
     private route: ActivatedRoute,
     private cdref: ChangeDetectorRef,
   ) {
@@ -185,7 +185,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
     this.updateSprint(sprint.id, sprint);
     this.updateSprint(nextSprint.id, nextSprint);
     this.sprints.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-    this.toastrService.success('Priority updated');
+    this.notificationService.success('Priority updated');
   }
 
   updateSprint(sprintId: number, sprint: SprintModel): void {
