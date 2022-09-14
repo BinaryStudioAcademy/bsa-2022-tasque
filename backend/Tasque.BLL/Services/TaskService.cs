@@ -39,7 +39,9 @@ namespace Tasque.Core.BLL.Services
             var entity = _mapper.Map<Common.Entities.Task>(model);
             var key = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId)?.Key;
             var count = _dbContext.Tasks.Where(t => t.ProjectId == model.ProjectId).Count();
+            var order = _dbContext.Tasks.Where(t => t.ProjectId == model.ProjectId).Max(x => x.Order) + 1;
             entity.Key = key + '-' + count;
+            entity.Order = order;
 
             _dbContext.Add(entity);
             _dbContext.SaveChanges();

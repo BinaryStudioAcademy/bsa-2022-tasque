@@ -314,7 +314,8 @@ public class ProjectService : EntityCrudService<Project>
     public async Task<BoardInfoDto> GetProjectBoard(int projectId)
     {
         var project = await _db.Projects
-            .Include(x => x.Columns).ThenInclude(x => x.Tasks)
+            .Include(x => x.Columns)
+                .ThenInclude(x => x.Tasks.OrderBy(x => x.Order))
             .Include(x => x.Users)
             .FirstOrDefaultAsync(x => x.Id == projectId)
             ?? throw new CustomNotFoundException("project");
