@@ -17,6 +17,7 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
 import { TaskCustomFieldModel } from 'src/core/models/task/task-creation-models/task-custom-field-model';
 import { TaskService } from 'src/core/services/task-service.service';
 import { TaskPriority } from 'src/core/models/task/task-priority';
+import { TaskState } from 'src/core/models/task/task-state';
 
 @Component({
   selector: 'tasque-task-creation',
@@ -34,6 +35,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   public summaryControl: FormControl;
   public descriptionControl: FormControl;
   public priorityControl: FormControl;
+  public stateControl: FormControl;
 
   public unsubscribe$ = new Subject<void>();
 
@@ -42,7 +44,8 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   public selectedProjectId: number;
   public selectedTaskTypeId: number;
-  public selectedPriorityId: number;
+  public selectedPriorityId: number | undefined;
+  public selectedStateId: number | undefined;
 
   public template: TaskTemplate;
   public taskType: TaskType;
@@ -50,6 +53,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   public customFields: TaskCustomField[];
   public issueTemplates: TaskTemplate[];
+  public taskStates: TaskState[];
   public projectUsers: UserModel[];
   public currentUser: UserModel;
 
@@ -57,6 +61,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   public projects: TasqueDropdownOption[] = [];
   public issueTypes: TasqueDropdownOption[] = [];
   public projectPriorities: TasqueDropdownOption[] = [];
+  public taskStateOptions: TasqueDropdownOption[] = [];
 
   @Input() public buttonText = '';
   @Input() public organizationId: number;
@@ -139,6 +144,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       Validators.maxLength(5000),
     ]);
     this.priorityControl = new FormControl(this.task.priorityId);
+    this.stateControl = new FormControl(this.task.stateId);
   }
 
   ngOnInit(): void {
@@ -148,6 +154,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       summaryControl: this.summaryControl,
       descriptionControl: this.descriptionControl,
       priorityControl: this.priorityControl,
+      stateControl: this.stateControl,
     });
 
     this.projectService
@@ -232,6 +239,24 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
           );
         }
       });
+
+      this.projectService
+        .getProjectStates(this.selectedProjectId)
+        .subscribe((resp) => {
+          if(resp.ok){
+            this.taskStates = resp.body as TaskState[];
+            this.taskStates.forEach((ts) => {
+              this.taskStateOptions.push({
+                id: ts.id,
+                title: ts.name,
+                color: ts.color,
+              });
+            });
+          } else {
+            this.notificationService
+              .error('Something went wrong, try again later');
+          }
+      });
   }
 
   setSelectedTaskType(id: number): void {
@@ -257,6 +282,10 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     );
   }
 
+  setSelectedTaskState(id: number): void {
+    this.selectedStateId = id;
+  }
+
   public submitForm(): void {
     if (
       !this.taskCreateForm.valid ||
@@ -273,12 +302,11 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     }
 
     this.task = {
-      //TODO: Replace stateId with dropdown select when ability to create this entity will implemented
       authorId: this.currentUser.id,
       projectId: this.taskCreateForm.get('projectControl')?.value.id,
 
       typeId: this.taskCreateForm.get('issueTypeControl')?.value.id,
-      stateId: 1, // <----
+      stateId: this.selectedStateId,
       priorityId: this.selectedPriorityId,
 
       summary: this.taskCreateForm.get('summaryControl')?.value,
@@ -303,6 +331,10 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   public clearForm(): void {
     this.taskCreateForm.reset();
+    this.selectedPriorityId = undefined;
+    this.selectedStateId = undefined;
+    this.projectPriorities = [];
+    this.taskStateOptions = [];
     this.customFields = [];
   }
 

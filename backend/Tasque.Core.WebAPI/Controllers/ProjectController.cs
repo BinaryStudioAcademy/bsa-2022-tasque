@@ -32,6 +32,16 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         return Ok(await _service.GetAllProjectsOfOrganization(organizationId));
     }
 
+    [HttpGet("getById/{id}")]
+    public override IActionResult GetById(int id)
+    {
+        var project = _service.GetProjectById(id);
+        if(project == null)
+            return NotFound("Project Not Found");
+        return Ok(project);
+        
+    }
+
     [HttpPut("invite")]
     public async Task<IActionResult> InviteUserToProject([FromBody] UserInviteDto userInviteDto)
     {
@@ -125,6 +135,15 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         if (priorities == null)
             return NotFound("Project or it's task priorities not found");
         return Ok(priorities);
+    }
+
+    [HttpGet("getProjectStates/{projectId}")]
+    public IActionResult GetProjectStates(int projectId)
+    {
+        var states = _service.GetProjectStatesById(projectId);
+        if (states == null)
+            return NotFound("Project or it's task states not found");
+        return Ok(states);
     }
 }
 

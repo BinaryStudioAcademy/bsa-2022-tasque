@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/core/services/auth.service';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-confirm-email-page',
@@ -13,7 +13,7 @@ export class ConfirmEmailPageComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private notifService: ToastrService,
+    private notifService: NotificationService,
   ) { }
 
   ngOnInit(): void {

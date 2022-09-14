@@ -11,6 +11,8 @@ import { InviteUserModel } from '../models/project/invite-user-model';
 import { ChangeUserRoleModel } from '../models/project/change-user-role-model';
 import { TaskPriority } from '../models/task/task-priority';
 import { BoardModel } from '../models/board/board-model';
+import { TaskState } from '../models/task/task-state';
+import { TaskModel } from '../models/task/task-model';
 
 @Injectable({
   providedIn: 'root'
@@ -76,5 +78,13 @@ export class ProjectService {
 
   getProjectPriorities(id: number): Observable<HttpResponse<TaskPriority[]>> {
     return this.httpService.getFullRequest(this.routePrefix + '/getProjectPriorities/' + id);
+  }
+
+  getProjectStates(id: number): Observable<HttpResponse<TaskState[]>> {
+    return this.httpService.getFullRequest(this.routePrefix + '/getProjectStates/' + id);
+  }
+
+  getAllProjectTasks(id: number): Observable<HttpResponse<TaskModel[]>> {
+    return this.httpService.getFullRequest('/api/task/getAllProjectTasks/' + id);
   }
 }

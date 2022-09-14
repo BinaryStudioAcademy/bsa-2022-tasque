@@ -42,6 +42,22 @@ namespace Tasque.Core.BLL.Services.AzureServices
             return results;
         }
 
+        public async Task<List<CosmosTaskModel>> GetAllProjectTasks(int projectId)
+        {
+            var query = _container.GetItemQueryIterator<CosmosTaskModel>(
+                new QueryDefinition(CosmosDbQueries.GetAll + $" WHERE c.{CosmosDbKeys.ProjectIdKey} = {projectId}"));
+
+            var results = new List<CosmosTaskModel>();
+
+            while (query.HasMoreResults)
+            {
+                var response = await query.ReadNextAsync();
+                results.AddRange(response.ToList());
+            }
+
+            return results;
+        }
+
         public async Task<CosmosTaskModel?> GetTaskById(string id)
         {
             try
