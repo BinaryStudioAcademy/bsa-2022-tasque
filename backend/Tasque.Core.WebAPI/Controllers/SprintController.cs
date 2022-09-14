@@ -16,7 +16,7 @@ namespace Tasque.Core.WebAPI.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost("createSprint")]
         public async Task<IActionResult> Create([FromBody] NewSprintDto sprintDto)
         {
             return Ok(await _service.Create(sprintDto));
