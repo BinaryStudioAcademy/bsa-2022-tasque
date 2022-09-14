@@ -153,7 +153,19 @@ namespace Tasque.Core.BLL.Services
 
             SaveChanges(task);
 
-            return JoinTaskAttributesWithDto(_mapper.Map<TaskDto>(task),
+            var response = await _dbContext.Tasks
+                .Include(t => t.Users)
+                .Include(t => t.Author)
+                .Include(t => t.Sprint)
+                .Include(t => t.LastUpdatedBy)
+                .Include(t => t.Priority)
+                .Include(t => t.State)
+                .Include(t => t.Project)
+                .Include(t => t.Type)
+                .FirstOrDefaultAsync(t => t.Id == model.Id)
+                ?? throw new CustomNotFoundException("task"); ;
+
+            return JoinTaskAttributesWithDto(_mapper.Map<TaskDto>(response),
                 RenameFieldsWithActualValue(
                     await GetTaskTemplate(task.ProjectId, task.TypeId),
                         await MapCosmosTaskFieldsToTaskCustomFields(_mapper.Map<TaskDto>(task), attributes.CustomFields)));
