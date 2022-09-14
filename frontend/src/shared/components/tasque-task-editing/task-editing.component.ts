@@ -310,7 +310,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       stateId: this.editTaskForm.controls.status.value.id,
       typeId: this.editTaskForm.controls.type.value.id,
       projectId: this.editTaskForm.controls.project.value.id,
-      sprintId: this.editTaskForm.controls.sprint.value.id,
+      //sprintId: this.editTaskForm.controls.sprint.value.id,
     };
 
     this.taskService.updateTask(updatedTask)
