@@ -11,6 +11,7 @@ export class TasqueTeamSelectComponent implements OnInit {
   public inputSearch = '';
   //Notify the parent component when the avatar is clicked and pass the selected user to it
   @Output() selectedUser = new EventEmitter<UserModel>();
+  public selectedUserId: number;
   public searchIcon = faMagnifyingGlass;
   public showPopUp = false;
 
@@ -21,33 +22,33 @@ export class TasqueTeamSelectComponent implements OnInit {
 
   public avatarsShow: UserModel[] = this.avatars;
 
-  public profileColors: string[] = [];
-
   constructor() {}
 
-  ngOnInit(): void {
-    this.avatarsShow = this.avatars;
-    this.generateColor();
+ngOnInit(): void {
     if(!this.miniViewDiameter){
       this.miniViewDiameter = 40;
     }
   }
 
-  generateColor(): void {
-    for (let i = 0; i < this.avatarsShow.length; i++) {
-      this.profileColors.push(
-        '#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6),
-      );
-    }
-  }
-
   filterItems(): void {
     this.avatarsShow = this.avatars.filter((avatar) => {
-      return avatar.name.includes(this.inputSearch);
+      return avatar.name.toLocaleLowerCase().includes(this.inputSearch.toLocaleLowerCase());
     });
   }
 
-  selectUser(avatars: UserModel): void {
-    this.selectedUser.emit(avatars);
+  selectUser(user: UserModel): void {
+    this.selectedUser.emit(user);
+    if (this.selectedUserId != user.id){
+      this.selectedUserId = user.id;
+    }
+    else {
+      this.selectedUserId = 0;
+    }
+    
+  }
+
+  switchPopUp(): void {
+    this.avatarsShow = this.avatars;
+    this.showPopUp = !this.showPopUp;
   }
 }
