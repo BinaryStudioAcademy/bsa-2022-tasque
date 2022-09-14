@@ -200,7 +200,7 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
         return _mapper.Map<List<ProjectInfoDto>>(projects);
     }
 
-    public async Task<bool> InviteUserToProject(UserInviteDto usersInviteDto)
+    public async Task InviteUserToProject(UserInviteDto usersInviteDto)
     {
         var user = await _db.Users
             .FirstOrDefaultAsync(u => u.Email == usersInviteDto.Email);
@@ -231,7 +231,6 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
         _db.Projects.Update(project);
 
         await _db.SaveChangesAsync();
-        return true;
     }
 
     public async Task KickUserOfProject(UserInviteDto usersInviteDto)

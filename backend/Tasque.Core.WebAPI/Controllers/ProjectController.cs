@@ -25,9 +25,9 @@ public class ProjectController : EntityController
     [HttpPut("invite")]
     public async Task<IActionResult> InviteUserToProject([FromBody] UserInviteDto userInviteDto)
     {
-        var isUserHasBeenAdded = await _service.InviteUserToProject(userInviteDto);
+        await _service.InviteUserToProject(userInviteDto);
 
-        return Ok(isUserHasBeenAdded);
+        return Ok();
     }
 
     [HttpPut("kick")]
