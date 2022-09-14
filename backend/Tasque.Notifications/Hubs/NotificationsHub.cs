@@ -9,7 +9,7 @@ namespace Tasque.Notifications.Hubs
     {
         public async Task NotifySingleUser<TNotification>(TNotification notification, int userId) where TNotification : Notification
         {
-            await Clients.User(userId.ToString()).SendAsync(notification.Type, JsonConvert.SerializeObject(notification));
+            await Clients.User(userId.ToString()).SendAsync(notification.Type.ToString(), JsonConvert.SerializeObject(notification));
         }
     }
 }

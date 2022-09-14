@@ -47,7 +47,7 @@ namespace Tasque.Notifications.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TaskCommentedNotifications");
+                    b.ToTable("TaskCommentedNotifications", (string)null);
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Notifications.TaskMovedNotification", b =>
@@ -81,7 +81,7 @@ namespace Tasque.Notifications.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TaskMovedNotifications");
+                    b.ToTable("TaskMovedNotifications", (string)null);
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Notifications.UserInvitedNotification", b =>
@@ -109,7 +109,7 @@ namespace Tasque.Notifications.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserInvitedNotifications");
+                    b.ToTable("UserInvitedNotifications", (string)null);
                 });
 #pragma warning restore 612, 618
         }
