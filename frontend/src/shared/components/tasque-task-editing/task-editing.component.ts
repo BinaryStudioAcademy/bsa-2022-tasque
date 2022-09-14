@@ -114,10 +114,10 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
   ngOnInit(): void {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.taskSprint = this.sprints.find((x) => x.id === this.task.sprint.id)!;
+    this.taskSprint = this.sprints.find((x) => x.id === this.task.sprint?.id)!;
 
     this.editTaskForm = new FormGroup({
-      taskProject: new FormControl(this.convertToOption(this.task.project)),
+      taskProject: new FormControl(this.convertToOption(this.task.project as ProjectModel)),
       taskSummary: new FormControl(this.task.summary, [
         Validators.required,
         Validators.minLength(2),
@@ -139,7 +139,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     this.fillTaskStateOptions(this.taskStates);
     this.fillTaskPriorityOptions(this.taskPriorities);
     this.fillTaskTypeOptions(this.taskTypes);
-  }
+          }
 
   public safeHTML(unsafe: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(unsafe);
@@ -203,23 +203,23 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
     switch (item.id % 4) {
       case 1:
-        return {
+      return {
           color: 'green',
           title: item.name,
-          id: item.id,
+        id: item.id,
         };
       case 2:
         return {
           color: 'yellow',
-          title: item.name,
+        title: item.name,
           id: item.id,
-        };
+      };
       case 3:
-        return {
+    return {
           color: 'orange',
           title: item.name,
-          id: item.id,
-        };
+      id: item.id,
+    };
       case 0:
         return {
           color: 'red',
