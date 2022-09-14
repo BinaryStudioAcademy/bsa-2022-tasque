@@ -43,7 +43,7 @@ export class EditSprintComponent implements OnInit {
     });
 
     dialog.afterClosed().subscribe((result: SprintModel) => {
-      if (this.isStarting && result.startAt) {
+      if (this.isStarting && result && result.startAt) {
         this.currentSprint.startAt = result.startAt;
         this.currentSprint.endAt = result.endAt;
       }
