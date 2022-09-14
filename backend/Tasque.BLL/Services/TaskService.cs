@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.PartialModels;
-using Tasque.Core.Common.DTO.Project;
 using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.DTO.Task.PartialModels;
 using Tasque.Core.Common.DTO.Task.TemplateModels.IncomeModels;
@@ -37,8 +35,8 @@ namespace Tasque.Core.BLL.Services
         public async Task<TaskDto> CreateTask(TaskDto model)
         {
             var entity = _mapper.Map<Common.Entities.Task>(model);
-            var key = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId)?.Key;
-            var count = _dbContext.Tasks.Where(t => t.ProjectId == model.ProjectId).Count();
+            var key = _dbContext.Projects.FirstOrDefault(p => p.Id == model.Project.Id)?.Key;
+            var count = _dbContext.Tasks.Where(t => t.ProjectId == model.Project.Id).Count();
             entity.Key = key + '-' + count;
 
             _dbContext.Add(entity);
@@ -58,12 +56,12 @@ namespace Tasque.Core.BLL.Services
 
             return JoinTaskAttributesWithDto(task,
                 RenameFieldsWithActualValue(
-                    await GetTaskTemplate(task.ProjectId, task.TypeId), await MapCosmosTaskFieldsToTaskCustomFields(task, attributes.CustomFields)));
+                    await GetTaskTemplate(task.Project.Id, task.Type.Id), await MapCosmosTaskFieldsToTaskCustomFields(task, attributes.CustomFields)));
         }
 
         public async Task DeleteTask(int id)
         {
-            var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == id) 
+            var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == id)
                 ?? throw new CustomNotFoundException(nameof(Common.Entities.Task));
 
             _dbContext.Tasks.Remove(task);
@@ -81,7 +79,7 @@ namespace Tasque.Core.BLL.Services
             return tasks.Join(customFields, t => t.Id, ca => int.Parse(ca.Id), (t, ca) =>
                 JoinTaskAttributesWithDto(t,
                     RenameFieldsWithActualValue(
-                        GetTaskTemplate(t.ProjectId, t.TypeId).Result,
+                        GetTaskTemplate(t.Project.Id, t.Type.Id).Result,
                             MapCosmosTaskFieldsToTaskCustomFields(t, ca.CustomFields).Result))).ToList();
         }
 
@@ -95,7 +93,7 @@ namespace Tasque.Core.BLL.Services
 
             return JoinTaskAttributesWithDto(task,
                 RenameFieldsWithActualValue(
-                    await GetTaskTemplate(task.ProjectId, task.TypeId),
+                    await GetTaskTemplate(task.Project.Id, task.Type.Id),
                         await MapCosmosTaskFieldsToTaskCustomFields(task, attributes.CustomFields)));
         }
 
@@ -151,7 +149,7 @@ namespace Tasque.Core.BLL.Services
 
         public async Task<List<TaskCustomFields>> MapCosmosTaskFieldsToTaskCustomFields(TaskDto task, List<CosmosTaskFields> fields)
         {
-            var template = await GetTaskTemplate(task.ProjectId, task.TypeId);
+            var template = await GetTaskTemplate(task.Project.Id, task.Type.Id);
             var result = new List<TaskCustomFields>();
 
             fields.ForEach(f => result.Add(new()
