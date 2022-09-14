@@ -11,8 +11,8 @@ export class GetCurrentOrganizationService {
     public currentOrganizationId$ = this.currentOrganizationIdSubj.asObservable();
 
     public set currentOrganizationId(value: number) {
-        this.currentOrganizationIdSubj.next(value);
-        localStorage.setItem(LocalStorageKeys.selectedOrganization, value.toString());
+      localStorage.setItem(LocalStorageKeys.selectedOrganization, value.toString());
+      this.currentOrganizationIdSubj.next(value);
     }
 
     public get currentOrganizationId(): number {

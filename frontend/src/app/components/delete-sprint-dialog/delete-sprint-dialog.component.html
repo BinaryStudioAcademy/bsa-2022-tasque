@@ -1,0 +1,23 @@
+<div class="conteiner">
+  <mat-dialog-content>
+    <div class="content">
+      <p class="title">Delete sprint</p>
+      <div class="sprint-info">
+        <span>Are you sure you want to delete sprint </span>
+        <span class="sprint-name">{{ sprint.name }}</span>
+        <span>?</span>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="dialog-options" align="end">
+    <tasque-button text="Cancel" class="fill gray" (click)="onClose()">
+    </tasque-button>
+    <tasque-button
+      type="submit"
+      text="Delete"
+      class="fill"
+      (btnClick)="deleteSprint()"
+    >
+    </tasque-button>
+  </mat-dialog-actions>
+</div>
