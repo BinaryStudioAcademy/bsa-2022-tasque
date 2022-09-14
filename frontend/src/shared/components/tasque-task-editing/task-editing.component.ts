@@ -144,6 +144,10 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       taskDescription: [this.task.description, [Validators.maxLength(5000)]],
       taskAssignees: [this.task.users],
     });
+
+    this.editTaskForm.controls.taskProject.valueChanges.subscribe((option: TasqueDropdownOption) => {
+      this.getProjectInfo(option.id);
+    });
   }
 
   summaryClick(): void {
