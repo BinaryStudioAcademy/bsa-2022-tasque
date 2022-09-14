@@ -1,6 +1,13 @@
 <div class="issue">
-  <p class="issue-type">{{ issue.type.name }}</p>
-  <p class="issue-key">{{ issue.key }}</p>
+  <p
+    class="issue-type"
+    style="background: {{ currentTaskTypeColor() ? currentTaskTypeColor() : 'colorscheme(yellow-100)' }}"
+  >
+    {{ issue.type.name }}
+  </p>
+  <p class="issue-key">
+    {{ issue.key }}
+  </p>
   <p class="issue-title" [matTooltipShowDelay]="1500" matTooltip=" {{ issue.description }}">
     {{ issue.summary }}
   </p>

@@ -5,12 +5,12 @@ import { IssueTemplateComponent } from './issue-template/issue-template.componen
 
 export const ProjectSettingsRoutes: Routes = [
     {
-        path: ':id/settings/issue-template',
+        path: 'settings/issue-template',
         component: IssueTemplateComponent,
         canActivate: [UserPermissionGuard],
     },
     {
-        path: ':id/settings/basic-issue-template',
+        path: 'settings/basic-issue-template',
         component: BasicIssueTemplateComponent,
         canActivate: [UserPermissionGuard],
     },
