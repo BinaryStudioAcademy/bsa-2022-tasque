@@ -284,4 +284,49 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         this.fillStateOptions(states.body);
       });
   }
+
+  public clearForm(): void {
+    this.editTaskForm.reset(this.editTaskFormDefaultValues, {
+      emitEvent: false
+    });
+  }
+
+  public submitForm(): void {
+    if (this.editTaskForm.invalid || this.editTaskForm.pristine || this.editTaskForm.untouched) {
+      this.editTaskForm.markAllAsTouched();
+      this.notificationService.error(
+        'Some values are incorrect. Follow error messages to solve this problem',
+        'Invalid values',
+      );
+      return;
+    }
+
+    const updatedTask = {
+      ...this.task,
+      users: this.editTaskForm.controls.assignees.value,
+      description: this.editTaskForm.controls.description.value,
+      summary: this.editTaskForm.controls.summary.value,
+      priorityId: this.editTaskForm.controls.priority.value.id,
+      stateId: this.editTaskForm.controls.status.value.id,
+      typeId: this.editTaskForm.controls.type.value.id,
+      projectId: this.editTaskForm.controls.project.value.id,
+      sprintId: this.editTaskForm.controls.sprint.value.id,
+    };
+
+    this.taskService.updateTask(updatedTask)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (task) => {
+          this.notificationService.success('Task has been updated successfully');
+          if (task.body) {
+            this.taskStorageService.updateTask(task.body);
+            this.editTaskFormDefaultValues = this.editTaskForm.value;
+            this.task = task.body;
+          }
+        }
+      )
+      .add(() => {
+        this.clearForm();
+      });
+  }
 }

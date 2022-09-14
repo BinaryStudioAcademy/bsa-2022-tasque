@@ -125,8 +125,9 @@
       </div>
 
       <div class="submit-buttons">
-        <tasque-button type="submit" class="btn stroke" text="Clear form"> </tasque-button>
-        <tasque-button type="submit" class="btn fill" text="Update"> </tasque-button>
+        <tasque-button type="submit" class="btn stroke" text="Clear form" (click)="clearForm()">
+        </tasque-button>
+        <tasque-button type="submit" class="btn fill" text="Update" (click)="submitForm()"> </tasque-button>
       </div>
 
       <div class="comments-container">
