@@ -105,25 +105,8 @@ export class IssueComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getIssueAuthor();
     this.estimateUpdate();
     this.cdRef.detectChanges();
-  }
-
-  //Get the author of the sprint, and display his avatar,
-  //if the author does not have an avatar, display a stub
-  public getIssueAuthor(): void {
-    this.userServise
-      .getUserById(this.issue.authorId)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((result) => {
-        if (result.body) {
-          this.issueAuthor = result.body;
-          if (this.issueAuthor.avatarURL == undefined) {
-            this.issueAuthor.avatarURL = '\\assets\\avatar.png';
-          }
-        }
-      });
   }
 
   public deadline(): Date {
@@ -159,23 +142,6 @@ export class IssueComponent implements OnInit {
     });
   }
 
-  currentTaskState(): string {
-    return (
-      this.taskStates?.find((el) => el.id == this.issue.state.id)?.name ??
-      'Task state'
-    );
-  }
-
-  currentTaskType(): string {
-    return (
-      this.taskTypes?.find((el) => el.id == this.issue.type.id)?.name ?? 'issue'
-    );
-  }
-  currentTaskTypeColor(): string {
-    return (
-      this.taskTypes?.find((el) => el.id == this.issue.typeId)?.color ?? 'red'
-    );
-  }
   updateTaskState(stateId: number): void {
     this.issue.state.id = stateId;
 

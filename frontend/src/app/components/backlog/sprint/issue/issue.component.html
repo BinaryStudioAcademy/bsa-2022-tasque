@@ -1,8 +1,5 @@
 <div class="issue">
-  <p
-    class="issue-type"
-    style="background: {{ currentTaskTypeColor() ? currentTaskTypeColor() : 'colorscheme(yellow-100)' }}"
-  >
+  <p class="issue-type" [ngStyle]="{ 'background': issue.type.color ?? 'colorscheme(yellow-100)' }">
     {{ issue.type.name }}
   </p>
   <p class="issue-key">
