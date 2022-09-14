@@ -2,7 +2,7 @@
 
 namespace Tasque.Core.Common.Entities;
 
-public class Sprint : OrderableEntity
+public class Sprint : OrderableEntity, IBaseEntity
 {
     public Sprint()
     {

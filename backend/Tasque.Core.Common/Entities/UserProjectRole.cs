@@ -1,6 +1,8 @@
-﻿namespace Tasque.Core.Common.Entities;
+﻿using Tasque.Core.Common.Entities.Abstract;
 
-public class UserProjectRole
+namespace Tasque.Core.Common.Entities;
+
+public class UserProjectRole : IBaseEntity
 {
     public int RoleId { get; set; }
     public Role Role { get; set; } = null!;

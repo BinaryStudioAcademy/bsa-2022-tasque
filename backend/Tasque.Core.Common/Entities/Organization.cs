@@ -2,7 +2,7 @@
 
 namespace Tasque.Core.Common.Entities;
 
-public class Organization : BaseEntity
+public class Organization : BaseEntity, IBaseEntity
 {
     public Organization()
     {

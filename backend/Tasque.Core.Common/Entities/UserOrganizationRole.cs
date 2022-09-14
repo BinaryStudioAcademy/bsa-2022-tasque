@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Tasque.Core.Common.Entities.Abstract;
 using Tasque.Core.Common.Enums;
 
 namespace Tasque.Core.Common.Entities
 {
-    public class UserOrganizationRole
+    public class UserOrganizationRole : IBaseEntity
     {
         public int OrganizationId { get; set; }
 

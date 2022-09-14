@@ -23,11 +23,11 @@ export class ProjectService {
   ) { }
 
   createProject(newProject: NewProjectModel): Observable<HttpResponse<ProjectInfoModel>> {
-    return this.httpService.postFullRequest<ProjectInfoModel>(this.routePrefix + '/add', newProject);
+    return this.httpService.postFullRequest<ProjectInfoModel>(this.routePrefix + '/create', newProject);
   }
 
-  editProject(editProject: EditProjectModel): Observable<HttpResponse<ProjectInfoModel>> {
-    return this.httpService.putFullRequest<ProjectInfoModel>(this.routePrefix + '/edit', editProject);
+  editProject(projectId: number, editProject: EditProjectModel): Observable<HttpResponse<ProjectInfoModel>> {
+    return this.httpService.putFullRequest<ProjectInfoModel>(this.routePrefix + `/update/${projectId}`, editProject);
   }
 
   getAllProjectsOfThisOrganization(organizationId: number): Observable<HttpResponse<ProjectInfoModel[]>> {

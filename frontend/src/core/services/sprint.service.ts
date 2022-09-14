@@ -64,16 +64,11 @@ export class SprintService {
     );
   }
 
-  editSprint(
-    editedSprint: EditSprintModel,
-  ): Observable<HttpResponse<SprintModel>> {
-    return this.httpService.putFullRequest<SprintModel>(
-      this.routePrefix + '/edit',
-      editedSprint,
-    );
+  editSprint(sprintId: number, editedSprint: EditSprintModel): Observable<HttpResponse<SprintModel>> {
+    return this.httpService.putFullRequest<SprintModel>(this.routePrefix + `/update/${sprintId}`, editedSprint);
   }
 
-  updareSprint(
+  updateSprint(
     sprintId: number,
     editedSprint: SprintModel,
   ): Observable<HttpResponse<SprintModel>> {

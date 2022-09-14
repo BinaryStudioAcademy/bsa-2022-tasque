@@ -2,7 +2,7 @@
 
 namespace Tasque.Core.Common.Entities;
 
-public class TaskState : BaseEntity
+public class TaskState : BaseEntity, IBaseEntity
 {
     public TaskState()
     {

@@ -2,7 +2,7 @@
 
 namespace Tasque.Core.Common.Entities;
 
-public class BoardColumn : BaseEntity
+public class BoardColumn : BaseEntity, IBaseEntity
 {
     public BoardColumn()
     {

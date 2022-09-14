@@ -11,18 +11,19 @@ using Task = System.Threading.Tasks.Task;
 using Tasque.Core.Common.Models.Task;
 using Tasque.Core.BLL.Extensions;
 using Tasque.Core.Common.Enums;
+using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.BLL.Services
 {
-    public class SprintService : EntityCrudService<Sprint>
+    public class SprintService : EntityCrudService<NewSprintDto, SprintDto, EditSprintDto, int, Sprint>
     {
-        private IMapper _mapper;
-        public SprintService(DataContext db, IMapper mapper) : base(db)
+        public SprintService(DataContext db, IMapper mapper, CurrentUserParameters currentUser) 
+            : base(db, mapper, currentUser)
         {
-            _mapper = mapper;
+
         }
 
-        public async Task<SprintDto> Create(NewSprintDto sprintDto)
+        public override async Task<SprintDto> Create(NewSprintDto sprintDto)
         {
             var sprintAuthor = await _db.Users
                 .Include(u => u.Roles)
@@ -88,9 +89,9 @@ namespace Tasque.Core.BLL.Services
             return _mapper.Map<IEnumerable<UserDto>>(users);
         }
 
-        public async Task<Sprint> Edit(EditSprintDto dto)
+        public override async Task<SprintDto> Update(int key, EditSprintDto dto)
         {
-            var entity = await _db.Sprints.FirstOrDefaultAsync(s => s.Id == dto.Id)
+            var entity = await _db.Sprints.FirstOrDefaultAsync(s => s.Id == key)
                 ?? throw new ValidationException("Sprint not found");
             entity.Name = dto.Name;
             if (dto.StartAt != null)
@@ -110,14 +111,15 @@ namespace Tasque.Core.BLL.Services
                 {
                     var task = await _db.Tasks.FirstOrDefaultAsync(t => t.Id == taskId)
                         ?? throw new ValidationException("Task not found");
-                    task.SprintId = dto.Id;
+                    task.SprintId = key;
                     _db.Tasks.Update(task);
                 }
             }
             
             _db.Sprints.Update(entity);
             await _db.SaveChangesAsync();
-            return entity;
+
+            return _mapper.Map<SprintDto>(entity);
         }
         public async Task CompleteSprint(int sprintId)
         {
@@ -142,12 +144,14 @@ namespace Tasque.Core.BLL.Services
             _db.Update(sprint);
             await _db.SaveChangesAsync();
         }
-        public async Task<IEnumerable<Sprint>> OrderSprints(IEnumerable<int> ids)
+        public async Task<IEnumerable<SprintDto>> OrderSprints(IEnumerable<int> ids)
         {
             var sprints = _db.Sprints.Where(x => ids.Contains(x.Id));
             sprints.SetOrder(ids);
             await _db.SaveChangesAsync();
-            return sprints.OrderBy(x => x.Order);
+
+            var ord = sprints.OrderBy(x => x.Order);
+            return _mapper.Map<List<SprintDto>>(ord);
         }
 
         public async Task UpdateTaskEstimate(TaskEstimateUpdate taskEstimateUpdate)

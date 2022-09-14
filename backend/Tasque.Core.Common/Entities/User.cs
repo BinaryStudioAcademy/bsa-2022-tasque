@@ -5,7 +5,7 @@ using Tasque.Core.Common.Security;
 
 namespace Tasque.Core.Common.Entities;
 
-public class User : BaseEntity
+public class User : BaseEntity, IBaseEntity
 {
     public User()
     {

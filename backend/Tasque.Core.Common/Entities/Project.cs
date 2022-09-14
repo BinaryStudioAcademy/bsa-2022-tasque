@@ -2,7 +2,7 @@
 
 namespace Tasque.Core.Common.Entities;
 
-public class Project : BaseEntity
+public class Project : BaseEntity, IBaseEntity
 {
     public Project()
     {

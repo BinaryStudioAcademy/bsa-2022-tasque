@@ -2,7 +2,7 @@
 
 namespace Tasque.Core.Common.Entities;
 
-public class Comment : BaseEntity
+public class Comment : BaseEntity, IBaseEntity
 {
     public string Message { get; set; } = null!;
 

@@ -12,12 +12,11 @@ namespace Tasque.Core.WebAPI.Controllers
     [Route("api/taskState")]
     [ApiController]
     [Authorize]
-    public class TaskStateController : EntityController<TaskState, TaskStateDto, TaskStateService>
+    public class TaskStateController : EntityController<TaskStateEditDto, TaskStateDto, TaskStateEditDto, int, TaskStateService>
     {
-        private readonly TaskStateService _service;
-        public TaskStateController(TaskStateService service, CurrentUserParameters currentUser) : base(service, currentUser)
+        public TaskStateController(TaskStateService service) : base(service)
         {
-            _service = service;
+
         }
 
         [HttpGet("getAll")]

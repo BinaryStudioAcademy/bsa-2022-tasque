@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Tasque.Core.Common.Entities.Abstract;
 
 namespace Tasque.Core.Common.Entities
 {
-    public class ConfirmationToken
+    public class ConfirmationToken : IBaseEntity
     {
         [Key]
         public Guid Token { get; set; } = new Guid();
