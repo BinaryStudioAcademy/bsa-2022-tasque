@@ -20,6 +20,8 @@ import { TaskModelDto } from 'src/core/models/task/task-model-dto';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { TaskTypeService } from 'src/core/services/task-type.service';
 import { TaskStateService } from 'src/core/services/task-state.service';
+import { SprintService } from 'src/core/services/sprint.service';
+import { NewSprintModel } from 'src/core/models/sprint/new-sprint-model';
 import { IssueSort } from '../backlog/models';
 
 @Component({
@@ -130,36 +132,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
 
   public sprints$: Observable<SprintModel[]>;
 
-  // TODO remove when real data is available
-  @Input() public sprints: SprintModel[] = [
-    {
-      id: 1,
-      projectId: 3,
-      name: 'spr1',
-      description: 'sprint desc',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      tasks: [],
-    },
-    {
-      id: 2,
-      projectId: 3,
-      name: 'spr2',
-      description: 'sprint desc',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      tasks: [],
-    },
-    {
-      id: 3,
-      projectId: 3,
-      name: 'spr3',
-      description: 'sprint desc',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      tasks: [],
-    },
-  ];
+  @Input() public sprints: SprintModel[];
 
   // TODO remove when real data is available
   @Input() public users: UserModel[] = [
@@ -200,6 +173,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
     public backlogService: BacklogService,
     public taskTypeService: TaskTypeService,
     public taskStateService: TaskStateService,
+    public sprintService: SprintService,
   ) {
     this.subscription = backlogService.changeBacklog$.subscribe(() => {
       this.getBacklogTasks();
@@ -332,5 +306,22 @@ export class BacklogContentComponent implements OnInit, OnChanges {
         );
       }
     }
+  }
+
+  createSprint(): void {
+    const newSprint: NewSprintModel = {
+      projectId: this.project.id,
+      name: `${this.project.key} Sprint ${this.sprints.length + 1}`,
+      authorId: this.currentUser.id,
+    };
+
+    this.sprintService
+      .create(newSprint)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result.body) {
+          this.sprints.push(result.body);
+        }
+      });
   }
 }

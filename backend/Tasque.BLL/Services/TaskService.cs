@@ -131,6 +131,13 @@ namespace Tasque.Core.BLL.Services
             }
 
             var task = _dbContext.Tasks.Update(_mapper.Map<Common.Entities.Task>(model)).Entity;
+            var entityTask = await _dbContext.Tasks
+                .FirstOrDefaultAsync(t => t.Id == model.Id)
+                ?? throw new CustomNotFoundException("task");
+
+            var task = _mapper.Map<Common.Entities.Task>(model);
+
+            _dbContext.Entry(entityTask).CurrentValues.SetValues(task);
 
             if (task == null)
                 throw new CustomNotFoundException(nameof(Common.Entities.Task));

@@ -19,19 +19,20 @@ export class AccessControlGuard implements CanActivate {
   constructor(
     private projectService: ProjectService,
     private currentProjectService: GetCurrentProjectService,
-    private currentUser: GetCurrentUserService,
+    private currentUserService: GetCurrentUserService,
     private router: Router) { }
   
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
-    this.userId = this.currentUser.currentUserId;
+    this.userId = this.currentUserService.getUserId();
 
     return this.projectService.getCurrentProjectInfoById(Number(route.paramMap.get('id')))
       .pipe(
         map((data) => {
         if(data.body) {
           const isUserExist = data.body.users.find((x) => x.id == this.userId);
+
           if(isUserExist) {
-            this.currentProjectService.setCurrentProject(this.currentProject);
+            this.currentProjectService.updateProject(this.currentProject);
             this.isGrantedAccess = true;
           } else {
             this.router.navigate(['/projects']);
@@ -44,4 +45,5 @@ export class AccessControlGuard implements CanActivate {
         return of(false);
       }));
   }
+
 }

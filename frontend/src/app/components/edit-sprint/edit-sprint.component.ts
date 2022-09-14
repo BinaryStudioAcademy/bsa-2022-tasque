@@ -17,7 +17,7 @@ export class EditSprintComponent implements OnInit {
 
   @Input() public isStarting: boolean;
 
-  @Input() public btnClass = 'btn mini voilet full ';
+  @Input() public btnClass = 'btn mini voilet full';
 
   constructor(public matDialog: MatDialog) {}
 
@@ -45,6 +45,7 @@ export class EditSprintComponent implements OnInit {
     dialog.afterClosed().subscribe((result: SprintModel) => {
       if (this.isStarting && result.startAt) {
         this.currentSprint.startAt = result.startAt;
+        this.currentSprint.endAt = result.endAt;
       }
     });
   }
