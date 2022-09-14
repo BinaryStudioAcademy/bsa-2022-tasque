@@ -19,6 +19,7 @@ import { ProjectService } from 'src/core/services/project.service';
 import { TaskType } from 'src/core/models/task/task-type';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { ProjectModel } from 'src/core/models/project/project-model';
+import { TaskStorageService } from 'src/core/services/task-storage.service';
 
 @Component({
   selector: 'tasque-board',
@@ -57,6 +58,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     private projectService: ProjectService,
     private notificationService: NotificationService,
     private currentUserService: GetCurrentUserService,
+    private taskStorageService: TaskStorageService
   ) {
     this.currentUserService.currentUser$.subscribe((res) => {
       this.user = res as UserModel;
@@ -102,6 +104,34 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           this.notificationService.error('Something went wrong');
         }
       });
+
+    this.taskStorageService.taskUpdated$.subscribe((task) => {
+      let isTaskFound = false;
+
+      for (const col of this.columns) {
+        if (isTaskFound) {
+          return;
+        }
+
+        const index = col.tasks.findIndex((t) => task.id === t.id);
+
+        if (index !== -1) {
+          isTaskFound = true;
+
+          col.tasks[index] = {
+            id: task.id,
+            typeId: task.typeId,
+            type: task.type,
+            priority: task.priority,
+            attachmentUrl: task.attachments[0]?.uri,
+            summary: task.summary,
+            customLabels: [],
+            key: task.key as string,
+            isHidden: false,
+          };
+        }
+      }
+    });
   }
 
   sortTasksByColumns(): void {
@@ -111,7 +141,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       const taskInfo: TaskInfoModel[] = [];
 
       tasks.forEach((t) => {
-
         taskInfo.push({
           id: t.id,
           typeId: t.typeId,

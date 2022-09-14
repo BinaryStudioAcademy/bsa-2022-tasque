@@ -20,6 +20,7 @@ import { TaskModel } from 'src/core/models/task/task-model';
 import { TaskService } from 'src/core/services/task.service';
 import { NotificationService } from 'src/core/services/notification.service';
 import { ProjectModel } from 'src/core/models/project/project-model';
+import { TaskStorageService } from 'src/core/services/task-storage.service';
 
 @Component({
   selector: 'app-issue',
@@ -31,7 +32,6 @@ export class IssueComponent implements OnInit {
   @Input() public issue: TaskModel;
   //get current user
   @Input() public currentUser: UserModel;
-  public issueAuthor: UserModel;
   //get current project
   @Input() public currentProject: ProjectModel;
   //notifying the parent components about the change in the value of estimate
@@ -99,11 +99,18 @@ export class IssueComponent implements OnInit {
     public sprintService: SprintService,
     public notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
+    private taskStorageService: TaskStorageService
   ) { }
 
   ngOnInit(): void {
     this.estimateUpdate();
     this.cdRef.detectChanges();
+
+    this.taskStorageService.taskUpdated$.subscribe((task) => {
+      if (task.id === this.issue.id) {
+        this.issue = task;
+      }
+    });
   }
 
   public deadline(): Date {
