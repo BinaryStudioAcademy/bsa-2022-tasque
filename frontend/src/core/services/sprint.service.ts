@@ -6,10 +6,7 @@ import { EditSprintModel } from '../models/sprint/edit-sprint-model';
 import { SprintModel } from '../models/sprint/sprint-model';
 import { HttpService } from './http.service';
 import { TaskEstimateUpdate } from '../models/task/task-estimate-update';
-<<<<<<< HEAD
 import { TaskModel } from '../models/task/task-model';
-=======
-import { TaskModelDto } from '../models/task/task-model-dto';
 import { NewSprintModel } from '../models/sprint/new-sprint-model';
 
 @Injectable({

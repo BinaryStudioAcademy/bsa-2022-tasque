@@ -16,11 +16,8 @@ import { UserModel } from 'src/core/models/user/user-model';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { TaskCustomFieldModel } from 'src/core/models/task/task-creation-models/task-custom-field-model';
 import { TaskPriority } from 'src/core/models/task/task-priority';
-<<<<<<< HEAD
 import { TaskService } from 'src/core/services/task.service';
-=======
 import { TaskState } from 'src/core/models/task/task-state';
->>>>>>> 5099a8a217cc1316f9c9ff96e25a368125750e29
 
 @Component({
   selector: 'tasque-task-creation',

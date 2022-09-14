@@ -16,9 +16,11 @@ export interface TaskModel {
   state: TaskState;
   stateId: number;
   type: TaskType;
+  typeId: number;
   priority: TaskPriority;
   author: UserModel;
-  project: ProjectModel;
+  authorId: number;
+  project?: ProjectModel;
   sprint?: SprintModel;
   lastUpdatedBy: UserModel;
   parentTaskId: number;

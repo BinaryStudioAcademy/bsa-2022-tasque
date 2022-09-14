@@ -31,6 +31,7 @@ export class IssueComponent implements OnInit {
   @Input() public issue: TaskModel;
   //get current user
   @Input() public currentUser: UserModel;
+  public issueAuthor: UserModel;
   //get current project
   @Input() public currentProject: ProjectModel;
   //notifying the parent components about the change in the value of estimate
@@ -63,36 +64,6 @@ export class IssueComponent implements OnInit {
 
   // TODO remove when real data is available
   @Input() public taskStates: TaskState[] = [
-<<<<<<< HEAD
-    {
-      id: 1,
-      name: 'To Do',
-      projectId: 5,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 2,
-      name: 'In Progress',
-      projectId: 5,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 3,
-      name: 'Done',
-      projectId: 5,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 4,
-      name: 'Canceled',
-      projectId: 5,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-=======
     // {
     //   id: 1,
     //   name: 'To Do',
@@ -117,7 +88,6 @@ export class IssueComponent implements OnInit {
     //   createdAt: new Date(),
     //   updatedAt: new Date(),
     // },
->>>>>>> 5099a8a217cc1316f9c9ff96e25a368125750e29
   ];
 
   public taskEstimate: TaskEstimateUpdate;

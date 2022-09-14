@@ -69,9 +69,6 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     private taskService: TaskService,
     private sprintService: SprintService) {
     super();
-<<<<<<< HEAD
-=======
-
     this.task = {
       id: 1,
       summary: 'Summary',
@@ -81,9 +78,11 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       state: {
         id: 1,
         name: 'To Do',
+        projectId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      typeId: 1,
       type: {
         id: 1,
         name: 'Bug',
@@ -100,8 +99,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         updatedAt: new Date(),
       },
       author: this.users.filter((u) => u.id == 1)[0],
-      project: this.projects.filter((p) => p.id == 2)[0],
-      sprint: this.sprints.filter((s) => s.id == 3)[0],
+      authorId: 1,
       lastUpdatedBy: this.users.filter((u) => u.id == 4)[0],
       parentTaskId: 5,
       createdAt: new Date(),
@@ -110,8 +108,6 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       custmFields: [],
     };
     this.currentUser = this.users[1];
-    this.taskReporter = this.users[2];
->>>>>>> 5099a8a217cc1316f9c9ff96e25a368125750e29
   }
 
   ngOnInit(): void {
@@ -129,7 +125,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
             return;
           }
           this.fillProjectOptions(resp.body);
-          this.getProjectInfo(this.task.project);
+          this.getProjectInfo(this.task.project as ProjectModel);
         });
     });
 
