@@ -93,7 +93,7 @@
         </div>
         <div class="item-wrapper">
           <span class="item-label">Reporter</span>
-          <div class="user-info">
+          <div class="user-info" *ngIf="task.author">
             <tasque-avatar [user]="task.author" [diameter_px]="30" alt="avatar"></tasque-avatar>
             <span> {{ task.author.name }}</span>
           </div>
