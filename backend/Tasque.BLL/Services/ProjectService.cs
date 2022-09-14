@@ -338,6 +338,7 @@ public class ProjectService : EntityCrudService<Project>
             if (entity == null) continue;
 
             entity.BoardColumnId = task.BoardColumnId;
+            entity.Order = task.Order;
         }
         await _db.SaveChangesAsync();
         return await GetProjectBoard(board.Id);

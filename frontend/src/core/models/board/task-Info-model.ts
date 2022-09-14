@@ -4,14 +4,15 @@ import { TaskType } from '../task/task-type';
 import { UserModel } from '../user/user-model';
 
 export interface TaskInfoModel {
-    id: number;
-    type: TaskType;
-    priority: TaskPriority;
-    attachmentUrl: string;
-    summary: string;
-    customLabels: LabelField[];
-    key: string;
-    user?: UserModel;
-    assignees?: UserModel[];
-    isHidden: boolean;
+  id: number;
+  type: TaskType;
+  priority: TaskPriority;
+  attachmentUrl: string;
+  summary: string;
+  order: number;
+  customLabels: LabelField[];
+  key: string;
+  user?: UserModel;
+  assignees?: UserModel[];
+  isHidden: boolean;
 }

@@ -59,10 +59,10 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     });
 
     this.createColumnForm = formBuilder.group({
-      'columnName': ['', [Validators.required]], 
+      'columnName': ['', [Validators.required]],
     });
   }
-  
+
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -126,8 +126,8 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         event.previousIndex,
         event.currentIndex,
       );
-      this.updateTasks();
     }
+    this.updateTasks();
   }
 
   updateColumns(): void {
@@ -141,11 +141,21 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   }
 
   updateTasks(): void {
+    this.board.columns.forEach((column) => {
+      column.tasks.forEach((task, index) => {
+        task.order = index;
+      });
+    });
+
     this.boardService
       .updateBoardTasks(this.board)
       .pipe(filter((resp) => resp.body != null))
       .subscribe((resp) => {
-        this.board = resp.body as BoardModel;
+        const res = resp.body as BoardModel;
+        res.columns.forEach((column) => {
+          column.tasks.sort((a, b) => a.order - b.order);
+        });
+        this.board = res;
         this.filterTasks();
       });
   }
