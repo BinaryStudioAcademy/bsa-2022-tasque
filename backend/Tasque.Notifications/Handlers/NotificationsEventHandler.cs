@@ -2,6 +2,7 @@
 using Tasque.Core.Common.Entities.Notifications;
 using Tasque.Core.Common.Models.Events;
 using Tasque.Messaging.Abstractions;
+using Tasque.Notifications.Data;
 using Tasque.Notifications.Hubs;
 
 namespace Tasque.Notifications.Handlers
@@ -12,18 +13,27 @@ namespace Tasque.Notifications.Handlers
     {
         protected IMapper _mapper;
         protected NotificationsHub _hub;
+        protected IServiceProvider _provider;
 
-        public NotificationsEventHandler(NotificationsHub hub)
+        public NotificationsEventHandler(NotificationsHub hub, IServiceProvider provider)
         {
+            _provider = provider;
             _hub = hub;
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<TEvent, TNotification>());
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<TEvent, TNotification>()
+                .ForMember(e => e.Id, options => options.Ignore()));
             _mapper = config.CreateMapper();
         }
 
-        public async virtual Task Handle(TEvent @event)
+        public virtual Task Handle(TEvent @event)
         {
             var notification = _mapper.Map<TNotification>(@event);
-            await _hub.NotifySingleUser(notification, notification.RecieverId);
+
+            using var scope = _provider.CreateScope();
+            var _db = scope.ServiceProvider.GetRequiredService<NotificationsContext>();
+            _db.Add(notification);
+            _db.SaveChanges();
+
+            return _hub.NotifySingleUser(notification, notification.RecieverId);
         }
     }
 }
