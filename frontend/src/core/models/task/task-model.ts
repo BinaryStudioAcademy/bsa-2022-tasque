@@ -1,3 +1,4 @@
+import { NumberLiteralType } from 'typescript';
 import { ProjectModel } from '../project/project-model';
 import { SprintModel } from '../sprint/sprint-model';
 import { UserModel } from '../user/user-model';
@@ -16,9 +17,11 @@ export interface TaskModel {
   state: TaskState;
   stateId: number;
   type: TaskType;
+  typeId: number;
   priority: TaskPriority;
   author: UserModel;
-  project: ProjectModel;
+  authorId: number;
+  project?: ProjectModel;
   sprint?: SprintModel;
   lastUpdatedBy: UserModel;
   parentTaskId: number;
