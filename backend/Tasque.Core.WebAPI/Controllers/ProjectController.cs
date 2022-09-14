@@ -152,17 +152,6 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
             return NotFound("Project or it's task states not found");
         return Ok(states);
     }
-
-    [HttpPost("invite")]
-    public async Task<IActionResult> InviteUser([FromBody] InviteUserDTO dto)
-    {
-        var invited = await _service.InviteUser(dto);
-        if (invited)
-        {
-            return Ok();
-        }
-        return BadRequest("User was not found or has not confirmed its account yet");
-    }
 }
 
 

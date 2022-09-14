@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Tasque.Notifications.Data;
@@ -11,9 +12,10 @@ using Tasque.Notifications.Data;
 namespace Tasque.Notifications.Migrations
 {
     [DbContext(typeof(NotificationsContext))]
-    partial class NotificationsContextModelSnapshot : ModelSnapshot
+    [Migration("20220914175244_Post-Merge changes")]
+    partial class PostMergechanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -6,6 +6,5 @@
         public override int RecieverId => InviteeId;
         public int ProjectId { get; set; }
         public int InviteeId { get; set; }
-        public int InvitorId { get; set; }
     }
 }

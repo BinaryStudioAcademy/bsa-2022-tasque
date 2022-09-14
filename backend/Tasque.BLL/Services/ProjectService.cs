@@ -10,21 +10,21 @@ using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Enums;
 using Tasque.Core.Common.StaticResources;
 using Tasque.Core.DAL;
-﻿using Tasque.Core.Common.DTO.Project;
-using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Models.Events;
-using Tasque.Core.DAL;
 using Tasque.Messaging.Abstractions;
 using Task = System.Threading.Tasks.Task;
+using Tasque.Messaging;
 
 namespace Tasque.Core.BLL.Services;
 
 public class ProjectService : EntityCrudService<Project>
 {
     private readonly IMapper _mapper;
+    private readonly IEventBus _bus;
     public ProjectService(DataContext db, IMapper mapper, IEventBus bus) : base(db)
     {
         _mapper = mapper;
+        _bus = bus;
     }
 
     public List<ProjectDto> GetProjectsByOrganizationId(int organizationId)
@@ -251,36 +251,35 @@ public class ProjectService : EntityCrudService<Project>
         UserInvitedEvent @event = new UserInvitedEvent
         {
             ProjectId = project.Id,
-            InviteeId = invitee.Id,
-            InvitorId = invitor.Id
+            InviteeId = user.Id
         };
 
         _bus.Publish(@event);
     }
 
     public async Task MoveTask(MoveTaskDTO dto)
+    {
+        var previousBoardColumn = _db.BoardColumns.Single(b => b.Id == dto.PreviousColumnId);
+        var currentBoardColumn = _db.BoardColumns.Single(b => b.Id == dto.NewColumnId);
+        var task = _db.Tasks.Single(t => t.Id == dto.TaskId);
+
+        previousBoardColumn.Tasks.Remove(task);
+        currentBoardColumn.Tasks.Add(task);
+
+        _db.Update(previousBoardColumn);
+        _db.Update(currentBoardColumn);
+        await _db.SaveChangesAsync();
+
+        TaskMovedEvent @event = new()
         {
-            var previousBoardColumn = _db.BoardColumns.Single(b => b.Id == dto.PreviousBoardId);
-            var currentBoardColumn = _db.BoardColumns.Single(b => b.Id == dto.CurrentBoardId);
-            var task = _db.Tasks.Single(t => t.Id == dto.TaskId);
+            PreviousColumnId = dto.PreviousColumnId,
+            NewColumnId = dto.NewColumnId,
+            TaskId = task.Id,
+            TaskAuthorId = task.AuthorId
+        };
 
-            previousBoardColumn.Tasks.Remove(task);
-            currentBoardColumn.Tasks.Add(task);
-
-            _db.Update(previousBoardColumn);
-            _db.Update(currentBoardColumn);
-            await _db.SaveChangesAsync();
-
-            TaskMovedEvent @event = new()
-            {
-                PreviousColumnId = dto.PreviousBoardId,
-                NewColumnId = dto.CurrentBoardId,
-                TaskId = task.Id,
-                TaskAuthorId = task.AuthorId
-            };
-
-            _bus.Publish(@event);
-        }
+        _bus.Publish(@event);
+    }
 
     public async Task KickUserOfProject(UserInviteDto usersInviteDto)
     {
