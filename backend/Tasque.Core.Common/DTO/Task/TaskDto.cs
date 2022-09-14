@@ -12,28 +12,31 @@ namespace Tasque.Core.Common.DTO.Task
         public string Summary { get; set; } = null!;
         public string? Key { get; set; }
 
-        public int StateId { get; set; }
+        public int? StateId { get; set; }
         public TaskStateDto? State { get; set; }
         public int TypeId { get; set; }
         public TaskTypeDto? Type { get; set; }
-        public int PriorityId { get; set; }
+        public int? PriorityId { get; set; }
         public TaskPriorityDto? Priority { get; set; }
 
         public DateTime Deadline { get; set; }
         public DateTime? FinishedAt { get; set; }
 
-        public UserDto Author { get; set; } = null!;
+        public UserDto? Author { get; set; }
+        public int AuthorId { get; set; }
 
-        public ProjectDto Project { get; set; } = null!;
-
+        public ProjectDto? Project { get; set; }
         public int ProjectId { get; set; }
 
         public int? BoardColumnId { get; set; }
 
-        public SprintDto? Sprint { get; set; } = null!;
+        public SprintDto? Sprint { get; set; }
+        public int? SprintId { get; set; }
 
         public UserDto? LastUpdatedBy { get; set; }
+        public int? LastUpdatedById { get; set; }
 
+        public TaskDto? ParentTask { get; set; }
         public int? ParentTaskId { get; set; }
 
         public int? Estimate { get; set; }

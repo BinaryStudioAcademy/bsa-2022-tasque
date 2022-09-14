@@ -9,7 +9,6 @@ using Tasque.Core.Common.DTO.Task.PartialModels;
 using Tasque.Core.Common.DTO.Task.TemplateModels.IncomeModels;
 using Tasque.Core.Common.Entities.Abstract;
 using Tasque.Core.DAL;
-using static Amazon.S3.Util.S3EventNotification;
 
 namespace Tasque.Core.BLL.Services
 {
@@ -38,7 +37,7 @@ namespace Tasque.Core.BLL.Services
         public async Task<TaskDto> CreateTask(TaskDto model)
         {
             var entity = _mapper.Map<Common.Entities.Task>(model);
-            var project = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId)?? throw new CustomNotFoundException("project");
+            var project = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId) ?? throw new CustomNotFoundException("project");
 
             entity.Key = project.Key + '-' + UpdateProjectCounter(project.Id);
 
@@ -59,7 +58,7 @@ namespace Tasque.Core.BLL.Services
 
             return JoinTaskAttributesWithDto(task,
                 RenameFieldsWithActualValue(
-                    await GetTaskTemplate(task.Project.Id, task.Type.Id), await MapCosmosTaskFieldsToTaskCustomFields(task, attributes.CustomFields)));
+                    await GetTaskTemplate(task.ProjectId, task.TypeId), await MapCosmosTaskFieldsToTaskCustomFields(task, attributes.CustomFields)));
         }
 
         public async Task DeleteTask(int id)
@@ -82,7 +81,7 @@ namespace Tasque.Core.BLL.Services
             return tasks.Join(customFields, t => t.Id, ca => int.Parse(ca.Id), (t, ca) =>
                 JoinTaskAttributesWithDto(t,
                     RenameFieldsWithActualValue(
-                        GetTaskTemplate(t.Project.Id, t.Type.Id).Result,
+                        GetTaskTemplate(t.ProjectId, t.TypeId).Result,
                             MapCosmosTaskFieldsToTaskCustomFields(t, ca.CustomFields).Result))).ToList();
         }
 
@@ -116,7 +115,7 @@ namespace Tasque.Core.BLL.Services
 
             return JoinTaskAttributesWithDto(task,
                 RenameFieldsWithActualValue(
-                    await GetTaskTemplate(task.Project.Id, task.Type.Id),
+                    await GetTaskTemplate(task.ProjectId, task.TypeId),
                         await MapCosmosTaskFieldsToTaskCustomFields(task, attributes.CustomFields)));
         }
 
@@ -124,9 +123,9 @@ namespace Tasque.Core.BLL.Services
         {
             var currentProjectId = _dbContext.Projects.FirstOrDefault(p => p.Id == _dbContext.Tasks.FirstOrDefault(t => t.Id == model.Id).ProjectId).Id;
 
-            if(model.ProjectId != currentProjectId)
+            if (model.ProjectId != currentProjectId)
             {
-                var project = await _dbContext.Projects.FirstOrDefaultAsync(p => p.Id == model.ProjectId)?? throw new CustomNotFoundException("project");
+                var project = await _dbContext.Projects.FirstOrDefaultAsync(p => p.Id == model.ProjectId) ?? throw new CustomNotFoundException("project");
                 model.Key = project.Key + '-' + UpdateProjectCounter(project.Id);
             }
 
@@ -186,7 +185,7 @@ namespace Tasque.Core.BLL.Services
 
         public async Task<List<TaskCustomFields>> MapCosmosTaskFieldsToTaskCustomFields(TaskDto task, List<CosmosTaskFields> fields)
         {
-            var template = await GetTaskTemplate(task.Project.Id, task.Type.Id);
+            var template = await GetTaskTemplate(task.ProjectId, task.TypeId);
             var result = new List<TaskCustomFields>();
 
             fields.ForEach(f => result.Add(new()
@@ -202,7 +201,7 @@ namespace Tasque.Core.BLL.Services
 
         private int UpdateProjectCounter(int projectId)
         {
-            var project = _dbContext.Projects.FirstOrDefault(p => p.Id == projectId)?? throw new CustomNotFoundException("project");
+            var project = _dbContext.Projects.FirstOrDefault(p => p.Id == projectId) ?? throw new CustomNotFoundException("project");
             project.ProjectTaskCounter += 1;
             _dbContext.SaveChanges();
             return project.ProjectTaskCounter;
