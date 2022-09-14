@@ -1,1 +1,20 @@
-<p>tasque-team works!</p>
+<div class="header container">
+  <h3>Project team</h3>
+  <tasque-input
+    placeholder="Search team members"
+    [icon]="icon"
+    iconPosition="search"
+    class="search-input"
+    (outputValue)="filter($event)"
+  ></tasque-input>
+</div>
+<div class="container grid">
+  <div class="user-wrp" *ngFor="let user of visible">
+    <tasque-avatar [user]="user"></tasque-avatar>
+    <div class="text-wrp">
+      <span class="text-16">{{ user.name }}</span>
+      <!-- User role here -->
+      <!-- <span class="text-14">User role</span> -->
+    </div>
+  </div>
+</div>

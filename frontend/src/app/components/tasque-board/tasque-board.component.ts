@@ -10,15 +10,15 @@ import {
 import { TaskInfoModel } from 'src/core/models/board/task-Info-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { NotificationService } from 'src/core/services/notification.service';
-import { BoardModel } from 'src/core/models/board/board-model';
 import { ActivatedRoute } from '@angular/router';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { Subject } from 'rxjs';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import { ProjectService } from 'src/core/services/project.service';
-import { filter } from 'rxjs/operators';
 import { TaskType } from 'src/core/models/task/task-type';
+import { TaskModel } from 'src/core/models/task/task-model';
+import { ProjectModel } from 'src/core/models/project/project-model';
 
 @Component({
   selector: 'tasque-board',
@@ -32,17 +32,21 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   public isOpenColumnAddDialog: boolean;
   public createColumnForm: FormGroup;
   @ViewChild('searchInput') public searchInput: InputComponent;
-  private selectedUserId?: number;
 
+  private selectedUserId?: number;
   private newColumn: BoardColumnModel;
   private projectId: number;
 
   public unsubscribe$ = new Subject<void>();
 
-  public board: BoardModel = { projectId: 0, id: 0, name: '', projectName: '', users: [], columns: [] };
+  public project: ProjectModel;
   user: UserModel;
   public hasTasks = false;
+  public isShow = false;
   public searchParameter = '';
+
+  public columns: BoardColumnModel[] = [];
+  public projectTasks: TaskModel[] = [];
 
   public projectOptions: TasqueDropdownOption[] = [];
   public projectTaskTypes: TaskType[] = [];
@@ -50,7 +54,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   constructor(
     formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private boardService: ProjectService,
+    private projectService: ProjectService,
     private notificationService: NotificationService,
     private currentUserService: GetCurrentUserService,
   ) {
@@ -69,24 +73,68 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.parent?.snapshot.paramMap.get('id');
     if (id == null) {
       this.notificationService.error('Path id is null');
       return;
     }
     this.projectId = parseInt(id);
 
-    this.boardService.getBoard(this.projectId).subscribe(
+    this.projectService.getProjectById(this.projectId)
+      .subscribe(
       (resp) => {
-        if (resp.ok && resp.body != null) {
-          this.board = resp.body;
-          this.hasTasks = this.checkIfHasTasks();
-          this.fillOptions();
+        if (resp.ok) {
+          this.project = resp.body as ProjectModel;
+          this.setColumns();
         } else {
           this.notificationService.error('Something went wrong');
         }
       },
     );
+
+    this.projectService.getAllProjectTasks(this.projectId)
+      .subscribe((resp) => {
+      if(resp.ok){
+        this.projectTasks = resp.body as TaskModel[];
+        this.hasTasks = this.checkIfHasTasks();
+        this.sortTasksByColumns();
+      } else {
+        this.notificationService.error('Something went wrong');
+      }
+    });
+  }
+
+  sortTasksByColumns(): void {
+    this.columns.forEach((c) => {
+
+      const tasks = this.projectTasks.filter((t) => t.stateId === c.id);
+      const taskInfo: TaskInfoModel[] = [];
+
+      tasks.forEach((t) => {
+
+        taskInfo.push({
+          id: t.id,
+          type: t.type,
+          priority: t.priority,
+          attachmentUrl: t.attachments[0]?.uri,
+          summary: t.summary,
+          customLabels: [],
+          key: t.key as string,
+          isHidden: false,
+        });
+      });
+      c.tasks = taskInfo;
+    });
+    this.isShow = true;
+  }
+
+  setColumns(): void {
+    const states = this.project.projectTaskStates;
+    states.forEach((s) => this.columns.push({
+      id: s.id,
+      name: s.name,
+      tasks: [],
+    }));
   }
 
   openAddColumn(): void {
@@ -100,10 +148,10 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         name: this.createColumnForm.get('columnName')?.value,
         tasks: [],
       };
-      this.board.columns.push(this.newColumn);
+      this.columns.push(this.newColumn);
       this.createColumnForm.reset();
       this.isOpenColumnAddDialog = false;
-      this.updateColumns();
+      //this.updateColumns();
     }
   }
 
@@ -127,27 +175,27 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         event.currentIndex,
       );
     }
-    this.updateTasks();
+    //this.updateTasks();
   }
 
-  updateColumns(): void {
-    this.boardService
-      .updateBoardColumns(this.board)
-      .pipe(filter((resp) => resp.body != null))
-      .subscribe((resp) => {
-        this.board = resp.body as BoardModel;
-        this.filterTasks();
-      });
-  }
+  // updateColumns(): void { //TODO: Rework as for current db scheme
+  //   this.projectService
+  //     .updateBoardColumns(this.board)
+  //     .pipe(filter((resp) => resp.body != null))
+  //     .subscribe((resp) => {
+  //       this.board = resp.body as BoardModel;
+  //       this.filterTasks();
+  //     });
+  // }
 
-  updateTasks(): void {
+  /*updateTasks(): void {
     this.board.columns.forEach((column) => {
       column.tasks.forEach((task, index) => {
         task.order = index;
       });
     });
 
-    this.boardService
+    this.projectService
       .updateBoardTasks(this.board)
       .pipe(filter((resp) => resp.body != null))
       .subscribe((resp) => {
@@ -158,24 +206,24 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         this.board = res;
         this.filterTasks();
       });
-  }
+  }*/
 
   checkIfHasTasks(): boolean {
-    for (const column of this.board.columns) {
-      if (column.tasks.length > 0) {
-        return true;
-      }
+    if(this.projectTasks.length > 0){
+      return true;
     }
     return false;
   }
 
   filterTasks(): void {
     const phrase = this.searchInput.inputValue;
-    for(const column of this.board.columns) {
-      for(const task of column.tasks) {
-        task.isHidden = !task.summary.toLowerCase().includes(phrase.toLowerCase());
-        if(this.selectedUserId) {
-          task.isHidden = task.isHidden || task.user?.id != this.selectedUserId;
+    for(const column of this.columns) {
+      if(column.tasks){
+        for(const task of column.tasks) {
+          task.isHidden = !task.summary.toLowerCase().includes(phrase.toLowerCase());
+          if(this.selectedUserId) {
+            task.isHidden = task.isHidden || task.user?.id != this.selectedUserId;
+          }
         }
       }
     }
@@ -188,12 +236,5 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       this.selectedUserId = event.id;
     }
     this.filterTasks();
-  }
-
-  fillOptions(): void {
-    this.projectOptions.push({
-      title: this.board.name,
-      id: this.projectId,
-    } as TasqueDropdownOption);
   }
 }

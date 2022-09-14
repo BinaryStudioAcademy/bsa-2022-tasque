@@ -75,6 +75,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       id: 1,
       summary: 'Summary',
       description: 'Description',
+      stateId: 1,
+      attachments: [],
       state: {
         id: 1,
         name: 'To Do',

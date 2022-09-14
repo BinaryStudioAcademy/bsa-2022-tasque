@@ -44,6 +44,15 @@
             </tasque-dropdown>
           </div>
           <div class="input-wrapper">
+            <label class="label">State</label>
+            <tasque-dropdown
+              [options]="taskStateOptions"
+              [formControl]="priorityControl"
+              (onSelect)="setSelectedTaskState($event)"
+            >
+            </tasque-dropdown>
+          </div>
+          <div class="input-wrapper">
             <label class="label">Summary</label>
             <tasque-input
               [formControl]="summaryControl"
