@@ -61,7 +61,7 @@
         [currentProject]="currentProject"
       ></app-sprint>
     </div>
-    <div *ngIf="!isShowArchive" [@fadeInOut]>
+    <div *ngIf="currentProject && currentUser && !isShowArchive" [@fadeInOut]>
       <app-sprint
         *ngFor="let sprint of sprints; let index = index"
         [currentSprint]="sprint"
