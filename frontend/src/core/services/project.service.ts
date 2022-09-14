@@ -71,7 +71,7 @@ export class ProjectService {
   }
 
   getProjectParticipants(id: number): Observable<HttpResponse<UserModel[]>> {
-    return this.httpService.getFullRequest<UserModel[]>(this.routePrefix + '/getParticipants/' + id);
+    return this.httpService.getFullRequest<UserModel[]>(this.routePrefix + `/${id}/participants/`);
   }
 
   getProjectPriorities(id: number): Observable<HttpResponse<TaskPriority[]>> {
