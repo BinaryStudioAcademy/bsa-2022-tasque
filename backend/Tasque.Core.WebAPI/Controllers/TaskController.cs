@@ -23,6 +23,15 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok(await _taskService.GetAllTasks());
         }
 
+        [HttpGet("getAllProjectTasks/{projectId}")]
+        public async Task<IActionResult> GetAllProjectTasks(int projectId)
+        {
+            var tasks = await _taskService.GetAllProjectTasks(projectId);
+            if (tasks == null)
+                return NotFound("Project or it's tasks not found");
+            return Ok(tasks);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTaskById(int id)
         {

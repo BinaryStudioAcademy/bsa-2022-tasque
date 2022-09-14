@@ -17,14 +17,14 @@ public class Task : BaseEntity, IBaseEntity
     public DateTime Deadline { get; set; }
     public DateTime? FinishedAt { get; set; }
 
-    public int StateId { get; set; }
-    public TaskState State { get; set; } = null!;
+    public int? StateId { get; set; }
+    public TaskState? State { get; set; } 
 
     public int TypeId { get; set; }
     public TaskType Type { get; set; } = null!;
 
-    public int PriorityId { get; set; }
-    public TaskPriority Priority { get; set; } = null!;
+    public int? PriorityId { get; set; }
+    public TaskPriority? Priority { get; set; }
 
     public int AuthorId { get; set; }
     public User Author { get; set; } = null!;

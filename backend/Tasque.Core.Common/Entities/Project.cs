@@ -23,6 +23,8 @@ public class Project : BaseEntity, IBaseEntity
     public int OrganizationId { get; set; }
     public Organization Organization { get; set; } = null!;
 
+    public int ProjectTaskCounter { get; set; }
+
     public virtual ICollection<User> Users { get; set; }
     public virtual ICollection<UserProjectRole> UserRoles { get; set; }
     public virtual ICollection<Sprint> Sprints { get; set; }

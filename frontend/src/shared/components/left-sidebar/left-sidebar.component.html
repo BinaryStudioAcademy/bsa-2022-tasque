@@ -1,4 +1,4 @@
-<div class="left-sidebar" [style.width.px]="containerWidth">
+<div class="left-sidebar" [style.width.px]="containerWidth" *ngIf="currentUser !== undefined">
   <div class="icon">
     <a (click)="minimize()">
       <img *ngIf="!sideBarMinimized" src="assets/burger_menu.svg" alt="" />

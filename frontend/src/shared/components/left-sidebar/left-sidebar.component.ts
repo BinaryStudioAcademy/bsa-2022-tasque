@@ -68,8 +68,7 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit {
   }
 
   public getProject(): void {
-    const id = this.route.children
-      .find((r) => r.snapshot.paramMap.has('id'))?.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.projectId = parseInt(id);
 
@@ -137,7 +136,7 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit {
 
   checkActivatedRoute(): void {
     this.setAllStylesUndefined();
-    
+
     if(this.router.url.includes('board')) {
       this.isBoard = '#F0F3F9';
     } else if(this.router.url.includes('backlog')) {

@@ -50,17 +50,17 @@
   color: colorscheme(white-100)
   opacity: 1
   &:hover
-    opacity: 0.8
+    opacity: 0.9
 
 .user-overflow
-  height: 100%
+  height: 46px
   border-radius: 100%
   aspect-ratio: 1 / 1
   object-fit: cover
   position: absolute
-  top: 0
+  top: 2px
   left: 0
-  background: rgba(29,29,29,0.4)
+  background: rgba(29,29,29,0.8)
   color: colorscheme(white-100)
   display: flex
   align-items: center
@@ -122,3 +122,12 @@
     margin-left: 50px
   &.pop-up
     margin-left: -150px
+
+.selected
+  border-radius: 50%
+  border: 3px solid colorscheme(pink-300)
+  z-index: 2
+
+.transparent-border
+  border-radius: 50%
+  border: 2px solid #ffffff00

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Tasque.Core.DAL;
@@ -11,9 +12,10 @@ using Tasque.Core.DAL;
 namespace Tasque.Core.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220913215415_ChangedStateAndPriorityFieldsAsNullableInTaskEntity")]
+    partial class ChangedStateAndPriorityFieldsAsNullableInTaskEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("TasksId");
 
-                    b.ToTable("AttachmentTask", (string)null);
+                    b.ToTable("AttachmentTask");
                 });
 
             modelBuilder.Entity("LabelTask", b =>
@@ -49,7 +51,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("TasksId");
 
-                    b.ToTable("LabelTask", (string)null);
+                    b.ToTable("LabelTask");
                 });
 
             modelBuilder.Entity("MeetingUser", b =>
@@ -64,7 +66,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("MeetingUser", (string)null);
+                    b.ToTable("MeetingUser");
                 });
 
             modelBuilder.Entity("OrganizationUser", b =>
@@ -79,7 +81,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("OrganizationUser", (string)null);
+                    b.ToTable("OrganizationUser");
                 });
 
             modelBuilder.Entity("ProjectUser", b =>
@@ -94,7 +96,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("ProjectUser", (string)null);
+                    b.ToTable("ProjectUser");
                 });
 
             modelBuilder.Entity("TaskUser", b =>
@@ -109,7 +111,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("TaskUser", (string)null);
+                    b.ToTable("TaskUser");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Attachment", b =>
@@ -132,7 +134,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Attachments", (string)null);
+                    b.ToTable("Attachments");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.BoardColumn", b =>
@@ -160,7 +162,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("BoardColumns", (string)null);
+                    b.ToTable("BoardColumns");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Calendar", b =>
@@ -184,7 +186,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Calendars", (string)null);
+                    b.ToTable("Calendars");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Comment", b =>
@@ -217,7 +219,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.ConfirmationToken", b =>
@@ -239,7 +241,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ConfirmationTokens", (string)null);
+                    b.ToTable("ConfirmationTokens");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Label", b =>
@@ -267,7 +269,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Labels", (string)null);
+                    b.ToTable("Labels");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Meeting", b =>
@@ -297,7 +299,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("CalendarId");
 
-                    b.ToTable("Meetings", (string)null);
+                    b.ToTable("Meetings");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Notification", b =>
@@ -325,7 +327,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Organization", b =>
@@ -353,7 +355,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Organizations", (string)null);
+                    b.ToTable("Organizations");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Project", b =>
@@ -381,9 +383,6 @@ namespace Tasque.Core.DAL.Migrations
                     b.Property<int>("OrganizationId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ProjectTaskCounter")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -393,7 +392,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("OrganizationId");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Role", b =>
@@ -416,7 +415,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
 
                     b.HasData(
                         new
@@ -482,7 +481,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Sprints", (string)null);
+                    b.ToTable("Sprints");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Task", b =>
@@ -565,7 +564,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("TypeId");
 
-                    b.ToTable("Tasks", (string)null);
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.TaskPriority", b =>
@@ -599,7 +598,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("TaskPriorities", (string)null);
+                    b.ToTable("TaskPriorities");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.TaskState", b =>
@@ -630,7 +629,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("TaskStates", (string)null);
+                    b.ToTable("TaskStates");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.TaskType", b =>
@@ -661,7 +660,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("TaskTypes", (string)null);
+                    b.ToTable("TaskTypes");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.User", b =>
@@ -705,7 +704,7 @@ namespace Tasque.Core.DAL.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.UserOrganizationRole", b =>
@@ -723,7 +722,7 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("OrganizationId");
 
-                    b.ToTable("UserOrganizationRoles", (string)null);
+                    b.ToTable("UserOrganizationRoles");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.UserProjectRole", b =>
@@ -737,13 +736,13 @@ namespace Tasque.Core.DAL.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("integer");
 
-                    b.HasKey("ProjectId", "UserId");
+                    b.HasKey("ProjectId", "UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserProjectRoles", (string)null);
+                    b.ToTable("UserProjectRoles");
                 });
 
             modelBuilder.Entity("AttachmentTask", b =>

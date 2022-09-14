@@ -1,8 +1,8 @@
-<div class="board">
+<div class="board" *ngIf="isShow && project !== undefined && columns !== undefined">
     <div class="board-info">
       <div class="board-title">
-        <span class="project-name">Project / {{board.projectName}}</span>
-        <span class="board-name">{{board.name}}</span>
+        <span class="project-name">Project / {{project.name}}</span>
+        <span class="board-name">{{project.name}}</span>
       </div>
       <div class="board-tools">
         <img src="assets/board/lightning.svg">
@@ -19,7 +19,7 @@
             <tasque-input class="search-input" #searchInput (input)="filterTasks()" type="search" [icon]="searchIcon" iconPosition="search" placeholder="Search..."></tasque-input>
           </div>
           <div class="team-container">
-            <tasque-team-select [avatars]="board.users" (selectedUser)="userSelected($event)"></tasque-team-select>
+            <tasque-team-select [avatars]="project.users" (selectedUser)="userSelected($event)"></tasque-team-select>
           </div>
         </div>
         <div class="filter">
@@ -30,7 +30,7 @@
         <h4>There are no tasks yet. You can create the first one.</h4>
       </div>
       <div class="board-columns" cdkDropListGroup>
-        <div cdkDropList *ngFor="let item of board.columns"
+        <div cdkDropList *ngFor="let item of columns"
         (cdkDropListDropped)="dragDrop($event)"
         [cdkDropListData]="item.tasks" class="column-with-tasks">
           <div class="column-title">
@@ -43,8 +43,15 @@
               <img src="assets/board/column_menu.svg"> 
             </div>  
           </div>
-          <div class="column" *ngFor="let task of item.tasks" cdkDrag> 
-            <tasque-card *ngIf="!task.isHidden" [taskInfo]="task"></tasque-card>
+          <div *ngIf="item.name !== 'done'">
+            <div class="column" *ngFor="let task of item.tasks" cdkDrag> 
+              <tasque-card *ngIf="!task.isHidden" [taskInfo]="task"></tasque-card>
+            </div>
+          </div>
+          <div *ngIf="item.name === 'done'">
+            <div class="column" *ngFor="let task of item.tasks" cdkDrag> 
+              <tasque-card *ngIf="!task.isHidden" [taskInfo]="task" [isDone]="true"></tasque-card>
+            </div>
           </div>
         </div>
         <div class="create-column" (mouseleave)="onClickedOutside()">
