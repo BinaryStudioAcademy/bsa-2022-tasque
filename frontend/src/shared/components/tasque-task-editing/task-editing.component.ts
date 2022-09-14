@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { UserModel } from 'src/core/models/user/user-model';
-import { faCheckToSlot, faXmark, faLink, faPaperclip, faShareNodes, faEllipsisVertical, faFaceSmile, faPen, faFlag } from '@fortawesome/free-solid-svg-icons';
+import { faCheckToSlot, faXmark, faLink, faPaperclip, faShareNodes, faEllipsisVertical, faFaceSmile, faPen, faFlag, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { BaseComponent } from 'src/core/base/base.component';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -31,6 +31,10 @@ import { TaskUpdateModel } from 'src/core/models/task/task-update-model';
 export class TaskEditingComponent extends BaseComponent implements OnInit {
   @Input() public task: TaskModel;
   @Input() public currentUser: UserModel;
+
+  @Input() public btnText = 'Edit task';
+  @Input() public btnClass = 'btn stroke';
+  @Input() public btnIcon: IconDefinition | undefined;
 
   public organizationId: number;
 
