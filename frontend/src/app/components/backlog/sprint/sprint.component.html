@@ -76,11 +76,7 @@
         "
         -->
           <app-complete-sprint
-            *ngIf="
-              currentSprint.startAt &&
-              isCurrentUserAdmin &&
-              !currentSprint.isComplete
-            "
+            *ngIf="currentSprint.startAt && !currentSprint.isComplete"
             [sprint]="currentSprint"
             class="btn complete-sprint"
             completeBthClass="btn mini violet-fill full"
