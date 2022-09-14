@@ -10,6 +10,7 @@ namespace Tasque.Core.Common.DTO.Task
     public class CommentTaskDTO
     {
         public int TaskId { get; set; }
-        public Comment Comment { get; set; }
+        public string Message { get; set; } = null!;
+        public int AuthorId { get; set; }
     }
 }
