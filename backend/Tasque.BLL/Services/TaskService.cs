@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
-<<<<<<< HEAD
-=======
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
->>>>>>> 5099a8a217cc1316f9c9ff96e25a368125750e29
 using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.PartialModels;
@@ -41,16 +38,9 @@ namespace Tasque.Core.BLL.Services
         public async Task<TaskDto> CreateTask(TaskDto model)
         {
             var entity = _mapper.Map<Common.Entities.Task>(model);
-<<<<<<< HEAD
-            var key = _dbContext.Projects.FirstOrDefault(p => p.Id == model.Project.Id)?.Key;
-            var count = _dbContext.Tasks.Where(t => t.ProjectId == model.Project.Id).Count();
-            entity.Key = key + '-' + count;
-=======
             var project = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId)?? throw new CustomNotFoundException("project");
 
             entity.Key = project.Key + '-' + UpdateProjectCounter(project.Id);
-
->>>>>>> 5099a8a217cc1316f9c9ff96e25a368125750e29
 
             _dbContext.Add(entity);
             _dbContext.SaveChanges();
