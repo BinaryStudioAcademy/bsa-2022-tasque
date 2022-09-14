@@ -15,6 +15,8 @@ namespace Tasque.Core.BLL.Interfaces
 
         Task<List<CosmosTaskModel>> GetAllTasks();
 
+        Task<List<CosmosTaskModel>> GetAllProjectTasks(int projectId);
+
         Task<CosmosTaskModel> UpdateTask(CosmosTaskModel model);
 
         Task DeleteTask(string id);

@@ -9,8 +9,8 @@ import { OrganizationModel } from 'src/core/models/organization/organization-mod
 import { UserModel } from 'src/core/models/user/user-model';
 import { AuthService } from 'src/core/services/auth.service';
 import { OpenDialogService } from 'src/core/services/open-dialog.service';
-import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { InternalServices } from 'src/core/services/internalServices';
 
 @Component({
   selector: 'tasque-header',
@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private openDialogService: OpenDialogService,
-    private getCurrentOrganizationService: GetCurrentOrganizationService,
+    private internalServices: InternalServices
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +41,7 @@ export class HeaderComponent implements OnInit {
   }
 
   private subscribeToCurrentOrganization(): void {
-    this.getCurrentOrganizationService.currentOrganizationId$.subscribe(
+    this.internalServices.getCurrentOrganizationService.currentOrganizationId$.subscribe(
       (result) => {
         this.currentOrganizationId = result;
       },
@@ -74,7 +74,7 @@ export class HeaderComponent implements OnInit {
           return;
         }
 
-        this.getCurrentOrganizationService.updateOrganization(result);
+        this.internalServices.getCurrentOrganizationService.updateOrganization(result);
       });
   }
 
@@ -85,6 +85,8 @@ export class HeaderComponent implements OnInit {
         if (!result) {
           return;
         }
+
+        this.internalServices.getCurrentProjectService.updateProject(result);
       });
   }
 
@@ -109,7 +111,4 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/user/profile'], { replaceUrl: true });
   }
 
-  public manageMyProjectsClick(): void {
-    this.router.navigate(['/projects'], { replaceUrl: true });
-  }
 }
