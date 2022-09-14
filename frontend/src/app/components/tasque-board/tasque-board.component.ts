@@ -15,10 +15,11 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
 import { Subject } from 'rxjs';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
-import { ProjectService } from 'src/core/services/project.service';
 import { TaskType } from 'src/core/models/task/task-type';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { ProjectModel } from 'src/core/models/project/project-model';
+import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
+import { TaskState } from 'src/core/models/task/task-state';
 
 @Component({
   selector: 'tasque-board',
@@ -34,7 +35,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   @ViewChild('searchInput') public searchInput: InputComponent;
 
   private selectedUserId?: number;
-  private newColumn: BoardColumnModel;
+  private newColumn: TaskState;
   private projectId: number;
 
   public unsubscribe$ = new Subject<void>();
@@ -44,6 +45,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   public hasTasks = false;
   public isShow = false;
   public searchParameter = '';
+  colors = ['#D47500', '#00AA55', '#E3BC01', '#009FD4', '#B281B3', '#D47500', '#DC2929'];
 
   public columns: BoardColumnModel[] = [];
   public projectTasks: TaskModel[] = [];
@@ -54,7 +56,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   constructor(
     formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private projectService: ProjectService,
+    private boardService: ScopeBoardService,
     private notificationService: NotificationService,
     private currentUserService: GetCurrentUserService,
   ) {
@@ -80,7 +82,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     }
     this.projectId = parseInt(id);
 
-    this.projectService.getProjectById(this.projectId)
+    this.boardService.projectService.getProjectById(this.projectId)
       .subscribe(
       (resp) => {
         if (resp.ok) {
@@ -92,7 +94,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       },
     );
 
-    this.projectService.getAllProjectTasks(this.projectId)
+    this.boardService.projectService.getAllProjectTasks(this.projectId)
       .subscribe((resp) => {
       if(resp.ok){
         this.projectTasks = resp.body as TaskModel[];
@@ -146,12 +148,18 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       this.newColumn = {
         id: 0,
         name: this.createColumnForm.get('columnName')?.value,
-        tasks: [],
+        projectId: this.projectId,
+        color: this.colors[this.projectId % this.colors.length],
       };
-      this.columns.push(this.newColumn);
+      this.columns.push({
+        id: this.newColumn.id,
+        name: this.newColumn.name,
+        tasks: [],
+      });
+      console.log(this.newColumn);
       this.createColumnForm.reset();
       this.isOpenColumnAddDialog = false;
-      //this.updateColumns();
+      this.updateColumns();
     }
   }
 
@@ -174,19 +182,21 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         event.previousIndex,
         event.currentIndex,
       );
+      
       //this.updateTasks(); 
     }
   }
 
-  // updateColumns(): void { //TODO: Rework as for current db scheme
-  //   this.projectService
-  //     .updateBoardColumns(this.board)
-  //     .pipe(filter((resp) => resp.body != null))
-  //     .subscribe((resp) => {
-  //       this.board = resp.body as BoardModel;
-  //       this.filterTasks();
-  //     });
-  // }
+  updateColumns(): void { //TODO: Rework as for current db scheme
+    this.boardService.taskStateService
+      .createTaskState(this.newColumn)
+        .subscribe(() => {
+          this.notificationService.success('Column has been created successfully');
+          this.filterTasks();
+    }, () => {
+      this.notificationService.error('Something went wrong, try again later');
+    });
+  }
 
   // updateTasks(): void {
   //   this.projectService

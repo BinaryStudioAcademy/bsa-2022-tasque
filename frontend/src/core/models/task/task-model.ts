@@ -18,8 +18,8 @@ export interface TaskModel {
   type: TaskType;
   priority: TaskPriority;
   author: UserModel;
-  project: ProjectModel;
-  sprint: SprintModel;
+  project?: ProjectModel;
+  sprint?: SprintModel;
   lastUpdatedBy: UserModel;
   parentTaskId: number;
   createdAt: Date;
