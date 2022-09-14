@@ -124,11 +124,11 @@
                   ></app-edit-sprint>
                 </a>
                 <a>
-                  <app-delete-sprint
+                  <tasque-button
                     text="Delete sprint"
-                    btnClass="btn black"
-                    [sprint]="currentSprint"
-                  ></app-delete-sprint>
+                    class="btn black"
+                    (click)="deleteSprint(currentSprint)"
+                  ></tasque-button>
                 </a>
               </div>
             </div>
