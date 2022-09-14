@@ -69,6 +69,49 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     private taskService: TaskService,
     private sprintService: SprintService) {
     super();
+<<<<<<< HEAD
+=======
+
+    this.task = {
+      id: 1,
+      summary: 'Summary',
+      description: 'Description',
+      stateId: 1,
+      attachments: [],
+      state: {
+        id: 1,
+        name: 'To Do',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      type: {
+        id: 1,
+        name: 'Bug',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        icon: this.flagIcon,
+      },
+      priority: {
+        id: 1,
+        name: 'Low',
+        type: 0,
+        projectId: 5,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      author: this.users.filter((u) => u.id == 1)[0],
+      project: this.projects.filter((p) => p.id == 2)[0],
+      sprint: this.sprints.filter((s) => s.id == 3)[0],
+      lastUpdatedBy: this.users.filter((u) => u.id == 4)[0],
+      parentTaskId: 5,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      deadline: new Date(),
+      custmFields: [],
+    };
+    this.currentUser = this.users[1];
+    this.taskReporter = this.users[2];
+>>>>>>> 5099a8a217cc1316f9c9ff96e25a368125750e29
   }
 
   ngOnInit(): void {

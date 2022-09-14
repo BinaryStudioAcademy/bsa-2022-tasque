@@ -27,6 +27,17 @@ public class ProjectService : EntityCrudService<Project>
         return _mapper.Map<List<ProjectDto>>(_db.Projects.Where(p => p.OrganizationId == organizationId));
     }
 
+    public ProjectDto GetProjectById(int id)
+    {
+        return _mapper.Map<ProjectDto>(_db.Projects
+            .Where(p => p.Id == id)
+                .Include(p => p.ProjectTaskTypes)
+                .Include(p => p.ProjectTaskStates)
+                .Include(p => p.ProjectTaskPriorities)
+                .Include(p => p.Users)
+                .FirstOrDefault());
+    }
+
     public IEnumerable<UserDto> GetProjectParticipants(int projectId)
     {
         var proj = _db.Projects
@@ -367,5 +378,10 @@ public class ProjectService : EntityCrudService<Project>
 
         await _db.SaveChangesAsync();
         return await GetProjectBoard(board.Id);
+    }
+
+    public List<TaskStateDto> GetProjectStatesById(int projectId)
+    {
+        return _mapper.Map<List<TaskStateDto>>(_db.TaskStates.Where(s => s.ProjectId == projectId));
     }
 }

@@ -13,7 +13,5 @@ namespace Tasque.Core.DAL.EntityConfiguration
                .WithMany(user => user.OwnedOrganization)
                .HasForeignKey(organization => organization.AuthorId);
         }
-
- 
     }
 }

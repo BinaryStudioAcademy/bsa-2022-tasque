@@ -63,6 +63,7 @@ export class IssueComponent implements OnInit {
 
   // TODO remove when real data is available
   @Input() public taskStates: TaskState[] = [
+<<<<<<< HEAD
     {
       id: 1,
       name: 'To Do',
@@ -91,6 +92,32 @@ export class IssueComponent implements OnInit {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+=======
+    // {
+    //   id: 1,
+    //   name: 'To Do',
+    //   createdAt: new Date(),
+    //   updatedAt: new Date(),
+    // },
+    // {
+    //   id: 2,
+    //   name: 'In Progress',
+    //   createdAt: new Date(),
+    //   updatedAt: new Date(),
+    // },
+    // {
+    //   id: 3,
+    //   name: 'Done',
+    //   createdAt: new Date(),
+    //   updatedAt: new Date(),
+    // },
+    // {
+    //   id: 4,
+    //   name: 'Canceled',
+    //   createdAt: new Date(),
+    //   updatedAt: new Date(),
+    // },
+>>>>>>> 5099a8a217cc1316f9c9ff96e25a368125750e29
   ];
 
   public taskEstimate: TaskEstimateUpdate;
