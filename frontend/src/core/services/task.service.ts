@@ -25,7 +25,7 @@ export class TaskService {
   }
 
   updateTask(model: TaskModel): Observable<HttpResponse<TaskModel>> {
-    return this.httpService.postFullRequest(this.routePrefix, model);
+    return this.httpService.putFullRequest(this.routePrefix, model);
   }
 
   deleteTask(id: number): Observable<HttpResponse<TaskModel>> {
