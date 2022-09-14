@@ -38,7 +38,7 @@ public class ProjectService : EntityCrudService<Project>
                 .FirstOrDefault());
     }
 
-    public List<UserDto> GetProjectParticipants(int projectId)
+    public IEnumerable<UserDto> GetProjectParticipants(int projectId)
     {
         var proj = _db.Projects
             .Include(x => x.Users)
