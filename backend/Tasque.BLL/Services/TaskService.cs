@@ -5,8 +5,12 @@ using Tasque.Core.Common.DTO.PartialModels;
 using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.DTO.Task.PartialModels;
 using Tasque.Core.Common.DTO.Task.TemplateModels.IncomeModels;
+using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Entities.Abstract;
+using Tasque.Core.Common.Models.Events;
 using Tasque.Core.DAL;
+using Tasque.Messaging.Abstractions;
+using Task = System.Threading.Tasks.Task;
 
 namespace Tasque.Core.BLL.Services
 {
@@ -20,16 +24,20 @@ namespace Tasque.Core.BLL.Services
 
         private readonly IMapper _mapper;
 
+        private readonly IEventBus _bus;
+
         public TaskService(
             DataContext dbContext, 
             ICosmosTaskService cosmosTaskService,
             ICosmosTemplateService cosmosTemplateService,
-            IMapper mapper)
+            IMapper mapper,
+            IEventBus bus)
         {
             _dbContext = dbContext;
             _cosmosTaskService = cosmosTaskService;
             _mapper = mapper;
             _cosmosTemplateService = cosmosTemplateService;
+            _bus = bus;
         }
 
         public async Task<TaskDto> CreateTask(TaskDto model)
@@ -163,12 +171,26 @@ namespace Tasque.Core.BLL.Services
         public async Task CommentTask(CommentTaskDTO dto)
         {
             var task = _dbContext.Tasks.Single(t => t.Id == dto.TaskId);
-            task.Comments.Add(dto.Comment);
+            var comment = new Comment
+            {
+                Message = dto.Message,
+                AuthorId = dto.AuthorId,
+                TaskId = dto.TaskId
+            };
+            _dbContext.Comments.Add(comment);
+            //task.Comments.Add(dto.Comment);
 
             _dbContext.Update(task);
             await _dbContext.SaveChangesAsync();
 
-            // TODO send notification
+            TaskCommentedEvent @event = new()
+            {
+                TaskAuthorId = task.AuthorId,
+                TaskId = task.Id,
+                CommentId = comment.Id
+            };
+
+            _bus.Publish(@event);
         }
 
         private void SaveChanges<T>(T entity)

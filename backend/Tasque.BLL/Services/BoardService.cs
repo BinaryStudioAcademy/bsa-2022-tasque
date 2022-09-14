@@ -3,7 +3,9 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.Common.DTO.Board;
 using Tasque.Core.Common.Entities;
+using Tasque.Core.Common.Models.Events;
 using Tasque.Core.DAL;
+using Tasque.Messaging.Abstractions;
 using Task = System.Threading.Tasks.Task;
 
 namespace Tasque.Core.BLL.Services
@@ -12,11 +14,13 @@ namespace Tasque.Core.BLL.Services
     {
         private DataContext _context;
         private IMapper _mapper;
+        private readonly IEventBus _bus;
 
-        public BoardService(DataContext context, IMapper mapper) : base(context)
+        public BoardService(DataContext context, IMapper mapper, IEventBus bus) : base(context)
         {
             _context = context;
             _mapper = mapper;
+            _bus = bus;
         }
 
         public async Task<ICollection<BoardDto>> GetUserBoards(int userId)
@@ -43,7 +47,15 @@ namespace Tasque.Core.BLL.Services
             _db.Update(currentBoardColumn);
             await _db.SaveChangesAsync();
 
-            // TODO send notification
+            TaskMovedEvent @event = new()
+            {
+                PreviousColumnId = dto.PreviousBoardId,
+                NewColumnId = dto.CurrentBoardId,
+                TaskId = task.Id,
+                TaskAuthorId = task.AuthorId
+            };
+
+            _bus.Publish(@event);
         }
     }
 }
