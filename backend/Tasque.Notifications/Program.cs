@@ -7,6 +7,7 @@ using Tasque.Notifications.Data;
 using Tasque.Notifications.Handlers;
 using Tasque.Notifications.Hubs;
 using AutoMapper;
+using Tasque.Notifications;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,14 +23,14 @@ builder.Services.AddSwaggerGen();
 RegisterHandlers(builder.Services);
 builder.Services.RegisterEventBus(builder.Configuration);
 
+builder.Services.AddServices();
+
 builder.Services.AddDbContext<NotificationsContext>(
     o => o.UseNpgsql(builder.Configuration["ConnectionStrings:NotificationsDb"],
         b => b.MigrationsAssembly(typeof(NotificationsContext).Assembly.FullName))
         .EnableDetailedErrors());
 
-builder.Services.AddSignalR();
-
-builder.Services.AddSingleton<NotificationsHub>();
+builder.Services.ConfigureSignalR();
 
 var app = builder.Build();
 
