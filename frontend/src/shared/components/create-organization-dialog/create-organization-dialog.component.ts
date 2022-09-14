@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -7,13 +7,15 @@ import { UserModel } from 'src/core/models/user/user-model';
 import { NewOrganizationModel } from 'src/core/models/organization/new-organization-model';
 import { FormControl, Validators } from '@angular/forms';
 import { NotificationService } from 'src/core/services/notification.service';
+import { Router } from '@angular/router';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 
 @Component({
   selector: 'app-create-organization-dialog',
   templateUrl: './create-organization-dialog.component.html',
   styleUrls: ['./create-organization-dialog.component.sass']
 })
-export class CreateOrganizationDialogComponent implements OnInit {
+export class CreateOrganizationDialogComponent implements OnInit, OnDestroy {
 
   public createBtnName = 'Create';
   public createBtnClass = 'fill';
@@ -57,6 +59,8 @@ export class CreateOrganizationDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<CreateOrganizationDialogComponent>,
     public organizationService: OrganizationService,
     public notificationService: NotificationService,
+    private router: Router,
+    private currOrgService: GetCurrentOrganizationService,
     @Inject(MAT_DIALOG_DATA) public currentUser: UserModel) {
     this.createOrganizationForm = new FormControl(this.organizationName, [
       Validators.required,
@@ -68,7 +72,7 @@ export class CreateOrganizationDialogComponent implements OnInit {
   public areLastAndFirstCharactersCorrect(): boolean {
     const regex = new RegExp('^[a-zA-Z0-9]+$');
     const lastChar = this.createOrganizationForm.value.length - 1;
-    if(!regex.test(this.createOrganizationForm.value.charAt(0)) || 
+    if(!regex.test(this.createOrganizationForm.value.charAt(0)) ||
       !regex.test(this.createOrganizationForm.value.charAt(lastChar))) {
         return false;
       }
@@ -76,6 +80,11 @@ export class CreateOrganizationDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   createOrganization(): void {
@@ -96,6 +105,8 @@ export class CreateOrganizationDialogComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         this.notificationService.success('Organization has been created successfully');
+        this.currOrgService.currentOrganizationId = result.body?.id as number;
+        this.router.navigate(['projects'], { replaceUrl: true });
         this.dialogRef.close(result.body);
       });
   }
