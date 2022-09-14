@@ -4,7 +4,7 @@
       <span class="item-label"> {{ task.key }}</span>
       <h5>
         <div class="summary-text-wrapper" *ngIf="!this.taskSummaryInputShow">
-          <span class="summary-text" [innerHTML]="task.summary"> </span>
+          <span class="summary-text" [innerHTML]="editTaskForm.controls.taskSummary.value"> </span>
           <tasque-button class="btn icon edit" [icon]="editIcon" (click)="summaryClick()"></tasque-button>
         </div>
 
@@ -31,11 +31,9 @@
           <tasque-button class="btn icon" [icon]="ellipsisIcon"></tasque-button>
         </div>
       </h5>
-      <span
-        class="error"
-        *ngIf="this.editTaskForm.controls?.taskSummary && this.editTaskForm.controls.taskSummary.invalid"
-        >{{ summaryErrorMessage }}</span
-      >
+      <span class="error" *ngIf="this.editTaskForm.controls.taskSummary.invalid">{{
+        summaryErrorMessage
+      }}</span>
     </div>
 
     <div class="task-main-container">
@@ -104,7 +102,8 @@
 
           <div class="fill-description-width">
             <div class="description-text-wrapper" *ngIf="!this.taskDescriptionEditorShow">
-              <span class="description-text" *ngIf="task.description" [innerHTML]="task.description"> </span>
+              <span class="description-text" [innerHTML]="editTaskForm.controls.taskDescription.value">
+              </span>
               <tasque-button
                 class="btn icon edit"
                 [icon]="editIcon"
@@ -124,13 +123,9 @@
             >
             </angular-editor>
 
-            <span
-              class="error"
-              *ngIf="
-                this.editTaskForm.controls?.taskDescription && editTaskForm.controls.taskDescription.invalid
-              "
-              >{{ descriptionErrorMessage }}</span
-            >
+            <span class="error" *ngIf="editTaskForm.controls.taskDescription.invalid">{{
+              descriptionErrorMessage
+            }}</span>
           </div>
         </div>
       </div>
