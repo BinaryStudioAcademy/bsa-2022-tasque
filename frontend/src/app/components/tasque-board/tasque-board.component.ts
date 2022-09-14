@@ -121,6 +121,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           customLabels: [],
           key: t.key as string,
           isHidden: false,
+          order: 0
         });
       });
       c.tasks = taskInfo;
