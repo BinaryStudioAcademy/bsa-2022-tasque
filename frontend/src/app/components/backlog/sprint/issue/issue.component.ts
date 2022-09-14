@@ -140,7 +140,10 @@ export class IssueComponent implements OnInit {
   }
 
   updateTaskState(stateId: number): void {
-    this.issue.state.id = stateId;
+    this.issue.stateId = stateId;
+    if (this.issue.state) {
+      this.issue.stateId = stateId;
+    }
 
     this.taskServise
       .updateTask(this.issue)

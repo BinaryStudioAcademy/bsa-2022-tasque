@@ -1,6 +1,6 @@
 <div class="issue">
-  <p class="issue-type" [ngStyle]="{ 'background': issue.type.color ?? 'colorscheme(yellow-100)' }">
-    {{ issue.type.name }}
+  <p class="issue-type" [ngStyle]="{ 'background': issue.type?.color ?? 'colorscheme(yellow-100)' }">
+    {{ issue.type?.name ?? '' }}
   </p>
   <p class="issue-key">
     {{ issue.key }}
@@ -22,7 +22,7 @@
   <tasque-dropdown
     [options]="taskStateToDropdownArray(taskStates)"
     (onSelect)="updateTaskState($event)"
-    [placeholder]="issue.state && issue.state.name"
+    [placeholder]="issue.state && issue.state.name ? issue.state.name : ''"
     width="150px"
   ></tasque-dropdown>
 

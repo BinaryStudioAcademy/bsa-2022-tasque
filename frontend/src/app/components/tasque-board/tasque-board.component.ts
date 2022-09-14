@@ -82,26 +82,26 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
     this.projectService.getProjectById(this.projectId)
       .subscribe(
-      (resp) => {
-        if (resp.ok) {
-          this.project = resp.body as ProjectModel;
-          this.setColumns();
-        } else {
-          this.notificationService.error('Something went wrong');
-        }
-      },
-    );
+        (resp) => {
+          if (resp.ok) {
+            this.project = resp.body as ProjectModel;
+            this.setColumns();
+          } else {
+            this.notificationService.error('Something went wrong');
+          }
+        },
+      );
 
     this.projectService.getAllProjectTasks(this.projectId)
       .subscribe((resp) => {
-      if(resp.ok){
-        this.projectTasks = resp.body as TaskModel[];
-        this.hasTasks = this.checkIfHasTasks();
-        this.sortTasksByColumns();
-      } else {
-        this.notificationService.error('Something went wrong');
-      }
-    });
+        if (resp.ok) {
+          this.projectTasks = resp.body as TaskModel[];
+          this.hasTasks = this.checkIfHasTasks();
+          this.sortTasksByColumns();
+        } else {
+          this.notificationService.error('Something went wrong');
+        }
+      });
   }
 
   sortTasksByColumns(): void {
@@ -114,6 +114,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
         taskInfo.push({
           id: t.id,
+          typeId: t.typeId,
           type: t.type,
           priority: t.priority,
           attachmentUrl: t.attachments[0]?.uri,
@@ -199,7 +200,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   // }
 
   checkIfHasTasks(): boolean {
-    if(this.projectTasks.length > 0){
+    if (this.projectTasks.length > 0) {
       return true;
     }
     return false;
@@ -207,11 +208,11 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
   filterTasks(): void {
     const phrase = this.searchInput.inputValue;
-    for(const column of this.columns) {
-      if(column.tasks){
-        for(const task of column.tasks) {
+    for (const column of this.columns) {
+      if (column.tasks) {
+        for (const task of column.tasks) {
           task.isHidden = !task.summary.toLowerCase().includes(phrase.toLowerCase());
-          if(this.selectedUserId) {
+          if (this.selectedUserId) {
             task.isHidden = task.isHidden || task.user?.id != this.selectedUserId;
           }
         }

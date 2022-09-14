@@ -48,16 +48,16 @@ export class CompleteSprintDialogComponent implements OnInit {
   openIssue(): number {
     return this.sprint.tasks.filter(
       (t) =>
-        t.state.id == TaskStateTypes.ToDo ||
-        t.state.id == TaskStateTypes.InProgress,
+        t.stateId == TaskStateTypes.ToDo ||
+        t.stateId == TaskStateTypes.InProgress,
     ).length;
   }
 
   completedIssues(): number {
     return this.sprint.tasks.filter(
       (t) =>
-        t.state.id == TaskStateTypes.Done ||
-        t.state.id == TaskStateTypes.Canceled,
+        t.stateId == TaskStateTypes.Done ||
+        t.stateId == TaskStateTypes.Canceled,
     ).length;
   }
 }

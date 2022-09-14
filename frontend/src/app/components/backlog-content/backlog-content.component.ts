@@ -300,7 +300,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
         this.tasks.sort((a) => a.id);
       } else if (this.filterIssue == IssueSort.OnlyMyIssues) {
         this.tasks = this.tasks.filter((item) => {
-          return item.author.id == this.currentUser.id;
+          return item.authorId == this.currentUser.id;
         });
       } else if (this.filterIssue == IssueSort.RecentlyUpdated) {
         this.tasks.sort(
