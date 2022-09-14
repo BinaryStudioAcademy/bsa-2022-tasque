@@ -38,12 +38,11 @@ namespace Tasque.Core.BLL.Services
         public async Task<TaskDto> CreateTask(TaskDto model)
         {
             var entity = _mapper.Map<Common.Entities.Task>(model);
-            var order = _dbContext.Tasks.Where(t => t.ProjectId == model.ProjectId).Max(x => x.Order) + 1;
-            entity.Order = order;
-            var project = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId)?? throw
-                new CustomNotFoundException("project");
+            var project = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId) ?? throw new CustomNotFoundException("project");            
 
             entity.Key = project.Key + '-' + UpdateProjectCounter(project.Id);
+            var order = _dbContext.Tasks.Where(t => t.ProjectId == model.ProjectId).Max(x => x.Order) + 1;
+            entity.Order = order;
 
 
             _dbContext.Add(entity);

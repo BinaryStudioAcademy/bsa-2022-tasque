@@ -188,25 +188,25 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   //     });
   // }
 
-  /*updateTasks(): void {
-    this.board.columns.forEach((column) => {
-      column.tasks.forEach((task, index) => {
-        task.order = index;
-      });
-    });
+  // updateTasks(): void {
+  //   this.board.columns.forEach((column) => {
+  //     column.tasks.forEach((task, index) => {
+  //       task.order = index;
+  //     });
+  //   });
 
-    this.projectService
-      .updateBoardTasks(this.board)
-      .pipe(filter((resp) => resp.body != null))
-      .subscribe((resp) => {
-        const res = resp.body as BoardModel;
-        res.columns.forEach((column) => {
-          column.tasks.sort((a, b) => a.order - b.order);
-        });
-        this.board = res;
-        this.filterTasks();
-      });
-  }*/
+  //   this.projectService
+  //     .updateBoardTasks(this.board)
+  //     .pipe(filter((resp) => resp.body != null))
+  //     .subscribe((resp) => {
+  //       const res = resp.body as BoardModel;
+  //       res.columns.forEach((column) => {
+  //         column.tasks.sort((a, b) => a.order - b.order);
+  //       });
+  //       this.board = res;
+  //       this.filterTasks();
+  //     });
+  // }
 
   checkIfHasTasks(): boolean {
     if(this.projectTasks.length > 0){
