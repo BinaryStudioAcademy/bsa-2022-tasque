@@ -40,7 +40,7 @@ namespace Tasque.Core.BLL.Services
             var entity = _mapper.Map<Common.Entities.Task>(model);
             var project = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId)?? throw new CustomNotFoundException("project");
 
-            entity.Key = project.Key + '-' + await UpdateProjectCounter(project.Id);
+            entity.Key = project.Key + '-' + UpdateProjectCounter(project.Id);
 
 
             _dbContext.Add(entity);
@@ -128,7 +128,7 @@ namespace Tasque.Core.BLL.Services
             if(model.ProjectId != currentProjectId)
             {
                 var project = await _dbContext.Projects.FirstOrDefaultAsync(p => p.Id == model.ProjectId)?? throw new CustomNotFoundException("project");
-                model.Key = project.Key + '-' + await UpdateProjectCounter(project.Id);
+                model.Key = project.Key + '-' + UpdateProjectCounter(project.Id);
             }
 
             var entityTask = await _dbContext.Tasks
@@ -201,9 +201,9 @@ namespace Tasque.Core.BLL.Services
             return result;
         }
 
-        private async Task<int> UpdateProjectCounter(int projectId)
+        private int UpdateProjectCounter(int projectId)
         {
-            var project = await _dbContext.Projects.FirstOrDefaultAsync(p => p.Id == projectId)?? throw new CustomNotFoundException("project");
+            var project = _dbContext.Projects.FirstOrDefault(p => p.Id == projectId)?? throw new CustomNotFoundException("project");
             project.ProjectTaskCounter += 1;
             _dbContext.SaveChanges();
             return project.ProjectTaskCounter;
