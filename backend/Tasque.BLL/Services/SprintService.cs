@@ -22,6 +22,31 @@ namespace Tasque.Core.BLL.Services
             _mapper = mapper;
         }
 
+        public async Task<SprintDto> Create(NewSprintDto sprintDto)
+        {
+            var sprintAuthor = await _db.Users
+                .Include(u => u.Roles)
+                .FirstOrDefaultAsync(u => u.Id == sprintDto.AuthorId)
+                  ?? throw new ValidationException("User not found");
+
+            var sprintProject = await _db.Projects
+                .FirstOrDefaultAsync(u => u.Id == sprintDto.ProjectId)
+                  ?? throw new ValidationException("Project not found");
+
+            var newSprint = new Sprint()
+            {
+                Name = sprintDto.Name,
+                ProjectId = sprintDto.ProjectId,
+                CreatedAt =  DateTime.UtcNow,
+            };
+            newSprint.Order = _db.Sprints.Max(x => x.Order) + 1;
+
+            var sprint = _db.Sprints.Add(newSprint).Entity;
+            await _db.SaveChangesAsync();
+
+            return _mapper.Map<SprintDto>(sprint);
+        }
+
         public async Task<IEnumerable<SprintDto>> GetProjectSprints(int projectId)
         {
             var sprints = await _db.Sprints

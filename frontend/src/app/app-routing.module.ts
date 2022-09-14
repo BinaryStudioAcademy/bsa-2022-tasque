@@ -13,6 +13,7 @@ import { BacklogComponent } from './components/backlog/backlog.component';
 import { NotFoundPageComponent } from 'src/shared/components/not-found-page/not-found-page.component';
 import { AccessControlGuard } from 'src/app/components/tasque-project-settings/project-options-module/guards/access-control.guard';
 import { ProjectSettingsRoutes } from './components/tasque-project-settings/project-options-module/project-options.routes';
+import { WikiComponent } from './components/wiki/wiki.component';
 
 const routes: Routes = [
   ...AuthRoutes,
@@ -31,13 +32,14 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'project',
+    path: 'project/:id',
     component: PageWithSidebarComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, AccessControlGuard],
     children: [
-      { path: ':id/board', component: TasqueBoardComponent, canActivate: [AccessControlGuard] },
-      { path: ':id/team', component: TasqueTeamComponent },
-      { path: ':id/backlog', component: BacklogComponent },
+      { path: 'board', component: TasqueBoardComponent },
+      { path: 'team', component: TasqueTeamComponent },
+      { path: 'backlog', component: BacklogComponent },
+      { path: 'wiki', component: WikiComponent },
       ...ProjectSettingsRoutes,
     ],
   },

@@ -19,6 +19,7 @@
         text="Create Sprint"
         [class]="btnClass"
         class="mini"
+        (click)="createSprint()"
       ></tasque-button>
     </div>
   </div>
@@ -42,6 +43,7 @@
         [issue]="task"
         [taskStates]="taskStates"
         [taskTypes]="taskTypes"
+        [currentProject]="project"
       ></app-issue>
     </div>
     <div class="add-issue-wrapper row">

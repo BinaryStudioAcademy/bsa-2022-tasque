@@ -1,7 +1,7 @@
 <div
   class="sprint-conteiner"
-  cdkDropList
   id="{{ currentSprint.id }}"
+  cdkDropList
   #doneList="cdkDropList"
   [cdkDropListData]="currentSprint.tasks"
   (cdkDropListDropped)="drop($event)"
@@ -33,7 +33,7 @@
             {{ currentSprint.startAt | date: 'mediumDate' }}
           </p>
           <p *ngIf="currentSprint.startAt">-</p>
-          <p *ngIf="!currentSprint.startAt">deadline:</p>
+          <p *ngIf="!currentSprint.startAt && currentSprint.endAt">deadline:</p>
           <p class="endAt">{{ currentSprint.endAt | date: 'mediumDate' }}</p>
         </div>
         <div class="issues">
@@ -44,15 +44,19 @@
         </div>
         <div class="estimate">
           <p>estimate</p>
-          <p class="estimate-count">{{ estimate }}</p>
+          <p class="estimate-count">{{ estimate ? estimate : 0 }}</p>
         </div>
         <div class="wrapper button">
           <app-edit-sprint
             *ngIf="
               !currentSprint.startAt &&
-              sprintIndex == 0 &&
               isCurrentUserAdmin &&
               !currentSprint.isComplete
+            "
+            [btnClass]="
+              sprintIndex != 0
+                ? 'btn mini voilet full disabled'
+                : 'btn mini voilet full'
             "
             [currentSprint]="currentSprint"
             class="btn mini voilet full start-sprint"
@@ -127,11 +131,18 @@
         <tasque-team-select
           [avatars]="sprintUsers"
           (selectedUser)="filterUserTasks($event)"
-          *ngIf="sprintUsersCircle"
+          *ngIf="sprintUsersCircle && sprintUsers.length > 0"
         ></tasque-team-select>
       </div>
     </div>
     <div class="sprint-body">
+      <div class="empty-tasks row pale" *ngIf="tasks && tasks.length === 0">
+        <label class="text-center"
+          >Plan a sprint by dragging the sprint footer down below some issue, or
+          by dragging issue here</label
+        >
+      </div>
+
       <app-issue
         *ngFor="let task of tasks"
         [issue]="task"
@@ -139,6 +150,7 @@
         [taskTypes]="taskType"
         [currentUser]="currentUser"
         (estimate)="estimateCount()"
+        [currentProject]="currentProject"
       ></app-issue>
     </div>
     <div class="sprint-footer">

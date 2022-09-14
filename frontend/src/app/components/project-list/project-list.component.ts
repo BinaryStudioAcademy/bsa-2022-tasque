@@ -97,7 +97,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
 
         this.projects.push(result);
         this.itemsShow = this.projects;
-        this.currentProjectService.setCurrentProject(result);
+        this.currentProjectService.updateProject(result);
       });
   }
 

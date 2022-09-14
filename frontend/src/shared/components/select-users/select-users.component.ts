@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
 import { BoardService } from 'src/core/services/board.service';
 import {
   BoardType,
@@ -15,6 +14,7 @@ import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
 import { UserModel } from 'src/core/models/user/user-model';
 import { UserRole } from 'src/core/models/user/user-roles';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'tasque-select-users',
@@ -56,7 +56,9 @@ export class SelectUsersComponent implements OnInit {
   @Output() onDelete = new EventEmitter<string>();
   @Output() onUpdate = new EventEmitter<IUserCard>();
 
-  constructor(private service: BoardService, private toastr: ToastrService) {
+  constructor(
+    private service: BoardService, 
+    private nontificationService: NotificationService) {
     this.roles = getRolesAsArray();
   }
 
@@ -72,7 +74,7 @@ export class SelectUsersComponent implements OnInit {
 
   public add(): void {
     if (!this.searchForm.valid) {
-      this.toastr.error('Invalid email');
+      this.nontificationService.error('Invalid email');
       return;
     }
 

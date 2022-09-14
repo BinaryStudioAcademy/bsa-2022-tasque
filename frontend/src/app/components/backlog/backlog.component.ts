@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  AfterContentChecked,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
@@ -19,11 +25,11 @@ import {
 } from '@angular/cdk/drag-drop';
 import { IssueSort } from './models';
 import { TaskModel } from 'src/core/models/task/task-model';
-import { ToastrService } from 'ngx-toastr';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from 'src/core/services/project.service';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-backlog',
@@ -43,7 +49,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
     ]),
   ],
 })
-export class BacklogComponent implements OnInit {
+export class BacklogComponent implements OnInit, AfterContentChecked {
   faMaximize = faMaximize;
   faMagnifyingGlass = faMagnifyingGlass;
   faUnlockKeyhole = faUnlockKeyhole;
@@ -69,16 +75,20 @@ export class BacklogComponent implements OnInit {
     public projectService: ProjectService,
     public sprintService: SprintService,
     public currentUserService: GetCurrentUserService,
-    private toastrService: ToastrService,
+    private notificationService: NotificationService,
     private route: ActivatedRoute,
+    private cdref: ChangeDetectorRef,
   ) {
     sprintService.deleteSprint$.subscribe((sprintId) => {
       this.deleteSprint(sprintId);
     });
   }
+  ngAfterContentChecked(): void {
+    this.cdref.detectChanges();
+  }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.url[0].path;
+    const id = this.route.parent?.snapshot.paramMap.get('id');
 
     if (id) {
       this.currentProjectId = parseInt(id);
@@ -175,7 +185,7 @@ export class BacklogComponent implements OnInit {
     this.updateSprint(sprint.id, sprint);
     this.updateSprint(nextSprint.id, nextSprint);
     this.sprints.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-    this.toastrService.success('Priority updated');
+    this.notificationService.success('Priority updated');
   }
 
   updateSprint(sprintId: number, sprint: SprintModel): void {
