@@ -3,22 +3,22 @@
     <div class="task-summary-container">
       <span class="item-label"> {{ task.key }}</span>
       <h5>
-        <div class="summary-text-wrapper" *ngIf="!this.taskSummaryInputShow">
-          <span class="summary-text" [innerHTML]="editTaskForm.controls.taskSummary.value"> </span>
+        <div class="summary-text-wrapper" *ngIf="!this.summaryInputShow">
+          <span class="summary-text" [innerHTML]="editTaskForm.controls.summary.value"> </span>
           <tasque-button class="btn icon edit" [icon]="editIcon" (click)="summaryClick()"></tasque-button>
         </div>
 
         <div
           class="input-wrapper"
-          *ngIf="this.taskSummaryInputShow"
+          *ngIf="this.summaryInputShow"
           (clickOutside)="summaryInputOutsideClick()"
           [delayClickOutsideInit]="true"
         >
           <tasque-input
             placeholder="Type some text"
-            formControlName="taskSummary"
+            formControlName="summary"
             errorMessage=""
-            [invalid]="editTaskForm.controls.taskSummary.valid"
+            [invalid]="editTaskForm.controls.summary.valid"
           >
           </tasque-input>
         </div>
@@ -31,9 +31,7 @@
           <tasque-button class="btn icon" [icon]="ellipsisIcon"></tasque-button>
         </div>
       </h5>
-      <span class="error" *ngIf="this.editTaskForm.controls.taskSummary.invalid">{{
-        summaryErrorMessage
-      }}</span>
+      <span class="error" *ngIf="this.editTaskForm.controls.summary.invalid">{{ summaryErrorMessage }}</span>
     </div>
 
     <div class="task-main-container">
@@ -44,35 +42,27 @@
             class="red"
             width="200px"
             [options]="projectOptions"
-            formControlName="taskProject"
+            formControlName="project"
           ></tasque-dropdown>
         </div>
 
         <div class="item-wrapper">
           <span class="item-label">Status</span>
-          <tasque-dropdown
-            width="200px"
-            [options]="taskStatusOptions"
-            formControlName="taskStatus"
-          ></tasque-dropdown>
+          <tasque-dropdown width="200px" [options]="statusOptions" formControlName="status"></tasque-dropdown>
         </div>
 
         <div class="item-wrapper">
           <span class="item-label">Priority</span>
           <tasque-dropdown
             width="200px"
-            [options]="taskPriorityOptions"
-            formControlName="taskPriority"
+            [options]="priorityOptions"
+            formControlName="priority"
           ></tasque-dropdown>
         </div>
 
         <div class="item-wrapper">
           <span class="item-label">Type</span>
-          <tasque-dropdown
-            width="200px"
-            [options]="taskTypeOptions"
-            formControlName="taskType"
-          ></tasque-dropdown>
+          <tasque-dropdown width="200px" [options]="typeOptions" formControlName="type"></tasque-dropdown>
         </div>
 
         <div class="item-wrapper">
@@ -81,7 +71,7 @@
             width="80px"
             optionsWidth="max-content"
             [options]="sprintOptions"
-            formControlName="taskSprint"
+            formControlName="sprint"
           ></tasque-dropdown>
         </div>
 
@@ -101,9 +91,8 @@
           <span class="item-label">Description</span>
 
           <div class="fill-description-width">
-            <div class="description-text-wrapper" *ngIf="!this.taskDescriptionEditorShow">
-              <span class="description-text" [innerHTML]="editTaskForm.controls.taskDescription.value">
-              </span>
+            <div class="description-text-wrapper" *ngIf="!this.descriptionEditorShow">
+              <span class="description-text" [innerHTML]="editTaskForm.controls.description.value"> </span>
               <tasque-button
                 class="btn icon edit"
                 [icon]="editIcon"
@@ -112,18 +101,18 @@
             </div>
 
             <angular-editor
-              *ngIf="this.taskDescriptionEditorShow"
+              *ngIf="this.descriptionEditorShow"
               (clickOutside)="descriptionEditorOutsideClick()"
               [delayClickOutsideInit]="true"
-              id="taskDescriptionEditor"
-              formControlName="taskDescription"
+              id="descriptionEditor"
+              formControlName="description"
               [config]="editorConfig"
               placeholder="Type some text..."
               class="description-editor"
             >
             </angular-editor>
 
-            <span class="error" *ngIf="editTaskForm.controls.taskDescription.invalid">{{
+            <span class="error" *ngIf="editTaskForm.controls.description.invalid">{{
               descriptionErrorMessage
             }}</span>
           </div>

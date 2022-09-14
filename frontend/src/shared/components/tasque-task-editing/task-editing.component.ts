@@ -43,18 +43,18 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public editIcon = faPen;
   public flagIcon = faFlag;
 
-  public taskDescriptionEditorShow = false;
-  public taskSummaryInputShow = false;
+  public descriptionEditorShow = false;
+  public summaryInputShow = false;
 
-  public taskStatusOptions: TasqueDropdownOption[] = [];
-  public taskPriorityOptions: TasqueDropdownOption[] = [];
-  public taskTypeOptions: TasqueDropdownOption[] = [];
+  public statusOptions: TasqueDropdownOption[] = [];
+  public priorityOptions: TasqueDropdownOption[] = [];
+  public typeOptions: TasqueDropdownOption[] = [];
   public projectOptions: TasqueDropdownOption[] = [];
   public sprintOptions: TasqueDropdownOption[] = [];
 
-  public taskPriorities: TaskPriority[] = [];
-  public taskStates: TaskState[] = [];
-  public taskTypes: TaskType[] = [];
+  public priorities: TaskPriority[] = [];
+  public states: TaskState[] = [];
+  public types: TaskType[] = [];
 
   public users: UserModel[] = [];
 
@@ -93,48 +93,42 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     });
 
     this.editTaskForm = this.fb.group({
-      taskProject: [this.convertToOption(this.task.project)],
-      taskSummary: [this.task.summary,
+      project: [this.convertToOption(this.task.project)],
+      summary: [this.task.summary,
       [Validators.minLength(2),
       Validators.maxLength(80)]
       ],
-      taskSprint: [this.convertToOption(this.task.sprint)],
-      taskStatus: [this.convertToOption(this.task.state)],
-      taskPriority: [this.convertToOption(this.task.priority)],
-      taskType: [this.convertToOption(this.task.type)],
-      taskDescription: [this.task.description, [Validators.maxLength(5000)]],
-      taskAssignees: [this.task.users],
+      sprint: [this.convertToOption(this.task.sprint)],
+      status: [this.convertToOption(this.task.state)],
+      priority: [this.convertToOption(this.task.priority)],
+      type: [this.convertToOption(this.task.type)],
+      description: [this.task.description, [Validators.maxLength(5000)]],
+      assignees: [this.task.users],
     });
 
-    this.editTaskForm.controls.taskProject.valueChanges.subscribe((option: TasqueDropdownOption) => {
+    this.editTaskForm.controls.project.valueChanges.subscribe((option: TasqueDropdownOption) => {
       this.getProjectInfo(option.id);
     });
   }
 
   summaryClick(): void {
-    this.taskSummaryInputShow = true;
+    this.summaryInputShow = true;
   }
 
   summaryInputOutsideClick(): void {
-    this.taskSummaryInputShow = false;
-    if (this.editTaskForm.value.taskSummary !== this.task.summary) {
-      this.task.summary = this.editTaskForm.value.taskSummary;
-    }
+    this.summaryInputShow = false;
   }
 
   descriptionClick(): void {
-    this.taskDescriptionEditorShow = true;
+    this.descriptionEditorShow = true;
   }
 
   descriptionEditorOutsideClick(): void {
-    this.taskDescriptionEditorShow = false;
-    if (this.editTaskForm.value.taskDescription !== this.task.description) {
-      this.task.description = this.editTaskForm.value.taskDescription;
-    }
+    this.descriptionEditorShow = false;
   }
 
   get summaryErrorMessage(): string {
-    const ctrl = this.editTaskForm.controls.taskSummary;
+    const ctrl = this.editTaskForm.controls.summary;
 
     if (ctrl.errors?.['minlength']) {
       return 'Summary must be at least 2 characters';
@@ -147,7 +141,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   }
 
   get descriptionErrorMessage(): string {
-    const ctrl = this.editTaskForm.controls.taskDescription;
+    const ctrl = this.editTaskForm.controls.description;
 
     if (ctrl.errors?.['maxlength']) {
       return 'Description must not exceed 5000 characters';
@@ -221,24 +215,24 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     });
   }
 
-  private fillTaskPriorityOptions(taskPriorities: TaskPriority[]): void {
-    this.taskPriorityOptions = [];
+  private fillPriorityOptions(taskPriorities: TaskPriority[]): void {
+    this.priorityOptions = [];
     taskPriorities.forEach((element) => {
-      this.taskPriorityOptions.push(this.convertToOption(element));
+      this.priorityOptions.push(this.convertToOption(element));
     });
   }
 
-  private fillTaskStateOptions(taskStates: TaskState[]): void {
-    this.taskStatusOptions = [];
-    taskStates.forEach((element) => {
-      this.taskStatusOptions.push(this.convertToOption(element));
+  private fillStateOptions(states: TaskState[]): void {
+    this.statusOptions = [];
+    states.forEach((element) => {
+      this.statusOptions.push(this.convertToOption(element));
     });
   }
 
-  private fillTaskTypeOptions(taskTypes: TaskType[]): void {
-    this.taskTypeOptions = [];
-    taskTypes.forEach((element) => {
-      this.taskTypeOptions.push(this.convertToOption(element));
+  private fillTypeOptions(types: TaskType[]): void {
+    this.typeOptions = [];
+    types.forEach((element) => {
+      this.typeOptions.push(this.convertToOption(element));
     });
   }
 
@@ -258,29 +252,29 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
     this.taskTemplateService.getAllProjectTaskTypes(projectId)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((taskTypes) => {
-        if (!taskTypes.body) {
+      .subscribe((types) => {
+        if (!types.body) {
           return;
         }
-        this.fillTaskTypeOptions(taskTypes.body);
+        this.fillTypeOptions(types.body);
       });
 
     this.projectService.getProjectPriorities(projectId)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((taskPriorities) => {
-        if (!taskPriorities.body) {
+      .subscribe((priorities) => {
+        if (!priorities.body) {
           return;
         }
-        this.fillTaskPriorityOptions(taskPriorities.body);
+        this.fillPriorityOptions(priorities.body);
       });
 
     this.taskTemplateService.getAllProjectTaskStates(projectId)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((taskStates) => {
-        if (!taskStates.body) {
+      .subscribe((states) => {
+        if (!states.body) {
           return;
         }
-        this.fillTaskStateOptions(taskStates.body);
+        this.fillStateOptions(states.body);
       });
   }
 }
