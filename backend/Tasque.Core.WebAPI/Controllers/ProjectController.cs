@@ -22,15 +22,6 @@ public class ProjectController : EntityController
         return Ok(await _service.GetAllProjectsOfOrganization(organizationId));
     }
 
-    [HttpGet("getById/{id}")]
-    public override IActionResult GetById(int id)
-    {
-        var project = _service.GetProjectById(id);
-        if(project == null)
-            return NotFound("Project Not Found");
-        return Ok(project);
-        
-    }
 
     [HttpPut("invite")]
     public async Task<IActionResult> InviteUserToProject([FromBody] UserInviteDto userInviteDto)
