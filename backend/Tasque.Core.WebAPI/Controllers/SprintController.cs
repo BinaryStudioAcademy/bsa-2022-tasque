@@ -16,6 +16,12 @@ namespace Tasque.Core.WebAPI.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] NewSprintDto sprintDto)
+        {
+            return Ok(await _service.Create(sprintDto));
+        }
+
         [Route("complete/{id}")]
         [HttpPut]
         public async Task<IActionResult> CompleteSprint(int id)

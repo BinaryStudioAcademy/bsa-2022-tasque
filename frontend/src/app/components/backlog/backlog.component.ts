@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  AfterContentChecked,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
@@ -43,7 +49,7 @@ import { NotificationService } from 'src/core/services/notification.service';
     ]),
   ],
 })
-export class BacklogComponent implements OnInit {
+export class BacklogComponent implements OnInit, AfterContentChecked {
   faMaximize = faMaximize;
   faMagnifyingGlass = faMagnifyingGlass;
   faUnlockKeyhole = faUnlockKeyhole;
@@ -71,10 +77,14 @@ export class BacklogComponent implements OnInit {
     public currentUserService: GetCurrentUserService,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
+    private cdref: ChangeDetectorRef,
   ) {
     sprintService.deleteSprint$.subscribe((sprintId) => {
       this.deleteSprint(sprintId);
     });
+  }
+  ngAfterContentChecked(): void {
+    this.cdref.detectChanges();
   }
 
   ngOnInit(): void {
