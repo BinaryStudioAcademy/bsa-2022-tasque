@@ -174,11 +174,11 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         event.previousIndex,
         event.currentIndex,
       );
-      //this.updateTasks();
+      //this.updateTasks(); 
     }
   }
 
-  // updateColumns(): void {
+  // updateColumns(): void { //TODO: Rework as for current db scheme
   //   this.projectService
   //     .updateBoardColumns(this.board)
   //     .pipe(filter((resp) => resp.body != null))
