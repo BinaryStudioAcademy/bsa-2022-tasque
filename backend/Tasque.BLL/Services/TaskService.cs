@@ -130,7 +130,6 @@ namespace Tasque.Core.BLL.Services
                 model.Key = project?.Key + "-" + _dbContext.Tasks.Where(t => t.ProjectId == model.ProjectId).Count() + 1;
             }
 
-            var task = _dbContext.Tasks.Update(_mapper.Map<Common.Entities.Task>(model)).Entity;
             var entityTask = await _dbContext.Tasks
                 .FirstOrDefaultAsync(t => t.Id == model.Id)
                 ?? throw new CustomNotFoundException("task");
