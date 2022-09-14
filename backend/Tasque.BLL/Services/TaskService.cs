@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.PartialModels;
-using Tasque.Core.Common.DTO.Project;
 using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.DTO.Task.PartialModels;
 using Tasque.Core.Common.DTO.Task.TemplateModels.IncomeModels;
 using Tasque.Core.Common.Entities.Abstract;
 using Tasque.Core.DAL;
+using static Amazon.S3.Util.S3EventNotification;
 
 namespace Tasque.Core.BLL.Services
 {
@@ -38,9 +38,14 @@ namespace Tasque.Core.BLL.Services
         public async Task<TaskDto> CreateTask(TaskDto model)
         {
             var entity = _mapper.Map<Common.Entities.Task>(model);
-            var key = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId)?.Key;
-            var count = _dbContext.Tasks.Where(t => t.ProjectId == model.ProjectId).Count();
-            entity.Key = key + '-' + count++;
+            var project = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId)?? throw new CustomNotFoundException("project");
+
+            if(project.ProjectTaskCounter == 0)
+                entity.Key = project.Key + '-' + 1;
+            else
+                entity.Key = project.Key + '-' + project.ProjectTaskCounter++;
+
+            await UpdateProjectCounter(project.Id);
 
             _dbContext.Add(entity);
             _dbContext.SaveChanges();
@@ -126,8 +131,14 @@ namespace Tasque.Core.BLL.Services
 
             if(model.ProjectId != currentProjectId)
             {
-                var project = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId);
-                model.Key = project?.Key + "-" + _dbContext.Tasks.Where(t => t.ProjectId == model.ProjectId).Count() + 1;
+                var project = await _dbContext.Projects.FirstOrDefaultAsync(p => p.Id == model.ProjectId)?? throw new CustomNotFoundException("project");
+
+                if (project.ProjectTaskCounter == 0)
+                    model.Key = project.Key + '-' + 1;
+                else
+                    model.Key = project.Key + '-' + project.ProjectTaskCounter++;
+
+                await UpdateProjectCounter(project.Id);
             }
 
             var entityTask = await _dbContext.Tasks
@@ -198,6 +209,13 @@ namespace Tasque.Core.BLL.Services
             }));
 
             return result;
+        }
+
+        private async Task UpdateProjectCounter(int projectId)
+        {
+            var project = await _dbContext.Projects.FirstOrDefaultAsync(p => p.Id == projectId)?? throw new CustomNotFoundException("project");
+            project.ProjectTaskCounter++;
+            _dbContext.SaveChanges();
         }
 
         private void SaveChanges<T>(T entity)
