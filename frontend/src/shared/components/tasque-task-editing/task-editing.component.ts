@@ -79,6 +79,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
   public editorConfig: AngularEditorConfig = EditorConfig;
 
+  public isOpen = false;
+
   // eslint-disable-next-line max-params
   constructor(
     private fb: FormBuilder,
@@ -362,5 +364,9 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       .add(() => {
         this.clearForm();
       });
+  }
+
+  openModal(): void {
+    this.isOpen = !this.isOpen;
   }
 }
