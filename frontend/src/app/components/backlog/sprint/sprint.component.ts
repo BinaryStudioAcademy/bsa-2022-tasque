@@ -86,7 +86,7 @@ export class SprintComponent implements OnInit, OnChanges {
     public taskTypeService: TaskTypeService,
     public taskStateService: TaskStateService,
     public openDialogService: OpenDialogService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     if (this.currentUser === undefined) {
@@ -187,7 +187,7 @@ export class SprintComponent implements OnInit, OnChanges {
         event.currentIndex,
       );
 
-      this.currentSprint.tasks[0].sprint = this.currentSprint;
+      this.currentSprint.tasks[0].sprintId = this.currentSprint.id;
 
       this.taskService
         .updateTask(this.tasks[0])

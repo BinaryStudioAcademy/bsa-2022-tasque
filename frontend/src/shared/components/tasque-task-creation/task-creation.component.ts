@@ -18,6 +18,8 @@ import { TaskCustomFieldModel } from 'src/core/models/task/task-creation-models/
 import { TaskPriority } from 'src/core/models/task/task-priority';
 import { TaskService } from 'src/core/services/task.service';
 import { TaskState } from 'src/core/models/task/task-state';
+import { BacklogService } from 'src/core/services/backlog.service';
+import { TaskModel } from 'src/core/models/task/task-model';
 
 @Component({
   selector: 'tasque-task-creation',
@@ -71,6 +73,9 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   @Input() public sidebarName = 'taskCreation';
 
   @Input() public currentProject: ProjectModel;
+
+  @Input() public currentTasks: TaskModel[];
+  @Input() public sprintId: string;
 
   get projectErrorMessage(): string {
     const ctrl = this.projectControl;
@@ -128,6 +133,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     private projectService: ProjectService,
     private currentUserService: GetCurrentUserService,
     private taskService: TaskService,
+    private backlogService: BacklogService,
   ) {
     this.projectControl = new FormControl(this.task.projectId, [
       Validators.required,
@@ -240,22 +246,23 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
         }
       });
 
-      this.projectService
-        .getProjectStates(this.selectedProjectId)
-        .subscribe((resp) => {
-          if(resp.ok){
-            this.taskStates = resp.body as TaskState[];
-            this.taskStates.forEach((ts) => {
-              this.taskStateOptions.push({
-                id: ts.id,
-                title: ts.name,
-                color: ts.color,
-              });
+    this.projectService
+      .getProjectStates(this.selectedProjectId)
+      .subscribe((resp) => {
+        if (resp.ok) {
+          this.taskStates = resp.body as TaskState[];
+          this.taskStates.forEach((ts) => {
+            this.taskStateOptions.push({
+              id: ts.id,
+              title: ts.name,
+              color: ts.color,
             });
-          } else {
-            this.notificationService
-              .error('Something went wrong, try again later');
-          }
+          });
+        } else {
+          this.notificationService.error(
+            'Something went wrong, try again later',
+          );
+        }
       });
   }
 
@@ -300,7 +307,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       );
       return;
     }
-
+    console.log(this.sprintId);
     this.task = {
       authorId: this.currentUser.id,
       projectId: this.taskCreateForm.get('projectControl')?.value.id,
@@ -313,10 +320,15 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       description: this.taskCreateForm.get('descriptionControl')?.value,
 
       customFields: this.taskCustomFields,
+      //   sprintId: this.sprintId,
     };
+    console.log(this.task);
     this.taskService.createTask(this.task).subscribe(
-      () => {
+      (result) => {
         this.notificationService.success('Task has been created successfully');
+        if (result.body && this.currentTasks) {
+          this.currentTasks.push(result.body);
+        }
       },
       () => {
         this.notificationService.error('Something go wrong. Try again later');
