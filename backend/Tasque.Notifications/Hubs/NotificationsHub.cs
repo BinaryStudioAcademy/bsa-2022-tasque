@@ -13,9 +13,16 @@ namespace Tasque.Notifications.Hubs
             _context=context;
         }
 
-        public Task NotifySingleUser(Notification notification, int userId)
+        public Task NotifySingleUser(Notification notification)
         {
-            return _context.Clients.User(userId.ToString()).SendAsync(notification.Type.ToString(), JsonConvert.SerializeObject(notification));
+            return _context.Clients.User(notification.ConnectionId).SendAsync(notification.Type.ToString(), JsonConvert.SerializeObject(notification));
+        }
+
+        public override Task OnConnectedAsync()
+        {
+            base.OnConnectedAsync();
+            Clients.Client(Context.ConnectionId).SendAsync("connected", Context.ConnectionId);
+            return Task.CompletedTask;
         }
     }
 }

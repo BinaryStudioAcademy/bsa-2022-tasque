@@ -33,7 +33,7 @@ namespace Tasque.Notifications.Handlers
             _db.Add(notification);
             _db.SaveChanges();
 
-            return _hub.NotifySingleUser(notification, notification.RecieverId);
+            return _hub.NotifySingleUser(notification);
         }
     }
 }
