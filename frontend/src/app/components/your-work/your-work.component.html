@@ -3,7 +3,8 @@
         <h4>Your work</h4>
     </div>
     <div class="your-work-panel">
-        <h5>Recent projects</h5>
+        <h5 *ngIf="projectCards && projectCards.length">Recent projects</h5>
+        <h5 *ngIf="!projectCards || !projectCards.length">You don't participate in projects</h5>
         <div class="cards-container">
             <project-card class="project-card" *ngFor="let card of projectCards" [projectCard]="card" [userId]="userId"></project-card>
         </div>

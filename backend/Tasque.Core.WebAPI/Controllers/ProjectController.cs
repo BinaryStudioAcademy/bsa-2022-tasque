@@ -3,6 +3,7 @@ using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Board;
 using Tasque.Core.Common.DTO.Project;
 using Tasque.Core.Common.DTO.User;
+using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers;
 
@@ -10,10 +11,11 @@ namespace Tasque.Core.WebAPI.Controllers;
 public class ProjectController : EntityController
     <NewProjectDto, ProjectInfoDto, EditProjectDto, int, ProjectService>
 {
-    public ProjectController(ProjectService service)
+    private readonly int _userId;
+    public ProjectController(ProjectService service, CurrentUserParameters userParams)
         : base(service)
     {
-
+        _userId = userParams.Id;
     }
 
     [HttpGet("all/{organizationId}")]
@@ -114,7 +116,7 @@ public class ProjectController : EntityController
     [HttpGet("getProjectCards")]
     public async Task<IActionResult> GetProjectCards()
     {
-        var result = await _service.GetProjectCardsByUserId(_currentUser.Id);
+        var result = await _service.GetProjectCardsByUserId(_userId);
 
         return Ok(result);
     }

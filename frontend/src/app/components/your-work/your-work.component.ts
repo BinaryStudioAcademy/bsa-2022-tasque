@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectCardModel } from 'src/core/models/your-work/project-card-model';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { ProjectService } from 'src/core/services/project.service';
 
 @Component({
   selector: 'app-your-work',
@@ -8,18 +10,21 @@ import { ProjectCardModel } from 'src/core/models/your-work/project-card-model';
 })
 export class YourWorkComponent implements OnInit {
 
-  constructor() { }
-  public projectCards: ProjectCardModel[] = [
-    { projectId: 1, title: 'Project 1', color: '', assignedIssuesCount: 2, allIssuesCount: 4 } as ProjectCardModel,
-    { projectId: 2, title: 'Project 2', color: '', assignedIssuesCount: 2, allIssuesCount: 4 } as ProjectCardModel,
-    { projectId: 3, title: 'Project with very long name', color: '', assignedIssuesCount: 2, allIssuesCount: 4 } as ProjectCardModel,
-    { projectId: 4, title: 'Project 4', color: '', assignedIssuesCount: 2, allIssuesCount: 4 } as ProjectCardModel,
-  ];
-  public userId = 1;
+  constructor(private projectService: ProjectService, private userIdService: GetCurrentUserService) { }
+  public projectCards: ProjectCardModel[];
+  public userId = 0;
   colors = ['#D47500', '#00AA55', '#E3BC01', '#009FD4', '#B281B3', '#D47500', '#DC2929'];
 
   ngOnInit(): void {
-    this.generateColors();
+    this.userId = this.userIdService.getUserId();
+    this.projectService.getProjectCards().subscribe(
+      (res) => {
+        if(res.body) {
+          this.projectCards = res.body;
+          this.generateColors();
+        }        
+      }
+    );    
   }
 
   private generateColors(): void {
