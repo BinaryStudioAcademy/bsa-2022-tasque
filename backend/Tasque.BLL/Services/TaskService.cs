@@ -230,6 +230,7 @@ namespace Tasque.Core.BLL.Services
         
         public async Task CommentTask(CommentTaskDTO dto)
         {
+            // TODO review method functionality after FrontEnd for task commenting is implemented
             var task = _dbContext.Tasks.Single(t => t.Id == dto.TaskId);
             var comment = new Comment
             {
@@ -238,7 +239,6 @@ namespace Tasque.Core.BLL.Services
                 TaskId = dto.TaskId
             };
             _dbContext.Comments.Add(comment);
-            //task.Comments.Add(dto.Comment);
 
             _dbContext.Update(task);
             await _dbContext.SaveChangesAsync();

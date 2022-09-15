@@ -264,6 +264,7 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
 
     public async Task MoveTask(MoveTaskDTO dto)
     {
+        // TODO review method functionality when FrontEnd for task moving is connected to BackEnd
         var previousBoardColumn = _db.BoardColumns.Single(b => b.Id == dto.PreviousColumnId);
         var currentBoardColumn = _db.BoardColumns.Single(b => b.Id == dto.NewColumnId);
         var task = _db.Tasks.Single(t => t.Id == dto.TaskId);
