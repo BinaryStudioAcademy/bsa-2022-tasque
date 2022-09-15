@@ -14,7 +14,7 @@ export interface TaskModel {
   key?: string;
   attachments: Attachment[];
   state?: TaskState;
-  stateId: number;
+  stateId?: number;
   type?: TaskType;
   typeId: number;
   priority?: TaskPriority

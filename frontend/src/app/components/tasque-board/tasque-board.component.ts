@@ -121,12 +121,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           isTaskFound = true;
 
           col.tasks[index] = {
-            id: task.id,
-            typeId: task.typeId,
-            type: task.type,
-            priority: task.priority,
-            attachmentUrl: task.attachments[0]?.uri,
-            summary: task.summary,
+            ...task,
             customLabels: [],
             key: task.key as string,
             isHidden: false,
@@ -149,12 +144,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           isTaskFound = true;
 
           col.tasks[index] = {
-            id: task.id,
-            typeId: task.typeId,
-            type: task.type,
-            priority: task.priority,
-            attachmentUrl: task.attachments[0]?.uri,
-            summary: task.summary,
+            ...task,
             customLabels: [],
             key: task.key as string,
             isHidden: false,
@@ -172,13 +162,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
       tasks.forEach((t) => {
         taskInfo.push({
-          id: t.id,
-          typeId: t.typeId,
-          type: t.type,
-          stateId: t.stateId,
-          priority: t.priority,
-          attachmentUrl: t.attachments[0]?.uri,
-          summary: t.summary,
+          ...t,
           customLabels: [],
           key: t.key as string,
           isHidden: false,
@@ -286,7 +270,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         for (const task of column.tasks) {
           task.isHidden = !task.summary.toLowerCase().includes(phrase.toLowerCase());
           if (this.selectedUserId) {
-            task.isHidden = task.isHidden || task.user?.id != this.selectedUserId;
+            task.isHidden = task.isHidden || task.author?.id != this.selectedUserId;
           }
         }
       }
