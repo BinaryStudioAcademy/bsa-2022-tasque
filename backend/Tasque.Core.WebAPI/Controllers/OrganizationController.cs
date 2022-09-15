@@ -1,37 +1,21 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Organization;
 using Tasque.Core.Common.DTO.User;
-using Tasque.Core.Common.Entities;
-using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class OrganizationController : EntityController<Organization, CreateOrganizationDto, OrganizationService>
+    public class OrganizationController : EntityController
+        <OrganizationCreateDto, OrganizationInfoDto, OrganizationCreateDto, int, OrganizationService>
     {
-        public OrganizationController(OrganizationService service, CurrentUserParameters currentUser)
-            : base(service, currentUser)
+        public OrganizationController(OrganizationService service)
+            : base(service)
         {
             
-        }
-
-        [Route("create")]
-        [HttpPost]
-        public override IActionResult Create([FromBody] CreateOrganizationDto createOrganizationDto)
-        {
-            var entity = new Organization()
-            {
-                Name = createOrganizationDto.Name,
-                AuthorId = _currentUser.Id
-            };
-            var org = _service.Create(entity);
-
-            return Ok(org);
         }
 
         [Route("getUserOrganizationsById/{id}")]
@@ -64,20 +48,6 @@ namespace Tasque.Core.WebAPI.Controllers
             }
         }
 
-        [HttpPut]
-        public async virtual Task<IActionResult> UpdateOrganization([FromBody] OrganizationDto organizationDto)
-        {
-            var organization = await _service.EditOrganization(organizationDto);
-
-            if (organization is not null)
-            {
-                return Ok(organization);
-            }
-            else
-            {
-                return NotFound("Organization not found");
-            }
-        }
 
         [Route("{organizationId}/users/add")]
         [HttpPost]

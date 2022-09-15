@@ -8,8 +8,8 @@ namespace Tasque.Core.BLL.MappingProfiles
     {
         public OrganizationProfile()
         {
-            CreateMap<CreateOrganizationDto, Organization>();
-            CreateMap<Organization, OrganizationDto>().ReverseMap();
+            CreateMap<OrganizationCreateDto, Organization>();
+            CreateMap<Organization, OrganizationInfoDto>();
         }
     }
 }

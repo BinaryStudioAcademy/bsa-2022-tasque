@@ -99,7 +99,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
     this.project.name = this.projectName;
     this.project.key = this.projectKey;
 
-    this.projectService.editProject({ id: this.project.id, name: this.project.name, key: this.project.key })
+    this.projectService.editProject(this.project.id, { name: this.project.name, key: this.project.key })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if(result.status == 200 && result.body !== null) {

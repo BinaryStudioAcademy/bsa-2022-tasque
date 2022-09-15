@@ -190,7 +190,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
 
   updateSprint(sprintId: number, sprint: SprintModel): void {
     this.sprintService
-      .updareSprint(sprintId, sprint)
+      .updateSprint(sprintId, sprint)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe();
   }
