@@ -1,28 +1,27 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { UserModel } from 'src/core/models/user/user-model';
-import {
-  faCheckToSlot,
-  faXmark,
-  faLink,
-  faPaperclip,
-  faShareNodes,
-  faEllipsisVertical,
-  faFaceSmile,
-  faPen,
-  faFlag,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCheckToSlot, faXmark, faLink, faPaperclip, faShareNodes, faEllipsisVertical, faFaceSmile, faPen, faFlag, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { BaseComponent } from 'src/core/base/base.component';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import { EditorConfig } from 'src/core/settings/angular-editor-setting';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskPriority } from 'src/core/models/task/task-priority';
 import { TaskType } from 'src/core/models/task/task-type';
 import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { ProjectService } from 'src/core/services/project.service';
+import { TaskTemplateService } from 'src/core/services/task-template.service';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
+import { SprintService } from 'src/core/services/sprint.service';
+import { TaskService } from 'src/core/services/task.service';
+import { takeUntil } from 'rxjs/operators';
+import { TaskStorageService } from 'src/core/services/task-storage.service';
+import { NotificationService } from 'src/core/services/notification.service';
+import { TaskUpdateModel } from 'src/core/models/task/task-update-model';
 
 @Component({
   selector: 'tasque-task-editing',
@@ -32,11 +31,15 @@ import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
 export class TaskEditingComponent extends BaseComponent implements OnInit {
   @Input() public task: TaskModel;
   @Input() public currentUser: UserModel;
-  public taskUser: UserModel;
-  public taskReporter: UserModel;
-  public taskSprint: SprintModel;
 
-  public editTaskForm: FormGroup = {} as FormGroup;
+  @Input() public btnText = 'Edit task';
+  @Input() public btnClass = 'btn stroke';
+  @Input() public btnIcon: IconDefinition | undefined;
+
+  public organizationId: number;
+
+  public editTaskForm = {} as FormGroup;
+  public editTaskFormDefaultValues: unknown;
 
   public closeIcon = faXmark;
   public linkIcon = faLink;
@@ -48,127 +51,96 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public editIcon = faPen;
   public flagIcon = faFlag;
 
-  public taskDescriptionEditorShow = false;
-  public taskSummaryInputShow = false;
+  public descriptionEditorShow = false;
+  public summaryInputShow = false;
 
-  public taskStatusOptions: TasqueDropdownOption[] = [];
-  public taskPriorityOptions: TasqueDropdownOption[] = [];
-  public taskTypeOptions: TasqueDropdownOption[] = [];
+  public statusOptions: TasqueDropdownOption[] = [];
+  public priorityOptions: TasqueDropdownOption[] = [];
+  public typeOptions: TasqueDropdownOption[] = [];
   public projectOptions: TasqueDropdownOption[] = [];
   public sprintOptions: TasqueDropdownOption[] = [];
 
-  @Input() public taskPriorities: TaskPriority[] = [];
-  @Input() public taskStates: TaskState[] = [];
-  @Input() public taskTypes: TaskType[] = [];
+  public priorities: TaskPriority[] = [];
+  public states: TaskState[] = [];
+  public types: TaskType[] = [];
 
-  @Input() public projects: ProjectModel[] = [];
-
-  @Input() public sprints: SprintModel[] = [];
-  @Input() public users: UserModel[] = [];
+  public users: UserModel[] = [];
 
   public editorConfig: AngularEditorConfig = EditorConfig;
 
-  constructor(private sanitizer: DomSanitizer) {
+  // eslint-disable-next-line max-params
+  constructor(
+    private fb: FormBuilder,
+    private currentUserService: GetCurrentUserService,
+    private taskTemplateService: TaskTemplateService,
+    private projectService: ProjectService,
+    private currentOrganizationService: GetCurrentOrganizationService,
+    private taskService: TaskService,
+    private taskStorageService: TaskStorageService,
+    private sprintService: SprintService,
+    private notificationService: NotificationService) {
     super();
-
-    this.task = {
-      id: 1,
-      summary: 'Summary',
-      description: 'Description',
-      stateId: 1,
-      attachments: [],
-      state: {
-        id: 1,
-        name: 'To Do',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      type: {
-        id: 1,
-        name: 'Bug',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        icon: this.flagIcon,
-      },
-      priority: {
-        id: 1,
-        name: 'Low',
-        type: 0,
-        projectId: 5,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      author: this.users.filter((u) => u.id == 1)[0],
-      project: this.projects.filter((p) => p.id == 2)[0],
-      sprint: this.sprints.filter((s) => s.id == 3)[0],
-      lastUpdatedBy: this.users.filter((u) => u.id == 4)[0],
-      parentTaskId: 5,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      deadline: new Date(),
-      custmFields: [],
-    };
-    this.currentUser = this.users[1];
-    this.taskReporter = this.users[2];
   }
 
   ngOnInit(): void {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.taskSprint = this.sprints.find((x) => x.id === this.task.sprint.id)!;
-
-    this.editTaskForm = new FormGroup({
-      taskProject: new FormControl(this.convertToOption(this.task.project)),
-      taskSummary: new FormControl(this.task.summary, [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(80),
-      ]),
-      taskStatus: new FormControl(this.convertToOption(this.task.state)),
-      taskPriority: new FormControl(this.convertToOption(this.task.priority)),
-      taskType: new FormControl(this.convertToOption(this.task.type)),
-      taskSprint: new FormControl(this.convertToOption(this.taskSprint)),
-      taskDescription: new FormControl<SafeHtml | undefined>(
-        this.task.description,
-        [Validators.maxLength(5000)],
-      ),
-      taskAssignees: new FormControl(),
+    this.currentUserService.currentUser$.subscribe((user) => {
+      this.currentUser = user;
     });
 
-    this.fillProjectOptions(this.projects);
-    this.fillSprintOptions(this.sprints);
-    this.fillTaskStateOptions(this.taskStates);
-    this.fillTaskPriorityOptions(this.taskPriorities);
-    this.fillTaskTypeOptions(this.taskTypes);
-  }
+    this.currentOrganizationService.currentOrganizationId$.subscribe((orgId) => {
+      this.organizationId = orgId;
 
-  public safeHTML(unsafe: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(unsafe);
+      this.projectService
+        .getProjectsByOrganizationId(this.organizationId)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((resp) => {
+          if (!resp.body) {
+            return;
+          }
+          this.fillProjectOptions(resp.body);
+          this.getProjectInfo(this.task.projectId);
+        });
+    });
+
+    this.editTaskForm = this.fb.group({
+      project: [this.convertToOption(this.task.project)],
+      summary: [this.task.summary,
+      [Validators.minLength(2),
+      Validators.maxLength(80)]
+      ],
+      sprint: [this.convertToOption(this.task.sprint)],
+      status: [this.convertToOption(this.task.state)],
+      priority: [this.convertToOption(this.task.priority)],
+      type: [this.convertToOption(this.task.type)],
+      description: [this.task.description, [Validators.maxLength(5000)]],
+      assignees: [this.task.users],
+    });
+
+    this.editTaskFormDefaultValues = this.editTaskForm.value;
+
+    this.editTaskForm.controls.project.valueChanges.subscribe((option: TasqueDropdownOption) => {
+      this.getProjectInfo(option.id);
+    });
   }
 
   summaryClick(): void {
-    this.taskSummaryInputShow = true;
+    this.summaryInputShow = true;
   }
 
   summaryInputOutsideClick(): void {
-    this.taskSummaryInputShow = false;
-    if (this.editTaskForm.value.taskSummary !== this.task.summary) {
-      this.task.summary = this.editTaskForm.value.taskSummary;
-    }
+    this.summaryInputShow = false;
   }
 
   descriptionClick(): void {
-    this.taskDescriptionEditorShow = true;
+    this.descriptionEditorShow = true;
   }
 
   descriptionEditorOutsideClick(): void {
-    this.taskDescriptionEditorShow = false;
-    if (this.editTaskForm.value.taskDescription !== this.task.description) {
-      this.task.description = this.editTaskForm.value.taskDescription;
-    }
+    this.descriptionEditorShow = false;
   }
 
   get summaryErrorMessage(): string {
-    const ctrl = this.editTaskForm.controls.taskSummary;
+    const ctrl = this.editTaskForm.controls.summary;
 
     if (ctrl.errors?.['minlength']) {
       return 'Summary must be at least 2 characters';
@@ -181,7 +153,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   }
 
   get descriptionErrorMessage(): string {
-    const ctrl = this.editTaskForm.controls.taskDescription;
+    const ctrl = this.editTaskForm.controls.description;
 
     if (ctrl.errors?.['maxlength']) {
       return 'Description must not exceed 5000 characters';
@@ -191,48 +163,47 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   }
 
   private convertToOption(
-    item: SprintModel | ProjectModel | TaskState | TaskPriority | TaskType,
-  ): TasqueDropdownOption {
-    if (item.id === 0) {
+    item: TaskState | TaskPriority | TaskType | SprintModel | ProjectModel | undefined): TasqueDropdownOption {
+    if (!item) {
       return {
-        color: 'lightgray',
-        title: '-',
         id: 0,
+        title: '-',
+        color: this.getColorById(0)
       };
     }
 
-    switch (item.id % 4) {
-      case 1:
-        return {
-          color: 'green',
-          title: item.name,
-          id: item.id,
-        };
-      case 2:
-        return {
-          color: 'yellow',
-          title: item.name,
-          id: item.id,
-        };
-      case 3:
-        return {
-          color: 'orange',
-          title: item.name,
-          id: item.id,
-        };
-      case 0:
-        return {
-          color: 'red',
-          title: item.name,
-          id: item.id,
-        };
+    if ('color' in item) {
+      return {
+        id: item.id,
+        title: item.name,
+        color: item.color
+      };
     }
 
     return {
-      color: 'pink',
-      title: 'error',
-      id: -1,
+      id: item.id,
+      title: item.name,
+      color: this.getColorById(item.id)
     };
+  }
+
+  private getColorById(id: number): string {
+    if (id === 0) {
+      return 'lightgray';
+    }
+
+    switch (id % 4) {
+      case 1:
+        return 'green';
+      case 2:
+        return 'yellow';
+      case 3:
+        return 'orange';
+      case 0:
+        return 'red';
+    }
+
+    return 'lightgray';
   }
 
   private fillProjectOptions(projects: ProjectModel[]): void {
@@ -245,9 +216,9 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   private fillSprintOptions(sprints: SprintModel[]): void {
     this.sprintOptions = [
       {
-        color: 'lightgray',
         title: '-',
         id: 0,
+        color: this.getColorById(0),
       },
     ];
 
@@ -256,24 +227,111 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     });
   }
 
-  private fillTaskPriorityOptions(taskPriorities: TaskPriority[]): void {
-    this.taskPriorityOptions = [];
+  private fillPriorityOptions(taskPriorities: TaskPriority[]): void {
+    this.priorityOptions = [];
     taskPriorities.forEach((element) => {
-      this.taskPriorityOptions.push(this.convertToOption(element));
+      this.priorityOptions.push(this.convertToOption(element));
     });
   }
 
-  private fillTaskStateOptions(taskStates: TaskState[]): void {
-    this.taskStatusOptions = [];
-    taskStates.forEach((element) => {
-      this.taskStatusOptions.push(this.convertToOption(element));
+  private fillStateOptions(states: TaskState[]): void {
+    this.statusOptions = [];
+    states.forEach((element) => {
+      this.statusOptions.push(this.convertToOption(element));
     });
   }
 
-  private fillTaskTypeOptions(taskTypes: TaskType[]): void {
-    this.taskTypeOptions = [];
-    taskTypes.forEach((element) => {
-      this.taskTypeOptions.push(this.convertToOption(element));
+  private fillTypeOptions(types: TaskType[]): void {
+    this.typeOptions = [];
+    types.forEach((element) => {
+      this.typeOptions.push(this.convertToOption(element));
     });
+  }
+
+  private getProjectInfo(projectId: number | undefined): void {
+    if (!projectId) {
+      return;
+    }
+
+    this.sprintService.getProjectSprints(projectId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((sprints) => {
+        if (!sprints.body) {
+          return;
+        }
+        this.fillSprintOptions(sprints.body);
+      });
+
+    this.taskTemplateService.getAllProjectTaskTypes(projectId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((types) => {
+        if (!types.body) {
+          return;
+        }
+        this.fillTypeOptions(types.body);
+      });
+
+    this.projectService.getProjectPriorities(projectId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((priorities) => {
+        if (!priorities.body) {
+          return;
+        }
+        this.fillPriorityOptions(priorities.body);
+      });
+
+    this.taskTemplateService.getAllProjectTaskStates(projectId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((states) => {
+        if (!states.body) {
+          return;
+        }
+        this.fillStateOptions(states.body);
+      });
+  }
+
+  public clearForm(): void {
+    this.editTaskForm.reset(this.editTaskFormDefaultValues, {
+      emitEvent: false
+    });
+  }
+
+  public submitForm(): void {
+    if (this.editTaskForm.invalid || this.editTaskForm.pristine) {
+      this.editTaskForm.markAllAsTouched();
+      this.notificationService.error(
+        'Some values are incorrect. Follow error messages to solve this problem',
+        'Invalid values',
+      );
+      return;
+    }
+
+    const updatedTask = {
+      ...this.task,
+      users: this.editTaskForm.controls.assignees.value,
+      description: this.editTaskForm.controls.description.value,
+      summary: this.editTaskForm.controls.summary.value,
+      priorityId: this.editTaskForm.controls.priority.value.id,
+      stateId: this.editTaskForm.controls.status.value.id,
+      typeId: this.editTaskForm.controls.type.value.id,
+      projectId: this.editTaskForm.controls.project.value.id,
+      //sprintId: this.editTaskForm.controls.sprint.value.id,
+    } as TaskUpdateModel;
+
+    this.taskService.updateTask(updatedTask)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (task) => {
+          this.notificationService.success('Task has been updated successfully');
+          if (task.body) {
+            this.taskStorageService.updateTask(task.body);
+            this.editTaskFormDefaultValues = this.editTaskForm.value;
+            this.task = task.body;
+          }
+        }
+      )
+      .add(() => {
+        this.clearForm();
+      });
   }
 }

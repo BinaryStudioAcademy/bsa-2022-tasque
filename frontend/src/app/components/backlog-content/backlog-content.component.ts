@@ -16,7 +16,6 @@ import {
 } from '@angular/cdk/drag-drop';
 import { BacklogService } from 'src/core/services/backlog.service';
 import { takeUntil } from 'rxjs/operators';
-import { TaskModelDto } from 'src/core/models/task/task-model-dto';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { TaskTypeService } from 'src/core/services/task-type.service';
 import { TaskStateService } from 'src/core/services/task-state.service';
@@ -40,7 +39,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
 
   public unsubscribe$ = new Subject<void>();
   subscription: Subscription;
-  public tasksShow: TaskModelDto[];
+  public tasksShow: TaskModel[];
 
   @Input() public currentUser: UserModel;
   @Input() public project: ProjectModel;
@@ -54,24 +53,28 @@ export class BacklogContentComponent implements OnInit, OnChanges {
     {
       id: 1,
       name: 'To Do',
+      projectId: 5,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
       id: 2,
       name: 'In Progress',
+      projectId: 5,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
       id: 3,
       name: 'Done',
+      projectId: 5,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
       id: 4,
       name: 'Canceled',
+      projectId: 5,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
@@ -168,7 +171,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   public tasks$: Observable<TaskModel[]>;
 
   // TODO remove when real data is available
-  @Input() public tasks: TaskModelDto[] = [];
+  @Input() public tasks: TaskModel[] = [];
   constructor(
     public backlogService: BacklogService,
     public taskTypeService: TaskTypeService,
@@ -230,7 +233,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
     moveItemInArray(this.sprints, event.previousIndex, event.currentIndex);
   }
 
-  drop(event: CdkDragDrop<TaskModelDto[]>): void {
+  drop(event: CdkDragDrop<TaskModel[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,

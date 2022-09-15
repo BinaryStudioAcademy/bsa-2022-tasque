@@ -1,8 +1,8 @@
 export interface TaskState {
   id: number,
-  name: string,
-  color?: string,
   projectId?: number,
-  createdAt: Date,
-  updatedAt: Date
+  color?: string,
+  name: string,
+  createdAt?: Date,
+  updatedAt?: Date
 }

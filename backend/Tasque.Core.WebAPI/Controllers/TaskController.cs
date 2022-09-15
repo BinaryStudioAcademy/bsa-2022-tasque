@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.Task;
+using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
@@ -11,10 +12,12 @@ namespace Tasque.Core.WebAPI.Controllers
     public class TaskController : ControllerBase
     {
         private readonly ITaskService _taskService;
+        protected readonly CurrentUserParameters _currentUser;
 
-        public TaskController(ITaskService taskService)
+        public TaskController(ITaskService taskService, CurrentUserParameters currentUser)
         {
             _taskService = taskService;
+            _currentUser = currentUser;
         }
 
         [HttpGet("getAllTasks")]
@@ -42,12 +45,13 @@ namespace Tasque.Core.WebAPI.Controllers
         public async Task<IActionResult> CreateTask([FromBody] TaskDto model)
         {
             var task = await _taskService.CreateTask(model);
-            return Created(task.ToString()?? "", task);
+            return Created(task.ToString() ?? "", task);
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateTask([FromBody] TaskDto model)
         {
+            model.LastUpdatedById = _currentUser.Id;
             return Ok(await _taskService.UpdateTask(model));
         }
 
@@ -62,7 +66,7 @@ namespace Tasque.Core.WebAPI.Controllers
         public async Task<IActionResult> GetTasksState()
         {
             return Ok();
-         //   return Ok(await _taskService.GetTasksState());
+            //   return Ok(await _taskService.GetTasksState());
         }
 
         [HttpGet("getTasksType")]
