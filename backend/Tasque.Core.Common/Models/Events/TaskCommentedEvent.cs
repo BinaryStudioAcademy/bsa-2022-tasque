@@ -1,7 +1,4 @@
-﻿using Tasque.Core.Common.Entities;
-using Task = Tasque.Core.Common.Entities.Task;
-
-namespace Tasque.Core.Common.Models.Events
+﻿namespace Tasque.Core.Common.Models.Events
 {
     public class TaskCommentedEvent : IntegrationEvent
     {
