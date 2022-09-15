@@ -10,7 +10,7 @@ namespace Tasque.Core.BLL.Services
 {
     public abstract class EntityCrudService<TCreateDto, TInfoDto, TUpdateDto, TKey, TEntity>
         : IBaseService<TCreateDto, TInfoDto, TUpdateDto, TKey>
-            where TEntity: class, IBaseEntity
+            where TEntity: BaseEntity
     {
         protected readonly DbSet<TEntity> _dbSet;
         protected readonly DataContext _db;

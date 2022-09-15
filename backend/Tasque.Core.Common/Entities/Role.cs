@@ -2,7 +2,7 @@
 
 namespace Tasque.Core.Common.Entities;
 
-public class Role : BaseEntity, IBaseEntity
+public class Role : BaseEntity
 {
     public Role()
     {

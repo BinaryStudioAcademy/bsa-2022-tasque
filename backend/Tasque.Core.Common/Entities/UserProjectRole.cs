@@ -2,7 +2,7 @@
 
 namespace Tasque.Core.Common.Entities;
 
-public class UserProjectRole : IBaseEntity
+public class UserProjectRole
 {
     public int RoleId { get; set; }
     public Role Role { get; set; } = null!;

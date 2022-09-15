@@ -2,7 +2,7 @@
 
 namespace Tasque.Core.Common.Entities;
 
-public class Attachment : BaseEntity, IBaseEntity
+public class Attachment : BaseEntity
 {
     public Attachment()
     {

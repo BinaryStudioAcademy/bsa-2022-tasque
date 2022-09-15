@@ -2,7 +2,7 @@
 
 namespace Tasque.Core.Common.Entities;
 
-public class Calendar : BaseEntity, IBaseEntity
+public class Calendar : BaseEntity
 {
     public int UserId { get; set; }
     public User User { get; set; } = null!;

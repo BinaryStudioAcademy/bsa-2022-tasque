@@ -3,7 +3,7 @@ using Tasque.Core.Common.Enums;
 
 namespace Tasque.Core.Common.Entities
 {
-    public class UserOrganizationRole : IBaseEntity
+    public class UserOrganizationRole
     {
         public int OrganizationId { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace Tasque.Core.Common.Entities;
 
-public class Label : BaseEntity, IBaseEntity
+public class Label : BaseEntity
 {
     public Label()
     {

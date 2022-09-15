@@ -2,7 +2,7 @@
 
 namespace Tasque.Core.Common.Entities;
 
-public class Notification : BaseEntity, IBaseEntity
+public class Notification : BaseEntity
 {
     public string Message { get; set; } = null!;
 

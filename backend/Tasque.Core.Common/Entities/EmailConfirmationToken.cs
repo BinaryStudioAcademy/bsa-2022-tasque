@@ -3,7 +3,7 @@ using Tasque.Core.Common.Entities.Abstract;
 
 namespace Tasque.Core.Common.Entities
 {
-    public class ConfirmationToken : IBaseEntity
+    public class ConfirmationToken
     {
         [Key]
         public Guid Token { get; set; } = new Guid();

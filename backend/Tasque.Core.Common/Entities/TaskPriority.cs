@@ -3,7 +3,7 @@ using Tasque.Core.Common.Enums;
 
 namespace Tasque.Core.Common.Entities;
 
-public class TaskPriority : BaseEntity, IBaseEntity
+public class TaskPriority : BaseEntity
 {
     public TaskPriority()
     {

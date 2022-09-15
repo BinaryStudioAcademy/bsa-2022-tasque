@@ -2,7 +2,7 @@
 
 namespace Tasque.Core.Common.Entities;
 
-public class Meeting : BaseEntity, IBaseEntity
+public class Meeting : BaseEntity
 {
     public Meeting()
     {
