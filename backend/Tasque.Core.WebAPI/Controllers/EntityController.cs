@@ -1,70 +1,58 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tasque.Core.BLL.Services;
-using Tasque.Core.Common.Entities.Abstract;
-using Tasque.Core.Identity.Helpers;
+using Tasque.Core.BLL.Interfaces;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
-    [ApiController]
     [Authorize]
-    public abstract class EntityController<TModel, TDto, TService> : ControllerBase
-        where TModel : BaseEntity
-        where TDto : class
-        where TService : IEntityCrudService<TModel>
+    [ApiController]
+    public abstract class EntityController<TCreateDto, TInfoDto, TUpdateDto, TKey, TService> : ControllerBase
+        where TService : class, IBaseService<TCreateDto, TInfoDto, TUpdateDto, TKey>
     {
         protected readonly TService _service;
-        protected readonly IMapper mapper;
-        protected readonly CurrentUserParameters _currentUser;
-
-        public EntityController(TService service, CurrentUserParameters currentUser)
+        
+        public EntityController(TService service)
         {
             _service = service;
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<TDto, TModel>().ReverseMap());
-            mapper = new Mapper(config);
-            _currentUser = currentUser;
-        }
-
-        [Route("getById/{id}")]
-        [HttpGet]
-        public virtual IActionResult GetById(int id)
-        {
-            var entity = _service.GetById(id);
-            if (entity is not null)
-            {
-                return Ok(entity);
-            }
-            else
-            {
-                return BadRequest("Entity not found");
-            }
         }
 
         [Route("create")]
         [HttpPost]
-        public virtual IActionResult Create([FromBody] TDto entityDTO)
+        public virtual async Task<IActionResult> Create([FromBody] TCreateDto entityDTO)
         {
-            var entity = mapper.Map<TModel>(entityDTO);
-            _service.Create(entity);
+            var entity = await _service.Create(entityDTO);
+
             return Ok(entity);
         }
 
-        [Route("update/{id}")]
+        [Route("getById/{key}")]
+        [HttpGet]
+        public virtual async Task<IActionResult> GetById(TKey key)
+        {
+            var entity = await _service.GetByKey(key);
+
+            return Ok(entity);
+        }
+
+
+        [Route("update/{key}")]
         [HttpPut]
-        public virtual IActionResult Update(int id, [FromBody] TDto entityDTO)
+        public virtual async Task<IActionResult> Update(
+            TKey key,
+            [FromBody] TUpdateDto updateDto)
         {
-            var entity = mapper.Map<TModel>(entityDTO);
-            entity.Id = id;
-            _service.Update(entity);
+            var entity = await _service.Update(key, updateDto);
+
             return Ok(entity);
         }
 
-        [Route("delete/{id}")]
+        [Route("delete/{key}")]
         [HttpDelete]
-        public virtual IActionResult Delete(int id)
+        public virtual async Task<IActionResult> Delete(TKey key)
         {
-            var deleted = _service.Delete(id);
-            return deleted ? Ok() : BadRequest();
+            var deleted = await _service.Delete(key);
+
+            return deleted ? NoContent() : BadRequest();
         }
     }
 }

@@ -5,16 +5,30 @@ using Tasque.Core.Common.DTO.Organization;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.DAL;
+using Tasque.Core.Identity.Helpers;
 using Task = System.Threading.Tasks.Task;
 
 namespace Tasque.Core.BLL.Services
 {
-    public class OrganizationService : EntityCrudService<Organization>
+    public class OrganizationService : EntityCrudService
+        <OrganizationCreateDto, OrganizationInfoDto, OrganizationCreateDto, int, Organization>
     {
-        private IMapper _mapper;
-        public OrganizationService(DataContext db, IMapper mapper) : base(db)
+        public OrganizationService(DataContext db, IMapper mapper, CurrentUserParameters currentUser)
+        : base(db, mapper, currentUser)
         {
-            _mapper = mapper;
+
+        }
+
+        public override async Task<OrganizationInfoDto> Create(OrganizationCreateDto createDto)
+        {
+            var entityToCreate = _mapper.Map<Organization>(createDto);
+
+            entityToCreate.AuthorId = _currentUserId;
+
+            await _dbSet.AddAsync(entityToCreate);
+            await _db.SaveChangesAsync();
+
+            return _mapper.Map<OrganizationInfoDto>(entityToCreate);
         }
 
         public async Task<IEnumerable<Organization>> GetUserOrganizations(int userId)
@@ -31,9 +45,9 @@ namespace Tasque.Core.BLL.Services
             return organizations;
         }
 
-        public async Task<OrganizationDto> EditOrganization(OrganizationDto organization)
+        public override async Task<OrganizationInfoDto> Update(int key, OrganizationCreateDto organization)
         {
-            var organizationEntity = await _db.Organizations.FirstOrDefaultAsync(o => o.Id == organization.Id)
+            var organizationEntity = await _db.Organizations.FirstOrDefaultAsync(o => o.Id == key)
                ?? throw new ValidationException("Organization not found");
 
             organizationEntity.Name = organization.Name;
@@ -41,7 +55,8 @@ namespace Tasque.Core.BLL.Services
 
             _db.Organizations.Update(organizationEntity);
             await _db.SaveChangesAsync();
-            return _mapper.Map<OrganizationDto>(organizationEntity);
+
+            return _mapper.Map<OrganizationInfoDto>(organizationEntity);
         }
 
         public async Task<IEnumerable<UserDto>> GetOrganizationUsers(int organizationId)
