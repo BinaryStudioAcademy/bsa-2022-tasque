@@ -146,7 +146,32 @@ namespace Tasque.Core.BLL.Services
 
             return _mapper.Map<SprintDto>(entity);
         }
-        
+
+        public  async Task<SprintDto> UpdateOrder(SprintDto dto)
+        {
+            var entity = await _db.Sprints.FirstOrDefaultAsync(s => s.Id == dto.Id)
+                ?? throw new ValidationException("Sprint not found");
+
+            if (dto.Order != entity.Order)
+            {
+                var maxOrderSprint = await _db.Sprints
+                    .FirstOrDefaultAsync(s => s.StartAt != null && !s.IsComplete);
+                   
+
+                if (maxOrderSprint != null && maxOrderSprint.Order >= dto.Order)
+                {
+                    throw new ValidationException(
+                        "You cannot raise a sprint because the sprint above has already started");
+                }
+            }
+            entity.Order = dto.Order;
+
+            _db.Sprints.Update(entity);
+            await _db.SaveChangesAsync();
+
+            return _mapper.Map<SprintDto>(entity);
+        }
+
         public async Task CompleteSprint(int sprintId)
         {
             var sprint = await _db.Sprints
@@ -201,23 +226,19 @@ namespace Tasque.Core.BLL.Services
             await _db.SaveChangesAsync();
         }
 
-        public async Task Delete(int sprintId, int currentUserId)
+        public override async Task<bool> Delete(int sprintId)
         {
             var sprint = await _db.Sprints
                 .Include(s => s.Tasks)
                 .FirstOrDefaultAsync(s => s.Id == sprintId)
                 ?? throw new HttpException(System.Net.HttpStatusCode.NotFound, "Sprinter with this ID does not exist");
 
-            var user = await _db.Users
-                .Include(u => u.Roles)
-                .FirstOrDefaultAsync(u => u.Id == currentUserId)
-                 ?? throw new HttpException(System.Net.HttpStatusCode.NotFound, "User not found");
 
-            var userRole = user.Roles
-                .FirstOrDefault(r => r.ProjectId == sprint.ProjectId);
+         //   var userRole = user.Roles
+         //       .FirstOrDefault(r => r.ProjectId == sprint.ProjectId);
 
-            if (userRole == null || userRole.RoleId != (int)BaseProjectRole.Admin)
-                throw new HttpException(System.Net.HttpStatusCode.Forbidden, "Access is denied");
+          //  if (userRole == null || userRole.RoleId != (int)BaseProjectRole.Admin)
+          //      throw new HttpException(System.Net.HttpStatusCode.Forbidden, "Access is denied");
 
             sprint.Tasks
                     .Where(t => t.StateId == ((int)BasicTaskStateTypes.ToDo)
@@ -231,6 +252,8 @@ namespace Tasque.Core.BLL.Services
             _db.Sprints.Remove(sprint);
 
             await _db.SaveChangesAsync();
+
+            return true;
         }
     }
 }
