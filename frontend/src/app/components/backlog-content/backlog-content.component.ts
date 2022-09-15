@@ -238,9 +238,6 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   }
 
   drop(event: CdkDragDrop<TaskModel[]>): void {
-    console.log(event.previousContainer.data[event.previousIndex]);
-    console.log(event);
-
     const _task = event.previousContainer.data[event.previousIndex];
 
     if (event.previousContainer === event.container) {
