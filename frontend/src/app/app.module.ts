@@ -38,6 +38,7 @@ import { BacklogComponent } from './components/backlog/backlog.component';
 import { AccessControlGuard } from './components/tasque-project-settings/project-options-module/guards/access-control.guard';
 import { WikiComponent } from './components/wiki/wiki.component';
 import { YourWorkComponent } from './components/your-work/your-work.component';
+import { ProjectCardComponent } from './components/your-work/project-card/project-card.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { YourWorkComponent } from './components/your-work/your-work.component';
     BacklogComponent,
     WikiComponent,
     YourWorkComponent,
+    ProjectCardComponent,
   ],
   imports: [
     BrowserModule,

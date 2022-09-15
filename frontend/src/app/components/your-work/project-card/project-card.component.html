@@ -1,0 +1,22 @@
+<mat-card>
+    <div class="card-title">
+        <div class="color-square" [ngStyle]="{ 'background-color': projectCard.color}"></div>
+        <p routerLink="/project/{{projectCard.projectId}}/board">{{projectCard.title}}</p>
+    </div>
+    <div class="main-card">
+        <div class="links">
+            <p>QUICK LINKS</p>
+        </div>
+        <div class="assigned">
+            <p>Assigned to me</p>
+            <p class="counter">{{projectCard.assignedIssuesCount}}</p>
+        </div>
+        <div class="all-issues">
+            <p>All open issues</p>
+            <p class="counter">{{projectCard.allIssuesCount}}</p>
+        </div>        
+    </div>
+    <div class="divider">
+        <mat-divider></mat-divider>
+    </div>    
+</mat-card>
