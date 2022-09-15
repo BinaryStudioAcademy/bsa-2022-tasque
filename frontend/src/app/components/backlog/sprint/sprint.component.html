@@ -163,14 +163,16 @@
       ></app-issue>
     </div>
     <div class="sprint-footer">
-      <tasque-task-creation
-        *ngIf="!currentSprint.isComplete"
-        btnText="+ Create issues"
-        btnClass="btn mini voilet"
-        [sidebarName]="createIssueSidebarName"
-        [organizationId]="currentProject.organizationId"
-        [currentProject]="currentProject"
-      ></tasque-task-creation>
+      <div class="create-issue">
+        <tasque-task-creation
+          *ngIf="!currentSprint.isComplete"
+          btnText="+ Create issues"
+          btnClass="btn mini voilet"
+          [sidebarName]="createIssueSidebarName"
+          [organizationId]="currentProject.organizationId"
+          [currentProject]="currentProject"
+        ></tasque-task-creation>
+      </div>
     </div>
   </details>
 </div>
