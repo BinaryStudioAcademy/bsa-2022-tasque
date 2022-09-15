@@ -89,9 +89,14 @@ namespace Tasque.Core.BLL.Services
         {
             var tasks = _mapper.Map<List<TaskDto>>(_dbContext.Tasks
                 .Where(t => t.ProjectId == projectId)
-                    .Include(t => t.Priority)
-                    .Include(t => t.State)
-                    .Include(t => t.Type));
+                .Include(t => t.Users)
+                .Include(t => t.Author)
+                .Include(t => t.Sprint)
+                .Include(t => t.LastUpdatedBy)
+                .Include(t => t.Priority)
+                .Include(t => t.State)
+                .Include(t => t.Project)
+                .Include(t => t.Type));
 
             var customFields = await _cosmosTaskService.GetAllProjectTasks(projectId);
 
