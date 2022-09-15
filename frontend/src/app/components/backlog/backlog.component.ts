@@ -110,24 +110,6 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  //get all user's boards
-  /*
-  public getUserBoards(): void {
-    this.boardService
-      .getUserBoards(this.currentUser.id)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((result) => {
-        if (result.body) {
-          this.boards = result.body.map((item) => ({
-            id: item.id,
-            title: item.name,
-            color: '',
-          }));
-        }
-      });
-  }
-  */
-
   //get sprints for the current project
   //and sort them by priority (order)
   public getSprints(projectId: number): void {
