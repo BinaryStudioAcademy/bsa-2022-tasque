@@ -372,7 +372,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     });
   }
 
-  openModal(): void {
-    this.isOpen = !this.isOpen;
+  toogleModal(event: boolean): void {
+    this.isOpen = event;
   }
 }

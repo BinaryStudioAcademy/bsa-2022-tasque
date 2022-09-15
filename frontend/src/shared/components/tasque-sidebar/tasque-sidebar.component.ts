@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { SideBarService } from 'src/core/services/sidebar.service';
 
@@ -14,12 +14,19 @@ export class TasqueSidebarComponent implements OnInit {
   @Input() public btnText = '';
   @Input() public btnIcon?: IconProp = undefined;
 
+  @Output() sidebarToggle = new EventEmitter<boolean>();
+
   openSidebar(): void {
+    this.sidebarToggle.emit(true);
     this.sidebarService.toggle(this.name);
   }
   ngOnInit(): void {
     if (this.name === '') {
       throw new Error('Attribute name is required');
     }
+  }
+
+  toggle(value: boolean) {
+    this.sidebarToggle.emit(value);
   }
 }
