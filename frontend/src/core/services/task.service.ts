@@ -7,17 +7,14 @@ import { TaskModel } from '../models/task/task-model';
 import { TaskUpdateModel } from '../models/task/task-update-model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TaskService {
-
   private routePrefix = '/api/task';
 
-  constructor(
-    private httpService: HttpService,
-  ) { }
+  constructor(private httpService: HttpService) {}
 
-  createTask(model: TaskCreateViewModel): Observable<HttpResponse<TaskCreateViewModel>> {
+  createTask(model: TaskCreateViewModel): Observable<HttpResponse<TaskModel>> {
     return this.httpService.postFullRequest(this.routePrefix, model);
   }
 
