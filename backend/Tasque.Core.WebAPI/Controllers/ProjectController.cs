@@ -145,6 +145,14 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
             return NotFound("Project or it's task states not found");
         return Ok(states);
     }
+
+    [HttpGet("getProjectCards")]
+    public async Task<IActionResult> GetProjectCards()
+    {
+        var result = await _service.GetProjectCardsByUserId(_currentUser.Id);
+
+        return Ok(result);
+    }
 }
 
 

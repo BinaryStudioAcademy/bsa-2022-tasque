@@ -384,4 +384,24 @@ public class ProjectService : EntityCrudService<Project>
     {
         return _mapper.Map<List<TaskStateDto>>(_db.TaskStates.Where(s => s.ProjectId == projectId));
     }
+
+    public async Task<List<ProjectCardDTO>> GetProjectCardsByUserId(int userId)
+    {
+        var user = await _db.Users
+            .Include(u => u.ParticipatedTasks)
+            .Include(u => u.ParticipatedProjects)
+            .FirstOrDefaultAsync(u => u.Id == userId)
+            ?? throw new CustomNotFoundException("user");
+        var projects = user.ParticipatedProjects;
+        var result = projects
+            .Select(p => new ProjectCardDTO
+            {
+                ProjectId = p.Id,
+                Title = p.Name,
+                AssignedIssuesCount = user.ParticipatedTasks.Where(t => t.ProjectId == p.Id).Count(),
+                AllIssuesCount = _db.Tasks.Where(t => t.ProjectId == p.Id).Count()
+            })
+            .ToList();
+        return result;
+    }
 }
