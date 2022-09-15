@@ -44,7 +44,7 @@ namespace Tasque.Core.BLL.Services
 
         public async Task<UserDto> GetUserByEmail(string email)
         {
-            var userEntity = await _context.Users.FirstOrDefaultAsync(u => u.Email == email)
+            var userEntity = await _context.Users.FirstOrDefaultAsync(u => (u.Email == email) && u.IsEmailConfirmed)
                 ?? throw new ValidationException("User with given email does not exist");
 
             var userRoles = _mapper.Map<List<UserOrganizationRoleDto>>(_context.UserOrganizationRoles);
