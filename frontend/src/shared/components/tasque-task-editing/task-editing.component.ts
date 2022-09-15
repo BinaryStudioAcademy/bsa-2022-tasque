@@ -375,6 +375,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     this.editTaskForm.controls.assignees.value.splice(index, 1);
   }
 
+  // TODO: Removed it when tasque-select-users is redesigned
   private convertToUserCard(user: UserModel): IUserCard {
     return {
       id: user.id,
