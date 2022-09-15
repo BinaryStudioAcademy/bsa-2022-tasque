@@ -14,6 +14,7 @@ namespace Tasque.Core.WebAPI.Controllers
     [Authorize]
     public class TaskStateController : EntityController<TaskStateEditDto, TaskStateDto, TaskStateEditDto, int, TaskStateService>
     {
+
         public TaskStateController(TaskStateService service) : base(service)
         {
 
@@ -23,6 +24,15 @@ namespace Tasque.Core.WebAPI.Controllers
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _service.GetAll());
+        }
+
+        [HttpGet("getAllByProjectId/{projectId}")]
+        public async Task<IActionResult> GetAllTaskStatesByProjectId(int projectId)
+        {
+            var types = await _service.GetAllTaskStatesByProjectId(projectId);
+            if (types == null)
+                return NotFound();
+            return Ok(types);
         }
     }
 }

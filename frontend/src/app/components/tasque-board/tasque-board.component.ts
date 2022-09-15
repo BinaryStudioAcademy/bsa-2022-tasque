@@ -15,10 +15,12 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
 import { Subject } from 'rxjs';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
-import { ProjectService } from 'src/core/services/project.service';
 import { TaskType } from 'src/core/models/task/task-type';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { ProjectModel } from 'src/core/models/project/project-model';
+import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
+import { TaskState } from 'src/core/models/task/task-state';
+import { TaskStorageService } from 'src/core/services/task-storage.service';
 
 @Component({
   selector: 'tasque-board',
@@ -34,7 +36,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   @ViewChild('searchInput') public searchInput: InputComponent;
 
   private selectedUserId?: number;
-  private newColumn: BoardColumnModel;
+  private newColumn: TaskState;
   private projectId: number;
 
   public unsubscribe$ = new Subject<void>();
@@ -44,6 +46,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   public hasTasks = false;
   public isShow = false;
   public searchParameter = '';
+  colors = ['#D47500', '#00AA55', '#E3BC01', '#009FD4', '#B281B3', '#D47500', '#DC2929'];
 
   public columns: BoardColumnModel[] = [];
   public projectTasks: TaskModel[] = [];
@@ -54,9 +57,10 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   constructor(
     formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private projectService: ProjectService,
+    private boardService: ScopeBoardService,
     private notificationService: NotificationService,
     private currentUserService: GetCurrentUserService,
+    private taskStorageService: TaskStorageService
   ) {
     this.currentUserService.currentUser$.subscribe((res) => {
       this.user = res as UserModel;
@@ -80,26 +84,82 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     }
     this.projectId = parseInt(id);
 
-    this.projectService.getProjectById(this.projectId)
+    this.boardService.projectService.getProjectById(this.projectId)
       .subscribe(
-      (resp) => {
+        (resp) => {
+          if (resp.ok) {
+            this.project = resp.body as ProjectModel;
+            this.setColumns();
+          } else {
+            this.notificationService.error('Something went wrong');
+          }
+        },
+      );
+
+    this.boardService.projectService.getAllProjectTasks(this.projectId)
+      .subscribe((resp) => {
         if (resp.ok) {
-          this.project = resp.body as ProjectModel;
-          this.setColumns();
+          this.projectTasks = resp.body as TaskModel[];
+          this.hasTasks = this.checkIfHasTasks();
+          this.sortTasksByColumns();
         } else {
           this.notificationService.error('Something went wrong');
         }
-      },
-    );
+      });
 
-    this.projectService.getAllProjectTasks(this.projectId)
-      .subscribe((resp) => {
-      if(resp.ok){
-        this.projectTasks = resp.body as TaskModel[];
-        this.hasTasks = this.checkIfHasTasks();
-        this.sortTasksByColumns();
-      } else {
-        this.notificationService.error('Something went wrong');
+    this.taskStorageService.taskUpdated$.subscribe((task) => {
+      let isTaskFound = false;
+
+      for (const col of this.columns) {
+        if (isTaskFound) {
+          return;
+        }
+
+        const index = col.tasks.findIndex((t) => task.id === t.id);
+
+        if (index !== -1) {
+          isTaskFound = true;
+
+          col.tasks[index] = {
+            id: task.id,
+            typeId: task.typeId,
+            type: task.type,
+            priority: task.priority,
+            attachmentUrl: task.attachments[0]?.uri,
+            summary: task.summary,
+            customLabels: [],
+            key: task.key as string,
+            isHidden: false,
+          };
+        }
+      }
+    });
+
+    this.taskStorageService.taskUpdated$.subscribe((task) => {
+      let isTaskFound = false;
+
+      for (const col of this.columns) {
+        if (isTaskFound) {
+          return;
+        }
+
+        const index = col.tasks.findIndex((t) => task.id === t.id);
+
+        if (index !== -1) {
+          isTaskFound = true;
+
+          col.tasks[index] = {
+            id: task.id,
+            typeId: task.typeId,
+            type: task.type,
+            priority: task.priority,
+            attachmentUrl: task.attachments[0]?.uri,
+            summary: task.summary,
+            customLabels: [],
+            key: task.key as string,
+            isHidden: false,
+          };
+        }
       }
     });
   }
@@ -111,10 +171,11 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       const taskInfo: TaskInfoModel[] = [];
 
       tasks.forEach((t) => {
-
         taskInfo.push({
           id: t.id,
+          typeId: t.typeId,
           type: t.type,
+          stateId: t.stateId,
           priority: t.priority,
           attachmentUrl: t.attachments[0]?.uri,
           summary: t.summary,
@@ -146,12 +207,17 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       this.newColumn = {
         id: 0,
         name: this.createColumnForm.get('columnName')?.value,
-        tasks: [],
+        projectId: this.projectId,
+        color: this.colors[this.projectId % this.colors.length],
       };
-      this.columns.push(this.newColumn);
+      this.columns.push({
+        id: this.newColumn.id,
+        name: this.newColumn.name,
+        tasks: [],
+      });
       this.createColumnForm.reset();
       this.isOpenColumnAddDialog = false;
-      //this.updateColumns();
+      this.updateColumns();
     }
   }
 
@@ -174,32 +240,40 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         event.previousIndex,
         event.currentIndex,
       );
-      //this.updateTasks(); 
+      this.updateTasks(event);
     }
   }
 
-  // updateColumns(): void { //TODO: Rework as for current db scheme
-  //   this.projectService
-  //     .updateBoardColumns(this.board)
-  //     .pipe(filter((resp) => resp.body != null))
-  //     .subscribe((resp) => {
-  //       this.board = resp.body as BoardModel;
-  //       this.filterTasks();
-  //     });
-  // }
+  updateColumns(): void {
+    this.boardService.taskStateService
+      .createTaskState(this.newColumn)
+      .subscribe(() => {
+        this.notificationService.success('Column has been created successfully');
+        this.filterTasks();
+      }, () => {
+        this.notificationService.error('Something went wrong, try again later');
+      });
+  }
 
-  // updateTasks(): void {
-  //   this.projectService
-  //     .updateBoardTasks(this.board)
-  //     .pipe(filter((resp) => resp.body != null))
-  //     .subscribe((resp) => {
-  //       this.board = resp.body as BoardModel;
-  //       this.filterTasks();
-  //     });
-  // }
+  updateTasks(event: CdkDragDrop<TaskInfoModel[]>): void {
+    const model = event.container.data[event.currentIndex];
+    this.columns.forEach((c) => {
+      if (c.tasks === event.container.data) {
+        const task = this.projectTasks.find((t) => t.id === model.id) as TaskModel;
+        task.stateId = c.id;
+        this.boardService.taskService
+          .updateTask(task)
+          .subscribe((resp) => {
+            if (!resp.ok) {
+              this.notificationService.error('Something went wrong, try again later');
+            }
+          });
+      }
+    });
+  }
 
   checkIfHasTasks(): boolean {
-    if(this.projectTasks.length > 0){
+    if (this.projectTasks.length > 0) {
       return true;
     }
     return false;
@@ -207,11 +281,11 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
   filterTasks(): void {
     const phrase = this.searchInput.inputValue;
-    for(const column of this.columns) {
-      if(column.tasks){
-        for(const task of column.tasks) {
+    for (const column of this.columns) {
+      if (column.tasks) {
+        for (const task of column.tasks) {
           task.isHidden = !task.summary.toLowerCase().includes(phrase.toLowerCase());
-          if(this.selectedUserId) {
+          if (this.selectedUserId) {
             task.isHidden = task.isHidden || task.user?.id != this.selectedUserId;
           }
         }

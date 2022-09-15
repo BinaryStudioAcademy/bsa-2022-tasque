@@ -13,15 +13,22 @@ namespace Tasque.Core.BLL.Services
         public TaskStateService(DataContext db, IMapper mapper, CurrentUserParameters currentUser) 
             : base(db, mapper, currentUser)
         {
-
+        
         }
 
-        public async Task<IEnumerable<TaskState>> GetAll()
+        public new async Task<IEnumerable<TaskState>> GetAll()
         {
             var tasksStates = await _db.TaskStates
                 .ToListAsync();
 
             return tasksStates;
+        }
+
+        public async Task<IEnumerable<TaskStateDto>> GetAllTaskStatesByProjectId(int projectId)
+        {
+            var taskStates = await _db.TaskStates.Where(t => t.ProjectId == projectId).ToListAsync();
+
+            return _mapper.Map<IEnumerable<TaskStateDto>>(taskStates);
         }
     }
 }

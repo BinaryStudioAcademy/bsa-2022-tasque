@@ -41,7 +41,7 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
 
   @HostListener('document:keyup')
   listenParagraph(): void {
-    if(this.fieldType === TaskFieldType.Paragraph) {
+    if (this.fieldType === TaskFieldType.Paragraph) {
       this.textValue = this.editorContent;
       this.emitField();
     }
@@ -57,18 +57,18 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
 
   //OUTPUT VALUE
   public valueField: TaskCustomFieldModel;
-  
+
   //INIT COMPONENT
   ngOnInit(): void {
     this.fieldType = this.customField.type;
-    if(this.fieldType === TaskFieldType.Dropdown) {
+    if (this.fieldType === TaskFieldType.Dropdown) {
       this.dropdownField = this.customField.dropdown as DropdownField;
     }
-    if(this.fieldType === TaskFieldType.Label) {
+    if (this.fieldType === TaskFieldType.Label) {
       this.labelField = this.customField.labels as LabelField[];
       this.setLabelOptions();
     }
-    if(this.fieldType === TaskFieldType.CheckBox) {
+    if (this.fieldType === TaskFieldType.CheckBox) {
       this.checkboxFields = this.customField.checkboxes as CheckboxField[];
     }
   }
@@ -88,11 +88,11 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
   setCheckboxChanged(val: boolean, field: CheckboxField): void {
     field.isChecked = val;
     const isExist = this.taskCheckboxFields.find((f) => f.checkboxName === field.checkboxName);
-    if(isExist === undefined) {
+    if (isExist === undefined) {
       this.taskCheckboxFields.push(field);
     } else {
       this.taskCheckboxFields.forEach((f) => {
-        if(f.checkboxName === field.checkboxName) {
+        if (f.checkboxName === field.checkboxName) {
           f.isChecked = field.isChecked;
         }
       });
@@ -100,7 +100,7 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
     this.textValue = JSON.stringify(this.checkboxFields);
     this.emitField();
   }
-  
+
   setSelectedLabel(val: number): void {
     this.labelValue = this.labelField[val];
     this.emitField();
@@ -125,39 +125,26 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
 
   //EMIT 
 
-  emitField(): void { 
-    if(this.fieldType === TaskFieldType.Paragraph) {
-      this.valueField = {
-        fieldId: this.customField.fieldId as string,
-        fieldValue: this.editorContent,
-      };
+  emitField(): void {
+    switch (this.fieldType) {
+      case TaskFieldType.Paragraph:
+        this.valueField.fieldValue = this.editorContent;
+        break;
+      case TaskFieldType.Label:
+        this.valueField.fieldValue = this.labelValue.name;
+        break;
+      case TaskFieldType.Dropdown:
+        this.valueField.fieldValue = this.dropdownValue;
+        break;
+      case TaskFieldType.User:
+      case TaskFieldType.CheckBox:
+      default: // Used for => Text, number and date fields
+        this.valueField.fieldValue = this.textValue;
+        break;
     }
-    if(this.fieldType === TaskFieldType.Label) {
-      this.valueField = {
-        fieldId: this.customField.fieldId as string,
-        fieldValue: this.labelValue.name,
-      };
-    } else if(this.fieldType === TaskFieldType.User) {
-      this.valueField = {
-        fieldId: this.customField.fieldId as string,
-        fieldValue: this.textValue,
-      };
-    } else if(this.fieldType === TaskFieldType.Dropdown) {
-      this.valueField = {
-        fieldId: this.customField.fieldId as string,
-        fieldValue: this.dropdownValue,
-      };
-    } else if(this.fieldType === TaskFieldType.CheckBox) {
-      this.valueField = {
-        fieldId: this.customField.fieldId as string,
-        fieldValue: this.textValue,
-      };
-    } else {                    //Used for => Text, number and date fields
-      this.valueField = {
-        fieldId: this.customField.fieldId as string,
-        fieldValue: this.textValue,
-      };
-    }
+
+    this.valueField.fieldId = this.customField.fieldId as string;
+
     this.taskCustomField.emit(this.valueField);
   }
 }
