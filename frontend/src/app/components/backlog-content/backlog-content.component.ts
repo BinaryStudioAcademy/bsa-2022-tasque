@@ -22,6 +22,8 @@ import { TaskStateService } from 'src/core/services/task-state.service';
 import { SprintService } from 'src/core/services/sprint.service';
 import { NewSprintModel } from 'src/core/models/sprint/new-sprint-model';
 import { IssueSort } from '../backlog/models';
+import { TaskService } from 'src/core/services/task.service';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-backlog-content',
@@ -177,6 +179,8 @@ export class BacklogContentComponent implements OnInit, OnChanges {
     public taskTypeService: TaskTypeService,
     public taskStateService: TaskStateService,
     public sprintService: SprintService,
+    public taskService: TaskService,
+    public notificationService: NotificationService,
   ) {
     this.subscription = backlogService.changeBacklog$.subscribe(() => {
       this.getBacklogTasks();
@@ -234,6 +238,8 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   }
 
   drop(event: CdkDragDrop<TaskModel[]>): void {
+    const _task = event.previousContainer.data[event.previousIndex];
+
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -247,6 +253,18 @@ export class BacklogContentComponent implements OnInit, OnChanges {
         event.previousIndex,
         event.currentIndex,
       );
+
+      _task.sprintId = undefined;
+      _task.sprint = undefined;
+
+      this.taskService
+        .updateTask(_task)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((result) => {
+          if (result.body) {
+            this.notificationService.success('Task moved to backlog');
+          }
+        });
     }
   }
 

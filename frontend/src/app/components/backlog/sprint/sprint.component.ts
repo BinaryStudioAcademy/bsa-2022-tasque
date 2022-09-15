@@ -86,7 +86,7 @@ export class SprintComponent implements OnInit, OnChanges {
     public taskTypeService: TaskTypeService,
     public taskStateService: TaskStateService,
     public openDialogService: OpenDialogService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     if (this.currentUser === undefined) {
@@ -173,6 +173,8 @@ export class SprintComponent implements OnInit, OnChanges {
 
   //Move the task from the backlog to the sprint, update the task in the database
   drop(event: CdkDragDrop<TaskModel[]>): void {
+    const _task = event.previousContainer.data[event.previousIndex];
+
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -187,10 +189,10 @@ export class SprintComponent implements OnInit, OnChanges {
         event.currentIndex,
       );
 
-      this.currentSprint.tasks[0].sprint = this.currentSprint;
+      _task.sprintId = this.currentSprint.id;
 
       this.taskService
-        .updateTask(this.tasks[0])
+        .updateTask(_task)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((result) => {
           if (result.body) {

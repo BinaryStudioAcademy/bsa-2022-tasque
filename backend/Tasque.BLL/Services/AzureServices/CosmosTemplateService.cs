@@ -33,6 +33,7 @@ namespace Tasque.Core.BLL.Services.AzureServices
                 CosmosDbQueries.GetAll + $" WHERE c.{CosmosDbKeys.ProjectIdKey} = {projectId}"));
 
             var results = new List<CosmosTemplateModel>();
+
             while (query.HasMoreResults)
             {
                 var response = await query.ReadNextAsync();

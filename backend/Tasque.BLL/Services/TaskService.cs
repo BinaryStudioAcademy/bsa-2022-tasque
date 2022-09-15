@@ -54,7 +54,7 @@ namespace Tasque.Core.BLL.Services
             };
 
             var attributes = await _cosmosTaskService.CreateTask(cosmosModel);
-            var task = _mapper.Map<TaskDto>(entity);
+            var task = await GetTaskById(entity.Id);
 
             return JoinTaskAttributesWithDto(task,
                 RenameFieldsWithActualValue(
@@ -112,7 +112,17 @@ namespace Tasque.Core.BLL.Services
 
         public async Task<TaskDto> GetTaskById(int id)
         {
-            var task = _mapper.Map<TaskDto>(_dbContext.Tasks.FirstOrDefault(t => t.Id == id));
+            var task = _mapper.Map<TaskDto>(_dbContext.Tasks
+                .Include(t => t.Users)
+                .Include(t => t.Author)
+                .Include(t => t.Sprint)
+                .Include(t => t.LastUpdatedBy)
+                .Include(t => t.Priority)
+                .Include(t => t.State)
+                .Include(t => t.Project)
+                .Include(t => t.Type)
+                .FirstOrDefault(t => t.Id == id));
+
             if (task == null)
                 throw new CustomNotFoundException(nameof(Common.Entities.Task));
 
