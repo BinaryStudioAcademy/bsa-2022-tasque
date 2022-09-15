@@ -28,7 +28,7 @@ export class YourWorkComponent implements OnInit {
   }
 
   private generateColors(): void {
-    this.projectCards.forEach(card => {
+    this.projectCards.forEach((card) => {
       if(!card.color) {
         card.color = this.colors[card.projectId % this.colors.length];
       }      
