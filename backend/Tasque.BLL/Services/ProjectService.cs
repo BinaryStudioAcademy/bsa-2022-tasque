@@ -251,7 +251,8 @@ public class ProjectService : EntityCrudService<Project>
         UserInvitedEvent @event = new UserInvitedEvent
         {
             ProjectId = project.Id,
-            InviteeId = user.Id
+            InviteeId = user.Id,
+            ConnectiondId = user.ConnectionId
         };
 
         _bus.Publish(@event);
@@ -275,7 +276,8 @@ public class ProjectService : EntityCrudService<Project>
             PreviousColumnId = dto.PreviousColumnId,
             NewColumnId = dto.NewColumnId,
             TaskId = task.Id,
-            TaskAuthorId = task.AuthorId
+            TaskAuthorId = task.AuthorId,
+            ConnectiondId = task.Author.ConnectionId
         };
 
         _bus.Publish(@event);

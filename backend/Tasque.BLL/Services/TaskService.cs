@@ -236,7 +236,8 @@ namespace Tasque.Core.BLL.Services
             {
                 TaskAuthorId = task.AuthorId,
                 TaskId = task.Id,
-                CommentId = comment.Id
+                CommentId = comment.Id,
+                ConnectiondId = task.Author.ConnectionId
             };
 
             _bus.Publish(@event);
