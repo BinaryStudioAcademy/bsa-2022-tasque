@@ -17,27 +17,31 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
   styleUrls: ['./user-profile.component.sass'],
 })
 export class UserProfileComponent implements OnInit {
+
   public imageFile: File;
   public defaultUserAvatarUrl = '../../assets/default_avatar.svg';
   public allowedFileTypes = ['image/png', 'image/jpeg', 'image/gif'];
   public originalUser: ProfileChangesDTO = {} as ProfileChangesDTO;
   public profileChanges: ProfileChangesDTO = {} as ProfileChangesDTO;
   public passwordChanges: PasswordChangesDTO;
-  public hidePass = true;
-  public hideNewPass = true;
+
   public profileForm: FormGroup = new FormGroup({});
   public changePassForm: FormGroup = new FormGroup({});
   public userNameControl: FormControl;
   public emailControl: FormControl;
   public prevPasswordControl: FormControl;
   public newPasswordControl: FormControl;
+  private validationConstants = ValidationConstants;
+
   public unsubscribe$ = new Subject<void>();
+
   public localStorage = window.localStorage;
   public localStorageKeys = LocalStorageKeys;
-  private validationConstants = ValidationConstants;
-  public isProfileChanged = false;
   public pencilIcon = faPencil;
+  public isProfileChanged = false;
   public loading = false;
+  public hidePass = true;
+  public hideNewPass = true;
 
   constructor(
     private notificationService: NotificationService,
@@ -51,31 +55,28 @@ export class UserProfileComponent implements OnInit {
     this.passwordChanges = {} as PasswordChangesDTO;
     this.passwordChanges.newPassword = '';
     this.passwordChanges.previousPassword = '';
+
     this.emailControl = new FormControl(this.profileChanges.email, [
       Validators.required,
       Validators.pattern(this.validationConstants.emailRegex),
     ]);
     this.userNameControl = new FormControl(this.profileChanges.email, [
       Validators.required,
+      Validators.pattern(/^([a-zA-Z0-9]+\s)*[a-zA-Z0-9]+$/),
       Validators.minLength(this.validationConstants.minLengthName),
       Validators.maxLength(this.validationConstants.maxLengthName),
     ]);
-    this.prevPasswordControl = new FormControl(
-      this.passwordChanges.previousPassword,
-      [
+    this.prevPasswordControl = new FormControl(this.passwordChanges.previousPassword, [
         Validators.required,
         Validators.minLength(this.validationConstants.minLengthPassword),
         Validators.maxLength(this.validationConstants.maxLengthPassword),
-      ],
-    );
-    this.newPasswordControl = new FormControl(
-      this.passwordChanges.previousPassword,
-      [
+    ]);
+    this.newPasswordControl = new FormControl(this.passwordChanges.previousPassword, [
         Validators.required,
         Validators.minLength(this.validationConstants.minLengthPassword),
         Validators.maxLength(this.validationConstants.maxLengthPassword),
-      ],
-    );
+    ]);
+
     this.profileForm = new FormGroup({
       userNameControl: this.userNameControl,
       emailControl: this.emailControl,
