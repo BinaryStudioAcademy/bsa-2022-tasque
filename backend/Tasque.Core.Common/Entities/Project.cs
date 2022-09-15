@@ -24,7 +24,6 @@ public class Project : BaseEntity
     public Organization Organization { get; set; } = null!;
 
     public int ProjectTaskCounter { get; set; }
-    public virtual ICollection<ProjectInvitation> Invitations { get; set; }
 
     public virtual ICollection<User> Users { get; set; }
     public virtual ICollection<UserProjectRole> UserRoles { get; set; }

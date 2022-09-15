@@ -24,6 +24,7 @@ public class User : BaseEntity
     public string Salt { get; set; } = null!;
     public bool IsEmailConfirmed { get; set; } = false;
     public string? AvatarURL { get; set; }
+    public string ConnectionId { get; set; } = "";
 
     public virtual ICollection<Meeting> Meetings { get; set; }
     public virtual ICollection<Project> OwnedProjects { get; set; }
@@ -34,7 +35,6 @@ public class User : BaseEntity
     public virtual ICollection<UserOrganizationRole> SystemRoles { get; set; }
     public virtual ICollection<Organization> ParticipatedOrganization { get; set; }
     public virtual ICollection<Organization> OwnedOrganization { get; set; }
-    public virtual ICollection<ProjectInvitation> Invitations { get; set; }
 }
 
 public class UserValidator : AbstractValidator<User>
