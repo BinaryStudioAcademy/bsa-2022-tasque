@@ -35,9 +35,9 @@ namespace Tasque.Notifications
         }
         private static void RegisterServices(this IServiceCollection services)
         {
-            services.AddTransient<NotificationsService<TaskCommentedNotification>>();
-            services.AddTransient<NotificationsService<TaskMovedNotification>>();
-            services.AddTransient<NotificationsService<UserInvitedNotification>>();
+            services.AddTransient<TaskCommentedNotificationsService>();
+            services.AddTransient<TaskMovedNotificationsService>();
+            services.AddTransient<UserInvitedNotificationsService>();
         }
 
         private static void ConfigureSignalR(this IServiceCollection services)

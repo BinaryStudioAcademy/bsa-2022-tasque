@@ -35,5 +35,4 @@ public class DataContext : DbContext
     public DbSet<UserOrganizationRole> UserOrganizationRoles { get; set; } = null!;
     public DbSet<Sprint> Sprints { get; set; } = null!;
     public DbSet<ConfirmationToken> ConfirmationTokens { get; set; } = null!;
-    public DbSet<ProjectInvitation> Invitations { get; set; } = null!;
 }
