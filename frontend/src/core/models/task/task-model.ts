@@ -12,6 +12,7 @@ export interface TaskModel {
   summary: string;
   description?: string;
   key?: string;
+  order: number;
   attachments: Attachment[];
   state?: TaskState;
   stateId: number;
