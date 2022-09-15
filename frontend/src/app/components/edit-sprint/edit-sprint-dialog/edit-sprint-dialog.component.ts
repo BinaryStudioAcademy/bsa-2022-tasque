@@ -37,6 +37,7 @@ export class EditSprintDialogComponent implements OnInit {
   ];
 
   public unsubscribe$ = new Subject<void>();
+  public isSave = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public sprint: EditSprintModel,
@@ -82,6 +83,8 @@ export class EditSprintDialogComponent implements OnInit {
       (resp) => {
         if (resp.ok && resp.body != null) {
           this.sprint.name = resp.body.name;
+          this.isSave = true;
+
           this.notificationService.success('Sprint was successfully changed');
         } else {
           this.notificationService.error('Something went wrong');

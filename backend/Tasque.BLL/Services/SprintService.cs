@@ -100,11 +100,29 @@ namespace Tasque.Core.BLL.Services
         {
             var entity = await _db.Sprints.FirstOrDefaultAsync(s => s.Id == key)
                 ?? throw new ValidationException("Sprint not found");
+
             entity.Name = dto.Name;
+
+
             if (dto.StartAt != null)
             {
+                //Before starting a sprint,
+                //we check whether there are no already started sprints in the project
+
+                var activeSprints = await _db.Sprints
+                    .Where(s => s.StartAt != null 
+                                && !s.IsComplete 
+                                && s.ProjectId == entity.ProjectId
+                                && s.Id != entity.Id)
+                    .ToListAsync();
+
+                if(activeSprints.Count >0)
+                    throw new ValidationException(
+                        "Before starting a new sprint, finish the previous one!");
+
                 entity.StartAt = DateTime.SpecifyKind((DateTime)dto.StartAt, DateTimeKind.Utc);
             }
+
             if (dto.EndAt != null)
             {
                 entity.EndAt = DateTime.SpecifyKind((DateTime)dto.EndAt, DateTimeKind.Utc);
