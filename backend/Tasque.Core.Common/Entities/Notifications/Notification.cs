@@ -6,6 +6,7 @@ namespace Tasque.Core.Common.Entities.Notifications
     {
         public abstract NotificationType Type { get; }
         public abstract int RecieverId { get; }
+        public string ConnectionId { get; set; } = "";
     }
 
     public enum NotificationType
