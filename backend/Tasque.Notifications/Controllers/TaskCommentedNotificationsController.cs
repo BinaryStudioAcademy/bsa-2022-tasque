@@ -8,7 +8,7 @@ namespace Tasque.Notifications.Controllers
     [ApiController]
     public class TaskCommentedNotificationsController : NotificationsController<TaskCommentedNotification>
     {
-        public TaskCommentedNotificationsController(NotificationsService<TaskCommentedNotification> service) : base(service)
+        public TaskCommentedNotificationsController(TaskCommentedNotificationsService service) : base(service)
         {
         }
     }

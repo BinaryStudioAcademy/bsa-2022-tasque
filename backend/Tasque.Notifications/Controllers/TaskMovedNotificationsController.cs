@@ -9,7 +9,7 @@ namespace Tasque.Notifications.Controllers
     [ApiController]
     public class TaskMovedNotificationsController : NotificationsController<TaskMovedNotification>
     {
-        public TaskMovedNotificationsController(NotificationsService<TaskMovedNotification> service) : base(service)
+        public TaskMovedNotificationsController(TaskMovedNotificationsService service) : base(service)
         {
         }
     }

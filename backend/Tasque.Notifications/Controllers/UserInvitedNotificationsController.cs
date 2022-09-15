@@ -8,7 +8,7 @@ namespace Tasque.Notifications.Controllers
     [ApiController]
     public class UserInvitedNotificationsController : NotificationsController<UserInvitedNotification>
     {
-        public UserInvitedNotificationsController(NotificationsService<UserInvitedNotification> service) : base(service)
+        public UserInvitedNotificationsController(UserInvitedNotificationsService service) : base(service)
         {
         }
     }

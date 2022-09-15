@@ -4,17 +4,14 @@ using Tasque.Notifications.Data;
 
 namespace Tasque.Notifications.Services
 {
-    public class NotificationsService<TNotification> where TNotification : Notification
+    public abstract class NotificationsService<TNotification> where TNotification : Notification
     {
-        private NotificationsContext _db;
+        protected NotificationsContext _db;
         public NotificationsService(NotificationsContext db)
         {
             _db = db;
         }
 
-        public Task<List<TNotification>> GetNotifications(int recieverId)
-        {
-            return _db.Set<TNotification>().Where(n => n.RecieverId == recieverId).ToListAsync();
-        }
+        public abstract Task<List<TNotification>> GetNotifications(int recieverId);
     }
 }
