@@ -152,18 +152,6 @@ namespace Tasque.Core.BLL.Services
             var entity = await _db.Sprints.FirstOrDefaultAsync(s => s.Id == dto.Id)
                 ?? throw new ValidationException("Sprint not found");
 
-            if (dto.Order != entity.Order)
-            {
-                var maxOrderSprint = await _db.Sprints
-                    .FirstOrDefaultAsync(s => s.StartAt != null && !s.IsComplete);
-                   
-
-                if (maxOrderSprint != null && maxOrderSprint.Order >= dto.Order)
-                {
-                    throw new ValidationException(
-                        "You cannot raise a sprint because the sprint above has already started");
-                }
-            }
             entity.Order = dto.Order;
 
             _db.Sprints.Update(entity);
