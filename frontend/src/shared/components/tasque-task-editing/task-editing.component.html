@@ -4,7 +4,7 @@
   [btnClass]="btnClass"
   [btnIcon]="btnIcon"
 >
-  <form class="edit-task-dialog" [formGroup]="editTaskForm">
+  <form class="edit-task-dialog" [formGroup]="editTaskForm" *ngIf="isShow">
     <div class="task-summary-container">
       <span class="item-label"> {{ task.key }}</span>
       <h5>
