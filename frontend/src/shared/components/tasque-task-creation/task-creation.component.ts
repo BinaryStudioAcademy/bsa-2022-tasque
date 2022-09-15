@@ -75,7 +75,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   @Input() public currentProject: ProjectModel;
 
   @Input() public currentTasks: TaskModel[];
-  @Input() public sprintId: string;
+  @Input() public sprintId: number;
 
   get projectErrorMessage(): string {
     const ctrl = this.projectControl;
@@ -320,7 +320,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       description: this.taskCreateForm.get('descriptionControl')?.value,
 
       customFields: this.taskCustomFields,
-      //   sprintId: this.sprintId,
+      sprintId: this.sprintId,
     };
     console.log(this.task);
     this.taskService.createTask(this.task).subscribe(

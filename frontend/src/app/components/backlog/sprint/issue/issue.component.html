@@ -1,11 +1,18 @@
 <div class="issue">
-  <p class="issue-type" [ngStyle]="{ 'background': issue.type?.color ?? 'colorscheme(yellow-100)' }">
+  <p
+    class="issue-type"
+    [ngStyle]="{ 'background': issue.type?.color ?? 'colorscheme(yellow-100)' }"
+  >
     {{ issue.type?.name ?? '' }}
   </p>
   <p class="issue-key">
     {{ issue.key }}
   </p>
-  <p class="issue-title" [matTooltipShowDelay]="1500" matTooltip=" {{ issue.description }}">
+  <p
+    class="issue-title"
+    [matTooltipShowDelay]="1500"
+    matTooltip=" {{ issue.description }}"
+  >
     {{ issue.summary }}
   </p>
   <tasque-task-editing [task]="issue"></tasque-task-editing>
