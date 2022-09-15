@@ -43,10 +43,10 @@ export class EditSprintComponent implements OnInit {
     });
 
     dialog.afterClosed().subscribe((result: SprintModel) => {
-      if (this.isStarting && result && result.startAt) {
-        this.currentSprint.startAt = result.startAt;
-        this.currentSprint.endAt = result.endAt;
-      }
+      this.currentSprint.name = result.name;
+      this.currentSprint.description = result.description;
+      this.currentSprint.startAt = result.startAt;
+      this.currentSprint.endAt = result.endAt;
     });
   }
 }
