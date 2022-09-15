@@ -187,10 +187,11 @@ export class SprintComponent implements OnInit, OnChanges {
         event.currentIndex,
       );
 
-      this.currentSprint.tasks[0].sprintId = this.currentSprint.id;
+      event.previousContainer.data[event.previousIndex].sprintId =
+        this.currentSprint.id;
 
       this.taskService
-        .updateTask(this.tasks[0])
+        .updateTask(event.previousContainer.data[event.previousIndex])
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((result) => {
           if (result.body) {

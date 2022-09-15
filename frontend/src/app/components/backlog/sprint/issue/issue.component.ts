@@ -105,7 +105,6 @@ export class IssueComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.issue);
     this.estimateUpdate();
     this.cdRef.detectChanges();
 
