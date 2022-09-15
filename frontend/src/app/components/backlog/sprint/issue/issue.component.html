@@ -1,4 +1,3 @@
-<template #alertContainer></template>
 <div class="issue">
   <p
     class="issue-type"
@@ -9,14 +8,15 @@
   <p class="issue-key">
     {{ issue.key }}
   </p>
-  <p
-    class="issue-title"
-    [matTooltipShowDelay]="1500"
+
+  <tasque-task-editing
+    [task]="issue"
+    [btnText]="issue.summary"
+    btnClass="btn full black"
     matTooltip=" {{ issue.description }}"
+    [matTooltipShowDelay]="1500"
   >
-    {{ issue.summary }}
-  </p>
-  <tasque-task-editing [task]="issue"> </tasque-task-editing>
+  </tasque-task-editing>
   <div class="issue-estimate">
     <tasque-input
       class="input estimate-input"
