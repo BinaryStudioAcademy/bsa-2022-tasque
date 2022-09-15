@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Tasque.Core.Common.Entities.Abstract;
 
 namespace Tasque.Core.Common.Entities
 {

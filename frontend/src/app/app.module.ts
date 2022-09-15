@@ -39,6 +39,7 @@ import { AccessControlGuard } from './components/tasque-project-settings/project
 import { WikiComponent } from './components/wiki/wiki.component';
 import { YourWorkComponent } from './components/your-work/your-work.component';
 import { ProjectCardComponent } from './components/your-work/project-card/project-card.component';
+import { DeleteSprintDialogComponent } from './components/delete-sprint-dialog/delete-sprint-dialog.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { ProjectCardComponent } from './components/your-work/project-card/projec
     WikiComponent,
     YourWorkComponent,
     ProjectCardComponent,
+    DeleteSprintDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,4 +93,4 @@ import { ProjectCardComponent } from './components/your-work/project-card/projec
   bootstrap: [AppComponent],
   exports: [OrganizationListComponent],
 })
-export class AppModule { }
+export class AppModule {}

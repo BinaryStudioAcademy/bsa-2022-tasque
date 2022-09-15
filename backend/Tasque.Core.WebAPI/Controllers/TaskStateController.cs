@@ -12,18 +12,27 @@ namespace Tasque.Core.WebAPI.Controllers
     [Route("api/taskState")]
     [ApiController]
     [Authorize]
-    public class TaskStateController : EntityController<TaskState, TaskStateDto, TaskStateService>
+    public class TaskStateController : EntityController<TaskStateEditDto, TaskStateDto, TaskStateEditDto, int, TaskStateService>
     {
-        private readonly TaskStateService _service;
-        public TaskStateController(TaskStateService service, CurrentUserParameters currentUser) : base(service, currentUser)
+
+        public TaskStateController(TaskStateService service) : base(service)
         {
-            _service = service;
+
         }
 
         [HttpGet("getAll")]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _service.GetAll());
+        }
+
+        [HttpGet("getAllByProjectId/{projectId}")]
+        public async Task<IActionResult> GetAllTaskStatesByProjectId(int projectId)
+        {
+            var types = await _service.GetAllTaskStatesByProjectId(projectId);
+            if (types == null)
+                return NotFound();
+            return Ok(types);
         }
     }
 }

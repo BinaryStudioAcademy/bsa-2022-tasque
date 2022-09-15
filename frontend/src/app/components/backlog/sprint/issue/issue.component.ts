@@ -16,10 +16,12 @@ import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/drop
 import { TaskType } from 'src/core/models/task/task-type';
 import { TaskState } from 'src/core/models/task/task-state';
 import { faFlag } from '@fortawesome/free-solid-svg-icons';
-import { TaskModelDto } from 'src/core/models/task/task-model-dto';
+import { TaskModel } from 'src/core/models/task/task-model';
 import { TaskService } from 'src/core/services/task.service';
 import { NotificationService } from 'src/core/services/notification.service';
 import { ProjectModel } from 'src/core/models/project/project-model';
+import { TaskStorageService } from 'src/core/services/task-storage.service';
+import { SideBarService } from 'src/core/services/sidebar.service';
 
 @Component({
   selector: 'app-issue',
@@ -28,7 +30,7 @@ import { ProjectModel } from 'src/core/models/project/project-model';
 })
 export class IssueComponent implements OnInit {
   //Get the issue to display it in the component
-  @Input() public issue: TaskModelDto;
+  @Input() public issue: TaskModel;
   //get current user
   @Input() public currentUser: UserModel;
   //get current project
@@ -89,10 +91,6 @@ export class IssueComponent implements OnInit {
     // },
   ];
 
-  public issueAuthor: UserModel;
-
-  public issueUsers: UserModel[];
-
   public taskEstimate: TaskEstimateUpdate;
   public unsubscribe$ = new Subject<void>();
 
@@ -102,28 +100,19 @@ export class IssueComponent implements OnInit {
     public sprintService: SprintService,
     public notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
+    private taskStorageService: TaskStorageService,
+    private sidebarService: SideBarService,
   ) {}
 
   ngOnInit(): void {
-    this.getIssueAuthor();
     this.estimateUpdate();
     this.cdRef.detectChanges();
-  }
 
-  //Get the author of the sprint, and display his avatar,
-  //if the author does not have an avatar, display a stub
-  public getIssueAuthor(): void {
-    this.userServise
-      .getUserById(this.issue.authorId)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((result) => {
-        if (result.body) {
-          this.issueAuthor = result.body;
-          if (this.issueAuthor.avatarURL == undefined) {
-            this.issueAuthor.avatarURL = '\\assets\\avatar.png';
-          }
-        }
-      });
+    this.taskStorageService.taskUpdated$.subscribe((task) => {
+      if (task.id === this.issue.id) {
+        this.issue = task;
+      }
+    });
   }
 
   public deadline(): Date {
@@ -139,7 +128,7 @@ export class IssueComponent implements OnInit {
     this.estimate.emit();
     this.taskEstimate = {
       taskId: this.issue.id,
-      sprintId: this.issue.sprintId,
+      sprintId: this.issue.sprint?.id,
       estimate: this.issue.estimate ?? 0,
     };
 
@@ -159,25 +148,11 @@ export class IssueComponent implements OnInit {
     });
   }
 
-  currentTaskState(): string {
-    return (
-      this.taskStates?.find((el) => el.id == this.issue.stateId)?.name ??
-      'Task state'
-    );
-  }
-
-  currentTaskType(): string {
-    return (
-      this.taskTypes?.find((el) => el.id == this.issue.typeId)?.name ?? 'issue'
-    );
-  }
-  currentTaskTypeColor(): string {
-    return (
-      this.taskTypes?.find((el) => el.id == this.issue.typeId)?.color ?? 'red'
-    );
-  }
   updateTaskState(stateId: number): void {
     this.issue.stateId = stateId;
+    if (this.issue.state) {
+      this.issue.stateId = stateId;
+    }
 
     this.taskServise
       .updateTask(this.issue)
@@ -187,5 +162,9 @@ export class IssueComponent implements OnInit {
           this.notificationService.success('Task status updated');
         }
       });
+  }
+
+  test(): void {
+    this.sidebarService.toggle('task-editing-' + this.issue.id);
   }
 }

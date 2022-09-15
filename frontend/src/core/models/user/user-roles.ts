@@ -1,8 +1,7 @@
 export enum UserRole {
-    registeredUser,
-    organizationMember,
-    projectMember,
-    projectAdmin,
-    OrganizationAdmin,
+  registeredUser,
+  organizationMember,
+  projectMember,
+  projectAdmin,
+  OrganizationAdmin,
 }
-

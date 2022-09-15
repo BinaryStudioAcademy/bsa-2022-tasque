@@ -1,4 +1,6 @@
-﻿namespace Tasque.Core.Common.Entities;
+﻿using Tasque.Core.Common.Entities.Abstract;
+
+namespace Tasque.Core.Common.Entities;
 
 public class UserProjectRole
 {

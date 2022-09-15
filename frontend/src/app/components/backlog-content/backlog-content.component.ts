@@ -16,13 +16,14 @@ import {
 } from '@angular/cdk/drag-drop';
 import { BacklogService } from 'src/core/services/backlog.service';
 import { takeUntil } from 'rxjs/operators';
-import { TaskModelDto } from 'src/core/models/task/task-model-dto';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { TaskTypeService } from 'src/core/services/task-type.service';
 import { TaskStateService } from 'src/core/services/task-state.service';
 import { SprintService } from 'src/core/services/sprint.service';
 import { NewSprintModel } from 'src/core/models/sprint/new-sprint-model';
 import { IssueSort } from '../backlog/models';
+import { TaskService } from 'src/core/services/task.service';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-backlog-content',
@@ -40,7 +41,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
 
   public unsubscribe$ = new Subject<void>();
   subscription: Subscription;
-  public tasksShow: TaskModelDto[];
+  public tasksShow: TaskModel[];
 
   @Input() public currentUser: UserModel;
   @Input() public project: ProjectModel;
@@ -54,24 +55,28 @@ export class BacklogContentComponent implements OnInit, OnChanges {
     {
       id: 1,
       name: 'To Do',
+      projectId: 5,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
       id: 2,
       name: 'In Progress',
+      projectId: 5,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
       id: 3,
       name: 'Done',
+      projectId: 5,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
       id: 4,
       name: 'Canceled',
+      projectId: 5,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
@@ -168,12 +173,14 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   public tasks$: Observable<TaskModel[]>;
 
   // TODO remove when real data is available
-  @Input() public tasks: TaskModelDto[] = [];
+  @Input() public tasks: TaskModel[] = [];
   constructor(
     public backlogService: BacklogService,
     public taskTypeService: TaskTypeService,
     public taskStateService: TaskStateService,
     public sprintService: SprintService,
+    public taskService: TaskService,
+    public notificationService: NotificationService,
   ) {
     this.subscription = backlogService.changeBacklog$.subscribe(() => {
       this.getBacklogTasks();
@@ -230,7 +237,9 @@ export class BacklogContentComponent implements OnInit, OnChanges {
     moveItemInArray(this.sprints, event.previousIndex, event.currentIndex);
   }
 
-  drop(event: CdkDragDrop<TaskModelDto[]>): void {
+  drop(event: CdkDragDrop<TaskModel[]>): void {
+    const _task = event.previousContainer.data[event.previousIndex];
+
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -244,6 +253,18 @@ export class BacklogContentComponent implements OnInit, OnChanges {
         event.previousIndex,
         event.currentIndex,
       );
+
+      _task.sprintId = undefined;
+      _task.sprint = undefined;
+
+      this.taskService
+        .updateTask(_task)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((result) => {
+          if (result.body) {
+            this.notificationService.success('Task moved to backlog');
+          }
+        });
     }
   }
 

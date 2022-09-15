@@ -23,7 +23,6 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { TaskService } from 'src/core/services/task.service';
-import { TaskModelDto } from 'src/core/models/task/task-model-dto';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskType } from 'src/core/models/task/task-type';
 import { TaskTypeService } from 'src/core/services/task-type.service';
@@ -31,6 +30,8 @@ import { TaskStateService } from 'src/core/services/task-state.service';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { NotificationService } from 'src/core/services/notification.service';
+import { OpenDialogService } from 'src/core/services/open-dialog.service';
+import { TaskModel } from 'src/core/models/task/task-model';
 
 @Component({
   selector: 'app-sprint',
@@ -64,9 +65,9 @@ export class SprintComponent implements OnInit, OnChanges {
   public sprintUsersCircle?: UserModel[];
   public filterTaskByUser?: UserModel;
 
-  public tasks: TaskModelDto[];
-  public tasksShow: TaskModelDto[];
-  public tasksDto: TaskModelDto;
+  public tasks: TaskModel[];
+  public tasksShow: TaskModel[];
+  public tasksDto: TaskModel;
   public role: UserRole;
   public isCurrentUserAdmin: boolean;
 
@@ -84,6 +85,7 @@ export class SprintComponent implements OnInit, OnChanges {
     public notificationService: NotificationService,
     public taskTypeService: TaskTypeService,
     public taskStateService: TaskStateService,
+    public openDialogService: OpenDialogService,
   ) {}
 
   ngOnInit(): void {
@@ -170,7 +172,7 @@ export class SprintComponent implements OnInit, OnChanges {
   }
 
   //Move the task from the backlog to the sprint, update the task in the database
-  drop(event: CdkDragDrop<TaskModelDto[]>): void {
+  drop(event: CdkDragDrop<TaskModel[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -185,10 +187,11 @@ export class SprintComponent implements OnInit, OnChanges {
         event.currentIndex,
       );
 
-      this.currentSprint.tasks[0].sprintId = this.currentSprint.id;
+      event.previousContainer.data[event.previousIndex].sprintId =
+        this.currentSprint.id;
 
       this.taskService
-        .updateTask(this.tasks[0])
+        .updateTask(event.previousContainer.data[event.previousIndex])
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((result) => {
           if (result.body) {
@@ -207,7 +210,7 @@ export class SprintComponent implements OnInit, OnChanges {
       this.filterTaskByUser = user;
 
       this.tasks = this.tasksShow.filter((item) => {
-        return item.users.find((u) => u.id === user.id);
+        return item.users?.find((u) => u.id === user.id);
       });
     }
   }
@@ -244,5 +247,9 @@ export class SprintComponent implements OnInit, OnChanges {
           this.taskType = result.body;
         }
       });
+  }
+
+  public deleteSprint(sprint: SprintModel): void {
+    this.openDialogService.openDeleteSprintDialog(sprint);
   }
 }

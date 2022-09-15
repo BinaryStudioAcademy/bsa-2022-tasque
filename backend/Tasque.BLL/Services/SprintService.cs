@@ -11,18 +11,19 @@ using Task = System.Threading.Tasks.Task;
 using Tasque.Core.Common.Models.Task;
 using Tasque.Core.BLL.Extensions;
 using Tasque.Core.Common.Enums;
+using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.BLL.Services
 {
-    public class SprintService : EntityCrudService<Sprint>
+    public class SprintService : EntityCrudService<NewSprintDto, SprintDto, EditSprintDto, int, Sprint>
     {
-        private IMapper _mapper;
-        public SprintService(DataContext db, IMapper mapper) : base(db)
+        public SprintService(DataContext db, IMapper mapper, CurrentUserParameters currentUser) 
+            : base(db, mapper, currentUser)
         {
-            _mapper = mapper;
+
         }
 
-        public async Task<SprintDto> Create(NewSprintDto sprintDto)
+        public override async Task<SprintDto> Create(NewSprintDto sprintDto)
         {
             var sprintAuthor = await _db.Users
                 .Include(u => u.Roles)
@@ -55,7 +56,7 @@ namespace Tasque.Core.BLL.Services
 
             return _mapper.Map<IEnumerable<SprintDto>>(sprints);
         }
-
+        
         public async Task<IEnumerable<SprintDto>> GetProjectArchiveSprints(int projectId)
         {
             var sprints = await _db.Sprints
@@ -64,33 +65,40 @@ namespace Tasque.Core.BLL.Services
 
             return _mapper.Map<IEnumerable<SprintDto>>(sprints);
         }
-
+        
         public async Task<IEnumerable<TaskDto>> GetSprintTasks(int sprintId)
         {
             var tasks = await _db.Tasks
                 .Include(t => t.Users)
+                .Include(t => t.Author)
+                .Include(t => t.Sprint)
+                .Include(t => t.LastUpdatedBy)
+                .Include(t => t.Priority)
+                .Include(t => t.State)
+                .Include(t => t.Project)
+                .Include(t => t.Type)
                 .Where(t => t.SprintId == sprintId)
                 .ToListAsync();
 
             return _mapper.Map<IEnumerable<TaskDto>>(tasks);
         }
-
+        
         public async Task<IEnumerable<UserDto>> GetSprintUsers(int sprintId)
         {
             var users = await _db.Tasks
                 .Include(t => t.Users)
                 .Where(t => t.SprintId == sprintId)
-                .SelectMany(t =>t.Users)
+                .SelectMany(t => t.Users)
                 .GroupBy(x => x.Id)
                 .Select(x => x.First())
                 .ToListAsync();
 
             return _mapper.Map<IEnumerable<UserDto>>(users);
         }
-
-        public async Task<Sprint> Edit(EditSprintDto dto)
+        
+        public override async Task<SprintDto> Update(int key, EditSprintDto dto)
         {
-            var entity = await _db.Sprints.FirstOrDefaultAsync(s => s.Id == dto.Id)
+            var entity = await _db.Sprints.FirstOrDefaultAsync(s => s.Id == key)
                 ?? throw new ValidationException("Sprint not found");
             entity.Name = dto.Name;
             if (dto.StartAt != null)
@@ -103,22 +111,24 @@ namespace Tasque.Core.BLL.Services
             }
             entity.Description = dto.Description;
             entity.UpdatedAt = DateTime.UtcNow;
-            
+
             if (dto.IsStarting && dto.Tasks != null)
             {
-                foreach(var taskId in dto.Tasks)
+                foreach (var taskId in dto.Tasks)
                 {
                     var task = await _db.Tasks.FirstOrDefaultAsync(t => t.Id == taskId)
                         ?? throw new ValidationException("Task not found");
-                    task.SprintId = dto.Id;
+                    task.SprintId = key;
                     _db.Tasks.Update(task);
                 }
             }
-            
+
             _db.Sprints.Update(entity);
             await _db.SaveChangesAsync();
-            return entity;
+
+            return _mapper.Map<SprintDto>(entity);
         }
+        
         public async Task CompleteSprint(int sprintId)
         {
             var sprint = await _db.Sprints
@@ -133,23 +143,26 @@ namespace Tasque.Core.BLL.Services
                         || t.StateId == ((int)BasicTaskStateTypes.InProgress))
                     .ToList()
                     .ForEach(t =>
-                        {
-                           t.SprintId = null;
-                        });
+                    {
+                        t.SprintId = null;
+                    });
 
             sprint.IsComplete = true;
 
             _db.Update(sprint);
             await _db.SaveChangesAsync();
         }
-        public async Task<IEnumerable<Sprint>> OrderSprints(IEnumerable<int> ids)
+        
+        public async Task<IEnumerable<SprintDto>> OrderSprints(IEnumerable<int> ids)
         {
             var sprints = _db.Sprints.Where(x => ids.Contains(x.Id));
             sprints.SetOrder(ids);
             await _db.SaveChangesAsync();
-            return sprints.OrderBy(x => x.Order);
-        }
 
+            var ord = sprints.OrderBy(x => x.Order);
+            return _mapper.Map<List<SprintDto>>(ord);
+        }
+        
         public async Task UpdateTaskEstimate(TaskEstimateUpdate taskEstimateUpdate)
         {
             var sprint = await _db.Sprints
@@ -167,6 +180,38 @@ namespace Tasque.Core.BLL.Services
             task.Estimate = taskEstimateUpdate.Estimate;
 
             _db.Update(task);
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task Delete(int sprintId, int currentUserId)
+        {
+            var sprint = await _db.Sprints
+                .Include(s => s.Tasks)
+                .FirstOrDefaultAsync(s => s.Id == sprintId)
+                ?? throw new HttpException(System.Net.HttpStatusCode.NotFound, "Sprinter with this ID does not exist");
+
+            var user = await _db.Users
+                .Include(u => u.Roles)
+                .FirstOrDefaultAsync(u => u.Id == currentUserId)
+                 ?? throw new HttpException(System.Net.HttpStatusCode.NotFound, "User not found");
+
+            var userRole = user.Roles
+                .FirstOrDefault(r => r.ProjectId == sprint.ProjectId);
+
+            if (userRole == null || userRole.RoleId != (int)BaseProjectRole.Admin)
+                throw new HttpException(System.Net.HttpStatusCode.Forbidden, "Access is denied");
+
+            sprint.Tasks
+                    .Where(t => t.StateId == ((int)BasicTaskStateTypes.ToDo)
+                        || t.StateId == ((int)BasicTaskStateTypes.InProgress))
+                    .ToList()
+                    .ForEach(t =>
+                    {
+                        t.SprintId = null;
+                    });
+
+            _db.Sprints.Remove(sprint);
+
             await _db.SaveChangesAsync();
         }
     }
