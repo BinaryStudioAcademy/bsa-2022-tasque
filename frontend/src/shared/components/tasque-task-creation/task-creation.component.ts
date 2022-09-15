@@ -325,13 +325,15 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
     this.taskService.createTask(this.task).subscribe(
       (result) => {
-        this.notificationService.success('Task has been created successfully');
         if (result.body) {
           if (this.currentTasks) {
             this.currentTasks.push(result.body);
           } else {
             this.backlogService.changeBacklog();
           }
+          this.notificationService.success(
+            'Task has been created successfully',
+          );
         }
       },
       () => {

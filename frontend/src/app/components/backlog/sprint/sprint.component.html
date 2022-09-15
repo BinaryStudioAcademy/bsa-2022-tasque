@@ -157,6 +157,7 @@
       </div>
 
       <app-issue
+        cdkDrag
         *ngFor="let task of tasks"
         [issue]="task"
         [taskStates]="taskState"
