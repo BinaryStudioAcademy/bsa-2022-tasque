@@ -1,25 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Sprint;
-using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Models.Task;
-using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
     [Route("api/sprint")]
-    public class SprintController : EntityController<Sprint, SprintDto, SprintService>
+    public class SprintController : EntityController<NewSprintDto, SprintDto, EditSprintDto, int, SprintService>
     {
-        public SprintController(SprintService service, CurrentUserParameters currentUser)
-           : base(service, currentUser)
+        public SprintController(SprintService service)
+           : base(service)
         {
 
-        }
-
-        [HttpPost("createSprint")]
-        public async Task<IActionResult> Create([FromBody] NewSprintDto sprintDto)
-        {
-            return Ok(await _service.Create(sprintDto));
         }
 
         [Route("complete/{id}")]
@@ -29,15 +21,6 @@ namespace Tasque.Core.WebAPI.Controllers
             await _service.CompleteSprint(id);
 
             return Ok();
-        }
-
-        [Route("edit")]
-        [HttpPut]
-        public virtual async Task<IActionResult> Edit([FromBody] EditSprintDto sprintDto)
-        {
-            var entity = await _service.Edit(sprintDto);
-            var dto = mapper.Map<SprintDto>(entity);
-            return Ok(dto);
         }
 
         [Route("getSprintsByProjectId/{id}")]
@@ -117,17 +100,8 @@ namespace Tasque.Core.WebAPI.Controllers
         public async Task<IActionResult> Order([FromBody] IEnumerable<int> ids)
         {
             var sprints = await _service.OrderSprints(ids);
-            var dto = mapper.Map<SprintDto>(sprints);
-            return Ok(dto);
-        }
-
-        [Route("deleteSprint/{id}")]
-        [HttpDelete]
-        public async Task<IActionResult> DeleteSprint(int id)
-        {
-            await _service.Delete(id, _currentUser.Id);
-
-            return NoContent();
+            
+            return Ok(sprints);
         }
     }
 }

@@ -78,7 +78,7 @@ export class EditSprintDialogComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.sprintService.editSprint(this.sprint).subscribe(
+    this.sprintService.editSprint(this.sprint.id, this.sprint).subscribe(
       (resp) => {
         if (resp.ok && resp.body != null) {
           this.sprint.name = resp.body.name;

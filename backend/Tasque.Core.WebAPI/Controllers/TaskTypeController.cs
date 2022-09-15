@@ -2,20 +2,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Task;
-using Tasque.Core.Common.Entities;
-using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
     [Route("api/taskType")]
     [ApiController]
     [Authorize]
-    public class TaskTypeController : EntityController<TaskType, TaskTypeDto, TaskTypeService>
+    public class TaskTypeController : EntityController<TaskPriorityEditDto, TaskTypeDto, TaskPriorityEditDto, int, TaskTypeService>
     {
-        private readonly TaskTypeService _service;
-        public TaskTypeController(TaskTypeService service, CurrentUserParameters currentUser) : base(service, currentUser)
+        public TaskTypeController(TaskTypeService service) : base(service)
         {
-            _service = service;
+
         }
 
         [HttpGet("getAllByProjectId/{projectId}")]
