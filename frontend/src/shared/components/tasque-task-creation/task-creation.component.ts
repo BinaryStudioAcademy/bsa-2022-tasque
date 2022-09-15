@@ -15,8 +15,8 @@ import { TaskCustomField } from 'src/core/models/task/task-template-models/task-
 import { UserModel } from 'src/core/models/user/user-model';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { TaskCustomFieldModel } from 'src/core/models/task/task-creation-models/task-custom-field-model';
-import { TaskService } from 'src/core/services/task-service.service';
 import { TaskPriority } from 'src/core/models/task/task-priority';
+import { TaskService } from 'src/core/services/task.service';
 import { TaskState } from 'src/core/models/task/task-state';
 
 @Component({

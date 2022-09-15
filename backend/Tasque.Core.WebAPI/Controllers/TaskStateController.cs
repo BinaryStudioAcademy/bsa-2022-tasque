@@ -14,7 +14,7 @@ namespace Tasque.Core.WebAPI.Controllers
     [Authorize]
     public class TaskStateController : EntityController<TaskState, TaskStateDto, TaskStateService>
     {
-        private readonly TaskStateService _service;
+        private new readonly TaskStateService _service;
         public TaskStateController(TaskStateService service, CurrentUserParameters currentUser) : base(service, currentUser)
         {
             _service = service;
@@ -24,6 +24,15 @@ namespace Tasque.Core.WebAPI.Controllers
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _service.GetAll());
+        }
+
+        [HttpGet("getAllByProjectId/{projectId}")]
+        public async Task<IActionResult> GetAllTaskStatesByProjectId(int projectId)
+        {
+            var types = await _service.GetAllTaskStatesByProjectId(projectId);
+            if (types == null)
+                return NotFound();
+            return Ok(types);
         }
     }
 }

@@ -7,7 +7,7 @@ import { GetCurrentOrganizationService } from 'src/core/services/get-current-org
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { NotificationService } from 'src/core/services/notification.service';
 import { OrganizationService } from 'src/core/services/organization.service';
-import { TaskService } from 'src/core/services/task-service.service';
+import { TaskService } from 'src/core/services/task.service';
 
 @Component({
   selector: 'tasque-card',
@@ -17,7 +17,7 @@ import { TaskService } from 'src/core/services/task-service.service';
 export class TasqueCardComponent implements OnInit {
 
   //Gets information about the task
-  @Input() taskInfo: TaskInfoModel; 
+  @Input() taskInfo: TaskInfoModel;
   @Input() isDone: boolean;
   user: UserModel;
   hasAccess: boolean;
@@ -26,7 +26,7 @@ export class TasqueCardComponent implements OnInit {
 
   currentUser: UserModel;
   currentOrganization: OrganizationModel;
-  
+
   assignees: UserModel[];
 
   constructor(
@@ -49,7 +49,7 @@ export class TasqueCardComponent implements OnInit {
       .subscribe((resp) => {
         this.currentOrganization = resp.body as OrganizationModel;
         const role = this.currentUser.organizationRoles.find((r) => r.organizationId === this.organizationId)?.role as UserRole;
-        if(role >= UserRole.projectAdmin || 
+        if (role >= UserRole.projectAdmin ||
           this.currentOrganization.authorId === this.currentUser.id) {
           this.hasAccess = true;
         } else {
@@ -59,7 +59,7 @@ export class TasqueCardComponent implements OnInit {
   }
 
   deleteTask(): void {
-    if(!this.hasAccess) {
+    if (!this.hasAccess) {
       this.notificationService.error('You has not permission to do that', 'Access denied');
       return;
     }
