@@ -120,4 +120,13 @@ public class ProjectController : EntityController
 
         return Ok(result);
     }
+
+    [Route("getById/{id}")]
+    [HttpGet]
+    public override async Task<IActionResult> GetById(int id)
+    {
+        var entity = await _service.GetProjectById(id);
+
+        return Ok(entity);
+    }
 }

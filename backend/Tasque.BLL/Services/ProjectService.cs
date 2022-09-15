@@ -29,15 +29,16 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
         return _mapper.Map<List<ProjectDto>>(_db.Projects.Where(p => p.OrganizationId == organizationId));
     }
 
-    public ProjectDto GetProjectById(int id)
+    public async Task<ProjectDto> GetProjectById(int id)
     {
-        return _mapper.Map<ProjectDto>(_db.Projects
+        var project = await _db.Projects
             .Where(p => p.Id == id)
                 .Include(p => p.ProjectTaskTypes)
                 .Include(p => p.ProjectTaskStates)
                 .Include(p => p.ProjectTaskPriorities)
                 .Include(p => p.Users)
-                .FirstOrDefault());
+                .FirstOrDefaultAsync();
+        return _mapper.Map<ProjectDto>(project);
     }
 
     public IEnumerable<UserDto> GetProjectParticipants(int projectId)

@@ -7,11 +7,11 @@
         <div class="links">
             <p>QUICK LINKS</p>
         </div>
-        <div class="assigned">
+        <div class="assigned" routerLink="/project/{{projectCard.projectId}}/board" [queryParams]="{ user: userId}">
             <p>Assigned to me</p>
             <p class="counter">{{projectCard.assignedIssuesCount}}</p>
         </div>
-        <div class="all-issues">
+        <div class="all-issues" routerLink="/project/{{projectCard.projectId}}/board">
             <p>All open issues</p>
             <p class="counter">{{projectCard.allIssuesCount}}</p>
         </div>        
