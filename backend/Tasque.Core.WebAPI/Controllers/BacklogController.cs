@@ -1,5 +1,4 @@
-﻿using Tasque.Core.Common.DTO.Task;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Identity.Helpers;
 

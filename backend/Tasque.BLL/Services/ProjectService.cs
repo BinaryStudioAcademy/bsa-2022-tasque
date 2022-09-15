@@ -12,19 +12,20 @@ using Tasque.Core.Common.StaticResources;
 using Tasque.Core.DAL;
 using Tasque.Core.Common.Models.Events;
 using Tasque.Messaging.Abstractions;
+using Tasque.Core.Identity.Helpers;
 using Task = System.Threading.Tasks.Task;
 using Tasque.Messaging;
 
 namespace Tasque.Core.BLL.Services;
 
-public class ProjectService : EntityCrudService<Project>
+public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, EditProjectDto, int, Project>
 {
-    private readonly IMapper _mapper;
-    private readonly IEventBus _bus;
-    public ProjectService(DataContext db, IMapper mapper, IEventBus bus) : base(db)
+	private readonly IEventBus _bus;
+	
+    public ProjectService(DataContext db, IMapper mapper, CurrentUserParameters currentUser, IEventBus bus) 
+        : base(db, mapper, currentUser)
     {
-        _mapper = mapper;
-        _bus = bus;
+		_bus = bus;
     }
 
     public List<ProjectDto> GetProjectsByOrganizationId(int organizationId)
@@ -53,17 +54,20 @@ public class ProjectService : EntityCrudService<Project>
         return _mapper.Map<IEnumerable<UserDto>>(proj.Users);
     }
 
-    public async Task<ProjectInfoDto> AddProject(Project entity)
+    public override async Task<ProjectInfoDto> Create(NewProjectDto entity)
     {
+        var entityToCreate = _mapper.Map<Project>(entity);
+        entityToCreate.AuthorId = _currentUserId;
+
         var user = await _db.Users
-            .FirstOrDefaultAsync(u => u.Id == entity.AuthorId);
+            .FirstOrDefaultAsync(u => u.Id == entityToCreate.AuthorId);
 
         if (user == null)
         {
             throw new HttpException(System.Net.HttpStatusCode.NotFound, "Something went wrong, the user was not found");
         }
 
-        var project = _db.Projects.Add(entity).Entity;
+        var project = _db.Projects.Add(entityToCreate).Entity;
 
         project.UserRoles.Add(new UserProjectRole
         {
@@ -183,10 +187,10 @@ public class ProjectService : EntityCrudService<Project>
         await _db.SaveChangesAsync();
     }
 
-    public async Task<ProjectInfoDto> EditProject(EditProjectDto projectDto)
+    public override async Task<ProjectInfoDto> Update(int key, EditProjectDto projectDto)
     {
         var project = await _db.Projects
-            .Where(proj => proj.Id == projectDto.Id)
+            .Where(proj => proj.Id == key)
             .Include(proj => proj.Users)
             .Include(proj => proj.UserRoles)
                 .ThenInclude(r => r.Role)
