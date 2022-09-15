@@ -99,8 +99,8 @@ export class IssueComponent implements OnInit {
     public sprintService: SprintService,
     public notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
-    private taskStorageService: TaskStorageService
-  ) { }
+    private taskStorageService: TaskStorageService,
+  ) {}
 
   ngOnInit(): void {
     this.estimateUpdate();

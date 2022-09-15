@@ -307,7 +307,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       );
       return;
     }
-    console.log(this.sprintId);
+
     this.task = {
       authorId: this.currentUser.id,
       projectId: this.taskCreateForm.get('projectControl')?.value.id,
@@ -322,12 +322,16 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       customFields: this.taskCustomFields,
       sprintId: this.sprintId,
     };
-    console.log(this.task);
+
     this.taskService.createTask(this.task).subscribe(
       (result) => {
         this.notificationService.success('Task has been created successfully');
-        if (result.body && this.currentTasks) {
-          this.currentTasks.push(result.body);
+        if (result.body) {
+          if (this.currentTasks) {
+            this.currentTasks.push(result.body);
+          } else {
+            this.backlogService.changeBacklog();
+          }
         }
       },
       () => {
