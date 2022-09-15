@@ -4,7 +4,7 @@
     class="issue-type"
     [ngStyle]="{ 'background': issue.type?.color ?? 'colorscheme(yellow-100)' }"
   >
-    {{ issue.type?.name ?? '' }}
+    {{ this.issue.type?.name }}
   </p>
   <p class="issue-key">
     {{ issue.key }}
