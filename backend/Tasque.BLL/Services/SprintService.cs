@@ -196,11 +196,6 @@ namespace Tasque.Core.BLL.Services
         
         public async Task UpdateTaskEstimate(TaskEstimateUpdate taskEstimateUpdate)
         {
-            var sprint = await _db.Sprints
-                .FirstOrDefaultAsync(s => s.Id == taskEstimateUpdate.SprintId);
-
-            if (sprint == null)
-                throw new HttpException(System.Net.HttpStatusCode.NotFound, "Sprinter with this ID does not exist");
 
             var task = await _db.Tasks
                 .FirstOrDefaultAsync(t => t.Id == taskEstimateUpdate.TaskId);

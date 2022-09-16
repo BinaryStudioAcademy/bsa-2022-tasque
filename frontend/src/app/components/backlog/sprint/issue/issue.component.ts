@@ -128,7 +128,6 @@ export class IssueComponent implements OnInit {
     this.estimate.emit();
     this.taskEstimate = {
       taskId: this.issue.id,
-      sprintId: this.issue.sprint?.id,
       estimate: this.issue.estimate ?? 0,
     };
 

@@ -8,7 +8,6 @@ namespace Tasque.Core.Common.Models.Task
 {
     public class TaskEstimateUpdate
     {
-        public int SprintId { get; set; }
         public int TaskId { get; set; }
         public int Estimate { get; set; }
     }
