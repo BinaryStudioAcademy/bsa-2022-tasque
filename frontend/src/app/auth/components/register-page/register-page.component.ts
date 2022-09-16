@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { AuthService } from 'src/core/services/auth.service';
 import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
-import { ToastrService } from 'ngx-toastr';
 import { ErrorMessages } from 'src/core/models/const-resources/error-messages';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
