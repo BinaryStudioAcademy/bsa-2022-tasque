@@ -37,7 +37,9 @@ import { BacklogContentComponent } from './components/backlog-content/backlog-co
 import { BacklogComponent } from './components/backlog/backlog.component';
 import { AccessControlGuard } from './components/tasque-project-settings/project-options-module/guards/access-control.guard';
 import { DeleteSprintDialogComponent } from './components/delete-sprint-dialog/delete-sprint-dialog.component';
-import { WikiComponent } from './components/wiki/wiki.component';
+import { WikiComponent } from './components/tasque-wiki/wiki/wiki.component';
+import { WikiLeftSidebarComponent } from './components/tasque-wiki/wiki-left-sidebar/wiki-left-sidebar.component';
+import { WikiPageComponent } from './components/tasque-wiki/wiki-page/wiki-page.component';
 
 @NgModule({
   declarations: [
@@ -64,8 +66,10 @@ import { WikiComponent } from './components/wiki/wiki.component';
     IssueComponent,
     BacklogContentComponent,
     BacklogComponent,
-    WikiComponent,
     DeleteSprintDialogComponent,
+    WikiComponent,
+    WikiLeftSidebarComponent,
+    WikiPageComponent
   ],
   imports: [
     BrowserModule,

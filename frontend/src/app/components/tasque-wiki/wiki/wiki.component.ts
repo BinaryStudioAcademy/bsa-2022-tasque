@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-wiki',
+  selector: 'tasque-wiki',
   templateUrl: './wiki.component.html',
   styleUrls: ['./wiki.component.sass']
 })
