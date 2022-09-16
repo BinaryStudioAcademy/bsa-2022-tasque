@@ -1,6 +1,17 @@
-<div class="avatar-wrapper" [ngStyle]="{ 'width.px': diameter_px }" *ngIf="user" matTooltip="{{user.name}}">
-  <div class="background" *ngIf="!user.avatarURL" [ngStyle]="{ 'background-color': background}">
-    <span class="initials" [ngStyle]="{ 'font-size.px': fontSize }">{{ getInitials(user) }}</span>
+<div
+  class="avatar-wrapper"
+  [ngStyle]="{ 'width.px': diameter_px }"
+  *ngIf="user"
+  matTooltip="{{ isShowMatTooltip ? user.name : '' }}"
+>
+  <div
+    class="background"
+    *ngIf="!user.avatarURL"
+    [ngStyle]="{ 'background-color': background }"
+  >
+    <span class="initials" [ngStyle]="{ 'font-size.px': fontSize }">{{
+      getInitials(user)
+    }}</span>
   </div>
   <img
     class="avatar"
