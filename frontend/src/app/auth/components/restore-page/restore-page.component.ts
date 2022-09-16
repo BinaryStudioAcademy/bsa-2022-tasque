@@ -6,13 +6,13 @@ import {
   faEye,
   faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons';
-import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { delay, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/core/services/auth.service';
 import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 import { UserResetPasswordModel } from 'src/core/models/user/user-reset-password-model';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-restore-page',
@@ -77,7 +77,7 @@ export class RestorePageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private toastrService: ToastrService,
+    private notificationService: NotificationService,
   ) {
     this.emailControl = new FormControl(this.email, [
       Validators.required,
@@ -143,7 +143,7 @@ export class RestorePageComponent implements OnInit, OnDestroy {
       .requestPasswordReset(email)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
-        this.toastrService.info('Check your inbox');
+        this.notificationService.info('Check your inbox');
       });
   }
 
@@ -172,7 +172,7 @@ export class RestorePageComponent implements OnInit, OnDestroy {
           const token = resp.body;
           if (!token) return;
           this.authService.setAuthToken(token);
-          this.toastrService.success(
+          this.notificationService.success(
             'You will be redirected to your profile',
             'Password changed'
           );

@@ -19,7 +19,7 @@
             <tasque-input class="search-input" #searchInput (input)="filterTasks()" type="search" [icon]="searchIcon" iconPosition="search" placeholder="Search..."></tasque-input>
           </div>
           <div class="team-container">
-            <tasque-team-select [avatars]="project.users" (selectedUser)="userSelected($event)"></tasque-team-select>
+            <tasque-team-select [avatars]="project.users" [selectedUserId]="selectedUserId ? selectedUserId : 0" (selectedUser)="userSelected($event)"></tasque-team-select>
           </div>
         </div>
         <div class="filter">

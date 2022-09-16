@@ -57,7 +57,7 @@ export class SelectUsersComponent implements OnInit {
   @Output() onUpdate = new EventEmitter<IUserCard>();
 
   constructor(
-    private service: BoardService, 
+    private service: BoardService,
     private nontificationService: NotificationService) {
     this.roles = getRolesAsArray();
   }
@@ -91,14 +91,16 @@ export class SelectUsersComponent implements OnInit {
     this.searchForm = new FormGroup({ emailControl: this.emailControl });
     this.userEmail = '';
 
-    this.refreshList();
+    setInterval(() => {
+      this.refreshList();
+    }, 150);
   }
 
   delete(email: string): void {
     this.isLoading = true;
 
     this.onDelete.emit(email);
-    
+
     this.refreshList();
   }
 
@@ -112,7 +114,7 @@ export class SelectUsersComponent implements OnInit {
   }
 
   roleToString(role: BusinessRole | null): string {
-    if(role) {
+    if (role) {
       return role.toString();
     }
 
@@ -140,5 +142,4 @@ export class SelectUsersComponent implements OnInit {
       this.isLoading = false;
     });
   }
-
 }

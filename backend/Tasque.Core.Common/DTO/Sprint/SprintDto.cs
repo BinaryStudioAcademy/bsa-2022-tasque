@@ -1,4 +1,6 @@
-﻿namespace Tasque.Core.Common.DTO.Sprint;
+﻿using Tasque.Core.Common.DTO.Task;
+
+namespace Tasque.Core.Common.DTO.Sprint;
 
 public class SprintDto
 {
@@ -12,4 +14,6 @@ public class SprintDto
     public int ProjectId { get; set; }
     public bool isComplete { get; set; }
     public int Order { get; set; }
+
+    public List<TaskDto>? Tasks { get; set; }
 }

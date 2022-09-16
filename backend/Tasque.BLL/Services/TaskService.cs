@@ -89,9 +89,14 @@ namespace Tasque.Core.BLL.Services
         {
             var tasks = _mapper.Map<List<TaskDto>>(_dbContext.Tasks
                 .Where(t => t.ProjectId == projectId)
-                    .Include(t => t.Priority)
-                    .Include(t => t.State)
-                    .Include(t => t.Type));
+                .Include(t => t.Users)
+                .Include(t => t.Author)
+                .Include(t => t.Sprint)
+                .Include(t => t.LastUpdatedBy)
+                .Include(t => t.Priority)
+                .Include(t => t.State)
+                .Include(t => t.Project)
+                .Include(t => t.Type));
 
             var customFields = await _cosmosTaskService.GetAllProjectTasks(projectId);
 
@@ -140,10 +145,21 @@ namespace Tasque.Core.BLL.Services
             }
 
             var entityTask = await _dbContext.Tasks
+                .Include(task => task.Users)
                 .FirstOrDefaultAsync(t => t.Id == model.Id)
                 ?? throw new CustomNotFoundException("task");
 
             var task = _mapper.Map<Common.Entities.Task>(model);
+            entityTask.Users.Clear();
+
+            foreach (var user in task.Users)
+            {
+                var userEntity = _dbContext.Users
+                    .FirstOrDefault(u => u.Id == user.Id)
+                    ?? throw new ValidationException("Coudn't find user to assign with given id");
+
+                entityTask.Users.Add(userEntity);
+            }
 
             _dbContext.Entry(entityTask).CurrentValues.SetValues(task);
 

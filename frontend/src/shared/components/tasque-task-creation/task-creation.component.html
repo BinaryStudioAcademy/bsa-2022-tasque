@@ -2,7 +2,7 @@
   [name]="sidebarName"
   [btnText]="btnText"
   [btnClass]="btnClass"
-  (click)="openModal()"
+  (sidebarToggle)="toogleModal($event)"
 >
   <div class="task-creation-conteiner" *ngIf="isOpen">
     <div class="task-creation-header">
@@ -63,7 +63,6 @@
               [formControl]="summaryControl"
               [errorMessage]="summaryErrorMessage"
               [invalid]="showError"
-              ngDefaultControl
             >
             </tasque-input>
           </div>

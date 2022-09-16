@@ -14,6 +14,7 @@ namespace Tasque.Core.WebAPI.Controllers
 
         }
 
+
         [Route("complete/{id}")]
         [HttpPut]
         public async Task<IActionResult> CompleteSprint(int id)
@@ -96,12 +97,39 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok();
         }
 
+        [Route("updateOrder")]
+        [HttpPut]
+        public async virtual Task<IActionResult> UpdateOrder([FromBody] SprintDto sprint)
+        {
+            await _service.UpdateOrder(sprint);
+
+            return Ok();
+        }
+
         [HttpPut("order")]
         public async Task<IActionResult> Order([FromBody] IEnumerable<int> ids)
         {
             var sprints = await _service.OrderSprints(ids);
             
             return Ok(sprints);
+        }
+
+        [HttpGet("currentSprint/{projectId}")]
+        public async Task<IActionResult> GetCurrentSprintByProjectId(int projectId)
+        {
+            var sprint = await _service.GetCurrentSprintByProjectId(projectId);
+            if (sprint == null)
+                return NotFound("Sprint not found");
+            return Ok(sprint);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateSprint([FromBody] NewSprintDto model)
+        {
+            var sprint = await _service.CreateSprint(model);
+            if(sprint == null)
+                return BadRequest();
+            return Ok(sprint);
         }
     }
 }

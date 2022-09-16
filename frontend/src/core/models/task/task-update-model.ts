@@ -7,7 +7,7 @@ export interface TaskUpdateModel {
   summary: string;
   description?: string;
   attachments: Attachment[];
-  stateId: number;
+  stateId?: number;
   typeId: number;
   priorityId?: number;
   projectId?: number;
