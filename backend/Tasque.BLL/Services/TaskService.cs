@@ -145,10 +145,21 @@ namespace Tasque.Core.BLL.Services
             }
 
             var entityTask = await _dbContext.Tasks
+                .Include(task => task.Users)
                 .FirstOrDefaultAsync(t => t.Id == model.Id)
                 ?? throw new CustomNotFoundException("task");
 
             var task = _mapper.Map<Common.Entities.Task>(model);
+            entityTask.Users.Clear();
+
+            foreach (var user in task.Users)
+            {
+                var userEntity = _dbContext.Users
+                    .FirstOrDefault(u => u.Id == user.Id)
+                    ?? throw new ValidationException("Coudn't find user to assign with given id");
+
+                entityTask.Users.Add(userEntity);
+            }
 
             _dbContext.Entry(entityTask).CurrentValues.SetValues(task);
 
