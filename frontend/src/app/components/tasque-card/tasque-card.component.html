@@ -5,14 +5,19 @@
       <span [style.background-color]="taskInfo.type?.color">{{ taskInfo.type?.name }}</span>
       <span [style.background-color]="taskInfo.priority?.color">{{ taskInfo.priority?.name }}</span>
     </div>
+    <div>
+      <tasque-task-editing
+        btnText=""
+        btnClass="btn icon gray-transparent"
+        [btnIcon]="editIcon"
+        [task]="taskInfo"
+      ></tasque-task-editing>
+    </div>
     <tasque-menu-dropdown class="card-settings" [left]="-80">
       <img src="assets/board/column_menu.svg" dropdown-button />
       <tasque-option option (click)="notImplementetNotification()">Copy issue link</tasque-option>
       <tasque-option option (click)="notImplementetNotification()">Move up</tasque-option>
       <tasque-option option (click)="notImplementetNotification()">Move down</tasque-option>
-      <tasque-option option>
-        <tasque-task-editing [task]="taskInfo"></tasque-task-editing>
-      </tasque-option>
       <tasque-option option (click)="deleteTask()">Delete issue</tasque-option>
     </tasque-menu-dropdown>
   </div>
