@@ -398,6 +398,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
           }
           this.editTaskForm.controls.assignees.value.push(user.body);
           this.board.users.push(this.convertToUserCard(user.body));
+          this.editTaskForm.markAsDirty();
         }
       );
   }
@@ -407,6 +408,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     this.board.users.splice(boardIndex, 1);
     const index = this.editTaskForm.controls.assignees.value.findIndex((x: UserModel) => { x.email == email; });
     this.editTaskForm.controls.assignees.value.splice(index, 1);
+    this.editTaskForm.markAsDirty();
   }
 
   // TODO: Removed it when tasque-select-users is redesigned
