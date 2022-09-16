@@ -13,6 +13,7 @@ import { TaskPriority } from '../models/task/task-priority';
 import { BoardModel } from '../models/board/board-model';
 import { TaskState } from '../models/task/task-state';
 import { TaskModel } from '../models/task/task-model';
+import { ProjectCardModel } from '../models/your-work/project-card-model';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +50,7 @@ export class ProjectService {
   }
 
   getProjectById(id: number): Observable<HttpResponse<ProjectModel>> {
-    return this.httpService.getFullRequest<ProjectModel>(this.routePrefix + '/getById/' + id);
+    return this.httpService.getFullRequest<ProjectModel>(this.routePrefix + '/getProjectById/' + id);
   }
 
   getBoard(projectId: number): Observable<HttpResponse<BoardModel>> {
@@ -86,5 +87,9 @@ export class ProjectService {
 
   getAllProjectTasks(id: number): Observable<HttpResponse<TaskModel[]>> {
     return this.httpService.getFullRequest('/api/task/getAllProjectTasks/' + id);
+  }
+
+  getProjectCards(): Observable<HttpResponse<ProjectCardModel[]>> {
+    return this.httpService.getFullRequest(this.routePrefix + '/getProjectCards');
   }
 }

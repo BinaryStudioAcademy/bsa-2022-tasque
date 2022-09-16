@@ -1,5 +1,6 @@
 export interface NewProjectModel {
   name: string,
   key?: string,
-  organizationId: number
+  organizationId: number,
+  authorId: number,
 }

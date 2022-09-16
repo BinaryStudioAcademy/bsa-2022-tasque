@@ -1,6 +1,5 @@
 <div class="issue">
   <p
-    (click)="test()"
     class="issue-type"
     [ngStyle]="{ 'background': issue.type?.color ?? 'colorscheme(yellow-100)' }"
   >
@@ -9,14 +8,15 @@
   <p class="issue-key">
     {{ issue.key }}
   </p>
-  <p
-    class="issue-title"
-    [matTooltipShowDelay]="1500"
-    matTooltip=" {{ issue.description }}"
-  >
-    {{ issue.summary }}
-  </p>
 
+  <tasque-task-editing
+    [task]="issue"
+    [btnText]="issue.summary"
+    btnClass="btn full black"
+    matTooltip=" {{ issue.description }}"
+    [matTooltipShowDelay]="1500"
+  >
+  </tasque-task-editing>
   <div class="issue-estimate">
     <tasque-input
       class="input estimate-input"
