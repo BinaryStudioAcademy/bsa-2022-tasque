@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { GetCurrentProjectService } from 'src/core/services/get-current-project.service';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 import { Router } from '@angular/router';
@@ -9,13 +9,14 @@ import { UserModel } from 'src/core/models/user/user-model';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { BusinessRole, IUserCard } from '../../select-users/Models';
 import { BaseComponent } from 'src/core/base/base.component';
+import { ProjectModel } from 'src/core/models/project/project-model';
 
 @Component({
   selector: 'tasque-project-dropdown',
   templateUrl: './project-dropdown.component.html',
   styleUrls: ['./project-dropdown.component.sass']
 })
-export class ProjectDropdownComponent extends BaseComponent implements OnInit {
+export class ProjectDropdownComponent extends BaseComponent implements OnInit, OnChanges {
 
   public currentUser: UserModel;
   public latestProjects: ProjectInfoModel[] = [];
@@ -38,6 +39,8 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit {
     users: this.fakeUsers
   };
 
+  @Input() organizationId: number;
+
   constructor(
     private getCurrentProjectService: GetCurrentProjectService,
     private getCurrentUserService: GetCurrentUserService,
@@ -50,6 +53,26 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.subscribeToCurrentUser();
     this.subscribeToCurrentProject();
+    this.subscribeToProjectChange();
+  }
+
+  ngOnChanges(): void {
+    this.projectService
+      .getProjectsByOrganizationId(this.organizationId)
+      .subscribe((resp) => {
+        const projects = resp.body as ProjectModel[];
+        this.latestProjects = [];
+        projects.forEach((p) => {
+          this.latestProjects.push({
+            id: p.id,
+            name: p.name,
+            authorId: p.authorId,
+            key: p.key as string,
+            organizationId: p.organizationId,
+          });
+        });
+    })
+    console.log('changes');
     this.subscribeToProjectChange();
   }
 

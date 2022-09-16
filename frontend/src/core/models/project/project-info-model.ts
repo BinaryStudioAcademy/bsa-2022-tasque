@@ -6,5 +6,5 @@ export interface ProjectInfoModel {
     key: string,
     authorId: number,
     organizationId: number,
-    users: IUserCard[]
+    users?: IUserCard[]
 }

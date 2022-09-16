@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
@@ -24,6 +24,8 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
     createdAt: new Date(),
     updatedAt: new Date()
   };
+
+  @Output() organizationChanged = new EventEmitter<number>();
 
   public availableOrganizations: OrganizationModel[] = [];
 
@@ -90,6 +92,7 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
 
     this.getCurrentOrganizationService.currentOrganizationId = organization.id;
 
+    this.organizationChanged.emit(organization.id);
     this.router.navigate(['/projects'], { replaceUrl: true });
     window.scroll(0, 0);
   }
