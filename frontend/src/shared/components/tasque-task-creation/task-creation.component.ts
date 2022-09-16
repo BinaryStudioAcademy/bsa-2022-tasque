@@ -373,7 +373,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   }
 
   toogleModal(event: boolean): void {
-    console.log(event);
     this.isOpen = event;
   }
 }
