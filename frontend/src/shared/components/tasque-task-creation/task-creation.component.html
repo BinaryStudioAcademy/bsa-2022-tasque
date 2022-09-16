@@ -2,9 +2,8 @@
   [name]="sidebarName"
   [btnText]="btnText"
   [btnClass]="btnClass"
-  (click)="openModal()"
 >
-  <div class="task-creation-conteiner" *ngIf="isOpen">
+  <div class="task-creation-conteiner">
     <div class="task-creation-header">
       <h4 class="task-creation-header-title" style="color: black">
         Create issue
@@ -63,7 +62,6 @@
               [formControl]="summaryControl"
               [errorMessage]="summaryErrorMessage"
               [invalid]="showError"
-              ngDefaultControl
             >
             </tasque-input>
           </div>

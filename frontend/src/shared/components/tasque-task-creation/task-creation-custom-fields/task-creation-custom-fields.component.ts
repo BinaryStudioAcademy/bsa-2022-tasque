@@ -125,26 +125,39 @@ export class TaskCreationCustomFieldsComponent implements OnInit {
 
   //EMIT 
 
-  emitField(): void {
-    switch (this.fieldType) {
-      case TaskFieldType.Paragraph:
-        this.valueField.fieldValue = this.editorContent;
-        break;
-      case TaskFieldType.Label:
-        this.valueField.fieldValue = this.labelValue.name;
-        break;
-      case TaskFieldType.Dropdown:
-        this.valueField.fieldValue = this.dropdownValue;
-        break;
-      case TaskFieldType.User:
-      case TaskFieldType.CheckBox:
-      default: // Used for => Text, number and date fields
-        this.valueField.fieldValue = this.textValue;
-        break;
+  emitField(): void { 
+    if(this.fieldType === TaskFieldType.Paragraph) {
+      this.valueField = {
+        fieldId: this.customField.fieldId as string,
+        fieldValue: this.editorContent,
+      };
     }
-
-    this.valueField.fieldId = this.customField.fieldId as string;
-
+    if(this.fieldType === TaskFieldType.Label) {
+      this.valueField = {
+        fieldId: this.customField.fieldId as string,
+        fieldValue: this.labelValue.name,
+      };
+    } else if(this.fieldType === TaskFieldType.User) {
+      this.valueField = {
+        fieldId: this.customField.fieldId as string,
+        fieldValue: this.textValue,
+      };
+    } else if(this.fieldType === TaskFieldType.Dropdown) {
+      this.valueField = {
+        fieldId: this.customField.fieldId as string,
+        fieldValue: this.dropdownValue,
+      };
+    } else if(this.fieldType === TaskFieldType.CheckBox) {
+      this.valueField = {
+        fieldId: this.customField.fieldId as string,
+        fieldValue: this.textValue,
+      };
+    } else {                    //Used for => Text, number and date fields
+      this.valueField = {
+        fieldId: this.customField.fieldId as string,
+        fieldValue: this.textValue,
+      };
+    }
     this.taskCustomField.emit(this.valueField);
   }
 }

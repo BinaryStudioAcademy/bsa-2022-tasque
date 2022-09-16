@@ -35,7 +35,8 @@
 </div>
 <div *ngIf="fieldType === 4" class="user-field">
     <tasque-team-select *ngIf="projectUsers.length > 0"
-        (selectedUser)="selectedUser"
+        (selectedUser)="setSelectedUser($event)"
+        [avatars]="projectUsers"
     >
     </tasque-team-select>
     <div *ngIf="projectUsers.length === 0">

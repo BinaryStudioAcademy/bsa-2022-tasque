@@ -8,6 +8,8 @@ import { NewProjectModel } from 'src/core/models/project/new-project-model';
 import { ProjectService } from 'src/core/services/project.service';
 import { Router } from '@angular/router';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { UserModel } from 'src/core/models/user/user-model';
 
 @Component({
   selector: 'app-create-project-dialog',
@@ -55,6 +57,8 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
   public projectNameControl: FormControl;
   public projectKeyControl: FormControl;
 
+  public currentUser: UserModel;
+
   public createBtnName = 'Create';
   public createBtnClass = 'fill';
 
@@ -83,6 +87,7 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     name: '',
     key: '',
     organizationId: 0,
+    authorId: 0,
   };
 
   constructor(
@@ -91,6 +96,7 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: number,
     private dialogRef: MatDialogRef<CreateProjectDialogComponent>,
     private router: Router,
+    private currentUserService: GetCurrentUserService,
   ) {
     this.projectNameControl = new FormControl(this.newProject.name, [
       Validators.required,
@@ -108,6 +114,9 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
     this.createProjectForm = new FormGroup({
       projectNameControl: this.projectNameControl,
       projectKeyControl: this.projectKeyControl,
+    });
+    this.currentUserService.currentUser$.subscribe((user) => {
+      this.currentUser = user;
     });
   }
 
@@ -158,6 +167,7 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
       organizationId: this.data,
       name: this.createProjectForm.get('projectNameControl')?.value,
       key: this.createProjectForm.get('projectKeyControl')?.value.toUpperCase(),
+      authorId: this.currentUser.id,
     };
 
     this.projectService
