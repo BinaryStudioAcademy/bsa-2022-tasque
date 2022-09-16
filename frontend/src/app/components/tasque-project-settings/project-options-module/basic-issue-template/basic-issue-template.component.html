@@ -21,9 +21,9 @@
   <hr />
 
   <div class="settings-container" *ngIf="selectedSetting" [ngSwitch]="selectedSetting">
-    <div *ngSwitchCase="'Priority'">Priority</div>
-    <div *ngSwitchCase="'Type'">Type</div>
-    <div *ngSwitchCase="'State'">State</div>
-    <div *ngSwitchCase="'Project'">Project</div>
+    <ng-container *ngSwitchCase="'Priority'">Priority</ng-container>
+    <ng-container *ngSwitchCase="'Type'">Type</ng-container>
+    <ng-container *ngSwitchCase="'State'">State</ng-container>
+    <ng-container *ngSwitchCase="'Project'">Project</ng-container>
   </div>
 </div>
