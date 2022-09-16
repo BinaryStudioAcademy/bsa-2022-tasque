@@ -30,5 +30,13 @@ namespace Tasque.Core.BLL.Services
 
             return _mapper.Map<IEnumerable<TaskStateDto>>(taskStates);
         }
+
+        public TaskStateDto CreateTaskState(TaskStateDto model)
+        {
+            var entity = _mapper.Map<TaskState>(model);
+            _db.TaskStates.Add(entity);
+            _db.SaveChanges();
+            return _mapper.Map<TaskStateDto>(entity);
+        }
     }
 }

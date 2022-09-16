@@ -180,6 +180,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           attachmentUrl: t.attachments[0]?.uri,
           summary: t.summary,
           customLabels: [],
+          assignees: t.users,
           key: t.key as string,
           isHidden: false,
         });

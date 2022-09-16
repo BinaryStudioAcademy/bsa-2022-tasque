@@ -19,6 +19,6 @@ export class TaskStateService {
   }
 
   createTaskState(model: TaskState): Observable<HttpResponse<TaskState>> {
-    return this.httpService.postFullRequest<TaskState>(this.routePrefix + '/create', model);
+    return this.httpService.postFullRequest<TaskState>(this.routePrefix, model);
   } 
 }

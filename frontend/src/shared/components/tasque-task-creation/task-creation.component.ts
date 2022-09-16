@@ -77,8 +77,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   @Input() public currentTasks: TaskModel[];
   @Input() public sprintId: number;
 
-  public isOpen = false;
-
   get projectErrorMessage(): string {
     const ctrl = this.projectControl;
 

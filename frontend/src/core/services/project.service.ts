@@ -49,7 +49,7 @@ export class ProjectService {
   }
 
   getProjectById(id: number): Observable<HttpResponse<ProjectModel>> {
-    return this.httpService.getFullRequest<ProjectModel>(this.routePrefix + '/getById/' + id);
+    return this.httpService.getFullRequest<ProjectModel>(this.routePrefix + '/getProjectById/' + id);
   }
 
   getBoard(projectId: number): Observable<HttpResponse<BoardModel>> {
