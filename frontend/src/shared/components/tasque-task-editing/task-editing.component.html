@@ -113,10 +113,11 @@
 
         <div class="item-wrapper">
           <span class="item-label">Assignees</span>
-          <tasque-button
-            class="btn icon select-button"
-            text="+"
-          ></tasque-button>
+          <tasque-select-users
+            (onAdd)="addUser($event)"
+            (onDelete)="deleteUser($event)"
+            [board]="board"
+          ></tasque-select-users>
         </div>
         <div class="item-wrapper">
           <span class="item-label">Reporter</span>

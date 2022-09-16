@@ -133,7 +133,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
             const toast = this.toastrService.error(
               'Click this notification to send confirmation link again',
               'Email is not confirmed',
-              { disableTimeOut: true, closeButton: true, timeOut: 10000 },
+              { disableTimeOut: true, closeButton: true, timeOut: 10000, positionClass: 'toast-top-right' },
             );
             toast.onTap.subscribe(() => this.resendConfirmationEmail());
             return;
@@ -177,7 +177,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       .resendEmailConfirmation(ctrl.value)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
-        this.toastrService.success('Check your inbox');
+        this.toastrService.success('Check your inbox', '', { positionClass: 'toast-top-right' });
       });
   }
 }

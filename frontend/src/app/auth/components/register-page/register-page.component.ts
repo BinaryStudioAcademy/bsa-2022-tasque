@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { AuthService } from 'src/core/services/auth.service';
 import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
-import { ToastrService } from 'ngx-toastr';
 import { ErrorMessages } from 'src/core/models/const-resources/error-messages';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
@@ -11,6 +10,7 @@ import { filter, map, mergeMap, switchMap, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { UserRegisterModel } from 'src/core/models/user/user-register-model';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-register-page',
@@ -91,7 +91,7 @@ export class RegisterPageComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private toastrService: ToastrService,
+    private notificationService: NotificationService,
     private route: ActivatedRoute,
     private router: Router,
   ) {
@@ -184,7 +184,7 @@ export class RegisterPageComponent implements OnInit {
             ),
           )
           .subscribe(() => {
-            this.toastrService.info('Check your mailbox');
+            this.notificationService.info('Check your mailbox');
           });
         return;
       }

@@ -33,6 +33,8 @@ import { takeUntil } from 'rxjs/operators';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
 import { NotificationService } from 'src/core/services/notification.service';
 import { TaskUpdateModel } from 'src/core/models/task/task-update-model';
+import { BoardType, IBoard, IUserCard } from '../select-users/Models';
+import { UserService } from 'src/app/user/services/user.service';
 
 @Component({
   selector: 'tasque-task-editing',
@@ -51,6 +53,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
   public editTaskForm = {} as FormGroup;
   public editTaskFormDefaultValues: unknown;
+
+  public board: IBoard;
 
   public closeIcon = faXmark;
   public linkIcon = faLink;
@@ -92,7 +96,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     private taskStorageService: TaskStorageService,
     private sprintService: SprintService,
     private notificationService: NotificationService,
-  ) {
+    private userService: UserService) {
     super();
   }
 
@@ -142,6 +146,13 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       },
     );
     // this.isShow = true;
+
+    this.board = {
+      id: 1,
+      type: BoardType.Board,
+      users: this.task.users?.map((user) => this.convertToUserCard(user)) ?? [],
+      hasRoles: false
+    };
   }
 
   summaryClick(): void {
@@ -347,7 +358,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       stateId: this.editTaskForm.controls.status.value.id,
       typeId: this.editTaskForm.controls.type.value.id,
       projectId: this.editTaskForm.controls.project.value.id,
-      //sprintId: this.editTaskForm.controls.sprint.value.id,
+      sprintId: this.editTaskForm.controls.sprint.value.id !== 0 ? this.editTaskForm.controls.sprint.value.id : undefined,
     } as TaskUpdateModel;
 
     this.taskService
@@ -368,5 +379,44 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
   toogleModal(event: boolean): void {
     this.isOpen = event;
+  }
+
+  addUser(email: string): void {
+    const isUserAdded = this.board.users.find((user) => user.email == email) ? true : false;
+
+    if (isUserAdded) {
+      this.notificationService.error('User with given email has already been added');
+      return;
+    }
+
+    this.userService.getUserByEmail(email)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (user) => {
+          if (!user.body) {
+            return;
+          }
+          this.editTaskForm.controls.assignees.value.push(user.body);
+          this.board.users.push(this.convertToUserCard(user.body));
+        }
+      );
+  }
+
+  deleteUser(email: string): void {
+    const boardIndex = this.board.users.findIndex((x) => x.email == email);
+    this.board.users.splice(boardIndex, 1);
+    const index = this.editTaskForm.controls.assignees.value.findIndex((x: UserModel) => { x.email == email; });
+    this.editTaskForm.controls.assignees.value.splice(index, 1);
+  }
+
+  // TODO: Removed it when tasque-select-users is redesigned
+  private convertToUserCard(user: UserModel): IUserCard {
+    return {
+      id: user.id,
+      email: user.email,
+      userName: user.name,
+      profileURL: '',
+      role: null,
+    };
   }
 }

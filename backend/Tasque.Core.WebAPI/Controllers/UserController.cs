@@ -68,5 +68,12 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok(await _service.
                     GetUserById(id));
         }
+
+        [HttpGet("getUserByEmail/{email}")]
+        public async Task<IActionResult> GetUserByEmail(string email)
+        {
+            return Ok(await _service.
+                    GetUserByEmail(email));
+        }
     }
 }
