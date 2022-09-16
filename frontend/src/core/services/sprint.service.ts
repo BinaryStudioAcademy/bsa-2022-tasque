@@ -21,11 +21,11 @@ export class SprintService {
     this.deleteSprintSource.next(sprintId);
   }
 
-  constructor(public httpService: HttpService) { }
+  constructor(public httpService: HttpService) {}
 
   create(sprint: NewSprintModel): Observable<HttpResponse<SprintModel>> {
     return this.httpService.postFullRequest<SprintModel>(
-      this.routePrefix + '/createSprint',
+      this.routePrefix + '/create',
       sprint,
     );
   }
@@ -65,20 +65,20 @@ export class SprintService {
   }
 
   editSprint(
+    sprintId: number,
     editedSprint: EditSprintModel,
   ): Observable<HttpResponse<SprintModel>> {
     return this.httpService.putFullRequest<SprintModel>(
-      this.routePrefix + '/edit',
+      this.routePrefix + `/update/${sprintId}`,
       editedSprint,
     );
   }
 
-  updareSprint(
-    sprintId: number,
+  updateOrder(
     editedSprint: SprintModel,
   ): Observable<HttpResponse<SprintModel>> {
     return this.httpService.putFullRequest<SprintModel>(
-      this.routePrefix + `/update/${sprintId}`,
+      this.routePrefix + '/updateOrder',
       editedSprint,
     );
   }
@@ -94,7 +94,7 @@ export class SprintService {
 
   delete(sprintId: number): Observable<HttpResponse<void>> {
     return this.httpService.deleteFullRequest<void>(
-      this.routePrefix + `/deleteSprint/${sprintId}`,
+      this.routePrefix + `/delete/${sprintId}`,
     );
   }
 }

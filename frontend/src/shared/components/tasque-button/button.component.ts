@@ -33,12 +33,12 @@ export class ButtonComponent {
   get type(): string {
     return this.buttonType;
   }
-  
+
   @Input()
   set icon(icon: IconProp) {
     this.buttonIcon = icon;
   }
-  
+
   @Output() btnClick = new EventEmitter();
 
   constructor() {}

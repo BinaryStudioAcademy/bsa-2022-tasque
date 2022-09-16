@@ -21,6 +21,7 @@ import { TaskService } from 'src/core/services/task.service';
 import { NotificationService } from 'src/core/services/notification.service';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
+import { SideBarService } from 'src/core/services/sidebar.service';
 
 @Component({
   selector: 'app-issue',
@@ -99,8 +100,9 @@ export class IssueComponent implements OnInit {
     public sprintService: SprintService,
     public notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
-    private taskStorageService: TaskStorageService
-  ) { }
+    private taskStorageService: TaskStorageService,
+    private sidebarService: SideBarService,
+  ) {}
 
   ngOnInit(): void {
     this.estimateUpdate();
@@ -126,7 +128,6 @@ export class IssueComponent implements OnInit {
     this.estimate.emit();
     this.taskEstimate = {
       taskId: this.issue.id,
-      sprintId: this.issue.sprint?.id,
       estimate: this.issue.estimate ?? 0,
     };
 
@@ -160,5 +161,9 @@ export class IssueComponent implements OnInit {
           this.notificationService.success('Task status updated');
         }
       });
+  }
+
+  test(): void {
+    this.sidebarService.toggle('task-editing-' + this.issue.id);
   }
 }

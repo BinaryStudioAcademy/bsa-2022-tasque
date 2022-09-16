@@ -2,7 +2,6 @@
 
 public class EditSprintDto
 {
-    public int Id { get; set; }
     public string Name { get; set; } = null!;
     public string? Description { get; set; }
     public DateTime? StartAt { get; set; }
@@ -10,4 +9,6 @@ public class EditSprintDto
     public int ProjectId { get; set; }
     public bool IsStarting { get; set; }
     public int[]? Tasks { get; set; }
+    public int? Order { get; set; }
+
 }

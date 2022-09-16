@@ -11,7 +11,7 @@ namespace Tasque.Core.WebAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private AuthService _service;
+        private readonly AuthService _service;
 
         public AuthController(AuthService service)
         {

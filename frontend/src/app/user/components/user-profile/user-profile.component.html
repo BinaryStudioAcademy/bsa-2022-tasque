@@ -88,6 +88,9 @@
               *ngIf="userNameControl.errors?.['required'] && (userNameControl.dirty || userNameControl.touched)"
               >Name is required.</span
             >
+            <span class="error" *ngIf="userNameControl.errors?.['pattern']"
+              >The name must consist of numbers or letters</span
+            >
             <span class="error" *ngIf="userNameControl.errors?.['minlength']"
               >Must be at least 2 characters</span
             >

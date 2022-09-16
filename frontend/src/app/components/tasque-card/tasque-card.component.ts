@@ -19,15 +19,12 @@ export class TasqueCardComponent implements OnInit {
   //Gets information about the task
   @Input() taskInfo: TaskInfoModel;
   @Input() isDone: boolean;
-  user: UserModel;
   hasAccess: boolean;
   organizationId: number;
   isDeleted = false;
 
   currentUser: UserModel;
   currentOrganization: OrganizationModel;
-
-  assignees: UserModel[];
 
   constructor(
     private currentUserService: GetCurrentUserService,
@@ -38,8 +35,6 @@ export class TasqueCardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.user = this.taskInfo.assignees?.[0] as UserModel;
-    this.assignees = this.taskInfo.assignees as UserModel[]?? [];
     this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user;
     });

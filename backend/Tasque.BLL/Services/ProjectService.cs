@@ -10,16 +10,18 @@ using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Enums;
 using Tasque.Core.Common.StaticResources;
 using Tasque.Core.DAL;
+using Tasque.Core.Identity.Helpers;
 using Task = System.Threading.Tasks.Task;
 
 namespace Tasque.Core.BLL.Services;
 
-public class ProjectService : EntityCrudService<Project>
+public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, EditProjectDto, int, Project>
 {
-    private readonly IMapper _mapper;
-    public ProjectService(DataContext db, IMapper mapper) : base(db)
+
+    public ProjectService(DataContext db, IMapper mapper, CurrentUserParameters currentUser) 
+        : base(db, mapper, currentUser)
     {
-        _mapper = mapper;
+
     }
 
     public List<ProjectDto> GetProjectsByOrganizationId(int organizationId)
@@ -27,15 +29,16 @@ public class ProjectService : EntityCrudService<Project>
         return _mapper.Map<List<ProjectDto>>(_db.Projects.Where(p => p.OrganizationId == organizationId));
     }
 
-    public ProjectDto GetProjectById(int id)
+    public async Task<ProjectDto> GetProjectById(int id)
     {
-        return _mapper.Map<ProjectDto>(_db.Projects
+        var project = await _db.Projects
             .Where(p => p.Id == id)
                 .Include(p => p.ProjectTaskTypes)
                 .Include(p => p.ProjectTaskStates)
                 .Include(p => p.ProjectTaskPriorities)
                 .Include(p => p.Users)
-                .FirstOrDefault());
+                .FirstOrDefaultAsync();
+        return _mapper.Map<ProjectDto>(project);
     }
 
     public IEnumerable<UserDto> GetProjectParticipants(int projectId)
@@ -48,17 +51,20 @@ public class ProjectService : EntityCrudService<Project>
         return _mapper.Map<IEnumerable<UserDto>>(proj.Users);
     }
 
-    public async Task<ProjectInfoDto> AddProject(Project entity)
+    public override async Task<ProjectInfoDto> Create(NewProjectDto entity)
     {
+        var entityToCreate = _mapper.Map<Project>(entity);
+        entityToCreate.AuthorId = _currentUserId;
+
         var user = await _db.Users
-            .FirstOrDefaultAsync(u => u.Id == entity.AuthorId);
+            .FirstOrDefaultAsync(u => u.Id == entityToCreate.AuthorId);
 
         if (user == null)
         {
             throw new HttpException(System.Net.HttpStatusCode.NotFound, "Something went wrong, the user was not found");
         }
 
-        var project = _db.Projects.Add(entity).Entity;
+        var project = _db.Projects.Add(entityToCreate).Entity;
 
         project.UserRoles.Add(new UserProjectRole
         {
@@ -178,10 +184,10 @@ public class ProjectService : EntityCrudService<Project>
         await _db.SaveChangesAsync();
     }
 
-    public async Task<ProjectInfoDto> EditProject(EditProjectDto projectDto)
+    public override async Task<ProjectInfoDto> Update(int key, EditProjectDto projectDto)
     {
         var project = await _db.Projects
-            .Where(proj => proj.Id == projectDto.Id)
+            .Where(proj => proj.Id == key)
             .Include(proj => proj.Users)
             .Include(proj => proj.UserRoles)
                 .ThenInclude(r => r.Role)
@@ -383,5 +389,25 @@ public class ProjectService : EntityCrudService<Project>
     public List<TaskStateDto> GetProjectStatesById(int projectId)
     {
         return _mapper.Map<List<TaskStateDto>>(_db.TaskStates.Where(s => s.ProjectId == projectId));
+    }
+
+    public async Task<List<ProjectCardDTO>> GetProjectCardsByUserId(int userId)
+    {
+        var user = await _db.Users
+            .Include(u => u.ParticipatedTasks)
+            .Include(u => u.ParticipatedProjects)
+            .FirstOrDefaultAsync(u => u.Id == userId)
+            ?? throw new CustomNotFoundException("user");
+        var projects = user.ParticipatedProjects;
+        var result = projects
+            .Select(p => new ProjectCardDTO
+            {
+                ProjectId = p.Id,
+                Title = p.Name,
+                AssignedIssuesCount = user.ParticipatedTasks.Where(t => t.ProjectId == p.Id).Count(),
+                AllIssuesCount = _db.Tasks.Where(t => t.ProjectId == p.Id).Count()
+            })
+            .ToList();
+        return result;
     }
 }

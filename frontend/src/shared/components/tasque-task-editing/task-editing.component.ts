@@ -1,7 +1,18 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { UserModel } from 'src/core/models/user/user-model';
-import { faCheckToSlot, faXmark, faLink, faPaperclip, faShareNodes, faEllipsisVertical, faFaceSmile, faPen, faFlag, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCheckToSlot,
+  faXmark,
+  faLink,
+  faPaperclip,
+  faShareNodes,
+  faEllipsisVertical,
+  faFaceSmile,
+  faPen,
+  faFlag,
+  IconDefinition,
+} from '@fortawesome/free-solid-svg-icons';
 import { BaseComponent } from 'src/core/base/base.component';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -22,6 +33,8 @@ import { takeUntil } from 'rxjs/operators';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
 import { NotificationService } from 'src/core/services/notification.service';
 import { TaskUpdateModel } from 'src/core/models/task/task-update-model';
+import { BoardType, IBoard, IUserCard } from '../select-users/Models';
+import { UserService } from 'src/app/user/services/user.service';
 
 @Component({
   selector: 'tasque-task-editing',
@@ -40,6 +53,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
   public editTaskForm = {} as FormGroup;
   public editTaskFormDefaultValues: unknown;
+
+  public board: IBoard;
 
   public closeIcon = faXmark;
   public linkIcon = faLink;
@@ -68,6 +83,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
   public editorConfig: AngularEditorConfig = EditorConfig;
 
+  public isOpen = false;
+
   // eslint-disable-next-line max-params
   constructor(
     private fb: FormBuilder,
@@ -78,35 +95,40 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     private taskService: TaskService,
     private taskStorageService: TaskStorageService,
     private sprintService: SprintService,
-    private notificationService: NotificationService) {
+    private notificationService: NotificationService,
+    private userService: UserService) {
     super();
   }
+
+  public isShow = false;
 
   ngOnInit(): void {
     this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user;
     });
 
-    this.currentOrganizationService.currentOrganizationId$.subscribe((orgId) => {
-      this.organizationId = orgId;
+    this.currentOrganizationService.currentOrganizationId$.subscribe(
+      (orgId) => {
+        this.organizationId = orgId;
 
-      this.projectService
-        .getProjectsByOrganizationId(this.organizationId)
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((resp) => {
-          if (!resp.body) {
-            return;
-          }
-          this.fillProjectOptions(resp.body);
-          this.getProjectInfo(this.task.projectId);
-        });
-    });
+        this.projectService
+          .getProjectsByOrganizationId(this.organizationId)
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe((resp) => {
+            if (!resp.body) {
+              return;
+            }
+            this.fillProjectOptions(resp.body);
+            this.getProjectInfo(this.task.projectId);
+          });
+      },
+    );
 
     this.editTaskForm = this.fb.group({
       project: [this.convertToOption(this.task.project)],
-      summary: [this.task.summary,
-      [Validators.minLength(2),
-      Validators.maxLength(80)]
+      summary: [
+        this.task.summary,
+        [Validators.minLength(2), Validators.maxLength(80)],
       ],
       sprint: [this.convertToOption(this.task.sprint)],
       status: [this.convertToOption(this.task.state)],
@@ -118,9 +140,19 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
     this.editTaskFormDefaultValues = this.editTaskForm.value;
 
-    this.editTaskForm.controls.project.valueChanges.subscribe((option: TasqueDropdownOption) => {
-      this.getProjectInfo(option.id);
-    });
+    this.editTaskForm.controls.project.valueChanges.subscribe(
+      (option: TasqueDropdownOption) => {
+        this.getProjectInfo(option.id);
+      },
+    );
+    // this.isShow = true;
+
+    this.board = {
+      id: 1,
+      type: BoardType.Board,
+      users: this.task.users?.map((user) => this.convertToUserCard(user)) ?? [],
+      hasRoles: false
+    };
   }
 
   summaryClick(): void {
@@ -163,12 +195,19 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   }
 
   private convertToOption(
-    item: TaskState | TaskPriority | TaskType | SprintModel | ProjectModel | undefined): TasqueDropdownOption {
+    item:
+      | TaskState
+      | TaskPriority
+      | TaskType
+      | SprintModel
+      | ProjectModel
+      | undefined,
+  ): TasqueDropdownOption {
     if (!item) {
       return {
         id: 0,
         title: '-',
-        color: this.getColorById(0)
+        color: this.getColorById(0),
       };
     }
 
@@ -176,14 +215,14 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       return {
         id: item.id,
         title: item.name,
-        color: item.color
+        color: item.color,
       };
     }
 
     return {
       id: item.id,
       title: item.name,
-      color: this.getColorById(item.id)
+      color: this.getColorById(item.id),
     };
   }
 
@@ -253,7 +292,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       return;
     }
 
-    this.sprintService.getProjectSprints(projectId)
+    this.sprintService
+      .getProjectSprints(projectId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((sprints) => {
         if (!sprints.body) {
@@ -262,7 +302,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         this.fillSprintOptions(sprints.body);
       });
 
-    this.taskTemplateService.getAllProjectTaskTypes(projectId)
+    this.taskTemplateService
+      .getAllProjectTaskTypes(projectId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((types) => {
         if (!types.body) {
@@ -271,7 +312,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         this.fillTypeOptions(types.body);
       });
 
-    this.projectService.getProjectPriorities(projectId)
+    this.projectService
+      .getProjectPriorities(projectId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((priorities) => {
         if (!priorities.body) {
@@ -280,7 +322,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         this.fillPriorityOptions(priorities.body);
       });
 
-    this.taskTemplateService.getAllProjectTaskStates(projectId)
+    this.taskTemplateService
+      .getAllProjectTaskStates(projectId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((states) => {
         if (!states.body) {
@@ -292,7 +335,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
   public clearForm(): void {
     this.editTaskForm.reset(this.editTaskFormDefaultValues, {
-      emitEvent: false
+      emitEvent: false,
     });
   }
 
@@ -315,23 +358,65 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       stateId: this.editTaskForm.controls.status.value.id,
       typeId: this.editTaskForm.controls.type.value.id,
       projectId: this.editTaskForm.controls.project.value.id,
-      //sprintId: this.editTaskForm.controls.sprint.value.id,
+      sprintId: this.editTaskForm.controls.sprint.value.id !== 0 ? this.editTaskForm.controls.sprint.value.id : undefined,
     } as TaskUpdateModel;
 
-    this.taskService.updateTask(updatedTask)
+    this.taskService
+      .updateTask(updatedTask)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (task) => {
-          this.notificationService.success('Task has been updated successfully');
-          if (task.body) {
-            this.taskStorageService.updateTask(task.body);
-            this.editTaskFormDefaultValues = this.editTaskForm.value;
-            this.task = task.body;
-          }
+      .subscribe((task) => {
+        this.notificationService.success('Task has been updated successfully');
+        if (task.body) {
+          this.taskStorageService.updateTask(task.body);
+          this.editTaskFormDefaultValues = this.editTaskForm.value;
+          this.task = task.body;
         }
-      )
+      })
       .add(() => {
         this.clearForm();
       });
+  }
+
+  toogleModal(event: boolean): void {
+    this.isOpen = event;
+  }
+
+  addUser(email: string): void {
+    const isUserAdded = this.board.users.find((user) => user.email == email) ? true : false;
+
+    if (isUserAdded) {
+      this.notificationService.error('User with given email has already been added');
+      return;
+    }
+
+    this.userService.getUserByEmail(email)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (user) => {
+          if (!user.body) {
+            return;
+          }
+          this.editTaskForm.controls.assignees.value.push(user.body);
+          this.board.users.push(this.convertToUserCard(user.body));
+        }
+      );
+  }
+
+  deleteUser(email: string): void {
+    const boardIndex = this.board.users.findIndex((x) => x.email == email);
+    this.board.users.splice(boardIndex, 1);
+    const index = this.editTaskForm.controls.assignees.value.findIndex((x: UserModel) => { x.email == email; });
+    this.editTaskForm.controls.assignees.value.splice(index, 1);
+  }
+
+  // TODO: Removed it when tasque-select-users is redesigned
+  private convertToUserCard(user: UserModel): IUserCard {
+    return {
+      id: user.id,
+      email: user.email,
+      userName: user.name,
+      profileURL: '',
+      role: null,
+    };
   }
 }

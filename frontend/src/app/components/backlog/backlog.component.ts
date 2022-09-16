@@ -110,24 +110,6 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  //get all user's boards
-  /*
-  public getUserBoards(): void {
-    this.boardService
-      .getUserBoards(this.currentUser.id)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((result) => {
-        if (result.body) {
-          this.boards = result.body.map((item) => ({
-            id: item.id,
-            title: item.name,
-            color: '',
-          }));
-        }
-      });
-  }
-  */
-
   //get sprints for the current project
   //and sort them by priority (order)
   public getSprints(projectId: number): void {
@@ -182,15 +164,16 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
     sprint.order = nextSprint.order ?? 0;
     nextSprint.order = currentSprintPosition;
 
-    this.updateSprint(sprint.id, sprint);
-    this.updateSprint(nextSprint.id, nextSprint);
+    this.updateSprint(sprint);
+    this.updateSprint(nextSprint);
+
     this.sprints.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     this.notificationService.success('Priority updated');
   }
 
-  updateSprint(sprintId: number, sprint: SprintModel): void {
+  updateSprint(sprint: SprintModel): void {
     this.sprintService
-      .updareSprint(sprintId, sprint)
+      .updateOrder(sprint)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe();
   }

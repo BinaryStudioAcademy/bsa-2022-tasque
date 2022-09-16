@@ -1,29 +1,21 @@
-﻿using Amazon.Runtime.Internal;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Board;
 using Tasque.Core.Common.DTO.Project;
 using Tasque.Core.Common.DTO.User;
-using Tasque.Core.Common.Entities;
 using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers;
 
 [Route("api/project/")]
-public class ProjectController : EntityController<Project, NewProjectDto, ProjectService>
+public class ProjectController : EntityController
+    <NewProjectDto, ProjectInfoDto, EditProjectDto, int, ProjectService>
 {
-    public ProjectController(ProjectService service, CurrentUserParameters currentUser)
-        : base(service, currentUser)
+    private readonly int _userId;
+    public ProjectController(ProjectService service, CurrentUserParameters userParams)
+        : base(service)
     {
-
-    }
-
-    [HttpPut("edit")]
-    public async Task<IActionResult> EditProject([FromBody] EditProjectDto editProjectDto)
-    {
-        var result = await _service.EditProject(editProjectDto);
-
-        return Ok(result);
+        _userId = userParams.Id;
     }
 
     [HttpGet("all/{organizationId}")]
@@ -32,15 +24,6 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         return Ok(await _service.GetAllProjectsOfOrganization(organizationId));
     }
 
-    [HttpGet("getById/{id}")]
-    public override IActionResult GetById(int id)
-    {
-        var project = _service.GetProjectById(id);
-        if(project == null)
-            return NotFound("Project Not Found");
-        return Ok(project);
-        
-    }
 
     [HttpPut("invite")]
     public async Task<IActionResult> InviteUserToProject([FromBody] UserInviteDto userInviteDto)
@@ -64,22 +47,6 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
         await _service.ChangeUserRole(changeUserRoleDto);
 
         return Ok();
-    }
-
-    [Route("add")]
-    [HttpPost]
-    public async Task<IActionResult> AddProject([FromBody] NewProjectDto entityDTO)
-    {
-        var entity = new Project()
-        {
-            Name = entityDTO.Name,
-            Key = entityDTO.Key,
-            OrganizationId = entityDTO.OrganizationId,
-            AuthorId = _currentUser.Id
-        };
-
-        var result = await _service.AddProject(entity);
-        return Ok(result);
     }
 
     [HttpGet("board/{projectId:int}")]
@@ -145,6 +112,30 @@ public class ProjectController : EntityController<Project, NewProjectDto, Projec
             return NotFound("Project or it's task states not found");
         return Ok(states);
     }
+
+    [HttpGet("getProjectCards")]
+    public async Task<IActionResult> GetProjectCards()
+    {
+        var result = await _service.GetProjectCardsByUserId(_userId);
+
+        return Ok(result);
+    }
+
+    [Route("getById/{id}")]
+    [HttpGet]
+    public override async Task<IActionResult> GetById(int id)
+    {
+        var entity = await _service.GetProjectById(id);
+
+        return Ok(entity);
+    }
+    
+    [HttpGet("getProjectById/{projectId}")]
+    public IActionResult GetProjectById(int projectId)
+    {
+        var project = _service.GetProjectById(projectId);
+        if (project == null)
+            return NotFound("Project not found");
+        return Ok(project);
+    }
 }
-
-

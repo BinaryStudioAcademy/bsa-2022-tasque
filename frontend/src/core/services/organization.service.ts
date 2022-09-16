@@ -55,7 +55,7 @@ export class OrganizationService {
     organization: OrganizationModel,
   ): Observable<HttpResponse<OrganizationModel>> {
     return this.httpService.putFullRequest<OrganizationModel>(
-      this.routePrefix,
+      this.routePrefix + `/update/${organization.id}`,
       organization,
     );
   }
