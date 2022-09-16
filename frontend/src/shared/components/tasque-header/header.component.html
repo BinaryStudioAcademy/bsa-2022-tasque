@@ -1,6 +1,8 @@
 <header>
   <div class="navigation-panel">
-    <a routerLink="/organizations" *ngIf="hasLogo"><tasque-logo class="logo" [isLight]="true"></tasque-logo></a>
+    <a routerLink="/organizations" *ngIf="hasLogo"
+      ><tasque-logo class="logo" [isLight]="true"></tasque-logo
+    ></a>
     <tasque-menu-dropdown>
       <span dropdown-button> Your work </span>
       <tasque-option option> One task </tasque-option>
@@ -8,8 +10,18 @@
     </tasque-menu-dropdown>
     <tasque-project-dropdown class="button"></tasque-project-dropdown>
     <span class="button">Calendar</span>
-    <tasque-menu-dropdown class="button-like" [toggleDropdownOnButtonClick]="false" separator="|">
-      <tasque-task-creation dropdown-button btnText="Create task" btnClass="btn white" [organizationId]="currentOrganizationId"></tasque-task-creation>
+    <tasque-menu-dropdown
+      class="button-like"
+      [toggleDropdownOnButtonClick]="false"
+      separator="|"
+    >
+      <tasque-task-creation
+        dropdown-button
+        btnText="Create task"
+        btnClass="btn white"
+        [organizationId]="currentOrganizationId"
+        sidebarName="createTaskSidebar"
+      ></tasque-task-creation>
       <tasque-option option (click)="openCreateProjectDialog()">
         <p>Create Project</p>
       </tasque-option>
@@ -19,7 +31,9 @@
     </tasque-menu-dropdown>
   </div>
   <div class="center-panel">
-    <tasque-organizations-dropdown class="button"></tasque-organizations-dropdown>
+    <tasque-organizations-dropdown
+      class="button"
+    ></tasque-organizations-dropdown>
   </div>
   <div class="user-panel">
     <div class="search-input">
@@ -38,8 +52,16 @@
       [upArrowIcon]="upArrowIcon"
       [downArrowIcon]="downArrowIcon"
     >
-      <tasque-avatar dropdown-button *ngIf="currentUser" [alt]="currentUser.name" [user]="currentUser" [diameter_px]="45"></tasque-avatar>
-      <tasque-option option (click)="profileSettingsClick()"> Profile settings </tasque-option>
+      <tasque-avatar
+        dropdown-button
+        *ngIf="currentUser"
+        [alt]="currentUser.name"
+        [user]="currentUser"
+        [diameter_px]="45"
+      ></tasque-avatar>
+      <tasque-option option (click)="profileSettingsClick()">
+        Profile settings
+      </tasque-option>
       <tasque-option option (click)="logoutClick()"> Log out </tasque-option>
     </tasque-menu-dropdown>
   </div>

@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faL } from '@fortawesome/free-solid-svg-icons';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from 'src/core/services/notification.service';
 import { Subject } from 'rxjs';
@@ -76,6 +76,8 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   @Input() public currentTasks: TaskModel[];
   @Input() public sprintId: number;
+
+  public isOpen = false;
 
   get projectErrorMessage(): string {
     const ctrl = this.projectControl;
@@ -371,6 +373,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   }
 
   toogleModal(event: boolean): void {
+    console.log(event);
     this.isOpen = event;
   }
 }
