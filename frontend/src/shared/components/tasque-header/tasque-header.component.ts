@@ -40,6 +40,10 @@ export class HeaderComponent implements OnInit {
     this.subscribeToCurrentUserAvatar();
   }
 
+  changeOrganizationId(val: number): void {
+    this.currentOrganizationId = val;
+  }
+
   private subscribeToCurrentOrganization(): void {
     this.internalServices.getCurrentOrganizationService.currentOrganizationId$.subscribe(
       (result) => {
