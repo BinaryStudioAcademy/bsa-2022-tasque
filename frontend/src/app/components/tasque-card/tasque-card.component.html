@@ -36,8 +36,8 @@
     <div class="task-info">
       <span>{{ taskInfo.key }}</span>
       <tasque-avatar
-        *ngIf="taskInfo.author"
-        [user]="taskInfo.author"
+        *ngIf="taskInfo.assignees && taskInfo.assignees.length > 0"
+        [user]="taskInfo.assignees[0]"
         alt="user's avatar"
         [diameter_px]="30"
       ></tasque-avatar>
