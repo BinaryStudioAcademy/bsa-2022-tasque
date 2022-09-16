@@ -6,6 +6,7 @@ $option-font-size: 14px
 $option-height: 35px
 $option-text-color: colorscheme(black-100)
 $label-text-color: colorscheme(white-100)
+$label-text-hover-color: colorscheme(gray-400)
 $options-max-height: 110px
 $options-width: max-content
 $options-translate: none
@@ -30,7 +31,7 @@ $options-border-radius: 10px
   align-items: center
   gap: var(--button-gap, $button-gap)
   &:hover
-    color: colorscheme(gray-400)
+    color: var(--label-text-hover-color, $label-text-hover-color)
 
 .dropdown-label
   font-size: var(--label-font-size, $label-font-size)
