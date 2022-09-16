@@ -14,6 +14,7 @@ namespace Tasque.Core.WebAPI.Controllers
 
         }
 
+
         [Route("complete/{id}")]
         [HttpPut]
         public async Task<IActionResult> CompleteSprint(int id)
@@ -96,6 +97,15 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok();
         }
 
+        [Route("updateOrder")]
+        [HttpPut]
+        public async virtual Task<IActionResult> UpdateOrder([FromBody] SprintDto sprint)
+        {
+            await _service.UpdateOrder(sprint);
+
+            return Ok();
+        }
+
         [HttpPut("order")]
         public async Task<IActionResult> Order([FromBody] IEnumerable<int> ids)
         {
@@ -103,5 +113,7 @@ namespace Tasque.Core.WebAPI.Controllers
             
             return Ok(sprints);
         }
+
+ 
     }
 }

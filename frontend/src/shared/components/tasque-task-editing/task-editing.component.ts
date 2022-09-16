@@ -377,8 +377,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       });
   }
 
-  openModal(): void {
-    this.isOpen = !this.isOpen;
+  toogleModal(event: boolean): void {
+    this.isOpen = event;
   }
 
   addUser(email: string): void {

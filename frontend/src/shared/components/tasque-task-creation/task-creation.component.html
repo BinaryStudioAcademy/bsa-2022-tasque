@@ -2,8 +2,9 @@
   [name]="sidebarName"
   [btnText]="btnText"
   [btnClass]="btnClass"
+  (sidebarToggle)="toogleModal($event)"
 >
-  <div class="task-creation-conteiner">
+  <div class="task-creation-conteiner" *ngIf="isOpen">
     <div class="task-creation-header">
       <h4 class="task-creation-header-title" style="color: black">
         Create issue

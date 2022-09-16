@@ -9,4 +9,6 @@ public class EditSprintDto
     public int ProjectId { get; set; }
     public bool IsStarting { get; set; }
     public int[]? Tasks { get; set; }
+    public int? Order { get; set; }
+
 }
