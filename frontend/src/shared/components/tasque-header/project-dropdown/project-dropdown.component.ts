@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { GetCurrentProjectService } from 'src/core/services/get-current-project.service';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 import { Router } from '@angular/router';
@@ -71,8 +71,7 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit, O
             organizationId: p.organizationId,
           });
         });
-    })
-    console.log('changes');
+    });
     this.subscribeToProjectChange();
   }
 
