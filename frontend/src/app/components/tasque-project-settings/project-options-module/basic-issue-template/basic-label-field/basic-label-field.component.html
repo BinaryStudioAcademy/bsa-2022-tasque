@@ -1,1 +1,40 @@
-<div class="container">Items</div>
+<div class="container">
+  <div *ngFor="let setting of settings" class="setting">
+    <div class="setting-data">
+      <div class="setting-color" [style.background-color]="setting.color"></div>
+      <span>{{ setting.name }}</span>
+    </div>
+    <tasque-button
+      style="margin-left: 10px"
+      (btnClick)="deleteSetting(setting)"
+      [icon]="faMinus"
+      class="btn icon"
+    ></tasque-button>
+  </div>
+  <div *ngIf="isChanging" class="edit-setting">
+    <tasque-input [formControl]="formColorControl" class="edit-input" type="color"></tasque-input>
+    <tasque-input
+      [formControl]="formNameControl"
+      (keydown.enter)="saveSetting()"
+      class="edit-input"
+      placeholder="Write name"
+      type="text"
+    ></tasque-input>
+    <tasque-button class="btn icon" [icon]="faCheck" (btnClick)="saveSetting()"></tasque-button>
+  </div>
+  <div class="create-setting">
+    <span>Add new item</span>
+    <tasque-button
+      style="margin-left: 10px"
+      class="btn icon"
+      [icon]="faPlus"
+      (btnClick)="addSetting()"
+    ></tasque-button>
+  </div>
+  <tasque-button
+    style="margin-left: 10px"
+    class="btn mini"
+    text="Save and finish editing"
+    (btnClick)="finishEdit()"
+  ></tasque-button>
+</div>
