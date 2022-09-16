@@ -71,7 +71,6 @@ namespace Tasque.Core.BLL.Services
             var tasks = await _db.Tasks
                 .Include(t => t.Users)
                 .Include(t => t.Author)
-                .Include(t => t.Sprint)
                 .Include(t => t.LastUpdatedBy)
                 .Include(t => t.Priority)
                 .Include(t => t.State)
