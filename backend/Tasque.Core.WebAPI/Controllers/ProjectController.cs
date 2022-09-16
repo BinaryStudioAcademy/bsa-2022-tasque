@@ -3,6 +3,7 @@ using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Board;
 using Tasque.Core.Common.DTO.Project;
 using Tasque.Core.Common.DTO.User;
+using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers;
 
@@ -10,10 +11,11 @@ namespace Tasque.Core.WebAPI.Controllers;
 public class ProjectController : EntityController
     <NewProjectDto, ProjectInfoDto, EditProjectDto, int, ProjectService>
 {
-    public ProjectController(ProjectService service)
+    private readonly int _userId;
+    public ProjectController(ProjectService service, CurrentUserParameters userParams)
         : base(service)
     {
-
+        _userId = userParams.Id;
     }
 
     [HttpGet("all/{organizationId}")]
@@ -111,10 +113,27 @@ public class ProjectController : EntityController
         return Ok(states);
     }
 
-    [HttpGet("getProjectById/{projectId}")]
-    public IActionResult GetProjectById(int projectId)
+    [HttpGet("getProjectCards")]
+    public async Task<IActionResult> GetProjectCards()
     {
-        var project = _service.GetProjectById(projectId);
+        var result = await _service.GetProjectCardsByUserId(_userId);
+
+        return Ok(result);
+    }
+
+    [Route("getById/{id}")]
+    [HttpGet]
+    public override async Task<IActionResult> GetById(int id)
+    {
+        var entity = await _service.GetProjectById(id);
+
+        return Ok(entity);
+    }
+    
+    [HttpGet("getProjectById/{projectId}")]
+    public async Task<IActionResult> GetProjectById(int projectId)
+    {
+        var project = await _service.GetProjectById(projectId);
         if (project == null)
             return NotFound("Project not found");
         return Ok(project);
