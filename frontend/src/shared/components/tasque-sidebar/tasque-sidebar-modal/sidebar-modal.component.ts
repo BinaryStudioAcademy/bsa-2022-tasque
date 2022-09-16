@@ -36,7 +36,7 @@ export class TasqueSideBarModalComponent {
     this.sideBarService.toggle(this.name);
   }
 
-  toogle(value: boolean) {
+  toogle(value: boolean): void {
     this.sidebarToggle.emit(value);
   }
 }

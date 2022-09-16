@@ -26,7 +26,7 @@ export class TasqueSidebarComponent implements OnInit {
     }
   }
 
-  toggle(value: boolean) {
+  toggle(value: boolean): void {
     this.sidebarToggle.emit(value);
   }
 }
