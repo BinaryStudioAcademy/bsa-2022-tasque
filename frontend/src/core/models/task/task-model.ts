@@ -17,7 +17,7 @@ export interface TaskModel {
   stateId?: number;
   type?: TaskType;
   typeId: number;
-  priority?: TaskPriority
+  priority?: TaskPriority;
   priorityId?: number;
   author?: UserModel;
   authorId?: number;

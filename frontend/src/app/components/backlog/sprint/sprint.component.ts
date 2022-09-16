@@ -119,7 +119,6 @@ export class SprintComponent implements OnInit, OnChanges {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          console.log(result.body);
           this.currentSprint.tasks = this.tasks = this.tasksShow = result.body;
           this.estimateCount();
         }
