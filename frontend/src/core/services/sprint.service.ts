@@ -29,6 +29,7 @@ export class SprintService {
       sprint,
     );
   }
+  
   completeSprint(sprintId: number): Observable<void> {
     return this.httpService.putRequest<void>(
       this.routePrefix + `/complete/${sprintId}`,

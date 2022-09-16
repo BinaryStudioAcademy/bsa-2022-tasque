@@ -131,9 +131,9 @@ public class ProjectController : EntityController
     }
     
     [HttpGet("getProjectById/{projectId}")]
-    public IActionResult GetProjectById(int projectId)
+    public async Task<IActionResult> GetProjectById(int projectId)
     {
-        var project = _service.GetProjectById(projectId);
+        var project = await _service.GetProjectById(projectId);
         if (project == null)
             return NotFound("Project not found");
         return Ok(project);
