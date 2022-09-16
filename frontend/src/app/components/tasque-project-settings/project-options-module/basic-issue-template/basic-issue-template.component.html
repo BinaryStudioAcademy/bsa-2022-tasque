@@ -1,1 +1,29 @@
-<p>basic-issue-template works!</p>
+<div class="settings-template-form">
+  <div class="settings-label">
+    <h1>Project templates settings</h1>
+  </div>
+
+  <hr />
+
+  <div class="select-setting-container">
+    <tasque-menu-dropdown class="settings-dropdown">
+      <span dropdown-button> Select setting </span>
+      <tasque-option option (click)="selectSetting('Priority')"> Task Priority </tasque-option>
+      <tasque-option option (click)="selectSetting('Type')"> Task Type </tasque-option>
+      <tasque-option option (click)="selectSetting('State')"> Task State </tasque-option>
+      <tasque-option option (click)="selectSetting('Project')"> Current Project </tasque-option>
+    </tasque-menu-dropdown>
+    <div class="selected-setting" *ngIf="selectedSetting">
+      <h2 class="setting-name">{{ selectedSetting }}</h2>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="settings-container" *ngIf="selectedSetting" [ngSwitch]="selectedSetting">
+    <div *ngSwitchCase="'Priority'">Priority</div>
+    <div *ngSwitchCase="'Type'">Type</div>
+    <div *ngSwitchCase="'State'">State</div>
+    <div *ngSwitchCase="'Project'">Project</div>
+  </div>
+</div>
