@@ -1,0 +1,50 @@
+@import 'src/colors.sass'
+    
+.card-title
+    display: flex
+    
+
+.card-title > p
+    display: inline-block
+    line-height: 30px
+    font-weight: 600
+    font-size: 24px
+    padding: 0 10px
+    cursor: pointer
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+    max-width: 230px
+
+    
+.color-square
+    display: inline-block
+    height: 30px
+    width: 30px
+    border-radius: 4px
+    background-color: red
+
+.main-card
+    padding-left: 40px
+
+.links
+    padding: 20px 0 5px
+    color: colorscheme(gray-500)
+    p
+        font-weight: 600
+
+.assigned, .all-issues
+    padding: 5px 0
+    display: flex
+    justify-content: space-between
+    &:hover
+        background-color: colorscheme(gray-200)
+        cursor: pointer
+
+.divider
+    padding: 10px 0
+
+.counter
+    background-color: colorscheme(gray-300)
+    border-radius: 5px
+    padding: 0 10px
