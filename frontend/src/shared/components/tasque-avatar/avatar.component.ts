@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UserModel } from 'src/core/models/user/user-model';
 
 @Component({
@@ -8,7 +8,7 @@ import { UserModel } from 'src/core/models/user/user-model';
 })
 export class AvatarComponent implements OnInit {
   @Input()
-  diameter_px: number = 40;
+  diameter_px = 40;
 
   @Input()
   alt: string;
