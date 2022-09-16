@@ -38,7 +38,6 @@ export class TasqueCardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.taskInfo);
     this.user = this.taskInfo.assignees?.[0] as UserModel;
     this.assignees = this.taskInfo.assignees as UserModel[]?? [];
     this.currentUserService.currentUser$.subscribe((user) => {
