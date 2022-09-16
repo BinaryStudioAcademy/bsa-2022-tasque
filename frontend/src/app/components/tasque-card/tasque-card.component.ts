@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { TaskInfoModel } from 'src/core/models/board/task-Info-model';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { UserModel } from 'src/core/models/user/user-model';
@@ -25,6 +26,8 @@ export class TasqueCardComponent implements OnInit {
 
   currentUser: UserModel;
   currentOrganization: OrganizationModel;
+
+  public editIcon = faPen;
 
   constructor(
     private currentUserService: GetCurrentUserService,
