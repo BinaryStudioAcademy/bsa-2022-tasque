@@ -79,8 +79,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   public isOpen = false;
 
-  public isOpen = false;
-
   get projectErrorMessage(): string {
     const ctrl = this.projectControl;
 
