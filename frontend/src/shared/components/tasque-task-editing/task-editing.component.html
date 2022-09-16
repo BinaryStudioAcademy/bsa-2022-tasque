@@ -3,7 +3,7 @@
   [btnText]="btnText"
   [btnClass]="btnClass"
   [btnIcon]="btnIcon"
-  (click)="openModal()"
+  (sidebarToggle)="toogleModal($event)"
 >
   <form class="edit-task-dialog" [formGroup]="editTaskForm" *ngIf="isOpen">
     <div class="task-summary-container">

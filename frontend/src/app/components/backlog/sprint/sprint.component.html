@@ -91,7 +91,7 @@
           TODO  Add ngIf to div when roles will work
           *ngIf="isCurrentUserAdmin && !currentSprint.isComplete"
         -->
-          <div class="dropdown-button">
+          <div class="dropdown-button" *ngIf="!currentSprint.isComplete">
             <div class="dropdown" style="float: right">
               <tasque-button
                 class="btn dropbtn"
