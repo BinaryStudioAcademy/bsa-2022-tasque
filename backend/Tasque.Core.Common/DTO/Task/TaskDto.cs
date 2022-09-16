@@ -30,7 +30,6 @@ namespace Tasque.Core.Common.DTO.Task
 
         public int? BoardColumnId { get; set; }
 
-        public SprintDto? Sprint { get; set; }
         public int? SprintId { get; set; }
 
         public UserDto? LastUpdatedBy { get; set; }

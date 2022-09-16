@@ -26,7 +26,14 @@
       ></tasque-button>
     </div>
   </div>
-  <div class="backlog-content">
+  <div
+    class="backlog-content"
+    cdkDropList
+    #todoList="cdkDropList"
+    [cdkDropListData]="tasks"
+    id="list-one"
+    (cdkDropListDropped)="drop($event)"
+  >
     <div class="empty-tasks row pale" *ngIf="tasks && tasks.length == 0">
       <label class="text-center">Your backlog is empty.</label>
     </div>
@@ -34,11 +41,6 @@
       class="backlog-issues"
       id="backlog-issues"
       *ngIf="tasks && tasks.length != 0"
-      cdkDropList
-      #todoList="cdkDropList"
-      [cdkDropListData]="tasks"
-      id="list-one"
-      (cdkDropListDropped)="drop($event)"
     >
       <app-issue
         cdkDrag

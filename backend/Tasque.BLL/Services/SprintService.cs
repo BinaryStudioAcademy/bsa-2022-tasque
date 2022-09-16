@@ -71,7 +71,6 @@ namespace Tasque.Core.BLL.Services
             var tasks = await _db.Tasks
                 .Include(t => t.Users)
                 .Include(t => t.Author)
-                .Include(t => t.Sprint)
                 .Include(t => t.LastUpdatedBy)
                 .Include(t => t.Priority)
                 .Include(t => t.State)
@@ -246,7 +245,21 @@ namespace Tasque.Core.BLL.Services
                     .Include(s => s.Tasks)
                 .FirstOrDefaultAsync();
 
-            return _mapper.Map<SprintDto>(sprint);
+            var tasks = _mapper.Map<List<TaskDto>>(_db.Tasks
+                .Where(t => t.SprintId == sprint.Id)
+                .Include(t => t.Users)
+                .Include(t => t.Author)
+                .Include(t => t.Sprint)
+                .Include(t => t.LastUpdatedBy)
+                .Include(t => t.Priority)
+                .Include(t => t.State)
+                .Include(t => t.Project)
+                .Include(t => t.Type));
+
+            var dto = _mapper.Map<SprintDto>(sprint);
+            dto.Tasks = _mapper.Map<List<TaskDto>>(tasks);
+
+            return dto;
         }
 
         public async Task<SprintDto> CreateSprint(NewSprintDto model)
