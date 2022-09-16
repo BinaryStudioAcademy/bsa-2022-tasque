@@ -238,5 +238,25 @@ namespace Tasque.Core.BLL.Services
 
             return true;
         }
+
+        public async Task<SprintDto> GetCurrentSprintByProjectId(int projectId)
+        {
+            var sprint = await _db.Sprints
+                .Where(s => s.ProjectId == projectId && !s.IsComplete && s.StartAt != null)
+                    .Include(s => s.Tasks)
+                .FirstOrDefaultAsync();
+
+            return _mapper.Map<SprintDto>(sprint);
+        }
+
+        public async Task<SprintDto> CreateSprint(NewSprintDto model)
+        {
+            var entity = _mapper.Map<Sprint>(model);
+
+            await  _db.Sprints.AddAsync(entity);
+            await _db.SaveChangesAsync();
+
+            return _mapper.Map<SprintDto>(entity);
+        }
     }
 }

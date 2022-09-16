@@ -114,6 +114,22 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok(sprints);
         }
 
- 
+        [HttpGet("currentSprint/{projectId}")]
+        public async Task<IActionResult> GetCurrentSprintByProjectId(int projectId)
+        {
+            var sprint = await _service.GetCurrentSprintByProjectId(projectId);
+            if (sprint == null)
+                return NotFound("Sprint not found");
+            return Ok(sprint);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateSprint([FromBody] NewSprintDto model)
+        {
+            var sprint = await _service.CreateSprint(model);
+            if(sprint == null)
+                return BadRequest();
+            return Ok(sprint);
+        }
     }
 }
