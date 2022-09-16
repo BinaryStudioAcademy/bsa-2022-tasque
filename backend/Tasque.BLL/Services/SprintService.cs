@@ -244,6 +244,8 @@ namespace Tasque.Core.BLL.Services
                 .Where(s => s.ProjectId == projectId && !s.IsComplete && s.StartAt != null)
                     .Include(s => s.Tasks)
                 .FirstOrDefaultAsync();
+            if (sprint == null)
+                return null;
 
             var tasks = _mapper.Map<List<TaskDto>>(_db.Tasks
                 .Where(t => t.SprintId == sprint.Id)
