@@ -77,8 +77,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   @Input() public currentTasks: TaskModel[];
   @Input() public sprintId: number;
 
-  public isOpen = false;
-
   get projectErrorMessage(): string {
     const ctrl = this.projectControl;
 
@@ -370,9 +368,5 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
         val.fieldValue = field.fieldValue;
       }
     });
-  }
-
-  openModal(): void {
-    this.isOpen = !this.isOpen;
   }
 }
