@@ -37,6 +37,7 @@ export class EditSprintDialogComponent implements OnInit {
   ];
 
   public unsubscribe$ = new Subject<void>();
+  public period = 0;
   public isSave = false;
 
   constructor(
@@ -111,5 +112,33 @@ export class EditSprintDialogComponent implements OnInit {
       d.getHours(),
       d.getMinutes() - d.getTimezoneOffset(),
     );
+  }
+
+  selectPeriod(event: number): void {
+    this.period = event;
+
+    const date = new Date();
+
+    if (this.sprint.startAt) {
+      this.sprint.endAt = this.addDays(this.sprint.startAt, 7 * 12);
+    }
+    switch (event) {
+      case 1:
+        if (this.sprint.startAt) {
+          this.sprint.endAt = this.addDays(date.toString(), 7);
+        }
+        break;
+      case 2:
+        if (this.sprint.startAt) {
+          this.sprint.endAt = this.addDays(date.toString(), 14);
+        }
+        break;
+      case 4:
+        if (this.sprint.startAt) {
+          this.sprint.endAt = this.addDays(date.toString(), 28);
+        }
+        break;
+      default:
+    }
   }
 }

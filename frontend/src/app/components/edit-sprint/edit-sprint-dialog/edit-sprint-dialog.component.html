@@ -31,6 +31,7 @@
         ngDefaultControl
         [invalid]="sprintDuration.invalid"
         [errorMessage]="requiredErrorMessage"
+        (onSelect)="selectPeriod($event)"
       >
       </tasque-dropdown>
     </div>
@@ -58,6 +59,7 @@
         [(ngModel)]="sprint.endAt"
         [invalid]="sprintEndAt.invalid"
         [errorMessage]="requiredErrorMessage"
+        [readonly]="period != 0 ? true : false"
       >
       </tasque-input>
     </div>
