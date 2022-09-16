@@ -18,11 +18,13 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
 })
 export class UserProfileComponent implements OnInit {
 
+  public emptyProfileDTO = {} as ProfileChangesDTO;
+
   public imageFile: File;
   public defaultUserAvatarUrl = '../../assets/default_avatar.svg';
   public allowedFileTypes = ['image/png', 'image/jpeg', 'image/gif'];
-  public originalUser: ProfileChangesDTO = {} as ProfileChangesDTO;
-  public profileChanges: ProfileChangesDTO = {} as ProfileChangesDTO;
+  public originalUser: ProfileChangesDTO = this.emptyProfileDTO;
+  public profileChanges: ProfileChangesDTO = this.emptyProfileDTO;
   public passwordChanges: PasswordChangesDTO;
 
   public profileForm: FormGroup = new FormGroup({});
@@ -60,7 +62,7 @@ export class UserProfileComponent implements OnInit {
       Validators.required,
       Validators.pattern(this.validationConstants.emailRegex),
     ]);
-    this.userNameControl = new FormControl(this.profileChanges.email, [
+    this.userNameControl = new FormControl(this.profileChanges.name, [
       Validators.required,
       Validators.pattern(/^([a-zA-Z0-9]+\s)*[a-zA-Z0-9]+$/),
       Validators.minLength(this.validationConstants.minLengthName),
@@ -71,7 +73,7 @@ export class UserProfileComponent implements OnInit {
         Validators.minLength(this.validationConstants.minLengthPassword),
         Validators.maxLength(this.validationConstants.maxLengthPassword),
     ]);
-    this.newPasswordControl = new FormControl(this.passwordChanges.previousPassword, [
+    this.newPasswordControl = new FormControl(this.passwordChanges.newPassword, [
         Validators.required,
         Validators.minLength(this.validationConstants.minLengthPassword),
         Validators.maxLength(this.validationConstants.maxLengthPassword),
