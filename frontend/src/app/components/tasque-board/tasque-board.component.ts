@@ -21,6 +21,7 @@ import { ProjectModel } from 'src/core/models/project/project-model';
 import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
+import { SprintModel } from 'src/core/models/sprint/sprint-model';
 
 @Component({
   selector: 'tasque-board',
@@ -50,6 +51,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
   public columns: BoardColumnModel[] = [];
   public projectTasks: TaskModel[] = [];
+  public currentSprint: SprintModel;
 
   public projectOptions: TasqueDropdownOption[] = [];
   public projectTaskTypes: TaskType[] = [];
@@ -96,15 +98,19 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         },
       );
 
-    this.boardService.projectService.getAllProjectTasks(this.projectId)
+    this.boardService.sprintService
+      .getCurrentSprintByProjectId(this.projectId)
       .subscribe((resp) => {
-        if (resp.ok) {
-          this.projectTasks = resp.body as TaskModel[];
+        if(resp.ok){
+          this.currentSprint = resp.body as SprintModel;
+          this.projectTasks = this.currentSprint.tasks;
           this.hasTasks = this.checkIfHasTasks();
           this.sortTasksByColumns();
-        } else {
-          this.notificationService.error('Something went wrong');
         }
+      }, (err) => {
+        if(err)
+        this.notificationService.info(err.error);
+        this.isShow = true;
       });
 
     this.taskStorageService.taskUpdated$.subscribe((task) => {

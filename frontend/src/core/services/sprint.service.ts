@@ -25,7 +25,7 @@ export class SprintService {
 
   create(sprint: NewSprintModel): Observable<HttpResponse<SprintModel>> {
     return this.httpService.postFullRequest<SprintModel>(
-      this.routePrefix + '/create',
+      this.routePrefix,
       sprint,
     );
   }
@@ -96,5 +96,9 @@ export class SprintService {
     return this.httpService.deleteFullRequest<void>(
       this.routePrefix + `/delete/${sprintId}`,
     );
+  }
+
+  getCurrentSprintByProjectId(projectId: number): Observable<HttpResponse<SprintModel>> {
+    return this.httpService.getFullRequest<SprintModel>(this.routePrefix + '/currentSprint/' + projectId);
   }
 }
