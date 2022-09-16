@@ -34,5 +34,14 @@ namespace Tasque.Core.WebAPI.Controllers
                 return NotFound();
             return Ok(types);
         }
+
+        [HttpPost]
+        public IActionResult CreateTaskState(TaskStateDto model)
+        {
+            var state = _service.CreateTaskState(model);
+            if (state == null)
+                return BadRequest();
+            return Ok(state);
+        }
     }
 }

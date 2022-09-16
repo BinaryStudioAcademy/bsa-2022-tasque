@@ -129,4 +129,13 @@ public class ProjectController : EntityController
 
         return Ok(entity);
     }
+    
+    [HttpGet("getProjectById/{projectId}")]
+    public IActionResult GetProjectById(int projectId)
+    {
+        var project = _service.GetProjectById(projectId);
+        if (project == null)
+            return NotFound("Project not found");
+        return Ok(project);
+    }
 }
