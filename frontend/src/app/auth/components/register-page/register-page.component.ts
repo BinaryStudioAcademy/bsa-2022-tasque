@@ -11,6 +11,7 @@ import { filter, map, mergeMap, switchMap, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { UserRegisterModel } from 'src/core/models/user/user-register-model';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-register-page',
@@ -91,7 +92,7 @@ export class RegisterPageComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private toastrService: ToastrService,
+    private notificationService: NotificationService,
     private route: ActivatedRoute,
     private router: Router,
   ) {
@@ -184,7 +185,7 @@ export class RegisterPageComponent implements OnInit {
             ),
           )
           .subscribe(() => {
-            this.toastrService.info('Check your mailbox');
+            this.notificationService.info('Check your mailbox');
           });
         return;
       }
