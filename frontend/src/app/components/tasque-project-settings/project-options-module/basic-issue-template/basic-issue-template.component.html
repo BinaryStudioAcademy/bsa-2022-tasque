@@ -27,9 +27,26 @@
     *ngIf="selectedSetting"
     [ngSwitch]="selectedSetting"
   >
-    <ng-container *ngSwitchCase="'Priority'">Priority</ng-container>
-    <ng-container *ngSwitchCase="'Type'">Type</ng-container>
-    <ng-container *ngSwitchCase="'State'">State</ng-container>
-    <ng-container *ngSwitchCase="'Project'">Project</ng-container>
+    <ng-container *ngSwitchCase="'Priority'">
+      <app-basic-label-field
+        [project]="project"
+        [settings]="priorities"
+      ></app-basic-label-field>
+    </ng-container>
+    <ng-container *ngSwitchCase="'Type'">
+      <app-basic-label-field
+        [project]="project"
+        [settings]="types"
+      ></app-basic-label-field>
+    </ng-container>
+    <ng-container *ngSwitchCase="'State'">
+      <app-basic-label-field
+        [project]="project"
+        [settings]="states"
+      ></app-basic-label-field>
+    </ng-container>
+    <ng-container *ngSwitchCase="'Project'">
+      <app-basic-label-field></app-basic-label-field>
+    </ng-container>
   </div>
 </div>
