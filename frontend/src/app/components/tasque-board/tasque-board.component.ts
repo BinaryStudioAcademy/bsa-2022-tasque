@@ -10,7 +10,7 @@ import {
 import { TaskInfoModel } from 'src/core/models/board/task-Info-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { NotificationService } from 'src/core/services/notification.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { Subject } from 'rxjs';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
@@ -36,7 +36,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   public createColumnForm: FormGroup;
   @ViewChild('searchInput') public searchInput: InputComponent;
 
-  private selectedUserId?: number;
+  public selectedUserId?: number;
   private newColumn: TaskState;
   private projectId: number;
 
@@ -62,7 +62,8 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     private boardService: ScopeBoardService,
     private notificationService: NotificationService,
     private currentUserService: GetCurrentUserService,
-    private taskStorageService: TaskStorageService
+    private taskStorageService: TaskStorageService,
+    private router: Router
   ) {
     this.currentUserService.currentUser$.subscribe((res) => {
       this.user = res as UserModel;
@@ -85,6 +86,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       return;
     }
     this.projectId = parseInt(id);
+    this.getSelectedUserFromQuery();
 
     this.boardService.projectService.getProjectById(this.projectId)
       .subscribe(
@@ -106,6 +108,9 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           this.projectTasks = this.currentSprint.tasks;
           this.hasTasks = this.checkIfHasTasks();
           this.sortTasksByColumns();
+          this.filterTasks();
+        } else {
+          this.notificationService.error('Something went wrong');
         }
       }, (err) => {
         if(err)
@@ -271,7 +276,10 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   }
 
   filterTasks(): void {
-    const phrase = this.searchInput.inputValue;
+    let phrase = '';
+    if(this.searchInput) {
+      phrase = this.searchInput.inputValue;
+    }
     for (const column of this.columns) {
       if (column.tasks) {
         for (const task of column.tasks) {
@@ -287,9 +295,18 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   userSelected(event: UserModel): void {
     if (this.selectedUserId && event.id === this.selectedUserId) {
       this.selectedUserId = undefined;
+      this.router.navigate([], { queryParams: { } });
     } else {
       this.selectedUserId = event.id;
+      this.router.navigate([], { queryParams: { user: this.selectedUserId } });
     }
     this.filterTasks();
+  }
+
+  getSelectedUserFromQuery(): void {
+    const userId = this.route.snapshot.queryParamMap.get('user');
+    if(userId) {
+      this.selectedUserId = Number(userId);
+    }
   }
 }
