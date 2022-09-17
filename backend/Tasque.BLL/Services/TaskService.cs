@@ -84,18 +84,6 @@ namespace Tasque.Core.BLL.Services
             _dbContext.SaveChanges();
         }
 
-        public async Task<List<TaskDto>> GetAllTasks()
-        {
-            var tasks = _mapper.Map<List<TaskDto>>(_dbContext.Tasks);
-            var customFields = await _cosmosTaskService.GetAllTasks();
-
-            return tasks.Join(customFields, t => t.Id, ca => int.Parse(ca.Id), (t, ca) =>
-                JoinTaskAttributesWithDto(t,
-                    RenameFieldsWithActualValue(
-                        GetTaskTemplate(t.ProjectId, t.TypeId).Result?? new(),
-                            MapCosmosTaskFieldsToTaskCustomFields(t, ca.CustomFields?? new()).Result)?? new())?? new()).ToList();
-        }
-
         public async Task<List<TaskDto>> GetAllProjectTasks(int projectId)
         {
             var tasks = _mapper.Map<List<TaskDto>>(_dbContext.Tasks

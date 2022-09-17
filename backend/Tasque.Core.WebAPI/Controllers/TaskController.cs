@@ -20,12 +20,6 @@ namespace Tasque.Core.WebAPI.Controllers
             _currentUser = currentUser;
         }
 
-        [HttpGet("getAllTasks")]
-        public async Task<IActionResult> GetAllTasks()
-        {
-            return Ok(await _taskService.GetAllTasks());
-        }
-
         [HttpGet("getAllProjectTasks/{projectId}")]
         public async Task<IActionResult> GetAllProjectTasks(int projectId)
         {
