@@ -118,8 +118,6 @@ export class HeaderComponent implements OnInit {
   }
 
   public checkUrl(): void {
-    console.log('checkUrl');
     this.isChanged.emit();
   }
-
 }
