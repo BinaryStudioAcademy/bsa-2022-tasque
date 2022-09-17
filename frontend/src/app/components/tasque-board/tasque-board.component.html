@@ -29,8 +29,8 @@
           <img src="assets/board/filter.svg">
         </div>
       </div>
-      <div class="no-tasks" *ngIf="!hasTasks">
-        <h4>There are no tasks yet. You can create the first one.</h4>
+      <div class="no-tasks row pale" *ngIf="!hasTasks">
+        <label>There are no tasks yet. You can create the first one.</label>
       </div>
       <div class="board-columns" cdkDropListGroup>
         <div cdkDropList *ngFor="let item of columns"

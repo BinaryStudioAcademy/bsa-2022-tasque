@@ -14,7 +14,7 @@
 .board-panel
     background-color: colorscheme(gray-100)
     padding: 44px 10px 0px 37px
-    height: calc( 100% - 36px )
+    height: calc( 100% - 97px )
 
 .board-title
     display: flex
@@ -130,8 +130,18 @@
     background: colorscheme(white-100)
 
 .no-tasks
-    text-align: center
-    padding: 20px
+    border: dashed
+    border-color: colorscheme('gray-400')
+    margin: 0 0 10px 0
+    &.pale
+        color: colorscheme('dark-grey-100')
+    &.row
+        display: inline-flex
+        align-items: center
+        height: 50px
+        width: 100%
+    label
+        margin: auto
 
 .team-container
     margin-left: 25px
