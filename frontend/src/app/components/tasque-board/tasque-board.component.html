@@ -1,3 +1,6 @@
+<div *ngIf="!isShow">
+  <mat-spinner></mat-spinner>
+</div>
 <div class="board" *ngIf="isShow && project !== undefined && columns !== undefined">
     <div class="board-info">
       <div class="board-title">
