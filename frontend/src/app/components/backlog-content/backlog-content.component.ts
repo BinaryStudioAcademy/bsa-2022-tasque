@@ -62,7 +62,6 @@ export class BacklogContentComponent implements OnInit, OnChanges {
 
   public tasks$: Observable<TaskModel[]>;
 
-
   constructor(
     public backlogService: BacklogService,
     public taskTypeService: TaskTypeService,
