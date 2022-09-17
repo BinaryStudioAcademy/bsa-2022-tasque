@@ -50,130 +50,19 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   //Get the string by which issue will be searched
   @Input() public inputSearch = '';
 
-  // TODO remove when real data is available
-  @Input() public taskStates: TaskState[] = [
-    {
-      id: 1,
-      name: 'To Do',
-      projectId: 5,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 2,
-      name: 'In Progress',
-      projectId: 5,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 3,
-      name: 'Done',
-      projectId: 5,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 4,
-      name: 'Canceled',
-      projectId: 5,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  ];
-
-  // TODO remove when real data is available
-  @Input() public taskPriorities: TaskPriority[] = [
-    {
-      id: 1,
-      name: 'Low',
-      projectId: 5,
-      type: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 2,
-      name: 'Normal',
-      projectId: 5,
-      type: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 3,
-      name: 'High',
-      projectId: 5,
-      type: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  ];
-
-  // TODO remove when real data is available
-  @Input() public taskTypes: TaskType[] = [
-    {
-      id: 1,
-      name: 'Bug',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      icon: this.flagIcon,
-    },
-    {
-      id: 2,
-      name: 'Feature',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      icon: this.flagIcon,
-    },
-    {
-      id: 3,
-      name: 'Enhancement',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      icon: this.flagIcon,
-    },
-  ];
+  @Input() public taskStates: TaskState[] = [];
+  @Input() public taskPriorities: TaskPriority[] = [];
+  @Input() public taskTypes: TaskType[] = [];
 
   public sprints$: Observable<SprintModel[]>;
 
   @Input() public sprints: SprintModel[];
-
-  // TODO remove when real data is available
-  @Input() public users: UserModel[] = [
-    {
-      id: 1,
-      name: 'John Doe',
-      email: 'email',
-      organizationRoles: [
-        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
-        { organizationId: 2, userId: 2, role: UserRole.organizationMember },
-      ],
-    },
-    {
-      id: 2,
-      name: 'Jane Doe',
-      email: 'email',
-      organizationRoles: [
-        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
-        { organizationId: 2, userId: 2, role: UserRole.organizationMember },
-      ],
-    },
-    {
-      id: 3,
-      name: 'James McGuill',
-      email: 'email',
-      organizationRoles: [
-        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
-        { organizationId: 2, userId: 2, role: UserRole.organizationMember },
-      ],
-    },
-  ];
+  @Input() public users: UserModel[] = [];
+  @Input() public tasks: TaskModel[] = [];
 
   public tasks$: Observable<TaskModel[]>;
 
-  // TODO remove when real data is available
-  @Input() public tasks: TaskModel[] = [];
+
   constructor(
     public backlogService: BacklogService,
     public taskTypeService: TaskTypeService,

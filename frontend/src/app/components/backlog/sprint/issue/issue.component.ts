@@ -30,19 +30,21 @@ import { TaskStorageService } from 'src/core/services/task-storage.service';
 export class IssueComponent implements OnInit {
   //Get the issue to display it in the component
   @Input() public issue: TaskModel;
+  
   //get current user
   @Input() public currentUser: UserModel;
+
   //get current project
   @Input() public currentProject: ProjectModel;
+
   //notifying the parent components about the change in the value of estimate
   @Output() estimate = new EventEmitter<void>();
   @Output() isChanging = new EventEmitter<boolean>();
 
   flagIcon = faFlag;
-  // TODO remove when real data is available
+  
   @Input() public taskTypes: TaskType[] = [];
 
-  // TODO remove when real data is available
   @Input() public taskStates: TaskState[] = [];
 
   public taskEstimate: TaskEstimateUpdate;
