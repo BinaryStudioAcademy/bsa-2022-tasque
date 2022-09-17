@@ -85,7 +85,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.errMsg) {
-      this.toastrService.error(this.errMsg);
+      this.toastrService.error(this.errMsg, '', { positionClass: 'toast-top-right' });
     }
 
     this.loginForm = new FormGroup({
