@@ -316,11 +316,9 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   }
 
   moveToBackLog(): void {
-    this.router.navigateByUrl(`/project/${this.projectId}`, { skipLocationChange: true }).then(() => {
-      this.router.navigateByUrl(`/project/${this.projectId}` + '/backlog', { 
-        replaceUrl: true,
-      });
-    })
+    this.router.navigateByUrl(`/project/${this.projectId}/backlog`, { 
+      replaceUrl: true,
+    });
   }
 
   moveToSettings(): void {
