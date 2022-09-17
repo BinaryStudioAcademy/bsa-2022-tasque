@@ -8,7 +8,6 @@ import { GetCurrentUserService } from "../get-current-user.service";
 })
 export class ScopeGetCurrentEntityService {
     
-    
     constructor(
         public getCurrentUserService: GetCurrentUserService,
         public getCurrentOrganizationService: GetCurrentOrganizationService,
