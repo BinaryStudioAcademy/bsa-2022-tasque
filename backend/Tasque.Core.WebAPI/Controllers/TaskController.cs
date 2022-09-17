@@ -61,19 +61,5 @@ namespace Tasque.Core.WebAPI.Controllers
             await _taskService.DeleteTask(id);
             return NoContent();
         }
-
-        [HttpGet("getTasksState")]
-        public IActionResult GetTasksState()
-        {
-            return Ok();
-            //   return Ok(await _taskService.GetTasksState());
-        }
-
-        [HttpGet("getTasksType")]
-        public IActionResult GetTasksType()
-        {
-            return Ok();
-            //   return Ok(await _taskService.GetTasksType());
-        }
     }
 }

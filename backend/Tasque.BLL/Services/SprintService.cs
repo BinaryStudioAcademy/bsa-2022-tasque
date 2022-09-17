@@ -215,13 +215,6 @@ namespace Tasque.Core.BLL.Services
                 .FirstOrDefaultAsync(s => s.Id == sprintId)
                 ?? throw new HttpException(System.Net.HttpStatusCode.NotFound, "Sprinter with this ID does not exist");
 
-
-         //   var userRole = user.Roles
-         //       .FirstOrDefault(r => r.ProjectId == sprint.ProjectId);
-
-          //  if (userRole == null || userRole.RoleId != (int)BaseProjectRole.Admin)
-          //      throw new HttpException(System.Net.HttpStatusCode.Forbidden, "Access is denied");
-
             sprint.Tasks
                     .Where(t => t.StateId == ((int)BasicTaskStateTypes.ToDo)
                         || t.StateId == ((int)BasicTaskStateTypes.InProgress))
