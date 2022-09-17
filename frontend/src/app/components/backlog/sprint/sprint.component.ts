@@ -71,6 +71,8 @@ export class SprintComponent implements OnInit, OnChanges {
   public role: UserRole;
   public isCurrentUserAdmin: boolean;
 
+  public isDraggable = true;
+
   public unsubscribe$ = new Subject<void>();
 
   public createIssueSidebarName = 'createIssue';
@@ -252,5 +254,9 @@ export class SprintComponent implements OnInit, OnChanges {
 
   public deleteSprint(sprint: SprintModel): void {
     this.openDialogService.openDeleteSprintDialog(sprint);
+  }
+
+  public toogleIsDragable(val: boolean): void {
+    this.isDraggable = !val;
   }
 }

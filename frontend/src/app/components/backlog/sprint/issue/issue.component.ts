@@ -37,6 +37,8 @@ export class IssueComponent implements OnInit {
   @Input() public currentProject: ProjectModel;
   //notifying the parent components about the change in the value of estimate
   @Output() estimate = new EventEmitter<void>();
+  @Output() isChanging = new EventEmitter<boolean>();
+
   flagIcon = faFlag;
   // TODO remove when real data is available
   @Input() public taskTypes: TaskType[] = [
@@ -163,7 +165,9 @@ export class IssueComponent implements OnInit {
       });
   }
 
-  test(): void {
-    this.sidebarService.toggle('task-editing-' + this.issue.id);
+  test(val: boolean): void {
+    //this.sidebarService.toggle('task-editing-' + this.issue.id);
+    console.log('edit');
+    this.isChanging.emit(val);
   }
 }

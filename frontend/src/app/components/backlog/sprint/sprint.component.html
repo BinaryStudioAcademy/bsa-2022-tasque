@@ -152,17 +152,31 @@
       <div class="empty-tasks row pale" *ngIf="tasks && tasks.length === 0">
         <label class="text-center">Plan a sprint by dragging issue here</label>
       </div>
-
-      <app-issue
-        cdkDrag
-        *ngFor="let task of tasks"
-        [issue]="task"
-        [taskStates]="taskState"
-        [taskTypes]="taskType"
-        [currentUser]="currentUser"
-        (estimate)="estimateCount()"
-        [currentProject]="currentProject"
-      ></app-issue>
+      <div *ngIf="isDraggable">
+        <app-issue
+          cdkDrag
+          (isChanging)="toogleIsDragable($event)"
+          *ngFor="let task of tasks"
+          [issue]="task"
+          [taskStates]="taskState"
+          [taskTypes]="taskType"
+          [currentUser]="currentUser"
+          (estimate)="estimateCount()"
+          [currentProject]="currentProject"
+        ></app-issue>
+      </div>
+      <div *ngIf="!isDraggable">
+        <app-issue
+          (isChanging)="toogleIsDragable($event)"
+          *ngFor="let task of tasks"
+          [issue]="task"
+          [taskStates]="taskState"
+          [taskTypes]="taskType"
+          [currentUser]="currentUser"
+          (estimate)="estimateCount()"
+          [currentProject]="currentProject"
+        ></app-issue>
+      </div>
     </div>
     <div class="sprint-footer">
       <div class="create-issue">
