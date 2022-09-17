@@ -57,6 +57,7 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit, O
   }
 
   ngOnChanges(): void {
+    this.currentProject.name = 'My Project';
     this.projectService
       .getProjectsByOrganizationId(this.organizationId)
       .subscribe((resp) => {
