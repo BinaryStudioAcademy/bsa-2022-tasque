@@ -238,7 +238,7 @@ namespace Tasque.Core.BLL.Services
             return true;
         }
 
-        public async Task<SprintDto> GetCurrentSprintByProjectId(int projectId)
+        public async Task<SprintDto?> GetCurrentSprintByProjectId(int projectId)
         {
             var sprint = await _db.Sprints
                 .Where(s => s.ProjectId == projectId && !s.IsComplete && s.StartAt != null)

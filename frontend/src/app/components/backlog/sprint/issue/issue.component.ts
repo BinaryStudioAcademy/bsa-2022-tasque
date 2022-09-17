@@ -21,7 +21,6 @@ import { TaskService } from 'src/core/services/task.service';
 import { NotificationService } from 'src/core/services/notification.service';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
-import { SideBarService } from 'src/core/services/sidebar.service';
 
 @Component({
   selector: 'app-issue',
@@ -41,57 +40,10 @@ export class IssueComponent implements OnInit {
 
   flagIcon = faFlag;
   // TODO remove when real data is available
-  @Input() public taskTypes: TaskType[] = [
-    {
-      id: 1,
-      name: 'Bug',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      icon: this.flagIcon,
-    },
-    {
-      id: 2,
-      name: 'Feature',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      icon: this.flagIcon,
-    },
-    {
-      id: 3,
-      name: 'Enhancement',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      icon: this.flagIcon,
-    },
-  ];
+  @Input() public taskTypes: TaskType[] = [];
 
   // TODO remove when real data is available
-  @Input() public taskStates: TaskState[] = [
-    // {
-    //   id: 1,
-    //   name: 'To Do',
-    //   createdAt: new Date(),
-    //   updatedAt: new Date(),
-    // },
-    // {
-    //   id: 2,
-    //   name: 'In Progress',
-    //   createdAt: new Date(),
-    //   updatedAt: new Date(),
-    // },
-    // {
-    //   id: 3,
-    //   name: 'Done',
-    //   createdAt: new Date(),
-    //   updatedAt: new Date(),
-    // },
-    // {
-    //   id: 4,
-    //   name: 'Canceled',
-    //   createdAt: new Date(),
-    //   updatedAt: new Date(),
-    // },
-  ];
+  @Input() public taskStates: TaskState[] = [];
 
   public taskEstimate: TaskEstimateUpdate;
   public unsubscribe$ = new Subject<void>();
@@ -103,7 +55,6 @@ export class IssueComponent implements OnInit {
     public notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
     private taskStorageService: TaskStorageService,
-    private sidebarService: SideBarService,
   ) {}
 
   ngOnInit(): void {
@@ -166,8 +117,6 @@ export class IssueComponent implements OnInit {
   }
 
   test(val: boolean): void {
-    //this.sidebarService.toggle('task-editing-' + this.issue.id);
-    console.log('edit');
     this.isChanging.emit(val);
   }
 }

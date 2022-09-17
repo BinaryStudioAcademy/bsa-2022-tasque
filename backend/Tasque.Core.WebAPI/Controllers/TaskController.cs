@@ -63,14 +63,14 @@ namespace Tasque.Core.WebAPI.Controllers
         }
 
         [HttpGet("getTasksState")]
-        public async Task<IActionResult> GetTasksState()
+        public IActionResult GetTasksState()
         {
             return Ok();
             //   return Ok(await _taskService.GetTasksState());
         }
 
         [HttpGet("getTasksType")]
-        public async Task<IActionResult> GetTasksType()
+        public IActionResult GetTasksType()
         {
             return Ok();
             //   return Ok(await _taskService.GetTasksType());

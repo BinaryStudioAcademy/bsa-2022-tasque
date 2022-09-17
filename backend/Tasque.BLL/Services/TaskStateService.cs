@@ -16,7 +16,7 @@ namespace Tasque.Core.BLL.Services
         
         }
 
-        public new async Task<IEnumerable<TaskState>> GetAll()
+        public async Task<IEnumerable<TaskState>> GetAll()
         {
             var tasksStates = await _db.TaskStates
                 .ToListAsync();

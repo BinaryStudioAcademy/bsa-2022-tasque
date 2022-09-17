@@ -85,7 +85,7 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit, O
     .getCurrentProjectService.currentProjectId = project.id;
 
     this.router.navigateByUrl(`/project/${project.id}`, { skipLocationChange: true }).then(() =>
-    this.router.navigate([`./board`], { 
+    this.router.navigate(['./board'], { 
       replaceUrl: true,
       relativeTo: this.activeRoute
     }));
