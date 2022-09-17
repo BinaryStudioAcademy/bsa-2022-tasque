@@ -194,7 +194,7 @@ export class SprintComponent implements OnInit, OnChanges {
       if(this.currentSprint.id) {
         _task.sprintId = this.currentSprint.id;
       } else {
-        _task.sprintId = undefined
+        _task.sprintId = undefined;
       }
 
       this.taskService
