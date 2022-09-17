@@ -22,6 +22,7 @@ import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'tasque-board',
@@ -229,6 +230,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         event.previousIndex,
         event.currentIndex,
       );
+      this.orderTasks(event);
     } else {
       transferArrayItem(
         event.previousContainer.data,
@@ -238,6 +240,16 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       );
       this.updateTasks(event);
     }
+  }
+
+  orderTasks(event: CdkDragDrop<TaskInfoModel[]>): void {
+    const tasks = event.container.data.map((x) => x.id);
+    this.boardService.taskService
+      .setOrder(tasks)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((resp) => {
+        event.container.data = resp.body as TaskInfoModel[];
+      });
   }
 
   updateColumns(): void {
