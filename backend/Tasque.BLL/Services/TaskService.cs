@@ -2,6 +2,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.BLL.Exceptions;
+using Tasque.Core.BLL.Extensions;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.PartialModels;
 using Tasque.Core.Common.DTO.Task;
@@ -256,6 +257,16 @@ namespace Tasque.Core.BLL.Services
             {
                 _dbContext.Entry(entity);
             }
+        }
+
+        public async Task<IEnumerable<TaskDto>> SetOrder(IEnumerable<int> ids)
+        {
+            var tasks = _dbContext.Tasks.Where(x => ids.Contains(x.Id));
+            tasks.SetOrder(ids);
+            await _dbContext.SaveChangesAsync();
+
+            tasks = tasks.OrderBy(x => x.Order);
+            return _mapper.Map<IEnumerable<TaskDto>>(tasks);
         }
     }
 }
