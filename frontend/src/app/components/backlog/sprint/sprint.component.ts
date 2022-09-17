@@ -191,7 +191,11 @@ export class SprintComponent implements OnInit, OnChanges {
         event.currentIndex,
       );
 
-      _task.sprintId = this.currentSprint.id;
+      if(this.currentSprint.id) {
+        _task.sprintId = this.currentSprint.id;
+      } else {
+        _task.sprintId = undefined
+      }
 
       this.taskService
         .updateTask(_task)

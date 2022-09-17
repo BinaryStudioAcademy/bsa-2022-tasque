@@ -131,17 +131,29 @@
 
 .no-tasks
     border: dashed
+    display: flex
+    flex-direction: column
     border-color: colorscheme('gray-400')
-    margin: 0 0 10px 0
+    margin: 10px 0 10px 0
+    justify-content: space-around
     &.pale
         color: colorscheme('dark-grey-100')
     &.row
         display: inline-flex
         align-items: center
-        height: 50px
+        height: 75px
         width: 100%
-    label
-        margin: auto
+    // label
+    //     margin: auto
+
+.no-tasks-actions
+    display: flex
+    a
+        color: colorscheme(blue-200)
+        margin: 0 5px 0 5px
+        &:hover
+            cursor: pointer
+
 
 .team-container
     margin-left: 25px

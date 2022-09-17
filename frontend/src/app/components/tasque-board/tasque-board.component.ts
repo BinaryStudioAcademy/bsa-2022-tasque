@@ -64,7 +64,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private currentUserService: GetCurrentUserService,
     private taskStorageService: TaskStorageService,
-    private router: Router
+    private router: Router,
   ) {
     this.currentUserService.currentUser$.subscribe((res) => {
       this.user = res as UserModel;
@@ -313,5 +313,19 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
   toogleIsDraggable(val: boolean): void {
     this.isDraggable = !val;
+  }
+
+  moveToBackLog(): void {
+    this.router.navigateByUrl(`/project/${this.projectId}`, { skipLocationChange: true }).then(() => {
+      this.router.navigateByUrl(`/project/${this.projectId}` + '/backlog', { 
+        replaceUrl: true,
+      });
+    })
+  }
+
+  moveToSettings(): void {
+    this.router.navigateByUrl(`/project/${this.projectId}/settings/issue-template`, { 
+      replaceUrl: true,      
+    });
   }
 }

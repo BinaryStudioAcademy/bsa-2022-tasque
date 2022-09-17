@@ -30,9 +30,13 @@
         </div>
       </div>
       <div class="no-tasks row pale" *ngIf="!hasTasks">
-        <label>There are no tasks yet. You can create the first one.</label>
+        <label>There are no tasks yet.</label>
+        <span class="no-tasks-actions">You can create the 
+          <a (click)="moveToBackLog()">first one</a> or check 
+          <a (click)="moveToSettings()">project settings</a>
+        </span>
       </div>
-      <div class="board-columns" cdkDropListGroup>
+      <div class="board-columns" cdkDropListGroup *ngIf="hasTasks">
         <div cdkDropList *ngFor="let item of columns"
         (cdkDropListDropped)="dragDrop($event)"
         [cdkDropListData]="item.tasks" class="column-with-tasks">
