@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import { BusinessRole, IUserCard } from '../../select-users/Models';
 import { BaseComponent } from 'src/core/base/base.component';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'tasque-project-dropdown',
@@ -18,6 +19,8 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit, O
 
   public currentUser: UserModel;
   public latestProjects: ProjectInfoModel[] = [];
+
+  @Output() isChanged = new EventEmitter<Observable<void>>();
 
   private fakeUsers: IUserCard[] = [{
     id: -1,
@@ -90,6 +93,7 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit, O
       relativeTo: this.activeRoute
     }));
     window.scroll(0, 0);
+    this.isChanged.emit();
   }
 
   public openProjectsPage(): void {
