@@ -46,6 +46,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   user: UserModel;
   public hasTasks = false;
   public isShow = false;
+  public isDraggable = true;
   public searchParameter = '';
   colors = ['#D47500', '#00AA55', '#E3BC01', '#009FD4', '#B281B3', '#D47500', '#DC2929'];
 
@@ -308,5 +309,9 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     if(userId) {
       this.selectedUserId = Number(userId);
     }
+  }
+
+  toogleIsDraggable(val: boolean): void {
+    this.isDraggable = !val;
   }
 }

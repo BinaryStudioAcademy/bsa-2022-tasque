@@ -46,14 +46,45 @@
               <img src="assets/board/column_menu.svg"> 
             </div>  
           </div>
-          <div *ngIf="item.name !== 'done'">
-            <div class="column" *ngFor="let task of item.tasks" cdkDrag> 
-              <tasque-card *ngIf="!task.isHidden" [taskInfo]="task"></tasque-card>
+          <div *ngIf="isDraggable">
+            <div *ngIf="item.name !== 'done'">
+              <div class="column" *ngFor="let task of item.tasks" cdkDrag> 
+                <tasque-card 
+                  *ngIf="!task.isHidden" 
+                  [taskInfo]="task" 
+                  (isChanging)="toogleIsDraggable($event)">
+                </tasque-card>
+              </div>
+            </div>
+            <div *ngIf="item.name === 'done'">
+              <div class="column" *ngFor="let task of item.tasks" cdkDrag> 
+                <tasque-card 
+                  *ngIf="!task.isHidden" 
+                  [taskInfo]="task" 
+                  [isDone]="true" 
+                  (isChanging)="toogleIsDraggable($event)">
+                </tasque-card>
+              </div>
             </div>
           </div>
-          <div *ngIf="item.name === 'done'">
-            <div class="column" *ngFor="let task of item.tasks" cdkDrag> 
-              <tasque-card *ngIf="!task.isHidden" [taskInfo]="task" [isDone]="true"></tasque-card>
+          <div *ngIf="!isDraggable">
+            <div *ngIf="item.name !== 'done'">
+              <div class="column" *ngFor="let task of item.tasks"> 
+                <tasque-card 
+                  *ngIf="!task.isHidden" 
+                  [taskInfo]="task" 
+                  (isChanging)="toogleIsDraggable($event)">
+                </tasque-card>
+              </div>
+            </div>
+            <div *ngIf="item.name === 'done'">
+              <div class="column" *ngFor="let task of item.tasks"> 
+                <tasque-card 
+                  *ngIf="!task.isHidden" 
+                  [taskInfo]="task" 
+                  [isDone]="true" 
+                  (isChanging)="toogleIsDraggable($event)"></tasque-card>
+              </div>
             </div>
           </div>
         </div>
