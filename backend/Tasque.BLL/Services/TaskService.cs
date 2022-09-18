@@ -114,7 +114,7 @@ namespace Tasque.Core.BLL.Services
             return tasks.Join(customFields, t => t.Id, ca => int.Parse(ca.Id), (t, ca) =>
                 JoinTaskAttributesWithDto(t,
                     RenameFieldsWithActualValue(
-                        GetTaskTemplate(t.ProjectId, t.TypeId).Result?? new(),
+                        GetTaskTemplate(t.ProjectId, t.TypeId).Result ?? new(),
                             MapCosmosTaskFieldsToTaskCustomFields(t, ca.CustomFields ?? new()).Result) ?? new())).ToList();
         }
 
