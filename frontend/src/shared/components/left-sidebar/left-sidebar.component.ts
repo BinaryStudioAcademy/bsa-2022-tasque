@@ -62,7 +62,7 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit, OnCha
   }
 
   ngOnChanges(): void {
-    this.checkActivatedRoute();
+    this.ngOnInit();
   }
 
   minimize(): void {
