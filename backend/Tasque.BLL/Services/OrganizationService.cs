@@ -27,6 +27,7 @@ namespace Tasque.Core.BLL.Services
             entityToCreate.AuthorId = _currentUserId;
 
             await _dbSet.AddAsync(entityToCreate);
+            await _db.SaveChangesAsync();
 
             var orgRole = new UserOrganizationRole()
             {
@@ -36,8 +37,8 @@ namespace Tasque.Core.BLL.Services
             };
 
             await _db.UserOrganizationRoles.AddAsync(orgRole);
-
             await _db.SaveChangesAsync();
+
 
             return _mapper.Map<OrganizationInfoDto>(entityToCreate);
         }
