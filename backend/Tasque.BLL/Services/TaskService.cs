@@ -75,7 +75,7 @@ namespace Tasque.Core.BLL.Services
 
                 return JoinTaskAttributesWithDto(task,
                     RenameFieldsWithActualValue(template,
-                        await MapCosmosTaskFieldsToTaskCustomFields(task, attributes.CustomFields)?? new())?? new());
+                        await MapCosmosTaskFieldsToTaskCustomFields(task, attributes.CustomFields) ?? new()) ?? new());
             }
 
             return task;
@@ -115,7 +115,7 @@ namespace Tasque.Core.BLL.Services
                 JoinTaskAttributesWithDto(t,
                     RenameFieldsWithActualValue(
                         GetTaskTemplate(t.ProjectId, t.TypeId).Result?? new(),
-                            MapCosmosTaskFieldsToTaskCustomFields(t, ca.CustomFields?? new()).Result)?? new())).ToList();
+                            MapCosmosTaskFieldsToTaskCustomFields(t, ca.CustomFields ?? new()).Result) ?? new())).ToList();
         }
 
         public async Task<TaskDto> GetTaskById(int id)
@@ -143,7 +143,7 @@ namespace Tasque.Core.BLL.Services
 
             return JoinTaskAttributesWithDto(task,
                 RenameFieldsWithActualValue(template,
-                        await MapCosmosTaskFieldsToTaskCustomFields(task, attributes.CustomFields))?? new());
+                        await MapCosmosTaskFieldsToTaskCustomFields(task, attributes.CustomFields)) ?? new());
         }
 
         public async Task<TaskDto> UpdateTask(TaskDto model)
@@ -212,7 +212,7 @@ namespace Tasque.Core.BLL.Services
 
                 return JoinTaskAttributesWithDto(_mapper.Map<TaskDto>(response),
                     RenameFieldsWithActualValue(template,
-                            await MapCosmosTaskFieldsToTaskCustomFields(_mapper.Map<TaskDto>(task), attributes.CustomFields))?? new());
+                            await MapCosmosTaskFieldsToTaskCustomFields(_mapper.Map<TaskDto>(task), attributes.CustomFields)) ?? new());
             }
 
             return _mapper.Map<TaskDto>(response);
@@ -258,7 +258,7 @@ namespace Tasque.Core.BLL.Services
                 {
                     FieldId = f.FieldId,
                     FieldName = template?.CustomFields?.Find(t => t.FieldId == f?.FieldId)?.Name,
-                    FieldType = type?? TaskFieldType.Text,
+                    FieldType = type ?? TaskFieldType.Text,
                     FieldValue = f.FieldValue,
                 });
             });
