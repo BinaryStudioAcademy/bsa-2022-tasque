@@ -12,16 +12,11 @@
         <span class="pale pl-5" *ngIf="tasks">({{ tasks.length }} issues)</span>
       </button>
     </div>
-    <div class="sprints">
-      <! -- 
-      TODO  Add ngIf to task button when roles will work
-      *ngIf="isCurrentUserAdmin"
-    -->
+    <div class="sprints" *ngIf="isCurrentUserAdmin">
       <tasque-button
         class="mini"
         text="Create Sprint"
         [class]="btnClass"
-        class="mini"
         (click)="createSprint()"
       ></tasque-button>
     </div>

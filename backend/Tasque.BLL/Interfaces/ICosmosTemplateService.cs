@@ -13,7 +13,7 @@ namespace Tasque.Core.BLL.Interfaces
 
         Task<List<TaskTemplate>> GetAllProjectTemplates(int projectId);
 
-        Task<TaskTemplate> GetTemplateById(string id);
+        Task<TaskTemplate?> GetTemplateById(string id);
 
         Task<TaskTemplate> UpdateTemplate(TaskTemplate model);
     }

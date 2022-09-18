@@ -133,10 +133,6 @@ details
     -o-transition: all .3s linear
     -webkit-transition: all .3s linear
 
-// .cdk-drag-preview
-//     app-backlog-content
-//     background: red
-
 .complete-sprint, .start-sprint
     width: 180px
 
@@ -166,3 +162,12 @@ details
         align-items: center
         height: 50px
         width: 100%
+
+.cdk-drag-preview
+    background: colorscheme(white-100)
+    border-radius: 10px
+    border: 2px solid colorscheme(gray-300)
+    transition: transform 300ms cubic-bezier(0, 0, 0.2, 1)
+    ::ng-deep 
+        .issue
+             border: none

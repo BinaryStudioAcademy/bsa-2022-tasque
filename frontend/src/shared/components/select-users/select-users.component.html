@@ -15,7 +15,7 @@
           ></tasque-input>
         </div>
         <div class="header-button-container wpx-150 pr-15 ml-15">
-          <tasque-button class="mini btn" text="Add User" [icon]="addIcon" type="submit" (btnClick)="add()"></tasque-button>
+          <tasque-button class="mini btn" text="+ Add User" type="submit" (btnClick)="add()"></tasque-button>
         </div>
       </form>
     </div>
@@ -27,23 +27,39 @@
         <ul role="list" [ngStyle]="{ 'height.px': defaultRowHeight_px * rowspan + 1 }">
           <div class="list-item-element" *ngFor="let user of users$ | async; index as i">
             <hr *ngIf="i != 0" />
-            <li role="listitem" class="row" >
+            <li role="listitem" class="row">
               <div class="user-data mr-15">
-                <tasque-avatar [user]="getUserModel(user)" alt="user's avatar" [diameter_px]="40"></tasque-avatar>
+                <tasque-avatar
+                  [user]="getUserModel(user)"
+                  alt="user's avatar"
+                  [diameter_px]="40"
+                ></tasque-avatar>
                 <a [href]="user.profileURL" class="username">
                   <tasque-button class="btn" [text]="user.userName"></tasque-button>
                 </a>
               </div>
               <div class="user-actions ml-15">
-                <tasque-dropdown [options]="roles" [placeholder]="roleToString(user.role)" [dropBelow]="false" width="150px" (onSelect)="update(user, $event)"></tasque-dropdown>
-                <tasque-button class="stroke mr-15 ml-15" text="Remove" (btnClick)="delete(user.email)"></tasque-button>
+                <tasque-dropdown
+                  [options]="roles"
+                  [placeholder]="roleToString(user.role)"
+                  [dropBelow]="false"
+                  width="150px"
+                  (onSelect)="update(user, $event)"
+                ></tasque-dropdown>
+                <tasque-button
+                  class="stroke mr-15 ml-15"
+                  text="Remove"
+                  (btnClick)="delete(user.email)"
+                ></tasque-button>
               </div>
             </li>
           </div>
         </ul>
       </ng-template>
       <ng-template [ngIf]="!isLoading && usersCount == 0">
-        <h4 class="text-center">It's quiet out here... You should invite someone.</h4>
+        <div class="no-users row pale">
+          <label class="text-center">It's quiet out here... You should invite someone.</label>
+        </div>
       </ng-template>
     </div>
   </div>

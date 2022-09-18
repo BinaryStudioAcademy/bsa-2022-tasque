@@ -29,7 +29,7 @@ export class AccessControlGuard implements CanActivate {
       .pipe(
         map((data) => {
         if(data.body) {
-          const isUserExist = data.body.users.find((x) => x.id == this.userId);
+          const isUserExist = data.body.users?.find((x) => x.id == this.userId);
 
           if(isUserExist) {
             this.currentProjectService.updateProject(this.currentProject);

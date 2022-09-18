@@ -4,7 +4,7 @@
       ><tasque-logo class="logo" [isLight]="true"></tasque-logo
     ></a>
     <span routerLink="/your-work" class="button">Your work</span>
-    <tasque-project-dropdown class="button"></tasque-project-dropdown>
+    <tasque-project-dropdown class="button" (isChanged)="checkUrl()" [organizationId]="currentOrganizationId"></tasque-project-dropdown>
     <span class="button">Calendar</span>
     <tasque-menu-dropdown
       class="button-like"
@@ -29,6 +29,7 @@
   <div class="center-panel">
     <tasque-organizations-dropdown
       class="button"
+      (organizationChanged)="changeOrganizationId($event)"
     ></tasque-organizations-dropdown>
   </div>
   <div class="user-panel">

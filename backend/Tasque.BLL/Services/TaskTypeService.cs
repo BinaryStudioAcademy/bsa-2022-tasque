@@ -20,9 +20,9 @@ namespace Tasque.Core.BLL.Services
             return _mapper.Map<List<TaskTypeDto>>(_db.TaskTypes.Where(t => t.ProjectId == projectId));
         }
 
-        public new async Task<IEnumerable<TaskType>> GetAll()
+        public Task<List<TaskType>> GetAll()
         {
-            var tasksTypes = await _db.TaskTypes
+            var tasksTypes = _db.TaskTypes
                 .ToListAsync();
 
             return tasksTypes;

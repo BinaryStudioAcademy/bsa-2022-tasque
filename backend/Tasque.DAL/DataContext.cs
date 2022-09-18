@@ -27,7 +27,6 @@ public class DataContext : DbContext
     public DbSet<Calendar> Calendars { get; set; } = null!;
     public DbSet<Label> Labels { get; set; } = null!;
     public DbSet<Meeting> Meetings { get; set; } = null!;
-    public DbSet<Notification> Notifications { get; set; } = null!;
     public DbSet<Role> Roles { get; set; } = null!;
     public DbSet<TaskPriority> TaskPriorities { get; set; } = null!;
     public DbSet<TaskState> TaskStates { get; set; } = null!;
