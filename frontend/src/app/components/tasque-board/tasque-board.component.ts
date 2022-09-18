@@ -110,7 +110,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           this.projectTasks = this.currentSprint.tasks;
           this.hasTasks = this.checkIfHasTasks();
           this.sortTasksByColumns();
-          this.filterTasks();
         } else {
           this.notificationService.error('Something went wrong');
         }
@@ -184,7 +183,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       });
       c.tasks = taskInfo;
     });
-    this.isShow = true;
+    this.filterTasks();
   }
 
   setColumns(): void {
@@ -292,6 +291,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         }
       }
     }
+    this.isShow = true;
   }
 
   userSelected(event: UserModel): void {
