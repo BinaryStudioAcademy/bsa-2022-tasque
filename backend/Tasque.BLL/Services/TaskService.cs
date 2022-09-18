@@ -247,7 +247,7 @@ namespace Tasque.Core.BLL.Services
             var template = await GetTaskTemplate(task.ProjectId, task.TypeId);
             var result = new List<TaskCustomFields>();
 
-            if (fields == null || fields.Count() == 0 || template == null || template.CustomFields == null)
+            if (fields == null || fields.Count() == 0 || template?.CustomFields == null)
                 return result;
 
             fields.ForEach(f =>
