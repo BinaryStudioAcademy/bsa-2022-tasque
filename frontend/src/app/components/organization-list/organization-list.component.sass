@@ -1,3 +1,5 @@
+@import 'src/colors.sass'
+
 .organization-list
   display: flex
   flex-direction: column
@@ -22,6 +24,12 @@
 .organizations-search ::ng-deep input
   width: 420px
 
-.empty-organization-warning
-  padding-top: 20px
-  font-size: 20px
+.empty-organizations-warning
+  text-align: center
+  padding: 20px
+  margin-bottom: 15px
+  border: dashed
+  border-color: colorscheme('gray-400')
+  color: colorscheme('dark-grey-100')
+  p
+    font-size: 16px

@@ -1,3 +1,5 @@
+@import 'src/colors.sass'
+
 .project-list
   display: flex
   flex-direction: column
@@ -21,3 +23,13 @@
 
 .project-search ::ng-deep input
   width: 420px
+
+.empty-projects-warning
+  text-align: center
+  padding: 20px
+  margin-bottom: 15px
+  border: dashed
+  border-color: colorscheme('gray-400')
+  color: colorscheme('dark-grey-100')
+  p
+    font-size: 16px

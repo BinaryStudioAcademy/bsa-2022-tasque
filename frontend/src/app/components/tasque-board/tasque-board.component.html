@@ -19,18 +19,34 @@
         <img src="assets/board/menu.svg">
       </div>
     </div>
-    <div class="board-panel">
-      <div class="task-menu">
-        <div class="project-team">
-          <div class="search-input-container">
-            <tasque-input class="search-input" #searchInput (input)="filterTasks()" type="search" [icon]="searchIcon" iconPosition="search" placeholder="Search..."></tasque-input>
-          </div>
-          <div class="team-container">
-            <tasque-team-select [avatars]="project.users" [selectedUserId]="selectedUserId ? selectedUserId : 0" (selectedUser)="userSelected($event)"></tasque-team-select>
-          </div>
+    <div class="board-tools">
+      <img src="assets/board/lightning.svg" />
+      <img src="assets/board/star.svg" />
+      <app-complete-sprint></app-complete-sprint>
+      <img src="assets/board/share.svg" />
+      <img src="assets/board/menu.svg" />
+    </div>
+  </div>
+  <div class="board-panel">
+    <div class="task-menu">
+      <div class="project-team">
+        <div class="search-input-container">
+          <tasque-input
+            class="search-input"
+            #searchInput
+            (input)="filterTasks()"
+            type="search"
+            [icon]="searchIcon"
+            iconPosition="search"
+            placeholder="Search..."
+          ></tasque-input>
         </div>
-        <div class="filter">
-          <img src="assets/board/filter.svg">
+        <div class="team-container">
+          <tasque-team-select
+            [avatars]="project.users"
+            [selectedUserId]="selectedUserId ? selectedUserId : 0"
+            (selectedUser)="userSelected($event)"
+          ></tasque-team-select>
         </div>
       </div>
       <div class="no-tasks row pale" *ngIf="!hasTasks">
@@ -43,16 +59,13 @@
       <div class="board-columns" cdkDropListGroup *ngIf="hasTasks">
         <div cdkDropList *ngFor="let item of columns"
         (cdkDropListDropped)="dragDrop($event)"
-        [cdkDropListData]="item.tasks" class="column-with-tasks">
-          <div class="column-title">
-            <div class="board-list">
-              <span class="column-name">{{item.name}}</span>
-              <span class="column-element-count"> ({{item.tasks.length}})</span>
-            </div>
-            <div class="column-tools">
-              <span>+</span>
-              <img src="assets/board/column_menu.svg"> 
-            </div>  
+        [cdkDropListData]="item.tasks"
+        class="column-with-tasks"
+      >
+        <div class="column-title">
+          <div class="board-list">
+            <span class="column-name">{{ item.name }}</span>
+            <span class="column-element-count"> ({{ item.tasks.length }})</span>
           </div>
           <div *ngIf="isDraggable">
             <div *ngIf="item.name !== 'done'">
@@ -96,14 +109,29 @@
             </div>
           </div>
         </div>
-        <div class="create-column" (mouseleave)="onClickedOutside()">
-          <span *ngIf="!isOpenColumnAddDialog" (click)="openAddColumn()">+ Add Section</span>
-          <div *ngIf="isOpenColumnAddDialog">
-            <form [formGroup]="createColumnForm" (ngSubmit)="addColumn()">
-              <tasque-input type="text" placeholder="Type name" formControlName="columnName" [invalid]="!createColumnForm.valid && createColumnForm.touched" errorMessage="required" [icon]="plusIcon" iconPosition="right" (iconClick)="addColumn()"></tasque-input>
-            </form>
+        <div *ngIf="item.name === 'done'">
+          <div class="column" *ngFor="let task of item.tasks" cdkDrag>
+            <tasque-card *ngIf="!task.isHidden" [taskInfo]="task" [isDone]="true"></tasque-card>
           </div>
         </div>
       </div>
+      <div class="create-column" (mouseleave)="onClickedOutside()">
+        <span *ngIf="!isOpenColumnAddDialog" (click)="openAddColumn()">+ Add Section</span>
+        <div *ngIf="isOpenColumnAddDialog">
+          <form [formGroup]="createColumnForm" (ngSubmit)="addColumn()">
+            <tasque-input
+              type="text"
+              placeholder="Type name"
+              formControlName="columnName"
+              [invalid]="!createColumnForm.valid && createColumnForm.touched"
+              errorMessage="required"
+              [icon]="plusIcon"
+              iconPosition="right"
+              (iconClick)="addColumn()"
+            ></tasque-input>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
