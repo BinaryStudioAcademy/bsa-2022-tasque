@@ -44,6 +44,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
 
   public project: ProjectModel;
+  public projectUsers: UserModel[] = [];
   user: UserModel;
   public hasTasks = false;
   public isShow = false;
@@ -95,6 +96,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         (resp) => {
           if (resp.ok) {
             this.project = resp.body as ProjectModel;
+            this.projectUsers = this.project.users;
             this.setColumns();
           } else {
             this.notificationService.error('Something went wrong');
@@ -187,7 +189,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   }
 
   setColumns(): void {
-    const states = this.project.projectTaskStates;
+    const states = this.project?.projectTaskStates as TaskState[];
     states.forEach((s) => this.columns.push({
       id: s.id,
       name: s.name,
