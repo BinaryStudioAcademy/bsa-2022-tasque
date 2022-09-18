@@ -37,7 +37,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   btnClass = 'btn mini voilet full';
 
   public role: UserRole;
-  public isCurrentUserAdmin: boolean;
+  public isCurrentUserAdmin = false;
 
   public unsubscribe$ = new Subject<void>();
   subscription: Subscription;
@@ -83,14 +83,14 @@ export class BacklogContentComponent implements OnInit, OnChanges {
     if (this.currentUser === undefined) {
       return;
     }
-    this.role =
-      (this.currentUser?.organizationRoles?.find(
+    this.role = this.currentUser?.organizationRoles?.find(
         (m) =>
           m.organizationId === this.project.organizationId &&
           m.userId === this.currentUser.id,
-      )?.role as UserRole) || 0;
+      )?.role as UserRole ?? 0;
 
-    if (UserRole.OrganizationAdmin <= this.role) {
+      console.log(this.role);
+    if (UserRole.OrganizationAdmin <= this.role || this.project.authorId === this.currentUser.id) {
       this.isCurrentUserAdmin = true;
     }
 

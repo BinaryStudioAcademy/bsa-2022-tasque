@@ -69,7 +69,7 @@ export class SprintComponent implements OnInit, OnChanges {
   public tasksShow: TaskModel[];
   public tasksDto: TaskModel;
   public role: UserRole;
-  public isCurrentUserAdmin: boolean;
+  public isCurrentUserAdmin = false;
 
   public isDraggable = true;
 
@@ -101,7 +101,7 @@ export class SprintComponent implements OnInit, OnChanges {
             m.userId === this.currentUser.id,
         )?.role as UserRole) || 0;
 
-      if (UserRole.OrganizationAdmin <= this.role) {
+      if (UserRole.OrganizationAdmin <= this.role || this.currentProject.authorId === this.currentUser.id) {
         this.isCurrentUserAdmin = true;
       }
     }

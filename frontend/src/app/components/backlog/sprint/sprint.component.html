@@ -47,19 +47,12 @@
           <p class="estimate-count">{{ estimate ? estimate : 0 }}</p>
         </div>
         <div class="wrapper button">
-          <! -- 
-          TODO  Add ngIf to app-edit-sprint when roles will work
-          *ngIf="
-          !currentSprint.startAt &&
-          isCurrentUserAdmin &&
-          !currentSprint.isComplete
-        "
-        -->
           <app-edit-sprint
             *ngIf="
               !currentSprint.startAt &&
               !currentSprint.isComplete &&
-              currentSprint.tasks
+              currentSprint.tasks && 
+              isCurrentUserAdmin
             "
             [btnClass]="
               sprintIndex != 0 || currentSprint.tasks.length == 0
@@ -70,28 +63,16 @@
             class="btn mini voilet full start-sprint"
             [isStarting]="true"
           ></app-edit-sprint>
-
-          <! -- 
-          TODO  Add ngIf to app-complete-sprint when roles will work
-          *ngIf="
-          currentSprint.startAt &&
-          isCurrentUserAdmin &&
-          !currentSprint.isComplete
-        "
-        -->
           <app-complete-sprint
-            *ngIf="currentSprint.startAt && !currentSprint.isComplete"
+            *ngIf="currentSprint.startAt && 
+            !currentSprint.isComplete && 
+            isCurrentUserAdmin"
             [sprint]="currentSprint"
             class="btn complete-sprint"
             completeBthClass="btn mini violet-fill full"
             completeBtnText="Complete sprint"
           ></app-complete-sprint>
-
-          <! -- 
-          TODO  Add ngIf to div when roles will work
-          *ngIf="isCurrentUserAdmin && !currentSprint.isComplete"
-        -->
-          <div class="dropdown-button" *ngIf="!currentSprint.isComplete">
+          <div class="dropdown-button" *ngIf="isCurrentUserAdmin && !currentSprint.isComplete">
             <div class="dropdown" style="float: right">
               <tasque-button
                 class="btn dropbtn"
