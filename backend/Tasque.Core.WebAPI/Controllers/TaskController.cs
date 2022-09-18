@@ -66,6 +66,7 @@ namespace Tasque.Core.WebAPI.Controllers
         public async Task<IActionResult> GetTasksState()
         {
             return Ok();
+            // TODO implement GetTasksState
             //   return Ok(await _taskService.GetTasksState());
         }
 
@@ -73,7 +74,15 @@ namespace Tasque.Core.WebAPI.Controllers
         public async Task<IActionResult> GetTasksType()
         {
             return Ok();
+            // TODO implement GetTasksType
             //   return Ok(await _taskService.GetTasksType());
+        }
+        
+        [HttpPost("comment")]
+        public async Task<IActionResult> CommentTask([FromBody] CommentTaskDTO dto)
+        {
+            await _taskService.CommentTask(dto);
+            return Ok();
         }
     }
 }

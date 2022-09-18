@@ -7,8 +7,13 @@ using Tasque.Core.Common.DTO.PartialModels;
 using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.DTO.Task.PartialModels;
 using Tasque.Core.Common.DTO.Task.TemplateModels.IncomeModels;
+using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Entities.Abstract;
+using Tasque.Core.Common.Models.Events;
 using Tasque.Core.DAL;
+using static Amazon.S3.Util.S3EventNotification;
+using Tasque.Messaging.Abstractions;
+using Task = System.Threading.Tasks.Task;
 
 namespace Tasque.Core.BLL.Services
 {
@@ -22,16 +27,20 @@ namespace Tasque.Core.BLL.Services
 
         private readonly IMapper _mapper;
 
+        private readonly IEventBus _bus;
+
         public TaskService(
             DataContext dbContext,
             ICosmosTaskService cosmosTaskService,
             ICosmosTemplateService cosmosTemplateService,
-            IMapper mapper)
+            IMapper mapper,
+            IEventBus bus)
         {
             _dbContext = dbContext;
             _cosmosTaskService = cosmosTaskService;
             _mapper = mapper;
             _cosmosTemplateService = cosmosTemplateService;
+            _bus = bus;
         }
 
         public async Task<TaskDto> CreateTask(TaskDto model)
@@ -243,6 +252,32 @@ namespace Tasque.Core.BLL.Services
             project.ProjectTaskCounter += 1;
             _dbContext.SaveChanges();
             return project.ProjectTaskCounter;
+        }    
+        
+        public async Task CommentTask(CommentTaskDTO dto)
+        {
+            // TODO review method functionality after FrontEnd for task commenting is implemented
+            var task = _dbContext.Tasks.Single(t => t.Id == dto.TaskId);
+            var comment = new Comment
+            {
+                Message = dto.Message,
+                AuthorId = dto.AuthorId,
+                TaskId = dto.TaskId
+            };
+            _dbContext.Comments.Add(comment);
+
+            _dbContext.Update(task);
+            await _dbContext.SaveChangesAsync();
+
+            TaskCommentedEvent @event = new()
+            {
+                TaskAuthorId = task.AuthorId,
+                TaskId = task.Id,
+                CommentId = comment.Id,
+                ConnectiondId = task.Author.ConnectionId
+            };
+
+            _bus.Publish(@event);
         }
 
         private void SaveChanges<T>(T entity)

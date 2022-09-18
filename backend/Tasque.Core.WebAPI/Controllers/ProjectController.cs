@@ -33,6 +33,13 @@ public class ProjectController : EntityController
         return Ok();
     }
 
+    [HttpPost("move")]
+    public async Task<IActionResult> MoveTaskToAnotherColumn([FromBody] MoveTaskDTO dto)
+    {
+        await _service.MoveTask(dto);
+        return Ok();
+    }
+
     [HttpPut("kick")]
     public async Task<IActionResult> KickUser([FromBody] UserInviteDto userInviteDto)
     {
