@@ -24,31 +24,6 @@ public class ProjectController : EntityController
         return Ok(await _service.GetAllProjectsOfOrganization(organizationId));
     }
 
-
-    [HttpPut("invite")]
-    public async Task<IActionResult> InviteUserToProject([FromBody] UserInviteDto userInviteDto)
-    {
-        await _service.InviteUserToProject(userInviteDto);
-
-        return Ok();
-    }
-
-    [HttpPut("kick")]
-    public async Task<IActionResult> KickUser([FromBody] UserInviteDto userInviteDto)
-    {
-        await _service.KickUserOfProject(userInviteDto);
-
-        return Ok();
-    }
-
-    [HttpPut("role")]
-    public async Task<IActionResult> UpdateUserRole([FromBody] ChangeUserRoleDto changeUserRoleDto)
-    {
-        await _service.ChangeUserRole(changeUserRoleDto);
-
-        return Ok();
-    }
-
     [HttpGet("board/{projectId:int}")]
     public async Task<IActionResult> GetBoard(int projectId)
     {
@@ -88,13 +63,6 @@ public class ProjectController : EntityController
         return Ok(projects);
     }
 
-    [HttpGet("{projectId}/participants")]
-    public IActionResult GetProjectParticipants(int projectId)
-    {
-        var participants = _service.GetProjectParticipants(projectId);
-        return Ok(participants);
-    }
-
     [HttpGet("getProjectPriorities/{projectId}")]
     public IActionResult GetProjectPriorities(int projectId)
     {
@@ -111,23 +79,6 @@ public class ProjectController : EntityController
         if (states == null)
             return NotFound("Project or it's task states not found");
         return Ok(states);
-    }
-
-    [HttpGet("getProjectCards")]
-    public async Task<IActionResult> GetProjectCards()
-    {
-        var result = await _service.GetProjectCardsByUserId(_userId);
-
-        return Ok(result);
-    }
-
-    [Route("getById/{id}")]
-    [HttpGet]
-    public override async Task<IActionResult> GetById(int id)
-    {
-        var entity = await _service.GetProjectById(id);
-
-        return Ok(entity);
     }
     
     [HttpGet("getProjectById/{projectId}")]

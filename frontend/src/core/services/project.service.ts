@@ -20,6 +20,7 @@ import { ProjectCardModel } from '../models/your-work/project-card-model';
 })
 export class ProjectService {
   public routePrefix = '/api/project';
+  public routePrefixParticipants = '/api/ProjectParticipants';
 
   constructor(
     public httpService: HttpService
@@ -38,15 +39,15 @@ export class ProjectService {
   }
 
   inviteUser(userInvite: InviteUserModel): Observable<void> {
-    return this.httpService.putRequest<void>(this.routePrefix + '/invite', userInvite);
+    return this.httpService.putRequest<void>(this.routePrefixParticipants + '/invite', userInvite);
   }
 
   kickUser(userKick: InviteUserModel): Observable<void> {
-    return this.httpService.putRequest<void>(this.routePrefix + '/kick', userKick);
+    return this.httpService.putRequest<void>(this.routePrefixParticipants + '/kick', userKick);
   }
 
   changeUserRole(user: ChangeUserRoleModel): Observable<void> {
-    return this.httpService.putRequest<void>(this.routePrefix + '/role', user);
+    return this.httpService.putRequest<void>(this.routePrefixParticipants + '/role', user);
   }
 
   getProjectById(id: number): Observable<HttpResponse<ProjectModel>> {
@@ -74,7 +75,7 @@ export class ProjectService {
   }
 
   getProjectParticipants(id: number): Observable<HttpResponse<UserModel[]>> {
-    return this.httpService.getFullRequest<UserModel[]>(this.routePrefix + `/${id}/participants/`);
+    return this.httpService.getFullRequest<UserModel[]>(this.routePrefixParticipants + `/${id}/participants/`);
   }
 
   getProjectPriorities(id: number): Observable<HttpResponse<TaskPriority[]>> {
@@ -90,6 +91,6 @@ export class ProjectService {
   }
 
   getProjectCards(): Observable<HttpResponse<ProjectCardModel[]>> {
-    return this.httpService.getFullRequest(this.routePrefix + '/getProjectCards');
+    return this.httpService.getFullRequest(this.routePrefixParticipants + '/getProjectCards');
   }
 }
