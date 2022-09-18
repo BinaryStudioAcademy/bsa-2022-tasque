@@ -29,15 +29,15 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit, OnCha
 
   @Input() isChanged: Observable<void>;
 
-  isBoard: string | undefined;
-  isBacklog: string | undefined;
-  isTeam: string | undefined;
-  isWiki: string | undefined;
-  isSettings: string | undefined;
-  isColumnsAndStatuses: string | undefined;
-  isIssueTypes: string | undefined;
-  isIssueTemplate: string | undefined;
-  isBasicIssueTemplate: string | undefined;
+  isBoard = false;
+  isBacklog = false;
+  isTeam = false;
+  isWiki = false;
+  isSettings = false;
+  isColumnsAndStatuses = false;
+  isIssueTypes = false;
+  isIssueTemplate = false;
+  isBasicIssueTemplate = false;
 
   selectedColor = '#F0F3F9';
 
@@ -106,53 +106,53 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit, OnCha
   navigateToIssueTemplate(): void {
     this.router.navigate(['project/' + this.projectId + '/settings/issue-template']);
     this.setAllStylesUndefined();
-    this.isSettings = this.selectedColor;
-    this.isIssueTemplate = this.selectedColor;
+    this.isSettings = true;
+    this.isIssueTemplate = true;
   }
 
   navigateToBasicIssueTemplate(): void {
     this.router.navigate(['project/' + this.projectId + '/settings/basic-issue-template']);
     this.setAllStylesUndefined();
-    this.isSettings = this.selectedColor;
-    this.isBasicIssueTemplate = this.selectedColor;
+    this.isSettings = true;
+    this.isBasicIssueTemplate = true;
   }
 
   navigateToColumnsAndStatuses(): void {
     this.router.navigate(['project/' + this.projectId + '/settings/columns-and-statuses']);
     this.setAllStylesUndefined();
-    this.isSettings = this.selectedColor;
-    this.isColumnsAndStatuses = this.selectedColor;
+    this.isSettings = true;
+    this.isColumnsAndStatuses = true;
   }
 
   navigateToIssueTypes(): void {
     this.router.navigate(['project/' + this.projectId + '/settings/issue-types']);
     this.setAllStylesUndefined();
-    this.isSettings = this.selectedColor;
-    this.isIssueTypes = this.selectedColor;
+    this.isSettings = true;
+    this.isIssueTypes = true;
   }
 
   navigateToBoard(): void {
     this.router.navigate(['project/' + this.projectId + '/board']);
     this.setAllStylesUndefined();
-    this.isBoard = this.selectedColor;
+    this.isBoard = true;
   }
 
   navigateToBacklog(): void {
     this.router.navigate(['project/' + this.projectId + '/backlog']);
     this.setAllStylesUndefined();
-    this.isBacklog = this.selectedColor;
+    this.isBacklog = true;
   }
 
   navigateToTeam(): void {
     this.router.navigate(['project/' + this.projectId + '/team']);
     this.setAllStylesUndefined();
-    this.isTeam = this.selectedColor;
+    this.isTeam = true;
   }
 
   navigateToWiki(): void {
     this.router.navigate(['project/' + this.projectId + '/wiki']);
     this.setAllStylesUndefined();
-    this.isWiki = this.selectedColor;
+    this.isWiki = true;
   }
 
   public toggleSettings(): void {
@@ -178,49 +178,49 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit, OnCha
       this.showSettings = true;
       switch (currentUrl[currentUrl.length - 1]) {
         case 'columns-and-statuses':
-          this.isSettings = this.selectedColor;
-          this.isColumnsAndStatuses = this.selectedColor;
+          this.isSettings = true;
+          this.isColumnsAndStatuses = true;
           return;
         case 'issue-types':
-          this.isSettings = this.selectedColor;
-          this.isIssueTypes = this.selectedColor;
+          this.isSettings = true;
+          this.isIssueTypes = true;
           return;
         case 'issue-template':
-          this.isSettings = this.selectedColor;
-          this.isIssueTemplate = this.selectedColor;
+          this.isSettings = true;
+          this.isIssueTemplate = true;
           return;
         case 'basic-issue-template':
-          this.isSettings = this.selectedColor;
-          this.isBasicIssueTemplate = this.selectedColor;
+          this.isSettings = true;
+          this.isBasicIssueTemplate = true;
           return;
       }
     }
 
     switch (currentUrl[currentUrl.length - 1]) {
       case 'board':
-        this.isBoard = this.selectedColor;
+        this.isBoard = true;
         return;
       case 'backlog':
-        this.isBacklog = this.selectedColor;
+        this.isBacklog = true;
         return;
       case 'team':
-        this.isTeam = this.selectedColor;
+        this.isTeam = true;
         return;
       case 'wiki':
-        this.isWiki = this.selectedColor;
+        this.isWiki = true;
         return;
     }
   }
 
   setAllStylesUndefined(): void {
-    this.isBacklog = undefined;
-    this.isBoard = undefined;
-    this.isSettings = undefined;
-    this.isTeam = undefined;
-    this.isWiki = undefined;
-    this.isColumnsAndStatuses = undefined;
-    this.isIssueTypes = undefined;
-    this.isIssueTemplate = undefined;
-    this.isBasicIssueTemplate = undefined;
+    this.isBacklog = false;
+    this.isBoard = false;
+    this.isSettings = false;
+    this.isTeam = false;
+    this.isWiki = false;
+    this.isColumnsAndStatuses = false;
+    this.isIssueTypes = false;
+    this.isIssueTemplate = false;
+    this.isBasicIssueTemplate = false;
   }
 }
