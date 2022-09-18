@@ -5,7 +5,7 @@
     >
   </mat-spinner>
 </div>
-<div class="board" *ngIf="isShow && project !== undefined && columns !== undefined && projectTasks != undefined">
+<div class="board" *ngIf="isShow && project && columns && projectTasks">
     <div class="board-info">
       <div class="board-title">
         <span class="project-name">Project / {{project.name}}</span>
