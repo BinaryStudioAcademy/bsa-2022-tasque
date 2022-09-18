@@ -43,7 +43,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
   public unsubscribe$ = new Subject<void>();
 
-  public project: ProjectModel | undefined;
+  public project: ProjectModel;
   public projectUsers: UserModel[] = [];
   user: UserModel;
   public hasTasks = false;
