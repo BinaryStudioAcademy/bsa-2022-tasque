@@ -57,7 +57,9 @@
         </ul>
       </ng-template>
       <ng-template [ngIf]="!isLoading && usersCount == 0">
-        <h4 class="text-center">It's quiet out here... You should invite someone.</h4>
+        <div class="no-users row pale">
+          <label class="text-center">It's quiet out here... You should invite someone.</label>
+        </div>
       </ng-template>
     </div>
   </div>

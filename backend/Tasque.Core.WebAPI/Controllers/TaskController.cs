@@ -20,12 +20,6 @@ namespace Tasque.Core.WebAPI.Controllers
             _currentUser = currentUser;
         }
 
-        [HttpGet("getAllTasks")]
-        public async Task<IActionResult> GetAllTasks()
-        {
-            return Ok(await _taskService.GetAllTasks());
-        }
-
         [HttpGet("getAllProjectTasks/{projectId}")]
         public async Task<IActionResult> GetAllProjectTasks(int projectId)
         {
@@ -60,29 +54,6 @@ namespace Tasque.Core.WebAPI.Controllers
         {
             await _taskService.DeleteTask(id);
             return NoContent();
-        }
-
-        [HttpGet("getTasksState")]
-        public async Task<IActionResult> GetTasksState()
-        {
-            return Ok();
-            // TODO implement GetTasksState
-            //   return Ok(await _taskService.GetTasksState());
-        }
-
-        [HttpGet("getTasksType")]
-        public async Task<IActionResult> GetTasksType()
-        {
-            return Ok();
-            // TODO implement GetTasksType
-            //   return Ok(await _taskService.GetTasksType());
-        }
-        
-        [HttpPost("comment")]
-        public async Task<IActionResult> CommentTask([FromBody] CommentTaskDTO dto)
-        {
-            await _taskService.CommentTask(dto);
-            return Ok();
         }
     }
 }

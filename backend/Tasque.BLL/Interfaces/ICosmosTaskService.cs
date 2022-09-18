@@ -9,7 +9,7 @@ namespace Tasque.Core.BLL.Interfaces
 {
     public interface ICosmosTaskService
     {
-        Task<CosmosTaskModel> GetTaskById(string id);
+        Task<CosmosTaskModel?> GetTaskById(string id);
 
         Task<CosmosTaskModel> CreateTask(CosmosTaskModel model);
 

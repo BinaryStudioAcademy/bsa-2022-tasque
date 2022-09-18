@@ -15,6 +15,7 @@ public class User : BaseEntity
         OwnedTasks = new List<Task>();
         ParticipatedTasks = new List<Task>();
         Roles = new List<UserProjectRole>();
+        SystemRoles = new List<UserOrganizationRole>();
         OwnedOrganization = new List<Organization>();
         ParticipatedOrganization = new List<Organization>();
     }

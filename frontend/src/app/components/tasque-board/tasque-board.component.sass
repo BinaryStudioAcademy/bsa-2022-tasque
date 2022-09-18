@@ -14,7 +14,7 @@
 .board-panel
     background-color: colorscheme(gray-100)
     padding: 44px 10px 0px 37px
-    height: calc( 100% - 36px )
+    height: calc( 100% - 97px )
 
 .board-title
     display: flex
@@ -129,15 +129,29 @@
     cursor: move
     background: colorscheme(white-100)
 
-.empty-board-warning
-    text-align: center
-    padding: 20px
-    margin-bottom: 15px
+.no-tasks
     border: dashed
+    display: flex
+    flex-direction: column
     border-color: colorscheme('gray-400')
-    color: colorscheme('dark-grey-100')
-    p
-        font-size: 16px
+    margin: 10px 0 10px 0
+    justify-content: space-around
+    &.pale
+        color: colorscheme('dark-grey-100')
+    &.row
+        display: inline-flex
+        align-items: center
+        height: 75px
+        width: 100%
+
+.no-tasks-actions
+    display: flex
+    a
+        color: colorscheme(blue-200)
+        margin: 0 5px 0 5px
+        &:hover
+            cursor: pointer
+
 
 .team-container
     margin-left: 25px

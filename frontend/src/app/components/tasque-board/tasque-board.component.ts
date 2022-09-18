@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { BoardColumnModel } from '../../../core/models/board/board-column-model';
@@ -12,7 +12,7 @@ import { UserModel } from 'src/core/models/user/user-model';
 import { NotificationService } from 'src/core/services/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import { TaskType } from 'src/core/models/task/task-type';
@@ -35,6 +35,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   public isOpenColumnAddDialog: boolean;
   public createColumnForm: FormGroup;
   @ViewChild('searchInput') public searchInput: InputComponent;
+  @Output() urlChanged = new EventEmitter<Observable<void>>();
 
   public selectedUserId?: number;
   private newColumn: TaskState;
@@ -46,6 +47,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   user: UserModel;
   public hasTasks = false;
   public isShow = false;
+  public isDraggable = true;
   public searchParameter = '';
   colors = ['#D47500', '#00AA55', '#E3BC01', '#009FD4', '#B281B3', '#D47500', '#DC2929'];
 
@@ -63,7 +65,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private currentUserService: GetCurrentUserService,
     private taskStorageService: TaskStorageService,
-    private router: Router
+    private router: Router,
   ) {
     this.currentUserService.currentUser$.subscribe((res) => {
       this.user = res as UserModel;
@@ -108,7 +110,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           this.projectTasks = this.currentSprint.tasks;
           this.hasTasks = this.checkIfHasTasks();
           this.sortTasksByColumns();
-          this.filterTasks();
         } else {
           this.notificationService.error('Something went wrong');
         }
@@ -182,7 +183,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       });
       c.tasks = taskInfo;
     });
-    this.isShow = true;
+    this.filterTasks();
   }
 
   setColumns(): void {
@@ -290,6 +291,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         }
       }
     }
+    this.isShow = true;
   }
 
   userSelected(event: UserModel): void {
@@ -308,5 +310,23 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     if(userId) {
       this.selectedUserId = Number(userId);
     }
+  }
+
+  toogleIsDraggable(val: boolean): void {
+    this.isDraggable = !val;
+  }
+
+  moveToBackLog(): void {
+    this.router.navigateByUrl(`/project/${this.projectId}/backlog`, { 
+      replaceUrl: true,
+    });
+    this.urlChanged.emit();
+  }
+
+  moveToSettings(): void {
+    this.router.navigateByUrl(`/project/${this.projectId}/settings/issue-template`, { 
+      replaceUrl: true,      
+    });
+    this.urlChanged.emit();
   }
 }

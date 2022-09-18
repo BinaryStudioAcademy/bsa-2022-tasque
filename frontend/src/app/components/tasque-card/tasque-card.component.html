@@ -11,6 +11,7 @@
         btnClass="btn icon gray-transparent"
         [btnIcon]="editIcon"
         [task]="taskInfo"
+        (isChanging)="isTaskChanging($event)"
       ></tasque-task-editing>
     </div>
     <tasque-menu-dropdown class="card-settings" [left]="-80">

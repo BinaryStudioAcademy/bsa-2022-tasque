@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   faCaretDown,
@@ -11,6 +11,7 @@ import { AuthService } from 'src/core/services/auth.service';
 import { OpenDialogService } from 'src/core/services/open-dialog.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { InternalServices } from 'src/core/services/internalServices';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'tasque-header',
@@ -22,6 +23,7 @@ export class HeaderComponent implements OnInit {
   public currentUser: UserModel;
   public currentOrganizationId: number;
   @Input() hasLogo = false;
+  @Output() isChanged = new EventEmitter<Observable<void>>();
 
   public upArrowIcon = faCaretUp;
   public downArrowIcon = faCaretDown;
@@ -115,4 +117,7 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/user/profile'], { replaceUrl: true });
   }
 
+  public checkUrl(): void {
+    this.isChanged.emit();
+  }
 }

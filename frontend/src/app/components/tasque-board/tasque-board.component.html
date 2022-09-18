@@ -1,8 +1,23 @@
-<div class="board" *ngIf="isShow && project !== undefined && columns !== undefined">
-  <div class="board-info">
-    <div class="board-title">
-      <span class="project-name">Project / {{ project.name }}</span>
-      <span class="board-name">{{ project.name }}</span>
+<div *ngIf="!isShow">
+  <mat-spinner 
+    style="margin: 250px auto;" 
+    mode="indeterminate"
+    >
+  </mat-spinner>
+</div>
+<div class="board" *ngIf="isShow && project && columns && projectTasks">
+    <div class="board-info">
+      <div class="board-title">
+        <span class="project-name">Project / {{project.name}}</span>
+        <span class="board-name">{{project.name}}</span>
+      </div>
+      <div class="board-tools">
+        <img src="assets/board/lightning.svg">
+        <img src="assets/board/star.svg">
+        <app-complete-sprint></app-complete-sprint>
+        <img src="assets/board/share.svg">
+        <img src="assets/board/menu.svg">
+      </div>
     </div>
     <div class="board-tools">
       <img src="assets/board/lightning.svg" />
@@ -34,17 +49,15 @@
           ></tasque-team-select>
         </div>
       </div>
-      <div class="filter">
-        <img src="assets/board/filter.svg" />
+      <div class="no-tasks row pale" *ngIf="!hasTasks">
+        <label>There are no tasks yet.</label>
+        <span class="no-tasks-actions">You can create the 
+          <a (click)="moveToBackLog()">first one</a> or check 
+          <a (click)="moveToSettings()">project settings</a>
+        </span>
       </div>
-    </div>
-    <div class="empty-board-warning" *ngIf="!hasTasks">
-      <p>There are no tasks yet. You can create the first one.</p>
-    </div>
-    <div class="board-columns" cdkDropListGroup>
-      <div
-        cdkDropList
-        *ngFor="let item of columns"
+      <div class="board-columns" cdkDropListGroup *ngIf="hasTasks">
+        <div cdkDropList *ngFor="let item of columns"
         (cdkDropListDropped)="dragDrop($event)"
         [cdkDropListData]="item.tasks"
         class="column-with-tasks"
@@ -54,14 +67,46 @@
             <span class="column-name">{{ item.name }}</span>
             <span class="column-element-count"> ({{ item.tasks.length }})</span>
           </div>
-          <div class="column-tools">
-            <span>+</span>
-            <img src="assets/board/column_menu.svg" />
+          <div *ngIf="isDraggable">
+            <div *ngIf="item.name !== 'done'">
+              <div class="column" *ngFor="let task of item.tasks" cdkDrag> 
+                <tasque-card 
+                  *ngIf="!task.isHidden" 
+                  [taskInfo]="task" 
+                  (isChanging)="toogleIsDraggable($event)">
+                </tasque-card>
+              </div>
+            </div>
+            <div *ngIf="item.name === 'done'">
+              <div class="column" *ngFor="let task of item.tasks" cdkDrag> 
+                <tasque-card 
+                  *ngIf="!task.isHidden" 
+                  [taskInfo]="task" 
+                  [isDone]="true" 
+                  (isChanging)="toogleIsDraggable($event)">
+                </tasque-card>
+              </div>
+            </div>
           </div>
-        </div>
-        <div *ngIf="item.name !== 'done'">
-          <div class="column" *ngFor="let task of item.tasks" cdkDrag>
-            <tasque-card *ngIf="!task.isHidden" [taskInfo]="task"></tasque-card>
+          <div *ngIf="!isDraggable">
+            <div *ngIf="item.name !== 'done'">
+              <div class="column" *ngFor="let task of item.tasks"> 
+                <tasque-card 
+                  *ngIf="!task.isHidden" 
+                  [taskInfo]="task" 
+                  (isChanging)="toogleIsDraggable($event)">
+                </tasque-card>
+              </div>
+            </div>
+            <div *ngIf="item.name === 'done'">
+              <div class="column" *ngFor="let task of item.tasks"> 
+                <tasque-card 
+                  *ngIf="!task.isHidden" 
+                  [taskInfo]="task" 
+                  [isDone]="true" 
+                  (isChanging)="toogleIsDraggable($event)"></tasque-card>
+              </div>
+            </div>
           </div>
         </div>
         <div *ngIf="item.name === 'done'">

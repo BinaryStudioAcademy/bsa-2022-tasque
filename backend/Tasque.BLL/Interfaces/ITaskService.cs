@@ -6,8 +6,6 @@ namespace Tasque.Core.BLL.Interfaces
     {
         Task<TaskDto> CreateTask(TaskDto model);
 
-        Task<List<TaskDto>> GetAllTasks();
-
         Task<List<TaskDto>> GetAllProjectTasks(int projectId);
 
         Task<TaskDto> GetTaskById(int id);

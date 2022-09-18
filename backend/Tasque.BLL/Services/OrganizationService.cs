@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Tasque.Core.Common.DTO.Organization;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
+using Tasque.Core.Common.Enums;
 using Tasque.Core.DAL;
 using Tasque.Core.Identity.Helpers;
 using Task = System.Threading.Tasks.Task;
@@ -26,6 +27,16 @@ namespace Tasque.Core.BLL.Services
             entityToCreate.AuthorId = _currentUserId;
 
             await _dbSet.AddAsync(entityToCreate);
+
+            var orgRole = new UserOrganizationRole()
+            {
+                UserId = _currentUserId,
+                OrganizationId = entityToCreate.Id,
+                Role = UserOrganizationRoles.OrganizationAdmin,
+            };
+
+            await _db.UserOrganizationRoles.AddAsync(orgRole);
+
             await _db.SaveChangesAsync();
 
             return _mapper.Map<OrganizationInfoDto>(entityToCreate);
