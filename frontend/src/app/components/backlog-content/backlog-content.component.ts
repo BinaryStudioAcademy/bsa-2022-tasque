@@ -89,8 +89,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
           m.userId === this.currentUser.id,
       )?.role as UserRole ?? 0;
 
-      console.log(this.role);
-    if (UserRole.OrganizationAdmin <= this.role || this.project.authorId === this.currentUser.id) {
+    if (UserRole.projectAdmin <= this.role || this.project.authorId === this.currentUser.id) {
       this.isCurrentUserAdmin = true;
     }
 
