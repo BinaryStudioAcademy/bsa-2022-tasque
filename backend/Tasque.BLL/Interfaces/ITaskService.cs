@@ -13,5 +13,7 @@ namespace Tasque.Core.BLL.Interfaces
         Task<TaskDto> UpdateTask(TaskDto model);
 
         Task DeleteTask(int id);
+
+        Task CommentTask(CommentTaskDTO dto);
     }
 }

@@ -23,7 +23,7 @@ public class ProjectController : EntityController
     {
         return Ok(await _service.GetAllProjectsOfOrganization(organizationId));
     }
-
+    
     [HttpGet("board/{projectId:int}")]
     public async Task<IActionResult> GetBoard(int projectId)
     {

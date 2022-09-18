@@ -25,6 +25,7 @@ public class User : BaseEntity
     public string Salt { get; set; } = null!;
     public bool IsEmailConfirmed { get; set; } = false;
     public string? AvatarURL { get; set; }
+    public string ConnectionId { get; set; } = "";
 
     public virtual ICollection<Meeting> Meetings { get; set; }
     public virtual ICollection<Project> OwnedProjects { get; set; }
