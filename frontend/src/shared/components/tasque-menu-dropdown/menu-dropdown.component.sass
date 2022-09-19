@@ -10,6 +10,7 @@ $label-text-hover-color: colorscheme(gray-400)
 $options-max-height: 110px
 $options-width: max-content
 $options-translate: none
+$options-transform: none
 $button-gap: 5px
 $options-border: 2px solid colorscheme(gray-300)
 $options-border-radius: 10px
@@ -52,6 +53,7 @@ $dropdown-wrapper-position: relative
   top: 100%
   z-index: 1
   translate: var(--options-translate, $options-translate)
+  transform: var(--options-transform, $options-transform)
 
 .options
   max-height: var(--options-max-height, $options-max-height)
