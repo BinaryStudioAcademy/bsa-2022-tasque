@@ -104,21 +104,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         },
       );
 
-    this.boardService.sprintService
-      .getCurrentSprintByProjectId(this.projectId)
-      .subscribe((resp) => {
-        if(resp.ok){
-          this.currentSprint = resp.body as SprintModel;
-          this.projectTasks = this.currentSprint.tasks;
-          this.hasTasks = this.checkIfHasTasks();
-          this.sortTasksByColumns();
-        } else {
-          this.notificationService.error('Something went wrong');
-        }
-      }, () => {
-        this.isShow = true;
-      });
-
     this.taskStorageService.taskUpdated$.subscribe((task) => {
       let isTaskFound = false;
 
@@ -163,6 +148,23 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           };
         }
       }
+    });
+  }
+
+  getCurrentSprintAndTasks(): void {
+    this.boardService.sprintService
+    .getCurrentSprintByProjectId(this.projectId)
+    .subscribe((resp) => {
+      if(resp.ok){
+        this.currentSprint = resp.body as SprintModel;
+        this.projectTasks = this.currentSprint.tasks;
+        this.hasTasks = this.checkIfHasTasks();
+        this.sortTasksByColumns();
+      } else {
+        this.notificationService.error('Something went wrong');
+      }
+    }, () => {
+      this.isShow = true;
     });
   }
 
@@ -193,6 +195,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       name: s.name,
       tasks: [],
     }));
+    this.getCurrentSprintAndTasks();
   }
 
   openAddColumn(): void {
