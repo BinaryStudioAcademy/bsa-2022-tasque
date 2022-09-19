@@ -14,6 +14,9 @@
         ></tasque-button>
       </div>
     </div>
+    <div class="empty-settings-warning" *ngIf="settings.length === 0">
+      <p>No settings</p>
+    </div>
   </div>
 
   <div *ngIf="isChanging" class="edit-setting">
