@@ -90,7 +90,7 @@ export class BasicLabelFieldComponent implements OnInit {
   }
 
   public cancelEdit(): void {
-    throw new Error('Method not implemented.');
+    this.settingsShow = Array.from(this.defaultValue);
   }
 
   public saveEdit(): void {
