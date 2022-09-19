@@ -1,6 +1,13 @@
 version: "3.9"  # optional since v1.27.0
 
 services:
+  message-bus:
+    image: rabbitmq:3
+    container_name: 'message-bus'
+    ports:
+        - 5672:5672
+        - 15672:15672
+
   webapi:
     image: mendasium/tasque-backend
     ports:
@@ -14,6 +21,8 @@ services:
         max-file: "5"
     # volumes:
       # - .:/ log volume!
+    depends_on:
+      - message-bus
       
   frontend:
     image: mendasium/tasque-frontend

@@ -14,7 +14,7 @@ public class TaskType : BaseEntity
 
     public int ProjectId { get; set; }
     
-    public Project Project { get; set; }
+    public Project? Project { get; set; }
 
     public virtual ICollection<Task> Tasks { get; set; }
 }

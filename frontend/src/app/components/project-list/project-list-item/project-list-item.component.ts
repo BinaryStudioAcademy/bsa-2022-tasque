@@ -28,10 +28,10 @@ export class ProjectListItemComponent implements OnInit {
   }
 
   permissionToEdit(): boolean {
-    if(this.currentUser.id === this.project.authorId) {
+    if(this.currentUser?.id === this.project.authorId) {
       return true;
     }
-    if (this.project.users.every((x) => { x.id == this.currentUser.id && x.role === 1; })) {
+    if (this.project.users?.every((x) => { x.id == this.currentUser?.id && x.role === 1; })) {
       return true;
     }
 

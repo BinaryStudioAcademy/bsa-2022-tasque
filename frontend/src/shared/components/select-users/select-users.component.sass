@@ -1,4 +1,4 @@
-@import '../../../colors'
+@import '../../../colors.sass'
 
 @for $i from 13 through 21 
 	.w-#{$i * 5} 
@@ -134,3 +134,14 @@
 					display: inline-flex
 					align-items: center
 					right: 15px
+
+.no-users
+	&.pale
+		color: colorscheme('dark-grey-100')
+	&.row
+		display: inline-flex
+		align-items: center
+		height: 50px
+		width: 100%
+	label
+		margin: auto

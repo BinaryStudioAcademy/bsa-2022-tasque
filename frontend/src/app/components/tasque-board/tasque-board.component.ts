@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { BoardColumnModel } from '../../../core/models/board/board-column-model';
@@ -12,7 +12,7 @@ import { UserModel } from 'src/core/models/user/user-model';
 import { NotificationService } from 'src/core/services/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import { TaskType } from 'src/core/models/task/task-type';
@@ -36,6 +36,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   public isOpenColumnAddDialog: boolean;
   public createColumnForm: FormGroup;
   @ViewChild('searchInput') public searchInput: InputComponent;
+  @Output() urlChanged = new EventEmitter<Observable<void>>();
 
   public selectedUserId?: number;
   private newColumn: TaskState;
@@ -44,9 +45,11 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
 
   public project: ProjectModel;
+  public projectUsers: UserModel[] = [];
   user: UserModel;
   public hasTasks = false;
   public isShow = false;
+  public isDraggable = true;
   public searchParameter = '';
   colors = ['#D47500', '#00AA55', '#E3BC01', '#009FD4', '#B281B3', '#D47500', '#DC2929'];
 
@@ -64,7 +67,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private currentUserService: GetCurrentUserService,
     private taskStorageService: TaskStorageService,
-    private router: Router
+    private router: Router,
   ) {
     this.currentUserService.currentUser$.subscribe((res) => {
       this.user = res as UserModel;
@@ -101,30 +104,13 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         (resp) => {
           if (resp.ok) {
             this.project = resp.body as ProjectModel;
+            this.projectUsers = this.project.users;
             this.setColumns();
           } else {
             this.notificationService.error('Something went wrong');
           }
         },
       );
-
-    this.boardService.sprintService
-      .getCurrentSprintByProjectId(this.projectId)
-      .subscribe((resp) => {
-        if(resp.ok){
-          this.currentSprint = resp.body as SprintModel;
-          this.projectTasks = this.currentSprint.tasks;
-          this.hasTasks = this.checkIfHasTasks();
-          this.sortTasksByColumns();
-          this.filterTasks();
-        } else {
-          this.notificationService.error('Something went wrong');
-        }
-      }, (err) => {
-        if(err)
-        this.notificationService.info(err.error);
-        this.isShow = true;
-      });
 
     this.taskStorageService.taskUpdated$.subscribe((task) => {
       let isTaskFound = false;
@@ -148,28 +134,22 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
 
-    this.taskStorageService.taskUpdated$.subscribe((task) => {
-      let isTaskFound = false;
-
-      for (const col of this.columns) {
-        if (isTaskFound) {
-          return;
-        }
-
-        const index = col.tasks.findIndex((t) => task.id === t.id);
-
-        if (index !== -1) {
-          isTaskFound = true;
-
-          col.tasks[index] = {
-            ...task,
-            customLabels: [],
-            key: task.key as string,
-            isHidden: false,
-          };
-        }
+  getCurrentSprintAndTasks(): void {
+    this.boardService.sprintService
+    .getCurrentSprintByProjectId(this.projectId)
+    .subscribe((resp) => {
+      if(resp.ok){
+        this.currentSprint = resp.body as SprintModel;
+        this.projectTasks = this.currentSprint.tasks;
+        this.hasTasks = this.checkIfHasTasks();
+        this.sortTasksByColumns();
+      } else {
+        this.notificationService.error('Something went wrong');
       }
+    }, () => {
+      this.isShow = true;
     });
   }
 
@@ -190,16 +170,17 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       });
       c.tasks = taskInfo;
     });
-    this.isShow = true;
+    this.filterTasks();
   }
 
   setColumns(): void {
-    const states = this.project.projectTaskStates;
+    const states = this.project?.projectTaskStates as TaskState[];
     states.forEach((s) => this.columns.push({
       id: s.id,
       name: s.name,
       tasks: [],
     }));
+    this.getCurrentSprintAndTasks();
   }
 
   openAddColumn(): void {
@@ -292,12 +273,16 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       if (column.tasks) {
         for (const task of column.tasks) {
           task.isHidden = !task.summary.toLowerCase().includes(phrase.toLowerCase());
-          if (this.selectedUserId) {
-            task.isHidden = task.isHidden || task.author?.id != this.selectedUserId;
+          if (this.selectedUserId && task.assignees) {
+            task.isHidden = task.isHidden || !task.assignees.some(
+              (user) =>
+                user.id == this.selectedUserId
+            );
           }
         }
       }
     }
+    this.isShow = true;
   }
 
   userSelected(event: UserModel): void {
@@ -316,5 +301,23 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     if(userId) {
       this.selectedUserId = Number(userId);
     }
+  }
+
+  toogleIsDraggable(val: boolean): void {
+    this.isDraggable = !val;
+  }
+
+  moveToBackLog(): void {
+    this.router.navigateByUrl(`/project/${this.projectId}/backlog`, { 
+      replaceUrl: true,
+    });
+    this.urlChanged.emit();
+  }
+
+  moveToSettings(): void {
+    this.router.navigateByUrl(`/project/${this.projectId}/settings/issue-template`, { 
+      replaceUrl: true,      
+    });
+    this.urlChanged.emit();
   }
 }

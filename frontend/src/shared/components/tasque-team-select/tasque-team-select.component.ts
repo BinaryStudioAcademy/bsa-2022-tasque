@@ -14,6 +14,7 @@ export class TasqueTeamSelectComponent implements OnInit {
   @Input() selectedUserId: number;
   public searchIcon = faMagnifyingGlass;
   public showPopUp = false;
+  @Input() canPopUp = true;
 
   //Show avatar of first user only
   @Input() miniView = false;
@@ -48,8 +49,24 @@ export class TasqueTeamSelectComponent implements OnInit {
     }
   }
 
-  switchPopUp(): void {
+  switchPopUp(): void {    
+    if(this.canPopUp && !this.showPopUp) {
+      this.openPopUp();
+    }
+    else {
+      this.closePopUp();
+    }
+  }
+
+  openPopUp(): void {
     this.avatarsShow = this.avatars;
-    this.showPopUp = !this.showPopUp;
+    this.showPopUp = true;
+  }
+
+  closePopUp(): void {
+    if(this.showPopUp) {
+      this.showPopUp = false;
+      this.inputSearch = '';
+    }
   }
 }

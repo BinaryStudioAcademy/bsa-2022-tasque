@@ -69,7 +69,9 @@ export class SprintComponent implements OnInit, OnChanges {
   public tasksShow: TaskModel[];
   public tasksDto: TaskModel;
   public role: UserRole;
-  public isCurrentUserAdmin: boolean;
+  public isCurrentUserAdmin = false;
+
+  public isDraggable = true;
 
   public unsubscribe$ = new Subject<void>();
 
@@ -92,14 +94,13 @@ export class SprintComponent implements OnInit, OnChanges {
     if (this.currentUser === undefined) {
       this.role = 0;
     } else {
-      this.role =
-        (this.currentUser?.organizationRoles?.find(
+      this.role = this.currentUser?.organizationRoles?.find(
           (m) =>
             m.organizationId === this.currentProject.organizationId &&
             m.userId === this.currentUser.id,
-        )?.role as UserRole) || 0;
+        )?.role as UserRole ?? 0;
 
-      if (UserRole.OrganizationAdmin <= this.role) {
+      if (UserRole.projectAdmin <= this.role || this.currentProject.authorId === this.currentUser.id) {
         this.isCurrentUserAdmin = true;
       }
     }
@@ -189,14 +190,18 @@ export class SprintComponent implements OnInit, OnChanges {
         event.currentIndex,
       );
 
-      _task.sprintId = this.currentSprint.id;
+      if(this.currentSprint.id) {
+        _task.sprintId = this.currentSprint.id;
+      } else {
+        _task.sprintId = undefined;
+      }
 
       this.taskService
         .updateTask(_task)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((result) => {
           if (result.body) {
-            this.notificationService.success('Task moved to sprint');
+            this.notificationService.success(`Task ${_task.key} moved to sprint`);
           }
         });
     }
@@ -229,14 +234,7 @@ export class SprintComponent implements OnInit, OnChanges {
   }
 
   public getTasksState(): void {
-    this.taskStateService
-      .getAll()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((result) => {
-        if (result.body) {
-          this.taskState = result.body;
-        }
-      });
+    this.taskState = this.currentProject.projectTaskStates;
   }
 
   public getTasksType(): void {
@@ -252,5 +250,9 @@ export class SprintComponent implements OnInit, OnChanges {
 
   public deleteSprint(sprint: SprintModel): void {
     this.openDialogService.openDeleteSprintDialog(sprint);
+  }
+
+  public toogleIsDragable(val: boolean): void {
+    this.isDraggable = !val;
   }
 }
