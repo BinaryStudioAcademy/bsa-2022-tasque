@@ -93,4 +93,16 @@ export class ProjectService {
   getProjectCards(): Observable<HttpResponse<ProjectCardModel[]>> {
     return this.httpService.getFullRequest(this.routePrefixParticipants + '/getProjectCards');
   }
+
+  updateProjectTaskPriorities(projectId: number, taskPriorities: TaskPriority[]): Observable<HttpResponse<TaskPriority[]>> {
+    return this.httpService.putFullRequest(this.routePrefix + `/taskPriorities/${projectId}`, taskPriorities);
+  }
+
+  updateProjectTaskStates(projectId: number, taskStates: TaskState[]): Observable<HttpResponse<TaskState[]>> {
+    return this.httpService.putFullRequest(this.routePrefix + `/taskStates/${projectId}`, taskStates);
+  }
+
+  updateProjectTaskTypes(projectId: number, taskTypes: TaskType[]): Observable<HttpResponse<TaskType[]>> {
+    return this.httpService.putFullRequest(this.routePrefix + `/taskTypes/${projectId}`, taskTypes);
+  }
 }
