@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { UserModel } from 'src/core/models/user/user-model';
@@ -8,13 +8,15 @@ import { ProjectService } from 'src/core/services/project.service';
 import { takeUntil } from 'rxjs/operators';
 import { BaseComponent } from 'src/core/base/base.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-left-sidebar',
   templateUrl: './left-sidebar.component.html',
   styleUrls: ['./left-sidebar.component.sass']
 })
-export class LeftSidebarComponent extends BaseComponent implements OnInit {
+export class LeftSidebarComponent extends BaseComponent implements OnInit, OnChanges {
   public projectId: number;
   public project: ProjectModel;
 
@@ -26,11 +28,19 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit {
   public sideBarMinimized: boolean;
   public showSettings = false;
 
-  isBoard: string | undefined;
-  isBacklog: string | undefined;
-  isTeam: string | undefined;
-  isWiki: string | undefined;
-  isSettings: string | undefined;
+  @Input() isChanged: Observable<void>;
+
+  isBoard = false;
+  isBacklog = false;
+  isTeam = false;
+  isWiki = false;
+  isSettings = false;
+  isColumnsAndStatuses = false;
+  isIssueTypes = false;
+  isIssueTemplate = false;
+  isBasicIssueTemplate = false;
+
+  arrowRight = faChevronRight;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -56,6 +66,10 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit {
           this.sideBarMinimized = false;
         }
       });
+  }
+
+  ngOnChanges(): void {
+    this.ngOnInit();
   }
 
   minimize(): void {
@@ -90,34 +104,56 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit {
     });
   }
 
-  navigateToIssueTemplate():void {
+  navigateToIssueTemplate(): void {
     this.router.navigate(['project/' + this.projectId + '/settings/issue-template']);
     this.setAllStylesUndefined();
-    this.isSettings = '#F0F3F9';
+    this.isSettings = true;
+    this.isIssueTemplate = true;
   }
 
-  navigateToBoard():void {
+  navigateToBasicIssueTemplate(): void {
+    this.router.navigate(['project/' + this.projectId + '/settings/basic-issue-template']);
+    this.setAllStylesUndefined();
+    this.isSettings = true;
+    this.isBasicIssueTemplate = true;
+  }
+
+  navigateToColumnsAndStatuses(): void {
+    this.router.navigate(['project/' + this.projectId + '/settings/columns-and-statuses']);
+    this.setAllStylesUndefined();
+    this.isSettings = true;
+    this.isColumnsAndStatuses = true;
+  }
+
+  navigateToIssueTypes(): void {
+    this.router.navigate(['project/' + this.projectId + '/settings/issue-types']);
+    this.setAllStylesUndefined();
+    this.isSettings = true;
+    this.isIssueTypes = true;
+  }
+
+  navigateToBoard(): void {
     this.router.navigate(['project/' + this.projectId + '/board']);
     this.setAllStylesUndefined();
-    this.isBoard = '#F0F3F9';
+    this.isBoard = true;
   }
 
-  navigateToBacklog():void {
+  navigateToBacklog(): void {
     this.router.navigate(['project/' + this.projectId + '/backlog']);
     this.setAllStylesUndefined();
-    this.isBacklog = '#F0F3F9';
+    this.isBacklog = true;
   }
 
-  navigateToTeam():void {
+  navigateToTeam(): void {
     this.router.navigate(['project/' + this.projectId + '/team']);
     this.setAllStylesUndefined();
-    this.isTeam = '#F0F3F9';
+    this.isTeam = true;
   }
 
-  navigateToWiki():void {
+  navigateToWiki(): void {
     this.router.navigate(['project/' + this.projectId + '/wiki']);
     this.setAllStylesUndefined();
-    this.isWiki = '#F0F3F9';
+    this.isWiki = true;
   }
 
   public toggleSettings(): void {
@@ -137,24 +173,55 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit {
   checkActivatedRoute(): void {
     this.setAllStylesUndefined();
 
-    if(this.router.url.includes('board')) {
-      this.isBoard = '#F0F3F9';
-    } else if(this.router.url.includes('backlog')) {
-      this.isBacklog = '#F0F3F9';
-    } else if(this.router.url.includes('wiki')) {
-      this.isWiki = '#F0F3F9';
-    } else if(this.router.url.includes('settings')) {
-      this.isSettings = '#F0F3F9';
-    } else if(this.router.url.includes('team')) {
-      this.isTeam = '#F0F3F9';
+    const currentUrl = this.router.url.split('/');
+
+    if (currentUrl.includes('settings')) {
+      this.showSettings = true;
+      switch (currentUrl[currentUrl.length - 1]) {
+        case 'columns-and-statuses':
+          this.isSettings = true;
+          this.isColumnsAndStatuses = true;
+          return;
+        case 'issue-types':
+          this.isSettings = true;
+          this.isIssueTypes = true;
+          return;
+        case 'issue-template':
+          this.isSettings = true;
+          this.isIssueTemplate = true;
+          return;
+        case 'basic-issue-template':
+          this.isSettings = true;
+          this.isBasicIssueTemplate = true;
+          return;
+      }
+    }
+
+    switch (currentUrl[currentUrl.length - 1]) {
+      case 'board':
+        this.isBoard = true;
+        return;
+      case 'backlog':
+        this.isBacklog = true;
+        return;
+      case 'team':
+        this.isTeam = true;
+        return;
+      case 'wiki':
+        this.isWiki = true;
+        return;
     }
   }
 
   setAllStylesUndefined(): void {
-    this.isBacklog = undefined;
-    this.isBoard = undefined;
-    this.isSettings = undefined;
-    this.isTeam = undefined;
-    this.isWiki = undefined;
+    this.isBacklog = false;
+    this.isBoard = false;
+    this.isSettings = false;
+    this.isTeam = false;
+    this.isWiki = false;
+    this.isColumnsAndStatuses = false;
+    this.isIssueTypes = false;
+    this.isIssueTemplate = false;
+    this.isBasicIssueTemplate = false;
   }
 }

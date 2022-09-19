@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import {
@@ -48,6 +48,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   @Input() public btnText = 'Edit task';
   @Input() public btnClass = 'btn stroke';
   @Input() public btnIcon: IconDefinition | undefined;
+
+  @Output() public isChanging = new EventEmitter<boolean>();
 
   public organizationId: number;
 
@@ -379,6 +381,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
   toogleModal(event: boolean): void {
     this.isOpen = event;
+    this.isChanging.emit(event);
   }
 
   addUser(email: string): void {

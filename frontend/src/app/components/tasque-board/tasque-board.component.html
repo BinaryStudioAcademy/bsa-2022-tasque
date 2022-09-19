@@ -1,67 +1,135 @@
-<div class="board" *ngIf="isShow && project !== undefined && columns !== undefined">
-    <div class="board-info">
-      <div class="board-title">
-        <span class="project-name">Project / {{project.name}}</span>
-        <span class="board-name">{{project.name}}</span>
-      </div>
-      <div class="board-tools">
-        <img src="assets/board/lightning.svg">
-        <img src="assets/board/star.svg">
-        <app-complete-sprint></app-complete-sprint>
-        <img src="assets/board/share.svg">
-        <img src="assets/board/menu.svg">
+<div *ngIf="!isShow">
+  <mat-spinner 
+    style="margin: 250px auto;" 
+    mode="indeterminate"
+    >
+  </mat-spinner>
+</div>
+<div class="board" *ngIf="isShow && project && columns && projectTasks && projectUsers">
+  <div class="board-info">
+    <div class="board-title">
+      <span class="project-name"> <a class="project-route" href="/projects">Project</a> / {{project.name}}</span>
+      <span class="board-name">{{project.name}}</span>
+    </div>
+    <div class="board-tools">
+      <img src="assets/board/lightning.svg">
+      <img src="assets/board/star.svg">
+      <app-complete-sprint></app-complete-sprint>
+      <img src="assets/board/share.svg">
+      <img src="assets/board/menu.svg">
+    </div>
+  </div>
+  <div class="board-panel">
+    <div class="task-menu">
+      <div class="project-team">
+        <div class="search-input-container">
+          <tasque-input
+            class="search-input"
+            #searchInput
+            (input)="filterTasks()"
+            type="search"
+            [icon]="searchIcon"
+            iconPosition="search"
+            placeholder="Search..."
+          ></tasque-input>
+        </div>
+        <div class="team-container">
+          <tasque-team-select
+            [avatars]="projectUsers"
+            [selectedUserId]="selectedUserId ? selectedUserId : 0"
+            (selectedUser)="userSelected($event)"
+          ></tasque-team-select>
+        </div>
       </div>
     </div>
-    <div class="board-panel">
-      <div class="task-menu">
-        <div class="project-team">
-          <div class="search-input-container">
-            <tasque-input class="search-input" #searchInput (input)="filterTasks()" type="search" [icon]="searchIcon" iconPosition="search" placeholder="Search..."></tasque-input>
-          </div>
-          <div class="team-container">
-            <tasque-team-select [avatars]="project.users" [selectedUserId]="selectedUserId ? selectedUserId : 0" (selectedUser)="userSelected($event)"></tasque-team-select>
-          </div>
-        </div>
-        <div class="filter">
-          <img src="assets/board/filter.svg">
-        </div>
+      <div class="no-tasks row pale" *ngIf="!hasTasks && currentSprint">
+        <label>There are no tasks in this sprint yet.</label>
+        <span class="no-tasks-actions">You can create the 
+          <a (click)="moveToBackLog()">first one</a> or check 
+          <a (click)="moveToSettings()">project settings</a>
+        </span>
       </div>
-      <div class="no-tasks" *ngIf="!hasTasks">
-        <h4>There are no tasks yet. You can create the first one.</h4>
+      <div class="no-tasks row pale" *ngIf="!currentSprint">
+        <label>There is no active sprint yet.</label>
+        <span class="no-tasks-actions">You can create and start the 
+          <a (click)="moveToBackLog()">first one</a> or check 
+          <a (click)="moveToSettings()">project settings</a>
+        </span>
       </div>
-      <div class="board-columns" cdkDropListGroup>
+      <div class="board-columns" cdkDropListGroup *ngIf="hasTasks">
         <div cdkDropList *ngFor="let item of columns"
-        (cdkDropListDropped)="dragDrop($event)"
-        [cdkDropListData]="item.tasks" class="column-with-tasks">
-          <div class="column-title">
-            <div class="board-list">
-              <span class="column-name">{{item.name}}</span>
-              <span class="column-element-count"> ({{item.tasks.length}})</span>
-            </div>
-            <div class="column-tools">
-              <span>+</span>
-              <img src="assets/board/column_menu.svg"> 
-            </div>  
+          (cdkDropListDropped)="dragDrop($event)"
+          [cdkDropListData]="item.tasks"
+          class="column-with-tasks"
+        >
+        <div class="column-title">
+          <div class="board-list">
+            <span class="column-name">{{ item.name }}</span>
+            <span class="column-element-count"> ({{ item.tasks.length }})</span>
           </div>
-          <div *ngIf="item.name !== 'done'">
-            <div class="column" *ngFor="let task of item.tasks" cdkDrag> 
-              <tasque-card *ngIf="!task.isHidden" [taskInfo]="task"></tasque-card>
+          <div class="card-container">
+            <div *ngIf="isDraggable">
+              <div *ngIf="item.name !== 'done'">
+                <div class="column" *ngFor="let task of item.tasks" cdkDrag> 
+                  <tasque-card 
+                    *ngIf="!task.isHidden" 
+                    [taskInfo]="task" 
+                    (isChanging)="toogleIsDraggable($event)">
+                  </tasque-card>
+                </div>
+              </div>
+              <div *ngIf="item.name === 'done'">
+                <div class="column" *ngFor="let task of item.tasks" cdkDrag> 
+                  <tasque-card 
+                    *ngIf="!task.isHidden" 
+                    [taskInfo]="task" 
+                    [isDone]="true" 
+                    (isChanging)="toogleIsDraggable($event)">
+                  </tasque-card>
+                </div>
+              </div>
             </div>
-          </div>
-          <div *ngIf="item.name === 'done'">
-            <div class="column" *ngFor="let task of item.tasks" cdkDrag> 
-              <tasque-card *ngIf="!task.isHidden" [taskInfo]="task" [isDone]="true"></tasque-card>
+            <div *ngIf="!isDraggable">
+              <div *ngIf="item.name !== 'done'">
+                <div class="column" *ngFor="let task of item.tasks"> 
+                  <tasque-card 
+                    *ngIf="!task.isHidden" 
+                    [taskInfo]="task" 
+                    (isChanging)="toogleIsDraggable($event)">
+                  </tasque-card>
+                </div>
+              </div>
+              <div *ngIf="item.name === 'done'">
+                <div class="column" *ngFor="let task of item.tasks"> 
+                  <tasque-card 
+                    *ngIf="!task.isHidden" 
+                    [taskInfo]="task" 
+                    [isDone]="true" 
+                    (isChanging)="toogleIsDraggable($event)">
+                  </tasque-card>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="create-column" (mouseleave)="onClickedOutside()">
-          <span *ngIf="!isOpenColumnAddDialog" (click)="openAddColumn()">+ Add Section</span>
-          <div *ngIf="isOpenColumnAddDialog">
-            <form [formGroup]="createColumnForm" (ngSubmit)="addColumn()">
-              <tasque-input type="text" placeholder="Type name" formControlName="columnName" [invalid]="!createColumnForm.valid && createColumnForm.touched" errorMessage="required" [icon]="plusIcon" iconPosition="right" (iconClick)="addColumn()"></tasque-input>
-            </form>
           </div>
         </div>
       </div>
+      <div class="create-column" (mouseleave)="onClickedOutside()">
+        <span *ngIf="!isOpenColumnAddDialog" (click)="openAddColumn()">+ Add Section</span>
+        <div *ngIf="isOpenColumnAddDialog">
+          <form [formGroup]="createColumnForm" (ngSubmit)="addColumn()">
+            <tasque-input
+              type="text"
+              placeholder="Type name"
+              formControlName="columnName"
+              [invalid]="!createColumnForm.valid && createColumnForm.touched"
+              errorMessage="required"
+              [icon]="plusIcon"
+              iconPosition="right"
+              (iconClick)="addColumn()"
+            ></tasque-input>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

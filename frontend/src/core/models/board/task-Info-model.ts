@@ -24,4 +24,5 @@ export interface TaskInfoModel {
   deadline: Date;
   isHidden: boolean;
   order: number;
+  estimate: number;
 }

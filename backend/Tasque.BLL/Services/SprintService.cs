@@ -71,7 +71,6 @@ namespace Tasque.Core.BLL.Services
             var tasks = await _db.Tasks
                 .Include(t => t.Users)
                 .Include(t => t.Author)
-                .Include(t => t.Sprint)
                 .Include(t => t.LastUpdatedBy)
                 .Include(t => t.Priority)
                 .Include(t => t.State)
@@ -216,13 +215,6 @@ namespace Tasque.Core.BLL.Services
                 .FirstOrDefaultAsync(s => s.Id == sprintId)
                 ?? throw new HttpException(System.Net.HttpStatusCode.NotFound, "Sprinter with this ID does not exist");
 
-
-         //   var userRole = user.Roles
-         //       .FirstOrDefault(r => r.ProjectId == sprint.ProjectId);
-
-          //  if (userRole == null || userRole.RoleId != (int)BaseProjectRole.Admin)
-          //      throw new HttpException(System.Net.HttpStatusCode.Forbidden, "Access is denied");
-
             sprint.Tasks
                     .Where(t => t.StateId == ((int)BasicTaskStateTypes.ToDo)
                         || t.StateId == ((int)BasicTaskStateTypes.InProgress))
@@ -239,14 +231,30 @@ namespace Tasque.Core.BLL.Services
             return true;
         }
 
-        public async Task<SprintDto> GetCurrentSprintByProjectId(int projectId)
+        public async Task<SprintDto?> GetCurrentSprintByProjectId(int projectId)
         {
             var sprint = await _db.Sprints
                 .Where(s => s.ProjectId == projectId && !s.IsComplete && s.StartAt != null)
                     .Include(s => s.Tasks)
                 .FirstOrDefaultAsync();
+            if (sprint == null)
+                return null;
 
-            return _mapper.Map<SprintDto>(sprint);
+            var tasks = _mapper.Map<List<TaskDto>>(_db.Tasks
+                .Where(t => t.SprintId == sprint.Id)
+                .Include(t => t.Users)
+                .Include(t => t.Author)
+                .Include(t => t.Sprint)
+                .Include(t => t.LastUpdatedBy)
+                .Include(t => t.Priority)
+                .Include(t => t.State)
+                .Include(t => t.Project)
+                .Include(t => t.Type));
+
+            var dto = _mapper.Map<SprintDto>(sprint);
+            dto.Tasks = _mapper.Map<List<TaskDto>>(tasks);
+
+            return dto;
         }
 
         public async Task<SprintDto> CreateSprint(NewSprintDto model)

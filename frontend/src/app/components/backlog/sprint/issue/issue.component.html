@@ -1,22 +1,24 @@
 <div class="issue">
-  <p
-    class="issue-type"
-    [ngStyle]="{ 'background': issue.type?.color ?? 'colorscheme(yellow-100)' }"
-  >
-    {{ this.issue.type?.name }}
-  </p>
-  <p class="issue-key">
-    {{ issue.key }}
-  </p>
-
-  <tasque-task-editing
-    [task]="issue"
-    [btnText]="issue.summary"
-    btnClass="btn full black"
+  <div class="basic-issue-info"
     matTooltip=" {{ issue.description }}"
-    [matTooltipShowDelay]="1500"
-  >
-  </tasque-task-editing>
+    [matTooltipShowDelay]="500">
+    <p
+      class="issue-type"
+      [ngStyle]="{ 'background': issue.type?.color ?? 'colorscheme(yellow-100)' }"
+    >
+      {{ this.issue.type?.name }}
+    </p>
+    <p class="issue-key">
+      {{ issue.key }}
+    </p>
+    <tasque-task-editing
+      [task]="issue"
+      [btnText]="issue.summary"
+      btnClass="btn full black"
+      (isChanging)="test($event)"
+    >
+    </tasque-task-editing>
+  </div>
   <div class="issue-estimate">
     <tasque-input
       class="input estimate-input"
