@@ -29,12 +29,15 @@
   </div>
 
   <div class="create-setting">
-    <span>Add new item</span>
     <tasque-button class="btn icon ml-10" [icon]="addIcon" (btnClick)="addSetting()"></tasque-button>
   </div>
 
   <div class="actions ml-10">
-    <tasque-button class="btn icon" text="Cancel" (btnClick)="cancelEdit()"></tasque-button>
-    <tasque-button class="btn icon" text="Save" (btnClick)="saveEdit()"></tasque-button>
+    <tasque-button
+      class="btn stroke gray fixed-height"
+      text="Cancel"
+      (btnClick)="cancelEdit()"
+    ></tasque-button>
+    <tasque-button class="btn stroke fixed-height" text="Save" (btnClick)="saveEdit()"></tasque-button>
   </div>
 </div>
