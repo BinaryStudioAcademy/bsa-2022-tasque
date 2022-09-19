@@ -94,14 +94,12 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
 
     if (id) {
       this.currentProjectId = parseInt(id);
-      this.getCurrentEntityService.getCurrentProjectService.currentProjectId = this.currentProjectId;
       this.projectService
         .getProjectById(this.currentProjectId)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((resp) => {
           this.currentProject = resp.body as ProjectModel;
-          this.getCurrentEntityService.getCurrentOrganizationService
-            .currentOrganizationId = this.currentProject.organizationId;
+          this.updateHeader();
         });
     }
     this.currentUserService.currentUser$.subscribe((user) => {
@@ -208,5 +206,11 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
 
   deleteSprint(sprintId: number): void {
     this.sprints = this.sprints.filter((task) => task.id !== sprintId);
+  }
+
+  updateHeader(): void {
+    this.getCurrentEntityService.getCurrentOrganizationService
+            .currentOrganizationId = this.currentProject.organizationId;
+    this.getCurrentEntityService.getCurrentProjectService.currentProjectId = this.currentProjectId;
   }
 }

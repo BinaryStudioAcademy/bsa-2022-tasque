@@ -91,7 +91,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       return;
     }
     this.projectId = parseInt(id);
-    this.getCurrentEntityService.getCurrentProjectService.currentProjectId = this.projectId;
     this.getSelectedUserFromQuery();
 
     this.boardService.projectService.getProjectById(this.projectId)
@@ -100,8 +99,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           if (resp.ok) {
             this.project = resp.body as ProjectModel;
             this.projectUsers = this.project.users;
-            this.getCurrentEntityService.getCurrentOrganizationService
-              .currentOrganizationId = this.project.organizationId;
+            this.updateHeader();
             this.setColumns();
           } else {
             this.notificationService.error('Something went wrong');
@@ -316,5 +314,11 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       replaceUrl: true,      
     });
     this.urlChanged.emit();
+  }
+
+  updateHeader(): void {
+    this.getCurrentEntityService.getCurrentOrganizationService
+      .currentOrganizationId = this.project.organizationId;
+    this.getCurrentEntityService.getCurrentProjectService.currentProjectId = this.project.id;
   }
 }
