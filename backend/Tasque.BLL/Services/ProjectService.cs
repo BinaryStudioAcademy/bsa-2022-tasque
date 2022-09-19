@@ -8,24 +8,23 @@ using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Enums;
+using Tasque.Core.Common.Models.Events;
 using Tasque.Core.Common.StaticResources;
 using Tasque.Core.DAL;
-using Tasque.Core.Common.Models.Events;
-using Tasque.Messaging.Abstractions;
 using Tasque.Core.Identity.Helpers;
+using Tasque.Messaging.Abstractions;
 using Task = System.Threading.Tasks.Task;
-using Tasque.Messaging;
 
 namespace Tasque.Core.BLL.Services;
 
 public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, EditProjectDto, int, Project>
 {
-	private readonly IEventBus _bus;
-	
-    public ProjectService(DataContext db, IMapper mapper, CurrentUserParameters currentUser, IEventBus bus) 
+    private readonly IEventBus _bus;
+
+    public ProjectService(DataContext db, IMapper mapper, CurrentUserParameters currentUser, IEventBus bus)
         : base(db, mapper, currentUser)
     {
-		_bus = bus;
+        _bus = bus;
     }
 
     public List<ProjectDto> GetProjectsByOrganizationId(int organizationId)
@@ -97,35 +96,30 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
         {
             new()
             {
-                Type = BasicTaskPriorityTypes.Highest,
                 Name = BasicTaskPriorityTypes.Highest.ToString(),
                 Color = TaskColors.Highest,
                 ProjectId = project.Id,
             },
             new()
             {
-                Type = BasicTaskPriorityTypes.High,
                 Name = BasicTaskPriorityTypes.High.ToString(),
                 Color = TaskColors.High,
                 ProjectId = project.Id,
             },
             new()
             {
-                Type = BasicTaskPriorityTypes.Medium,
                 Name = BasicTaskPriorityTypes.Medium.ToString(),
                 Color = TaskColors.Medium,
                 ProjectId = project.Id,
             },
             new()
             {
-                Type = BasicTaskPriorityTypes.Low,
                 Name = BasicTaskPriorityTypes.Low.ToString(),
                 Color = TaskColors.Low,
                 ProjectId = project.Id,
             },
             new()
             {
-                Type = BasicTaskPriorityTypes.Lowest,
                 Name = BasicTaskPriorityTypes.Lowest.ToString(),
                 Color = TaskColors.Lowest,
                 ProjectId = project.Id,
@@ -252,7 +246,7 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
         _db.Projects.Update(project);
 
         await _db.SaveChangesAsync();
-        
+
         UserInvitedEvent @event = new UserInvitedEvent
         {
             ProjectId = project.Id,
