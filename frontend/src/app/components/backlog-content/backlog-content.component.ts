@@ -148,7 +148,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((result) => {
           if (result.body) {
-            this.notificationService.success('Task moved to backlog');
+            this.notificationService.success(`Task ${_task.key} moved to backlog`);
           }
         });
     }
