@@ -9,14 +9,14 @@ import { TaskState } from 'src/core/models/task/task-state';
 import { TaskType } from 'src/core/models/task/task-type';
 import { NotificationService } from 'src/core/services/notification.service';
 import { ProjectService } from 'src/core/services/project.service';
-import { TemplateSetting } from '../template-setting-model';
+import { SettingType } from '../setting-type-model';
 
 @Component({
-  selector: 'app-basic-label-field',
-  templateUrl: './basic-label-field.component.html',
-  styleUrls: ['./basic-label-field.component.sass']
+  selector: 'app-basic-setting-field',
+  templateUrl: './basic-setting-field.component.html',
+  styleUrls: ['./basic-setting-field.component.sass']
 })
-export class BasicLabelFieldComponent extends BaseComponent implements OnInit {
+export class BasicSettingFieldComponent extends BaseComponent implements OnInit {
   @Input()
   public set settings(v: TaskType[] | TaskState[] | TaskPriority[]) {
     if (!v) {
@@ -30,7 +30,7 @@ export class BasicLabelFieldComponent extends BaseComponent implements OnInit {
   }
 
   @Input() public project: ProjectModel;
-  @Input() public type: TemplateSetting;
+  @Input() public type: SettingType;
 
   public settingsShow: TaskType[] | TaskState[] | TaskPriority[];
 

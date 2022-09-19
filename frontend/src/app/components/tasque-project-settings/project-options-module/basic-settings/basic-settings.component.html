@@ -18,20 +18,20 @@
 
   <div class="settings-container" *ngIf="selectedSetting" [ngSwitch]="selectedSetting">
     <ng-container *ngSwitchCase="'Priority'">
-      <app-basic-label-field
+      <app-basic-setting-field
         [project]="project"
         type="Priority"
         [settings]="priorities"
-      ></app-basic-label-field>
+      ></app-basic-setting-field>
     </ng-container>
     <ng-container *ngSwitchCase="'Type'">
-      <app-basic-label-field [project]="project" [settings]="types" type="Type"></app-basic-label-field>
+      <app-basic-setting-field [project]="project" [settings]="types" type="Type"></app-basic-setting-field>
     </ng-container>
     <ng-container *ngSwitchCase="'State'">
-      <app-basic-label-field [project]="project" [settings]="states" type="State"></app-basic-label-field>
+      <app-basic-setting-field [project]="project" [settings]="states" type="State"></app-basic-setting-field>
     </ng-container>
     <ng-container *ngSwitchCase="'Project'">
-      <app-basic-label-field></app-basic-label-field>
+      <app-basic-setting-field></app-basic-setting-field>
     </ng-container>
   </div>
 
