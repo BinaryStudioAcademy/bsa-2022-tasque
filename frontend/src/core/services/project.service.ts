@@ -14,6 +14,7 @@ import { BoardModel } from '../models/board/board-model';
 import { TaskState } from '../models/task/task-state';
 import { TaskModel } from '../models/task/task-model';
 import { ProjectCardModel } from '../models/your-work/project-card-model';
+import { TaskType } from '../models/task/task-type';
 
 @Injectable({
   providedIn: 'root'
