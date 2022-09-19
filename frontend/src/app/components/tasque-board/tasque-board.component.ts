@@ -22,6 +22,7 @@ import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
+import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 
 @Component({
   selector: 'tasque-board',
@@ -70,7 +71,14 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     });
 
     this.createColumnForm = formBuilder.group({
-      'columnName': ['', [Validators.required]],
+      'columnName': ['',
+        [
+          Validators.required,
+          Validators.minLength(ValidationConstants.minLengthName),
+          Validators.maxLength(ValidationConstants.maxLengthName),
+          Validators.pattern(/[a-zA-Z0-9]/)
+        ]
+      ],
     });
   }
 

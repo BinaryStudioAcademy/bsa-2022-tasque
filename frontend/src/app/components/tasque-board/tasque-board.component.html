@@ -58,7 +58,7 @@
           <span *ngIf="!isOpenColumnAddDialog" (click)="openAddColumn()">+ Add Section</span>
           <div *ngIf="isOpenColumnAddDialog">
             <form [formGroup]="createColumnForm" (ngSubmit)="addColumn()">
-              <tasque-input type="text" placeholder="Type name" formControlName="columnName" [invalid]="!createColumnForm.valid && createColumnForm.touched" errorMessage="required" [icon]="plusIcon" iconPosition="right" (iconClick)="addColumn()"></tasque-input>
+              <tasque-input type="text" placeholder="Type name" formControlName="columnName" [invalid]="!createColumnForm.valid && createColumnForm.touched" errorMessage="Column name is incorrect" [icon]="plusIcon" iconPosition="right" (iconClick)="addColumn()"></tasque-input>
             </form>
           </div>
         </div>
