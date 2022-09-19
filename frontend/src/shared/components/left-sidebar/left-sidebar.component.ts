@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { BaseComponent } from 'src/core/base/base.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-left-sidebar',
@@ -39,7 +40,7 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit, OnCha
   isIssueTemplate = false;
   isBasicIssueTemplate = false;
 
-  selectedColor = '#F0F3F9';
+  arrowRight = faChevronRight;
 
   constructor(
     private breakpointObserver: BreakpointObserver,

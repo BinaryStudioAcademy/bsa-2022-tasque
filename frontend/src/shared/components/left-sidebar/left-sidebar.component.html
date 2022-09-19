@@ -93,7 +93,11 @@
       </div>
 
       <div class="menu-item" [ngClass]="{ 'selected': isSettings }" *ngIf="sideBarMinimized">
-        <tasque-menu-dropdown class="settings-dropdown">
+        <tasque-menu-dropdown
+          class="settings-dropdown"
+          [upArrowIcon]="arrowRight"
+          [downArrowIcon]="arrowRight"
+        >
           <div dropdown-button (click)="toggleSettings()">
             <div class="settings-button">
               <img
