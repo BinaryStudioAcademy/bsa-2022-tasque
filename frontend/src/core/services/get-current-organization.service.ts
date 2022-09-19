@@ -5,38 +5,47 @@ import { OrganizationModel } from '../models/organization/organization-model';
 
 @Injectable({ providedIn: 'root' })
 export class GetCurrentOrganizationService {
-    constructor() { }
+  constructor() {}
 
-    private currentOrganizationIdSubj = new BehaviorSubject<number>(this.currentOrganizationId);
-    public currentOrganizationId$ = this.currentOrganizationIdSubj.asObservable();
+  private currentOrganizationIdSubj = new BehaviorSubject<number>(
+    this.currentOrganizationId,
+  );
+  public currentOrganizationId$ = this.currentOrganizationIdSubj.asObservable();
 
-    public set currentOrganizationId(value: number) {
-      localStorage.setItem(LocalStorageKeys.selectedOrganization, value.toString());
-      this.currentOrganizationIdSubj.next(value);
-    }
+  public set currentOrganizationId(value: number) {
+    localStorage.setItem(
+      LocalStorageKeys.selectedOrganization,
+      value.toString(),
+    );
+    this.currentOrganizationIdSubj.next(value);
+  }
 
-    public get currentOrganizationId(): number {
-        return +(localStorage.getItem(LocalStorageKeys.selectedOrganization) ?? '-1');
-    }
+  public get currentOrganizationId(): number {
+    return +(
+      localStorage.getItem(LocalStorageKeys.selectedOrganization) ?? '-1'
+    );
+  }
 
-    public clearCurrentOrganizationId(): void {
-        this.currentOrganizationIdSubj.next(-1);
-        this.currentOrganizationIdSubj.complete();
-        this.currentOrganizationIdSubj = new BehaviorSubject<number>(this.currentOrganizationId);
-        this.currentOrganizationId$ = this.currentOrganizationIdSubj.asObservable();
-    }
+  public clearCurrentOrganizationId(): void {
+    this.currentOrganizationIdSubj.next(-1);
+    this.currentOrganizationIdSubj.complete();
+    this.currentOrganizationIdSubj = new BehaviorSubject<number>(
+      this.currentOrganizationId,
+    );
+    this.currentOrganizationId$ = this.currentOrganizationIdSubj.asObservable();
+  }
 
-    private organizationUpdatedSubj = new Subject<OrganizationModel>();
-    public organizationUpdated$ = this.organizationUpdatedSubj.asObservable();
+  private organizationUpdatedSubj = new Subject<OrganizationModel>();
+  public organizationUpdated$ = this.organizationUpdatedSubj.asObservable();
 
-    public updateOrganization(organization: OrganizationModel): void {
-        this.organizationUpdatedSubj.next(organization);
-    }
+  public updateOrganization(organization: OrganizationModel): void {
+    this.organizationUpdatedSubj.next(organization);
+  }
 
-    private organizationsSubj = new ReplaySubject<OrganizationModel[]>(1);
-    public organizations$ = this.organizationsSubj.asObservable();
+  private organizationsSubj = new ReplaySubject<OrganizationModel[]>(1);
+  public organizations$ = this.organizationsSubj.asObservable();
 
-    public setOrganizations(organizations: OrganizationModel[]): void {
-        this.organizationsSubj.next(organizations);
-    }
+  public setOrganizations(organizations: OrganizationModel[]): void {
+    this.organizationsSubj.next(organizations);
+  }
 }
