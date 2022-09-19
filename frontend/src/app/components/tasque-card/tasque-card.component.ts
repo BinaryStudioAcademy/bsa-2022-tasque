@@ -29,6 +29,14 @@ export class TasqueCardComponent implements OnInit {
   currentUser: UserModel;
   currentOrganization: OrganizationModel;
 
+  public get taskInfoStyle(): string {
+    if(this.taskInfo.estimate) {
+      return 'space-between';
+    } else {
+      return 'flex-end';
+    }
+  }
+
   public editIcon = faPen;
 
   constructor(
