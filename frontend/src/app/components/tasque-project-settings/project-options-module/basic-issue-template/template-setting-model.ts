@@ -1,1 +1,1 @@
-export type templateSetting = 'Project' | 'State' | 'Priority' | 'Type';
+export type TemplateSetting = 'Project' | 'State' | 'Priority' | 'Type';

@@ -8,7 +8,7 @@ import { TaskType } from 'src/core/models/task/task-type';
 import { GetCurrentProjectService } from 'src/core/services/get-current-project.service';
 import { ProjectService } from 'src/core/services/project.service';
 import { TaskTemplateService } from 'src/core/services/task-template.service';
-import { templateSetting } from './template-setting-model';
+import { TemplateSetting } from './template-setting-model';
 
 @Component({
   selector: 'app-basic-issue-template',
@@ -16,7 +16,7 @@ import { templateSetting } from './template-setting-model';
   styleUrls: ['./basic-issue-template.component.sass']
 })
 export class BasicIssueTemplateComponent extends BaseComponent implements OnInit {
-  public selectedSetting?: templateSetting;
+  public selectedSetting?: TemplateSetting;
 
   public project: ProjectModel;
   public priorities: TaskPriority[];
@@ -42,7 +42,7 @@ export class BasicIssueTemplateComponent extends BaseComponent implements OnInit
     });
   }
 
-  public selectSetting(setting: templateSetting): void {
+  public selectSetting(setting: TemplateSetting): void {
     this.selectedSetting = setting;
 
     switch (this.selectedSetting) {
