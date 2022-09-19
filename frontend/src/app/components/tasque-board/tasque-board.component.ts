@@ -115,9 +115,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         } else {
           this.notificationService.error('Something went wrong');
         }
-      }, (err) => {
-        if(err)
-        this.notificationService.info(err.error);
+      }, () => {
         this.isShow = true;
       });
 
