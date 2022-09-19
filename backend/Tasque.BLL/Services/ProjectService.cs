@@ -202,6 +202,66 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
         return _mapper.Map<ProjectInfoDto>(project);
     }
 
+    public async Task<IEnumerable<TaskStateDto>> UpdateProjectTaskStates(int key, IEnumerable<TaskStateDto> taskStateDtos)
+    {
+        var project = await _db.Projects
+            .Where(proj => proj.Id == key)
+            .Include(proj => proj.ProjectTaskStates)
+            .FirstOrDefaultAsync();
+
+        if (project == null)
+            throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
+
+        var entitiesToDelete = project.ProjectTaskStates;
+        var taskStates = _mapper.Map<ICollection<TaskState>>(taskStateDtos);
+
+        _db.TaskStates.RemoveRange(entitiesToDelete);
+        _db.TaskStates.AddRange(taskStates);
+        _db.SaveChanges();
+
+        return _mapper.Map<IEnumerable<TaskStateDto>>(taskStates);
+    }
+
+    public async Task<IEnumerable<TaskTypeDto>> UpdateProjectTaskTypes(int key, IEnumerable<TaskTypeDto> taskTypeDtos)
+    {
+        var project = await _db.Projects
+            .Where(proj => proj.Id == key)
+            .Include(proj => proj.ProjectTaskTypes)
+            .FirstOrDefaultAsync();
+
+        if (project == null)
+            throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
+
+        var entitiesToDelete = project.ProjectTaskTypes;
+        var taskTypes = _mapper.Map<ICollection<TaskType>>(taskTypeDtos);
+
+        _db.TaskTypes.RemoveRange(entitiesToDelete);
+        _db.TaskTypes.AddRange(taskTypes);
+        _db.SaveChanges();
+
+        return _mapper.Map<IEnumerable<TaskTypeDto>>(taskTypes);
+    }
+
+    public async Task<IEnumerable<TaskPriorityDto>> UpdateProjectTaskPriorities(int key, IEnumerable<TaskPriorityDto> taskPriorityDtos)
+    {
+        var project = await _db.Projects
+            .Where(proj => proj.Id == key)
+            .Include(proj => proj.ProjectTaskPriorities)
+            .FirstOrDefaultAsync();
+
+        if (project == null)
+            throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
+
+        var entitiesToDelete = project.ProjectTaskPriorities;
+        var taskPriorities = _mapper.Map<ICollection<TaskPriority>>(taskPriorityDtos);
+
+        _db.TaskPriorities.RemoveRange(entitiesToDelete);
+        _db.TaskPriorities.AddRange(taskPriorities);
+        _db.SaveChanges();
+
+        return _mapper.Map<IEnumerable<TaskPriorityDto>>(taskPriorities);
+    }
+
     public async Task<List<ProjectInfoDto>> GetAllProjectsOfOrganization(int organizationId)
     {
         var projects = await _db.Projects
