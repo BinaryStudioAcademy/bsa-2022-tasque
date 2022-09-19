@@ -71,7 +71,7 @@
         <span>Settings</span>
       </div>
 
-      <div class="menu-settings" *ngIf="!sideBarMinimized && showSettings && isProjectAdmin()">
+      <div class="menu-settings" *ngIf="!sideBarMinimized && showSettings">
         <div class="settings-actions" *ngIf="isProjectAdmin()">
           <p (click)="navigateToBasicSettings()" [ngClass]="{ 'selected': isBasicSettings }">
             Basic settings
