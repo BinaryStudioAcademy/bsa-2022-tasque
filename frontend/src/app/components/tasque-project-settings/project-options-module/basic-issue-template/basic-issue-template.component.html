@@ -8,45 +8,30 @@
   <div class="select-setting-container">
     <tasque-menu-dropdown class="settings-dropdown">
       <span dropdown-button> {{ selectedSetting ?? 'Select setting' }} </span>
-      <tasque-option option (click)="selectSetting('Priority')">
-        Task Priority
-      </tasque-option>
-      <tasque-option option (click)="selectSetting('Type')">
-        Task Type
-      </tasque-option>
-      <tasque-option option (click)="selectSetting('State')">
-        Task State
-      </tasque-option>
+      <tasque-option option (click)="selectSetting('Priority')"> Task Priority </tasque-option>
+      <tasque-option option (click)="selectSetting('Type')"> Task Type </tasque-option>
+      <tasque-option option (click)="selectSetting('State')"> Task State </tasque-option>
     </tasque-menu-dropdown>
   </div>
 
   <hr />
 
-  <div
-    class="settings-container"
-    *ngIf="selectedSetting"
-    [ngSwitch]="selectedSetting"
-  >
+  <div class="settings-container" *ngIf="selectedSetting" [ngSwitch]="selectedSetting">
     <ng-container *ngSwitchCase="'Priority'">
-      <app-basic-label-field
-        [project]="project"
-        [settings]="priorities"
-      ></app-basic-label-field>
+      <app-basic-label-field [project]="project" [settings]="priorities"></app-basic-label-field>
     </ng-container>
     <ng-container *ngSwitchCase="'Type'">
-      <app-basic-label-field
-        [project]="project"
-        [settings]="types"
-      ></app-basic-label-field>
+      <app-basic-label-field [project]="project" [settings]="types"></app-basic-label-field>
     </ng-container>
     <ng-container *ngSwitchCase="'State'">
-      <app-basic-label-field
-        [project]="project"
-        [settings]="states"
-      ></app-basic-label-field>
+      <app-basic-label-field [project]="project" [settings]="states"></app-basic-label-field>
     </ng-container>
     <ng-container *ngSwitchCase="'Project'">
       <app-basic-label-field></app-basic-label-field>
     </ng-container>
+  </div>
+
+  <div class="empty-selected-setting-warning" *ngIf="!selectedSetting">
+    <p>You have not chosen any setting yet.</p>
   </div>
 </div>
