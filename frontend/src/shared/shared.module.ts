@@ -33,6 +33,7 @@ import { CreateProjectDialogComponent } from './components/create-project-dialog
 import { TaskCreationCustomFieldsComponent } from './components/tasque-task-creation/task-creation-custom-fields/task-creation-custom-fields.component';
 import { TaskCreationComponent } from './components/tasque-task-creation/task-creation.component';
 import { ProjectDropdownComponent } from './components/tasque-header/project-dropdown/project-dropdown.component';
+import { TasqueCreateDropdownComponent } from './components/tasque-create-dropdown/tasque-create-dropdown.component';
 
 @NgModule({
   imports: [
@@ -72,7 +73,8 @@ import { ProjectDropdownComponent } from './components/tasque-header/project-dro
     CreateOrganizationDialogComponent,
     CreateProjectDialogComponent,
     TaskCreationCustomFieldsComponent,
-    ProjectDropdownComponent
+    ProjectDropdownComponent,
+    TasqueCreateDropdownComponent,
   ],
   exports: [
     CommonModule,
@@ -108,6 +110,7 @@ import { ProjectDropdownComponent } from './components/tasque-header/project-dro
     CreateOrganizationDialogComponent,
     CreateProjectDialogComponent,
     TasqueOptionComponent,
+    TasqueCreateDropdownComponent,
   ],
   providers: [SideBarService],
 })

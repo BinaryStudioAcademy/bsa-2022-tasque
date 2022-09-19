@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { faCircleArrowLeft, faPlus, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { WikiPage } from 'src/core/models/wiki/wikiPage';
 
 @Component({
   selector: 'wiki-left-sidebar',
@@ -11,23 +12,26 @@ export class WikiLeftSidebarComponent implements OnInit {
 
   public backIcon: IconDefinition = faCircleArrowLeft;
   public plusIcon: IconDefinition = faPlus;
+  
+  public pageList: WikiPage[] = [];
+  public showCreate: boolean;
 
   private currentProjectId: number;
 
   constructor(
-    private router: Router,
-    private activeRoute: ActivatedRoute
+    private router: Router
   ) { }
 
   ngOnInit() {
-    this.currentProjectId = Number(this.activeRoute.snapshot.paramMap.get('id'));
   }
 
   backToProject(): void {
     this.router.navigate([`project/${this.currentProjectId}/board`]);
   }
 
-  openPage(name: string): void {
-    this.router.navigate([`project/${this.currentProjectId}/wiki/${name}`]);
+  createBasePage(name: string): void {
+    this.pageList.push({name: name});
+    this.showCreate = false;
   }
+
 }

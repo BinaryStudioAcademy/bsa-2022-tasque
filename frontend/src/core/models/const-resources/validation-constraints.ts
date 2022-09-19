@@ -1,6 +1,7 @@
 export const ValidationConstants = {
   minLengthName: 2,
   maxLengthName: 30,
+  maxLenghtTitle: 12,
   minLengthPassword: 8,
   maxLengthPassword: 255,
   minLengthEmail: 8,

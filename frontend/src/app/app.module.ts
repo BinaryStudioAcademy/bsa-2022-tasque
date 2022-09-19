@@ -40,6 +40,7 @@ import { DeleteSprintDialogComponent } from './components/delete-sprint-dialog/d
 import { WikiComponent } from './components/tasque-wiki/wiki/wiki.component';
 import { WikiLeftSidebarComponent } from './components/tasque-wiki/wiki-left-sidebar/wiki-left-sidebar.component';
 import { WikiPageComponent } from './components/tasque-wiki/wiki-page/wiki-page.component';
+import { WikiTitleComponent } from './components/tasque-wiki/wiki-title/wiki-title.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { WikiPageComponent } from './components/tasque-wiki/wiki-page/wiki-page.
     DeleteSprintDialogComponent,
     WikiComponent,
     WikiLeftSidebarComponent,
-    WikiPageComponent
+    WikiPageComponent,
+    WikiTitleComponent,
   ],
   imports: [
     BrowserModule,
