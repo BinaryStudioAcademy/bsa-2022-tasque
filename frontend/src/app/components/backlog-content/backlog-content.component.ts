@@ -61,6 +61,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   @Input() public tasks: TaskModel[] = [];
 
   public tasks$: Observable<TaskModel[]>;
+  public isDragable = true;
 
   constructor(
     public backlogService: BacklogService,
@@ -152,6 +153,10 @@ export class BacklogContentComponent implements OnInit, OnChanges {
           }
         });
     }
+  }
+
+  toogleIsDragable(val: boolean): void {
+    this.isDragable = !val;
   }
 
   getBacklogTasks(): void {
