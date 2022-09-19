@@ -11,7 +11,6 @@ import { TaskInfoModel } from 'src/core/models/board/task-Info-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { NotificationService } from 'src/core/services/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { Observable, Subject } from 'rxjs';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
