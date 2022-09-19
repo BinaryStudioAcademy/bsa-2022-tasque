@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { faCheck, faMinus, faPencil, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { ProjectModel } from 'src/core/models/project/project-model';
+import { TaskPriorityType } from 'src/core/models/task/enums/task-priority-types';
 import { TaskPriority } from 'src/core/models/task/task-priority';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskType } from 'src/core/models/task/task-type';
@@ -82,11 +83,26 @@ export class BasicLabelFieldComponent implements OnInit {
   }
 
   public saveSetting(): void {
-    throw new Error('Method not implemented.');
+    if (!this.formNameControl.valid || !this.formColorControl.valid) {
+      this.notificatinService.error(this.errorMessage);
+      return;
+    }
+
+    this.settingsShow.push({
+      id: 0,
+      name: this.formNameControl.value,
+      color: this.formColorControl.value,
+      projectId: this.project.id,
+      type: TaskPriorityType.Medium
+    });
+    this.isChanging = false;
+
+    this.formColorControl.setValue('');
+    this.formNameControl.setValue('');
   }
 
   public addSetting(): void {
-    throw new Error('Method not implemented.');
+    this.isChanging = !this.isChanging;
   }
 
   public cancelEdit(): void {
