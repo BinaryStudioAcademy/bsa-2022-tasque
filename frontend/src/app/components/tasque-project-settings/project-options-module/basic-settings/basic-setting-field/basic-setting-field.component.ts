@@ -18,15 +18,15 @@ import { SettingType } from '../setting-type-model';
 })
 export class BasicSettingFieldComponent extends BaseComponent implements OnInit {
   @Input()
-  public set settings(v: TaskType[] | TaskState[] | TaskPriority[]) {
-    if (!v) {
+  public set projectSettings(settings: TaskType[] | TaskState[] | TaskPriority[]) {
+    if (!settings) {
       this.settingsShow = [];
-      this.defaultValue = [];
+      this.defaultSettings = [];
       return;
     }
 
-    this.settingsShow = Array.from(v);
-    this.defaultValue = Array.from(v);
+    this.settingsShow = Array.from(settings);
+    this.defaultSettings = Array.from(settings);
   }
 
   @Input() public project: ProjectModel;
@@ -39,7 +39,7 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
   addIcon = faPlus;
   editIcon = faPencil;
 
-  defaultValue: TaskType[] | TaskState[] | TaskPriority[];
+  defaultSettings: TaskType[] | TaskState[] | TaskPriority[];
   formNameControl: FormControl;
   formColorControl: FormControl;
 
@@ -115,7 +115,7 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
   }
 
   public cancelEdit(): void {
-    this.settingsShow = Array.from(this.defaultValue);
+    this.settingsShow = Array.from(this.defaultSettings);
     this.isUpdated = false;
   }
 
@@ -134,7 +134,7 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
               return;
             }
             this.settingsShow = Array.from(resp.body);
-            this.defaultValue = Array.from(resp.body);
+            this.defaultSettings = Array.from(resp.body);
             this.notificatinService.success('Task Priorities were successfully updated');
             this.isUpdated = false;
           });
@@ -147,7 +147,7 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
               return;
             }
             this.settingsShow = Array.from(resp.body);
-            this.defaultValue = Array.from(resp.body);
+            this.defaultSettings = Array.from(resp.body);
             this.notificatinService.success('Task States were successfully updated');
             this.isUpdated = false;
           });
@@ -160,7 +160,7 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
               return;
             }
             this.settingsShow = Array.from(resp.body);
-            this.defaultValue = Array.from(resp.body);
+            this.defaultSettings = Array.from(resp.body);
             this.notificatinService.success('Task Types were successfully updated');
             this.isUpdated = false;
           });

@@ -21,14 +21,22 @@
       <app-basic-setting-field
         [project]="project"
         type="Priority"
-        [settings]="priorities"
+        [projectSettings]="priorities"
       ></app-basic-setting-field>
     </ng-container>
     <ng-container *ngSwitchCase="'Type'">
-      <app-basic-setting-field [project]="project" [settings]="types" type="Type"></app-basic-setting-field>
+      <app-basic-setting-field
+        [project]="project"
+        [projectSettings]="types"
+        type="Type"
+      ></app-basic-setting-field>
     </ng-container>
     <ng-container *ngSwitchCase="'State'">
-      <app-basic-setting-field [project]="project" [settings]="states" type="State"></app-basic-setting-field>
+      <app-basic-setting-field
+        [project]="project"
+        [projectSettings]="states"
+        type="State"
+      ></app-basic-setting-field>
     </ng-container>
     <ng-container *ngSwitchCase="'Project'">
       <app-basic-setting-field></app-basic-setting-field>
