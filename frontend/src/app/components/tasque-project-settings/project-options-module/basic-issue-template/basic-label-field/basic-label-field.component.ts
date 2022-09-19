@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { faCheck, faMinus, faPencil, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { TaskPriority } from 'src/core/models/task/task-priority';
@@ -28,10 +28,23 @@ export class BasicLabelFieldComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.formNameControl = new FormControl('', [
+      Validators.required,
+      Validators.minLength(2),
+    ]);
+
+    this.formColorControl = new FormControl('', [
+      Validators.required,
+    ]);
   }
 
-  public deleteSetting(_setting: TaskType | TaskState | TaskPriority): void {
-    throw new Error('Method not implemented.');
+  public deleteSetting(setting: TaskType | TaskState | TaskPriority): void {
+    for (let index = 0; index < this.settings.length; index++) {
+      if (this.settings[index] === setting) {
+        this.settings.splice(index, 1);
+        return;
+      }
+    }
   }
 
   public editSetting(_setting: TaskType | TaskState | TaskPriority): void {
