@@ -126,29 +126,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         }
       }
     });
-
-    this.taskStorageService.taskUpdated$.subscribe((task) => {
-      let isTaskFound = false;
-
-      for (const col of this.columns) {
-        if (isTaskFound) {
-          return;
-        }
-
-        const index = col.tasks.findIndex((t) => task.id === t.id);
-
-        if (index !== -1) {
-          isTaskFound = true;
-
-          col.tasks[index] = {
-            ...task,
-            customLabels: [],
-            key: task.key as string,
-            isHidden: false,
-          };
-        }
-      }
-    });
   }
 
   getCurrentSprintAndTasks(): void {
