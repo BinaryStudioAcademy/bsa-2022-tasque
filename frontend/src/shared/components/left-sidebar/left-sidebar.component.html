@@ -5,56 +5,62 @@
       <img *ngIf="sideBarMinimized" src="assets/kebab_menu.svg" alt="" />
     </a>
   </div>
-  <div class="menu">
-    <div class="menu-item" [style.background-color]="isBoard">
-      <a (click)="hideSettings(); 
-      navigateToBoard();">
-        <img src="assets/board_icon.svg" alt="" matTooltip="Board" matTooltipPosition="after" [matTooltipDisabled]="!sideBarMinimized"/>
-        <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Board</span>
-      </a>
+  <aside class="menu">
+    <div class="menu-item" [ngClass]="{ 'selected': isBoard }" (click)="hideSettings(); navigateToBoard()">
+      <img
+        src="assets/board_icon.svg"
+        alt=""
+        matTooltip="Board"
+        matTooltipPosition="after"
+        [matTooltipDisabled]="!sideBarMinimized"
+      />
+      <span *ngIf="!sideBarMinimized">Board</span>
     </div>
-    <div class="menu-item"  [style.background-color]="isBacklog">
-      <a (click)="hideSettings(); navigateToBacklog();">
-        <img
-          src="assets/backlog_icon.svg"
-          alt=""
-          matTooltip="Backlog"
-          matTooltipPosition="after"
-          [matTooltipDisabled]="!sideBarMinimized"
-        />
-        <span *ngIf="!sideBarMinimized" routerLinkActive="selected"
-          >Backlog</span
-        >
-      </a>
+
+    <div
+      class="menu-item"
+      [ngClass]="{ 'selected': isBacklog }"
+      (click)="hideSettings(); navigateToBacklog()"
+    >
+      <img
+        src="assets/backlog_icon.svg"
+        alt=""
+        matTooltip="Backlog"
+        matTooltipPosition="after"
+        [matTooltipDisabled]="!sideBarMinimized"
+      />
+      <span *ngIf="!sideBarMinimized">Backlog</span>
     </div>
-    <div class="menu-item"  [style.background-color]="isTeam">
-      <a (click)="hideSettings(); navigateToTeam()">
-        <img
-          src="assets/team_icon.svg"
-          alt=""
-          matTooltip="Team"
-          matTooltipPosition="after"
-          [matTooltipDisabled]="!sideBarMinimized"
-        />
-        <span *ngIf="!sideBarMinimized" routerLinkActive="selected">Team</span>
-      </a>
+
+    <div class="menu-item" [ngClass]="{ 'selected': isTeam }" (click)="hideSettings(); navigateToTeam()">
+      <img
+        src="assets/team_icon.svg"
+        alt=""
+        matTooltip="Team"
+        matTooltipPosition="after"
+        [matTooltipDisabled]="!sideBarMinimized"
+      />
+      <span *ngIf="!sideBarMinimized">Team</span>
     </div>
-    <div class="menu-item"  [style.background-color]="isWiki">
-      <a (click)="hideSettings(); navigateToWiki()">
-        <img
-          src="assets/wiki_icon.svg"
-          alt=""
-          matTooltip="Project wiki"
-          matTooltipPosition="after"
-          [matTooltipDisabled]="!sideBarMinimized"
-        />
-        <span *ngIf="!sideBarMinimized" routerLinkActive="selected"
-          >Project wiki</span
-        >
-      </a>
+
+    <div class="menu-item" [ngClass]="{ 'selected': isWiki }" (click)="hideSettings(); navigateToWiki()">
+      <img
+        src="assets/wiki_icon.svg"
+        alt=""
+        matTooltip="Project wiki"
+        matTooltipPosition="after"
+        [matTooltipDisabled]="!sideBarMinimized"
+      />
+      <span *ngIf="!sideBarMinimized">Project wiki</span>
     </div>
-    <div class="menu-item" *ngIf="!sideBarMinimized" (click)="toggleSettings()" [style.background-color]="isSettings">
-      <div class="button">
+
+    <section class="settings">
+      <div
+        class="menu-item"
+        *ngIf="!sideBarMinimized"
+        [ngClass]="{ 'selected': isSettings }"
+        (click)="toggleSettings()"
+      >
         <img
           src="assets/settings_icon_sidebarmenu.svg"
           alt=""
@@ -62,99 +68,56 @@
           matTooltipPosition="after"
           [matTooltipDisabled]="!sideBarMinimized"
         />
-        <span *ngIf="!sideBarMinimized">Settings</span>
+        <span>Settings</span>
       </div>
-      <div *ngIf="!sideBarMinimized && showSettings">
-        <div class="menu-actions" *ngIf="isProjectAdmin()">
-          <ul>
-            <li>
-              <p
-                routerLink="settings/columns-and-statuses"
-                routerLinkActive="selected"
-              >
-                Columns and statuses
-              </p>
-            </li>
-            <hr>
-            <li>
-              <p routerLink="settings/issue-types" routerLinkActive="selected">
-                Issue types
-              </p>
-            </li>
-            <hr>
-            <li>
-              <p
-                (click)="navigateToIssueTemplate()"
-                routerLinkActive="selected"
-              >
-                Issue template
-              </p>
-            </li>
-            <hr>
-            <li>
-              <p
-                routerLink="settings/basic-issue-template"
-                routerLinkActive="selected"
-              >
-                Basic issue template
-              </p>
-            </li>
-          </ul>
+
+      <div class="menu-settings" *ngIf="!sideBarMinimized && showSettings && isProjectAdmin()">
+        <div class="settings-actions" *ngIf="isProjectAdmin()">
+          <p (click)="navigateToColumnsAndStatuses()" [ngClass]="{ 'selected': isColumnsAndStatuses }">
+            Columns and statuses
+          </p>
+          <p (click)="navigateToIssueTypes()" [ngClass]="{ 'selected': isIssueTypes }">Issue types</p>
+          <p (click)="navigateToIssueTemplate()" [ngClass]="{ 'selected': isIssueTemplate }">
+            Issue template
+          </p>
+          <p (click)="navigateToBasicIssueTemplate()" [ngClass]="{ 'selected': isBasicIssueTemplate }">
+            Basic issue template
+          </p>
         </div>
-        <div *ngIf="!isProjectAdmin()" class="no-permission">
+        <div *ngIf="!isProjectAdmin()" class="settings-no-permission">
           <p>
-            You don't have enough permission. Ask your supervisor to give you
-            access to change project settings
+            You don't have enough permission. Ask your supervisor to give you access to change project
+            settings
           </p>
         </div>
       </div>
-    </div>
-    <tasque-menu-dropdown *ngIf="sideBarMinimized" [left]="50" class="menu-item min-settings" [style.background-color]="isSettings">
-      <div 
-        dropdown-button 
-        (click)="toggleSettings()" 
-        [style.background-color]="isSettings"
-        >
-        <div class="button">
-          <img
-            src="assets/settings_icon_sidebarmenu.svg"
-            alt=""
-            matTooltip="Settings"
-            matTooltipPosition="after"
-          />
-        </div>
+
+      <div class="menu-item" [ngClass]="{ 'selected': isSettings }" *ngIf="sideBarMinimized">
+        <tasque-menu-dropdown class="settings-dropdown">
+          <div dropdown-button (click)="toggleSettings()">
+            <div class="settings-button">
+              <img
+                src="assets/settings_icon_sidebarmenu.svg"
+                alt=""
+                matTooltip="Settings"
+                matTooltipPosition="after"
+              />
+            </div>
+          </div>
+          <div option *ngIf="isProjectAdmin()">
+            <tasque-option (click)="navigateToColumnsAndStatuses()"> Columns and statuses </tasque-option>
+            <tasque-option (click)="navigateToIssueTypes()">Issue types</tasque-option>
+            <tasque-option (click)="navigateToIssueTemplate()">Issue template</tasque-option>
+            <tasque-option (click)="navigateToBasicIssueTemplate()"> Basic issue template </tasque-option>
+          </div>
+          <div option *ngIf="!isProjectAdmin()">
+            <tasque-option>
+              You don't have enough permission. Ask your supervisor to give you access to change project
+              settings
+            </tasque-option>
+          </div>
+        </tasque-menu-dropdown>
       </div>
-      <div option *ngIf="isProjectAdmin()">
-        <tasque-option option 
-          routerLink="settings/columns-and-statuses"
-          routerLinkActive="selected"
-          >Columns and statuses
-        </tasque-option>
-        <tasque-option 
-          option 
-          routerLink="settings/issue-types" 
-          routerLinkActive="selected"
-          >Issue types
-        </tasque-option>
-        <tasque-option 
-          option 
-          (click)="navigateToIssueTemplate()"
-          routerLinkActive="selected"
-          >Issue template
-        </tasque-option>
-        <tasque-option 
-          option
-          routerLink="settings/basic-issue-template"
-          routerLinkActive="selected" 
-          >Basic issue template
-        </tasque-option>
-      </div>
-      <div *ngIf="!isProjectAdmin()" class="no-permission">
-        <p>
-          You don't have enough permission. Ask your supervisor to give you
-          access to change project settings
-        </p>
-      </div>
-    </tasque-menu-dropdown>
-  </div>
+    </section>
+  </aside>
 </div>
