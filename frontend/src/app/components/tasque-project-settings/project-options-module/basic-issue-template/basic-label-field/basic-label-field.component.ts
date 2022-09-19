@@ -26,6 +26,7 @@ export class BasicLabelFieldComponent implements OnInit {
   }
 
   @Input() public project: ProjectModel;
+  @Input() public type: TemplateSetting;
 
   public settingsShow: TaskType[] | TaskState[] | TaskPriority[];
 
