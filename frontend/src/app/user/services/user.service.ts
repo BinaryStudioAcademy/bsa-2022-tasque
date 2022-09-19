@@ -52,14 +52,14 @@ export class UserService {
 
   setLastOrg(userId: number, orgId: number): Observable<HttpResponse<void>> {
     return this.httpService.postFullRequest(
-      this.routePrefix + `lastOrganization?userId=${userId}&orgId=${orgId}`,
+      this.routePrefix + `/lastOrganization?userId=${userId}&orgId=${orgId}`,
       {},
     );
   }
 
   getLastOrg(userId: number): Observable<HttpResponse<number>> {
     return this.httpService.getFullRequest(
-      this.routePrefix + `lastOrganization?userId=${userId}`,
+      this.routePrefix + `/lastOrganization?userId=${userId}`,
     );
   }
 }
