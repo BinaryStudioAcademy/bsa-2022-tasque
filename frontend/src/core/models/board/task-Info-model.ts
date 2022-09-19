@@ -16,6 +16,7 @@ export interface TaskInfoModel {
     summary: string;
     customLabels: LabelField[];
     key: string;
+    estimate?: number,
     author?: UserModel;
     assignees?: UserModel[];
     attachments: Attachment[],
