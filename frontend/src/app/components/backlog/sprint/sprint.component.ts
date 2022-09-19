@@ -234,14 +234,7 @@ export class SprintComponent implements OnInit, OnChanges {
   }
 
   public getTasksState(): void {
-    this.taskStateService
-      .getAll()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((result) => {
-        if (result.body) {
-          this.taskState = result.body;
-        }
-      });
+    this.taskState = this.currentProject.projectTaskStates;
   }
 
   public getTasksType(): void {
