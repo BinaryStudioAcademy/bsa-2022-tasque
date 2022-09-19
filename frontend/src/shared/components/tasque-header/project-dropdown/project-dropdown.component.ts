@@ -81,19 +81,22 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit, O
     if (this.currentProject.id === project.id &&
       this.getCurrentEntityService
       .getCurrentProjectService.currentProjectId === project.id) {
-      return;
+        this.navigateToBoard(project);
+        return;
     }
 
     this.getCurrentEntityService
     .getCurrentProjectService.currentProjectId = project.id;
-
-    this.router.navigateByUrl(`/project/${project.id}`, { skipLocationChange: true }).then(() =>
-    this.router.navigate(['./board'], { 
-      replaceUrl: true,
-      relativeTo: this.activeRoute
-    }));
+    this.navigateToBoard(project);
     window.scroll(0, 0);
     this.isChanged.emit();
+  }
+
+  public navigateToBoard(project: ProjectInfoModel): void {
+    this.router.navigateByUrl(`/project/${project.id}`, { skipLocationChange: true }).then(() =>
+    this.router.navigate([`/project/${project.id}/board`], { 
+      replaceUrl: true,
+    }));
   }
 
   public openProjectsPage(): void {
