@@ -5,6 +5,7 @@ import { ProjectModel } from 'src/core/models/project/project-model';
 import { TaskPriority } from 'src/core/models/task/task-priority';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskType } from 'src/core/models/task/task-type';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-basic-label-field',
@@ -39,7 +40,9 @@ export class BasicLabelFieldComponent implements OnInit {
 
   isChanging = false;
 
-  constructor() { }
+  constructor(
+    private notificatinService: NotificationService,
+  ) { }
 
   ngOnInit(): void {
     this.formNameControl = new FormControl('', [
