@@ -55,6 +55,19 @@ export class BasicLabelFieldComponent implements OnInit {
     ]);
   }
 
+  get errorMessage(): string {
+    if (this.formNameControl.errors?.['required']) {
+      return 'All fields are required';
+    }
+    if (this.formNameControl.errors?.['minlength']) {
+      return 'Minimum label name should contain 2 characters';
+    }
+    if (this.formColorControl.errors?.['required']) {
+      return 'Choose color';
+    }
+    return 'Unexpected error. Try again.';
+  }
+
   public deleteSetting(setting: TaskType | TaskState | TaskPriority): void {
     for (let index = 0; index < this.settingsShow.length; index++) {
       if (this.settingsShow[index] === setting) {
