@@ -65,12 +65,11 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private boardService: ScopeBoardService,
     private notificationService: NotificationService,
-    private currentUserService: GetCurrentUserService,
+    private getCurrentEntityService: ScopeGetCurrentEntityService,
     private taskStorageService: TaskStorageService,
     private router: Router,
-    private getCurrentEntityService: ScopeGetCurrentEntityService,
   ) {
-    this.currentUserService.currentUser$.subscribe((res) => {
+    this.getCurrentEntityService.getCurrentUserService.currentUser$.subscribe((res) => {
       this.user = res as UserModel;
     });
 
