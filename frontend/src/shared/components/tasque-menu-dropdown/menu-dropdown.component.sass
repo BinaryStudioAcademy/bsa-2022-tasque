@@ -13,13 +13,14 @@ $options-translate: none
 $button-gap: 5px
 $options-border: 2px solid colorscheme(gray-300)
 $options-border-radius: 10px
+$dropdown-wrapper-position: relative
 
 .dropdown-wrapper
   font-family: Nunito
   font-style: normal
   color: var(--label-text-color, $label-text-color)
   display: flex
-  position: relative
+  position: var(--dropdown-wrapper-position, $dropdown-wrapper-position)
   cursor: pointer
   user-select: none
   -moz-user-select: none

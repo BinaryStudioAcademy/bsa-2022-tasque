@@ -104,23 +104,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         },
       );
 
-    this.boardService.sprintService
-      .getCurrentSprintByProjectId(this.projectId)
-      .subscribe((resp) => {
-        if(resp.ok){
-          this.currentSprint = resp.body as SprintModel;
-          this.projectTasks = this.currentSprint.tasks;
-          this.hasTasks = this.checkIfHasTasks();
-          this.sortTasksByColumns();
-        } else {
-          this.notificationService.error('Something went wrong');
-        }
-      }, (err) => {
-        if(err)
-        this.notificationService.info(err.error);
-        this.isShow = true;
-      });
-
     this.taskStorageService.taskUpdated$.subscribe((task) => {
       let isTaskFound = false;
 
@@ -143,28 +126,22 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
 
-    this.taskStorageService.taskUpdated$.subscribe((task) => {
-      let isTaskFound = false;
-
-      for (const col of this.columns) {
-        if (isTaskFound) {
-          return;
-        }
-
-        const index = col.tasks.findIndex((t) => task.id === t.id);
-
-        if (index !== -1) {
-          isTaskFound = true;
-
-          col.tasks[index] = {
-            ...task,
-            customLabels: [],
-            key: task.key as string,
-            isHidden: false,
-          };
-        }
+  getCurrentSprintAndTasks(): void {
+    this.boardService.sprintService
+    .getCurrentSprintByProjectId(this.projectId)
+    .subscribe((resp) => {
+      if(resp.ok){
+        this.currentSprint = resp.body as SprintModel;
+        this.projectTasks = this.currentSprint.tasks;
+        this.hasTasks = this.checkIfHasTasks();
+        this.sortTasksByColumns();
+      } else {
+        this.notificationService.error('Something went wrong');
       }
+    }, () => {
+      this.isShow = true;
     });
   }
 
@@ -195,6 +172,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       name: s.name,
       tasks: [],
     }));
+    this.getCurrentSprintAndTasks();
   }
 
   openAddColumn(): void {
@@ -287,8 +265,11 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       if (column.tasks) {
         for (const task of column.tasks) {
           task.isHidden = !task.summary.toLowerCase().includes(phrase.toLowerCase());
-          if (this.selectedUserId) {
-            task.isHidden = task.isHidden || task.author?.id != this.selectedUserId;
+          if (this.selectedUserId && task.assignees) {
+            task.isHidden = task.isHidden || !task.assignees.some(
+              (user) =>
+                user.id == this.selectedUserId
+            );
           }
         }
       }

@@ -201,7 +201,7 @@ export class SprintComponent implements OnInit, OnChanges {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((result) => {
           if (result.body) {
-            this.notificationService.success('Task moved to sprint');
+            this.notificationService.success(`Task ${_task.key} moved to sprint`);
           }
         });
     }
@@ -234,14 +234,7 @@ export class SprintComponent implements OnInit, OnChanges {
   }
 
   public getTasksState(): void {
-    this.taskStateService
-      .getAll()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((result) => {
-        if (result.body) {
-          this.taskState = result.body;
-        }
-      });
+    this.taskState = this.currentProject.projectTaskStates;
   }
 
   public getTasksType(): void {

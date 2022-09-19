@@ -35,16 +35,21 @@
       </div>
     </div>
     <div class="task-info">
-      <span>{{ taskInfo.key }}</span>
-      <tasque-avatar
-        *ngIf="taskInfo.author"
-        [user]="taskInfo.author"
-        alt="user's avatar"
-        [diameter_px]="30"
-      ></tasque-avatar>
-      <span *ngIf="taskInfo.assignees !== undefined && taskInfo.assignees.length > 1" class="user-overflow"
-        >+{{ taskInfo.assignees.length - 1 }}</span
-      >
+      <div class="left-info" *ngIf="taskInfo.estimate">
+        <span>{{ taskInfo.estimate }}</span>
+      </div>
+      <div class="right-info">
+        <span>{{ taskInfo.key }}</span>
+        <tasque-avatar
+          *ngIf="taskInfo.assignees && taskInfo.assignees.length > 0"
+          [user]="taskInfo.assignees[0]"
+          alt="user's avatar"
+          [diameter_px]="30"
+        ></tasque-avatar>
+        <span *ngIf="taskInfo.assignees !== undefined && taskInfo.assignees.length > 1" class="user-overflow"
+          >+{{ taskInfo.assignees.length - 1 }}</span
+        >
+      </div>
     </div>
   </div>
 </div>

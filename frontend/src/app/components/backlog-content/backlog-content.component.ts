@@ -61,6 +61,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   @Input() public tasks: TaskModel[] = [];
 
   public tasks$: Observable<TaskModel[]>;
+  public isDragable = true;
 
   constructor(
     public backlogService: BacklogService,
@@ -148,10 +149,14 @@ export class BacklogContentComponent implements OnInit, OnChanges {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((result) => {
           if (result.body) {
-            this.notificationService.success('Task moved to backlog');
+            this.notificationService.success(`Task ${_task.key} moved to backlog`);
           }
         });
     }
+  }
+
+  toogleIsDragable(val: boolean): void {
+    this.isDragable = !val;
   }
 
   getBacklogTasks(): void {
