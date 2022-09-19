@@ -6,6 +6,7 @@
   <hr />
 
   <div class="select-setting-container">
+    <span class="select-setting-text">Select from the list the section you want to configure: </span>
     <tasque-menu-dropdown class="settings-dropdown">
       <span dropdown-button> {{ selectedSetting ?? 'Select setting' }} </span>
       <tasque-option option (click)="selectSetting('Priority')"> Task Priority </tasque-option>
