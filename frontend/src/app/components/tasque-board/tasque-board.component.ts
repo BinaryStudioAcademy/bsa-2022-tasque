@@ -287,8 +287,11 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       if (column.tasks) {
         for (const task of column.tasks) {
           task.isHidden = !task.summary.toLowerCase().includes(phrase.toLowerCase());
-          if (this.selectedUserId) {
-            task.isHidden = task.isHidden || task.author?.id != this.selectedUserId;
+          if (this.selectedUserId && task.assignees) {
+            task.isHidden = task.isHidden || !task.assignees.some(
+              (user) =>
+                user.id == this.selectedUserId
+            );
           }
         }
       }
