@@ -10,18 +10,22 @@ using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Enums;
 using Tasque.Core.Common.StaticResources;
 using Tasque.Core.DAL;
+using Tasque.Core.Common.Models.Events;
+using Tasque.Messaging.Abstractions;
 using Tasque.Core.Identity.Helpers;
 using Task = System.Threading.Tasks.Task;
+using Tasque.Messaging;
 
 namespace Tasque.Core.BLL.Services;
 
 public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, EditProjectDto, int, Project>
 {
-
-    public ProjectService(DataContext db, IMapper mapper, CurrentUserParameters currentUser) 
+	private readonly IEventBus _bus;
+	
+    public ProjectService(DataContext db, IMapper mapper, CurrentUserParameters currentUser, IEventBus bus) 
         : base(db, mapper, currentUser)
     {
-
+		_bus = bus;
     }
 
     public List<ProjectDto> GetProjectsByOrganizationId(int organizationId)
@@ -29,15 +33,16 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
         return _mapper.Map<List<ProjectDto>>(_db.Projects.Where(p => p.OrganizationId == organizationId));
     }
 
-    public ProjectDto GetProjectById(int id)
+    public async Task<ProjectDto> GetProjectById(int id)
     {
-        return _mapper.Map<ProjectDto>(_db.Projects
+        var project = await _db.Projects
             .Where(p => p.Id == id)
                 .Include(p => p.ProjectTaskTypes)
                 .Include(p => p.ProjectTaskStates)
                 .Include(p => p.ProjectTaskPriorities)
                 .Include(p => p.Users)
-                .FirstOrDefault());
+                .FirstOrDefaultAsync();
+        return _mapper.Map<ProjectDto>(project);
     }
 
     public IEnumerable<UserDto> GetProjectParticipants(int projectId)
@@ -247,6 +252,41 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
         _db.Projects.Update(project);
 
         await _db.SaveChangesAsync();
+        
+        UserInvitedEvent @event = new UserInvitedEvent
+        {
+            ProjectId = project.Id,
+            InviteeId = user.Id,
+            ConnectiondId = user.ConnectionId
+        };
+
+        _bus.Publish(@event);
+    }
+
+    public async Task MoveTask(MoveTaskDTO dto)
+    {
+        // TODO review method functionality when FrontEnd for task moving is connected to BackEnd
+        var previousBoardColumn = _db.BoardColumns.Single(b => b.Id == dto.PreviousColumnId);
+        var currentBoardColumn = _db.BoardColumns.Single(b => b.Id == dto.NewColumnId);
+        var task = _db.Tasks.Single(t => t.Id == dto.TaskId);
+
+        previousBoardColumn.Tasks.Remove(task);
+        currentBoardColumn.Tasks.Add(task);
+
+        _db.Update(previousBoardColumn);
+        _db.Update(currentBoardColumn);
+        await _db.SaveChangesAsync();
+
+        TaskMovedEvent @event = new()
+        {
+            PreviousColumnId = dto.PreviousColumnId,
+            NewColumnId = dto.NewColumnId,
+            TaskId = task.Id,
+            TaskAuthorId = task.AuthorId,
+            ConnectiondId = task.Author.ConnectionId
+        };
+
+        _bus.Publish(@event);
     }
 
     public async Task KickUserOfProject(UserInviteDto usersInviteDto)
@@ -388,5 +428,25 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
     public List<TaskStateDto> GetProjectStatesById(int projectId)
     {
         return _mapper.Map<List<TaskStateDto>>(_db.TaskStates.Where(s => s.ProjectId == projectId));
+    }
+
+    public async Task<List<ProjectCardDTO>> GetProjectCardsByUserId(int userId)
+    {
+        var user = await _db.Users
+            .Include(u => u.ParticipatedTasks)
+            .Include(u => u.ParticipatedProjects)
+            .FirstOrDefaultAsync(u => u.Id == userId)
+            ?? throw new CustomNotFoundException("user");
+        var projects = user.ParticipatedProjects;
+        var result = projects
+            .Select(p => new ProjectCardDTO
+            {
+                ProjectId = p.Id,
+                Title = p.Name,
+                AssignedIssuesCount = user.ParticipatedTasks.Where(t => t.ProjectId == p.Id).Count(),
+                AllIssuesCount = _db.Tasks.Where(t => t.ProjectId == p.Id).Count()
+            })
+            .ToList();
+        return result;
     }
 }

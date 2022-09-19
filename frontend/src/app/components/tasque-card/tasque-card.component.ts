@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { TaskInfoModel } from 'src/core/models/board/task-Info-model';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { UserModel } from 'src/core/models/user/user-model';
@@ -19,12 +20,16 @@ export class TasqueCardComponent implements OnInit {
   //Gets information about the task
   @Input() taskInfo: TaskInfoModel;
   @Input() isDone: boolean;
+  @Output() isChanging = new EventEmitter<boolean>();
+
   hasAccess: boolean;
   organizationId: number;
   isDeleted = false;
 
   currentUser: UserModel;
   currentOrganization: OrganizationModel;
+
+  public editIcon = faPen;
 
   constructor(
     private currentUserService: GetCurrentUserService,
@@ -66,6 +71,10 @@ export class TasqueCardComponent implements OnInit {
 
   notImplementetNotification(): void {
     this.notificationService.warning('Not implemented yet', 'Warning');
+  }
+
+  isTaskChanging(val: boolean): void {
+    this.isChanging.emit(val);
   }
 
 }

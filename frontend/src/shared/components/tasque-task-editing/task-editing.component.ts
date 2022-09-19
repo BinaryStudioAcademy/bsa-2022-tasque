@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import {
@@ -48,6 +48,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   @Input() public btnText = 'Edit task';
   @Input() public btnClass = 'btn stroke';
   @Input() public btnIcon: IconDefinition | undefined;
+
+  @Output() public isChanging = new EventEmitter<boolean>();
 
   public organizationId: number;
 
@@ -377,8 +379,9 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       });
   }
 
-  openModal(): void {
-    this.isOpen = !this.isOpen;
+  toogleModal(event: boolean): void {
+    this.isOpen = event;
+    this.isChanging.emit(event);
   }
 
   addUser(email: string): void {
@@ -398,6 +401,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
           }
           this.editTaskForm.controls.assignees.value.push(user.body);
           this.board.users.push(this.convertToUserCard(user.body));
+          this.editTaskForm.markAsDirty();
         }
       );
   }
@@ -407,6 +411,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     this.board.users.splice(boardIndex, 1);
     const index = this.editTaskForm.controls.assignees.value.findIndex((x: UserModel) => { x.email == email; });
     this.editTaskForm.controls.assignees.value.splice(index, 1);
+    this.editTaskForm.markAsDirty();
   }
 
   // TODO: Removed it when tasque-select-users is redesigned

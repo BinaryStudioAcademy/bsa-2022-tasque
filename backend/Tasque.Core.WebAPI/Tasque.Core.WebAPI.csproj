@@ -40,6 +40,7 @@
 	    <ProjectReference Include="..\Tasque.Core.Common\Tasque.Core.Common.csproj" />
 	    <ProjectReference Include="..\Tasque.Core.Identity\Tasque.Core.Identity.csproj" />
 	    <ProjectReference Include="..\Tasque.DAL\Tasque.Core.DAL.csproj" />
+	    <ProjectReference Include="..\Tasque.Messaging\Tasque.Messaging.csproj" />
     </ItemGroup>
 
 </Project>

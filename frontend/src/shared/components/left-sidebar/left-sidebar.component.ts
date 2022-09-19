@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { UserModel } from 'src/core/models/user/user-model';
@@ -8,13 +8,14 @@ import { ProjectService } from 'src/core/services/project.service';
 import { takeUntil } from 'rxjs/operators';
 import { BaseComponent } from 'src/core/base/base.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-left-sidebar',
   templateUrl: './left-sidebar.component.html',
   styleUrls: ['./left-sidebar.component.sass']
 })
-export class LeftSidebarComponent extends BaseComponent implements OnInit {
+export class LeftSidebarComponent extends BaseComponent implements OnInit, OnChanges {
   public projectId: number;
   public project: ProjectModel;
 
@@ -25,6 +26,8 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit {
 
   public sideBarMinimized: boolean;
   public showSettings = false;
+
+  @Input() isChanged: Observable<void>;
 
   isBoard: string | undefined;
   isBacklog: string | undefined;
@@ -56,6 +59,10 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit {
           this.sideBarMinimized = false;
         }
       });
+  }
+
+  ngOnChanges(): void {
+    this.ngOnInit();
   }
 
   minimize(): void {

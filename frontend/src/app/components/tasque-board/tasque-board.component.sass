@@ -14,16 +14,22 @@
 .board-panel
     background-color: colorscheme(gray-100)
     padding: 44px 10px 0px 37px
-    height: calc( 100% - 36px )
+    height: calc( 100% - 97px )
 
 .board-title
     display: flex
     flex-direction: column
 
-.project-name
+.project-name,.project-route
     color: colorscheme(gray-500)
     font-size: 14px
     font-weight: 400
+
+.project-route
+    text-decoration: none
+    &:hover
+        cursor: pointer
+        color: colorscheme(blue-200)
 
 .board-name
     font-size: 24px
@@ -57,8 +63,14 @@
     grid-gap: 30px
     overflow: scroll hidden
 
+.card-container
+    display: flex
+    width: 100%
+    flex-direction: column
+
 .column-title
     display: flex
+    flex-direction: column
     justify-content: space-between
     align-items: center
     border-bottom: 1px solid colorscheme(gray-300)
@@ -130,8 +142,28 @@
     background: colorscheme(white-100)
 
 .no-tasks
-    text-align: center
-    padding: 20px
+    border: dashed
+    display: flex
+    flex-direction: column
+    border-color: colorscheme('gray-400')
+    margin: 10px 0 10px 0
+    justify-content: space-around
+    &.pale
+        color: colorscheme('dark-grey-100')
+    &.row
+        display: inline-flex
+        align-items: center
+        height: 75px
+        width: 100%
+
+.no-tasks-actions
+    display: flex
+    a
+        color: colorscheme(blue-200)
+        margin: 0 5px 0 5px
+        &:hover
+            cursor: pointer
+
 
 .team-container
     margin-left: 25px

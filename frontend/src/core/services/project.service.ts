@@ -13,12 +13,14 @@ import { TaskPriority } from '../models/task/task-priority';
 import { BoardModel } from '../models/board/board-model';
 import { TaskState } from '../models/task/task-state';
 import { TaskModel } from '../models/task/task-model';
+import { ProjectCardModel } from '../models/your-work/project-card-model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
   public routePrefix = '/api/project';
+  public routePrefixParticipants = '/api/ProjectParticipants';
 
   constructor(
     public httpService: HttpService
@@ -37,15 +39,15 @@ export class ProjectService {
   }
 
   inviteUser(userInvite: InviteUserModel): Observable<void> {
-    return this.httpService.putRequest<void>(this.routePrefix + '/invite', userInvite);
+    return this.httpService.putRequest<void>(this.routePrefixParticipants + '/invite', userInvite);
   }
 
   kickUser(userKick: InviteUserModel): Observable<void> {
-    return this.httpService.putRequest<void>(this.routePrefix + '/kick', userKick);
+    return this.httpService.putRequest<void>(this.routePrefixParticipants + '/kick', userKick);
   }
 
   changeUserRole(user: ChangeUserRoleModel): Observable<void> {
-    return this.httpService.putRequest<void>(this.routePrefix + '/role', user);
+    return this.httpService.putRequest<void>(this.routePrefixParticipants + '/role', user);
   }
 
   getProjectById(id: number): Observable<HttpResponse<ProjectModel>> {
@@ -73,7 +75,7 @@ export class ProjectService {
   }
 
   getProjectParticipants(id: number): Observable<HttpResponse<UserModel[]>> {
-    return this.httpService.getFullRequest<UserModel[]>(this.routePrefix + `/${id}/participants/`);
+    return this.httpService.getFullRequest<UserModel[]>(this.routePrefixParticipants + `/${id}/participants/`);
   }
 
   getProjectPriorities(id: number): Observable<HttpResponse<TaskPriority[]>> {
@@ -86,5 +88,9 @@ export class ProjectService {
 
   getAllProjectTasks(id: number): Observable<HttpResponse<TaskModel[]>> {
     return this.httpService.getFullRequest('/api/task/getAllProjectTasks/' + id);
+  }
+
+  getProjectCards(): Observable<HttpResponse<ProjectCardModel[]>> {
+    return this.httpService.getFullRequest(this.routePrefixParticipants + '/getProjectCards');
   }
 }

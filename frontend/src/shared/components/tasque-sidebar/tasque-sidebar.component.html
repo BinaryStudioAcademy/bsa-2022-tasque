@@ -11,6 +11,6 @@
   [text]="btnText"
   (click)="openSidebar()"
 ></tasque-button>
-<tasque-sidebar-modal [name]="name">
+<tasque-sidebar-modal [name]="name" (sidebarToggle)="toggle($event)">
   <ng-content></ng-content>
 </tasque-sidebar-modal>
