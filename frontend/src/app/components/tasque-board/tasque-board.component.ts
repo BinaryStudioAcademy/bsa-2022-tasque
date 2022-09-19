@@ -22,6 +22,7 @@ import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
+import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
 
 @Component({
   selector: 'tasque-board',
@@ -67,6 +68,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     private currentUserService: GetCurrentUserService,
     private taskStorageService: TaskStorageService,
     private router: Router,
+    private getCurrentEntityService: ScopeGetCurrentEntityService,
   ) {
     this.currentUserService.currentUser$.subscribe((res) => {
       this.user = res as UserModel;
@@ -89,6 +91,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       return;
     }
     this.projectId = parseInt(id);
+    this.getCurrentEntityService.getCurrentProjectService.currentProjectId = this.projectId;
     this.getSelectedUserFromQuery();
 
     this.boardService.projectService.getProjectById(this.projectId)
@@ -97,6 +100,8 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           if (resp.ok) {
             this.project = resp.body as ProjectModel;
             this.projectUsers = this.project.users;
+            this.getCurrentEntityService.getCurrentOrganizationService
+              .currentOrganizationId = this.project.organizationId;
             this.setColumns();
           } else {
             this.notificationService.error('Something went wrong');

@@ -30,6 +30,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from 'src/core/services/project.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { NotificationService } from 'src/core/services/notification.service';
+import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
 
 @Component({
   selector: 'app-backlog',
@@ -78,6 +79,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
     private notificationService: NotificationService,
     private route: ActivatedRoute,
     private cdref: ChangeDetectorRef,
+    private getCurrentEntityService: ScopeGetCurrentEntityService,
   ) {
     sprintService.deleteSprint$.subscribe((sprintId) => {
       this.deleteSprint(sprintId);
@@ -92,11 +94,14 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
 
     if (id) {
       this.currentProjectId = parseInt(id);
+      this.getCurrentEntityService.getCurrentProjectService.currentProjectId = this.currentProjectId;
       this.projectService
         .getProjectById(this.currentProjectId)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((resp) => {
           this.currentProject = resp.body as ProjectModel;
+          this.getCurrentEntityService.getCurrentOrganizationService
+            .currentOrganizationId = this.currentProject.organizationId;
         });
     }
     this.currentUserService.currentUser$.subscribe((user) => {
