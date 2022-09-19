@@ -22,7 +22,7 @@ import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'tasque-board',
@@ -123,7 +123,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
             customLabels: [],
             key: task.key as string,
             isHidden: false,
-          };
+          } as TaskInfoModel;
         }
       }
     });
@@ -149,7 +149,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   sortTasksByColumns(): void {
     this.columns.forEach((c) => {
 
-      const tasks = this.projectTasks.filter((t) => t.stateId === c.id);
+      const tasks = this.projectTasks.filter((t) => t.stateId === c.id).sort((x) => x.order);
       const taskInfo: TaskInfoModel[] = [];
 
       tasks.forEach((t) => {
@@ -159,7 +159,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           assignees: t.users,
           key: t.key as string,
           isHidden: false,
-        });
+        } as TaskInfoModel);
       });
       c.tasks = taskInfo;
     });
@@ -227,7 +227,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     const tasks = event.container.data.map((x) => x.id);
     this.boardService.taskService
       .setOrder(tasks)
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(take(1))
       .subscribe((resp) => {
         event.container.data = resp.body as TaskInfoModel[];
       });
@@ -312,15 +312,15 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   }
 
   moveToBackLog(): void {
-    this.router.navigateByUrl(`/project/${this.projectId}/backlog`, { 
+    this.router.navigateByUrl(`/project/${this.projectId}/backlog`, {
       replaceUrl: true,
     });
     this.urlChanged.emit();
   }
 
   moveToSettings(): void {
-    this.router.navigateByUrl(`/project/${this.projectId}/settings/issue-template`, { 
-      replaceUrl: true,      
+    this.router.navigateByUrl(`/project/${this.projectId}/settings/issue-template`, {
+      replaceUrl: true,
     });
     this.urlChanged.emit();
   }
