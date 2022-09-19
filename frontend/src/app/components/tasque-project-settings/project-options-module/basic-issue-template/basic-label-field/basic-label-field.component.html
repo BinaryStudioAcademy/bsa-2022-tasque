@@ -1,6 +1,6 @@
 <div class="container">
   <div class="settings-container">
-    <div class="setting" *ngFor="let setting of settings">
+    <div class="setting" *ngFor="let setting of settingsShow">
       <div class="setting-data">
         <div class="setting-color" [style.background-color]="setting.color"></div>
         <span>{{ setting.name }}</span>
@@ -14,7 +14,7 @@
         ></tasque-button>
       </div>
     </div>
-    <div class="empty-settings-warning" *ngIf="settings.length === 0">
+    <div class="empty-settings-warning" *ngIf="settingsShow?.length === 0">
       <p>No settings</p>
     </div>
   </div>

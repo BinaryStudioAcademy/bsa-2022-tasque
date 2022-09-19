@@ -12,14 +12,28 @@ import { TaskType } from 'src/core/models/task/task-type';
   styleUrls: ['./basic-label-field.component.sass']
 })
 export class BasicLabelFieldComponent implements OnInit {
-  @Input() public settings: TaskType[] | TaskState[] | TaskPriority[];
+  @Input()
+  public set settings(v: TaskType[] | TaskState[] | TaskPriority[]) {
+    if (!v) {
+      this.settingsShow = [];
+      this.defaultValue = [];
+      return;
+    }
+
+    this.settingsShow = Array.from(v);
+    this.defaultValue = Array.from(v);
+  }
+
   @Input() public project: ProjectModel;
+
+  public settingsShow: TaskType[] | TaskState[] | TaskPriority[];
 
   applyIcon = faCheck;
   removeIcon = faMinus;
   addIcon = faPlus;
   editIcon = faPencil;
 
+  defaultValue: TaskType[] | TaskState[] | TaskPriority[];
   formNameControl: FormControl;
   formColorControl: FormControl;
 
@@ -39,9 +53,9 @@ export class BasicLabelFieldComponent implements OnInit {
   }
 
   public deleteSetting(setting: TaskType | TaskState | TaskPriority): void {
-    for (let index = 0; index < this.settings.length; index++) {
-      if (this.settings[index] === setting) {
-        this.settings.splice(index, 1);
+    for (let index = 0; index < this.settingsShow.length; index++) {
+      if (this.settingsShow[index] === setting) {
+        this.settingsShow.splice(index, 1);
         return;
       }
     }
