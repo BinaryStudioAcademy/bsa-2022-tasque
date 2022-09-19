@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { faCircleArrowLeft, faPlus, IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { WikiPage } from 'src/core/models/wiki/wikiPage';
+import { WikiPageInfo } from 'src/core/models/wiki/wiki-page-info';
+import { WikiService } from 'src/core/services/wiki.service';
 
 @Component({
   selector: 'wiki-left-sidebar',
@@ -13,16 +14,26 @@ export class WikiLeftSidebarComponent implements OnInit {
   public backIcon: IconDefinition = faCircleArrowLeft;
   public plusIcon: IconDefinition = faPlus;
   
-  public pageList: WikiPage[] = [];
+  public pageList: WikiPageInfo[] = [];
   public showCreate: boolean;
 
   private currentProjectId: number;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private activeRoute: ActivatedRoute,
+    private wikiService: WikiService
   ) { }
 
   ngOnInit() {
+    this.currentProjectId = Number(this.activeRoute.snapshot.paramMap.get('id'));
+
+    this.wikiService.getProjectWiki(this.currentProjectId).subscribe((data) => {
+      if(data.body) {
+        this.pageList = data.body;
+        this.router.navigate([`project/${this.currentProjectId}/wiki/${this.pageList[0].name}`]);
+      }
+    });
   }
 
   backToProject(): void {
@@ -30,8 +41,13 @@ export class WikiLeftSidebarComponent implements OnInit {
   }
 
   createBasePage(name: string): void {
-    this.pageList.push({name: name});
-    this.showCreate = false;
+    this.wikiService.createWikiPage({name: name, projectId: this.currentProjectId})
+    .subscribe((data) => {
+      if(data.body) {
+        this.pageList.push(data.body);
+        this.showCreate = false;
+      }
+    });
   }
 
 }
