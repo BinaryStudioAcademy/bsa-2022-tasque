@@ -73,15 +73,11 @@
 
       <div class="menu-settings" *ngIf="!sideBarMinimized && showSettings && isProjectAdmin()">
         <div class="settings-actions" *ngIf="isProjectAdmin()">
-          <p (click)="navigateToColumnsAndStatuses()" [ngClass]="{ 'selected': isColumnsAndStatuses }">
-            Columns and statuses
+          <p (click)="navigateToBasicSettings()" [ngClass]="{ 'selected': isBasicSettings }">
+            Basic settings
           </p>
-          <p (click)="navigateToIssueTypes()" [ngClass]="{ 'selected': isIssueTypes }">Issue types</p>
           <p (click)="navigateToIssueTemplate()" [ngClass]="{ 'selected': isIssueTemplate }">
             Issue template
-          </p>
-          <p (click)="navigateToBasicIssueTemplate()" [ngClass]="{ 'selected': isBasicIssueTemplate }">
-            Basic issue template
           </p>
         </div>
         <div *ngIf="!isProjectAdmin()" class="settings-no-permission">
@@ -109,10 +105,8 @@
             </div>
           </div>
           <div option *ngIf="isProjectAdmin()">
-            <tasque-option (click)="navigateToColumnsAndStatuses()"> Columns and statuses </tasque-option>
-            <tasque-option (click)="navigateToIssueTypes()">Issue types</tasque-option>
+            <tasque-option (click)="navigateToBasicSettings()"> Basic settings </tasque-option>
             <tasque-option (click)="navigateToIssueTemplate()">Issue template</tasque-option>
-            <tasque-option (click)="navigateToBasicIssueTemplate()"> Basic issue template </tasque-option>
           </div>
           <div option *ngIf="!isProjectAdmin()">
             <tasque-option>
