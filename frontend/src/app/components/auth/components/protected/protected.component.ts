@@ -14,9 +14,9 @@ export class ProtectedComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.route.queryParams.subscribe((p) => {
-      const exist = p['exist'];
-      const key = p['key'] as string;
+    this.route.queryParams.subscribe((params) => {
+      const exist = params['exist'];
+      const key = params['key'] as string;
       if(exist === 'true') {
         this.router.navigate(['auth/login'], {
           queryParams: { key: key },
