@@ -11,7 +11,7 @@ import { ProfileChangesDTO } from '../dto/profile-changes-dto';
 })
 export class UserService {
   public routePrefix = '/api/user';
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService) {}
 
   getCurrentUser(): Observable<HttpResponse<UserModel>> {
     return this.httpService.getFullRequest(this.routePrefix + '/current');
@@ -47,6 +47,19 @@ export class UserService {
   getUserByEmail(email: string): Observable<HttpResponse<UserModel>> {
     return this.httpService.getFullRequest(
       this.routePrefix + `/getUserByEmail/${email}`,
+    );
+  }
+
+  setLastOrg(userId: number, orgId: number): Observable<HttpResponse<void>> {
+    return this.httpService.postFullRequest(
+      this.routePrefix + `/lastOrganization?userId=${userId}&orgId=${orgId}`,
+      {},
+    );
+  }
+
+  getLastOrg(userId: number): Observable<HttpResponse<number>> {
+    return this.httpService.getFullRequest(
+      this.routePrefix + `/lastOrganization?userId=${userId}`,
     );
   }
 }

@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.DTO.User.UserRoles;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Security;
 using Tasque.Core.DAL;
+using Task = System.Threading.Tasks.Task;
 
 namespace Tasque.Core.BLL.Services
 {
@@ -99,6 +101,26 @@ namespace Tasque.Core.BLL.Services
             _context.Users.Update(userEntity);
             await _context.SaveChangesAsync();
             return new PasswordEditDto { Id = dto.Id };
+        }
+
+        public async Task SetLastOrganization(int userId, int orgId)
+        {
+            var user = await _context.Users.FindAsync(userId)
+                ?? throw new CustomNotFoundException("user");
+
+            _ = await _context.Organizations.FindAsync(orgId) ??
+                throw new CustomNotFoundException("organization");
+
+            user.LastOrganizationId = orgId;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<int?> GetLastOrganization(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId)
+                ?? throw new CustomNotFoundException("user");
+
+            return user.LastOrganizationId;
         }
     }
 }
