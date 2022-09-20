@@ -15,6 +15,7 @@ import { AccessControlGuard } from 'src/app/components/tasque-project-settings/p
 import { ProjectSettingsRoutes } from './components/tasque-project-settings/project-options-module/project-options.routes';
 import { WikiComponent } from './components/tasque-wiki/wiki/wiki.component';
 import { WikiPageComponent } from './components/tasque-wiki/wiki-page/wiki-page.component';
+import { YourWorkComponent } from './components/your-work/your-work.component';
 
 const routes: Routes = [
   ...AuthRoutes,
@@ -30,6 +31,7 @@ const routes: Routes = [
       { path: 'projects', component: ProjectListComponent },
       { path: 'not-found', component: NotFoundPageComponent },
       ...UserRoutes,
+      { path: 'your-work', component: YourWorkComponent },
     ],
   },
   {

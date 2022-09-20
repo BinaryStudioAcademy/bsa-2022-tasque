@@ -1,7 +1,9 @@
+import { Attachment } from '../task/attachment';
 import { TaskPriority } from '../task/task-priority';
 import { LabelField } from '../task/task-template-models/label-field';
 import { TaskType } from '../task/task-type';
 import { UserModel } from '../user/user-model';
+import { TaskState } from '../task/task-state';
 
 export interface TaskInfoModel {
     id: number;
@@ -11,11 +13,15 @@ export interface TaskInfoModel {
     priorityId?: number;
     state?: TaskState;
     stateId?: number;
-    attachmentUrl: string;
     summary: string;
     customLabels: LabelField[];
     key: string;
-    user?: UserModel;
+    estimate?: number,
+    author?: UserModel;
     assignees?: UserModel[];
+    attachments: Attachment[],
+    createdAt: Date,
+    updatedAt: Date,
+    deadline: Date,
     isHidden: boolean;
 }

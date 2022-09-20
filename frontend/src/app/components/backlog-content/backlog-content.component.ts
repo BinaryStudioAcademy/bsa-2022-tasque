@@ -22,6 +22,8 @@ import { TaskStateService } from 'src/core/services/task-state.service';
 import { SprintService } from 'src/core/services/sprint.service';
 import { NewSprintModel } from 'src/core/models/sprint/new-sprint-model';
 import { IssueSort } from '../backlog/models';
+import { TaskService } from 'src/core/services/task.service';
+import { NotificationService } from 'src/core/services/notification.service';
 
 @Component({
   selector: 'app-backlog-content',
@@ -35,7 +37,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   btnClass = 'btn mini voilet full';
 
   public role: UserRole;
-  public isCurrentUserAdmin: boolean;
+  public isCurrentUserAdmin = false;
 
   public unsubscribe$ = new Subject<void>();
   subscription: Subscription;
@@ -48,135 +50,26 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   //Get the string by which issue will be searched
   @Input() public inputSearch = '';
 
-  // TODO remove when real data is available
-  @Input() public taskStates: TaskState[] = [
-    {
-      id: 1,
-      name: 'To Do',
-      projectId: 5,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 2,
-      name: 'In Progress',
-      projectId: 5,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 3,
-      name: 'Done',
-      projectId: 5,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 4,
-      name: 'Canceled',
-      projectId: 5,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  ];
-
-  // TODO remove when real data is available
-  @Input() public taskPriorities: TaskPriority[] = [
-    {
-      id: 1,
-      name: 'Low',
-      projectId: 5,
-      type: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 2,
-      name: 'Normal',
-      projectId: 5,
-      type: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 3,
-      name: 'High',
-      projectId: 5,
-      type: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  ];
-
-  // TODO remove when real data is available
-  @Input() public taskTypes: TaskType[] = [
-    {
-      id: 1,
-      name: 'Bug',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      icon: this.flagIcon,
-    },
-    {
-      id: 2,
-      name: 'Feature',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      icon: this.flagIcon,
-    },
-    {
-      id: 3,
-      name: 'Enhancement',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      icon: this.flagIcon,
-    },
-  ];
+  @Input() public taskStates: TaskState[] = [];
+  @Input() public taskPriorities: TaskPriority[] = [];
+  @Input() public taskTypes: TaskType[] = [];
 
   public sprints$: Observable<SprintModel[]>;
 
   @Input() public sprints: SprintModel[];
-
-  // TODO remove when real data is available
-  @Input() public users: UserModel[] = [
-    {
-      id: 1,
-      name: 'John Doe',
-      email: 'email',
-      organizationRoles: [
-        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
-        { organizationId: 2, userId: 2, role: UserRole.organizationMember },
-      ],
-    },
-    {
-      id: 2,
-      name: 'Jane Doe',
-      email: 'email',
-      organizationRoles: [
-        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
-        { organizationId: 2, userId: 2, role: UserRole.organizationMember },
-      ],
-    },
-    {
-      id: 3,
-      name: 'James McGuill',
-      email: 'email',
-      organizationRoles: [
-        { organizationId: 1, userId: 2, role: UserRole.organizationMember },
-        { organizationId: 2, userId: 2, role: UserRole.organizationMember },
-      ],
-    },
-  ];
+  @Input() public users: UserModel[] = [];
+  @Input() public tasks: TaskModel[] = [];
 
   public tasks$: Observable<TaskModel[]>;
+  public isDragable = true;
 
-  // TODO remove when real data is available
-  @Input() public tasks: TaskModel[] = [];
   constructor(
     public backlogService: BacklogService,
     public taskTypeService: TaskTypeService,
     public taskStateService: TaskStateService,
     public sprintService: SprintService,
+    public taskService: TaskService,
+    public notificationService: NotificationService,
   ) {
     this.subscription = backlogService.changeBacklog$.subscribe(() => {
       this.getBacklogTasks();
@@ -191,14 +84,13 @@ export class BacklogContentComponent implements OnInit, OnChanges {
     if (this.currentUser === undefined) {
       return;
     }
-    this.role =
-      (this.currentUser?.organizationRoles?.find(
+    this.role = this.currentUser?.organizationRoles?.find(
         (m) =>
           m.organizationId === this.project.organizationId &&
           m.userId === this.currentUser.id,
-      )?.role as UserRole) || 0;
+      )?.role as UserRole ?? 0;
 
-    if (UserRole.OrganizationAdmin <= this.role) {
+    if (UserRole.projectAdmin <= this.role || this.project.authorId === this.currentUser.id) {
       this.isCurrentUserAdmin = true;
     }
 
@@ -234,6 +126,8 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   }
 
   drop(event: CdkDragDrop<TaskModel[]>): void {
+    const _task = event.previousContainer.data[event.previousIndex];
+    
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -247,7 +141,22 @@ export class BacklogContentComponent implements OnInit, OnChanges {
         event.previousIndex,
         event.currentIndex,
       );
+
+      _task.sprintId = undefined;
+
+      this.taskService
+        .updateTask(_task)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((result) => {
+          if (result.body) {
+            this.notificationService.success(`Task ${_task.key} moved to backlog`);
+          }
+        });
     }
+  }
+
+  toogleIsDragable(val: boolean): void {
+    this.isDragable = !val;
   }
 
   getBacklogTasks(): void {

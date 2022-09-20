@@ -41,6 +41,8 @@ import { WikiComponent } from './components/tasque-wiki/wiki/wiki.component';
 import { WikiLeftSidebarComponent } from './components/tasque-wiki/wiki-left-sidebar/wiki-left-sidebar.component';
 import { WikiPageComponent } from './components/tasque-wiki/wiki-page/wiki-page.component';
 import { WikiTitleComponent } from './components/tasque-wiki/wiki-title/wiki-title.component';
+import { YourWorkComponent } from './components/your-work/your-work.component';
+import { ProjectCardComponent } from './components/your-work/project-card/project-card.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,9 @@ import { WikiTitleComponent } from './components/tasque-wiki/wiki-title/wiki-tit
     IssueComponent,
     BacklogContentComponent,
     BacklogComponent,
+    WikiComponent,
+    YourWorkComponent,
+    ProjectCardComponent,
     DeleteSprintDialogComponent,
     WikiComponent,
     WikiLeftSidebarComponent,

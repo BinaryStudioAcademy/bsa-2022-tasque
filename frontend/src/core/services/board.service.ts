@@ -34,6 +34,7 @@ export class BoardService {
       observer.next(users);
       observer.complete();
     });
+    //this.httpService.getFullRequest(this.routePrefix + '/')
   }
 
   public deleteUser(board: IBoard, email: string): Observable<unknown> {

@@ -30,65 +30,22 @@ import { TaskStorageService } from 'src/core/services/task-storage.service';
 export class IssueComponent implements OnInit {
   //Get the issue to display it in the component
   @Input() public issue: TaskModel;
+  
   //get current user
   @Input() public currentUser: UserModel;
+
   //get current project
   @Input() public currentProject: ProjectModel;
+
   //notifying the parent components about the change in the value of estimate
   @Output() estimate = new EventEmitter<void>();
-  flagIcon = faFlag;
-  // TODO remove when real data is available
-  @Input() public taskTypes: TaskType[] = [
-    {
-      id: 1,
-      name: 'Bug',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      icon: this.flagIcon,
-    },
-    {
-      id: 2,
-      name: 'Feature',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      icon: this.flagIcon,
-    },
-    {
-      id: 3,
-      name: 'Enhancement',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      icon: this.flagIcon,
-    },
-  ];
+  @Output() isChanging = new EventEmitter<boolean>();
 
-  // TODO remove when real data is available
-  @Input() public taskStates: TaskState[] = [
-    // {
-    //   id: 1,
-    //   name: 'To Do',
-    //   createdAt: new Date(),
-    //   updatedAt: new Date(),
-    // },
-    // {
-    //   id: 2,
-    //   name: 'In Progress',
-    //   createdAt: new Date(),
-    //   updatedAt: new Date(),
-    // },
-    // {
-    //   id: 3,
-    //   name: 'Done',
-    //   createdAt: new Date(),
-    //   updatedAt: new Date(),
-    // },
-    // {
-    //   id: 4,
-    //   name: 'Canceled',
-    //   createdAt: new Date(),
-    //   updatedAt: new Date(),
-    // },
-  ];
+  flagIcon = faFlag;
+  
+  @Input() public taskTypes: TaskType[] = [];
+
+  @Input() public taskStates: TaskState[] = [];
 
   public taskEstimate: TaskEstimateUpdate;
   public unsubscribe$ = new Subject<void>();
@@ -99,8 +56,8 @@ export class IssueComponent implements OnInit {
     public sprintService: SprintService,
     public notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
-    private taskStorageService: TaskStorageService
-  ) { }
+    private taskStorageService: TaskStorageService,
+  ) {}
 
   ngOnInit(): void {
     this.estimateUpdate();
@@ -126,7 +83,6 @@ export class IssueComponent implements OnInit {
     this.estimate.emit();
     this.taskEstimate = {
       taskId: this.issue.id,
-      sprintId: this.issue.sprint?.id,
       estimate: this.issue.estimate ?? 0,
     };
 
@@ -160,5 +116,9 @@ export class IssueComponent implements OnInit {
           this.notificationService.success('Task status updated');
         }
       });
+  }
+
+  test(val: boolean): void {
+    this.isChanging.emit(val);
   }
 }

@@ -1,24 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { GetCurrentProjectService } from 'src/core/services/get-current-project.service';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { ProjectService } from 'src/core/services/project.service';
-import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { UserModel } from 'src/core/models/user/user-model';
-import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { BusinessRole, IUserCard } from '../../select-users/Models';
 import { BaseComponent } from 'src/core/base/base.component';
+import { ProjectModel } from 'src/core/models/project/project-model';
+import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'tasque-project-dropdown',
   templateUrl: './project-dropdown.component.html',
   styleUrls: ['./project-dropdown.component.sass']
 })
-export class ProjectDropdownComponent extends BaseComponent implements OnInit {
+export class ProjectDropdownComponent extends BaseComponent implements OnInit, OnChanges {
 
   public currentUser: UserModel;
   public latestProjects: ProjectInfoModel[] = [];
+
+  @Output() isChanged = new EventEmitter<Observable<void>>();
 
   private fakeUsers: IUserCard[] = [{
     id: -1,
@@ -38,12 +40,13 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit {
     users: this.fakeUsers
   };
 
+  @Input() organizationId: number;
+
   constructor(
-    private getCurrentProjectService: GetCurrentProjectService,
-    private getCurrentUserService: GetCurrentUserService,
-    private getCurrentOrganizationService: GetCurrentOrganizationService,
+    private getCurrentEntityService: ScopeGetCurrentEntityService,
     private projectService: ProjectService,
-    private router: Router) {
+    private router: Router,
+    private activeRoute: ActivatedRoute) {
     super();
   }
 
@@ -53,18 +56,47 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit {
     this.subscribeToProjectChange();
   }
 
+  ngOnChanges(): void {
+    this.currentProject.name = 'My Project';
+    this.currentProject.id = -1;
+    this.projectService
+      .getProjectsByOrganizationId(this.organizationId)
+      .subscribe((resp) => {
+        const projects = resp.body as ProjectModel[];
+        this.latestProjects = [];
+        projects.forEach((p) => {
+          this.latestProjects.push({
+            id: p.id,
+            name: p.name,
+            authorId: p.authorId,
+            key: p.key as string,
+            organizationId: p.organizationId,
+          });
+        });
+    });
+    this.subscribeToProjectChange();
+  }
+
   public selectProject(project: ProjectInfoModel): void {
     if (this.currentProject.id === project.id &&
-      this.getCurrentProjectService.currentProjectId === project.id) {
-      return;
+      this.getCurrentEntityService
+      .getCurrentProjectService.currentProjectId === project.id) {
+        this.navigateToBoard(project);
+        return;
     }
 
-    this.getCurrentProjectService.currentProjectId = project.id;
-
-    this.router.navigate([`/project/${project.id}/board`], { 
-      replaceUrl: true 
-    });
+    this.getCurrentEntityService
+    .getCurrentProjectService.currentProjectId = project.id;
+    this.navigateToBoard(project);
     window.scroll(0, 0);
+    this.isChanged.emit();
+  }
+
+  public navigateToBoard(project: ProjectInfoModel): void {
+    this.router.navigateByUrl(`/project/${project.id}`, { skipLocationChange: true }).then(() =>
+    this.router.navigate([`/project/${project.id}/board`], { 
+      replaceUrl: true,
+    }));
   }
 
   public openProjectsPage(): void {
@@ -83,7 +115,8 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit {
       return;
     }
 
-    this.projectService.getCurrentProjectInfoById(this.getCurrentProjectService.currentProjectId)
+    this.projectService.getCurrentProjectInfoById(this.getCurrentEntityService
+      .getCurrentProjectService.currentProjectId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (result) => {
@@ -96,11 +129,13 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit {
   }
 
   private subscribeToCurrentProject(): void {
-    this.getCurrentProjectService.currentProjectId$.subscribe(
+    this.getCurrentEntityService
+    .getCurrentProjectService.currentProjectId$.subscribe(
       (result) => {
         if (result === -1) {
           this.latestProjects = [];
-          this.getCurrentProjectService.setProjects(this.latestProjects);
+          this.getCurrentEntityService
+          .getCurrentProjectService.setProjects(this.latestProjects);
           return;
         }
 
@@ -120,7 +155,8 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit {
   }
 
   private subscribeToProjectChange(): void {
-    this.getCurrentProjectService.projectUpdated$.subscribe(
+    this.getCurrentEntityService
+    .getCurrentProjectService.projectUpdated$.subscribe(
       (project) => {
         if(project) {
           const index = this.latestProjects.findIndex((proj) => proj.id === project.id);
@@ -128,8 +164,10 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit {
           if (index === -1) {
             this.latestProjects.push(project);
   
-            if (this.getCurrentProjectService.currentProjectId === -1) {
-              this.getCurrentProjectService.currentProjectId = this.latestProjects[0].id;
+            if (this.getCurrentEntityService
+              .getCurrentProjectService.currentProjectId === -1) {
+              this.getCurrentEntityService
+              .getCurrentProjectService.currentProjectId = this.latestProjects[0].id;
             }
   
             return;
@@ -146,10 +184,12 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit {
   }
 
   public subscribeToCurrentUser(): void {
-    this.getCurrentUserService.currentUser$.subscribe((user) => {
+    this.getCurrentEntityService
+    .getCurrentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user;
 
-      this.projectService.getAllProjectsOfThisOrganization(this.getCurrentOrganizationService.currentOrganizationId)
+      this.projectService.getAllProjectsOfThisOrganization(this.getCurrentEntityService
+        .getCurrentOrganizationService.currentOrganizationId)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((response) => {
 
@@ -165,26 +205,32 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit {
               users: this.fakeUsers
             };
 
-            this.getCurrentProjectService.setProjects(this.latestProjects);
+            this.getCurrentEntityService
+            .getCurrentProjectService.setProjects(this.latestProjects);
             return;
           }
 
           const searchedProject = this.latestProjects
-            .find((x) => x.id === this.getCurrentProjectService.currentProjectId);
+            .find((x) => x.id === this.getCurrentEntityService
+            .getCurrentProjectService.currentProjectId);
 
           if (searchedProject) {
             this.currentProject = searchedProject;
 
-            this.getCurrentProjectService.setProjects(this.latestProjects);
+            this.getCurrentEntityService
+            .getCurrentProjectService.setProjects(this.latestProjects);
             return;
           }
 
-          if (this.getCurrentProjectService.currentProjectId === -1
+          if (this.getCurrentEntityService
+            .getCurrentProjectService.currentProjectId === -1
             && this.latestProjects.length > 0) {
 
-            this.getCurrentProjectService.currentProjectId = this.latestProjects[0].id;
+            this.getCurrentEntityService
+            .getCurrentProjectService.currentProjectId = this.latestProjects[0].id;
 
-            this.getCurrentProjectService.setProjects(this.latestProjects);
+            this.getCurrentEntityService
+            .getCurrentProjectService.setProjects(this.latestProjects);
             return;
           }
         });

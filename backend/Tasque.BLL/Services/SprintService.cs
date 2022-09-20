@@ -70,6 +70,12 @@ namespace Tasque.Core.BLL.Services
         {
             var tasks = await _db.Tasks
                 .Include(t => t.Users)
+                .Include(t => t.Author)
+                .Include(t => t.LastUpdatedBy)
+                .Include(t => t.Priority)
+                .Include(t => t.State)
+                .Include(t => t.Project)
+                .Include(t => t.Type)
                 .Where(t => t.SprintId == sprintId)
                 .ToListAsync();
 
@@ -93,11 +99,29 @@ namespace Tasque.Core.BLL.Services
         {
             var entity = await _db.Sprints.FirstOrDefaultAsync(s => s.Id == key)
                 ?? throw new ValidationException("Sprint not found");
+
             entity.Name = dto.Name;
+
+
             if (dto.StartAt != null)
             {
+                //Before starting a sprint,
+                //we check whether there are no already started sprints in the project
+
+                var activeSprints = await _db.Sprints
+                    .Where(s => s.StartAt != null 
+                                && !s.IsComplete 
+                                && s.ProjectId == entity.ProjectId
+                                && s.Id != entity.Id)
+                    .ToListAsync();
+
+                if(activeSprints.Count >0)
+                    throw new ValidationException(
+                        "Before starting a new sprint, finish the previous one!");
+
                 entity.StartAt = DateTime.SpecifyKind((DateTime)dto.StartAt, DateTimeKind.Utc);
             }
+
             if (dto.EndAt != null)
             {
                 entity.EndAt = DateTime.SpecifyKind((DateTime)dto.EndAt, DateTimeKind.Utc);
@@ -121,7 +145,20 @@ namespace Tasque.Core.BLL.Services
 
             return _mapper.Map<SprintDto>(entity);
         }
-        
+
+        public  async Task<SprintDto> UpdateOrder(SprintDto dto)
+        {
+            var entity = await _db.Sprints.FirstOrDefaultAsync(s => s.Id == dto.Id)
+                ?? throw new ValidationException("Sprint not found");
+
+            entity.Order = dto.Order;
+
+            _db.Sprints.Update(entity);
+            await _db.SaveChangesAsync();
+
+            return _mapper.Map<SprintDto>(entity);
+        }
+
         public async Task CompleteSprint(int sprintId)
         {
             var sprint = await _db.Sprints
@@ -158,11 +195,6 @@ namespace Tasque.Core.BLL.Services
         
         public async Task UpdateTaskEstimate(TaskEstimateUpdate taskEstimateUpdate)
         {
-            var sprint = await _db.Sprints
-                .FirstOrDefaultAsync(s => s.Id == taskEstimateUpdate.SprintId);
-
-            if (sprint == null)
-                throw new HttpException(System.Net.HttpStatusCode.NotFound, "Sprinter with this ID does not exist");
 
             var task = await _db.Tasks
                 .FirstOrDefaultAsync(t => t.Id == taskEstimateUpdate.TaskId);
@@ -176,23 +208,12 @@ namespace Tasque.Core.BLL.Services
             await _db.SaveChangesAsync();
         }
 
-        public async Task Delete(int sprintId, int currentUserId)
+        public override async Task<bool> Delete(int sprintId)
         {
             var sprint = await _db.Sprints
                 .Include(s => s.Tasks)
                 .FirstOrDefaultAsync(s => s.Id == sprintId)
                 ?? throw new HttpException(System.Net.HttpStatusCode.NotFound, "Sprinter with this ID does not exist");
-
-            var user = await _db.Users
-                .Include(u => u.Roles)
-                .FirstOrDefaultAsync(u => u.Id == currentUserId)
-                 ?? throw new HttpException(System.Net.HttpStatusCode.NotFound, "User not found");
-
-            var userRole = user.Roles
-                .FirstOrDefault(r => r.ProjectId == sprint.ProjectId);
-
-            if (userRole == null || userRole.RoleId != (int)BaseProjectRole.Admin)
-                throw new HttpException(System.Net.HttpStatusCode.Forbidden, "Access is denied");
 
             sprint.Tasks
                     .Where(t => t.StateId == ((int)BasicTaskStateTypes.ToDo)
@@ -206,6 +227,44 @@ namespace Tasque.Core.BLL.Services
             _db.Sprints.Remove(sprint);
 
             await _db.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<SprintDto?> GetCurrentSprintByProjectId(int projectId)
+        {
+            var sprint = await _db.Sprints
+                .Where(s => s.ProjectId == projectId && !s.IsComplete && s.StartAt != null)
+                    .Include(s => s.Tasks)
+                .FirstOrDefaultAsync();
+            if (sprint == null)
+                return null;
+
+            var tasks = _mapper.Map<List<TaskDto>>(_db.Tasks
+                .Where(t => t.SprintId == sprint.Id)
+                .Include(t => t.Users)
+                .Include(t => t.Author)
+                .Include(t => t.Sprint)
+                .Include(t => t.LastUpdatedBy)
+                .Include(t => t.Priority)
+                .Include(t => t.State)
+                .Include(t => t.Project)
+                .Include(t => t.Type));
+
+            var dto = _mapper.Map<SprintDto>(sprint);
+            dto.Tasks = _mapper.Map<List<TaskDto>>(tasks);
+
+            return dto;
+        }
+
+        public async Task<SprintDto> CreateSprint(NewSprintDto model)
+        {
+            var entity = _mapper.Map<Sprint>(model);
+
+            await  _db.Sprints.AddAsync(entity);
+            await _db.SaveChangesAsync();
+
+            return _mapper.Map<SprintDto>(entity);
         }
     }
 }

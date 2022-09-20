@@ -5,6 +5,15 @@
       <span [style.background-color]="taskInfo.type?.color">{{ taskInfo.type?.name }}</span>
       <span [style.background-color]="taskInfo.priority?.color">{{ taskInfo.priority?.name }}</span>
     </div>
+    <div>
+      <tasque-task-editing
+        btnText=""
+        btnClass="btn icon gray-transparent"
+        [btnIcon]="editIcon"
+        [task]="taskInfo"
+        (isChanging)="isTaskChanging($event)"
+      ></tasque-task-editing>
+    </div>
     <tasque-menu-dropdown class="card-settings" [left]="-80">
       <img src="assets/board/column_menu.svg" dropdown-button />
       <tasque-option option (click)="notImplementetNotification()">Copy issue link</tasque-option>
@@ -13,9 +22,7 @@
       <tasque-option option (click)="deleteTask()">Delete issue</tasque-option>
     </tasque-menu-dropdown>
   </div>
-  <div *ngIf="taskInfo.attachmentUrl">
-    <img class="attach" [src]="taskInfo.attachmentUrl" />
-  </div>
+  <div *ngIf="taskInfo.attachments.length > 0"></div>
   <div>
     <div class="task-content">
       <span>
@@ -28,16 +35,21 @@
       </div>
     </div>
     <div class="task-info">
-      <span>{{ taskInfo.key }}</span>
-      <tasque-avatar
-        *ngIf="user !== undefined"
-        [user]="user"
-        alt="user's avatar"
-        [diameter_px]="30"
-      ></tasque-avatar>
-      <span *ngIf="assignees !== undefined && assignees.length > 1" class="user-overflow"
-        >+{{ assignees.length - 1 }}</span
-      >
+      <div class="left-info" *ngIf="taskInfo.estimate">
+        <span>{{ taskInfo.estimate }}</span>
+      </div>
+      <div class="right-info">
+        <span>{{ taskInfo.key }}</span>
+        <tasque-avatar
+          *ngIf="taskInfo.assignees && taskInfo.assignees.length > 0"
+          [user]="taskInfo.assignees[0]"
+          alt="user's avatar"
+          [diameter_px]="30"
+        ></tasque-avatar>
+        <span *ngIf="taskInfo.assignees !== undefined && taskInfo.assignees.length > 1" class="user-overflow"
+          >+{{ taskInfo.assignees.length - 1 }}</span
+        >
+      </div>
     </div>
   </div>
 </div>

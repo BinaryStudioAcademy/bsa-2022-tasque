@@ -1,4 +1,9 @@
-<button type="{{ buttonType }}" (click)="onClick()" class="{{ buttonClass }}">
+<button
+  type="{{ buttonType }}"
+  (click)="onClick()"
+  class="{{ buttonClass }}"
+  [disabled]="this.buttonClass.includes('disabled') ? true : false"
+>
   <span *ngIf="buttonText">{{ buttonText }}</span>
   <fa-icon *ngIf="buttonIcon" [icon]="buttonIcon" class="icon-right"></fa-icon>
 </button>

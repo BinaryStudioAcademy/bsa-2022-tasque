@@ -12,36 +12,48 @@
         <span class="pale pl-5" *ngIf="tasks">({{ tasks.length }} issues)</span>
       </button>
     </div>
-    <div class="sprints">
-      <! -- 
-      TODO  Add ngIf to task button when roles will work
-      *ngIf="isCurrentUserAdmin"
-    -->
+    <div class="sprints" *ngIf="isCurrentUserAdmin">
       <tasque-button
         class="mini"
         text="Create Sprint"
         [class]="btnClass"
-        class="mini"
         (click)="createSprint()"
       ></tasque-button>
     </div>
   </div>
-  <div class="backlog-content">
+  <div
+    class="backlog-content"
+    cdkDropList
+    #todoList="cdkDropList"
+    [cdkDropListData]="tasks"
+    id="list-one"
+    (cdkDropListDropped)="drop($event)"
+  >
     <div class="empty-tasks row pale" *ngIf="tasks && tasks.length == 0">
       <label class="text-center">Your backlog is empty.</label>
     </div>
     <div
       class="backlog-issues"
       id="backlog-issues"
-      *ngIf="tasks && tasks.length != 0"
-      cdkDropList
-      #todoList="cdkDropList"
-      [cdkDropListData]="tasks"
-      id="list-one"
-      (cdkDropListDropped)="drop($event)"
+      *ngIf="tasks && tasks.length != 0 && isDragable"
     >
       <app-issue
+        (isChanging)="toogleIsDragable($event)"
         cdkDrag
+        *ngFor="let task of tasks"
+        [issue]="task"
+        [taskStates]="taskStates"
+        [taskTypes]="taskTypes"
+        [currentProject]="project"
+      ></app-issue>
+    </div>
+    <div
+      class="backlog-issues"
+      id="backlog-issues"
+      *ngIf="tasks && tasks.length != 0 && !isDragable"
+    >
+      <app-issue
+        (isChanging)="toogleIsDragable($event)"
         *ngFor="let task of tasks"
         [issue]="task"
         [taskStates]="taskStates"
@@ -55,6 +67,7 @@
         btnClass="btn mini voilet"
         [currentProject]="project"
         [organizationId]="project.organizationId"
+        [currentTasks]="tasks"
       ></tasque-task-creation>
     </div>
   </div>

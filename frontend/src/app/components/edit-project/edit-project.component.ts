@@ -85,7 +85,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
     this.board = {
       id: 1,
       type: BoardType.Organization,
-      users: this.project.users,
+      users: this.project.users as IUserCard[],
       hasRoles: true
     };
   }

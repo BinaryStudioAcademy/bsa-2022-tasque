@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { BoardColumnModel } from '../../../core/models/board/board-column-model';
@@ -10,9 +10,8 @@ import {
 import { TaskInfoModel } from 'src/core/models/board/task-Info-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { NotificationService } from 'src/core/services/notification.service';
-import { ActivatedRoute } from '@angular/router';
-import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
-import { Subject } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import { TaskType } from 'src/core/models/task/task-type';
@@ -21,6 +20,8 @@ import { ProjectModel } from 'src/core/models/project/project-model';
 import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
+import { SprintModel } from 'src/core/models/sprint/sprint-model';
+import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
 
 @Component({
   selector: 'tasque-board',
@@ -34,22 +35,26 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   public isOpenColumnAddDialog: boolean;
   public createColumnForm: FormGroup;
   @ViewChild('searchInput') public searchInput: InputComponent;
+  @Output() urlChanged = new EventEmitter<Observable<void>>();
 
-  private selectedUserId?: number;
+  public selectedUserId?: number;
   private newColumn: TaskState;
   private projectId: number;
 
   public unsubscribe$ = new Subject<void>();
 
   public project: ProjectModel;
+  public projectUsers: UserModel[] = [];
   user: UserModel;
   public hasTasks = false;
   public isShow = false;
+  public isDraggable = true;
   public searchParameter = '';
   colors = ['#D47500', '#00AA55', '#E3BC01', '#009FD4', '#B281B3', '#D47500', '#DC2929'];
 
   public columns: BoardColumnModel[] = [];
   public projectTasks: TaskModel[] = [];
+  public currentSprint: SprintModel;
 
   public projectOptions: TasqueDropdownOption[] = [];
   public projectTaskTypes: TaskType[] = [];
@@ -59,10 +64,11 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private boardService: ScopeBoardService,
     private notificationService: NotificationService,
-    private currentUserService: GetCurrentUserService,
-    private taskStorageService: TaskStorageService
+    private getCurrentEntityService: ScopeGetCurrentEntityService,
+    private taskStorageService: TaskStorageService,
+    private router: Router,
   ) {
-    this.currentUserService.currentUser$.subscribe((res) => {
+    this.getCurrentEntityService.getCurrentUserService.currentUser$.subscribe((res) => {
       this.user = res as UserModel;
     });
 
@@ -83,12 +89,15 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       return;
     }
     this.projectId = parseInt(id);
+    this.getSelectedUserFromQuery();
 
     this.boardService.projectService.getProjectById(this.projectId)
       .subscribe(
         (resp) => {
           if (resp.ok) {
             this.project = resp.body as ProjectModel;
+            this.projectUsers = this.project.users;
+            this.updateHeader();
             this.setColumns();
           } else {
             this.notificationService.error('Something went wrong');
@@ -96,17 +105,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         },
       );
 
-    this.boardService.projectService.getAllProjectTasks(this.projectId)
-      .subscribe((resp) => {
-        if (resp.ok) {
-          this.projectTasks = resp.body as TaskModel[];
-          this.hasTasks = this.checkIfHasTasks();
-          this.sortTasksByColumns();
-        } else {
-          this.notificationService.error('Something went wrong');
-        }
-      });
-
     this.taskStorageService.taskUpdated$.subscribe((task) => {
       let isTaskFound = false;
 
@@ -121,12 +119,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           isTaskFound = true;
 
           col.tasks[index] = {
-            id: task.id,
-            typeId: task.typeId,
-            type: task.type,
-            priority: task.priority,
-            attachmentUrl: task.attachments[0]?.uri,
-            summary: task.summary,
+            ...task,
             customLabels: [],
             key: task.key as string,
             isHidden: false,
@@ -134,33 +127,22 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
 
-    this.taskStorageService.taskUpdated$.subscribe((task) => {
-      let isTaskFound = false;
-
-      for (const col of this.columns) {
-        if (isTaskFound) {
-          return;
-        }
-
-        const index = col.tasks.findIndex((t) => task.id === t.id);
-
-        if (index !== -1) {
-          isTaskFound = true;
-
-          col.tasks[index] = {
-            id: task.id,
-            typeId: task.typeId,
-            type: task.type,
-            priority: task.priority,
-            attachmentUrl: task.attachments[0]?.uri,
-            summary: task.summary,
-            customLabels: [],
-            key: task.key as string,
-            isHidden: false,
-          };
-        }
+  getCurrentSprintAndTasks(): void {
+    this.boardService.sprintService
+    .getCurrentSprintByProjectId(this.projectId)
+    .subscribe((resp) => {
+      if(resp.ok){
+        this.currentSprint = resp.body as SprintModel;
+        this.projectTasks = this.currentSprint.tasks;
+        this.hasTasks = this.checkIfHasTasks();
+        this.sortTasksByColumns();
+      } else {
+        this.notificationService.error('Something went wrong');
       }
+    }, () => {
+      this.isShow = true;
     });
   }
 
@@ -172,30 +154,26 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
       tasks.forEach((t) => {
         taskInfo.push({
-          id: t.id,
-          typeId: t.typeId,
-          type: t.type,
-          stateId: t.stateId,
-          priority: t.priority,
-          attachmentUrl: t.attachments[0]?.uri,
-          summary: t.summary,
+          ...t,
           customLabels: [],
+          assignees: t.users,
           key: t.key as string,
           isHidden: false,
         });
       });
       c.tasks = taskInfo;
     });
-    this.isShow = true;
+    this.filterTasks();
   }
 
   setColumns(): void {
-    const states = this.project.projectTaskStates;
+    const states = this.project?.projectTaskStates as TaskState[];
     states.forEach((s) => this.columns.push({
       id: s.id,
       name: s.name,
       tasks: [],
     }));
+    this.getCurrentSprintAndTasks();
   }
 
   openAddColumn(): void {
@@ -280,25 +258,65 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   }
 
   filterTasks(): void {
-    const phrase = this.searchInput.inputValue;
+    let phrase = '';
+    if(this.searchInput) {
+      phrase = this.searchInput.inputValue;
+    }
     for (const column of this.columns) {
       if (column.tasks) {
         for (const task of column.tasks) {
           task.isHidden = !task.summary.toLowerCase().includes(phrase.toLowerCase());
-          if (this.selectedUserId) {
-            task.isHidden = task.isHidden || task.user?.id != this.selectedUserId;
+          if (this.selectedUserId && task.assignees) {
+            task.isHidden = task.isHidden || !task.assignees.some(
+              (user) =>
+                user.id == this.selectedUserId
+            );
           }
         }
       }
     }
+    this.isShow = true;
   }
 
   userSelected(event: UserModel): void {
     if (this.selectedUserId && event.id === this.selectedUserId) {
       this.selectedUserId = undefined;
+      this.router.navigate([], { queryParams: { } });
     } else {
       this.selectedUserId = event.id;
+      this.router.navigate([], { queryParams: { user: this.selectedUserId } });
     }
     this.filterTasks();
+  }
+
+  getSelectedUserFromQuery(): void {
+    const userId = this.route.snapshot.queryParamMap.get('user');
+    if(userId) {
+      this.selectedUserId = Number(userId);
+    }
+  }
+
+  toogleIsDraggable(val: boolean): void {
+    this.isDraggable = !val;
+  }
+
+  moveToBackLog(): void {
+    this.router.navigateByUrl(`/project/${this.projectId}/backlog`, { 
+      replaceUrl: true,
+    });
+    this.urlChanged.emit();
+  }
+
+  moveToSettings(): void {
+    this.router.navigateByUrl(`/project/${this.projectId}/settings/issue-template`, { 
+      replaceUrl: true,      
+    });
+    this.urlChanged.emit();
+  }
+
+  updateHeader(): void {
+    this.getCurrentEntityService.getCurrentOrganizationService
+      .currentOrganizationId = this.project.organizationId;
+    this.getCurrentEntityService.getCurrentProjectService.currentProjectId = this.project.id;
   }
 }

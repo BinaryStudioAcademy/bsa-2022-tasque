@@ -1,15 +1,17 @@
 import { TaskCustomFieldModel } from './task-creation-models/task-custom-field-model';
 
 export interface TaskCreateViewModel {
-    summary?: string;
-    description?: string;
+  summary?: string;
+  description?: string;
 
-    authorId?: number;
-    projectId?: number;
+  authorId?: number;
+  projectId?: number;
 
-    typeId?: number;
-    priorityId?: number;
-    stateId?: number;
+  typeId?: number;
+  priorityId?: number;
+  stateId?: number;
 
-    customFields?: TaskCustomFieldModel[],
+  customFields?: TaskCustomFieldModel[];
+
+  sprintId?: number;
 }

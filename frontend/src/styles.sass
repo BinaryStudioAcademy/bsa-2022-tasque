@@ -3,6 +3,13 @@
 @import '../node_modules/ngx-toastr/toastr.css'
 @import 'src/toastr.sass'
 
+@font-face 
+  font-family: "FontAwesome"
+  src: url("/assets/fonts/fontawesome-webfont.ttf") format("ttf")
+  src: url("/assets/fonts/fontawesome-webfont.woff") format("woff")
+  src: url("/assets/fonts/fontawesome-webfont.woff2") format("woff2")
+
+
 *
   padding: 0
   margin: 0
@@ -52,3 +59,10 @@ app-login-page
 .full-width
   width: 100%
   min-width: 100%
+
+html, body
+  height: 100%
+
+angular-editor-toolbar button i 
+  font-family: FontAwesome !important
+  color: #474d6d !important

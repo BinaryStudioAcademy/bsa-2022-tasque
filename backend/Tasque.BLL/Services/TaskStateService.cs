@@ -16,9 +16,9 @@ namespace Tasque.Core.BLL.Services
         
         }
 
-        public new async Task<IEnumerable<TaskState>> GetAll()
+        public Task<List<TaskState>> GetAll()
         {
-            var tasksStates = await _db.TaskStates
+            var tasksStates = _db.TaskStates
                 .ToListAsync();
 
             return tasksStates;
@@ -29,6 +29,14 @@ namespace Tasque.Core.BLL.Services
             var taskStates = await _db.TaskStates.Where(t => t.ProjectId == projectId).ToListAsync();
 
             return _mapper.Map<IEnumerable<TaskStateDto>>(taskStates);
+        }
+
+        public TaskStateDto CreateTaskState(TaskStateDto model)
+        {
+            var entity = _mapper.Map<TaskState>(model);
+            _db.TaskStates.Add(entity);
+            _db.SaveChanges();
+            return _mapper.Map<TaskStateDto>(entity);
         }
     }
 }

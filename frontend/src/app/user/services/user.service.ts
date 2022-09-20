@@ -43,4 +43,23 @@ export class UserService {
       this.routePrefix + `/getUserById/${userId}`,
     );
   }
+
+  getUserByEmail(email: string): Observable<HttpResponse<UserModel>> {
+    return this.httpService.getFullRequest(
+      this.routePrefix + `/getUserByEmail/${email}`,
+    );
+  }
+
+  setLastOrg(userId: number, orgId: number): Observable<HttpResponse<void>> {
+    return this.httpService.postFullRequest(
+      this.routePrefix + `/lastOrganization?userId=${userId}&orgId=${orgId}`,
+      {},
+    );
+  }
+
+  getLastOrg(userId: number): Observable<HttpResponse<number>> {
+    return this.httpService.getFullRequest(
+      this.routePrefix + `/lastOrganization?userId=${userId}`,
+    );
+  }
 }

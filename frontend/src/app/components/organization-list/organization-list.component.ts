@@ -9,6 +9,7 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
 import { BaseComponent } from 'src/core/base/base.component';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { OpenDialogService } from 'src/core/services/open-dialog.service';
+import { OrganizationService } from 'src/core/services/organization.service';
 
 @Component({
   selector: 'app-organization-list',
@@ -28,6 +29,7 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
   constructor(
     private currentUserService: GetCurrentUserService,
     private getCurrentOrganizationService: GetCurrentOrganizationService,
+    private organizationService: OrganizationService,
     private openDialogService: OpenDialogService,
   ) {
     super();
@@ -36,6 +38,12 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user;
+
+      this.organizationService.getUserOrganizations(this.currentUser.id).subscribe((resp) => {
+        if(resp.ok){
+          this.items = this.itemsShow = resp.body as OrganizationModel[];
+        }
+      });
     });
 
     this.getCurrentOrganizationService.organizations$.subscribe(

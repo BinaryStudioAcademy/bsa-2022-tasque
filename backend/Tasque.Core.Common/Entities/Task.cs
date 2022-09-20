@@ -44,8 +44,9 @@ public class Task : BaseEntity
     public int? ParentTaskId { get; set; }
     public Task? ParentTask { get; set; }
 
-    public int? Estimate { get; set; }
+    public int? Estimate { get; set; } = 0;
 
+    public virtual ICollection<Comment> Comments { get; set; }
     public virtual ICollection<Attachment> Attachments { get; set; }
     public virtual ICollection<Label> Labels { get; set; }
     public virtual ICollection<User> Users { get; set; }

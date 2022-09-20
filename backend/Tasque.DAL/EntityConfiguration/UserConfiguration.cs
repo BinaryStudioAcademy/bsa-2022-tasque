@@ -23,6 +23,10 @@ namespace Tasque.Core.DAL.EntityConfiguration
             builder
                .HasMany(user => user.ParticipatedOrganization)
                .WithMany(organization => organization.Users);
+
+            builder.HasOne(x => x.LastOrganization)
+                .WithMany()
+                .HasForeignKey(x => x.LastOrganizationId);
         }
     }
 }

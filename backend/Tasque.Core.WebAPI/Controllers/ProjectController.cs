@@ -2,7 +2,8 @@
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Board;
 using Tasque.Core.Common.DTO.Project;
-using Tasque.Core.Common.DTO.User;
+using Tasque.Core.Common.DTO.Task;
+using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers;
 
@@ -10,41 +11,17 @@ namespace Tasque.Core.WebAPI.Controllers;
 public class ProjectController : EntityController
     <NewProjectDto, ProjectInfoDto, EditProjectDto, int, ProjectService>
 {
-    public ProjectController(ProjectService service)
+    private readonly int _userId;
+    public ProjectController(ProjectService service, CurrentUserParameters userParams)
         : base(service)
     {
-
+        _userId = userParams.Id;
     }
 
     [HttpGet("all/{organizationId}")]
     public async Task<IActionResult> GetAllProjectsOfOrganization(int organizationId)
     {
         return Ok(await _service.GetAllProjectsOfOrganization(organizationId));
-    }
-
-
-    [HttpPut("invite")]
-    public async Task<IActionResult> InviteUserToProject([FromBody] UserInviteDto userInviteDto)
-    {
-        await _service.InviteUserToProject(userInviteDto);
-
-        return Ok();
-    }
-
-    [HttpPut("kick")]
-    public async Task<IActionResult> KickUser([FromBody] UserInviteDto userInviteDto)
-    {
-        await _service.KickUserOfProject(userInviteDto);
-
-        return Ok();
-    }
-
-    [HttpPut("role")]
-    public async Task<IActionResult> UpdateUserRole([FromBody] ChangeUserRoleDto changeUserRoleDto)
-    {
-        await _service.ChangeUserRole(changeUserRoleDto);
-
-        return Ok();
     }
 
     [HttpGet("board/{projectId:int}")]
@@ -86,13 +63,6 @@ public class ProjectController : EntityController
         return Ok(projects);
     }
 
-    [HttpGet("{projectId}/participants")]
-    public IActionResult GetProjectParticipants(int projectId)
-    {
-        var participants = _service.GetProjectParticipants(projectId);
-        return Ok(participants);
-    }
-
     [HttpGet("getProjectPriorities/{projectId}")]
     public IActionResult GetProjectPriorities(int projectId)
     {
@@ -109,5 +79,35 @@ public class ProjectController : EntityController
         if (states == null)
             return NotFound("Project or it's task states not found");
         return Ok(states);
+    }
+
+    [HttpGet("getProjectById/{projectId}")]
+    public async Task<IActionResult> GetProjectById(int projectId)
+    {
+        var project = await _service.GetProjectById(projectId);
+        if (project == null)
+            return NotFound("Project not found");
+        return Ok(project);
+    }
+
+    [HttpPut("taskPriorities/{projectId}")]
+    public async Task<IActionResult> UpdateProjectTaskPriorities(int projectId, IEnumerable<TaskPriorityDto> taskPriorityDtos)
+    {
+        var res = await _service.UpdateProjectTaskPriorities(projectId, taskPriorityDtos);
+        return Ok(res);
+    }
+
+    [HttpPut("taskStates/{projectId}")]
+    public async Task<IActionResult> UpdateProjectTaskPriorities(int projectId, IEnumerable<TaskStateDto> taskStateDtos)
+    {
+        var res = await _service.UpdateProjectTaskStates(projectId, taskStateDtos);
+        return Ok(res);
+    }
+
+    [HttpPut("taskTypes/{projectId}")]
+    public async Task<IActionResult> UpdateProjectTaskTypes(int projectId, IEnumerable<TaskTypeDto> taskTypeDtos)
+    {
+        var res = await _service.UpdateProjectTaskTypes(projectId, taskTypeDtos);
+        return Ok(res);
     }
 }
