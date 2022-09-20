@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using System.ComponentModel.DataAnnotations;
+using FluentValidation;
 using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.Common.Entities;
@@ -60,11 +60,6 @@ namespace Tasque.Core.Identity.Services.Extensions
 
             if (token == null || !token.IsValid)
                 throw new ValidationException("Expired token");
-
-            var expired = _context.InvitationTokens.Where(t => !t.IsValid).ToList();
-            _context.InvitationTokens.RemoveRange(expired);
-
-            await _context.SaveChangesAsync();
 
             return token;
         }

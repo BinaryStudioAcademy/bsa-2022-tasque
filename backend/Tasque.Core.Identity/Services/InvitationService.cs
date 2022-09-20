@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
-using SendGrid.Helpers.Errors.Model;
-using Tasque.Core.BLL.Exceptions;
-using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Enums;
-using Tasque.Core.Common.Models.InvitationModels;
 using Tasque.Core.DAL;
 using Tasque.Core.Identity.Services.Extensions;
 using Task = System.Threading.Tasks.Task;
@@ -33,7 +29,7 @@ namespace Tasque.Core.Identity.Services
                 .FirstOrDefaultAsync();
 
             if (user != null && user.SystemRoles.Any(r => r.OrganizationId == organizationId))
-                throw new BadRequestException("User is already in organization");
+                throw new ValidationException("User is already in organization");
 
             return await SetUpAndSendInvitationEmail(3, TokenKind.OrganizationInvitation, organizationId, userEmail, user == null ? false : true);
         }

@@ -11,7 +11,6 @@ using Tasque.Core.DAL;
 using Tasque.Core.Identity.Exeptions;
 using Tasque.Core.Identity.JWT;
 using Tasque.Core.Identity.Services.AuxiliaryServices;
-using Tasque.Core.Identity.Services.Extensions;
 using Task = System.Threading.Tasks.Task;
 
 namespace Tasque.Core.Identity.Services
@@ -58,6 +57,18 @@ namespace Tasque.Core.Identity.Services
 
             if (!SecurityHelper.ValidatePassword(loginInfo.Password, userEntity.Password, userEntity.Salt))
                 throw new ValidationException("Invalid password");
+
+            InvitationToken? invitationToken = null;
+
+            if (loginInfo.IsInvitedToOrganization && loginInfo.Key.HasValue)
+            {
+                invitationToken = await _invitationExtension.ConfirmInvitationToken(loginInfo.Key!.Value);
+
+                if (invitationToken.InvitedUserEmail != loginInfo.Email)
+                    throw new ValidationException("Invalid token");
+
+                await _invitationExtension.CreateUserModel(userEntity.Id, invitationToken);
+            }
 
             return _mapper.Map<UserDto>(userEntity);
         }
