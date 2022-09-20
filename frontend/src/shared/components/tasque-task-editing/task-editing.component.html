@@ -134,24 +134,8 @@
         </tasque-button>
         <tasque-button type="submit" class="btn fill" text="Update" (click)="submitForm()"> </tasque-button>
       </div>
-
-      <div class="comments-container">
-        <h5>Comments</h5>
-      </div>
     </div>
-
-    <div class="user-comment-container">
-      <tasque-avatar [user]="currentUser" [diameter_px]="45" alt="avatar"></tasque-avatar>
-
-      <div class="input-wrapper">
-        <tasque-input placeholder="Type a comment"></tasque-input>
-      </div>
-
-      <div class="user-comment-buttons">
-        <tasque-button class="btn icon" [icon]="linkIcon"></tasque-button>
-        <tasque-button class="btn icon" [icon]="faceSmileIcon"></tasque-button>
-        <tasque-button class="btn icon" [icon]="ellipsisIcon"></tasque-button>
-      </div>
-    </div>
+    <tasque-comments></tasque-comments>
   </form>
+  
 </tasque-sidebar>

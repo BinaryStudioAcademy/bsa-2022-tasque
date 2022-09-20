@@ -1,0 +1,17 @@
+<div class="comments-container">
+    <h5>Comments</h5>
+</div>
+<div class="task-comment-container">
+    
+</div>
+<div class="user-comment-container">
+    <tasque-avatar [user]="currentUser" [diameter_px]="45" alt="avatar"></tasque-avatar>
+
+    <div class="input-wrapper">
+      <tasque-input placeholder="Type a comment"></tasque-input>
+    </div>
+
+    <div class="user-comment-buttons">
+      <tasque-button class="btn icon" [icon]="sendIcon"></tasque-button>
+    </div>
+</div>

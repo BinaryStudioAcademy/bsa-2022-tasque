@@ -1,0 +1,42 @@
+@import 'src/colors.sass'
+
+.comments-container
+  margin-bottom: 15px
+
+.user-comment-buttons
+  display: flex
+  flex-direction: row
+  gap: 10px
+  background: colorscheme(gray-200)
+  height: 70px
+  align-items: center
+  padding-left: 10px
+  padding-right: 40px
+  border-top-right-radius: 10px
+  border-bottom-right-radius: 10px
+  ::ng-deep tasque-button button
+    color: colorscheme(gray-400)
+    font-size: 23px
+
+.submit-buttons
+  display: flex
+  gap: 10px
+  justify-content: center
+
+.user-comment-container
+  display: flex
+  margin-top: auto
+  align-items: center
+  padding-top: 20px
+  padding-left: 45px
+  padding-right: 30px
+  padding-bottom: 45px
+  .input-wrapper
+    width: 100%
+    ::ng-deep tasque-input input
+      height: 70px
+      border-top-right-radius: 0px
+      border-bottom-right-radius: 0px
+
+tasque-avatar
+  padding-right: 10px
