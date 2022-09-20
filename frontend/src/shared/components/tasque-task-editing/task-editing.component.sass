@@ -96,6 +96,32 @@ $task-summary-buttons-width: 161px
   max-height: 250px
   word-wrap: break-word
   overflow-y: auto
+  font-weight: 700
+  outline: 0px solid transparent
+  opacity: .88
+
+.summary-text-wrapper
+  display: flex
+  align-items: center
+  padding: 5px
+  border-radius: 10px
+  border: 2px solid colorscheme(white-100)
+  .icon
+    vertical-align: middle
+    border-radius: 50%
+  &:hover
+    background: colorscheme(gray-300)
+    border: 2px solid colorscheme(violet-200)
+    .icon
+      display: none
+  &:focus
+      outline: 0px solid transparent
+  tasque-button
+    ::ng-deep
+      button
+        color: colorscheme(gray-500)
+        .ng-fa-icon
+          vertical-align: sub
 
 .task-summary-buttons
   display: flex

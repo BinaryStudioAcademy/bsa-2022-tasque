@@ -12,6 +12,7 @@ import {
   faPen,
   faFlag,
   IconDefinition,
+  faPenToSquare
 } from '@fortawesome/free-solid-svg-icons';
 import { BaseComponent } from 'src/core/base/base.component';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -67,10 +68,10 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public ellipsisIcon = faEllipsisVertical;
   public faceSmileIcon = faFaceSmile;
   public editIcon = faPen;
+  public editSquareIcon = faPenToSquare;
   public flagIcon = faFlag;
 
   public descriptionEditorShow = false;
-  public summaryInputShow = false;
 
   public statusOptions: TasqueDropdownOption[] = [];
   public priorityOptions: TasqueDropdownOption[] = [];
@@ -159,12 +160,9 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     };
   }
 
-  summaryClick(): void {
-    this.summaryInputShow = true;
-  }
-
-  summaryInputOutsideClick(): void {
-    this.summaryInputShow = false;
+  public titleContent(event: Event): string {
+    const input = event.target as HTMLElement;
+    return input.innerText;
   }
 
   descriptionClick(): void {
