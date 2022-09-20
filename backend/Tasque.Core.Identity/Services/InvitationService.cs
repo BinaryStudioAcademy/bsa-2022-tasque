@@ -17,7 +17,6 @@ namespace Tasque.Core.Identity.Services
     {
         private readonly ConfirmationTokenExtension _tokenService;
         private readonly DataContext _dbContext;
-        private readonly IMapper _mapper;
 
         public InvitationService(
             ConfirmationTokenExtension tokenService,
@@ -46,25 +45,13 @@ namespace Tasque.Core.Identity.Services
             return await _tokenService.SendInvitationEmail(token);
         }
 
-        public async Task<ConfirmInvitationModel> ConfirmInvitation(Guid key)
+        public async Task<InvitationToken> ConfirmInvitationToken(Guid key)
         {
-            var token = await _tokenService.ConfirmInvitation(key);
-            var user = _dbContext.Users.FirstOrDefaultAsync(u => u.Email == token.InvitedUserEmail);
-
-            if (user == null)
-                throw new CustomNotFoundException("User");
-
-            if (token.Kind == TokenKind.OrganizationInvitation)
-                await CreateUserModel(user.Id, token);
-
-            return new()
-            {
-                InvitationToken = token,
-                User = _mapper.Map<UserDto>(user),
-            };
+            var token = await _tokenService.ConfirmInvitationToken(key);
+            return token;
         }
 
-        private async Task CreateUserModel(int userId, InvitationToken token)
+        public async Task CreateUserModel(int userId, InvitationToken token)
         {
             var userRole = new UserOrganizationRole()
             {

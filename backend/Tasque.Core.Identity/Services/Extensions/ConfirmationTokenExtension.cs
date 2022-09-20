@@ -1,17 +1,12 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
-using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services.Email;
-using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Enums;
-using Tasque.Core.Common.Models.InvitationModels;
 using Tasque.Core.DAL;
-using Tasque.Core.Identity.Exceptions;
 using Tasque.Core.Identity.Services.AuxiliaryServices;
 using Tasque.Core.Identity.Services.Extensions.Factory;
 
@@ -59,16 +54,15 @@ namespace Tasque.Core.Identity.Services.Extensions
             return await _emailService.SendEmailAsync(email);
         }
 
-        public async Task<InvitationToken> ConfirmInvitation(Guid key)
+        public async Task<InvitationToken> ConfirmInvitationToken(Guid key)
         {
             var token = await  _context.InvitationTokens.FirstOrDefaultAsync(t => t.Token == key);
 
             if (token == null || !token.IsValid)
                 throw new ValidationException("Expired token");
 
-            var expired = _context.InvitationTokens.Where(t => t.IsValid).ToList();
+            var expired = _context.InvitationTokens.Where(t => !t.IsValid).ToList();
             _context.InvitationTokens.RemoveRange(expired);
-            _context.InvitationTokens.Remove(token);
 
             await _context.SaveChangesAsync();
 

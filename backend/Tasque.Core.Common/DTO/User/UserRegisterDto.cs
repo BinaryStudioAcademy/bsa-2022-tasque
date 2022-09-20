@@ -6,5 +6,6 @@
         public string Password { get; set; } = null!;
         public string Name { get; set; } = null!;
         public Guid? Key { get; set; }
+        public bool IsInvitedToOrganization { get; set; }
     }
 }

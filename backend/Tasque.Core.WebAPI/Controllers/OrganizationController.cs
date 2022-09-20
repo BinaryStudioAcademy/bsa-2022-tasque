@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
+using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.DTO.Organization;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Models.InvitationModels;
@@ -82,13 +83,11 @@ namespace Tasque.Core.WebAPI.Controllers
         [HttpPut("invite/confirm/{key}")]
         public async Task<IActionResult> ConfirmInvitation(Guid key)
         {
-            var model = await _invitationService.ConfirmInvitation(key);
+            var token = await _invitationService.ConfirmInvitationToken(key);
 
-            if (model.InvitationToken == null || model.User == null)
-                return BadRequest();
-
-            await _service.AddUser(model.InvitationToken.EntityId, model.User);
-            return Ok();
+            if (token == null || token.InvitedUserEmail == null)
+                return BadRequest("Expired token");
+            return Ok( new EmailDto() { Email = token.InvitedUserEmail });
         }
     }
 }

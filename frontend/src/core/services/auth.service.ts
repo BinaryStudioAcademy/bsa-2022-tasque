@@ -10,6 +10,7 @@ import { GetCurrentOrganizationService } from './get-current-organization.servic
 import { UserRegisterModel } from '../models/user/user-register-model';
 import { UserResetPasswordModel } from '../models/user/user-reset-password-model';
 import { GetCurrentUserService } from './get-current-user.service';
+import { UserModel } from '../models/user/user-model';
 
 @Injectable({
   providedIn: 'root'
@@ -54,6 +55,10 @@ export class AuthService {
 
   checkRefLink(ref: string): Observable<HttpResponse<{ email: string }>> {
     return this.httpService.getFullRequest(this.routePrefix + `/ref?key=${ref}`);
+  }
+
+  checkInvitationLink(ref: string): Observable<HttpResponse<{ email: string}>> {
+    return this.httpService.putFullRequest('/api/organization/' + ref);
   }
 
   setAuthToken(token: AccessToken): void {
