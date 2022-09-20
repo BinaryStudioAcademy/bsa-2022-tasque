@@ -68,7 +68,13 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
   }
 
   addUserToOrganization(userEmail: string): void {
-    console.log(userEmail);
+    this.organizationService
+      .iviteUserToOrganization(this.organization.id, userEmail)
+      .subscribe((resp) => {
+        if(resp.ok) {
+          this.notificationService.success(`User has been invited to organization!`)
+        }
+      });
   }
 
   public submitForm(): void {
