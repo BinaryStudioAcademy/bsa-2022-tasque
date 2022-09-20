@@ -1,0 +1,32 @@
+<div class="setting-container">
+  <div class="setting-data" *ngIf="!isEditing">
+    <div class="setting-color" [style.background-color]="projectSetting.color"></div>
+    <span>{{ projectSetting.name }}</span>
+  </div>
+  <div class="edit-setting" *ngIf="isEditing">
+    <tasque-input [formControl]="formColorControl" class="edit-input" type="color"></tasque-input>
+    <tasque-input
+      [formControl]="formNameControl"
+      (keydown.enter)="saveSetting()"
+      class="edit-input text-input"
+      placeholder="Write name"
+      type="text"
+    ></tasque-input>
+  </div>
+  <div class="setting-actions">
+    <tasque-button
+      class="btn icon"
+      *ngIf="isEditing"
+      [icon]="resetIcon"
+      (btnClick)="resetSetting()"
+    ></tasque-button>
+    <tasque-button
+      class="btn icon"
+      *ngIf="isEditing"
+      [icon]="applyIcon"
+      (btnClick)="saveSetting()"
+    ></tasque-button>
+    <tasque-button (btnClick)="isEditing = !isEditing" [icon]="editIcon" class="btn icon"></tasque-button>
+    <tasque-button (btnClick)="deleteSetting()" [icon]="removeIcon" class="btn icon"></tasque-button>
+  </div>
+</div>
