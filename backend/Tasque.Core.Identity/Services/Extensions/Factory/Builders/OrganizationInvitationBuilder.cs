@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using SendGrid.Helpers.Mail;
 using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services;
-using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Models.Email;
 using Tasque.Core.DAL;
@@ -26,6 +24,7 @@ namespace Tasque.Core.Identity.Services.Extensions.Factory.Builders
             _emailOptions = emailOptions;
             _configuration = configuration;
         }
+
         public async Task<EmailMessage> GetEmailMessage(InvitationToken token)
         {
             var reciever = new EmailContact(token.InvitedUserEmail, token.InvitedUserEmail);
