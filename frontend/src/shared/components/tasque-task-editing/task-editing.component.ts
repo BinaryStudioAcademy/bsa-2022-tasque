@@ -344,11 +344,17 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   }
 
   public submitForm(): void {
-    if (this.editTaskForm.invalid || this.editTaskForm.pristine) {
-      this.editTaskForm.markAllAsTouched();
+    if (this.editTaskForm.invalid) {
       this.notificationService.error(
         'Some values are incorrect. Follow error messages to solve this problem',
         'Invalid values',
+      );
+      return;
+    }
+
+    if (this.editTaskForm.pristine) {
+      this.notificationService.error(
+        'Data hasn\'t been changed',
       );
       return;
     }
@@ -415,18 +421,16 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   }
 
   deleteUser(email: string): void {
-    const boardIndex = this.board.users.findIndex((x) => x.email == email);
+    const boardIndex = this.board.users.findIndex((x) => x.email === email);
     this.board.users.splice(boardIndex, 1);
     const index = this.editTaskForm.controls.assignees.value.findIndex(
-      (x: UserModel) => {
-        x.email == email;
-      },
+      (x: UserModel) => x.email === email
     );
     this.editTaskForm.controls.assignees.value.splice(index, 1);
     this.editTaskForm.markAsDirty();
   }
 
-  // TODO: Removed it when tasque-select-users is redesigned
+  // TODO: Remove it when tasque-select-users is redesigned
   private convertToUserCard(user: UserModel): IUserCard {
     return {
       id: user.id,
