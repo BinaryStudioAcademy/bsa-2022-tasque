@@ -166,7 +166,7 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit, OnCha
           this.isSettings = true;
           this.isIssueTemplate = true;
           return;
-        case 'basic-issue-template':
+        case 'basic-settings':
           this.isSettings = true;
           this.isBasicSettings = true;
           return;
