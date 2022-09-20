@@ -2,7 +2,7 @@
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Board;
 using Tasque.Core.Common.DTO.Project;
-using Tasque.Core.Common.DTO.User;
+using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Identity.Helpers;
 
 namespace Tasque.Core.WebAPI.Controllers;
@@ -23,7 +23,7 @@ public class ProjectController : EntityController
     {
         return Ok(await _service.GetAllProjectsOfOrganization(organizationId));
     }
-    
+
     [HttpGet("board/{projectId:int}")]
     public async Task<IActionResult> GetBoard(int projectId)
     {
@@ -80,7 +80,7 @@ public class ProjectController : EntityController
             return NotFound("Project or it's task states not found");
         return Ok(states);
     }
-    
+
     [HttpGet("getProjectById/{projectId}")]
     public async Task<IActionResult> GetProjectById(int projectId)
     {
@@ -88,5 +88,26 @@ public class ProjectController : EntityController
         if (project == null)
             return NotFound("Project not found");
         return Ok(project);
+    }
+
+    [HttpPut("taskPriorities/{projectId}")]
+    public async Task<IActionResult> UpdateProjectTaskPriorities(int projectId, IEnumerable<TaskPriorityDto> taskPriorityDtos)
+    {
+        var res = await _service.UpdateProjectTaskPriorities(projectId, taskPriorityDtos);
+        return Ok(res);
+    }
+
+    [HttpPut("taskStates/{projectId}")]
+    public async Task<IActionResult> UpdateProjectTaskPriorities(int projectId, IEnumerable<TaskStateDto> taskStateDtos)
+    {
+        var res = await _service.UpdateProjectTaskStates(projectId, taskStateDtos);
+        return Ok(res);
+    }
+
+    [HttpPut("taskTypes/{projectId}")]
+    public async Task<IActionResult> UpdateProjectTaskTypes(int projectId, IEnumerable<TaskTypeDto> taskTypeDtos)
+    {
+        var res = await _service.UpdateProjectTaskTypes(projectId, taskTypeDtos);
+        return Ok(res);
     }
 }
