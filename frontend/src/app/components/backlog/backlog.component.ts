@@ -72,6 +72,8 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
   public isShowArchive: boolean;
   public tasks: TaskModel[] = [];
 
+  public isShow = false;
+
   constructor(
     public projectService: ProjectService,
     public sprintService: SprintService,
@@ -121,6 +123,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
+          this.isShow = true;
           this.sprints = result.body.sort(
             (a, b) => (a.order ?? 0) - (b.order ?? 0),
           );
@@ -163,12 +166,10 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
     }
 
     const nextSprint = sprintsSort.length > 0 ? sprintsSort[0] : sprint;
-
     sprint.order = nextSprint.order ?? 0;
     nextSprint.order = currentSprintPosition;
 
     this.updateSprint(sprint);
-    this.updateSprint(nextSprint);
 
     this.sprints.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     this.notificationService.success('Priority updated');
@@ -209,8 +210,9 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
   }
 
   updateHeader(): void {
-    this.getCurrentEntityService.getCurrentOrganizationService
-            .currentOrganizationId = this.currentProject.organizationId;
-    this.getCurrentEntityService.getCurrentProjectService.currentProjectId = this.currentProjectId;
+    this.getCurrentEntityService.getCurrentOrganizationService.currentOrganizationId =
+      this.currentProject.organizationId;
+    this.getCurrentEntityService.getCurrentProjectService.currentProjectId =
+      this.currentProjectId;
   }
 }
