@@ -124,9 +124,9 @@ namespace Tasque.Core.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateSprint([FromBody] NewSprintDto model)
+        public override async Task<IActionResult> Create([FromBody] NewSprintDto model)
         {
-            var sprint = await _service.CreateSprint(model);
+            var sprint = await _service.Create(model);
             if(sprint == null)
                 return BadRequest();
             return Ok(sprint);

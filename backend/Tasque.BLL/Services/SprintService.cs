@@ -39,13 +39,13 @@ namespace Tasque.Core.BLL.Services
                 Name = sprintDto.Name,
                 ProjectId = sprintDto.ProjectId,
                 CreatedAt =  DateTime.UtcNow,
-            };
-            newSprint.Order = _db.Sprints.Max(x => x.Order) + 1;
+                Order = _db.Sprints.Max(x => x.Order) + 1,
+        };
 
-            var sprint = _db.Sprints.Add(newSprint).Entity;
+            await _db.Sprints.AddAsync(newSprint);
             await _db.SaveChangesAsync();
 
-            return _mapper.Map<SprintDto>(sprint);
+            return _mapper.Map<SprintDto>(newSprint);
         }
 
         public async Task<IEnumerable<SprintDto>> GetProjectSprints(int projectId)
@@ -146,12 +146,64 @@ namespace Tasque.Core.BLL.Services
             return _mapper.Map<SprintDto>(entity);
         }
 
-        public  async Task<SprintDto> UpdateOrder(SprintDto dto)
+        public async Task<SprintDto> UpdateOrder(SprintDto dto)
         {
             var entity = await _db.Sprints.FirstOrDefaultAsync(s => s.Id == dto.Id)
                 ?? throw new ValidationException("Sprint not found");
 
-            entity.Order = dto.Order;
+            var sprints = await _db.Sprints
+                .Where(s => !s.IsComplete && s.ProjectId == dto.ProjectId)
+                .OrderBy(s => s.Order)
+                .ToListAsync();
+
+            if (dto.Order < entity.Order)
+            {
+                //sprint up
+                int firstSprintOrder = 0;
+                var firstSprint = sprints
+                    .LastOrDefault(s => s.Order < entity.Order);
+
+                if (firstSprint != null)
+                {
+                    if(firstSprint.StartAt !=null)
+                        throw new HttpException(System.Net.HttpStatusCode.Forbidden, "Complete the pre-sprint first!");
+
+
+                    firstSprintOrder = firstSprint.Order;
+                    firstSprint.Order = entity.Order;
+
+                    _db.Sprints.Update(firstSprint);
+                }
+                else
+                {
+                    firstSprintOrder = _db.Sprints.Max(x => x.Order) - 1;
+                }
+
+                entity.Order = firstSprintOrder;
+
+            }
+            else if (dto.Order > entity.Order)
+            {
+                //sprint down
+                int lastSprintOrder = 0;
+                var lastSprint = sprints
+                   .FirstOrDefault(s => s.Order > entity.Order);
+
+                if (lastSprint != null)
+                {
+                    lastSprintOrder = lastSprint.Order;
+                    lastSprint.Order = entity.Order;
+
+                    _db.Sprints.Update(lastSprint);
+                }
+                else
+                {
+                    lastSprintOrder = _db.Sprints.Max(x => x.Order) + 1;
+                }
+
+                entity.Order = lastSprintOrder;
+            }
+
 
             _db.Sprints.Update(entity);
             await _db.SaveChangesAsync();
@@ -257,14 +309,5 @@ namespace Tasque.Core.BLL.Services
             return dto;
         }
 
-        public async Task<SprintDto> CreateSprint(NewSprintDto model)
-        {
-            var entity = _mapper.Map<Sprint>(model);
-
-            await  _db.Sprints.AddAsync(entity);
-            await _db.SaveChangesAsync();
-
-            return _mapper.Map<SprintDto>(entity);
-        }
     }
 }
