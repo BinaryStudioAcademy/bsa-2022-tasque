@@ -1,5 +1,5 @@
 export enum TaskPriorityType {
-    Heghest,
+    Highest,
     High,
     Medium,
     Low,

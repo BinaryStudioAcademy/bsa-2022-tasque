@@ -14,6 +14,7 @@ import { BoardModel } from '../models/board/board-model';
 import { TaskState } from '../models/task/task-state';
 import { TaskModel } from '../models/task/task-model';
 import { ProjectCardModel } from '../models/your-work/project-card-model';
+import { TaskType } from '../models/task/task-type';
 
 @Injectable({
   providedIn: 'root'
@@ -92,5 +93,17 @@ export class ProjectService {
 
   getProjectCards(): Observable<HttpResponse<ProjectCardModel[]>> {
     return this.httpService.getFullRequest(this.routePrefixParticipants + '/getProjectCards');
+  }
+
+  updateProjectTaskPriorities(projectId: number, taskPriorities: TaskPriority[]): Observable<HttpResponse<TaskPriority[]>> {
+    return this.httpService.putFullRequest(this.routePrefix + `/taskPriorities/${projectId}`, taskPriorities);
+  }
+
+  updateProjectTaskStates(projectId: number, taskStates: TaskState[]): Observable<HttpResponse<TaskState[]>> {
+    return this.httpService.putFullRequest(this.routePrefix + `/taskStates/${projectId}`, taskStates);
+  }
+
+  updateProjectTaskTypes(projectId: number, taskTypes: TaskType[]): Observable<HttpResponse<TaskType[]>> {
+    return this.httpService.putFullRequest(this.routePrefix + `/taskTypes/${projectId}`, taskTypes);
   }
 }
