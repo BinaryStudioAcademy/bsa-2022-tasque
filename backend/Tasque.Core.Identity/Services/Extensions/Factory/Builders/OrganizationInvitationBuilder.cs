@@ -42,7 +42,7 @@ namespace Tasque.Core.Identity.Services.Extensions.Factory.Builders
             {
                 { "appLink", host },
                 { "logoLink", logo },
-                { "email", token.InvitedUserEmail },
+                { "email", token.InvitedUserEmail ?? string.Empty },
                 { "link", $"{link}?key={key}" },
                 { "organizationName", organization.Name }
             };

@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { Subject } from 'rxjs';
-import { filter, map, mergeMap, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/core/services/auth.service';
 import { LocalStorageKeys } from 'src/core/models/local-storage-keys';
 import { UserLoginModel } from 'src/core/models/user/user-login-model';

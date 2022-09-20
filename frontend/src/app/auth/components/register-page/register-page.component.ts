@@ -146,7 +146,7 @@ export class RegisterPageComponent implements OnInit {
       );
   }
 
-  checkInvitationLink(ref: string): Observable<HttpResponse<{email: string}>> {
+  checkInvitationLink(ref: string): Observable<HttpResponse<{ email: string }>> {
     const currentUrl = this.router.url.split('/');
     if(currentUrl.includes('invite')) {
       this.isInvitedToOrganization = true;

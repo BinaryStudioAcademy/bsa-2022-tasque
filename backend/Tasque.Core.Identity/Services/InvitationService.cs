@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Enums;
 using Tasque.Core.DAL;
@@ -47,16 +48,22 @@ namespace Tasque.Core.Identity.Services
             return token;
         }
 
-        public async Task CreateUserModel(int userId, InvitationToken token)
+        public async Task AddUserToOrganizationModel(User user, InvitationToken token)
         {
             var userRole = new UserOrganizationRole()
             {
-                UserId = userId,
+                UserId = user.Id,
                 OrganizationId = token.EntityId,
                 Role = UserOrganizationRoles.OrganizationMember,
             };
 
             _dbContext.UserOrganizationRoles.Add(userRole);
+
+            var organization = await _dbContext.Organizations.FirstOrDefaultAsync(o => o.Id == token.EntityId);
+            if (organization == null)
+                throw new CustomNotFoundException("organization");
+            organization.Users.Add(user);
+
             await _dbContext.SaveChangesAsync();
         }
     }

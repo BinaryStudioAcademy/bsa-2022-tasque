@@ -67,7 +67,7 @@ namespace Tasque.Core.Identity.Services
                 if (invitationToken.InvitedUserEmail != loginInfo.Email)
                     throw new ValidationException("Invalid token");
 
-                await _invitationExtension.CreateUserModel(userEntity.Id, invitationToken);
+                await _invitationExtension.AddUserToOrganizationModel(userEntity, invitationToken);
             }
 
             return _mapper.Map<UserDto>(userEntity);
@@ -141,7 +141,7 @@ namespace Tasque.Core.Identity.Services
             await _context.SaveChangesAsync();
 
             if (invitationToken != null)
-                await _invitationExtension.CreateUserModel(userEntity.Id, invitationToken);
+                await _invitationExtension.AddUserToOrganizationModel(userEntity, invitationToken);
 
             return res;
         }

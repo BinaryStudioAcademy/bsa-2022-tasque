@@ -32,9 +32,8 @@ export class TasqueCardComponent implements OnInit {
   public get taskInfoStyle(): string {
     if(this.taskInfo.estimate) {
       return 'space-between';
-    } else {
-      return 'flex-end';
-    }
+    } 
+    return 'flex-end';
   }
 
   public editIcon = faPen;
