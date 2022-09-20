@@ -107,7 +107,6 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public isShow = false;
 
   ngOnInit(): void {
-    console.log(this.task);
     this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user;
     });
