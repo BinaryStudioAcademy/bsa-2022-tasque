@@ -94,13 +94,17 @@ export class SprintComponent implements OnInit, OnChanges {
     if (this.currentUser === undefined) {
       this.role = 0;
     } else {
-      this.role = this.currentUser?.organizationRoles?.find(
+      this.role =
+        (this.currentUser?.organizationRoles?.find(
           (m) =>
             m.organizationId === this.currentProject.organizationId &&
             m.userId === this.currentUser.id,
-        )?.role as UserRole ?? 0;
+        )?.role as UserRole) ?? 0;
 
-      if (UserRole.projectAdmin <= this.role || this.currentProject.authorId === this.currentUser.id) {
+      if (
+        UserRole.projectAdmin <= this.role ||
+        this.currentProject.authorId === this.currentUser.id
+      ) {
         this.isCurrentUserAdmin = true;
       }
     }
@@ -190,7 +194,7 @@ export class SprintComponent implements OnInit, OnChanges {
         event.currentIndex,
       );
 
-      if(this.currentSprint.id) {
+      if (this.currentSprint.id) {
         _task.sprintId = this.currentSprint.id;
       } else {
         _task.sprintId = undefined;

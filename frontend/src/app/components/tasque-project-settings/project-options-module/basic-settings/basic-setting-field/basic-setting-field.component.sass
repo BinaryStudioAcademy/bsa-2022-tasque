@@ -7,43 +7,26 @@
   align-items: center
   gap: 5px
 
-.edit-setting
+.add-setting
+  width: 400px
   display: flex
   flex-direction: row
-  justify-content: center
-  .color-input
-    width: 25px
-    height: 25px
-    tasque-button ::ng-deep
-      button
-        color: colorscheme(gray-500)
-        .ng-fa-icon
-          vertical-align: sub 
-  .apply-icon
-    margin-left: 5px
+  margin-bottom: 10px
+  .add-setting-actions
+    display: flex
+    margin-left: auto
+    gap: 10px
 
-.ml-10
-  margin-left: 10px
-
-.setting-color
-  height: 25px
-  width: 25px
-  margin-right: 10px
-
-.setting-data
-  display: flex
-  flex-direction: row
+.edit-input ::ng-deep
+  .text-input
+    width: 250px
 
 .settings-container
   display: flex
   flex-direction: column
   width: 400px
   gap: 10px
-
-.setting
-  display: flex
-  justify-content: space-between
-  flex-direction: row
+  margin-bottom: 5px
 
 .create-setting
   display: flex
@@ -53,11 +36,6 @@
   display: flex
   flex-direction: row
   gap: 15px
-
-.setting-actions
-  display: flex
-  flex-direction: row
-  gap: 10px
 
 .empty-settings-warning
   text-align: center

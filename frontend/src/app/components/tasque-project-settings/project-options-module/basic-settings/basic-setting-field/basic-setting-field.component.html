@@ -1,41 +1,41 @@
 <div class="container">
   <div class="settings-container">
     <div class="setting" *ngFor="let setting of settingsShow">
-      <div class="setting-data">
-        <div class="setting-color" [style.background-color]="setting.color"></div>
-        <span>{{ setting.name }}</span>
-      </div>
-      <div class="setting-actions ml-10">
-        <tasque-button (btnClick)="editSetting(setting)" [icon]="editIcon" class="btn icon"></tasque-button>
-        <tasque-button
-          (btnClick)="deleteSetting(setting)"
-          [icon]="removeIcon"
-          class="btn icon"
-        ></tasque-button>
-      </div>
+      <app-basic-setting
+        [projectSetting]="setting"
+        (settingChanged)="isUpdated = true"
+        (settingDeleted)="deleteSetting($event)"
+      ></app-basic-setting>
     </div>
     <div class="empty-settings-warning" *ngIf="settingsShow?.length === 0">
       <p>No settings</p>
     </div>
   </div>
 
-  <div *ngIf="isChanging" class="edit-setting">
+  <div *ngIf="isAdding" class="add-setting">
     <tasque-input [formControl]="formColorControl" class="edit-input" type="color"></tasque-input>
     <tasque-input
       [formControl]="formNameControl"
       (keydown.enter)="saveSetting()"
-      class="edit-input"
+      class="edit-input text-input"
       placeholder="Write name"
       type="text"
     ></tasque-input>
-    <tasque-button class="btn icon apply-icon" [icon]="applyIcon" (btnClick)="saveSetting()"></tasque-button>
+    <div class="add-setting-actions">
+      <tasque-button class="btn icon" [icon]="resetIcon" (btnClick)="clearSetting()"></tasque-button>
+      <tasque-button class="btn icon" [icon]="applyIcon" (btnClick)="saveSetting()"></tasque-button>
+      <tasque-button class="btn icon" [icon]="removeIcon" (btnClick)="removeSetting()"></tasque-button>
+    </div>
   </div>
 
-  <div class="create-setting">
-    <tasque-button class="btn icon ml-10" [icon]="addIcon" (btnClick)="addSetting()"></tasque-button>
-  </div>
+  <tasque-button
+    *ngIf="!isAdding"
+    class="btn icon create-setting"
+    [icon]="addIcon"
+    (btnClick)="addSetting()"
+  ></tasque-button>
 
-  <div class="actions ml-10">
+  <div class="actions">
     <tasque-button
       class="btn stroke gray fixed-height"
       text="Cancel"
