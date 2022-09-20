@@ -16,19 +16,29 @@ export class AvatarComponent implements OnInit {
   @Input()
   user!: UserModel;
 
+  @Input() isShowMatTooltip = true;
+
   userAvatar: string | undefined;
   fontSize: number;
 
-  colors = ['#D47500', '#00AA55', '#E3BC01', '#009FD4', '#B281B3', '#D47500', '#DC2929'];
+  colors = [
+    '#D47500',
+    '#00AA55',
+    '#E3BC01',
+    '#009FD4',
+    '#B281B3',
+    '#D47500',
+    '#DC2929',
+  ];
   public background: string;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
     this.fontSize = this.diameter_px / 2;
-    
+
     this.userAvatar = this.user.avatarURL;
-    
+
     this.background = this.colors[this.user.id % this.colors.length];
   }
 
