@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { faCheck, faMinus, faPencil, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faMinus, faPlus, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { takeUntil } from 'rxjs/operators';
 import { BaseComponent } from 'src/core/base/base.component';
 import { ProjectModel } from 'src/core/models/project/project-model';
@@ -35,19 +35,19 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
   public settingsShow: TaskType[] | TaskState[] | TaskPriority[];
 
   applyIcon = faCheck;
-  removeIcon = faMinus;
   addIcon = faPlus;
-  editIcon = faPencil;
+  removeIcon = faMinus;
+  resetIcon = faRotateLeft;
 
   defaultSettings: TaskType[] | TaskState[] | TaskPriority[];
   formNameControl: FormControl;
   formColorControl: FormControl;
 
-  isChanging = false;
+  isAdding = false;
   isUpdated = false;
 
   constructor(
-    private notificatinService: NotificationService,
+    private notificationService: NotificationService,
     private projectService: ProjectService
   ) {
     super();
@@ -77,23 +77,21 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
     return 'Unexpected error. Try again.';
   }
 
-  public deleteSetting(setting: TaskType | TaskState | TaskPriority): void {
-    for (let index = 0; index < this.settingsShow.length; index++) {
-      if (this.settingsShow[index] === setting) {
-        this.settingsShow.splice(index, 1);
-        this.isUpdated = true;
-        return;
-      }
-    }
-  }
+  public deleteSetting($event: number): void {
+    const id = $event;
+    const index = this.settingsShow.findIndex((setting) => setting.id === id);
 
-  public editSetting(_setting: TaskType | TaskState | TaskPriority): void {
-    throw new Error('Method not implemented.');
+    if (index === -1) {
+      return;
+    }
+
+    this.settingsShow.splice(index, 1);
+    this.isUpdated = true;
   }
 
   public saveSetting(): void {
     if (!this.formNameControl.valid || !this.formColorControl.valid) {
-      this.notificatinService.error(this.errorMessage);
+      this.notificationService.error(this.errorMessage);
       return;
     }
 
@@ -103,7 +101,7 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
       color: this.formColorControl.value,
       projectId: this.project.id,
     });
-    this.isChanging = false;
+    this.isAdding = false;
 
     this.formColorControl.setValue('');
     this.formNameControl.setValue('');
@@ -111,17 +109,30 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
   }
 
   public addSetting(): void {
-    this.isChanging = !this.isChanging;
+    this.isAdding = !this.isAdding;
+  }
+
+  public clearSetting(): void {
+    this.formColorControl.setValue('');
+    this.formNameControl.setValue('');
+  }
+
+  public removeSetting(): void {
+    this.isAdding = false;
+    this.clearSetting();
   }
 
   public cancelEdit(): void {
     this.settingsShow = Array.from(this.defaultSettings);
     this.isUpdated = false;
+    this.isAdding = false;
+    this.formColorControl.setValue('');
+    this.formNameControl.setValue('');
   }
 
   public saveEdit(): void {
     if (!this.isUpdated) {
-      this.notificatinService.info('There are no changes. Update values');
+      this.notificationService.info('There are no changes. Update values');
       return;
     }
 
@@ -135,7 +146,7 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
             }
             this.settingsShow = Array.from(resp.body);
             this.defaultSettings = Array.from(resp.body);
-            this.notificatinService.success('Task Priorities were successfully updated');
+            this.notificationService.success('Task Priorities were successfully updated');
             this.isUpdated = false;
           });
         return;
@@ -148,7 +159,7 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
             }
             this.settingsShow = Array.from(resp.body);
             this.defaultSettings = Array.from(resp.body);
-            this.notificatinService.success('Task States were successfully updated');
+            this.notificationService.success('Task States were successfully updated');
             this.isUpdated = false;
           });
         return;
@@ -161,7 +172,7 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
             }
             this.settingsShow = Array.from(resp.body);
             this.defaultSettings = Array.from(resp.body);
-            this.notificatinService.success('Task Types were successfully updated');
+            this.notificationService.success('Task Types were successfully updated');
             this.isUpdated = false;
           });
         return;
