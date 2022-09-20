@@ -11,7 +11,6 @@ import { TaskInfoModel } from 'src/core/models/board/task-Info-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { NotificationService } from 'src/core/services/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { Observable, Subject } from 'rxjs';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
@@ -23,6 +22,8 @@ import { TaskState } from 'src/core/models/task/task-state';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import { take } from 'rxjs/operators';
+import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
+import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
 
 @Component({
   selector: 'tasque-board',
@@ -65,16 +66,23 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private boardService: ScopeBoardService,
     private notificationService: NotificationService,
-    private currentUserService: GetCurrentUserService,
+    private getCurrentEntityService: ScopeGetCurrentEntityService,
     private taskStorageService: TaskStorageService,
     private router: Router,
   ) {
-    this.currentUserService.currentUser$.subscribe((res) => {
+    this.getCurrentEntityService.getCurrentUserService.currentUser$.subscribe((res) => {
       this.user = res as UserModel;
     });
 
     this.createColumnForm = formBuilder.group({
-      'columnName': ['', [Validators.required]],
+      'columnName': ['',
+        [
+          Validators.required,
+          Validators.minLength(ValidationConstants.minLengthName),
+          Validators.maxLength(ValidationConstants.maxLengthName),
+          Validators.pattern(/[a-zA-Z0-9]/)
+        ]
+      ],
     });
   }
 
@@ -98,6 +106,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           if (resp.ok) {
             this.project = resp.body as ProjectModel;
             this.projectUsers = this.project.users;
+            this.updateHeader();
             this.setColumns();
           } else {
             this.notificationService.error('Something went wrong');
@@ -323,5 +332,11 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       replaceUrl: true,
     });
     this.urlChanged.emit();
+  }
+
+  updateHeader(): void {
+    this.getCurrentEntityService.getCurrentOrganizationService
+      .currentOrganizationId = this.project.organizationId;
+    this.getCurrentEntityService.getCurrentProjectService.currentProjectId = this.project.id;
   }
 }
