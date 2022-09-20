@@ -6,6 +6,7 @@ import { RegisterPageComponent } from './components/register-page/register-page.
 import { AuthPageComponent } from './components/auth-page/auth-page.component';
 import { RestorePageComponent } from './components/restore-page/restore-page.component';
 import { ConfirmEmailPageComponent } from './components/confirm-email-page/confirm-email-page.component';
+import { ProtectedComponent } from './components/protected/protected.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { ConfirmEmailPageComponent } from './components/confirm-email-page/confi
     AuthPageComponent,
     RestorePageComponent,
     ConfirmEmailPageComponent,
+    ProtectedComponent,
   ],
   imports: [CommonModule, SharedModule],
 })

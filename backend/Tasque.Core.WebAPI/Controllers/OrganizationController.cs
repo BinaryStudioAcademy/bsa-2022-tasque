@@ -4,7 +4,6 @@ using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.DTO.Organization;
 using Tasque.Core.Common.DTO.User;
-using Tasque.Core.Common.Models.InvitationModels;
 using Tasque.Core.Identity.Services;
 
 namespace Tasque.Core.WebAPI.Controllers
@@ -72,7 +71,7 @@ namespace Tasque.Core.WebAPI.Controllers
         }
 
         [HttpPost("invite/{organizationId}")]
-        public async Task<IActionResult> InviteUserToOrganization(int organizationId, [FromBody] InvitationModel userEmail)
+        public async Task<IActionResult> InviteUserToOrganization(int organizationId, [FromBody] EmailDto userEmail)
         {
             var isSucced = await _invitationService.InviteUserToOrganization(organizationId, userEmail.Email ?? string.Empty);
             if(!isSucced)
@@ -80,6 +79,7 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpPut("invite/confirm/{key}")]
         public async Task<IActionResult> ConfirmInvitation(Guid key)
         {

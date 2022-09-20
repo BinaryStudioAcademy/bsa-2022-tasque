@@ -58,11 +58,9 @@ namespace Tasque.Core.Identity.Services
             if (!SecurityHelper.ValidatePassword(loginInfo.Password, userEntity.Password, userEntity.Salt))
                 throw new ValidationException("Invalid password");
 
-            InvitationToken? invitationToken = null;
-
             if (loginInfo.IsInvitedToOrganization && loginInfo.Key.HasValue)
             {
-                invitationToken = await _invitationExtension.ConfirmInvitationToken(loginInfo.Key!.Value);
+                var invitationToken = await _invitationExtension.ConfirmInvitationToken(loginInfo.Key!.Value);
 
                 if (invitationToken.InvitedUserEmail != loginInfo.Email)
                     throw new ValidationException("Invalid token");
