@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faCircleArrowLeft, faPlus, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { WikiPageInfo } from 'src/core/models/wiki/wiki-page-info';
+import { GetCurrentWikiService } from 'src/core/services/get-current-wiki.service';
 import { WikiService } from 'src/core/services/wiki.service';
 
 @Component({
@@ -22,7 +23,8 @@ export class WikiLeftSidebarComponent implements OnInit {
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private wikiService: WikiService
+    private wikiService: WikiService,
+    private currentWiki: GetCurrentWikiService
   ) { }
 
   ngOnInit() {
@@ -32,6 +34,7 @@ export class WikiLeftSidebarComponent implements OnInit {
       if(data.body) {
         this.pageList = data.body;
         this.router.navigate([`project/${this.currentProjectId}/wiki/${this.pageList[0].name}`]);
+        this.currentWiki.setWiki(this.pageList[0]);
       }
     });
   }

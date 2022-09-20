@@ -1,1 +1,50 @@
 @import 'src/colors.sass'
+
+.container
+    margin: 68px 20px
+
+.page-header
+    margin-left: 30px
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+.buttons
+    display: flex
+    align-items: center
+    & *
+        margin-right: 10px
+
+.text
+    margin: 20px 100px 10px 30px
+
+.pageName-wrapper
+  display: flex
+  align-items: center
+  padding: 5px
+  border-radius: 10px
+  border: 2px solid colorscheme(white-100)
+  .icon
+    vertical-align: middle
+    border-radius: 50%
+  &:hover
+    background: colorscheme(gray-300)
+    border: 2px solid colorscheme(violet-200)
+    .icon
+      display: none
+  &:focus
+      outline: 0px solid transparent
+  tasque-button
+    ::ng-deep
+      button
+        color: colorscheme(gray-500)
+        .ng-fa-icon
+          vertical-align: sub
+
+.pageName
+  background: none
+  font-weight: 700
+  font-size: 27px
+  line-height: 114.88%
+  outline: 0px solid transparent
+  opacity: .88

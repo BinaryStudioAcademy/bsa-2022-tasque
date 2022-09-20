@@ -1,3 +1,19 @@
-<p>
-  wiki-page works!
-</p>
+<div [formGroup]="pageForm" class="container">
+  <div>
+    <span>Url text</span>
+  </div>
+  <div class="page-header">
+    <div class="pageName-wrapper">
+      <div class="pageName" [textContent]="pageName" (input)="pageName = titleContent($event)" contenteditable="true" [formControl]="pageNameControl" ngDefaultControl></div>
+      <tasque-button class="btn icon" [icon]="editIcon"></tasque-button>
+    </div>
+    <div class="buttons">
+      <tasque-button type="submit" class="btn stroke violet-stroke" text="Edit" (click)="edit()"> </tasque-button>
+      <tasque-button type="submit" class="btn stroke violet-stroke" text="Cancel" (click)="cancel()"> </tasque-button>
+      <tasque-button type="submit" class="btn stroke violet-stroke" text="Save" (click)="save()"> </tasque-button>
+    </div>
+  </div>
+  <div class="text">
+    <div [formControl]="pageTextControl" ngDefaultControl>{{pageText}}</div>
+  </div>
+</div>
