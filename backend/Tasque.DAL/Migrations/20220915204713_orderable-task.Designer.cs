@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Tasque.Core.DAL;
@@ -11,9 +12,10 @@ using Tasque.Core.DAL;
 namespace Tasque.Core.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220915204713_orderable-task")]
+    partial class orderabletask
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -300,6 +302,34 @@ namespace Tasque.Core.DAL.Migrations
                     b.ToTable("Meetings");
                 });
 
+            modelBuilder.Entity("Tasque.Core.Common.Entities.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("Tasque.Core.Common.Entities.Organization", b =>
                 {
                     b.Property<int>("Id")
@@ -564,6 +594,9 @@ namespace Tasque.Core.DAL.Migrations
                     b.Property<int>("ProjectId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -647,10 +680,6 @@ namespace Tasque.Core.DAL.Migrations
                     b.Property<string>("AvatarURL")
                         .HasColumnType("text");
 
-                    b.Property<string>("ConnectionId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -660,9 +689,6 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.Property<bool>("IsEmailConfirmed")
                         .HasColumnType("boolean");
-
-                    b.Property<int?>("LastOrganizationId")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -683,8 +709,6 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("Email")
                         .IsUnique();
-
-                    b.HasIndex("LastOrganizationId");
 
                     b.ToTable("Users");
                 });
@@ -848,7 +872,7 @@ namespace Tasque.Core.DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("Tasque.Core.Common.Entities.Task", "Task")
-                        .WithMany("Comments")
+                        .WithMany()
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -889,6 +913,17 @@ namespace Tasque.Core.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Calendar");
+                });
+
+            modelBuilder.Entity("Tasque.Core.Common.Entities.Notification", b =>
+                {
+                    b.HasOne("Tasque.Core.Common.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Organization", b =>
@@ -1028,15 +1063,6 @@ namespace Tasque.Core.DAL.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("Tasque.Core.Common.Entities.User", b =>
-                {
-                    b.HasOne("Tasque.Core.Common.Entities.Organization", "LastOrganization")
-                        .WithMany()
-                        .HasForeignKey("LastOrganizationId");
-
-                    b.Navigation("LastOrganization");
-                });
-
             modelBuilder.Entity("Tasque.Core.Common.Entities.UserOrganizationRole", b =>
                 {
                     b.HasOne("Tasque.Core.Common.Entities.Organization", "Organization")
@@ -1111,11 +1137,6 @@ namespace Tasque.Core.DAL.Migrations
             modelBuilder.Entity("Tasque.Core.Common.Entities.Sprint", b =>
                 {
                     b.Navigation("Tasks");
-                });
-
-            modelBuilder.Entity("Tasque.Core.Common.Entities.Task", b =>
-                {
-                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.TaskPriority", b =>
