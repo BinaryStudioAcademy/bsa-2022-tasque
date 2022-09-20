@@ -20,6 +20,7 @@
           <div class="input-wrapper">
             <label class="label">Project</label>
             <tasque-dropdown
+              [placeholder]="currentProject ? currentProject.name : ''"
               [options]="projects"
               [formControl]="projectControl"
               [errorMessage]="projectErrorMessage"
@@ -60,6 +61,7 @@
           <div class="input-wrapper">
             <label class="label">Title</label>
             <tasque-input
+              class="input title"
               [formControl]="summaryControl"
               [errorMessage]="summaryErrorMessage"
               [invalid]="showError"

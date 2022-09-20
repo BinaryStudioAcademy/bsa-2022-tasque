@@ -102,7 +102,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     if (ctrl.errors?.['minlength'] && (ctrl.touched || ctrl.dirty)) {
       return 'Summary must be at least 2 characters';
     }
-    if (ctrl.errors?.['maxlength'] && (ctrl.touched || ctrl.dirty)) {
+    if (ctrl.errors?.['maxlength'] && ctrl.touched) {
       return 'Summary must be less than 80 characters';
     }
     if (ctrl.errors?.['required'] && (ctrl.touched || ctrl.dirty)) {
