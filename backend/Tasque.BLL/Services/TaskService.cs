@@ -311,9 +311,13 @@ namespace Tasque.Core.BLL.Services
             }
         }
 
-        public Task<List<CommentInfoDTO>> GetCommentsByTaskId(int taskId)
+        public async Task<List<CommentInfoDTO>> GetCommentsByTaskId(int taskId)
         {
-            throw new NotImplementedException();
+            var comments = await _dbContext.Comments
+                .Include(c => c.Author)
+                .Where(c => c.TaskId == taskId)
+                .ToListAsync();
+            return _mapper.Map<List<CommentInfoDTO>>(comments);
         }
     }
 }
