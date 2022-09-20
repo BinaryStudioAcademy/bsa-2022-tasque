@@ -75,5 +75,19 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok(await _service.
                     GetUserByEmail(email));
         }
+
+        [HttpPost("lastOrganization")]
+        public async Task<IActionResult> SetLastOrgId(int userId, int orgId)
+        {
+            await _service.SetLastOrganization(userId, orgId);
+            return Ok();
+        }
+
+        [HttpGet("lastOrganization")]
+        public async Task<IActionResult> GetLastOrgId(int userId)
+        {
+            var orgId = await _service.GetLastOrganization(userId);
+            return Ok(orgId);
+        }
     }
 }
