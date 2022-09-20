@@ -122,7 +122,7 @@
               placeholder="Type name"
               formControlName="columnName"
               [invalid]="!createColumnForm.valid && createColumnForm.touched"
-              errorMessage="required"
+              errorMessage="Column name is incorrect"
               [icon]="plusIcon"
               iconPosition="right"
               (iconClick)="addColumn()"
