@@ -135,7 +135,7 @@
         <tasque-button type="submit" class="btn fill" text="Update" (click)="submitForm()"> </tasque-button>
       </div>
     </div>
-    <tasque-comments></tasque-comments>
+    <tasque-comments [taskId]="task.id"></tasque-comments>
   </form>
   
 </tasque-sidebar>

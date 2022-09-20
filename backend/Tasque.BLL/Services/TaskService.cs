@@ -316,6 +316,7 @@ namespace Tasque.Core.BLL.Services
             var comments = await _dbContext.Comments
                 .Include(c => c.Author)
                 .Where(c => c.TaskId == taskId)
+                .OrderByDescending(c => c.CreatedAt)
                 .ToListAsync();
             return _mapper.Map<List<CommentInfoDTO>>(comments);
         }
