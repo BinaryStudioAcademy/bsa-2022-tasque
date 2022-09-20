@@ -8,24 +8,23 @@ using Tasque.Core.Common.DTO.Task;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Enums;
+using Tasque.Core.Common.Models.Events;
 using Tasque.Core.Common.StaticResources;
 using Tasque.Core.DAL;
-using Tasque.Core.Common.Models.Events;
-using Tasque.Messaging.Abstractions;
 using Tasque.Core.Identity.Helpers;
+using Tasque.Messaging.Abstractions;
 using Task = System.Threading.Tasks.Task;
-using Tasque.Messaging;
 
 namespace Tasque.Core.BLL.Services;
 
 public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, EditProjectDto, int, Project>
 {
-	private readonly IEventBus _bus;
-	
-    public ProjectService(DataContext db, IMapper mapper, CurrentUserParameters currentUser, IEventBus bus) 
+    private readonly IEventBus _bus;
+
+    public ProjectService(DataContext db, IMapper mapper, CurrentUserParameters currentUser, IEventBus bus)
         : base(db, mapper, currentUser)
     {
-		_bus = bus;
+        _bus = bus;
     }
 
     public List<ProjectDto> GetProjectsByOrganizationId(int organizationId)
@@ -97,35 +96,30 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
         {
             new()
             {
-                Type = BasicTaskPriorityTypes.Highest,
                 Name = BasicTaskPriorityTypes.Highest.ToString(),
                 Color = TaskColors.Highest,
                 ProjectId = project.Id,
             },
             new()
             {
-                Type = BasicTaskPriorityTypes.High,
                 Name = BasicTaskPriorityTypes.High.ToString(),
                 Color = TaskColors.High,
                 ProjectId = project.Id,
             },
             new()
             {
-                Type = BasicTaskPriorityTypes.Medium,
                 Name = BasicTaskPriorityTypes.Medium.ToString(),
                 Color = TaskColors.Medium,
                 ProjectId = project.Id,
             },
             new()
             {
-                Type = BasicTaskPriorityTypes.Low,
                 Name = BasicTaskPriorityTypes.Low.ToString(),
                 Color = TaskColors.Low,
                 ProjectId = project.Id,
             },
             new()
             {
-                Type = BasicTaskPriorityTypes.Lowest,
                 Name = BasicTaskPriorityTypes.Lowest.ToString(),
                 Color = TaskColors.Lowest,
                 ProjectId = project.Id,
@@ -208,6 +202,66 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
         return _mapper.Map<ProjectInfoDto>(project);
     }
 
+    public async Task<IEnumerable<TaskStateDto>> UpdateProjectTaskStates(int key, IEnumerable<TaskStateDto> taskStateDtos)
+    {
+        var project = await _db.Projects
+            .Where(proj => proj.Id == key)
+            .Include(proj => proj.ProjectTaskStates)
+            .FirstOrDefaultAsync();
+
+        if (project == null)
+            throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
+
+        var entitiesToDelete = project.ProjectTaskStates;
+        var taskStates = _mapper.Map<ICollection<TaskState>>(taskStateDtos);
+
+        _db.TaskStates.RemoveRange(entitiesToDelete);
+        _db.TaskStates.AddRange(taskStates);
+        _db.SaveChanges();
+
+        return _mapper.Map<IEnumerable<TaskStateDto>>(taskStates);
+    }
+
+    public async Task<IEnumerable<TaskTypeDto>> UpdateProjectTaskTypes(int key, IEnumerable<TaskTypeDto> taskTypeDtos)
+    {
+        var project = await _db.Projects
+            .Where(proj => proj.Id == key)
+            .Include(proj => proj.ProjectTaskTypes)
+            .FirstOrDefaultAsync();
+
+        if (project == null)
+            throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
+
+        var entitiesToDelete = project.ProjectTaskTypes;
+        var taskTypes = _mapper.Map<ICollection<TaskType>>(taskTypeDtos);
+
+        _db.TaskTypes.RemoveRange(entitiesToDelete);
+        _db.TaskTypes.AddRange(taskTypes);
+        _db.SaveChanges();
+
+        return _mapper.Map<IEnumerable<TaskTypeDto>>(taskTypes);
+    }
+
+    public async Task<IEnumerable<TaskPriorityDto>> UpdateProjectTaskPriorities(int key, IEnumerable<TaskPriorityDto> taskPriorityDtos)
+    {
+        var project = await _db.Projects
+            .Where(proj => proj.Id == key)
+            .Include(proj => proj.ProjectTaskPriorities)
+            .FirstOrDefaultAsync();
+
+        if (project == null)
+            throw new HttpException(System.Net.HttpStatusCode.NotFound, "The project with this id does not exist");
+
+        var entitiesToDelete = project.ProjectTaskPriorities;
+        var taskPriorities = _mapper.Map<ICollection<TaskPriority>>(taskPriorityDtos);
+
+        _db.TaskPriorities.RemoveRange(entitiesToDelete);
+        _db.TaskPriorities.AddRange(taskPriorities);
+        _db.SaveChanges();
+
+        return _mapper.Map<IEnumerable<TaskPriorityDto>>(taskPriorities);
+    }
+
     public async Task<List<ProjectInfoDto>> GetAllProjectsOfOrganization(int organizationId)
     {
         var projects = await _db.Projects
@@ -252,7 +306,7 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
         _db.Projects.Update(project);
 
         await _db.SaveChangesAsync();
-        
+
         UserInvitedEvent @event = new UserInvitedEvent
         {
             ProjectId = project.Id,

@@ -35,10 +35,8 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit, OnCha
   isTeam = false;
   isWiki = false;
   isSettings = false;
-  isColumnsAndStatuses = false;
-  isIssueTypes = false;
   isIssueTemplate = false;
-  isBasicIssueTemplate = false;
+  isBasicSettings = false;
 
   arrowRight = faChevronRight;
 
@@ -111,25 +109,11 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit, OnCha
     this.isIssueTemplate = true;
   }
 
-  navigateToBasicIssueTemplate(): void {
-    this.router.navigate(['project/' + this.projectId + '/settings/basic-issue-template']);
+  navigateToBasicSettings(): void {
+    this.router.navigate(['project/' + this.projectId + '/settings/basic-settings']);
     this.setAllStylesUndefined();
     this.isSettings = true;
-    this.isBasicIssueTemplate = true;
-  }
-
-  navigateToColumnsAndStatuses(): void {
-    this.router.navigate(['project/' + this.projectId + '/settings/columns-and-statuses']);
-    this.setAllStylesUndefined();
-    this.isSettings = true;
-    this.isColumnsAndStatuses = true;
-  }
-
-  navigateToIssueTypes(): void {
-    this.router.navigate(['project/' + this.projectId + '/settings/issue-types']);
-    this.setAllStylesUndefined();
-    this.isSettings = true;
-    this.isIssueTypes = true;
+    this.isBasicSettings = true;
   }
 
   navigateToBoard(): void {
@@ -178,21 +162,13 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit, OnCha
     if (currentUrl.includes('settings')) {
       this.showSettings = true;
       switch (currentUrl[currentUrl.length - 1]) {
-        case 'columns-and-statuses':
-          this.isSettings = true;
-          this.isColumnsAndStatuses = true;
-          return;
-        case 'issue-types':
-          this.isSettings = true;
-          this.isIssueTypes = true;
-          return;
         case 'issue-template':
           this.isSettings = true;
           this.isIssueTemplate = true;
           return;
         case 'basic-issue-template':
           this.isSettings = true;
-          this.isBasicIssueTemplate = true;
+          this.isBasicSettings = true;
           return;
       }
     }
@@ -219,9 +195,7 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit, OnCha
     this.isSettings = false;
     this.isTeam = false;
     this.isWiki = false;
-    this.isColumnsAndStatuses = false;
-    this.isIssueTypes = false;
     this.isIssueTemplate = false;
-    this.isBasicIssueTemplate = false;
+    this.isBasicSettings = false;
   }
 }

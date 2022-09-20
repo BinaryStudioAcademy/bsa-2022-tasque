@@ -6,9 +6,11 @@ $option-font-size: 14px
 $option-height: 35px
 $option-text-color: colorscheme(black-100)
 $label-text-color: colorscheme(white-100)
+$label-text-hover-color: colorscheme(gray-400)
 $options-max-height: 110px
 $options-width: max-content
 $options-translate: none
+$options-transform: none
 $button-gap: 5px
 $options-border: 2px solid colorscheme(gray-300)
 $options-border-radius: 10px
@@ -31,7 +33,7 @@ $dropdown-wrapper-position: relative
   align-items: center
   gap: var(--button-gap, $button-gap)
   &:hover
-    color: colorscheme(gray-400)
+    color: var(--label-text-hover-color, $label-text-hover-color)
 
 .dropdown-label
   font-size: var(--label-font-size, $label-font-size)
@@ -51,6 +53,7 @@ $dropdown-wrapper-position: relative
   top: 100%
   z-index: 1
   translate: var(--options-translate, $options-translate)
+  transform: var(--options-transform, $options-transform)
 
 .options
   max-height: var(--options-max-height, $options-max-height)
