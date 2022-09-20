@@ -53,7 +53,7 @@ export class HttpService {
     return this.http.put<T>(this.buildUrl(url), payload, { headers: this.getHeaders() });
   }
 
-  public putFullRequest<T>(url: string, payload: object): Observable<HttpResponse<T>> {
+  public putFullRequest<T>(url: string, payload?: object): Observable<HttpResponse<T>> {
     return this.http.put<T>(this.buildUrl(url), payload, { headers: this.getHeaders(), observe: 'response' });
   }
 

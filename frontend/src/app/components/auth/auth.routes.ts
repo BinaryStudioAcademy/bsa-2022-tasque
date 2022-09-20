@@ -19,7 +19,18 @@ export const AuthRoutes: Routes = [
         canActivate: [LoginGuard]
       },
       {
+        path: 'invite/true',
+        component: LoginPageComponent,
+        canActivate: [LoginGuard]
+      },
+      {
         path: 'register',
+        component: RegisterPageComponent,
+        canDeactivate: [RegisterGuard],
+        canActivate: [LoginGuard],
+      },
+      {
+        path: 'invite/false',
         component: RegisterPageComponent,
         canDeactivate: [RegisterGuard],
         canActivate: [LoginGuard],

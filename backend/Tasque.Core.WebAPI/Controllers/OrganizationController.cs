@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
+using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.DTO.Organization;
 using Tasque.Core.Common.DTO.User;
+using Tasque.Core.Common.Models.InvitationModels;
+using Tasque.Core.Identity.Services;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
@@ -12,10 +15,11 @@ namespace Tasque.Core.WebAPI.Controllers
     public class OrganizationController : EntityController
         <OrganizationCreateDto, OrganizationInfoDto, OrganizationCreateDto, int, OrganizationService>
     {
-        public OrganizationController(OrganizationService service)
+        private readonly InvitationService _invitationService;
+        public OrganizationController(OrganizationService service, InvitationService invitationService)
             : base(service)
         {
-            
+            _invitationService = invitationService;
         }
 
         [Route("getUserOrganizationsById/{id}")]
@@ -67,5 +71,23 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok();
         }
 
+        [HttpPost("invite/{organizationId}")]
+        public async Task<IActionResult> InviteUserToOrganization(int organizationId, [FromBody] InvitationModel userEmail)
+        {
+            var isSucced = await _invitationService.InviteUserToOrganization(organizationId, userEmail.Email ?? string.Empty);
+            if(!isSucced)
+                return BadRequest();
+            return Ok();
+        }
+
+        [HttpPut("invite/confirm/{key}")]
+        public async Task<IActionResult> ConfirmInvitation(Guid key)
+        {
+            var token = await _invitationService.ConfirmInvitationToken(key);
+
+            if (token == null || token.InvitedUserEmail == null)
+                return BadRequest("Expired token");
+            return Ok( new EmailDto() { Email = token.InvitedUserEmail });
+        }
     }
 }

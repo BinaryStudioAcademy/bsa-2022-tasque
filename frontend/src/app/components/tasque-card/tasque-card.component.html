@@ -34,7 +34,7 @@
         <span [style.background-color]="item?.color">{{ item.name }}</span>
       </div>
     </div>
-    <div class="task-info">
+    <div class="task-info" [style.justify-content]="taskInfoStyle">
       <div class="left-info" *ngIf="taskInfo.estimate">
         <span>{{ taskInfo.estimate }}</span>
       </div>

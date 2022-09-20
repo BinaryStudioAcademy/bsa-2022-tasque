@@ -8,9 +8,10 @@ import { InputComponent } from 'src/shared/components/tasque-input/input.compone
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { filter, map, mergeMap, switchMap, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { UserRegisterModel } from 'src/core/models/user/user-register-model';
 import { NotificationService } from 'src/core/services/notification.service';
+import { HttpResponse } from '@angular/common/http';
 import { matchValidator } from '../../match.validator';
 
 @Component({
@@ -23,6 +24,7 @@ export class RegisterPageComponent implements OnInit {
   public hidePass = true;
   public hidePassRepeat = true;
   public isInvite = false;
+  public isInvitedToOrganization = false;
 
   private key?: string;
 
@@ -138,7 +140,7 @@ export class RegisterPageComponent implements OnInit {
           this.key = params['key'] as string;
           return this.key;
         }),
-        mergeMap((ref) => this.authService.checkRefLink(ref)),
+        mergeMap((ref) => this.checkInvitationLink(ref)),
       )
       .subscribe(
         (resp) => {
@@ -154,6 +156,18 @@ export class RegisterPageComponent implements OnInit {
       );
   }
 
+  checkInvitationLink(ref: string): Observable<HttpResponse<{ email: string }>> {
+    const currentUrl = this.router.url.split('/');
+    if(currentUrl.includes('invite')) {
+      this.isInvitedToOrganization = true;
+    }
+
+    if(this.isInvitedToOrganization) {
+      return this.authService.checkInvitationLink(ref);
+    }
+    return this.authService.checkRefLink(ref);
+  }
+
   flipPassword(input: InputComponent): void {
     const show = input.type == 'password';
     input.type = show ? 'text' : 'password';
@@ -167,6 +181,7 @@ export class RegisterPageComponent implements OnInit {
         email: this.emailControl.value,
         password: this.passwordControl.value,
         key: this.key,
+        isInvitedToOrganization: this.isInvitedToOrganization,
       } as UserRegisterModel;
 
       if (!this.key) {

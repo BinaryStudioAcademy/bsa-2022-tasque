@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Net;
 using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Exeptions;
+using Tasque.Core.Identity.Exceptions;
 using Tasque.Core.Identity.Exeptions;
 
 namespace Tasque.Core.WebAPI.Middlewares
@@ -43,6 +44,9 @@ namespace Tasque.Core.WebAPI.Middlewares
                         break;
                     case DbUpdateException ex:
                         await HandleDbUpdateException(httpContext, ex);
+                        break;
+                    case InvalidTokenKindException ex:
+                        await HandleInvalidTokenKindException(httpContext, ex);
                         break;
                     default:
                         await HandleGenericException(httpContext, exception);
@@ -88,6 +92,13 @@ namespace Tasque.Core.WebAPI.Middlewares
                     ? ex.Errors.Aggregate("", (x, y) => x += $"{y.ErrorMessage}\n")
                     : ex.Message;
             await CreateExceptionAsync(context, HttpStatusCode.BadRequest, message);
+        }
+
+        private async Task HandleInvalidTokenKindException(HttpContext context, InvalidTokenKindException ex)
+        {
+            if (ex.InnerException != null)
+                _logger.LogError(ex.InnerException.Message);
+            await CreateExceptionAsync(context, HttpStatusCode.BadRequest, ex.Message);
         }
 
         private async Task HandleDbUpdateException(HttpContext context, DbUpdateException ex)
