@@ -24,7 +24,7 @@ export class RegisterPageComponent implements OnInit {
   public hidePass = true;
   public hidePassRepeat = true;
   public isInvite = false;
-  public isInvitedToOrganization = false;
+  public isInvitedToOrganization: boolean;
 
   private key?: string;
 
@@ -138,6 +138,10 @@ export class RegisterPageComponent implements OnInit {
         filter((params) => !!params['key']),
         map((params) => {
           this.key = params['key'] as string;
+          const invitation = params['invite'] as string;
+          if(invitation) {
+            this.isInvitedToOrganization = true;
+          }
           return this.key;
         }),
         mergeMap((ref) => this.checkInvitationLink(ref)),
@@ -157,11 +161,6 @@ export class RegisterPageComponent implements OnInit {
   }
 
   checkInvitationLink(ref: string): Observable<HttpResponse<{ email: string }>> {
-    const currentUrl = this.router.url.split('/');
-    if(currentUrl.includes('invite')) {
-      this.isInvitedToOrganization = true;
-    }
-
     if(this.isInvitedToOrganization) {
       return this.authService.checkInvitationLink(ref);
     }

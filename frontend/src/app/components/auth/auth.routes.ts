@@ -7,6 +7,7 @@ import { LoginPageComponent } from './components/login-page/login-page.component
 import { RegisterPageComponent } from './components/register-page/register-page.component';
 import { RestorePageComponent } from './components/restore-page/restore-page.component';
 import { LoginGuard } from './guards/login.guard';
+import { ProtectedComponent } from './components/protected/protected.component';
 
 export const AuthRoutes: Routes = [
   {
@@ -19,18 +20,12 @@ export const AuthRoutes: Routes = [
         canActivate: [LoginGuard]
       },
       {
-        path: 'invite/true',
-        component: LoginPageComponent,
-        canActivate: [LoginGuard]
-      },
-      {
-        path: 'register',
-        component: RegisterPageComponent,
-        canDeactivate: [RegisterGuard],
+        path: 'invite',
+        component: ProtectedComponent,
         canActivate: [LoginGuard],
       },
       {
-        path: 'invite/false',
+        path: 'register',
         component: RegisterPageComponent,
         canDeactivate: [RegisterGuard],
         canActivate: [LoginGuard],
