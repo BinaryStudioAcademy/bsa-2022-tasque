@@ -56,6 +56,10 @@ export class AuthService {
     return this.httpService.getFullRequest(this.routePrefix + `/ref?key=${ref}`);
   }
 
+  checkInvitationLink(ref: string): Observable<HttpResponse<{ email: string }>> {
+    return this.httpService.putFullRequest('/api/organization/' + ref);
+  }
+
   setAuthToken(token: AccessToken): void {
     localStorage.setItem(LocalStorageKeys.token, token.accessToken);
   }

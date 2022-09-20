@@ -80,19 +80,23 @@ export class EditSprintDialogComponent implements OnInit {
   }
 
   onSubmit(): void {
+    if(this.sprint.startAt === '') {
+      this.sprint.startAt = undefined;
+    }
+    
     this.sprintService.editSprint(this.sprint.id, this.sprint).subscribe(
       (resp) => {
         if (resp.ok && resp.body != null) {
           this.sprint.name = resp.body.name;
           this.isSave = true;
 
-          this.notificationService.success('Sprint was successfully changed');
+          this.notificationService.success(`Sprint ${this.sprint.name} was successfully changed`);
         } else {
           this.notificationService.error('Something went wrong');
         }
       },
       (error) => {
-        this.notificationService.error(error);
+        this.notificationService.error(error.error);
       },
     );
   }

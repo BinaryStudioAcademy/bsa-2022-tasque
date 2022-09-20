@@ -206,7 +206,7 @@ export class SprintComponent implements OnInit, OnChanges {
         .subscribe((result) => {
           if (result.body) {
             this.notificationService.success(
-              `Task ${_task.key} moved to sprint`,
+              `Task ${_task.key} moved to sprint ${this.currentSprint.name}`,
             );
           }
         });

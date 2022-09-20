@@ -21,6 +21,7 @@ import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
+import { take } from 'rxjs/operators';
 import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
 
@@ -131,7 +132,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
             customLabels: [],
             key: task.key as string,
             isHidden: false,
-          };
+          } as TaskInfoModel;
         }
       }
     });
@@ -157,7 +158,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   sortTasksByColumns(): void {
     this.columns.forEach((c) => {
 
-      const tasks = this.projectTasks.filter((t) => t.stateId === c.id);
+      const tasks = this.projectTasks.filter((t) => t.stateId === c.id).sort((x) => x.order);
       const taskInfo: TaskInfoModel[] = [];
 
       tasks.forEach((t) => {
@@ -167,7 +168,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           assignees: t.users,
           key: t.key as string,
           isHidden: false,
-        });
+        } as TaskInfoModel);
       });
       c.tasks = taskInfo;
     });
@@ -219,6 +220,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         event.previousIndex,
         event.currentIndex,
       );
+      this.orderTasks(event);
     } else {
       transferArrayItem(
         event.previousContainer.data,
@@ -228,6 +230,16 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       );
       this.updateTasks(event);
     }
+  }
+
+  orderTasks(event: CdkDragDrop<TaskInfoModel[]>): void {
+    const tasks = event.container.data.map((x) => x.id);
+    this.boardService.taskService
+      .setOrder(tasks)
+      .pipe(take(1))
+      .subscribe((resp) => {
+        event.container.data = resp.body as TaskInfoModel[];
+      });
   }
 
   updateColumns(): void {
@@ -309,15 +321,15 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   }
 
   moveToBackLog(): void {
-    this.router.navigateByUrl(`/project/${this.projectId}/backlog`, { 
+    this.router.navigateByUrl(`/project/${this.projectId}/backlog`, {
       replaceUrl: true,
     });
     this.urlChanged.emit();
   }
 
   moveToSettings(): void {
-    this.router.navigateByUrl(`/project/${this.projectId}/settings/issue-template`, { 
-      replaceUrl: true,      
+    this.router.navigateByUrl(`/project/${this.projectId}/settings/issue-template`, {
+      replaceUrl: true,
     });
     this.urlChanged.emit();
   }

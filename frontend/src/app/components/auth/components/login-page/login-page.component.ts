@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/core/services/auth.service';
 import { LocalStorageKeys } from 'src/core/models/local-storage-keys';
 import { UserLoginModel } from 'src/core/models/user/user-login-model';
@@ -36,6 +36,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   private validationConstants = ValidationConstants;
 
   private errMsg?: string;
+  public isInvitedToOrganization = false;
+  private key?: string;
 
   @ViewChild('passwordInput') passwordInput: InputComponent;
   @ViewChild('emailInput') emailInput: InputComponent;
@@ -87,6 +89,29 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     if (this.errMsg) {
       this.toastrService.error(this.errMsg, '', { positionClass: 'toast-top-right' });
     }
+    
+    this.route.queryParams
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        filter((params) => !!params['key']),
+        map((params) => {
+          this.key = params['key'] as string;
+          return this.key;
+        }),
+        mergeMap((ref) => this.authService.checkInvitationLink(ref)),
+      )
+      .subscribe(
+        (resp) => {
+          this.emailControl.setValue(resp.body?.email);
+          this.isInvitedToOrganization = true;
+        },
+        () => {
+          this.router.navigate([], {
+            replaceUrl: true,
+            relativeTo: this.route,
+          });
+        },
+      );
 
     this.loginForm = new FormGroup({
       emailControl: this.emailControl,
@@ -109,6 +134,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     this.userLogin = {
       email: this.loginForm.get('emailControl')?.value,
       password: this.loginForm.get('passwordControl')?.value,
+      isInvitedToOrganization: this.isInvitedToOrganization,
+      key: this.key,
     };
 
     this.authService

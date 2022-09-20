@@ -9,6 +9,7 @@
     (focusout)="showError(emailInput)"
     (input)="hideError(emailInput)"
     label="Email"
+    [readonly]="isInvitedToOrganization"
     placeholder="Enter your email"
     formControlName="emailControl"
   ></tasque-input>

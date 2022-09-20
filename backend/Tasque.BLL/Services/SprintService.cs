@@ -122,6 +122,11 @@ namespace Tasque.Core.BLL.Services
                 entity.StartAt = DateTime.SpecifyKind((DateTime)dto.StartAt, DateTimeKind.Utc);
             }
 
+            if(dto.StartAt.ToString() == string.Empty)
+            {
+                entity.StartAt = null;
+            }
+
             if (dto.EndAt != null)
             {
                 entity.EndAt = DateTime.SpecifyKind((DateTime)dto.EndAt, DateTimeKind.Utc);
