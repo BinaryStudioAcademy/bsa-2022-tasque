@@ -74,6 +74,7 @@
                   <tasque-card 
                     *ngIf="!task.isHidden" 
                     [taskInfo]="task" 
+                    [currentSprint]="currentSprint"
                     (isChanging)="toogleIsDraggable($event)">
                   </tasque-card>
                 </div>
@@ -83,6 +84,7 @@
                   <tasque-card 
                     *ngIf="!task.isHidden" 
                     [taskInfo]="task" 
+                    [currentSprint]="currentSprint"
                     [isDone]="true" 
                     (isChanging)="toogleIsDraggable($event)">
                   </tasque-card>
@@ -95,6 +97,7 @@
                   <tasque-card 
                     *ngIf="!task.isHidden" 
                     [taskInfo]="task" 
+                    [currentSprint]="currentSprint"
                     (isChanging)="toogleIsDraggable($event)">
                   </tasque-card>
                 </div>
@@ -103,7 +106,8 @@
                 <div class="column" *ngFor="let task of item.tasks"> 
                   <tasque-card 
                     *ngIf="!task.isHidden" 
-                    [taskInfo]="task" 
+                    [taskInfo]="task"
+                    [currentSprint]="currentSprint" 
                     [isDone]="true" 
                     (isChanging)="toogleIsDraggable($event)">
                   </tasque-card>
