@@ -166,12 +166,10 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
     }
 
     const nextSprint = sprintsSort.length > 0 ? sprintsSort[0] : sprint;
-
     sprint.order = nextSprint.order ?? 0;
     nextSprint.order = currentSprintPosition;
 
     this.updateSprint(sprint);
-    // this.updateSprint(nextSprint);
 
     this.sprints.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     this.notificationService.success('Priority updated');
