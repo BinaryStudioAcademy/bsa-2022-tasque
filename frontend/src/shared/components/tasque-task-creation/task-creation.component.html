@@ -13,7 +13,7 @@
     <div class="task-creation-body">
       <div class="task-creation-body-wrapper">
         <div class="body-title">
-          <span>Basic info</span>
+          <h4>Basic info</h4>
         </div>
         <hr />
         <form [formGroup]="taskCreateForm">
@@ -85,7 +85,9 @@
             class="body-title"
             *ngIf="customFields !== undefined && customFields.length > 0"
           >
-            <span>Additional fields</span>
+            <div class="body-title">
+              <h4>Additional fields</h4>
+            </div>
             <hr />
           </div>
           <div *ngFor="let field of customFields" class="custom-field">
