@@ -15,5 +15,6 @@ namespace Tasque.Core.BLL.Interfaces
         Task DeleteTask(int id);
 
         Task CommentTask(CommentTaskDTO dto);
+        Task<IEnumerable<TaskDto>> SetOrder(IEnumerable<int> ids);
     }
 }

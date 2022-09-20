@@ -12,6 +12,7 @@ import { Subject, Observable } from 'rxjs';
 import { UserRegisterModel } from 'src/core/models/user/user-register-model';
 import { NotificationService } from 'src/core/services/notification.service';
 import { HttpResponse } from '@angular/common/http';
+import { matchValidator } from '../../match.validator';
 
 @Component({
   selector: 'app-register-page',
@@ -82,11 +83,14 @@ export class RegisterPageComponent implements OnInit {
 
   get passwordRepeatErrorMessage(): string {
     const ctrl = this.passwordRepeatControl;
-    if (ctrl.errors?.['pattern']) {
+    if (ctrl.errors?.['noMatch']) {
       return 'Passwords do not match';
     }
     if (ctrl.errors?.['required'] && (ctrl.dirty || ctrl.touched)) {
       return 'You need to repeat your password';
+    }
+    if (ctrl.errors?.['minlength']) {
+      return 'Password must be at least 8 characters';
     }
     return '';
   }
@@ -111,6 +115,8 @@ export class RegisterPageComponent implements OnInit {
     ]);
     this.passwordRepeatControl = new FormControl(this.passwordRepeat, [
       Validators.required,
+      Validators.minLength(this.validationConstants.minLengthPassword),
+      matchValidator(this.passwordControl)
     ]);
   }
 
@@ -120,6 +126,10 @@ export class RegisterPageComponent implements OnInit {
       emailControl: this.emailControl,
       passwordControl: this.passwordControl,
       passwordRepeatControl: this.passwordRepeatControl,
+    });
+
+    this.passwordControl.valueChanges.subscribe(() => {
+      this.passwordRepeatControl.updateValueAndValidity();
     });
 
     this.route.queryParams
@@ -162,22 +172,6 @@ export class RegisterPageComponent implements OnInit {
     const show = input.type == 'password';
     input.type = show ? 'text' : 'password';
     input.icon = show ? this.faHide : this.faShow;
-  }
-
-  resetPasswordControl(): void {
-    this.passwordRepeatControl = new FormControl(
-      this.passwordRepeatControl.value,
-      [
-        Validators.required,
-        Validators.pattern(this.passwordControl.value as string),
-      ],
-    );
-    this.registerForm = new FormGroup({
-      nameControl: this.nameControl,
-      emailControl: this.emailControl,
-      passwordControl: this.passwordControl,
-      passwordRepeatControl: this.passwordRepeatControl,
-    });
   }
 
   public submitForm(): void {

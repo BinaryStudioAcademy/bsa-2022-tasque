@@ -4,7 +4,11 @@
       ><tasque-logo class="logo" [isLight]="true"></tasque-logo
     ></a>
     <span routerLink="/your-work" class="button">Your work</span>
-    <tasque-project-dropdown class="button" (isChanged)="checkUrl()" [organizationId]="currentOrganizationId"></tasque-project-dropdown>
+    <tasque-project-dropdown
+      class="button"
+      (isChanged)="checkUrl()"
+      [organizationId]="currentOrganizationId"
+    ></tasque-project-dropdown>
     <span class="button">Calendar</span>
     <tasque-menu-dropdown
       class="button-like"
@@ -55,6 +59,7 @@
         [alt]="currentUser.name"
         [user]="currentUser"
         [diameter_px]="45"
+        [isShowMatTooltip]="false"
       ></tasque-avatar>
       <tasque-option option (click)="profileSettingsClick()">
         Profile settings

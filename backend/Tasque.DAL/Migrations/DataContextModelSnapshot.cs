@@ -518,6 +518,9 @@ namespace Tasque.Core.DAL.Migrations
                     b.Property<int?>("LastUpdatedById")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("ParentTaskId")
                         .HasColumnType("integer");
 
@@ -585,9 +588,6 @@ namespace Tasque.Core.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("ProjectId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Type")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -687,6 +687,9 @@ namespace Tasque.Core.DAL.Migrations
                     b.Property<bool>("IsEmailConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<int?>("LastOrganizationId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -706,6 +709,8 @@ namespace Tasque.Core.DAL.Migrations
 
                     b.HasIndex("Email")
                         .IsUnique();
+
+                    b.HasIndex("LastOrganizationId");
 
                     b.ToTable("Users");
                 });
@@ -1047,6 +1052,15 @@ namespace Tasque.Core.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Tasque.Core.Common.Entities.User", b =>
+                {
+                    b.HasOne("Tasque.Core.Common.Entities.Organization", "LastOrganization")
+                        .WithMany()
+                        .HasForeignKey("LastOrganizationId");
+
+                    b.Navigation("LastOrganization");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.UserOrganizationRole", b =>
