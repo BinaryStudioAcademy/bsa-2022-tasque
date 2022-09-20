@@ -4,7 +4,7 @@ import { faCheck, faMinus, faPencil, faRotateLeft } from '@fortawesome/free-soli
 import { TaskPriority } from 'src/core/models/task/task-priority';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskType } from 'src/core/models/task/task-type';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 
 @Component({
   selector: 'app-basic-setting',
@@ -26,7 +26,7 @@ export class BasicSettingComponent implements OnInit {
   editIcon = faPencil;
   resetIcon = faRotateLeft;
 
-  constructor(private notificationService: NotificationService) { }
+  constructor(private notificationService: ToastrNotificationService) { }
 
   ngOnInit(): void {
     this.formNameControl = new FormControl(this.projectSetting.name, [

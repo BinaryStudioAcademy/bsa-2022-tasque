@@ -23,7 +23,7 @@ import { SprintService } from 'src/core/services/sprint.service';
 import { NewSprintModel } from 'src/core/models/sprint/new-sprint-model';
 import { IssueSort } from '../backlog/models';
 import { TaskService } from 'src/core/services/task.service';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 
 @Component({
   selector: 'app-backlog-content',
@@ -69,7 +69,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
     public taskStateService: TaskStateService,
     public sprintService: SprintService,
     public taskService: TaskService,
-    public notificationService: NotificationService,
+    public notificationService: ToastrNotificationService,
   ) {
     this.subscription = backlogService.changeBacklog$.subscribe(() => {
       this.getBacklogTasks();

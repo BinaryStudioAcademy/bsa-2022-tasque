@@ -29,7 +29,7 @@ import { ProjectModel } from 'src/core/models/project/project-model';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from 'src/core/services/project.service';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
 
 @Component({
@@ -78,7 +78,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
     public projectService: ProjectService,
     public sprintService: SprintService,
     public currentUserService: GetCurrentUserService,
-    private notificationService: NotificationService,
+    private notificationService: ToastrNotificationService,
     private route: ActivatedRoute,
     private cdref: ChangeDetectorRef,
     private getCurrentEntityService: ScopeGetCurrentEntityService,

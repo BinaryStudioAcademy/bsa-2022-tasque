@@ -14,7 +14,7 @@ import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
 import { UserModel } from 'src/core/models/user/user-model';
 import { UserRole } from 'src/core/models/user/user-roles';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 
 @Component({
   selector: 'tasque-select-users',
@@ -58,7 +58,7 @@ export class SelectUsersComponent implements OnInit {
 
   constructor(
     private service: BoardService,
-    private nontificationService: NotificationService) {
+    private nontificationService: ToastrNotificationService) {
     this.roles = getRolesAsArray();
   }
 

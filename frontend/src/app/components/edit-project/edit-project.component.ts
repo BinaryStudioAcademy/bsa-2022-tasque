@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 import { GetCurrentProjectService } from 'src/core/services/get-current-project.service';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { ProjectService } from 'src/core/services/project.service';
 import { SideBarService } from 'src/core/services/sidebar.service';
 import { BoardType, IBoard, IUserCard } from 'src/shared/components/select-users/Models';
@@ -58,7 +58,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  constructor(private notification: NotificationService,
+  constructor(private notification: ToastrNotificationService,
     private sideBarService: SideBarService,
     public projectService: ProjectService,
     public currentProjectService: GetCurrentProjectService) {

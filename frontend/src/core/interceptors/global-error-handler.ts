@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, Injector, Injectable } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { NotificationService } from '../services/notification.service';
+import { ToastrNotificationService } from '../services/toastr-notification.service';
 
 @Injectable()
 export class GlobalErrorHandler extends ErrorHandler {
@@ -9,8 +9,8 @@ export class GlobalErrorHandler extends ErrorHandler {
     super();
   }
 
-  private get notificationService(): NotificationService {
-    return this.injector.get(NotificationService);
+  private get notificationService(): ToastrNotificationService {
+    return this.injector.get(ToastrNotificationService);
   }
 
   private get authService(): AuthService {

@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { Subject } from 'rxjs';
 import { EditorConfig } from 'src/core/settings/angular-editor-setting';
 import { TaskCreateViewModel } from 'src/core/models/task/task-create-view-model';
@@ -130,7 +130,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private notificationService: NotificationService,
+    private notificationService: ToastrNotificationService,
     private taskTemplateService: TaskTemplateService,
     private projectService: ProjectService,
     private currentUserService: GetCurrentUserService,

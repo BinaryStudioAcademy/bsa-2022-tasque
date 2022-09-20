@@ -31,7 +31,7 @@ import { SprintService } from 'src/core/services/sprint.service';
 import { TaskService } from 'src/core/services/task.service';
 import { takeUntil } from 'rxjs/operators';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { TaskUpdateModel } from 'src/core/models/task/task-update-model';
 import { BoardType, IBoard, IUserCard } from '../select-users/Models';
 import { UserService } from 'src/app/user/services/user.service';
@@ -98,7 +98,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     private taskService: TaskService,
     private taskStorageService: TaskStorageService,
     private sprintService: SprintService,
-    private notificationService: NotificationService,
+    private notificationService: ToastrNotificationService,
     private userService: UserService,
   ) {
     super();
