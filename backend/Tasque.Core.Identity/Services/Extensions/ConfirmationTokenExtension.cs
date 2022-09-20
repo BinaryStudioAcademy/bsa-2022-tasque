@@ -1,9 +1,15 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System.ComponentModel.DataAnnotations;
+using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services.Email;
+using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Enums;
+using Tasque.Core.Common.Models.InvitationModels;
 using Tasque.Core.DAL;
 using Tasque.Core.Identity.Exceptions;
 using Tasque.Core.Identity.Services.AuxiliaryServices;
@@ -23,13 +29,15 @@ namespace Tasque.Core.Identity.Services.Extensions
             double lifetimeFromSeconds, 
             TokenKind kind, 
             int entityId, 
-            string userEmail)
+            string userEmail,
+            bool isUserExist)
         {
             var invitationToken = new InvitationToken()
             {
                 EntityId = entityId,
                 ExpiringAt = DateTime.UtcNow.AddSeconds(lifetimeFromSeconds),
                 Kind = kind,
+                IsUserExist = isUserExist,
                 InvitedUserEmail = userEmail,
             };
 
@@ -46,9 +54,25 @@ namespace Tasque.Core.Identity.Services.Extensions
             var email = await emailBuilder.GetEmailMessage(token);
 
             if (email == null)
-                throw new InvalidTokenKindException();
+                throw new ValidationException("Invalid token kind");
 
             return await _emailService.SendEmailAsync(email);
+        }
+
+        public async Task<InvitationToken> ConfirmInvitation(Guid key)
+        {
+            var token = await  _context.InvitationTokens.FirstOrDefaultAsync(t => t.Token == key);
+
+            if (token == null || !token.IsValid)
+                throw new ValidationException("Expired token");
+
+            var expired = _context.InvitationTokens.Where(t => t.IsValid).ToList();
+            _context.InvitationTokens.RemoveRange(expired);
+            _context.InvitationTokens.Remove(token);
+
+            await _context.SaveChangesAsync();
+
+            return token;
         }
     }
 }

@@ -13,7 +13,8 @@ namespace Tasque.Core.Common.Entities
         [Key]
         public Guid Token { get; set; } = new Guid();
         public int EntityId { get; set; }
-        public string InvitedUserEmail { get; set; }
+        public string? InvitedUserEmail { get; set; }
+        public bool IsUserExist { get; set; }
         public DateTime ExpiringAt { get; set; }
         public TokenKind Kind { get; set; }
         public bool IsValid => DateTime.UtcNow < ExpiringAt;

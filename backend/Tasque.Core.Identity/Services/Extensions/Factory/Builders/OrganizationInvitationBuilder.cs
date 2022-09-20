@@ -27,9 +27,9 @@ namespace Tasque.Core.Identity.Services.Extensions.Factory.Builders
 
         public async Task<EmailMessage> GetEmailMessage(InvitationToken token)
         {
-            var reciever = new EmailContact(token.InvitedUserEmail, token.InvitedUserEmail);
+            var reciever = new EmailContact(token.InvitedUserEmail ?? string.Empty, token.InvitedUserEmail ?? string.Empty);
             var host = _emailOptions.Host;
-            var endpoint = _emailOptions.InviteEndpoint;
+            var endpoint = token.IsUserExist ? _emailOptions.InviteExistUserEndpoint : _emailOptions.InviteNewUserEndpoint;
             var link = $"{host}{endpoint}";
             var key = token.Token;
             var logo = _configuration["Host:BigLogo"];
@@ -47,7 +47,7 @@ namespace Tasque.Core.Identity.Services.Extensions.Factory.Builders
                 { "organizationName", organization.Name }
             };
 
-            string html = await AssemblyResourceService.GetResource(AssemblyResource.OrganizationInvitationMessage);
+            string html = await AssemblyResourceService.GetResource(AssemblyResource.InviteToOrganizationMessage);
             foreach (var kv in args)
                 html = html.Replace($"{{{kv.Key}}}", kv.Value);
 

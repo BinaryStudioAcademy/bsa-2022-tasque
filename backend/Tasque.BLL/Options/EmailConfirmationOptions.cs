@@ -8,6 +8,8 @@ namespace Tasque.Core.BLL.Options
         public string ConfirmationEndpoint { get; set; } = "";
         public string PasswordResetEndpoint { get; set; } = "";
         public string InviteEndpoint { get; set; } = "";
+        public string InviteExistUserEndpoint { get; set; } = "";
+        public string InviteNewUserEndpoint { get; set; } = "";
         public string OrganizationInvitationEndpoint { get; set; } = "";
         public string SenderEmail { get; set; } = null!;
         public string SenderName { get; set; } = null!;

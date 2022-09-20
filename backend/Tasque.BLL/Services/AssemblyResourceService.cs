@@ -45,6 +45,6 @@ namespace Tasque.Core.BLL.Services
         public static AssemblyResource ResetPasswordMessage => new("ResetPasswordMessage.html");
         public static AssemblyResource ConfirmEmailMessage => new("ConfirmEmailMessage.html");
         public static AssemblyResource ReferralInvitationMessage => new("ReferralInvitationMessage.html");
-        public static AssemblyResource OrganizationInvitationMessage => new("InviteToOrganizationMessage.html");
+        public static AssemblyResource InviteToOrganizationMessage => new("InviteToOrganizationMessage.html");
     }
 }

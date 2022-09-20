@@ -74,9 +74,21 @@ namespace Tasque.Core.WebAPI.Controllers
         public async Task<IActionResult> InviteUserToOrganization(int organizationId, [FromBody] InvitationModel userEmail)
         {
             var isSucced = await _invitationService.InviteUserToOrganization(organizationId, userEmail.Email ?? string.Empty);
-            if(isSucced)
-                return Ok();
-            return BadRequest();
+            if(!isSucced)
+                return BadRequest();
+            return Ok();
+        }
+
+        [HttpPut("invite/confirm/{key}")]
+        public async Task<IActionResult> ConfirmInvitation(Guid key)
+        {
+            var model = await _invitationService.ConfirmInvitation(key);
+
+            if (model.InvitationToken == null || model.User == null)
+                return BadRequest();
+
+            await _service.AddUser(model.InvitationToken.EntityId, model.User);
+            return Ok();
         }
     }
 }
