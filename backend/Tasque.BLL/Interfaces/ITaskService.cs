@@ -14,6 +14,7 @@ namespace Tasque.Core.BLL.Interfaces
 
         Task DeleteTask(int id);
 
-        Task CommentTask(CommentTaskDTO dto);
+        Task<CommentInfoDTO> AddComment(CreateCommentDTO dto);
+        Task<List<CommentInfoDTO>> GetCommentsByTaskId(int taskId);
     }
 }
