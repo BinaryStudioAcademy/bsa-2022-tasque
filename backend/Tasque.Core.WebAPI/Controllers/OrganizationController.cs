@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO.Organization;
 using Tasque.Core.Common.DTO.User;
+using Tasque.Core.Identity.Services;
 
 namespace Tasque.Core.WebAPI.Controllers
 {
@@ -12,10 +13,11 @@ namespace Tasque.Core.WebAPI.Controllers
     public class OrganizationController : EntityController
         <OrganizationCreateDto, OrganizationInfoDto, OrganizationCreateDto, int, OrganizationService>
     {
-        public OrganizationController(OrganizationService service)
+        private readonly InvitationService _invitationService;
+        public OrganizationController(OrganizationService service, InvitationService invitationService)
             : base(service)
         {
-            
+            _invitationService = invitationService;
         }
 
         [Route("getUserOrganizationsById/{id}")]
@@ -67,5 +69,13 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok();
         }
 
+        [HttpPost("invite/{organizationId}")]
+        public async Task<IActionResult> InviteUserToOrganization(int organizationId, [FromBody] string userEmail)
+        {
+            var isSucced = await _invitationService.InviteUserToOrganization(organizationId, userEmail);
+            if(isSucced)
+                return Ok();
+            return BadRequest();
+        }
     }
 }

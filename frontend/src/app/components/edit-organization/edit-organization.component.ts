@@ -67,6 +67,10 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  addUserToOrganization(userEmail: string): void {
+    console.log(userEmail);
+  }
+
   public submitForm(): void {
     this.organization.name = this.organizationName;
 

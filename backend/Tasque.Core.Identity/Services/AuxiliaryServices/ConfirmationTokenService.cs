@@ -6,18 +6,18 @@ using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.BLL.Services.Email;
 using Tasque.Core.Common.Entities;
+using Tasque.Core.Common.Enums;
 using Tasque.Core.Common.Models.Email;
 using Tasque.Core.DAL;
-using Tasque.Core.Identity.Options;
 
-namespace Tasque.Core.Identity.Services
+namespace Tasque.Core.Identity.Services.AuxiliaryServices
 {
     public class ConfirmationTokenService
     {
-        private DataContext _context;
-        private IEmailService _emailService;
-        private EmailConfirmationOptions _emailOptions;
-        private IConfiguration _configuration;
+        private protected DataContext _context;
+        private protected IEmailService _emailService;
+        private protected EmailConfirmationOptions _emailOptions;
+        private protected IConfiguration _configuration;
 
         public ConfirmationTokenService(
             DataContext context,
@@ -71,7 +71,7 @@ namespace Tasque.Core.Identity.Services
             var reciever = new EmailContact(user.Email, user.Name);
             var email = new EmailMessage(reciever)
             {
-                Subject = GetEmailSubject(token),
+                Subject = GetEmailSubject(token.Kind),
                 Content = await GetEmailText(token),
                 Sender = new EmailContact(_emailOptions.SenderEmail, _emailOptions.SenderName)
             };
@@ -81,11 +81,10 @@ namespace Tasque.Core.Identity.Services
         private async Task<string> GetEmailText(ConfirmationToken token)
         {
             var host = _emailOptions.Host;
-            var endpoint = GetEndpoint(token);
+            var endpoint = GetEndpoint(token.Kind);
             var link = $"{host}{endpoint}";
             var key = token.Token;
             var logo = _configuration["Host:BigLogo"];
-
 
             Dictionary<string, string> args = new()
             {
@@ -96,16 +95,16 @@ namespace Tasque.Core.Identity.Services
                 { "link", $"{link}?key={key}" }
             };
 
-            string html = await GetEmailHtml(token);
+            string html = await GetEmailHtml(token.Kind);
             foreach (var kv in args)
                 html = html.Replace($"{{{kv.Key}}}", kv.Value);
 
             return html;
         }
 
-        private string GetEndpoint(ConfirmationToken token)
+        private protected string GetEndpoint(TokenKind kind)
         {
-            return token.Kind switch
+            return kind switch
             {
                 TokenKind.EmailConfirmation => _emailOptions.ConfirmationEndpoint,
                 TokenKind.PasswordReset => _emailOptions.PasswordResetEndpoint,
@@ -114,9 +113,9 @@ namespace Tasque.Core.Identity.Services
             };
         }
 
-        private static string GetEmailSubject(ConfirmationToken token)
+        private protected static string GetEmailSubject(TokenKind kind)
         {
-            return token.Kind switch
+            return kind switch
             {
                 TokenKind.EmailConfirmation => "Email confirmation",
                 TokenKind.PasswordReset => "Password reset",
@@ -125,9 +124,9 @@ namespace Tasque.Core.Identity.Services
             };
         }
 
-        private static async Task<string> GetEmailHtml(ConfirmationToken token)
+        private protected static async Task<string> GetEmailHtml(TokenKind kind)
         {
-            return token.Kind switch
+            return kind switch
             {
                 TokenKind.PasswordReset => await AssemblyResourceService.GetResource(AssemblyResource.ResetPasswordMessage),
                 TokenKind.EmailConfirmation => await AssemblyResourceService.GetResource(AssemblyResource.ConfirmEmailMessage),
