@@ -1,7 +1,7 @@
 <form [formGroup]="sprintForm" class="edit-sprint-dialog">
   <mat-dialog-content class="dialog-content">
     <h4>
-      {{ sprint.isStarting ? 'Start sprint' : 'Edit sprint: ' + sprint.name }}
+      <p class="sprint-name">{{ sprint.isStarting ? 'Start sprint' : 'Edit sprint: ' + sprint.name }}</p>
       <span *ngIf="sprint.isStarting" class="dialog-info"
         ><strong>{{ sprint.tasks ? sprint.tasks.length : 0 }}</strong> issues will be added in this
         sprint.</span
