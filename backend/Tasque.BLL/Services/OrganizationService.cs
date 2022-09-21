@@ -46,6 +46,7 @@ namespace Tasque.Core.BLL.Services
         {
             var organizations = await _db.Users
                 .Where(user => userId == user.Id)
+                .Include(u => u.ParticipatedOrganization)
                 .SelectMany(user => user.OwnedOrganization)
                 .Union(_db.Users
                     .Where(user => userId == user.Id)

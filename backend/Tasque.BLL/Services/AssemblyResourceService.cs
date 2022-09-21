@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Net.WebSockets;
+using System.Reflection;
 
 namespace Tasque.Core.BLL.Services
 {
@@ -44,5 +45,6 @@ namespace Tasque.Core.BLL.Services
         public static AssemblyResource ResetPasswordMessage => new("ResetPasswordMessage.html");
         public static AssemblyResource ConfirmEmailMessage => new("ConfirmEmailMessage.html");
         public static AssemblyResource ReferralInvitationMessage => new("ReferralInvitationMessage.html");
+        public static AssemblyResource InviteToOrganizationMessage => new("InviteToOrganizationMessage.html");
     }
 }

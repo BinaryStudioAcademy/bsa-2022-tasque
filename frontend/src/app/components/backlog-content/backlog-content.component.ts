@@ -171,14 +171,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   }
 
   public getTasksState(): void {
-    this.taskStateService
-      .getAll()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((result) => {
-        if (result.body) {
-          this.taskStates = result.body;
-        }
-      });
+    this.taskStates = this.project.projectTaskStates;
   }
 
   public getTasksType(): void {

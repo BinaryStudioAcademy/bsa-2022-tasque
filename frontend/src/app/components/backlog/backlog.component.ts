@@ -30,6 +30,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from 'src/core/services/project.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { NotificationService } from 'src/core/services/notification.service';
+import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
 
 @Component({
   selector: 'app-backlog',
@@ -71,6 +72,8 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
   public isShowArchive: boolean;
   public tasks: TaskModel[] = [];
 
+  public isShow = false;
+
   constructor(
     public projectService: ProjectService,
     public sprintService: SprintService,
@@ -78,6 +81,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
     private notificationService: NotificationService,
     private route: ActivatedRoute,
     private cdref: ChangeDetectorRef,
+    private getCurrentEntityService: ScopeGetCurrentEntityService,
   ) {
     sprintService.deleteSprint$.subscribe((sprintId) => {
       this.deleteSprint(sprintId);
@@ -97,6 +101,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((resp) => {
           this.currentProject = resp.body as ProjectModel;
+          this.updateHeader();
         });
     }
     this.currentUserService.currentUser$.subscribe((user) => {
@@ -118,6 +123,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
+          this.isShow = true;
           this.sprints = result.body.sort(
             (a, b) => (a.order ?? 0) - (b.order ?? 0),
           );
@@ -160,12 +166,10 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
     }
 
     const nextSprint = sprintsSort.length > 0 ? sprintsSort[0] : sprint;
-
     sprint.order = nextSprint.order ?? 0;
     nextSprint.order = currentSprintPosition;
 
     this.updateSprint(sprint);
-    this.updateSprint(nextSprint);
 
     this.sprints.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     this.notificationService.success('Priority updated');
@@ -203,5 +207,12 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
 
   deleteSprint(sprintId: number): void {
     this.sprints = this.sprints.filter((task) => task.id !== sprintId);
+  }
+
+  updateHeader(): void {
+    this.getCurrentEntityService.getCurrentOrganizationService.currentOrganizationId =
+      this.currentProject.organizationId;
+    this.getCurrentEntityService.getCurrentProjectService.currentProjectId =
+      this.currentProjectId;
   }
 }

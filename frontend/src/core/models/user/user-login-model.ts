@@ -1,4 +1,6 @@
 export interface UserLoginModel {
     email?: string,
-    password?: string
+    password?: string,
+    isInvitedToOrganization?: boolean,
+    key?: string,
 }

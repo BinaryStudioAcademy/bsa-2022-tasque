@@ -9,11 +9,13 @@
 
   <ItemGroup>
     <None Remove="Resources\ConfirmEmailMessage.html" />
+    <None Remove="Resources\InviteToOrganizationMessage.html" />
     <None Remove="Resources\ReferralInvitationMessage.html" />
     <None Remove="Resources\ResetPasswordMessage.html" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\InviteToOrganizationMessage.html" />
     <EmbeddedResource Include="Resources\ReferralInvitationMessage.html" />
     <EmbeddedResource Include="Resources\ConfirmEmailMessage.html" />
     <EmbeddedResource Include="Resources\ResetPasswordMessage.html" />

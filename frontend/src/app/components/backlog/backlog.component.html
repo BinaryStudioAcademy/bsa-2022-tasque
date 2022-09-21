@@ -41,6 +41,9 @@
   </div>
 
   <div class="body" cdkDropListGroup cdkScrollable>
+    <div *ngIf="!isShow">
+      <mat-spinner style="margin: 250px auto"> </mat-spinner>
+    </div>
     <div class="sprint-archive" *ngIf="isShowArchive" [@fadeInOut]>
       <h3 class="title">Sprints archive</h3>
       <app-sprint

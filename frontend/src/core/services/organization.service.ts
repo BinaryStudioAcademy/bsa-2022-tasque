@@ -70,6 +70,10 @@ export class OrganizationService {
     );
   }
 
+  iviteUserToOrganization(id: number, userEmail: string) : Observable<HttpResponse<string>> {
+    return this.httpService.postFullRequest<string>(this.routePrefix + '/invite/' + id, { email: userEmail });
+  }
+
   deleteUser(
     organizationId: number,
     user: ProfileChangesDTO,

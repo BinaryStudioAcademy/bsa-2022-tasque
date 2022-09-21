@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthRoutes } from './auth/auth.routes';
+import { AuthRoutes } from './components/auth/auth.routes';
 import { ProjectListComponent } from './components/project-list/project-list.component';
-import { PageWithoutSidebarComponent } from './components/page-without-sidebar/page-without-sidebar.component';
 import { OrganizationListComponent } from './components/organization-list/organization-list.component';
 import { UserRoutes } from './user/user.routes';
 import { PageWithSidebarComponent } from './components/page-with-sidebar/page-with-sidebar.component';
 import { TasqueBoardComponent } from './components/tasque-board/tasque-board.component';
 import { TasqueTeamComponent } from './components/tasque-team/tasque-team.component';
-import { AuthGuard } from './auth/guards/auth.guard';
+import { AuthGuard } from './components/auth/guards/auth.guard';
 import { BacklogComponent } from './components/backlog/backlog.component';
 import { NotFoundPageComponent } from 'src/shared/components/not-found-page/not-found-page.component';
 import { AccessControlGuard } from 'src/app/components/tasque-project-settings/project-options-module/guards/access-control.guard';
 import { ProjectSettingsRoutes } from './components/tasque-project-settings/project-options-module/project-options.routes';
 import { WikiComponent } from './components/wiki/wiki.component';
 import { YourWorkComponent } from './components/your-work/your-work.component';
+import { PageWithoutSidebarComponent } from './components/page-without-sidebar/page-without-sidebar.component';
 
 const routes: Routes = [
   ...AuthRoutes,
@@ -52,4 +52,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

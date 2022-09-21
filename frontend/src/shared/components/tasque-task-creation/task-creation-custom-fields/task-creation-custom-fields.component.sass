@@ -1,6 +1,12 @@
 @import 'src/colors.sass'
 
 .field-label
+    margin-right: 16px
+    width: 100px
+    min-width: 100px
+    font-weight: 400
+    font-size: 14px
+    line-height: 19px
     color: colorscheme(black-100)
 
 div > span
@@ -28,8 +34,73 @@ div > span
     display: flex
     justify-content: center
 
-
 .checkbox-item
     margin: 15px 0 15px 0
 
+.editor-wrapper
+    display: flex
+    flex-direction: row
+    align-items: center
+    padding: 15px 0 0px 0px
+    label
+        margin-right: 16px !important
+        width: 100px !important
+        min-width: 100px
+        font-weight: 400
+        font-size: 14px !important
+        line-height: 19px !important
+        color: colorscheme(black-100)
+    .editor-conteiner
+        flex: 1 0 33.333%
+        min-width: 200px
+        color: colorscheme(black-100)
 
+.text-field, .number-field, .date-field
+    width: 300px
+
+tasque-input
+    ::ng-deep
+        .input-container
+            display: grid
+            grid-template-columns: min-content
+        .input-wrp
+            width: 100%
+            grid-column: 2
+        .input
+            width: 100% !important
+            height: 50px
+            background: colorscheme(gray-300)
+            border-radius: 15px !important
+        label
+            grid-column: 1
+            margin-right: 16px !important
+            width: 100px !important
+            font-weight: 400
+            font-size: 14px !important
+            line-height: 19px !important
+            margin: auto
+            color: colorscheme(black-100)
+        .error
+            grid-column: 2
+            margin: auto
+
+tasque-dropdown
+    ::ng-deep
+        .dropdown-warapper
+            display: grid
+            grid-template-columns: min-content
+            .dropdown-button
+                width: 172px
+                background: colorscheme(gray-300)
+                grid-column: 2
+            .error
+                grid-column: 2
+                margin: auto
+            .dropdown-label
+                padding-right: 16px
+                width: 100px
+                font-weight: 400
+                font-size: 14px
+                line-height: 19px
+                grid-column: 1
+                margin: auto

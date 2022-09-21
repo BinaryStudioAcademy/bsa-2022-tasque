@@ -5,10 +5,12 @@ using Tasque.Core.Common;
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.DTO.User;
 using Tasque.Core.Common.Entities;
+using Tasque.Core.Common.Enums;
 using Tasque.Core.Common.Security;
 using Tasque.Core.DAL;
 using Tasque.Core.Identity.Exeptions;
 using Tasque.Core.Identity.JWT;
+using Tasque.Core.Identity.Services.AuxiliaryServices;
 using Task = System.Threading.Tasks.Task;
 
 namespace Tasque.Core.Identity.Services
@@ -20,19 +22,22 @@ namespace Tasque.Core.Identity.Services
         private IMapper _mapper;
         private IValidator<User> _validator;
         private ConfirmationTokenService _tokenService;
+        private readonly InvitationService _invitationExtension;
 
         public AuthService(
             DataContext context,
             JwtFactory jwtFactory,
             IMapper mapper,
             IValidator<User> validator,
-            ConfirmationTokenService tokenService)
+            ConfirmationTokenService tokenService,
+            InvitationService tokenExtension)
         {
             _context = context;
             _mapper = mapper;
             _jwtFactory = jwtFactory;
             _validator = validator;
             _tokenService = tokenService;
+            _invitationExtension = tokenExtension;
         }
 
         public async Task<UserDto> Login(UserLoginDto loginInfo)
@@ -53,6 +58,16 @@ namespace Tasque.Core.Identity.Services
             if (!SecurityHelper.ValidatePassword(loginInfo.Password, userEntity.Password, userEntity.Salt))
                 throw new ValidationException("Invalid password");
 
+            if (loginInfo.IsInvitedToOrganization && loginInfo.Key.HasValue)
+            {
+                var invitationToken = await _invitationExtension.ConfirmInvitationToken(loginInfo.Key!.Value);
+
+                if (invitationToken.InvitedUserEmail != loginInfo.Email)
+                    throw new ValidationException("Invalid token");
+
+                await _invitationExtension.AddUserToOrganizationModel(userEntity, invitationToken);
+            }
+
             return _mapper.Map<UserDto>(userEntity);
         }
 
@@ -69,8 +84,9 @@ namespace Tasque.Core.Identity.Services
         {
             var userEntity = new User();
             ConfirmationToken? token = null;
+            InvitationToken? invitationToken = null;
 
-            if (registerInfo.Key.HasValue)
+            if (registerInfo.Key.HasValue && !registerInfo.IsInvitedToOrganization)
             {
                 token = await _tokenService.ConfirmToken(registerInfo.Key!.Value, TokenKind.ReferralSignUp);
                 if (token.User.Email != registerInfo.Email)
@@ -78,32 +94,53 @@ namespace Tasque.Core.Identity.Services
                 userEntity = token.User;
                 userEntity.IsEmailConfirmed = true;
             }
+            if(registerInfo.Key.HasValue && registerInfo.IsInvitedToOrganization)
+            {
+                invitationToken = await _invitationExtension.ConfirmInvitationToken(registerInfo.Key!.Value);
+
+                if (invitationToken.InvitedUserEmail != registerInfo.Email)
+                    throw new ValidationException("Invalid token");
+
+                userEntity.IsEmailConfirmed = true;
+            }
 
             userEntity = _mapper.Map(registerInfo, userEntity);
             _validator.ValidateAndThrow(userEntity);
 
-            if (token == null && _context.Users.Any(x => x.Email == userEntity.Email))
-            {
+            var anyUserWithEmail = _context.Users.Any(x => x.Email == userEntity.Email);
+
+            if (token == null && anyUserWithEmail)
                 throw new ValidationException("User with given email already exists");
-            }
+            if (invitationToken == null && anyUserWithEmail)
+                throw new ValidationException("User with given email already exists");
 
             var salt = SecurityHelper.GetRandomBytes();
             userEntity.Salt = Convert.ToBase64String(salt);
             userEntity.Password = SecurityHelper.HashPassword(registerInfo.Password, salt);
 
             AuthTokenDto? res = null;
-            if (token == null)
-            {
-                _context.Users.Add(userEntity);
-            }
-            else
+            if (token != null)
             {
                 _context.Users.Update(userEntity);
                 _context.ConfirmationTokens.Remove(token);
                 res = GetAccessToken(userEntity.Id, userEntity.Name, userEntity.Email);
             }
+            else if(invitationToken != null)
+            {
+                _context.Users.Add(userEntity);
+                _context.InvitationTokens.Remove(invitationToken);
+                res = GetAccessToken(userEntity.Id, userEntity.Name, userEntity.Email);
+            }
+            else
+            {
+                _context.Users.Add(userEntity);
+            }
 
             await _context.SaveChangesAsync();
+
+            if (invitationToken != null)
+                await _invitationExtension.AddUserToOrganizationModel(userEntity, invitationToken);
+
             return res;
         }
 

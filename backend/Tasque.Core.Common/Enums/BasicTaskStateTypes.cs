@@ -1,10 +1,10 @@
 ﻿namespace Tasque.Core.Common.Enums
 {
-    public enum BasicTaskStateTypes
+    public static class BasicTaskStateTypes
     {
-        ToDo = 1,
-        InProgress = 2,
-        Done = 3,
-        Canceled = 4,
+        public const string ToDo = "To Do";
+        public const string InProgress = "In Progress";
+        public const string Done = "Done";
+        public const string Canceled = "Canceled";
     }
 }

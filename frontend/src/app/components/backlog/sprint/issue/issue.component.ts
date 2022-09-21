@@ -21,6 +21,7 @@ import { TaskService } from 'src/core/services/task.service';
 import { NotificationService } from 'src/core/services/notification.service';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
+import { SprintModel } from 'src/core/models/sprint/sprint-model';
 
 @Component({
   selector: 'app-issue',
@@ -30,19 +31,22 @@ import { TaskStorageService } from 'src/core/services/task-storage.service';
 export class IssueComponent implements OnInit {
   //Get the issue to display it in the component
   @Input() public issue: TaskModel;
-  
+
   //get current user
   @Input() public currentUser: UserModel;
 
   //get current project
   @Input() public currentProject: ProjectModel;
 
+  //get current sprint
+  @Input() public currentSprint: SprintModel;
+
   //notifying the parent components about the change in the value of estimate
   @Output() estimate = new EventEmitter<void>();
   @Output() isChanging = new EventEmitter<boolean>();
 
   flagIcon = faFlag;
-  
+
   @Input() public taskTypes: TaskType[] = [];
 
   @Input() public taskStates: TaskState[] = [];

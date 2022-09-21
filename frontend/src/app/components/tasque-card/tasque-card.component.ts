@@ -2,6 +2,7 @@ import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { TaskInfoModel } from 'src/core/models/board/task-Info-model';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
+import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
@@ -20,6 +21,7 @@ export class TasqueCardComponent implements OnInit {
   //Gets information about the task
   @Input() taskInfo: TaskInfoModel;
   @Input() isDone: boolean;
+  @Input() currentSprint: SprintModel;
   @Output() isChanging = new EventEmitter<boolean>();
 
   hasAccess: boolean;
@@ -28,6 +30,13 @@ export class TasqueCardComponent implements OnInit {
 
   currentUser: UserModel;
   currentOrganization: OrganizationModel;
+
+  public get taskInfoStyle(): string {
+    if (this.taskInfo.estimate) {
+      return 'space-between';
+    }
+    return 'flex-end';
+  }
 
   public editIcon = faPen;
 
