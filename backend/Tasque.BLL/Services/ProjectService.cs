@@ -167,12 +167,14 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
                 Color = TaskColors.Done,
                 Name = BasicTaskStateTypes.Done,
                 ProjectId = project.Id,
+                Status =  true,
             },
             new()
             {
                 Color = TaskColors.Canceled,
                 Name = BasicTaskStateTypes.Canceled,
                 ProjectId = project.Id,
+                Status =  true,
             },
         };
 
