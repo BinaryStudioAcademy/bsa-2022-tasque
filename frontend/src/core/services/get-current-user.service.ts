@@ -38,11 +38,10 @@ export class GetCurrentUserService {
       });
   }
 
-  public setCurrentUserByEmail(email: string) {
+  public setCurrentUserByEmail(email: string): void {
     this.userService.getUserByEmail(email).subscribe((resp) => {
-      console.log(resp.body);
       this.currentUserSubj.next(resp.body as UserModel);
-    })
+    });
   }
 
   public clearCurrentUser(): void {

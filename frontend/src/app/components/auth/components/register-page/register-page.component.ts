@@ -13,7 +13,6 @@ import { UserRegisterModel } from 'src/core/models/user/user-register-model';
 import { NotificationService } from 'src/core/services/notification.service';
 import { HttpResponse } from '@angular/common/http';
 import { matchValidator } from '../../match.validator';
-import { UserService } from 'src/app/user/services/user.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Component({
