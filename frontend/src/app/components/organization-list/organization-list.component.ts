@@ -32,6 +32,7 @@ export class OrganizationListComponent extends BaseComponent implements OnInit {
     private organizationService: OrganizationService,
     private openDialogService: OpenDialogService,
   ) {
+    getCurrentOrganizationService.getLastOrganization();
     super();
   }
 
