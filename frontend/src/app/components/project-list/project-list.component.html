@@ -1,4 +1,5 @@
-<div class="project-list">
+<mat-spinner style="margin: 250px auto" *ngIf="!isShow"></mat-spinner>
+<div class="project-list" *ngIf="isShow && currentUser">
   <div class="project-top">
     <div class="projects-header">
       <h4>List of Projects</h4>
@@ -25,10 +26,11 @@
     <div class="empty-projects-warning" *ngIf="projects.length < 1">
       <p>You are not a participant of any project.</p>
       <p>
-        You can create a new one in your organization or ask an organization or project admin to invite you to
-        an existing one
+        You can create a new one in your organization or ask an organization or
+        project admin to invite you to an existing one
       </p>
     </div>
+
     <app-project-list-item
       *ngFor="let item of itemsShow"
       [project]="item"
