@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { faLocationArrow as faSend}  from '@fortawesome/free-solid-svg-icons';
 import { CommentInfo } from 'src/core/models/comment/comment-info';
+import { CreateComment } from 'src/core/models/comment/create-comment';
 import { UserModel } from 'src/core/models/user/user-model';
 import { CommentService } from 'src/core/services/comment.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { NotificationService } from 'src/core/services/notification.service';
+import { InputComponent } from '../tasque-input/input.component';
 
 @Component({
   selector: 'tasque-comments',
@@ -21,6 +24,7 @@ export class TasqueCommentsComponent implements OnInit {
   constructor(
     private currentUserService: GetCurrentUserService,
     private commentService: CommentService,
+    private notificationService: NotificationService,
     ) { }
 
   ngOnInit(): void {
@@ -31,12 +35,32 @@ export class TasqueCommentsComponent implements OnInit {
     this.commentService.getCommentsByTaskId(this.taskId)
       .subscribe(
         (resp) => {
-          if(resp) {
+          if(resp.ok) {
             this.comments = resp.body as CommentInfo[];
           }
         }
           
       );
   }
+
+  sendComment(messageInput: InputComponent): void {
+    const comment = {
+      taskId: this.taskId,
+      message: messageInput.inputValue,
+      authorId: this.currentUser.id
+    } as CreateComment;
+
+    this.commentService.addComment(comment).subscribe(
+      (resp) => {
+        if(resp.ok) {
+          this.comments.unshift(resp.body as CommentInfo);
+          messageInput.writeValue('');
+        }
+        else {
+          this.notificationService.error('Comment has not been added!');
+        }
+      }
+    )
+  } 
 
 }
