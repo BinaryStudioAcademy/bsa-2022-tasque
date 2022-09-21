@@ -55,7 +55,8 @@
     display: flex
     align-items: center
 
-.board-columns 
+.board-columns
+    padding-top: 10px
     height: calc(100% - 100px)
     display: grid
     grid-auto-flow: column
@@ -108,33 +109,38 @@
     & > span
         color: colorscheme(gray-500)
         cursor: pointer
+    form
+        display: flex
+        align-items: center
+        .is-task-complete
+            padding-left: 10px
 
 ::-webkit-scrollbar
-  width: 5px
-  height: 5px
+    width: 5px
+    height: 5px
 
 ::-webkit-scrollbar-track
-  background-color: rgba(224, 196, 196, 0.1)
-  border-radius: 10px
+    background-color: rgba(224, 196, 196, 0.1)
+    border-radius: 10px
 
 ::-webkit-scrollbar-thumb
-  background-color: #8b9499
-  border-radius: 10px
+    background-color: #8b9499
+    border-radius: 10px
 
 .board-list
     overflow: hidden
     display: block
 
-.cdk-drag-placeholder 
+.cdk-drag-placeholder
     opacity: 0
 
-.cdk-drag-animating 
+.cdk-drag-animating
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1)
 
-.example-box:last-child 
+.example-box:last-child
     border: none
 
-.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) 
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder)
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1)
 
 .column
@@ -164,11 +170,9 @@
         &:hover
             cursor: pointer
 
-
 .team-container
     margin-left: 25px
 
 .column-with-tasks
-     overflow: hidden auto
-     padding-right: 10px
-
+    overflow: hidden auto
+    padding-right: 10px
