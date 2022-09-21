@@ -27,6 +27,7 @@ import { NotificationService } from 'src/core/services/notification.service';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
+import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
 
 @Component({
   selector: 'app-backlog-content',
@@ -68,13 +69,11 @@ export class BacklogContentComponent implements OnInit, OnChanges {
 
   constructor(
     public backlogService: BacklogService,
-    public taskTypeService: TaskTypeService,
-    public taskStateService: TaskStateService,
-    public sprintService: SprintService,
     public taskService: TaskService,
     public notificationService: NotificationService,
     private currentOrganizationService: GetCurrentOrganizationService,
     private organizationService: OrganizationService,
+    public scopeBoardService: ScopeBoardService,
   ) {
     this.subscription = backlogService.changeBacklog$.subscribe(() => {
       this.getBacklogTasks();
@@ -174,7 +173,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   }
 
   public getTasksType(): void {
-    this.taskTypeService
+    this.scopeBoardService.taskTypeService
       .getAll()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
@@ -219,7 +218,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
       authorId: this.currentUser.id,
     };
 
-    this.sprintService
+    this.scopeBoardService.sprintService
       .create(newSprint)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
