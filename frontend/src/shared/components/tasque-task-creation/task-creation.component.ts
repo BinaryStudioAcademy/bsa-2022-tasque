@@ -156,6 +156,17 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    if (this.currentProject) {
+      this.setSelectedProjectId(this.currentProject.id);
+
+      const options: TasqueDropdownOption = {
+        title: this.currentProject.name,
+        id: this.currentProject.id,
+      };
+
+      this.projectControl.setValue(options);
+    }
+
     this.taskCreateForm = new FormGroup({
       projectControl: this.projectControl,
       issueTypeControl: this.issueTypeControl,
