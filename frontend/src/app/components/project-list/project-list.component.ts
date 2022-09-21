@@ -109,7 +109,6 @@ export class ProjectListComponent implements OnInit, OnDestroy {
         if (UserRole.projectAdmin <= this.role) {
           this.isCurrentUserAdmin = true;
         }
-        console.log(this.role);
       }
     });
   }

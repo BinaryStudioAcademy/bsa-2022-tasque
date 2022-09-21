@@ -8,20 +8,18 @@ import { GetCurrentProjectService } from 'src/core/services/get-current-project.
 @Component({
   selector: 'app-project-list-item',
   templateUrl: './project-list-item.component.html',
-  styleUrls: ['./project-list-item.component.sass']
+  styleUrls: ['./project-list-item.component.sass'],
 })
 export class ProjectListItemComponent implements OnInit {
-
   @Input() public project: ProjectInfoModel;
   @Input() public currentUser: UserModel;
 
   constructor(
-    public router: Router, 
-    private currentProject: GetCurrentProjectService
-  ) { }
+    public router: Router,
+    private currentProject: GetCurrentProjectService,
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   openProjectBoard(): void {
     this.currentProject.currentProjectId = this.project.id;
@@ -29,12 +27,19 @@ export class ProjectListItemComponent implements OnInit {
   }
 
   permissionToEdit(): boolean {
-    const role = this.currentUser.organizationRoles
-    .find((role) => role.organizationId === this.project.organizationId)?.role as UserRole;
-    if(this.currentUser?.id === this.project.authorId || role >= 3) {
+    const role = this.currentUser.organizationRoles.find(
+      (role) =>
+        role.organizationId === this.project.organizationId &&
+        role.userId === this.currentUser.id,
+    )?.role as UserRole;
+    if (role >= 3) {
       return true;
     }
-    if (this.project.users?.every((x) => { x.id == this.currentUser?.id && x.role === 1; })) {
+    if (
+      this.project.users?.every((x) => {
+        x.id == this.currentUser?.id && x.role === 1;
+      })
+    ) {
       return true;
     }
 

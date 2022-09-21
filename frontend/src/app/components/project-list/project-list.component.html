@@ -4,6 +4,7 @@
     <div class="projects-header">
       <h4>List of Projects</h4>
       <tasque-button
+        *ngIf="isCurrentUserAdmin"
         class="btn stroke"
         text="Create Project"
         (btnClick)="openCreateProjectDialog()"
