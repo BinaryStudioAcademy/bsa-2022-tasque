@@ -10,13 +10,19 @@ import { BaseComponent } from 'src/core/base/base.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { OrganizationService } from 'src/core/services/organization.service';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
+import { OrganizationModel } from 'src/core/models/organization/organization-model';
 
 @Component({
   selector: 'app-left-sidebar',
   templateUrl: './left-sidebar.component.html',
-  styleUrls: ['./left-sidebar.component.sass']
+  styleUrls: ['./left-sidebar.component.sass'],
 })
-export class LeftSidebarComponent extends BaseComponent implements OnInit, OnChanges {
+export class LeftSidebarComponent
+  extends BaseComponent
+  implements OnInit, OnChanges
+{
   public projectId: number;
   public project: ProjectModel;
 
@@ -27,6 +33,8 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit, OnCha
 
   public sideBarMinimized: boolean;
   public showSettings = false;
+
+  public isCurrentUserAdmin = false;
 
   @Input() isChanged: Observable<void>;
 
@@ -45,7 +53,10 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit, OnCha
     private route: ActivatedRoute,
     private router: Router,
     private currentUserService: GetCurrentUserService,
-    private projectService: ProjectService) {
+    private projectService: ProjectService,
+    private currentOrganizationService: GetCurrentOrganizationService,
+    private organizationService: OrganizationService,
+  ) {
     super();
   }
 
@@ -84,7 +95,8 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit, OnCha
     if (id) {
       this.projectId = parseInt(id);
 
-      this.projectService.getProjectById(this.projectId)
+      this.projectService
+        .getProjectById(this.projectId)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((resp) => {
           this.project = resp.body as ProjectModel;
@@ -96,21 +108,28 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit, OnCha
   public subsribeToCurrentUser(): void {
     this.currentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user;
-      this.userRole = this.currentUser.organizationRoles.find(
-        (r) => r.organizationId === this.project.organizationId,
-      )?.role ?? UserRole.projectMember;
+      this.userRole =
+        this.currentUser.organizationRoles.find(
+          (r) => r.organizationId === this.project.organizationId,
+        )?.role ?? UserRole.projectMember;
+
+      this.permissionToEdit();
     });
   }
 
   navigateToIssueTemplate(): void {
-    this.router.navigate(['project/' + this.projectId + '/settings/issue-template']);
+    this.router.navigate([
+      'project/' + this.projectId + '/settings/issue-template',
+    ]);
     this.setAllStylesUndefined();
     this.isSettings = true;
     this.isIssueTemplate = true;
   }
 
   navigateToBasicSettings(): void {
-    this.router.navigate(['project/' + this.projectId + '/settings/basic-settings']);
+    this.router.navigate([
+      'project/' + this.projectId + '/settings/basic-settings',
+    ]);
     this.setAllStylesUndefined();
     this.isSettings = true;
     this.isBasicSettings = true;
@@ -151,7 +170,9 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit, OnCha
   }
 
   public isProjectAdmin(): boolean {
-    return this.userRole >= 3 || this.project?.authorId === this.currentUser?.id;
+    return (
+      this.userRole >= 3 || this.project?.authorId === this.currentUser?.id
+    );
   }
 
   checkActivatedRoute(): void {
@@ -197,5 +218,28 @@ export class LeftSidebarComponent extends BaseComponent implements OnInit, OnCha
     this.isWiki = false;
     this.isIssueTemplate = false;
     this.isBasicSettings = false;
+  }
+
+  public permissionToEdit(): void {
+    const organizationId =
+      this.currentOrganizationService.currentOrganizationId;
+    this.organizationService
+      .getOrganization(organizationId)
+      .subscribe((resp) => {
+        const currentOrganization = resp.body as OrganizationModel;
+        const role = this.currentUser.organizationRoles.find(
+          (r) =>
+            r.organizationId === organizationId &&
+            r.userId === this.currentUser.id,
+        )?.role as UserRole;
+        if (
+          role >= UserRole.projectAdmin ||
+          currentOrganization.authorId === this.currentUser.id
+        ) {
+          this.isCurrentUserAdmin = true;
+        } else {
+          this.isCurrentUserAdmin = false;
+        }
+      });
   }
 }
