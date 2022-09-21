@@ -100,13 +100,13 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     const ctrl = this.summaryControl;
 
     if (ctrl.errors?.['minlength'] && (ctrl.touched || ctrl.dirty)) {
-      return 'Summary must be at least 2 characters';
+      return 'Title must be at least 2 characters';
     }
     if (ctrl.errors?.['maxlength'] && (ctrl.touched || ctrl.dirty)) {
-      return 'Summary must be less than 80 characters';
+      return 'Title must be less than 80 characters';
     }
     if (ctrl.errors?.['required'] && (ctrl.touched || ctrl.dirty)) {
-      return 'Summary is required';
+      return 'Title is required';
     }
     return '';
   }
@@ -156,6 +156,17 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    if (this.currentProject) {
+      this.setSelectedProjectId(this.currentProject.id);
+
+      const options: TasqueDropdownOption = {
+        title: this.currentProject.name,
+        id: this.currentProject.id,
+      };
+
+      this.projectControl.setValue(options);
+    }
+
     this.taskCreateForm = new FormGroup({
       projectControl: this.projectControl,
       issueTypeControl: this.issueTypeControl,

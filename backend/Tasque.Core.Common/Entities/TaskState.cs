@@ -17,4 +17,7 @@ public class TaskState : BaseEntity
     public Project Project { get; set; } = null!;
 
     public virtual ICollection<Task> Tasks { get; set; }
+
+    public bool? Status { get; set; }
+
 }

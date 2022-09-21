@@ -2,16 +2,18 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { DeleteSprintDialogComponent } from 'src/app/components/delete-sprint-dialog/delete-sprint-dialog.component';
+import { EditSprintDialogComponent } from 'src/app/components/edit-sprint-dialog/edit-sprint-dialog.component';
 import { CreateOrganizationDialogComponent } from 'src/shared/components/create-organization-dialog/create-organization-dialog.component';
 import { CreateProjectDialogComponent } from 'src/shared/components/create-project-dialog/create-project-dialog.component';
 import { OrganizationModel } from '../models/organization/organization-model';
 import { ProjectInfoModel } from '../models/project/project-info-model';
+import { EditSprintModel } from '../models/sprint/edit-sprint-model';
 import { SprintModel } from '../models/sprint/sprint-model';
 import { UserModel } from '../models/user/user-model';
 
 @Injectable({ providedIn: 'root' })
 export class OpenDialogService {
-  constructor(private matDialog: MatDialog) {}
+  constructor(private matDialog: MatDialog) { }
 
   public openCreateOrganizationDialog(
     currentUser: UserModel,
@@ -39,5 +41,13 @@ export class OpenDialogService {
     });
 
     dialog.afterClosed();
+  }
+
+  openEditSprintDialog(sprint: EditSprintModel): Observable<SprintModel> {
+    const dialog = this.matDialog.open(EditSprintDialogComponent, {
+      data: sprint,
+    });
+
+    return dialog.afterClosed();
   }
 }

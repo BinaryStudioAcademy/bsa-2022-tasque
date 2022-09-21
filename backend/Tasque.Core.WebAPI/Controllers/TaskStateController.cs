@@ -43,5 +43,11 @@ namespace Tasque.Core.WebAPI.Controllers
                 return BadRequest();
             return Ok(state);
         }
+
+        [HttpGet("updateTaskStateStatus/{id}")]
+        public async Task<IActionResult> UpdateTaskStateStatus(int id)
+        {
+            return Ok(await _service.UpdateTaskStateStatus(id));
+        }
     }
 }
