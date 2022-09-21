@@ -10,7 +10,9 @@
     <div class="task-creation-body">
       <div class="task-creation-body-wrapper">
         <tasque-select-users [board]="board" 
-          (onAdd)="addUserToOrganization($event)">
+          (onAdd)="addUserToOrganization($event)"
+          (onDelete)="kickUserFromOrganization($event)"
+          [organization]="organization">
         </tasque-select-users>
       </div>
     </div>
