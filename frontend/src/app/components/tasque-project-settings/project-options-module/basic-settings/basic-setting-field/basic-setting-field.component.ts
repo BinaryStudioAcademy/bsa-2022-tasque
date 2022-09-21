@@ -25,8 +25,8 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
       return;
     }
 
-    this.settingsShow = Array.from(settings);
-    this.defaultSettings = Array.from(settings);
+    this.settingsShow = settings;
+    this.defaultSettings = this.deepClone(this.settingsShow);
   }
 
   @Input() public project: ProjectModel;
@@ -62,6 +62,10 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
     this.formColorControl = new FormControl('', [
       Validators.required,
     ]);
+  }
+
+  private deepClone<T>(value: T): T {
+    return JSON.parse(JSON.stringify(value));
   }
 
   get errorMessage(): string {
@@ -123,7 +127,7 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
   }
 
   public cancelEdit(): void {
-    this.settingsShow = Array.from(this.defaultSettings);
+    this.settingsShow = this.deepClone(this.defaultSettings);
     this.isUpdated = false;
     this.isAdding = false;
     this.formColorControl.setValue('');
@@ -144,8 +148,8 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
             if (!resp.body) {
               return;
             }
-            this.settingsShow = Array.from(resp.body);
-            this.defaultSettings = Array.from(resp.body);
+            this.settingsShow = resp.body;
+            this.defaultSettings = this.deepClone(resp.body);
             this.notificationService.success('Task Priorities were successfully updated');
             this.isUpdated = false;
           });
@@ -157,8 +161,8 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
             if (!resp.body) {
               return;
             }
-            this.settingsShow = Array.from(resp.body);
-            this.defaultSettings = Array.from(resp.body);
+            this.settingsShow = resp.body;
+            this.defaultSettings = this.deepClone(resp.body);
             this.notificationService.success('Task States were successfully updated');
             this.isUpdated = false;
           });
@@ -170,8 +174,8 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
             if (!resp.body) {
               return;
             }
-            this.settingsShow = Array.from(resp.body);
-            this.defaultSettings = Array.from(resp.body);
+            this.settingsShow = resp.body;
+            this.defaultSettings = this.deepClone(resp.body);
             this.notificationService.success('Task Types were successfully updated');
             this.isUpdated = false;
           });
