@@ -9,32 +9,19 @@
     <div class="task-summary-container">
       <span class="item-label"> {{ task.key }}</span>
       <h5>
-        <div class="summary-text-wrapper" *ngIf="!this.summaryInputShow">
-          <span
+        <div class="summary-text-wrapper">
+          <div
             class="summary-text"
-            [innerHTML]="editTaskForm.controls.summary.value"
-          >
-          </span>
-          <tasque-button
-            class="btn icon edit"
-            [icon]="editIcon"
-            (click)="summaryClick()"
-          ></tasque-button>
-        </div>
-
-        <div
-          class="input-wrapper"
-          *ngIf="this.summaryInputShow"
-          (clickOutside)="summaryInputOutsideClick()"
-          [delayClickOutsideInit]="true"
-        >
-          <tasque-input
-            placeholder="Type some text"
+            [textContent]="editTaskForm.controls.summary.value"
+            (input)="
+              editTaskForm.controls.summary.setValue(titleContent($event))
+            "
+            contenteditable="true"
             formControlName="summary"
-            errorMessage=""
-            [invalid]="editTaskForm.controls.summary.valid"
-          >
-          </tasque-input>
+            ngDefaultControl
+          ></div>
+          <tasque-button class="btn icon" [icon]="editSquareIcon">
+          </tasque-button>
         </div>
 
         <div class="task-summary-buttons">
@@ -68,7 +55,7 @@
           <span class="item-label">Project</span>
           <tasque-dropdown
             class="red"
-            width="200px"
+            width="300px"
             [options]="projectOptions"
             formControlName="project"
           ></tasque-dropdown>
@@ -77,7 +64,7 @@
         <div class="item-wrapper">
           <span class="item-label">Status</span>
           <tasque-dropdown
-            width="200px"
+            width="300px"
             [options]="statusOptions"
             formControlName="status"
           ></tasque-dropdown>
@@ -86,7 +73,7 @@
         <div class="item-wrapper">
           <span class="item-label">Priority</span>
           <tasque-dropdown
-            width="200px"
+            width="300px"
             [options]="priorityOptions"
             formControlName="priority"
           ></tasque-dropdown>
@@ -95,7 +82,7 @@
         <div class="item-wrapper">
           <span class="item-label">Type</span>
           <tasque-dropdown
-            width="200px"
+            width="300px"
             [options]="typeOptions"
             formControlName="type"
           ></tasque-dropdown>
@@ -104,7 +91,7 @@
         <div class="item-wrapper">
           <span class="item-label">Sprint</span>
           <tasque-dropdown
-            width="200px"
+            width="300px"
             [options]="sprintOptions"
             formControlName="sprint"
           ></tasque-dropdown>
