@@ -17,6 +17,8 @@ export class ProtectedComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       const exist = params['exist'];
       const key = params['key'] as string;
+      localStorage.clear();
+
       if(exist === 'true') {
         this.router.navigate(['auth/login'], {
           queryParams: { key: key },

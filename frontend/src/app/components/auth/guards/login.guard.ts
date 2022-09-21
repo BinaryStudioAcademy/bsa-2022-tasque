@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router, UrlTree } from '@angular/router';
+import { ActivatedRoute, CanActivate, Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth.service';
 import { NotificationService } from '../../../../core/services/notification.service';
@@ -10,16 +10,23 @@ import { NotificationService } from '../../../../core/services/notification.serv
 export class LoginGuard implements CanActivate {
   constructor(
     private router: Router,
+    private activeRoute: ActivatedRoute,
     private authService: AuthService,
     private notificationService: NotificationService,
   ) {}
+
+  private key: string;
 
   canActivate():
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (this.authService.areTokensExist()) {
+      this.activeRoute.queryParams
+      .subscribe((params) => {
+        this.key = params['key'] as string;
+      });
+    if (this.authService.areTokensExist() && !this.key) {
       this.router.navigate(['/organizations']);
       this.notificationService.info('You are already logged in', 'Reminding');
       return false;

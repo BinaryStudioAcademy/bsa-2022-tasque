@@ -38,6 +38,13 @@ export class GetCurrentUserService {
       });
   }
 
+  public setCurrentUserByEmail(email: string) {
+    this.userService.getUserByEmail(email).subscribe((resp) => {
+      console.log(resp.body);
+      this.currentUserSubj.next(resp.body as UserModel);
+    })
+  }
+
   public clearCurrentUser(): void {
     this.currentUserSubj.complete();
     this.currentUserSubj = new ReplaySubject<UserModel>(1);
