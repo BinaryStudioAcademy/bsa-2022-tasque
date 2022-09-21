@@ -27,8 +27,7 @@ import { EditProjectComponent } from './components/edit-project/edit-project.com
 import { ProjectOptionsModule } from './components/tasque-project-settings/project-options-module/project-options-module.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TasqueCardComponent } from './components/tasque-card/tasque-card.component';
-import { EditSprintComponent } from './components/edit-sprint/edit-sprint.component';
-import { EditSprintDialogComponent } from './components/edit-sprint/edit-sprint-dialog/edit-sprint-dialog.component';
+import { EditSprintDialogComponent } from './components/edit-sprint-dialog/edit-sprint-dialog.component';
 import { CompleteSprintComponent } from './components/complete-sprint/complete-sprint.component';
 import { CompleteSprintDialogComponent } from './components/complete-sprint/complete-sprint-dialog/complete-sprint-dialog.component';
 import { SprintComponent } from './components/backlog/sprint/sprint.component';
@@ -93,4 +92,4 @@ import { DeleteSprintDialogComponent } from './components/delete-sprint-dialog/d
   bootstrap: [AppComponent],
   exports: [OrganizationListComponent],
 })
-export class AppModule {}
+export class AppModule { }
