@@ -7,11 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  faLessThanEqual,
-  faMagnifyingGlass,
-  faPlus,
-} from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { BoardColumnModel } from '../../../core/models/board/board-column-model';
 import {
   CdkDragDrop,

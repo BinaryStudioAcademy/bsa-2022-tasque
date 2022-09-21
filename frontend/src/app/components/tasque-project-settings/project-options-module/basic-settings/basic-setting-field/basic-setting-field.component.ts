@@ -169,7 +169,6 @@ export class BasicSettingFieldComponent
           });
         return;
       case 'State':
-        console.log(this.settingsShow as TaskState[]);
         this.projectService
           .updateProjectTaskStates(
             this.project.id,
