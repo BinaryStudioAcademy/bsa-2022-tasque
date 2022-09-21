@@ -279,8 +279,6 @@ export class SprintComponent implements OnInit, OnChanges {
         if (result) {
           this.currentSprint.name = result.name;
           this.currentSprint.description = result.description;
-          this.currentSprint.startAt = result.startAt;
-          this.currentSprint.endAt = result.endAt;
         }
       });
   }
