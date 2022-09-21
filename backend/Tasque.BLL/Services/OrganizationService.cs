@@ -113,12 +113,16 @@ namespace Tasque.Core.BLL.Services
             var userEntity = await _db.Users.FirstOrDefaultAsync(u => u.Email == userEmail)
                ?? throw new ValidationException("User not found");
 
+            var userRole = await _db.UserOrganizationRoles.FirstOrDefaultAsync(r => r.UserId == userEntity.Id)
+               ?? throw new ValidationException("User not found");
+
             if (!organizationEntity.Users.Contains(userEntity))
                 return;
 
             var user = _mapper.Map<User>(userEntity);
 
             organizationEntity.Users.Remove(user);
+            _db.UserOrganizationRoles.Remove(userRole);
 
             await _db.SaveChangesAsync();
         }
