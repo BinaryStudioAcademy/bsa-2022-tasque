@@ -13,6 +13,7 @@ import { UserRegisterModel } from 'src/core/models/user/user-register-model';
 import { NotificationService } from 'src/core/services/notification.service';
 import { HttpResponse } from '@angular/common/http';
 import { matchValidator } from '../../match.validator';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Component({
   selector: 'app-register-page',
@@ -100,6 +101,7 @@ export class RegisterPageComponent implements OnInit {
     private notificationService: NotificationService,
     private route: ActivatedRoute,
     private router: Router,
+    private userService: GetCurrentUserService,
   ) {
     this.nameControl = new FormControl(this.userRegister.name, [
       Validators.required,
@@ -201,6 +203,7 @@ export class RegisterPageComponent implements OnInit {
         .subscribe((resp) => {
           if (resp.body != null) {
             this.authService.setAuthToken(resp.body);
+            this.userService.setCurrentUserByEmail(this.emailControl.value);
           }
           this.router.navigate(['/']);
         });
