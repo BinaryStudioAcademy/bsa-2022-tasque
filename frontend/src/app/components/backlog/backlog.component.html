@@ -19,15 +19,9 @@
         </tasque-input>
       </div>
       <ul class="navigation">
-        <li (click)="taskSort(1)" [ngClass]="{ 'active': filterIssue == 1 }">
-          All
-        </li>
-        <li (click)="taskSort(2)" [ngClass]="{ 'active': filterIssue == 2 }">
-          Only my issues
-        </li>
-        <li (click)="taskSort(3)" [ngClass]="{ 'active': filterIssue == 3 }">
-          Recently updated
-        </li>
+        <li (click)="taskSort(1)" [ngClass]="{ 'active': filterIssue == 1 }">All</li>
+        <li (click)="taskSort(2)" [ngClass]="{ 'active': filterIssue == 2 }">Only my issues</li>
+        <li (click)="taskSort(3)" [ngClass]="{ 'active': filterIssue == 3 }">Recently updated</li>
         <li (click)="getArchiveSprints(currentProject.id)">
           <tasque-button
             class="btn icon-right"
@@ -45,7 +39,7 @@
       <mat-spinner style="margin: 250px auto"> </mat-spinner>
     </div>
     <div class="sprint-archive" *ngIf="isShowArchive" [@fadeInOut]>
-      <h3 class="title">Sprints archive</h3>
+      <h4 class="title">Sprints archive</h4>
       <app-sprint
         *ngFor="let sprint of archiveSprints; let index = index"
         [currentSprint]="sprint"
