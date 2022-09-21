@@ -15,7 +15,7 @@
 <div class="task-comment-container">
     <div class="comment-row" *ngFor="let comment of comments">
         <tasque-avatar [user]="comment.author" [diameter_px]="40" alt="avatar"></tasque-avatar>
-        <div>
+        <div class="minus-avatar">
             <div class="comment-header">
                 <p class="comment-user-name">{{ comment.author.name }}</p>
                 <p class="comment-date">{{ comment.createdAt | date: 'medium' }}</p>
