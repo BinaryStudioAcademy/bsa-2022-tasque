@@ -2,25 +2,27 @@
     <h5>Comments</h5>
 </div>
 <div class="user-comment-container">
-    <tasque-avatar [user]="currentUser" [diameter_px]="45" alt="avatar"></tasque-avatar>
+    <tasque-avatar [user]="currentUser" [diameter_px]="40" alt="avatar"></tasque-avatar>
 
     <div class="input-wrapper">
       <tasque-input #commentInput placeholder="Type a comment"></tasque-input>
+      <div class="user-comment-buttons">
+        <tasque-button class="btn icon" [icon]="sendIcon" (btnClick)="sendComment(commentInput)"></tasque-button>
+      </div>
     </div>
-
-    <div class="user-comment-buttons">
-      <tasque-button class="btn icon" [icon]="sendIcon" (btnClick)="sendComment(commentInput)"></tasque-button>
-    </div>
+    
 </div>
 <div class="task-comment-container">
-    <div *ngFor="let comment of comments">
-        <div class="comment-header">
-            <tasque-avatar [user]="comment.author" [diameter_px]="26" alt="avatar"></tasque-avatar>
-            <p class="comment-user-name">{{ comment.author.name }}</p>
-            <p class="comment-date">{{ comment.createdAt | date: 'medium' }}</p>
-        </div>
-        <div class="comment-text">
-            <p>{{ comment.message }}</p>
+    <div class="comment-row" *ngFor="let comment of comments">
+        <tasque-avatar [user]="comment.author" [diameter_px]="40" alt="avatar"></tasque-avatar>
+        <div>
+            <div class="comment-header">
+                <p class="comment-user-name">{{ comment.author.name }}</p>
+                <p class="comment-date">{{ comment.createdAt | date: 'medium' }}</p>
+            </div>
+            <div class="comment-text">
+                <p>{{ comment.message }}</p>
+            </div>
         </div>
     </div>    
 </div>

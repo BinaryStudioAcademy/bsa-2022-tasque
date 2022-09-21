@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { faLocationArrow as faSend}  from '@fortawesome/free-solid-svg-icons';
+import { faLocationArrow as faSend }  from '@fortawesome/free-solid-svg-icons';
 import { CommentInfo } from 'src/core/models/comment/comment-info';
 import { CreateComment } from 'src/core/models/comment/create-comment';
 import { UserModel } from 'src/core/models/user/user-model';
@@ -44,6 +44,10 @@ export class TasqueCommentsComponent implements OnInit {
   }
 
   sendComment(messageInput: InputComponent): void {
+    if(!messageInput.inputValue) {
+      this.notificationService.error('Comment cannot be empty!');
+      return;
+    }
     const comment = {
       taskId: this.taskId,
       message: messageInput.inputValue,
@@ -60,7 +64,7 @@ export class TasqueCommentsComponent implements OnInit {
           this.notificationService.error('Comment has not been added!');
         }
       }
-    )
+    );
   } 
 
 }

@@ -1,22 +1,23 @@
 @import 'src/colors.sass'
 
 .comments-container
-  padding-top: 15px
+  padding-top: 25px
   padding-left: 45px
-  padding-right: 30px
-  padding-bottom: 15px
+  padding-right: 45px
+  padding-bottom: 5px
 
 .user-comment-buttons
   display: flex
   flex-direction: row
   gap: 10px
-  background: colorscheme(gray-200)
+  position: absolute
+  top: 0
+  right: 0
+  background: none
   height: 70px
   align-items: center
   padding-left: 10px
   padding-right: 20px
-  border-top-right-radius: 10px
-  border-bottom-right-radius: 10px
   ::ng-deep tasque-button button
     color: colorscheme(gray-400)
     font-size: 28px
@@ -34,15 +35,13 @@
   align-items: center
   padding-top: 20px
   padding-left: 45px
-  padding-right: 30px
-  padding-bottom: 45px
+  padding-right: 45px
+  padding-bottom: 20px
   .input-wrapper
     width: 100%
+    position: relative
     ::ng-deep tasque-input input
       height: 70px
-      border-top-right-radius: 0px
-      border-bottom-right-radius: 0px
-
 
 tasque-avatar
   padding-right: 10px
@@ -50,7 +49,7 @@ tasque-avatar
 .task-comment-container
   padding-top: 15px
   padding-left: 45px
-  padding-right: 30px
+  padding-right: 45px
   padding-bottom: 15px
 
 .comment-header
@@ -60,13 +59,14 @@ tasque-avatar
 .comment-user-name
     font-weight: 600
     padding-right: 15px
-    line-height: 26px
 
 .comment-date
     color: colorscheme(gray-500)
     padding-left: 14px
     border-left: 1px solid colorscheme(gray-300)
-    line-height: 26px
 
 .comment-text
-    padding: 5px 36px 20px
+    padding: 5px 0 20px
+
+.comment-row
+    display: flex
