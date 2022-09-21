@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
-import { TaskStateTypes } from 'src/core/models/task/task-state-types';
 import { BacklogService } from 'src/core/services/backlog.service';
 import { SprintService } from 'src/core/services/sprint.service';
 
@@ -23,7 +22,7 @@ export class CompleteSprintDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<CompleteSprintDialogComponent>,
     public sprintService: SprintService,
     public backlogService: BacklogService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.openIssue();
@@ -46,18 +45,10 @@ export class CompleteSprintDialogComponent implements OnInit {
   }
 
   openIssue(): number {
-    return this.sprint.tasks.filter(
-      (t) =>
-        t.state?.name.toLowerCase() !== TaskStateTypes.Done &&
-        t.state?.name.toLowerCase() !== TaskStateTypes.Canceled,
-    ).length;
+    return this.sprint.tasks.filter((t) => !t.state?.status).length;
   }
 
   completedIssues(): number {
-    return this.sprint.tasks.filter(
-      (t) =>
-        t.state?.name.toLowerCase() === TaskStateTypes.Done ||
-        t.state?.name.toLowerCase() === TaskStateTypes.Canceled,
-    ).length;
+    return this.sprint.tasks.filter((t) => t.state?.status).length;
   }
 }

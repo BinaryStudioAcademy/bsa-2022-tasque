@@ -63,9 +63,9 @@ namespace Tasque.Core.WebAPI.Controllers
 
         [Route("{organizationId}/users/del")]
         [HttpPost]
-        public async virtual Task<IActionResult> DeleteUserInOrganization(int organizationId, [FromBody] UserDto user)
+        public async virtual Task<IActionResult> DeleteUserInOrganization(int organizationId, [FromBody] EmailDto email)
         {
-            await _service.DeleteUser(organizationId, user);
+            await _service.DeleteUser(organizationId, email.Email);
 
             return Ok();
         }

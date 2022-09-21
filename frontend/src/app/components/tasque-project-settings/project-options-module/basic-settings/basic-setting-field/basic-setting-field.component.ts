@@ -1,6 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { faCheck, faMinus, faPlus, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCheck,
+  faMinus,
+  faPlus,
+  faRotateLeft,
+} from '@fortawesome/free-solid-svg-icons';
 import { takeUntil } from 'rxjs/operators';
 import { BaseComponent } from 'src/core/base/base.component';
 import { ProjectModel } from 'src/core/models/project/project-model';
@@ -14,11 +19,16 @@ import { SettingType } from '../setting-type-model';
 @Component({
   selector: 'app-basic-setting-field',
   templateUrl: './basic-setting-field.component.html',
-  styleUrls: ['./basic-setting-field.component.sass']
+  styleUrls: ['./basic-setting-field.component.sass'],
 })
-export class BasicSettingFieldComponent extends BaseComponent implements OnInit {
+export class BasicSettingFieldComponent
+  extends BaseComponent
+  implements OnInit
+{
   @Input()
-  public set projectSettings(settings: TaskType[] | TaskState[] | TaskPriority[]) {
+  public set projectSettings(
+    settings: TaskType[] | TaskState[] | TaskPriority[],
+  ) {
     if (!settings) {
       this.settingsShow = [];
       this.defaultSettings = [];
@@ -48,7 +58,7 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
 
   constructor(
     private notificationService: NotificationService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
   ) {
     super();
   }
@@ -59,9 +69,7 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
       Validators.minLength(2),
     ]);
 
-    this.formColorControl = new FormControl('', [
-      Validators.required,
-    ]);
+    this.formColorControl = new FormControl('', [Validators.required]);
   }
 
   private deepClone<T>(value: T): T {
@@ -142,7 +150,11 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
 
     switch (this.type) {
       case 'Priority':
-        this.projectService.updateProjectTaskPriorities(this.project.id, this.settingsShow as TaskPriority[])
+        this.projectService
+          .updateProjectTaskPriorities(
+            this.project.id,
+            this.settingsShow as TaskPriority[],
+          )
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe((resp) => {
             if (!resp.body) {
@@ -150,12 +162,18 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
             }
             this.settingsShow = resp.body;
             this.defaultSettings = this.deepClone(resp.body);
-            this.notificationService.success('Task Priorities were successfully updated');
+            this.notificationService.success(
+              'Task Priorities were successfully updated',
+            );
             this.isUpdated = false;
           });
         return;
       case 'State':
-        this.projectService.updateProjectTaskStates(this.project.id, this.settingsShow as TaskState[])
+        this.projectService
+          .updateProjectTaskStates(
+            this.project.id,
+            this.settingsShow as TaskState[],
+          )
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe((resp) => {
             if (!resp.body) {
@@ -163,12 +181,18 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
             }
             this.settingsShow = resp.body;
             this.defaultSettings = this.deepClone(resp.body);
-            this.notificationService.success('Task States were successfully updated');
+            this.notificationService.success(
+              'Task States were successfully updated',
+            );
             this.isUpdated = false;
           });
         return;
       case 'Type':
-        this.projectService.updateProjectTaskTypes(this.project.id, this.settingsShow as TaskType[])
+        this.projectService
+          .updateProjectTaskTypes(
+            this.project.id,
+            this.settingsShow as TaskType[],
+          )
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe((resp) => {
             if (!resp.body) {
@@ -176,7 +200,9 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
             }
             this.settingsShow = resp.body;
             this.defaultSettings = this.deepClone(resp.body);
-            this.notificationService.success('Task Types were successfully updated');
+            this.notificationService.success(
+              'Task Types were successfully updated',
+            );
             this.isUpdated = false;
           });
         return;

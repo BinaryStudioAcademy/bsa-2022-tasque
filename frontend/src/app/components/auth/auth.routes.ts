@@ -22,7 +22,6 @@ export const AuthRoutes: Routes = [
       {
         path: 'invite',
         component: ProtectedComponent,
-        canActivate: [LoginGuard],
       },
       {
         path: 'register',

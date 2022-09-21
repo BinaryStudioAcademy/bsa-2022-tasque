@@ -13,7 +13,7 @@ import { SettingType } from './setting-type-model';
 @Component({
   selector: 'app-basic-settings',
   templateUrl: './basic-settings.component.html',
-  styleUrls: ['./basic-settings.component.sass']
+  styleUrls: ['./basic-settings.component.sass'],
 })
 export class BasicSettingsComponent extends BaseComponent implements OnInit {
   public selectedSetting?: SettingType;
@@ -26,20 +26,23 @@ export class BasicSettingsComponent extends BaseComponent implements OnInit {
   constructor(
     private getProjectService: GetCurrentProjectService,
     private projectService: ProjectService,
-    private taskTemplateService: TaskTemplateService) {
+    private taskTemplateService: TaskTemplateService,
+  ) {
     super();
   }
 
   ngOnInit(): void {
-    this.getProjectService.currentProjectId$.pipe(
-      concatMap((id) => this.projectService.getProjectById(id)),
-      map((resp) => resp.body),
-    ).subscribe((project) => {
-      if (!project) {
-        return;
-      }
-      this.project = project;
-    });
+    this.getProjectService.currentProjectId$
+      .pipe(
+        concatMap((id) => this.projectService.getProjectById(id)),
+        map((resp) => resp.body),
+      )
+      .subscribe((project) => {
+        if (!project) {
+          return;
+        }
+        this.project = project;
+      });
   }
 
   public selectSetting(setting: SettingType): void {

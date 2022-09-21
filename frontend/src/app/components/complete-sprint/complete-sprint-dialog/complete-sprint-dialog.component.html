@@ -1,13 +1,12 @@
 <div class="container">
   <mat-dialog-content>
     <div class="content">
-      <p>Complete {{ sprint.name }} sprint</p>
+      <p class="sprint-name">Complete {{ sprint.name }} sprint</p>
       <div class="task-info">
         <span>This sprint contains:</span>
         <ul>
           <li>
-            <span class="selection">{{ completedIssues() }}</span> completed
-            issues
+            <span class="selection">{{ completedIssues() }}</span> completed issues
           </li>
           <li>
             <span class="selection">{{ openIssue() }}</span> open issue
@@ -21,11 +20,7 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions class="dialog-options" align="end">
-    <tasque-button
-      [text]="this.cancelBtnName"
-      [class]="this.cancelBtnClass"
-      (click)="onClose()"
-    >
+    <tasque-button [text]="this.cancelBtnName" [class]="this.cancelBtnClass" (click)="onClose()">
     </tasque-button>
     <tasque-button
       type="submit"

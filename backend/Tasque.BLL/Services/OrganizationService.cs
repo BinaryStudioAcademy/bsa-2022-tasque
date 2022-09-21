@@ -103,14 +103,14 @@ namespace Tasque.Core.BLL.Services
             await _db.SaveChangesAsync();
         }
 
-        public async Task DeleteUser(int organizationId, UserDto userDto)
+        public async Task DeleteUser(int organizationId, string userEmail)
         {
             var organizationEntity = await _db.Organizations
                 .Include(u => u.Users)
                 .FirstOrDefaultAsync(o => o.Id == organizationId)
                ?? throw new ValidationException("Organization not found");
 
-            var userEntity = await _db.Users.FirstOrDefaultAsync(u => u.Id == userDto.Id)
+            var userEntity = await _db.Users.FirstOrDefaultAsync(u => u.Email == userEmail)
                ?? throw new ValidationException("User not found");
 
             if (!organizationEntity.Users.Contains(userEntity))
