@@ -20,5 +20,11 @@ export class TaskStateService {
 
   createTaskState(model: TaskState): Observable<HttpResponse<TaskState>> {
     return this.httpService.postFullRequest<TaskState>(this.routePrefix, model);
-  } 
+  }
+
+  updateTaskStateStatus(id: number): Observable<HttpResponse<TaskState>> {
+    return this.httpService.getFullRequest<TaskState>(
+      this.routePrefix + `/updateTaskStateStatus/${id}`,
+    );
+  }
 }

@@ -10,10 +10,10 @@ namespace Tasque.Core.BLL.Services
     public class TaskStateService : EntityCrudService<TaskStateEditDto, TaskStateDto, TaskStateEditDto, int, TaskState>
     {
 
-        public TaskStateService(DataContext db, IMapper mapper, CurrentUserParameters currentUser) 
+        public TaskStateService(DataContext db, IMapper mapper, CurrentUserParameters currentUser)
             : base(db, mapper, currentUser)
         {
-        
+
         }
 
         public Task<List<TaskState>> GetAll()
@@ -38,5 +38,28 @@ namespace Tasque.Core.BLL.Services
             _db.SaveChanges();
             return _mapper.Map<TaskStateDto>(entity);
         }
+
+        public async Task<TaskStateDto> UpdateTaskStateStatus(int taskId)
+        {
+            var taskState = await _db.TaskStates.FirstOrDefaultAsync(t => t.Id == taskId);
+
+            if (taskState != null)
+            {
+                if (taskState.Status == null)
+                {
+                    taskState.Status = true;
+                }
+                else
+                {
+                    taskState.Status = !taskState.Status;
+                }
+            }
+
+            _db.Update(taskState);
+            await _db.SaveChangesAsync();
+
+            return _mapper.Map<TaskStateDto>(taskState);
+        }
     }
 }
+ 
