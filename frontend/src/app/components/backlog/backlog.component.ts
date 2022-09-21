@@ -31,6 +31,7 @@ import { ProjectService } from 'src/core/services/project.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { NotificationService } from 'src/core/services/notification.service';
 import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
+import { UserRole } from 'src/core/models/user/user-roles';
 
 @Component({
   selector: 'app-backlog',
@@ -72,6 +73,9 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
   public isShowArchive: boolean;
   public tasks: TaskModel[] = [];
 
+  public role: UserRole;
+  public isCurrentUserAdmin = false;
+
   public isShow = false;
 
   constructor(
@@ -110,7 +114,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
       if (this.currentUser === undefined) {
         return;
       }
-      // this.getUserBoards();
+
       this.getSprints(this.currentProjectId);
     });
   }

@@ -31,6 +31,11 @@ import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import { take } from 'rxjs/operators';
 import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
+import { UserRole } from 'src/core/models/user/user-roles';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
+import { OrganizationService } from 'src/core/services/organization.service';
+import { OrganizationModel } from 'src/core/models/organization/organization-model';
 
 @Component({
   selector: 'tasque-board',
@@ -49,6 +54,10 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   public selectedUserId?: number;
   private newColumn: TaskState;
   private projectId: number;
+
+  public currentUser: UserModel;
+  public role: UserRole;
+  public isCurrentUserAdmin = false;
 
   public unsubscribe$ = new Subject<void>();
 
@@ -86,6 +95,9 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     private getCurrentEntityService: ScopeGetCurrentEntityService,
     private taskStorageService: TaskStorageService,
     private router: Router,
+    public currentUserService: GetCurrentUserService,
+    private currentOrganizationService: GetCurrentOrganizationService,
+    private organizationService: OrganizationService,
   ) {
     this.getCurrentEntityService.getCurrentUserService.currentUser$.subscribe(
       (res) => {
@@ -128,6 +140,8 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           this.projectUsers = this.project.users;
           this.updateHeader();
           this.setColumns();
+
+          this.permissionToEdit();
         } else {
           this.notificationService.error('Something went wrong');
         }
@@ -382,5 +396,35 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
   statusChanged(val: boolean): void {
     this.statusColumn = val;
+  }
+
+  public permissionToEdit(): void {
+    this.currentUserService.currentUser$.subscribe((user) => {
+      this.currentUser = user;
+      if (this.currentUser === undefined) {
+        this.role = 0;
+      } else {
+        const organizationId =
+          this.currentOrganizationService.currentOrganizationId;
+        this.organizationService
+          .getOrganization(organizationId)
+          .subscribe((resp) => {
+            const currentOrganization = resp.body as OrganizationModel;
+            const role = this.currentUser.organizationRoles.find(
+              (r) =>
+                r.organizationId === organizationId &&
+                r.userId === this.currentUser.id,
+            )?.role as UserRole;
+            if (
+              role >= UserRole.projectAdmin ||
+              currentOrganization.authorId === this.currentUser.id
+            ) {
+              this.isCurrentUserAdmin = true;
+            } else {
+              this.isCurrentUserAdmin = false;
+            }
+          });
+      }
+    });
   }
 }
