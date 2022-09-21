@@ -27,6 +27,8 @@ namespace Tasque.Core.BLL.MappingProfiles
                 );
             CreateMap<TaskInfoDto, Task>()
                 .ForMember(x => x.Author, opt => opt.Ignore());
+            CreateMap<Comment, CreateCommentDTO>().ReverseMap();
+            CreateMap<Comment, CommentInfoDTO>();
         }
     }
 }
