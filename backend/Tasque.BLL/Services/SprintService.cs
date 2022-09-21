@@ -227,7 +227,7 @@ namespace Tasque.Core.BLL.Services
                 throw new HttpException(System.Net.HttpStatusCode.NotFound, "Sprinter with this ID does not exist");
 
             sprint.Tasks
-                    .Where(t => t.State?.Status != null && t.State?.Status == true)
+                    .Where(t => t.State?.Status == null || t.State?.Status == false)
                     .ToList()
                     .ForEach(t =>
                     {

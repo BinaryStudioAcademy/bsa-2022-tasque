@@ -34,6 +34,9 @@ import { OpenDialogService } from 'src/core/services/open-dialog.service';
 import { TaskModel } from 'src/core/models/task/task-model';
 import * as moment from 'moment';
 import { EditSprintModel } from 'src/core/models/sprint/edit-sprint-model';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
+import { OrganizationService } from 'src/core/services/organization.service';
+import { OrganizationModel } from 'src/core/models/organization/organization-model';
 
 @Component({
   selector: 'app-sprint',
@@ -92,25 +95,15 @@ export class SprintComponent implements OnInit, OnChanges {
     public taskTypeService: TaskTypeService,
     public taskStateService: TaskStateService,
     public openDialogService: OpenDialogService,
-  ) { }
+    private currentOrganizationService: GetCurrentOrganizationService,
+    private organizationService: OrganizationService,
+  ) {}
 
   ngOnInit(): void {
     if (this.currentUser === undefined) {
       this.role = 0;
     } else {
-      this.role =
-        (this.currentUser?.organizationRoles?.find(
-          (m) =>
-            m.organizationId === this.currentProject.organizationId &&
-            m.userId === this.currentUser.id,
-        )?.role as UserRole) ?? 0;
-
-      if (
-        UserRole.projectAdmin <= this.role ||
-        this.currentProject.authorId === this.currentUser.id
-      ) {
-        this.isCurrentUserAdmin = true;
-      }
+      this.permissionToEdit();
     }
 
     this.getTasksState();
@@ -209,7 +202,9 @@ export class SprintComponent implements OnInit, OnChanges {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((result) => {
           if (result.body) {
-            this.notificationService.success(`Task ${_task.key} moved to sprint ${this.currentSprint.name}`);
+            this.notificationService.success(
+              `Task ${_task.key} moved to sprint ${this.currentSprint.name}`,
+            );
           }
         });
     }
@@ -267,14 +262,14 @@ export class SprintComponent implements OnInit, OnChanges {
   public switchDropdown(): void {
     if (this.dropdownState === 'opened') {
       this.dropdownState = 'closed';
-    }
-    else {
+    } else {
       this.dropdownState = 'opened';
     }
   }
 
   public editSprint(): void {
-    this.openDialogService.openEditSprintDialog(this.getEditSprintModel(false))
+    this.openDialogService
+      .openEditSprintDialog(this.getEditSprintModel(false))
       .subscribe((result) => {
         if (result) {
           this.currentSprint.name = result.name;
@@ -284,7 +279,8 @@ export class SprintComponent implements OnInit, OnChanges {
   }
 
   public startSprint(): void {
-    this.openDialogService.openEditSprintDialog(this.getEditSprintModel(true))
+    this.openDialogService
+      .openEditSprintDialog(this.getEditSprintModel(true))
       .subscribe((result) => {
         if (result) {
           this.currentSprint.name = result.name;
@@ -307,5 +303,28 @@ export class SprintComponent implements OnInit, OnChanges {
       isStarting: isStarting,
       tasks: this.tasks.map((task) => task.id),
     };
+  }
+
+  public permissionToEdit(): void {
+    const organizationId =
+      this.currentOrganizationService.currentOrganizationId;
+    this.organizationService
+      .getOrganization(organizationId)
+      .subscribe((resp) => {
+        const currentOrganization = resp.body as OrganizationModel;
+        const role = this.currentUser.organizationRoles.find(
+          (r) =>
+            r.organizationId === organizationId &&
+            r.userId === this.currentUser.id,
+        )?.role as UserRole;
+        if (
+          role >= UserRole.projectAdmin ||
+          currentOrganization.authorId === this.currentUser.id
+        ) {
+          this.isCurrentUserAdmin = true;
+        } else {
+          this.isCurrentUserAdmin = false;
+        }
+      });
   }
 }

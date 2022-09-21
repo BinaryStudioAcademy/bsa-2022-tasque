@@ -17,13 +17,14 @@ import {
 import { BacklogService } from 'src/core/services/backlog.service';
 import { takeUntil } from 'rxjs/operators';
 import { UserRole } from 'src/core/models/user/user-roles';
-import { TaskTypeService } from 'src/core/services/task-type.service';
-import { TaskStateService } from 'src/core/services/task-state.service';
-import { SprintService } from 'src/core/services/sprint.service';
 import { NewSprintModel } from 'src/core/models/sprint/new-sprint-model';
 import { IssueSort } from '../backlog/models';
 import { TaskService } from 'src/core/services/task.service';
 import { NotificationService } from 'src/core/services/notification.service';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
+import { OrganizationService } from 'src/core/services/organization.service';
+import { OrganizationModel } from 'src/core/models/organization/organization-model';
+import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
 
 @Component({
   selector: 'app-backlog-content',
@@ -65,11 +66,11 @@ export class BacklogContentComponent implements OnInit, OnChanges {
 
   constructor(
     public backlogService: BacklogService,
-    public taskTypeService: TaskTypeService,
-    public taskStateService: TaskStateService,
-    public sprintService: SprintService,
     public taskService: TaskService,
     public notificationService: NotificationService,
+    private currentOrganizationService: GetCurrentOrganizationService,
+    private organizationService: OrganizationService,
+    public scopeBoardService: ScopeBoardService,
   ) {
     this.subscription = backlogService.changeBacklog$.subscribe(() => {
       this.getBacklogTasks();
@@ -84,16 +85,8 @@ export class BacklogContentComponent implements OnInit, OnChanges {
     if (this.currentUser === undefined) {
       return;
     }
-    this.role = this.currentUser?.organizationRoles?.find(
-        (m) =>
-          m.organizationId === this.project.organizationId &&
-          m.userId === this.currentUser.id,
-      )?.role as UserRole ?? 0;
 
-    if (UserRole.projectAdmin <= this.role || this.project.authorId === this.currentUser.id) {
-      this.isCurrentUserAdmin = true;
-    }
-
+    this.permissionToEdit();
     this.getTasksState();
     this.getTasksType();
     this.getBacklogTasks();
@@ -127,7 +120,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
 
   drop(event: CdkDragDrop<TaskModel[]>): void {
     const _task = event.previousContainer.data[event.previousIndex];
-    
+
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -149,7 +142,9 @@ export class BacklogContentComponent implements OnInit, OnChanges {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((result) => {
           if (result.body) {
-            this.notificationService.success(`Task ${_task.key} moved to backlog`);
+            this.notificationService.success(
+              `Task ${_task.key} moved to backlog`,
+            );
           }
         });
     }
@@ -175,7 +170,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   }
 
   public getTasksType(): void {
-    this.taskTypeService
+    this.scopeBoardService.taskTypeService
       .getAll()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
@@ -220,12 +215,35 @@ export class BacklogContentComponent implements OnInit, OnChanges {
       authorId: this.currentUser.id,
     };
 
-    this.sprintService
+    this.scopeBoardService.sprintService
       .create(newSprint)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
           this.sprints.push(result.body);
+        }
+      });
+  }
+
+  permissionToEdit(): void {
+    const organizationId =
+      this.currentOrganizationService.currentOrganizationId;
+    this.organizationService
+      .getOrganization(organizationId)
+      .subscribe((resp) => {
+        const currentOrganization = resp.body as OrganizationModel;
+        const role = this.currentUser.organizationRoles.find(
+          (r) =>
+            r.organizationId === organizationId &&
+            r.userId === this.currentUser.id,
+        )?.role as UserRole;
+        if (
+          role >= UserRole.projectAdmin ||
+          currentOrganization.authorId === this.currentUser.id
+        ) {
+          this.isCurrentUserAdmin = true;
+        } else {
+          this.isCurrentUserAdmin = false;
         }
       });
   }

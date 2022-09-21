@@ -22,7 +22,11 @@
         [organizationId]="currentOrganizationId"
         sidebarName="createTaskSidebar"
       ></tasque-task-creation>
-      <tasque-option option (click)="openCreateProjectDialog()">
+      <tasque-option
+        *ngIf="isCurrentUserAdmin"
+        option
+        (click)="openCreateProjectDialog()"
+      >
         <p>Create Project</p>
       </tasque-option>
       <tasque-option option (click)="openCreateOrganizationDialog()">
