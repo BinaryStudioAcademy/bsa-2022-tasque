@@ -13,6 +13,8 @@ import { takeUntil } from 'rxjs/operators';
 import { OpenDialogService } from 'src/core/services/open-dialog.service';
 import { GetCurrentProjectService } from 'src/core/services/get-current-project.service';
 import { UserRole } from 'src/core/models/user/user-roles';
+import { OrganizationService } from 'src/core/services/organization.service';
+import { OrganizationModel } from 'src/core/models/organization/organization-model';
 
 @Component({
   selector: 'app-project-list',
@@ -43,6 +45,8 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     private currentUserService: GetCurrentUserService,
     private currentProjectService: GetCurrentProjectService,
     private openDialogService: OpenDialogService,
+    private currentOrganizationService: GetCurrentOrganizationService,
+    private organizationService: OrganizationService,
   ) {}
 
   ngOnInit(): void {
@@ -96,20 +100,26 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       }
       this.currentUser = user;
 
-      if (this.currentUser === undefined) {
-        this.role = 0;
-      } else {
-        this.role =
-          (this.currentUser?.organizationRoles?.find(
-            (m) =>
-              m.organizationId === this.currentOrganizationId &&
-              m.userId === this.currentUser.id,
-          )?.role as UserRole) ?? 0;
-
-        if (UserRole.projectAdmin <= this.role) {
-          this.isCurrentUserAdmin = true;
-        }
-      }
+      const organizationId =
+        this.currentOrganizationService.currentOrganizationId;
+      this.organizationService
+        .getOrganization(organizationId)
+        .subscribe((resp) => {
+          const currentOrganization = resp.body as OrganizationModel;
+          const role = this.currentUser.organizationRoles.find(
+            (r) =>
+              r.organizationId === organizationId &&
+              r.userId === this.currentUser.id,
+          )?.role as UserRole;
+          if (
+            role >= UserRole.projectAdmin ||
+            currentOrganization.authorId === this.currentUser.id
+          ) {
+            this.isCurrentUserAdmin = true;
+          } else {
+            this.isCurrentUserAdmin = false;
+          }
+        });
     });
   }
 
