@@ -32,6 +32,8 @@ import { UserRole } from 'src/core/models/user/user-roles';
 import { NotificationService } from 'src/core/services/notification.service';
 import { OpenDialogService } from 'src/core/services/open-dialog.service';
 import { TaskModel } from 'src/core/models/task/task-model';
+import * as moment from 'moment';
+import { EditSprintModel } from 'src/core/models/sprint/edit-sprint-model';
 
 @Component({
   selector: 'app-sprint',
@@ -269,5 +271,43 @@ export class SprintComponent implements OnInit, OnChanges {
     else {
       this.dropdownState = 'opened';
     }
+  }
+
+  public editSprint(): void {
+    this.openDialogService.openEditSprintDialog(this.getEditSprintModel(false))
+      .subscribe((result) => {
+        if (result) {
+          this.currentSprint.name = result.name;
+          this.currentSprint.description = result.description;
+          this.currentSprint.startAt = result.startAt;
+          this.currentSprint.endAt = result.endAt;
+        }
+      });
+  }
+
+  public startSprint(): void {
+    this.openDialogService.openEditSprintDialog(this.getEditSprintModel(true))
+      .subscribe((result) => {
+        if (result) {
+          this.currentSprint.name = result.name;
+          this.currentSprint.description = result.description;
+          this.currentSprint.startAt = result.startAt;
+          this.currentSprint.endAt = result.endAt;
+        }
+      });
+  }
+
+  private getEditSprintModel(isStarting: boolean): EditSprintModel {
+    return {
+      ...this.currentSprint,
+      startAt: this.currentSprint.startAt
+        ? moment(this.currentSprint.startAt).format('YYYY-MM-DDTHH:mm')
+        : undefined,
+      endAt: this.currentSprint.endAt
+        ? moment(this.currentSprint.endAt).format('YYYY-MM-DDTHH:mm')
+        : undefined,
+      isStarting: isStarting,
+      tasks: this.tasks.map((task) => task.id),
+    };
   }
 }

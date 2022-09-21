@@ -37,19 +37,19 @@
           <p class="estimate-count">{{ estimate ? estimate : 0 }}</p>
         </div>
         <div class="wrapper button">
-          <app-edit-sprint
+          <tasque-button
             *ngIf="
               !currentSprint.startAt && !currentSprint.isComplete && currentSprint.tasks && isCurrentUserAdmin
             "
-            [btnClass]="
+            [class]="
               sprintIndex != 0 || currentSprint.tasks.length == 0
                 ? 'btn mini voilet full disabled'
                 : 'btn mini voilet full'
             "
-            [currentSprint]="currentSprint"
+            text="Start sprint"
             class="btn mini voilet full start-sprint"
-            [isStarting]="true"
-          ></app-edit-sprint>
+            (btnClick)="startSprint()"
+          ></tasque-button>
           <app-complete-sprint
             *ngIf="currentSprint.startAt && !currentSprint.isComplete && isCurrentUserAdmin"
             [sprint]="currentSprint"
@@ -70,29 +70,20 @@
                 (clickOutside)="dropdownState = 'closed'"
                 exclude=".dropbtn"
               >
-                <a *ngIf="sprintIndex != 0 && (sprintIndex != 1 || !sprints[0].startAt)">
-                  <tasque-button
-                    (click)="$sprintUp(currentSprint)"
-                    text="Move sprint up"
-                    class="btn black"
-                  ></tasque-button>
+                <a
+                  *ngIf="sprintIndex != 0 && (sprintIndex != 1 || !sprints[0].startAt)"
+                  (click)="$sprintUp(currentSprint)"
+                >
+                  <tasque-button text="Move sprint up" class="btn black"></tasque-button>
                 </a>
-                <a *ngIf="sprintIndex != 0 || !currentSprint.startAt">
-                  <tasque-button
-                    (click)="$sprintDown(currentSprint)"
-                    text="Move sprint down"
-                    class="btn black"
-                  ></tasque-button>
+                <a *ngIf="sprintIndex != 0 || !currentSprint.startAt" (click)="$sprintDown(currentSprint)">
+                  <tasque-button text="Move sprint down" class="btn black"></tasque-button>
                 </a>
-                <a>
-                  <app-edit-sprint [currentSprint]="currentSprint" btnClass="btn black"></app-edit-sprint>
+                <a (click)="editSprint()">
+                  <tasque-button text="Edit Sprint" class="btn black"></tasque-button>
                 </a>
-                <a>
-                  <tasque-button
-                    text="Delete sprint"
-                    class="btn black"
-                    (click)="deleteSprint(currentSprint)"
-                  ></tasque-button>
+                <a (click)="deleteSprint(currentSprint)">
+                  <tasque-button text="Delete sprint" class="btn black"></tasque-button>
                 </a>
               </div>
             </div>
