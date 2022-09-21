@@ -59,7 +59,6 @@ import { DeleteSprintDialogComponent } from './components/delete-sprint-dialog/d
     BacklogComponent,
     CompleteSprintComponent,
     CompleteSprintDialogComponent,
-    EditSprintComponent,
     EditSprintDialogComponent,
     SprintComponent,
     IssueComponent,
