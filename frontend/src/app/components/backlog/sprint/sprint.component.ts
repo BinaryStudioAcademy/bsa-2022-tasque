@@ -81,6 +81,8 @@ export class SprintComponent implements OnInit, OnChanges {
   faAngleDown = faAngleDown;
   faChevronRight = faChevronRight;
 
+  dropdownState: 'opened' | 'closed' = 'closed';
+
   constructor(
     public sprintService: SprintService,
     public taskService: TaskService,
@@ -88,7 +90,7 @@ export class SprintComponent implements OnInit, OnChanges {
     public taskTypeService: TaskTypeService,
     public taskStateService: TaskStateService,
     public openDialogService: OpenDialogService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.currentUser === undefined) {
@@ -258,5 +260,14 @@ export class SprintComponent implements OnInit, OnChanges {
 
   public toogleIsDragable(val: boolean): void {
     this.isDraggable = !val;
+  }
+
+  public switchDropdown(): void {
+    if (this.dropdownState === 'opened') {
+      this.dropdownState = 'closed';
+    }
+    else {
+      this.dropdownState = 'opened';
+    }
   }
 }

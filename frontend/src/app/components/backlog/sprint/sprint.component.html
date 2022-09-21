@@ -59,8 +59,17 @@
           ></app-complete-sprint>
           <div class="dropdown-button" *ngIf="isCurrentUserAdmin && !currentSprint.isComplete">
             <div class="dropdown" style="float: right">
-              <tasque-button class="btn dropbtn" [icon]="faEllipsisV"></tasque-button>
-              <div class="dropdown-content">
+              <tasque-button
+                class="btn dropbtn"
+                (btnClick)="switchDropdown()"
+                [icon]="faEllipsisV"
+              ></tasque-button>
+              <div
+                class="dropdown-content"
+                [ngClass]="dropdownState"
+                (clickOutside)="dropdownState = 'closed'"
+                exclude=".dropbtn"
+              >
                 <a *ngIf="sprintIndex != 0 && (sprintIndex != 1 || !sprints[0].startAt)">
                   <tasque-button
                     (click)="$sprintUp(currentSprint)"
