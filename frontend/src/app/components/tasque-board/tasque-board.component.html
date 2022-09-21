@@ -105,7 +105,7 @@
                   </tasque-card>
                 </div>
               </div>
-              <div *ngIf="item.name === 'done'">
+              <div *ngIf="item.name.toLowerCase() === 'done'">
                 <div class="column" *ngFor="let task of item.tasks">
                   <tasque-card
                     *ngIf="!task.isHidden"
