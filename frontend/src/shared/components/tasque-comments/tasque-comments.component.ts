@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { faFloppyDisk as faSend}  from '@fortawesome/free-solid-svg-icons';
+import { faLocationArrow as faSend}  from '@fortawesome/free-solid-svg-icons';
 import { CommentInfo } from 'src/core/models/comment/comment-info';
 import { UserModel } from 'src/core/models/user/user-model';
 import { CommentService } from 'src/core/services/comment.service';
