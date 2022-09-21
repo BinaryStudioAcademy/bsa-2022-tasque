@@ -12,6 +12,9 @@ import { OpenDialogService } from 'src/core/services/open-dialog.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { InternalServices } from 'src/core/services/internalServices';
 import { Observable } from 'rxjs';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
+import { OrganizationService } from 'src/core/services/organization.service';
+import { UserRole } from 'src/core/models/user/user-roles';
 
 @Component({
   selector: 'tasque-header',
@@ -27,13 +30,16 @@ export class HeaderComponent implements OnInit {
 
   public upArrowIcon = faCaretUp;
   public downArrowIcon = faCaretDown;
+  public isCurrentUserAdmin = false;
 
   constructor(
     private getCurrentUserService: GetCurrentUserService,
     private authService: AuthService,
     private router: Router,
     private openDialogService: OpenDialogService,
-    private internalServices: InternalServices
+    private internalServices: InternalServices,
+    private currentOrganizationService: GetCurrentOrganizationService,
+    private organizationService: OrganizationService,
   ) {}
 
   ngOnInit(): void {
@@ -63,6 +69,7 @@ export class HeaderComponent implements OnInit {
       }
 
       this.currentUser = user;
+      this.permissionToEdit();
     });
   }
 
@@ -80,7 +87,9 @@ export class HeaderComponent implements OnInit {
           return;
         }
 
-        this.internalServices.getCurrentOrganizationService.updateOrganization(result);
+        this.internalServices.getCurrentOrganizationService.updateOrganization(
+          result,
+        );
       });
   }
 
@@ -119,5 +128,28 @@ export class HeaderComponent implements OnInit {
 
   public checkUrl(): void {
     this.isChanged.emit();
+  }
+
+  public permissionToEdit(): void {
+    const organizationId =
+      this.currentOrganizationService.currentOrganizationId;
+    this.organizationService
+      .getOrganization(organizationId)
+      .subscribe((resp) => {
+        const currentOrganization = resp.body as OrganizationModel;
+        const role = this.currentUser.organizationRoles.find(
+          (r) =>
+            r.organizationId === organizationId &&
+            r.userId === this.currentUser.id,
+        )?.role as UserRole;
+        if (
+          role >= UserRole.projectAdmin ||
+          currentOrganization.authorId === this.currentUser.id
+        ) {
+          this.isCurrentUserAdmin = true;
+        } else {
+          this.isCurrentUserAdmin = false;
+        }
+      });
   }
 }

@@ -24,6 +24,9 @@ import { NewSprintModel } from 'src/core/models/sprint/new-sprint-model';
 import { IssueSort } from '../backlog/models';
 import { TaskService } from 'src/core/services/task.service';
 import { NotificationService } from 'src/core/services/notification.service';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
+import { OrganizationService } from 'src/core/services/organization.service';
+import { OrganizationModel } from 'src/core/models/organization/organization-model';
 
 @Component({
   selector: 'app-backlog-content',
@@ -70,6 +73,8 @@ export class BacklogContentComponent implements OnInit, OnChanges {
     public sprintService: SprintService,
     public taskService: TaskService,
     public notificationService: NotificationService,
+    private currentOrganizationService: GetCurrentOrganizationService,
+    private organizationService: OrganizationService,
   ) {
     this.subscription = backlogService.changeBacklog$.subscribe(() => {
       this.getBacklogTasks();
@@ -84,16 +89,8 @@ export class BacklogContentComponent implements OnInit, OnChanges {
     if (this.currentUser === undefined) {
       return;
     }
-    this.role = this.currentUser?.organizationRoles?.find(
-        (m) =>
-          m.organizationId === this.project.organizationId &&
-          m.userId === this.currentUser.id,
-      )?.role as UserRole ?? 0;
 
-    if (UserRole.projectAdmin <= this.role || this.project.authorId === this.currentUser.id) {
-      this.isCurrentUserAdmin = true;
-    }
-
+    this.permissionToEdit();
     this.getTasksState();
     this.getTasksType();
     this.getBacklogTasks();
@@ -127,7 +124,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
 
   drop(event: CdkDragDrop<TaskModel[]>): void {
     const _task = event.previousContainer.data[event.previousIndex];
-    
+
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -149,7 +146,9 @@ export class BacklogContentComponent implements OnInit, OnChanges {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((result) => {
           if (result.body) {
-            this.notificationService.success(`Task ${_task.key} moved to backlog`);
+            this.notificationService.success(
+              `Task ${_task.key} moved to backlog`,
+            );
           }
         });
     }
@@ -226,6 +225,29 @@ export class BacklogContentComponent implements OnInit, OnChanges {
       .subscribe((result) => {
         if (result.body) {
           this.sprints.push(result.body);
+        }
+      });
+  }
+
+  permissionToEdit(): void {
+    const organizationId =
+      this.currentOrganizationService.currentOrganizationId;
+    this.organizationService
+      .getOrganization(organizationId)
+      .subscribe((resp) => {
+        const currentOrganization = resp.body as OrganizationModel;
+        const role = this.currentUser.organizationRoles.find(
+          (r) =>
+            r.organizationId === organizationId &&
+            r.userId === this.currentUser.id,
+        )?.role as UserRole;
+        if (
+          role >= UserRole.projectAdmin ||
+          currentOrganization.authorId === this.currentUser.id
+        ) {
+          this.isCurrentUserAdmin = true;
+        } else {
+          this.isCurrentUserAdmin = false;
         }
       });
   }

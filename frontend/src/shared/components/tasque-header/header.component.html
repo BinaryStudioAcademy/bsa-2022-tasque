@@ -25,7 +25,11 @@
       <tasque-option option (click)="openCreateProjectDialog()">
         <p>Create Project</p>
       </tasque-option>
-      <tasque-option option (click)="openCreateOrganizationDialog()">
+      <tasque-option
+        *ngIf="isCurrentUserAdmin"
+        option
+        (click)="openCreateOrganizationDialog()"
+      >
         <p>Create Organization</p>
       </tasque-option>
     </tasque-menu-dropdown>
