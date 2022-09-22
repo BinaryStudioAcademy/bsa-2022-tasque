@@ -173,9 +173,8 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     this.columns.forEach((c) => {
       const tasks = this.projectTasks
         .filter((t) => t.stateId === c.id)
-        .sort((x) => x.order);
-        console.log(this.projectTasks);
-      console.log(tasks);
+        .sort((prev, next) => prev.order > next.order ? 1 : -1);
+
       const taskInfo: TaskInfoModel[] = [];
 
       tasks.forEach((t) => {
@@ -286,7 +285,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       if (c.tasks === event.container.data) {
         const task = this.projectTasks.find((t) => t.id === model.id);
 
-        console.log(task);
         if (!task) {
           return;
         }
