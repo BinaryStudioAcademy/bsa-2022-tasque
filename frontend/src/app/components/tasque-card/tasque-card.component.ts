@@ -21,6 +21,8 @@ export class TasqueCardComponent implements OnInit {
   @Input() taskInfo: TaskInfoModel;
   @Input() isDone: boolean;
   @Input() currentSprint: SprintModel;
+  @Input() public isCurrentUserAdmin = false;
+  @Input() public isCurrentUserProjectAdmin = false;
   @Output() isChanging = new EventEmitter<boolean>();
 
   hasAccess: boolean;
@@ -28,7 +30,6 @@ export class TasqueCardComponent implements OnInit {
   isDeleted = false;
 
   public role: UserRole;
-  public isCurrentUserAdmin = false;
 
   currentUser: UserModel;
   currentOrganization: OrganizationModel;

@@ -11,13 +11,14 @@
     </div>
     <div>
       <tasque-task-editing
-        *ngIf="hasAccess"
         btnText=""
         btnClass="btn icon gray-transparent"
         [btnIcon]="editIcon"
         [task]="taskInfo"
         [currentSprint]="currentSprint"
         (isChanging)="isTaskChanging($event)"
+        [isCurrentUserAdmin]="isCurrentUserAdmin"
+        [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
       ></tasque-task-editing>
     </div>
     <tasque-menu-dropdown class="card-settings" [left]="-80">
