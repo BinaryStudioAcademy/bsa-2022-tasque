@@ -143,28 +143,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.taskStorageService.taskUpdated$.subscribe((task) => {
-      let isTaskFound = false;
-
-      for (const col of this.columns) {
-        if (isTaskFound) {
-          return;
-        }
-
-        const index = col.tasks.findIndex((t) => task.id === t.id);
-
-        if (index !== -1) {
-          isTaskFound = true;
-
-          col.tasks[index] = {
-            ...task,
-            customLabels: [],
-            key: task.key as string,
-            isHidden: false,
-          } as TaskInfoModel;
-        }
-      }
-    });
+    this.subscribeToTasksUpdate();
   }
 
   getCurrentSprintAndTasks(): void {
@@ -392,6 +371,50 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
   statusChanged(val: boolean): void {
     this.statusColumn = val;
+  }
+
+  public subscribeToTasksUpdate(): void {
+    this.taskStorageService.taskUpdated$.subscribe((task) => {
+      for (const col of this.columns) {
+        const index = col.tasks.findIndex((t) => task.id === t.id);
+
+        if (index === -1) {
+          continue;
+        }
+
+        if (this.currentSprint.projectId !== task.projectId) {
+          col.tasks.splice(index, 1);
+          return;
+        }
+
+        if (this.currentSprint.id !== task.sprintId) {
+          col.tasks.splice(index, 1);
+          return;
+        }
+
+        const currentTask = {
+          ...task,
+          customLabels: [],
+          stateId: task.state?.id,
+          key: task.key as string,
+          isHidden: false,
+        } as TaskInfoModel;
+
+        if (task.state?.id !== col.id) {
+          const rightColumn = this.columns.find((column) => column.id === task.state?.id);
+          rightColumn?.tasks.push(currentTask);
+          col.tasks.splice(index, 1);
+          return;
+        }
+
+        if (task.state?.id === col.id) {
+          col.tasks[index] = currentTask;
+          return;
+        }
+
+        return;
+      }
+    });
   }
 
   public permissionToEdit(): void {
