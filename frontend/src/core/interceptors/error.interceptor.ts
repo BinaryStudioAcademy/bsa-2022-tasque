@@ -7,13 +7,13 @@ import {
   HttpEvent,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { NotificationService } from '../services/notification.service';
+import { ToastrNotificationService } from '../services/toastr-notification.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private notificationService: NotificationService) {
+  constructor(private notificationService: ToastrNotificationService) {
     this.notificationService.position = 'toast-top-right';
   }
   handleError(error: HttpErrorResponse): Observable<never> {

@@ -10,7 +10,7 @@ import { filter, map, mergeMap, switchMap, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, Observable } from 'rxjs';
 import { UserRegisterModel } from 'src/core/models/user/user-register-model';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { HttpResponse } from '@angular/common/http';
 import { matchValidator } from '../../match.validator';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
@@ -98,7 +98,7 @@ export class RegisterPageComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private notificationService: NotificationService,
+    private notificationService: ToastrNotificationService,
     private route: ActivatedRoute,
     private router: Router,
     private userService: GetCurrentUserService,

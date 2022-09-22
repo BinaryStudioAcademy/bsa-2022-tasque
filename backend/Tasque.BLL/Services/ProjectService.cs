@@ -309,11 +309,12 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
 
         await _db.SaveChangesAsync();
 
-        UserInvitedEvent @event = new UserInvitedEvent
+        UserInvitedEvent @event = new()
         {
             ProjectId = project.Id,
+            InvitorId = _currentUserId,
             InviteeId = user.Id,
-            ConnectiondId = user.ConnectionId
+            ConnectionId = user.ConnectionId
         };
 
         _bus.Publish(@event);
@@ -339,7 +340,7 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
             NewColumnId = dto.NewColumnId,
             TaskId = task.Id,
             TaskAuthorId = task.AuthorId,
-            ConnectiondId = task.Author.ConnectionId
+            ConnectionId = task.Author.ConnectionId
         };
 
         _bus.Publish(@event);

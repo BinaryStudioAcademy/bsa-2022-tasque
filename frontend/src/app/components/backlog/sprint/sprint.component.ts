@@ -29,7 +29,7 @@ import { TaskTypeService } from 'src/core/services/task-type.service';
 import { TaskStateService } from 'src/core/services/task-state.service';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { UserRole } from 'src/core/models/user/user-roles';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { OpenDialogService } from 'src/core/services/open-dialog.service';
 import { TaskModel } from 'src/core/models/task/task-model';
 import * as moment from 'moment';
@@ -94,7 +94,7 @@ export class SprintComponent implements OnInit, OnChanges {
   constructor(
     public sprintService: SprintService,
     public taskService: TaskService,
-    public notificationService: NotificationService,
+    public notificationService: ToastrNotificationService,
     public taskTypeService: TaskTypeService,
     public taskStateService: TaskStateService,
     public openDialogService: OpenDialogService,

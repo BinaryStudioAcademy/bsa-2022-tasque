@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import { BacklogService } from 'src/core/services/backlog.service';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { SprintService } from 'src/core/services/sprint.service';
 
 @Component({
@@ -15,7 +15,7 @@ export class DeleteSprintDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public sprint: SprintModel,
     private dialogRef: MatDialogRef<DeleteSprintDialogComponent>,
     private sprintService: SprintService,
-    private notificationService: NotificationService,
+    private notificationService: ToastrNotificationService,
     private backlogService: BacklogService,
   ) {}
 

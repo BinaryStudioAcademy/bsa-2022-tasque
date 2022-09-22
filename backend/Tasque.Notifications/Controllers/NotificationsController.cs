@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Tasque.Core.Common.Entities.Notifications;
 using Tasque.Notifications.Services;
 
@@ -17,7 +19,20 @@ namespace Tasque.Notifications.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int recieverId)
         {
-            return Ok(await Service.GetNotifications(recieverId));
+            var data = JsonConvert.SerializeObject(
+                await Service.GetNotifications(recieverId),
+                new JsonSerializerSettings
+                {
+                    ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy() }
+                });
+            return Ok(data);
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteNotification(int id)
+        {
+            await Service.DeleteNotification(id);
+            return Ok();
         }
     }
 }

@@ -20,7 +20,7 @@ import { UserRole } from 'src/core/models/user/user-roles';
 import { NewSprintModel } from 'src/core/models/sprint/new-sprint-model';
 import { IssueSort } from '../backlog/models';
 import { TaskService } from 'src/core/services/task.service';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
@@ -70,7 +70,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   constructor(
     public backlogService: BacklogService,
     public taskService: TaskService,
-    public notificationService: NotificationService,
+    public notificationService: ToastrNotificationService,
     private currentOrganizationService: GetCurrentOrganizationService,
     private organizationService: OrganizationService,
     public scopeBoardService: ScopeBoardService,
