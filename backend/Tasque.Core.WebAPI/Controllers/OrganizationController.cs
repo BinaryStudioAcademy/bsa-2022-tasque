@@ -56,7 +56,7 @@ namespace Tasque.Core.WebAPI.Controllers
         [HttpPost]
         public async virtual Task<IActionResult> AddUserToOrganization(int organizationId, [FromBody] UserDto user)
         {
-            await _service.AddUser(1, user);
+            await _service.AddUser(organizationId, user);
 
             return Ok();
         }
