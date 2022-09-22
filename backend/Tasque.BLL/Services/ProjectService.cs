@@ -495,13 +495,23 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
             .FirstOrDefaultAsync(u => u.Id == userId)
             ?? throw new CustomNotFoundException("user");
         var projects = user.ParticipatedProjects;
-        var result = projects
+        var sprints = projects.Select(p => new
+        {
+            Project = p,
+            Sprint = _db.Sprints
+                .Where(s => s.ProjectId == p.Id && !s.IsComplete && s.StartAt != null)
+                .Include(s => s.Tasks)
+                .FirstOrDefault()
+        });
+
+        var result = sprints
             .Select(p => new ProjectCardDTO
             {
-                ProjectId = p.Id,
-                Title = p.Name,
-                AssignedIssuesCount = user.ParticipatedTasks.Where(t => t.ProjectId == p.Id).Count(),
-                AllIssuesCount = _db.Tasks.Where(t => t.ProjectId == p.Id).Count()
+                ProjectId = p.Project.Id,
+                Title = p.Project.Name,
+                AssignedIssuesCount = p.Sprint != null 
+                    ? user.ParticipatedTasks.Where(t => t.SprintId == p.Sprint.Id).Count() : 0,
+                AllIssuesCount = p.Sprint != null ? p.Sprint.Tasks.Count : 0
             })
             .ToList();
         return result;
