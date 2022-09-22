@@ -80,6 +80,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
 
   public isShow = false;
 
+  // eslint-disable-next-line max-params
   constructor(
     public projectService: ProjectService,
     public sprintService: SprintService,
