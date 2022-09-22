@@ -82,6 +82,10 @@ export class WikiPageComponent implements OnInit, OnDestroy {
     this.orEdit = false;
   }
 
+  emptyText(): boolean {
+    return this.orEdit && (this.pageText?.length == 0 || !this.pageText)
+  }
+
   cancel(): void {
     this.orEdit = true;
     this.pageName = this.wikiPage.name;

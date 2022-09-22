@@ -1,7 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import { BacklogService } from 'src/core/services/backlog.service';
+import { GetCurrentProjectService } from 'src/core/services/get-current-project.service';
 import { SprintService } from 'src/core/services/sprint.service';
 
 @Component({
@@ -10,7 +12,6 @@ import { SprintService } from 'src/core/services/sprint.service';
   styleUrls: ['./complete-sprint-dialog.component.sass'],
 })
 export class CompleteSprintDialogComponent implements OnInit {
-  //Information about the current sprint
 
   public finishBtnName = 'Complete sprint';
   public createBtnClass = 'fill';
@@ -19,9 +20,11 @@ export class CompleteSprintDialogComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public sprint: SprintModel,
+    private router: Router,
     private dialogRef: MatDialogRef<CompleteSprintDialogComponent>,
     public sprintService: SprintService,
     public backlogService: BacklogService,
+    private currentProjectService: GetCurrentProjectService
   ) {}
 
   ngOnInit(): void {
@@ -35,6 +38,8 @@ export class CompleteSprintDialogComponent implements OnInit {
   onSubmit(): void {
     this.sprintService.completeSprint(this.sprint.id).subscribe(() => {
       this.changeOutside();
+      this.currentProjectService.setLeftSidebar(true);
+      this.router.navigate([`project/${this.sprint.projectId}/backlog`]);
     });
     this.dialogRef.close();
   }

@@ -118,8 +118,7 @@ namespace Tasque.Core.WebAPI.Controllers
         public async Task<IActionResult> GetCurrentSprintByProjectId(int projectId)
         {
             var sprint = await _service.GetCurrentSprintByProjectId(projectId);
-            if (sprint == null)
-                return NotFound("No active sprint found");
+
             return Ok(sprint);
         }
 

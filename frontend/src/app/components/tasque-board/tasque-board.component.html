@@ -16,7 +16,7 @@
     <div class="board-tools">
       <img src="assets/board/lightning.svg" />
       <img src="assets/board/star.svg" />
-      <app-complete-sprint *ngIf="isCurrentUserAdmin"></app-complete-sprint>
+      <app-complete-sprint [sprint]="currentSprint" *ngIf="currentSprint && isCurrentUserAdmin"></app-complete-sprint>
       <img src="assets/board/share.svg" />
       <img src="assets/board/menu.svg" />
     </div>
