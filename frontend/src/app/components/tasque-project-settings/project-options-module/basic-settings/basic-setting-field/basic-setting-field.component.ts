@@ -1,6 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { faCheck, faMinus, faPencil, faPlus } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCheck,
+  faMinus,
+  faPlus,
+  faRotateLeft,
+} from '@fortawesome/free-solid-svg-icons';
 import { takeUntil } from 'rxjs/operators';
 import { BaseComponent } from 'src/core/base/base.component';
 import { ProjectModel } from 'src/core/models/project/project-model';
@@ -14,19 +19,24 @@ import { SettingType } from '../setting-type-model';
 @Component({
   selector: 'app-basic-setting-field',
   templateUrl: './basic-setting-field.component.html',
-  styleUrls: ['./basic-setting-field.component.sass']
+  styleUrls: ['./basic-setting-field.component.sass'],
 })
-export class BasicSettingFieldComponent extends BaseComponent implements OnInit {
+export class BasicSettingFieldComponent
+  extends BaseComponent
+  implements OnInit
+{
   @Input()
-  public set projectSettings(settings: TaskType[] | TaskState[] | TaskPriority[]) {
+  public set projectSettings(
+    settings: TaskType[] | TaskState[] | TaskPriority[],
+  ) {
     if (!settings) {
       this.settingsShow = [];
       this.defaultSettings = [];
       return;
     }
 
-    this.settingsShow = Array.from(settings);
-    this.defaultSettings = Array.from(settings);
+    this.settingsShow = settings;
+    this.defaultSettings = this.deepClone(this.settingsShow);
   }
 
   @Input() public project: ProjectModel;
@@ -35,20 +45,20 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
   public settingsShow: TaskType[] | TaskState[] | TaskPriority[];
 
   applyIcon = faCheck;
-  removeIcon = faMinus;
   addIcon = faPlus;
-  editIcon = faPencil;
+  removeIcon = faMinus;
+  resetIcon = faRotateLeft;
 
   defaultSettings: TaskType[] | TaskState[] | TaskPriority[];
   formNameControl: FormControl;
   formColorControl: FormControl;
 
-  isChanging = false;
+  isAdding = false;
   isUpdated = false;
 
   constructor(
-    private notificatinService: NotificationService,
-    private projectService: ProjectService
+    private notificationService: NotificationService,
+    private projectService: ProjectService,
   ) {
     super();
   }
@@ -59,9 +69,11 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
       Validators.minLength(2),
     ]);
 
-    this.formColorControl = new FormControl('', [
-      Validators.required,
-    ]);
+    this.formColorControl = new FormControl('', [Validators.required]);
+  }
+
+  private deepClone<T>(value: T): T {
+    return JSON.parse(JSON.stringify(value));
   }
 
   get errorMessage(): string {
@@ -77,23 +89,21 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
     return 'Unexpected error. Try again.';
   }
 
-  public deleteSetting(setting: TaskType | TaskState | TaskPriority): void {
-    for (let index = 0; index < this.settingsShow.length; index++) {
-      if (this.settingsShow[index] === setting) {
-        this.settingsShow.splice(index, 1);
-        this.isUpdated = true;
-        return;
-      }
-    }
-  }
+  public deleteSetting($event: number): void {
+    const id = $event;
+    const index = this.settingsShow.findIndex((setting) => setting.id === id);
 
-  public editSetting(_setting: TaskType | TaskState | TaskPriority): void {
-    throw new Error('Method not implemented.');
+    if (index === -1) {
+      return;
+    }
+
+    this.settingsShow.splice(index, 1);
+    this.isUpdated = true;
   }
 
   public saveSetting(): void {
     if (!this.formNameControl.valid || !this.formColorControl.valid) {
-      this.notificatinService.error(this.errorMessage);
+      this.notificationService.error(this.errorMessage);
       return;
     }
 
@@ -103,7 +113,7 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
       color: this.formColorControl.value,
       projectId: this.project.id,
     });
-    this.isChanging = false;
+    this.isAdding = false;
 
     this.formColorControl.setValue('');
     this.formNameControl.setValue('');
@@ -111,57 +121,88 @@ export class BasicSettingFieldComponent extends BaseComponent implements OnInit 
   }
 
   public addSetting(): void {
-    this.isChanging = !this.isChanging;
+    this.isAdding = !this.isAdding;
+  }
+
+  public clearSetting(): void {
+    this.formColorControl.setValue('');
+    this.formNameControl.setValue('');
+  }
+
+  public removeSetting(): void {
+    this.isAdding = false;
+    this.clearSetting();
   }
 
   public cancelEdit(): void {
-    this.settingsShow = Array.from(this.defaultSettings);
+    this.settingsShow = this.deepClone(this.defaultSettings);
     this.isUpdated = false;
+    this.isAdding = false;
+    this.formColorControl.setValue('');
+    this.formNameControl.setValue('');
   }
 
   public saveEdit(): void {
     if (!this.isUpdated) {
-      this.notificatinService.info('There are no changes. Update values');
+      this.notificationService.info('There are no changes. Update values');
       return;
     }
 
     switch (this.type) {
       case 'Priority':
-        this.projectService.updateProjectTaskPriorities(this.project.id, this.settingsShow as TaskPriority[])
+        this.projectService
+          .updateProjectTaskPriorities(
+            this.project.id,
+            this.settingsShow as TaskPriority[],
+          )
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe((resp) => {
             if (!resp.body) {
               return;
             }
-            this.settingsShow = Array.from(resp.body);
-            this.defaultSettings = Array.from(resp.body);
-            this.notificatinService.success('Task Priorities were successfully updated');
+            this.settingsShow = resp.body;
+            this.defaultSettings = this.deepClone(resp.body);
+            this.notificationService.success(
+              'Task Priorities were successfully updated',
+            );
             this.isUpdated = false;
           });
         return;
       case 'State':
-        this.projectService.updateProjectTaskStates(this.project.id, this.settingsShow as TaskState[])
+        this.projectService
+          .updateProjectTaskStates(
+            this.project.id,
+            this.settingsShow as TaskState[],
+          )
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe((resp) => {
             if (!resp.body) {
               return;
             }
-            this.settingsShow = Array.from(resp.body);
-            this.defaultSettings = Array.from(resp.body);
-            this.notificatinService.success('Task States were successfully updated');
+            this.settingsShow = resp.body;
+            this.defaultSettings = this.deepClone(resp.body);
+            this.notificationService.success(
+              'Task States were successfully updated',
+            );
             this.isUpdated = false;
           });
         return;
       case 'Type':
-        this.projectService.updateProjectTaskTypes(this.project.id, this.settingsShow as TaskType[])
+        this.projectService
+          .updateProjectTaskTypes(
+            this.project.id,
+            this.settingsShow as TaskType[],
+          )
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe((resp) => {
             if (!resp.body) {
               return;
             }
-            this.settingsShow = Array.from(resp.body);
-            this.defaultSettings = Array.from(resp.body);
-            this.notificatinService.success('Task Types were successfully updated');
+            this.settingsShow = resp.body;
+            this.defaultSettings = this.deepClone(resp.body);
+            this.notificationService.success(
+              'Task Types were successfully updated',
+            );
             this.isUpdated = false;
           });
         return;

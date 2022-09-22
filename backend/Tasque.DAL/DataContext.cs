@@ -36,4 +36,5 @@ public class DataContext : DbContext
     public DbSet<Sprint> Sprints { get; set; } = null!;
     public DbSet<WikiPage> WikiPages { get; set; } = null!;
     public DbSet<ConfirmationToken> ConfirmationTokens { get; set; } = null!;
+    public DbSet<InvitationToken> InvitationTokens { get; set; } = null!;
 }

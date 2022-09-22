@@ -1,10 +1,14 @@
 <div class="issue">
-  <div class="basic-issue-info"
+  <div
+    class="basic-issue-info"
     matTooltip=" {{ issue.description }}"
-    [matTooltipShowDelay]="500">
+    [matTooltipShowDelay]="500"
+  >
     <p
       class="issue-type"
-      [ngStyle]="{ 'background': issue.type?.color ?? 'colorscheme(yellow-100)' }"
+      [ngStyle]="{
+        'background': issue.type?.color ?? 'colorscheme(yellow-100)'
+      }"
     >
       {{ this.issue.type?.name }}
     </p>
@@ -13,9 +17,12 @@
     </p>
     <tasque-task-editing
       [task]="issue"
+      [currentSprint]="currentSprint"
       [btnText]="issue.summary"
       btnClass="btn full black"
       (isChanging)="test($event)"
+      [isCurrentUserAdmin]="isCurrentUserAdmin"
+      [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
     >
     </tasque-task-editing>
   </div>
@@ -42,7 +49,7 @@
       class="users"
       [miniView]="true"
       [avatars]="issue.users"
-      [canPopUp]="false"
+      [canPopUp]="true"
     ></tasque-team-select>
   </div>
 </div>

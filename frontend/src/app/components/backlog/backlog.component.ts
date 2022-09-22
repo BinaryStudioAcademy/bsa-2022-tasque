@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { UserModel } from 'src/core/models/user/user-model';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import {
@@ -16,7 +15,6 @@ import {
   faUnlockKeyhole,
   faLock,
 } from '@fortawesome/free-solid-svg-icons';
-import { SprintService } from 'src/core/services/sprint.service';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
 import {
   CdkDragDrop,
@@ -27,10 +25,11 @@ import { IssueSort } from './models';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { ActivatedRoute } from '@angular/router';
-import { ProjectService } from 'src/core/services/project.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { NotificationService } from 'src/core/services/notification.service';
 import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
+import { UserRole } from 'src/core/models/user/user-roles';
+import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
 
 @Component({
   selector: 'app-backlog',
@@ -72,16 +71,19 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
   public isShowArchive: boolean;
   public tasks: TaskModel[] = [];
 
+  public role: UserRole;
+  public isCurrentUserAdmin = false;
+
+  public isShow = false;
+
   constructor(
-    public projectService: ProjectService,
-    public sprintService: SprintService,
-    public currentUserService: GetCurrentUserService,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
     private cdref: ChangeDetectorRef,
     private getCurrentEntityService: ScopeGetCurrentEntityService,
+    private scopeBoardService: ScopeBoardService,
   ) {
-    sprintService.deleteSprint$.subscribe((sprintId) => {
+    scopeBoardService.sprintService.deleteSprint$.subscribe((sprintId) => {
       this.deleteSprint(sprintId);
     });
   }
@@ -94,7 +96,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
 
     if (id) {
       this.currentProjectId = parseInt(id);
-      this.projectService
+      this.scopeBoardService.projectService
         .getProjectById(this.currentProjectId)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((resp) => {
@@ -102,25 +104,28 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
           this.updateHeader();
         });
     }
-    this.currentUserService.currentUser$.subscribe((user) => {
-      this.currentUser = user as UserModel;
+    this.getCurrentEntityService.getCurrentUserService.currentUser$.subscribe(
+      (user) => {
+        this.currentUser = user as UserModel;
 
-      if (this.currentUser === undefined) {
-        return;
-      }
-      // this.getUserBoards();
-      this.getSprints(this.currentProjectId);
-    });
+        if (this.currentUser === undefined) {
+          return;
+        }
+
+        this.getSprints(this.currentProjectId);
+      },
+    );
   }
 
   //get sprints for the current project
   //and sort them by priority (order)
   public getSprints(projectId: number): void {
-    this.sprintService
+    this.scopeBoardService.sprintService
       .getProjectSprints(projectId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
+          this.isShow = true;
           this.sprints = result.body.sort(
             (a, b) => (a.order ?? 0) - (b.order ?? 0),
           );
@@ -131,7 +136,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
   public getArchiveSprints(projectId: number): void {
     this.isShowArchive = !this.isShowArchive;
 
-    this.sprintService
+    this.scopeBoardService.sprintService
       .getArchiveProjectSprints(projectId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
@@ -163,19 +168,17 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
     }
 
     const nextSprint = sprintsSort.length > 0 ? sprintsSort[0] : sprint;
-
     sprint.order = nextSprint.order ?? 0;
     nextSprint.order = currentSprintPosition;
 
     this.updateSprint(sprint);
-    this.updateSprint(nextSprint);
 
     this.sprints.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     this.notificationService.success('Priority updated');
   }
 
   updateSprint(sprint: SprintModel): void {
-    this.sprintService
+    this.scopeBoardService.sprintService
       .updateOrder(sprint)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe();
@@ -209,8 +212,9 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
   }
 
   updateHeader(): void {
-    this.getCurrentEntityService.getCurrentOrganizationService
-            .currentOrganizationId = this.currentProject.organizationId;
-    this.getCurrentEntityService.getCurrentProjectService.currentProjectId = this.currentProjectId;
+    this.getCurrentEntityService.getCurrentOrganizationService.currentOrganizationId =
+      this.currentProject.organizationId;
+    this.getCurrentEntityService.getCurrentProjectService.currentProjectId =
+      this.currentProjectId;
   }
 }

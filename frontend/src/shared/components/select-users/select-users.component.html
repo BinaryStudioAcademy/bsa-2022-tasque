@@ -40,6 +40,7 @@
               </div>
               <div class="user-actions ml-15">
                 <tasque-dropdown
+                  *ngIf="!organization"
                   [options]="roles"
                   [placeholder]="roleToString(user.role)"
                   [dropBelow]="false"

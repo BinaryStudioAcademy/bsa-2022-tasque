@@ -9,7 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './components/auth/auth.module';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProjectListItemComponent } from './components/project-list/project-list-item/project-list-item.component';
 import { OrganizationListComponent } from './components/organization-list/organization-list.component';
@@ -27,8 +27,7 @@ import { EditProjectComponent } from './components/edit-project/edit-project.com
 import { ProjectOptionsModule } from './components/tasque-project-settings/project-options-module/project-options-module.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TasqueCardComponent } from './components/tasque-card/tasque-card.component';
-import { EditSprintComponent } from './components/edit-sprint/edit-sprint.component';
-import { EditSprintDialogComponent } from './components/edit-sprint/edit-sprint-dialog/edit-sprint-dialog.component';
+import { EditSprintDialogComponent } from './components/edit-sprint-dialog/edit-sprint-dialog.component';
 import { CompleteSprintComponent } from './components/complete-sprint/complete-sprint.component';
 import { CompleteSprintDialogComponent } from './components/complete-sprint/complete-sprint-dialog/complete-sprint-dialog.component';
 import { SprintComponent } from './components/backlog/sprint/sprint.component';
@@ -63,7 +62,6 @@ import { ProjectCardComponent } from './components/your-work/project-card/projec
     BacklogComponent,
     CompleteSprintComponent,
     CompleteSprintDialogComponent,
-    EditSprintComponent,
     EditSprintDialogComponent,
     SprintComponent,
     IssueComponent,
@@ -100,4 +98,4 @@ import { ProjectCardComponent } from './components/your-work/project-card/projec
   bootstrap: [AppComponent],
   exports: [OrganizationListComponent],
 })
-export class AppModule {}
+export class AppModule { }

@@ -46,6 +46,7 @@ namespace Tasque.Core.BLL.Services
         {
             var organizations = await _db.Users
                 .Where(user => userId == user.Id)
+                .Include(u => u.ParticipatedOrganization)
                 .SelectMany(user => user.OwnedOrganization)
                 .Union(_db.Users
                     .Where(user => userId == user.Id)
@@ -102,14 +103,17 @@ namespace Tasque.Core.BLL.Services
             await _db.SaveChangesAsync();
         }
 
-        public async Task DeleteUser(int organizationId, UserDto userDto)
+        public async Task DeleteUser(int organizationId, string userEmail)
         {
             var organizationEntity = await _db.Organizations
                 .Include(u => u.Users)
                 .FirstOrDefaultAsync(o => o.Id == organizationId)
                ?? throw new ValidationException("Organization not found");
 
-            var userEntity = await _db.Users.FirstOrDefaultAsync(u => u.Id == userDto.Id)
+            var userEntity = await _db.Users.FirstOrDefaultAsync(u => u.Email == userEmail)
+               ?? throw new ValidationException("User not found");
+
+            var userRole = await _db.UserOrganizationRoles.FirstOrDefaultAsync(r => r.UserId == userEntity.Id)
                ?? throw new ValidationException("User not found");
 
             if (!organizationEntity.Users.Contains(userEntity))
@@ -118,6 +122,7 @@ namespace Tasque.Core.BLL.Services
             var user = _mapper.Map<User>(userEntity);
 
             organizationEntity.Users.Remove(user);
+            _db.UserOrganizationRoles.Remove(userRole);
 
             await _db.SaveChangesAsync();
         }

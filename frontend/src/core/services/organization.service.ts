@@ -70,13 +70,17 @@ export class OrganizationService {
     );
   }
 
+  iviteUserToOrganization(id: number, userEmail: string) : Observable<HttpResponse<string>> {
+    return this.httpService.postFullRequest<string>(this.routePrefix + '/invite/' + id, { email: userEmail });
+  }
+
   deleteUser(
     organizationId: number,
-    user: ProfileChangesDTO,
+    userEmail: string,
   ): Observable<HttpResponse<ProfileChangesDTO>> {
     return this.httpService.postFullRequest(
       this.routePrefix + `/${organizationId}/users/del`,
-      user,
+      { email: userEmail },
     );
   }
 }

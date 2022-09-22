@@ -1,3 +1,4 @@
+import { UserProjectRole } from './user-project-roles';
 import { UserRoleModel } from './user-role-model';
 
 export interface UserModel {
@@ -6,4 +7,5 @@ export interface UserModel {
   email: string;
   avatarURL?: string;
   organizationRoles: UserRoleModel[];
+  roles?: UserProjectRole[];
 }

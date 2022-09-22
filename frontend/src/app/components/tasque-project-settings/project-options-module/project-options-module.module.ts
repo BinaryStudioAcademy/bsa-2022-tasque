@@ -7,6 +7,7 @@ import { IssueFieldComponent } from './issue-template/issue-field/issue-field.co
 import { LabelFieldEditComponent } from './issue-template/label-field-edit/label-field-edit.component';
 import { DropdownFieldEditComponent } from './issue-template/dropdown-field-edit/dropdown-field-edit.component';
 import { CheckboxFieldComponent } from './issue-template/checkbox-field-edit/checkbox-field.component';
+import { BasicSettingComponent } from './basic-settings/basic-setting/basic-setting.component';
 import { BasicSettingsComponent } from './basic-settings/basic-settings.component';
 import { BasicSettingFieldComponent } from './basic-settings/basic-setting-field/basic-setting-field.component';
 
@@ -18,7 +19,8 @@ import { BasicSettingFieldComponent } from './basic-settings/basic-setting-field
     DropdownFieldEditComponent,
     CheckboxFieldComponent,
     BasicSettingFieldComponent,
-    BasicSettingsComponent
+    BasicSettingsComponent,
+    BasicSettingComponent
   ],
   imports: [
     CommonModule,

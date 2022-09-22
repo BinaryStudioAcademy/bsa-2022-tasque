@@ -1,5 +1,4 @@
 ﻿using Tasque.Core.Common.DTO.User.UserRoles;
-using Tasque.Core.Common.Enums;
 
 namespace Tasque.Core.Common.DTO.User
 {
@@ -12,9 +11,12 @@ namespace Tasque.Core.Common.DTO.User
         public string? AvatarURL { get; set; }
         public List<UserOrganizationRoleDto> OrganizationRoles { get; set; }
 
+        public List<UserProjectRoleDto> Roles { get; set; }
+
         public UserDto()
         {
             OrganizationRoles = new();
+            Roles = new();
         }
     }
 }
