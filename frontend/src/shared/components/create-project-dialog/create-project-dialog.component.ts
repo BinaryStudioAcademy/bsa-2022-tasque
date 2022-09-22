@@ -178,7 +178,10 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
           this.notificationService.success('The project has been created');
           const project = resp.body as ProjectInfoModel;
           this.dialogRef.close(resp.body);
-          this.router.navigate([`/project/${project.id}/board`]);
+          this.router.navigateByUrl(`/project/${project.id}`, { skipLocationChange: true }).then(() =>
+          this.router.navigate([`/project/${project.id}/board`], { 
+          replaceUrl: true,
+        }));
         }
       });
   }

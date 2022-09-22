@@ -455,8 +455,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           currentOrganization.authorId === this.user.id
         ) {
           this.isCurrentUserAdmin = true;
-        } else {
-          this.isCurrentUserAdmin = false;
+          return;
         }
 
         const projectRole = this.user.roles?.find(
@@ -464,13 +463,14 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         ) as UserProjectRole;
 
         if (
-          projectRole.roleId == BusinessRole.Admin ||
+          projectRole?.roleId == BusinessRole.Admin ||
           this.isCurrentUserAdmin
         ) {
           this.isCurrentUserProjectAdmin = true;
         } else {
           this.isCurrentUserProjectAdmin = false;
         }
-      });
+      }
+    );
   }
 }
