@@ -281,8 +281,27 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       if (c.tasks === event.container.data) {
         const task = this.projectTasks.find(
           (t) => t.id === model.id,
-        ) as TaskModel;
+        );
+
+        if (!task) {
+          return;
+        }
+
         task.stateId = c.id;
+        task.state = this.project?.projectTaskStates.find((state) => state.id === c.id);
+
+        for (const col of this.columns) {
+          const index = col.tasks.findIndex((t) => task.id === t.id);
+
+          if (index === -1) {
+            continue;
+          }
+
+          col.tasks[index].state = task.state;
+          col.tasks[index].stateId = task.stateId;
+          return;
+        }
+
         this.boardService.taskService.updateTask(task).subscribe((resp) => {
           if (!resp.ok) {
             this.notificationService.error(
