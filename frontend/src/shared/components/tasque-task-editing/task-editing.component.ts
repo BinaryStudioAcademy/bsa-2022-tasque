@@ -354,7 +354,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     }
 
     if (this.editTaskForm.pristine) {
-      this.notificationService.error(`Data hasn't been changed`);
+      this.notificationService.error('Data hasn`t been changed');
       return;
     }
 
