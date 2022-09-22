@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
@@ -28,8 +28,7 @@ export class WikiPageComponent implements OnInit, OnDestroy {
   public pageName = '';
   public pageText?: string;
   public pageTitle: string;
-  public orEdit: boolean = true;
-  private currentProjectId: number;
+  public orEdit = true;
 
   private unsubscribe$ = new Subject<void>();
 
@@ -54,7 +53,7 @@ export class WikiPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.activeRoute.params.subscribe(routeParams => {
+    this.activeRoute.params.subscribe((routeParams) => {
       this.wikiService.getWikiPage(routeParams.pageId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((data) => {
@@ -99,13 +98,13 @@ export class WikiPageComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         if(data.body) {
           this.wikiPage = data.body;
-          this.wikiPage.name = this.wikiPage.name;
+          this.pageName = this.wikiPage.name;
           this.pageText = this.wikiPage.text;
           this.orEdit = true;
 
           this.currentWikiService.setWiki(data.body);
         }
-      })
+      });
     }
   }
 

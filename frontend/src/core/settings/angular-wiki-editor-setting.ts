@@ -1,4 +1,4 @@
-import { AngularEditorConfig } from "@kolkov/angular-editor";
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 export const WikiEditorConfig: AngularEditorConfig = {
   editable: true,
@@ -21,7 +21,7 @@ export const WikiEditorConfig: AngularEditorConfig = {
     { class: 'times-new-roman', name: 'Times New Roman' },
     { class: 'calibri', name: 'Calibri' },
     { class: 'comic-sans-ms', name: 'Comic Sans MS' },
-    { class: 'nunito', name: 'Nunito'}
+    { class: 'nunito', name: 'Nunito' }
   ],
   customClasses: [
     {

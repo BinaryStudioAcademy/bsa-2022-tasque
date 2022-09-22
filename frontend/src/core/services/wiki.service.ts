@@ -24,7 +24,7 @@ export class WikiService {
   }
 
   updateWikiPage(updateModel: WikiPageUpdate, wikiPageId: number): Observable<HttpResponse<WikiPage>> {
-    return this.httpService.putFullRequest<WikiPage>(this.routePrefix + `/update/page/${wikiPageId}`, updateModel)
+    return this.httpService.putFullRequest<WikiPage>(this.routePrefix + `/update/page/${wikiPageId}`, updateModel);
   }
 
   getWikiPage(wikiPageId: number): Observable<HttpResponse<WikiPage>> {

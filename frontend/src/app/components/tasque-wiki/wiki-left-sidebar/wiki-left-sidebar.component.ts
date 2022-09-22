@@ -70,7 +70,7 @@ export class WikiLeftSidebarComponent implements OnInit, OnDestroy {
   }
 
   createBasePage(name: string): void {
-    this.wikiService.createWikiPage({name: name, projectId: this.currentProjectId})
+    this.wikiService.createWikiPage({ name: name, projectId: this.currentProjectId })
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((data) => {
       if(data.body) {

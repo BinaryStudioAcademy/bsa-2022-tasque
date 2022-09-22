@@ -25,8 +25,8 @@ export class WikiTitleComponent implements OnInit, OnDestroy {
   public collapseIcon: IconDefinition = this.chevronRightIcon;
 
   public showCreate: boolean;
-  public isHidden: boolean = true;
-  public selected: boolean = false;
+  public isHidden = true;
+  public selected = false;
 
   private currentProjectId: number;
 
@@ -76,7 +76,7 @@ export class WikiTitleComponent implements OnInit, OnDestroy {
   }
 
   createPage(name: string): void {
-    this.wikiService.createWikiPage({name: name, projectId: this.currentProjectId, parentPageId: this.childWikiPage.id})
+    this.wikiService.createWikiPage({ name: name, projectId: this.currentProjectId, parentPageId: this.childWikiPage.id })
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((data) => {
       if(data.body) {
@@ -98,11 +98,10 @@ export class WikiTitleComponent implements OnInit, OnDestroy {
       this.isHidden = false;
       this.collapseIcon = this.chevronDownIcon;
       return;
-    } else {
-      this.isHidden = true;
-      this.collapseIcon = this.chevronRightIcon;
-      return;
     }
+
+    this.isHidden = true;
+    this.collapseIcon = this.chevronRightIcon;
   }
 
   restrictionCreation(): boolean {
