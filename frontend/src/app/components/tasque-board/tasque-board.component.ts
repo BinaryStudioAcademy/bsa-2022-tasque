@@ -477,6 +477,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         } else {
           this.isCurrentUserProjectAdmin = false;
         }
-      });
+      }
+    );
   }
 }

@@ -85,15 +85,15 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
   }
 
   public selectOrganization(organization: OrganizationModel): void {
-    if (this.currentOrganization.id === organization.id &&
-      this.getCurrentOrganizationService.currentOrganizationId === organization.id) {
-      return;
-    }
+    // if (this.currentOrganization.id === organization.id &&
+    //   this.getCurrentOrganizationService.currentOrganizationId === organization.id) {
+    //   return;
+    // }
 
     this.getCurrentOrganizationService.currentOrganizationId = organization.id;
 
     this.organizationChanged.emit(organization.id);
-    this.router.navigate(['/projects'], { replaceUrl: true });
+    this.router.navigate(['projects'], { replaceUrl: true });
     window.scroll(0, 0);
   }
 
