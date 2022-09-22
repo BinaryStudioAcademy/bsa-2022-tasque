@@ -191,13 +191,15 @@ export class HeaderComponent implements OnInit {
             r.userId === this.currentUser.id,
         ) as UserProjectRole;
 
-        if (
-          projectRole.roleId == BusinessRole.Admin ||
-          this.isCurrentUserAdmin
-        ) {
-          this.isCurrentUserProjectAdmin = true;
-        } else {
-          this.isCurrentUserProjectAdmin = false;
+        if (projectRole) {
+          if (
+            projectRole.roleId == BusinessRole.Admin ||
+            this.isCurrentUserAdmin
+          ) {
+            this.isCurrentUserProjectAdmin = true;
+          } else {
+            this.isCurrentUserProjectAdmin = false;
+          }
         }
       });
   }
