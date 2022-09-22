@@ -1,6 +1,9 @@
-<div class="issue-template-form">
+<div class="settings-label">
+    <span class="settings-subtitle">Settings</span>
     <h1>Issue template</h1>
-    <hr>
+</div>
+<div class="issue-template-form">
+
     <div class="select-issue-type">
         <tasque-dropdown class="dropdown" label="Select issue type" placeholder="Issue type" [options]="dropdownOptions" (onSelect)="setSelected($event)"></tasque-dropdown>
         <div class="selected-issue" *ngIf="selectedIssue !== undefined">
