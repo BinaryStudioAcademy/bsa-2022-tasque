@@ -2,6 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { forkJoin, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Notification } from '../models/notifications/notification';
 import { NotificationType } from '../models/notifications/notification-type';
 import { TaskCommentedNotification } from '../models/notifications/task-commented-notification';
@@ -15,13 +16,15 @@ import { ToastrNotificationService } from './toastr-notification.service';
   providedIn: 'root'
 })
 export class NotificationsService {
+  public hubUrl: string = environment.signalR_hub;
+
 
   constructor(private authSerivce: AuthService, private httpService: HttpNotificationsService, private toastr: ToastrNotificationService) {
     
   }
 
   buildConnection() : HubConnection {
-    const connection = new HubConnectionBuilder().withUrl('https://localhost:6001/notifications').withAutomaticReconnect().build();
+    const connection = new HubConnectionBuilder().withUrl(this.hubUrl).withAutomaticReconnect().build();
     return connection;
   }
 
@@ -48,27 +51,27 @@ export class NotificationsService {
     let url = '';
     switch (notification.type) {
       case NotificationType.TaskCommented:
-        url += 'task-commented-notifications';
+        url += 'task-commented';
         break;
       case NotificationType.TaskMoved:
-        url += 'task-moved-notifications';
+        url += 'task-moved';
         break;
       case NotificationType.UserInvited:
-        url += 'user-invited-notifications';
+        url += 'user-invited';
     }
 
     return this.httpService.deleteFullRequest<void>(url + `/delete/${notification.id}`);
   }
 
   private getUserInvitedNotifications(userId: number): Observable<HttpResponse<UserInvitedNotification[]>> {
-    return this.httpService.getFullRequest<UserInvitedNotification[]>(`user-invited-notifications?recieverId=${userId}`);
+    return this.httpService.getFullRequest<UserInvitedNotification[]>(`user-invited?recieverId=${userId}`);
   }
 
   private getTaskMovedNotifications(userId: number): Observable<HttpResponse<TaskMovedNotification[]>> {
-    return this.httpService.getFullRequest<TaskMovedNotification[]>(`task-moved-notifications?recieverId=${userId}`);
+    return this.httpService.getFullRequest<TaskMovedNotification[]>(`task-moved?recieverId=${userId}`);
   }
 
   private getTaskCommentedNotifications(userId: number): Observable<HttpResponse<TaskCommentedNotification[]>> {
-    return this.httpService.getFullRequest<TaskCommentedNotification[]>(`task-commented-notifications?recieverId=${userId}`);
+    return this.httpService.getFullRequest<TaskCommentedNotification[]>(`task-commented?recieverId=${userId}`);
   }
 }
