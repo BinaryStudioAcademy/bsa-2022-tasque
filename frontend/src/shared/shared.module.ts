@@ -78,7 +78,6 @@ import { UserInvitedNotificationComponent } from './components/tasque-header/not
     TaskCreationCustomFieldsComponent,
     ProjectDropdownComponent,
     TasqueCreateDropdownComponent,
-    TasqueCommentsComponent
     TasqueCommentsComponent,
     NotificationsComponent,
     UserInvitedNotificationComponent
