@@ -69,9 +69,6 @@
     width: 100%
     flex-direction: column
     overflow: hidden auto
-    //padding: 25px 5px 10px 0
-    //padding-top: 25px
-    //padding-bottom: 10px
 
 .column-title
     display: flex
@@ -99,6 +96,7 @@
 .column-element-count
     color: colorscheme(gray-500)
     font-size: 12px
+    margin: 2px 0 0 2px
 
 .column-tools > span
     padding-right: 10px
@@ -136,8 +134,13 @@
 
 .board-list
     overflow: hidden
-    display: block
+    display: flex
+    justify-content: center
     background: colorscheme(gray-100)
+
+.board-header
+    display: flex
+    flex-direction: column
 
 .cdk-drag-placeholder
     opacity: 0
