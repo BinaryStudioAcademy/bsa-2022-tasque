@@ -24,6 +24,22 @@ services:
     depends_on:
       - message-bus
       
+  notifications:
+    image: mendasium/tasque-notiifications
+    ports:
+      - "5001:5001"
+    env_file:
+      - ./.env/notifications.env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    # volumes:
+      # - .:/ log volume!
+    depends_on:
+      - message-bus
+
   frontend:
     image: mendasium/tasque-frontend
     container_name: frontend
