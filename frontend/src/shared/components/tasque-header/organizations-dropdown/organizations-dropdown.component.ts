@@ -85,11 +85,6 @@ export class OrganizationsDropdownComponent extends BaseComponent implements OnI
   }
 
   public selectOrganization(organization: OrganizationModel): void {
-    // if (this.currentOrganization.id === organization.id &&
-    //   this.getCurrentOrganizationService.currentOrganizationId === organization.id) {
-    //   return;
-    // }
-
     this.getCurrentOrganizationService.currentOrganizationId = organization.id;
 
     this.organizationChanged.emit(organization.id);
