@@ -79,6 +79,7 @@ export class SprintComponent implements OnInit, OnChanges {
   public isCurrentUserAdmin = false;
   public isCurrentUserProjectAdmin = false;
 
+  public isShow = false;
   public isDraggable = true;
 
   public unsubscribe$ = new Subject<void>();
@@ -127,6 +128,7 @@ export class SprintComponent implements OnInit, OnChanges {
           this.currentSprint.tasks = this.tasks = this.tasksShow = result.body;
           this.estimateCount();
         }
+        this.isShow = true;
       });
   }
 
