@@ -11,8 +11,8 @@
 
 .grid
   --grid-layout-gap: 20px
-  --grid-column-count: 10
-  --grid-item--min-width: 100px
+  --grid-column-count: 8
+  --grid-item--min-width: 150px
 
   --gap-count: calc(var(--grid-column-count) - 1)
   --total-gap-width: calc(var(--gap-count) * var(--grid-layout-gap))
@@ -28,9 +28,11 @@
   align-items: center
   span
     align-self: center
-  > tasque-avatar 
+  > tasque-avatar
+    transform: scale(0.75)
+    transition: all 0.2s ease-in-out
     &:hover
-      transform: scale(1.5)
+      transform: scale(1)
 
 .text-wrp
   display: flex
