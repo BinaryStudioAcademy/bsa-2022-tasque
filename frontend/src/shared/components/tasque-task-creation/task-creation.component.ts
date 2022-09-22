@@ -13,13 +13,18 @@ import { ProjectService } from 'src/core/services/project.service';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { TaskCustomField } from 'src/core/models/task/task-template-models/task-custom-field';
 import { UserModel } from 'src/core/models/user/user-model';
-import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { TaskCustomFieldModel } from 'src/core/models/task/task-creation-models/task-custom-field-model';
 import { TaskPriority } from 'src/core/models/task/task-priority';
 import { TaskService } from 'src/core/services/task.service';
 import { TaskState } from 'src/core/models/task/task-state';
 import { BacklogService } from 'src/core/services/backlog.service';
 import { TaskModel } from 'src/core/models/task/task-model';
+import { UserProjectRole } from 'src/core/models/user/user-project-roles';
+import { BusinessRole } from '../select-users/Models';
+import { OrganizationModel } from 'src/core/models/organization/organization-model';
+import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
+import { UserRole } from 'src/core/models/user/user-roles';
+import { OrganizationService } from 'src/core/services/organization.service';
 
 @Component({
   selector: 'tasque-task-creation',
@@ -95,8 +100,8 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   @Input() public currentTasks: TaskModel[];
   @Input() public sprintId: number;
 
-  @Input() public isCurrentUserAdmin = false;
-  @Input() public isCurrentUserProjectAdmin = false;
+  public isCurrentUserAdmin = false;
+  public isCurrentUserProjectAdmin = false;
 
   public isOpen = false;
 
@@ -154,9 +159,10 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     private notificationService: ToastrNotificationService,
     private taskTemplateService: TaskTemplateService,
     private projectService: ProjectService,
-    private currentUserService: GetCurrentUserService,
     private taskService: TaskService,
     private backlogService: BacklogService,
+    private getCurrentEntityService: ScopeGetCurrentEntityService,
+    private organizationService: OrganizationService,
   ) {
     this.projectControl = new FormControl(this.task.projectId, [
       Validators.required,
@@ -201,9 +207,12 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
         );
       });
 
-    this.currentUserService.currentUser$.subscribe((user) => {
-      this.currentUser = user;
-    });
+    this.getCurrentEntityService.getCurrentUserService.currentUser$.subscribe(
+      (user) => {
+        this.currentUser = user;
+        this.permissionToEdit();
+      },
+    );
   }
 
   ngOnDestroy(): void {
@@ -412,5 +421,46 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
   toogleModal(event: boolean): void {
     this.isOpen = event;
+  }
+
+  public permissionToEdit(): void {
+    const organizationId =
+      this.getCurrentEntityService.getCurrentOrganizationService
+        .currentOrganizationId;
+    this.organizationService
+      .getOrganization(organizationId)
+      .subscribe((resp) => {
+        const currentOrganization = resp.body as OrganizationModel;
+        const role = this.currentUser.organizationRoles.find(
+          (r) =>
+            r.organizationId === organizationId &&
+            r.userId === this.currentUser.id,
+        )?.role as UserRole;
+        if (
+          role >= UserRole.projectAdmin ||
+          currentOrganization.authorId === this.currentUser.id
+        ) {
+          this.isCurrentUserAdmin = true;
+        } else {
+          this.isCurrentUserAdmin = false;
+        }
+
+        const projectId =
+          this.getCurrentEntityService.getCurrentProjectService
+            .currentProjectId;
+
+        const projectRole = this.currentUser.roles?.find(
+          (r) => r.projectId === projectId && r.userId === this.currentUser.id,
+        ) as UserProjectRole;
+
+        if (
+          projectRole.roleId == BusinessRole.Admin ||
+          this.isCurrentUserAdmin
+        ) {
+          this.isCurrentUserProjectAdmin = true;
+        } else {
+          this.isCurrentUserProjectAdmin = false;
+        }
+      });
   }
 }

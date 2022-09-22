@@ -39,8 +39,9 @@
     width="150px"
   ></tasque-dropdown>
 
-  <div class="issue-users" *ngIf="issue.users && issue.users.length > 0">
+  <div class="issue-users">
     <tasque-team-select
+      *ngIf="issue.users && issue.users.length > 0"
       class="users"
       [miniView]="true"
       [avatars]="issue.users"
