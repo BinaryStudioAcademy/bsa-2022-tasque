@@ -128,7 +128,11 @@ export class EditProjectComponent implements OnInit, OnDestroy {
   inviteUser(email: string): void {
     this.projectService.inviteUser({ projectId: this.project.id, email: email })
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe();
+      .subscribe(() => {
+        this.notification.success(`User ${email} has been invited successfully`);
+      }, (err) => {
+        this.notification.error(err.error.error);
+      });
   }
 
   deleteUser(email: string): void {

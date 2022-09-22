@@ -62,10 +62,12 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
         var user = await _db.Users
             .FirstOrDefaultAsync(u => u.Id == entityToCreate.AuthorId);
 
+        var organization = await _db.Organizations.FirstOrDefaultAsync(o => o.Id == entity.OrganizationId);
+
         if (user == null)
-        {
-            throw new HttpException(System.Net.HttpStatusCode.NotFound, "Something went wrong, the user was not found");
-        }
+            throw new HttpException(System.Net.HttpStatusCode.BadRequest, "Something went wrong, the user was not found");
+        if (organization == null)
+            throw new HttpException(System.Net.HttpStatusCode.BadRequest, "Organization is required for project creation");
 
         var project = _db.Projects.Add(entityToCreate).Entity;
 
@@ -280,7 +282,9 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
     public async Task InviteUserToProject(UserInviteDto usersInviteDto)
     {
         var user = await _db.Users
-            .FirstOrDefaultAsync(u => u.Email == usersInviteDto.Email);
+            .Where(u => u.Email == usersInviteDto.Email)
+            .Include(u => u.ParticipatedProjects)
+            .FirstOrDefaultAsync();
 
         var project = await _db.Projects
             .FirstOrDefaultAsync(proj => proj.Id == usersInviteDto.ProjectId);
@@ -304,7 +308,16 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
             RoleId = (int)BaseProjectRole.Dev
         };
 
+        var organization = await _db.Organizations.FirstOrDefaultAsync(o => o.Id == project.OrganizationId)
+            ?? throw new HttpException(System.Net.HttpStatusCode.NotFound, "The organization with this id does not exist");
+
+        if(user.ParticipatedProjects.Any(p => p.Id == project.Id))
+            throw new HttpException(System.Net.HttpStatusCode.BadRequest, "User already participate this project");
+
+        user.ParticipatedOrganization.Add(organization);
+        user.ParticipatedProjects.Add(project);
         await _db.UserProjectRoles.AddAsync(userProjectRole);
+
         _db.Projects.Update(project);
 
         await _db.SaveChangesAsync();
@@ -374,6 +387,12 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
         {
             throw new HttpException(System.Net.HttpStatusCode.NotFound, "Make sure that the user is a member of the project");
         }
+
+        var organization = await _db.Organizations.FirstOrDefaultAsync(o => o.Id == project.OrganizationId)
+            ?? throw new HttpException(System.Net.HttpStatusCode.NotFound, "The organization with this id does not exist");
+
+        if (!organization.Users.Any(u => u.Id == user.Id))
+            user.ParticipatedOrganization.Remove(organization);
 
         project.Users.Remove(user);
         _db.UserProjectRoles.RemoveRange(userProjectRole);

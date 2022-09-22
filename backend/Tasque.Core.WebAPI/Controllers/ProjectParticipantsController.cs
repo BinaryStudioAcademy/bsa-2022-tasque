@@ -30,7 +30,6 @@ namespace Tasque.Core.WebAPI.Controllers
         public async Task<IActionResult> InviteUserToProject([FromBody] UserInviteDto userInviteDto)
         {
             await _service.InviteUserToProject(userInviteDto);
-
             return Ok();
         }
 

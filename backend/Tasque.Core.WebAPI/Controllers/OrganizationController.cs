@@ -66,7 +66,6 @@ namespace Tasque.Core.WebAPI.Controllers
         public async virtual Task<IActionResult> DeleteUserInOrganization(int organizationId, [FromBody] EmailDto email)
         {
             await _service.DeleteUser(organizationId, email.Email);
-
             return Ok();
         }
 
