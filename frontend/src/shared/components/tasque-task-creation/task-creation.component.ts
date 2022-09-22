@@ -342,7 +342,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       projectId: this.taskCreateForm.get('projectControl')?.value.id,
 
       typeId: this.taskCreateForm.get('issueTypeControl')?.value.id,
-      stateId: this.selectedStateId,
+      stateId: this.taskCreateForm.get('stateControl')?.value.id,
       priorityId: this.selectedPriorityId,
 
       summary: this.taskCreateForm.get('summaryControl')?.value,
