@@ -1,16 +1,21 @@
-<div class="confirmation-dialog-container">
-  <h2 mat-dialog-title>{{ title }}</h2>
-
-  <p>{{ message }}</p>
-
+<div class="conteiner">
+  <mat-dialog-content>
+    <div class="content">
+      <p class="title">{{ title }}</p>
+      <div class="sprint-info">
+        <span>{{ message }}</span>
+      </div>
+    </div>
+  </mat-dialog-content>
   <div [ngSwitch]="type">
-    <div class="button-container" *ngSwitchCase="'default'">
-      <tasque-button text="Cancel" class="btn fill grey" (btnClick)="onDismiss()"></tasque-button>
-      <tasque-button text="Ok" class="btn fill green" (btnClick)="onConfirm()"></tasque-button>
-    </div>
-    <div class="button-container" *ngSwitchCase="'deletion'">
-      <tasque-button text="Cancel" class="btn fill grey" (btnClick)="onDismiss()"></tasque-button>
-      <tasque-button text="Delete" class="btn fill red" (btnClick)="onConfirm()"></tasque-button>
-    </div>
+    <mat-dialog-actions class="dialog-options" align="end" *ngSwitchCase="'deletion'">
+      <tasque-button text="Cancel" class="fill gray" (click)="onDismiss()"></tasque-button>
+      <tasque-button type="submit" text="Delete" class="fill" (btnClick)="onConfirm()"></tasque-button>
+    </mat-dialog-actions>
+
+    <mat-dialog-actions class="dialog-options" align="end" *ngSwitchCase="'default'">
+      <tasque-button text="Cancel" class="fill gray" (click)="onDismiss()"></tasque-button>
+      <tasque-button type="submit" text="Ok" class="fill" (btnClick)="onConfirm()"></tasque-button>
+    </mat-dialog-actions>
   </div>
 </div>

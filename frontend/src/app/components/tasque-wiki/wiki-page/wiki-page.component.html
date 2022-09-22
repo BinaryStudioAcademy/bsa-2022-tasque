@@ -1,0 +1,45 @@
+<div [formGroup]="pageForm" class="container">
+  <div>
+    <span>{{pageTitle}}</span>
+  </div>
+  <div class="page-header">
+    <div>
+      <div class="pageName-wrapper">
+        <input class="pageName"
+        [value]="pageName"
+        [(ngModel)]="pageName"
+        [size]="pageName.length - 1 || 1"
+        [ngClass]="{
+          'input-size': pageName.length < 2
+        }"
+        contenteditable="true" 
+        formControlName="pageNameControl">
+        <tasque-button class="btn icon" [icon]="faPenToSquare"> </tasque-button>
+      </div>
+      <span class="error" *ngIf="pageNameControl.errors?.['required'] && (pageNameControl.dirty || pageNameControl.touched)">Name is required. </span>
+      <span class="error" *ngIf="pageNameControl.errors?.['pattern']">The name must consist of numbers or letters. </span>
+      <span class="error" *ngIf="pageNameControl.errors?.['minlength']">Must be at least 2 characters. </span>
+      <span class="error" *ngIf="pageNameControl.errors?.['maxlength']">Must be no more than 30 characters. </span>
+    </div>
+    <div class="buttons">
+      <tasque-button type="submit" class="btn stroke violet-stroke" text="Edit" (click)="edit()"></tasque-button>
+      <tasque-button type="submit" class="btn stroke violet-stroke" text="Cancel" (click)="cancel()"></tasque-button>
+      <tasque-button type="submit" class="btn stroke violet-stroke" text="Remove" (click)="remove()"></tasque-button>
+      <tasque-button type="submit" class="btn stroke violet-stroke" text="Save" (click)="save()"></tasque-button>
+    </div>
+  </div>
+  <div class="text">
+    <div class="empty-tasks row pale" *ngIf="pageText?.length == 0 && orEdit">
+      <label class="text-center">This can be the text of your page</label>
+    </div>
+    <div class="text-page" [hidden]="!orEdit" [innerHTML]="pageText" aria-readonly="true"></div>
+    <angular-editor
+      [hidden]="orEdit"
+      id="textEditor"
+      formControlName="pageTextControl"
+      [config]="editorConfig"
+      [(ngModel)]="pageText"
+      placeholder="Type some text..."
+    ></angular-editor>
+  </div>
+</div>

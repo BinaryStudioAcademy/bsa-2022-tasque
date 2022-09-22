@@ -1,0 +1,14 @@
+<div class="dropdown">
+  <form [formGroup]="createForm" (ngSubmit)="create()">
+    <tasque-input 
+      type="text" 
+      placeholder="Type name" 
+      formControlName="createControl"
+      [errorMessage]="createErrorMessage"
+      [invalid]="!createForm.valid && createForm.touched"
+      [icon]="plusIcon" 
+      iconPosition="right" 
+      (iconClick)="create()">
+    </tasque-input>
+  </form>
+</div>
