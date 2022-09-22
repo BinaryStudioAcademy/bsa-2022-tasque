@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { fromEvent, Subject } from 'rxjs';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 import { LocalStorageKeys } from 'src/core/models/local-storage-keys';
 import { PasswordChangesDTO } from '../../dto/password-changes-dto';
@@ -46,7 +46,7 @@ export class UserProfileComponent implements OnInit {
   public hideNewPass = true;
 
   constructor(
-    private notificationService: NotificationService,
+    private notificationService: ToastrNotificationService,
     private userService: UserService,
     private currentUserService: GetCurrentUserService
   ) { }

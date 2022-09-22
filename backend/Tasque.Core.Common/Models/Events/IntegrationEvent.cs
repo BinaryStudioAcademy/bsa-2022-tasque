@@ -16,6 +16,6 @@ namespace Tasque.Core.Common.Models.Events
         }
         public Guid Id { get; private set; }
         public DateTime CreationDate { get; private set; }
-        public string ConnectiondId { get; set; }
+        public string ConnectionId { get; set; }
     }
 }

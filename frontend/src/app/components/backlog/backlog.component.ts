@@ -26,10 +26,13 @@ import { TaskModel } from 'src/core/models/task/task-model';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { ActivatedRoute } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
+import { ProjectService } from 'src/core/services/project.service';
+import { SprintService } from 'src/core/services/sprint.service';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
 
 @Component({
@@ -78,7 +81,10 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
   public isShow = false;
 
   constructor(
-    private notificationService: NotificationService,
+    public projectService: ProjectService,
+    public sprintService: SprintService,
+    public currentUserService: GetCurrentUserService,
+    private notificationService: ToastrNotificationService,
     private route: ActivatedRoute,
     private cdref: ChangeDetectorRef,
     private getCurrentEntityService: ScopeGetCurrentEntityService,

@@ -12,7 +12,7 @@ import { AuthService } from 'src/core/services/auth.service';
 import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 import { UserResetPasswordModel } from 'src/core/models/user/user-reset-password-model';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 
 @Component({
   selector: 'app-restore-page',
@@ -77,7 +77,7 @@ export class RestorePageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private notificationService: NotificationService,
+    private notificationService: ToastrNotificationService,
   ) {
     this.emailControl = new FormControl(this.email, [
       Validators.required,

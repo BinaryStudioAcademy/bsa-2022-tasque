@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { NewProjectModel } from 'src/core/models/project/new-project-model';
 import { ProjectService } from 'src/core/services/project.service';
 import { Router } from '@angular/router';
@@ -92,7 +92,7 @@ export class CreateProjectDialogComponent implements OnInit, OnDestroy {
 
   constructor(
     public projectService: ProjectService,
-    public notificationService: NotificationService,
+    public notificationService: ToastrNotificationService,
     @Inject(MAT_DIALOG_DATA) public data: number,
     private dialogRef: MatDialogRef<CreateProjectDialogComponent>,
     private router: Router,

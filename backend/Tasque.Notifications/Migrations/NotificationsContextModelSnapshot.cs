@@ -110,6 +110,9 @@ namespace Tasque.Notifications.Migrations
                     b.Property<int>("InviteeId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("InvitorId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("ProjectId")
                         .HasColumnType("integer");
 
