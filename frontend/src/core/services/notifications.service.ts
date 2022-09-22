@@ -18,7 +18,6 @@ import { ToastrNotificationService } from './toastr-notification.service';
 export class NotificationsService {
   public hubUrl: string = environment.signalR_hub;
 
-
   constructor(private authSerivce: AuthService, private httpService: HttpNotificationsService, private toastr: ToastrNotificationService) {
     
   }
