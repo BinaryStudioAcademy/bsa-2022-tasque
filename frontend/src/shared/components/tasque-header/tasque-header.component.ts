@@ -11,6 +11,10 @@ import { AuthService } from 'src/core/services/auth.service';
 import { OpenDialogService } from 'src/core/services/open-dialog.service';
 import { InternalServices } from 'src/core/services/internalServices';
 import { Observable } from 'rxjs';
+import { ProjectModel } from 'src/core/models/project/project-model';
+import { ProjectService } from 'src/core/services/project.service';
+import { concatMap, map } from 'rxjs/operators';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { UserProjectRole } from 'src/core/models/user/user-project-roles';
@@ -27,6 +31,7 @@ export class HeaderComponent implements OnInit {
   public currentUser: UserModel;
   public currentOrganizationId: number;
   public currentProjectId: number;
+  public currentProject: ProjectModel;
   @Input() hasLogo = false;
   @Output() isChanged = new EventEmitter<Observable<void>>();
 
@@ -40,6 +45,8 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private openDialogService: OpenDialogService,
     private internalServices: InternalServices,
+    private projectService: ProjectService,
+    private currentOrganizationService: GetCurrentOrganizationService,
     private organizationService: OrganizationService,
     private scopeGetCurrentEntityService: ScopeGetCurrentEntityService,
   ) {}
@@ -48,6 +55,7 @@ export class HeaderComponent implements OnInit {
     this.subscribeToCurrentUser();
     this.subscribeToCurrentOrganization();
     this.subscribeToCurrentUserAvatar();
+    this.subscribeToCurrentProject();
   }
 
   changeOrganizationId(val: number): void {
@@ -88,6 +96,20 @@ export class HeaderComponent implements OnInit {
         this.currentUser.avatarURL = avatar;
       },
     );
+  }
+
+  public subscribeToCurrentProject(): void {
+    this.internalServices.getCurrentProjectService.currentProjectId$
+      .pipe(
+        concatMap((id) => this.projectService.getProjectById(id)),
+        map((resp) => resp.body),
+      )
+      .subscribe((project) => {
+        if (!project) {
+          return;
+        }
+        this.currentProject = project;
+      });
   }
 
   openCreateOrganizationDialog(): void {

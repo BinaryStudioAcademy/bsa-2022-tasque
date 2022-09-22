@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { UserModel } from 'src/core/models/user/user-model';
@@ -23,8 +23,7 @@ import { BusinessRole } from '../select-users/Models';
 })
 export class LeftSidebarComponent
   extends BaseComponent
-  implements OnInit, OnChanges
-{
+  implements OnInit {
   public projectId: number;
   public project: ProjectModel;
 
@@ -78,10 +77,6 @@ export class LeftSidebarComponent
           this.sideBarMinimized = false;
         }
       });
-  }
-
-  ngOnChanges(): void {
-    this.ngOnInit();
   }
 
   minimize(): void {

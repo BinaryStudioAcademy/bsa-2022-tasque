@@ -10,16 +10,13 @@
       [organizationId]="currentOrganizationId"
     ></tasque-project-dropdown>
     <span class="button">Calendar</span>
-    <tasque-menu-dropdown
-      class="button-like"
-      [toggleDropdownOnButtonClick]="false"
-      separator="|"
-    >
+    <tasque-menu-dropdown class="button-like" [toggleDropdownOnButtonClick]="false" separator="|">
       <tasque-task-creation
         dropdown-button
         btnText="Create task"
         btnClass="btn white"
         [organizationId]="currentOrganizationId"
+        [currentProject]="currentProject"
         sidebarName="createTaskSidebar"
         [isCurrentUserAdmin]="isCurrentUserAdmin"
         [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
@@ -67,9 +64,7 @@
         [diameter_px]="45"
         [isShowMatTooltip]="false"
       ></tasque-avatar>
-      <tasque-option option (click)="profileSettingsClick()">
-        Profile settings
-      </tasque-option>
+      <tasque-option option (click)="profileSettingsClick()"> Profile settings </tasque-option>
       <tasque-option option (click)="logoutClick()"> Log out </tasque-option>
     </tasque-menu-dropdown>
   </div>
