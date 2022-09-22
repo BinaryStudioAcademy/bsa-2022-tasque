@@ -72,35 +72,41 @@
             <span class="column-name">{{ item.name }}</span>
             <span class="column-element-count"> ({{ item.tasks.length }})</span>
           </div>
-          <hr class="column-border">
+          <hr class="column-border" />
           <div class="card-container">
             <div *ngIf="item.name.toLowerCase() !== 'done'">
-              <div 
-                class="column" 
+              <div
+                class="column"
                 *ngFor="let task of item.tasks"
-                cdkDrag 
-                [cdkDragDisabled]="!isDraggable">
+                cdkDrag
+                [cdkDragDisabled]="!isDraggable"
+              >
                 <tasque-card
                   *ngIf="!task.isHidden"
                   [taskInfo]="task"
                   [currentSprint]="currentSprint"
                   (isChanging)="toogleIsDraggable($event)"
+                  [isCurrentUserAdmin]="isCurrentUserAdmin"
+                  [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
                 >
                 </tasque-card>
               </div>
             </div>
             <div *ngIf="item.name.toLowerCase() === 'done'">
-              <div 
-                class="column" 
-                *ngFor="let task of item.tasks" 
+              <div
+                class="column"
+                *ngFor="let task of item.tasks"
                 cdkDrag
-                [cdkDragDisabled]="!isDraggable">
+                [cdkDragDisabled]="!isDraggable"
+              >
                 <tasque-card
                   *ngIf="!task.isHidden"
                   [taskInfo]="task"
                   [currentSprint]="currentSprint"
                   [isDone]="true"
                   (isChanging)="toogleIsDraggable($event)"
+                  [isCurrentUserAdmin]="isCurrentUserAdmin"
+                  [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
                 >
                 </tasque-card>
               </div>

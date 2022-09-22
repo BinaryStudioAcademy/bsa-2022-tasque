@@ -1,9 +1,5 @@
 <div class="issue">
-  <div
-    class="basic-issue-info"
-    matTooltip=" {{ issue.description }}"
-    [matTooltipShowDelay]="500"
-  >
+  <div class="basic-issue-info">
     <p
       class="issue-type"
       [ngStyle]="{
@@ -43,13 +39,16 @@
     width="150px"
   ></tasque-dropdown>
 
-  <div class="issue-users">
+  <div class="issue-users" *ngIf="issue.users && issue.users.length > 0">
     <tasque-team-select
-      *ngIf="issue.users && issue.users.length > 0"
       class="users"
       [miniView]="true"
       [avatars]="issue.users"
       [canPopUp]="true"
     ></tasque-team-select>
   </div>
+  <tasque-menu-dropdown class="card-settings" [left]="-80">
+    <img src="assets/board/column_menu.svg" dropdown-button />
+    <tasque-option option (click)="deleteTask()">Delete issue</tasque-option>
+  </tasque-menu-dropdown>
 </div>

@@ -47,6 +47,7 @@ export class IssueComponent implements OnInit {
   //notifying the parent components about the change in the value of estimate
   @Output() estimate = new EventEmitter<void>();
   @Output() isChanging = new EventEmitter<boolean>();
+  @Output() isDelete = new EventEmitter<number>();
 
   flagIcon = faFlag;
 
@@ -56,6 +57,7 @@ export class IssueComponent implements OnInit {
 
   public taskEstimate: TaskEstimateUpdate;
   public unsubscribe$ = new Subject<void>();
+  isDeleted = false;
 
   constructor(
     public userServise: UserService,
@@ -63,8 +65,9 @@ export class IssueComponent implements OnInit {
     public sprintService: SprintService,
     public notificationService: ToastrNotificationService,
     private cdRef: ChangeDetectorRef,
-    private taskStorageService: TaskStorageService
-  ) { }
+    private taskStorageService: TaskStorageService,
+    private taskService: TaskService,
+  ) {}
 
   ngOnInit(): void {
     this.estimateUpdate();
@@ -120,5 +123,16 @@ export class IssueComponent implements OnInit {
 
   test(val: boolean): void {
     this.isChanging.emit(val);
+  }
+
+  deleteTask(): void {
+    this.taskService.deleteTask(this.issue.id).subscribe(() => {
+      this.notificationService.success(
+        'Task has been deleted successfully',
+        'Success',
+      );
+      this.isDeleted = true;
+      this.isDelete.emit(this.issue.id);
+    });
   }
 }

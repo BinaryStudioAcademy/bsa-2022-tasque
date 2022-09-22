@@ -275,4 +275,9 @@ export class BacklogContentComponent implements OnInit, OnChanges {
         }
       });
   }
+
+  public deleteIssue(id: number): void {
+    const index = this.tasks.findIndex((x) => x.id == id);
+    this.tasks.splice(index, 1);
+  }
 }

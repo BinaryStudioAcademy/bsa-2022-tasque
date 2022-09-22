@@ -42,13 +42,14 @@
     >
       <app-issue
         (isChanging)="toogleIsDragable($event)"
-        cdkDrag
         [cdkDragDisabled]="!isDragable"
+        cdkDrag
         *ngFor="let task of tasks"
         [issue]="task"
         [taskStates]="taskStates"
         [taskTypes]="taskTypes"
         [currentProject]="project"
+        (isDelete)="deleteIssue($event)"
       ></app-issue>
     </div>
     <div class="add-issue-wrapper row">

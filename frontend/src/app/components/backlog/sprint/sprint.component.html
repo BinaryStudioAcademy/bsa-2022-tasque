@@ -6,8 +6,12 @@
   [cdkDropListData]="currentSprint.tasks"
   (cdkDropListDropped)="drop($event)"
 >
+  <div *ngIf="!isShow">
+    <mat-spinner style="margin: auto"> </mat-spinner>
+  </div>
   <details
     [open]="currentSprint.startAt && !currentSprint.isComplete ? true : false"
+    *ngIf="isShow"
   >
     <summary>
       <div class="wrapper">
@@ -163,6 +167,7 @@
           [currentProject]="currentProject"
           [isCurrentUserAdmin]="isCurrentUserAdmin"
           [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
+          (isDelete)="deleteIssue($event)"
         ></app-issue>
       </div>
     </div>
