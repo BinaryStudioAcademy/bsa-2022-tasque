@@ -12,7 +12,7 @@ import {
   faPen,
   faFlag,
   IconDefinition,
-  faPenToSquare
+  faPenToSquare,
 } from '@fortawesome/free-solid-svg-icons';
 import { BaseComponent } from 'src/core/base/base.component';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -50,6 +50,9 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   @Input() public btnText = 'Edit task';
   @Input() public btnClass = 'btn stroke';
   @Input() public btnIcon: IconDefinition | undefined;
+
+  @Input() public isCurrentUserAdmin = false;
+  @Input() public isCurrentUserProjectAdmin = false;
 
   @Output() public isChanging = new EventEmitter<boolean>();
 
@@ -156,7 +159,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       id: 1,
       type: BoardType.Board,
       users: this.task.users?.map((user) => this.convertToUserCard(user)) ?? [],
-      hasRoles: false,
+      hasRoles: true,
     };
   }
 
@@ -351,9 +354,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     }
 
     if (this.editTaskForm.pristine) {
-      this.notificationService.error(
-        'Data hasn\'t been changed',
-      );
+      this.notificationService.error("Data hasn't been changed");
       return;
     }
 
@@ -422,7 +423,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     const boardIndex = this.board.users.findIndex((x) => x.email === email);
     this.board.users.splice(boardIndex, 1);
     const index = this.editTaskForm.controls.assignees.value.findIndex(
-      (x: UserModel) => x.email === email
+      (x: UserModel) => x.email === email,
     );
     this.editTaskForm.controls.assignees.value.splice(index, 1);
     this.editTaskForm.markAsDirty();

@@ -16,17 +16,15 @@
       {{ issue.key }}
     </p>
     <tasque-task-editing
-      *ngIf="isCurrentUserAdmin"
       [task]="issue"
       [currentSprint]="currentSprint"
       [btnText]="issue.summary"
       btnClass="btn full black"
       (isChanging)="test($event)"
+      [isCurrentUserAdmin]="isCurrentUserAdmin"
+      [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
     >
     </tasque-task-editing>
-    <p *ngIf="!isCurrentUserAdmin">
-      {{ issue.summary }}
-    </p>
   </div>
   <div class="issue-estimate">
     <tasque-input

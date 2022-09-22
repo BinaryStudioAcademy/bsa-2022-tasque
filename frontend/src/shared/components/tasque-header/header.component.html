@@ -21,6 +21,8 @@
         btnClass="btn white"
         [organizationId]="currentOrganizationId"
         sidebarName="createTaskSidebar"
+        [isCurrentUserAdmin]="isCurrentUserAdmin"
+        [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
       ></tasque-task-creation>
       <tasque-option
         *ngIf="isCurrentUserAdmin"

@@ -17,7 +17,7 @@
         </div>
         <hr />
         <form [formGroup]="taskCreateForm">
-          <div class="input-wrapper">
+          <div class="input-wrapper" *ngIf="isCurrentUserAdmin">
             <label class="label">Project</label>
             <tasque-dropdown
               class="input title"
