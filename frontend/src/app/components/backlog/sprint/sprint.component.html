@@ -165,7 +165,7 @@
           [currentSprint]="currentSprint"
           (estimate)="estimateCount()"
           [currentProject]="currentProject"
-          [isCurrentUserAdmin]="isCurrentUserAdmin"
+          (isCurrentUserAdmin)="(isCurrentUserAdmin)"
           [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
           (isDelete)="deleteIssue($event)"
         ></app-issue>
