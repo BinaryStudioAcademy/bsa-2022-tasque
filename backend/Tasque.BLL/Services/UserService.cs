@@ -122,5 +122,15 @@ namespace Tasque.Core.BLL.Services
 
             return user.LastOrganizationId;
         }
+
+        public async Task SetConnectionId(int userId, string connectionId)
+        {
+            var user = await _context.Users.FindAsync(userId)
+                ?? throw new CustomNotFoundException("user");
+
+            user.ConnectionId = connectionId;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
