@@ -34,12 +34,22 @@ namespace Tasque.Core.BLL.Services
                 .FirstOrDefaultAsync(u => u.Id == sprintDto.ProjectId)
                   ?? throw new ValidationException("Project not found");
 
+            int order;
+            try
+            {
+                order = _db.Sprints.Max(x => x.Order);
+            }
+            catch
+            {
+                order = 0;
+            }
+
             var newSprint = new Sprint()
             {
                 Name = sprintDto.Name,
                 ProjectId = sprintDto.ProjectId,
                 CreatedAt = DateTime.UtcNow,
-                Order = _db.Sprints.Max(x => x.Order) + 1,
+                Order = order + 1,
             };
 
             await _db.Sprints.AddAsync(newSprint);

@@ -84,7 +84,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.setSelectedProjectId(project.id);
+    this.setSelectedProjectId(project.id, false);
 
     const options: TasqueDropdownOption = {
       title: project.name,
@@ -220,7 +220,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  setSelectedProjectId(id: number): void {
+  setSelectedProjectId(id: number, clean: boolean): void {
     this.selectedProjectId = id;
     this.issueTemplates = [];
     this.projectUsers = [];
@@ -246,7 +246,9 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
             color: t.color ?? '',
           }),
         );
-        this.issueTypeControl.setValue(this.issueTypes[0]);
+        if (!clean) {
+          this.issueTypeControl.setValue(this.issueTypes[0]);
+        }
       });
 
     this.projectService
@@ -274,7 +276,9 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
               color: p.color,
             }),
           );
-          this.priorityControl.setValue(this.projectPriorities[0]);
+          if (!clean) {
+            this.priorityControl.setValue(this.projectPriorities[0]);
+          }
         } else {
           this.notificationService.error(
             'Something went wrong, try again later',
@@ -295,7 +299,9 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
               color: ts.color,
             });
           });
-          this.stateControl.setValue(this.taskStateOptions[0]);
+          if (!clean) {
+            this.stateControl.setValue(this.taskStateOptions[0]);
+          }
         } else {
           this.notificationService.error(
             'Something went wrong, try again later',
@@ -352,7 +358,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
 
       typeId: this.taskCreateForm.get('issueTypeControl')?.value.id,
       stateId: this.taskCreateForm.get('stateControl')?.value.id,
-      priorityId: this.selectedPriorityId,
+      priorityId: this.taskCreateForm.get('priorityControl')?.value.id,
 
       summary: this.taskCreateForm.get('summaryControl')?.value,
       description: this.taskCreateForm.get('descriptionControl')?.value,
@@ -372,13 +378,14 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
           this.notificationService.success(
             'Task has been created successfully',
           );
+          this.clearForm();
         }
       },
       () => {
         this.notificationService.error('Something go wrong. Try again later');
+        this.clearForm();
       },
     );
-    this.clearForm();
   }
 
   setPriority(id: number): void {
@@ -386,15 +393,16 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   }
 
   public clearForm(): void {
-    //  this.taskCreateForm.reset();
-    this.issueTypeControl.reset();
-    this.summaryControl.reset();
-    this.descriptionControl.reset();
-    this.priorityControl.reset();
-    this.stateControl.reset();
-
+    const lastProject = this.projectControl.value;
+    this.taskCreateForm.reset();
+    this.setSelectedProjectId(lastProject.id, true);
+    this.projectControl.setValue(lastProject);
     this.selectedPriorityId = undefined;
     this.selectedStateId = undefined;
+    this.projectPriorities = [];
+    this.issueTypes = [];
+    this.taskStateOptions = [];
+    this.customFields = [];
   }
 
   getCustomField(field: TaskCustomFieldModel): void {
