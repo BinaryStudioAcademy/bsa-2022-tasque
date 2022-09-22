@@ -309,7 +309,6 @@ export class SprintComponent implements OnInit, OnChanges {
   }
 
   public permissionToEdit(): void {
-    console.log(this.currentUser);
     const organizationId =
       this.currentOrganizationService.currentOrganizationId;
     this.organizationService
