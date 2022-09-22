@@ -39,7 +39,7 @@ jobs:
       id: date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d--%M-%S')"
     - name: Build the Docker image # push The image to the docker hub
-      run: docker build -f ./backend/Notifications.Dockerfile ./backend --tag $DOCKER_USER/$REPO_NAME_NOTIFICATIONS
+      run: docker build ./backend --tag $DOCKER_USER/$REPO_NAME_NOTIFICATIONS -f ./backend/Notifications.Dockerfile 
     - name: Docker Push
       run: docker push $DOCKER_USER/$REPO_NAME_NOTIFICATIONS
 
@@ -60,7 +60,7 @@ jobs:
 
   redeploy_images:
     runs-on: ubuntu-latest
-    needs: [build_push_backend, build_push_frontend]
+    needs: [build_push_backend, build_push_frontend, build_push_notifications]
     steps:
       - uses: actions/checkout@v2
       - name: Update PROD images
