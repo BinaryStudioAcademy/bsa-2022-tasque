@@ -30,6 +30,9 @@ import { ToastrNotificationService } from 'src/core/services/toastr-notification
 import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
+import { ProjectService } from 'src/core/services/project.service';
+import { SprintService } from 'src/core/services/sprint.service';
+import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 
 @Component({
   selector: 'app-backlog',

@@ -14,7 +14,6 @@ import { Observable } from 'rxjs';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { ProjectService } from 'src/core/services/project.service';
 import { concatMap, map } from 'rxjs/operators';
-import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { UserProjectRole } from 'src/core/models/user/user-project-roles';
@@ -49,17 +48,17 @@ export class HeaderComponent implements OnInit {
   private notificationSound = new Audio('assets/notification_sound.wav');
   private notificationDeleteSound = new Audio('assets/notification_delete.wav');
 
+  // eslint-disable-next-line
   constructor(
     private authService: AuthService,
     private router: Router,
     private openDialogService: OpenDialogService,
     private internalServices: InternalServices,
     private projectService: ProjectService,
-    private currentOrganizationService: GetCurrentOrganizationService,
     private organizationService: OrganizationService,
     private scopeGetCurrentEntityService: ScopeGetCurrentEntityService,
     private notificationsService: NotificationsService,
-    private toastrNotificationsService: ToastrNotificationService
+    private toastrNotificationsService: ToastrNotificationService,
   ) {}
 
   ngOnInit(): void {
@@ -75,7 +74,9 @@ export class HeaderComponent implements OnInit {
     // connection.on(Methods.taskCommented, (notification: TaskCommentedNotification) => {});
     // connection.on(Methods.taskMoved, (notification: TaskMovedNotification) => {});
     connection.on(Methods.userInvited, (jsonNotification: string) => {
-      const notification = JSON.parse(jsonNotification) as UserInvitedNotification;
+      const notification = JSON.parse(
+        jsonNotification,
+      ) as UserInvitedNotification;
       this.notifications.push(notification);
       this.notificationSound.play();
     });
@@ -102,16 +103,22 @@ export class HeaderComponent implements OnInit {
           return;
         }
         this.currentUser = user;
-        this.notificationsService.getNotificationsOfUser(this.currentUser.id)
-      	.subscribe((result) => {
-        if (result.some((resp) => !resp.ok)) {
-          this.toastrNotificationsService.error('Notifications cannot be fetched');
-          return;
-        }
-        result.map((resp) => {
-          const notifications = resp.body as Notification[];
-          this.notifications.push(...notifications);
-        });
+
+        this.notificationsService
+          .getNotificationsOfUser(this.currentUser.id)
+          .subscribe((result) => {
+            if (result.some((resp) => !resp.ok)) {
+              this.toastrNotificationsService.error(
+                'Notifications cannot be fetched',
+              );
+              return;
+            }
+
+            result.map((resp) => {
+              const notifications = resp.body as Notification[];
+              this.notifications.push(...notifications);
+            });
+          });
         this.scopeGetCurrentEntityService.getCurrentProjectService.currentProjectId$.subscribe(
           (project) => {
             this.currentProjectId = project;
@@ -233,17 +240,23 @@ export class HeaderComponent implements OnInit {
           this.isCurrentUserProjectAdmin = false;
         }
       });
-      
+  }
+
   public onDeleteNotification(notification: Notification): void {
-    this.notificationsService.deleteNotification(notification)
-    .subscribe((resp) => {
-      if (resp.ok) {
-        this.notifications.splice(this.notifications.indexOf(notification), 1);
-        this.notificationDeleteSound.play();
-      }
-      else {
-        this.toastrNotificationsService.error('Error while deleting notification');
-      }
-    });
+    this.notificationsService
+      .deleteNotification(notification)
+      .subscribe((resp) => {
+        if (resp.ok) {
+          this.notifications.splice(
+            this.notifications.indexOf(notification),
+            1,
+          );
+          this.notificationDeleteSound.play();
+        } else {
+          this.toastrNotificationsService.error(
+            'Error while deleting notification',
+          );
+        }
+      });
   }
 }
