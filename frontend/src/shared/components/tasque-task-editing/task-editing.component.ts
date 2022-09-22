@@ -392,6 +392,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       .add(() => {
         this.clearForm();
       });
+      this.isChanging.emit(false);
   }
 
   toogleModal(event: boolean): void {
