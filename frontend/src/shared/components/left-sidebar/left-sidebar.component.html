@@ -70,7 +70,10 @@
       <span *ngIf="!sideBarMinimized">Project wiki</span>
     </div>
 
-    <section class="settings" *ngIf="isCurrentUserAdmin">
+    <section
+      class="settings"
+      *ngIf="isCurrentUserAdmin || isCurrentUserProjectAdmin"
+    >
       <div
         class="menu-item"
         *ngIf="!sideBarMinimized"

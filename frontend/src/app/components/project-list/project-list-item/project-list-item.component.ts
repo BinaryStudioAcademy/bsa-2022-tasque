@@ -3,10 +3,12 @@ import { Router } from '@angular/router';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 import { UserModel } from 'src/core/models/user/user-model';
+import { UserProjectRole } from 'src/core/models/user/user-project-roles';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { GetCurrentProjectService } from 'src/core/services/get-current-project.service';
 import { OrganizationService } from 'src/core/services/organization.service';
+import { BusinessRole } from 'src/shared/components/select-users/Models';
 
 @Component({
   selector: 'app-project-list-item',
@@ -18,6 +20,7 @@ export class ProjectListItemComponent implements OnInit {
   @Input() public currentUser: UserModel;
 
   public isCurrentUserAdmin = false;
+  public isCurrentUserProjectAdmin = false;
 
   constructor(
     public router: Router,
@@ -54,6 +57,22 @@ export class ProjectListItemComponent implements OnInit {
           this.isCurrentUserAdmin = true;
         } else {
           this.isCurrentUserAdmin = false;
+        }
+
+        const projectRole = this.currentUser.roles?.find(
+          (r) =>
+            r.projectId === this.project.id && r.userId === this.currentUser.id,
+        ) as UserProjectRole;
+
+        if (projectRole) {
+          if (
+            projectRole.roleId == BusinessRole.Admin ||
+            this.isCurrentUserAdmin
+          ) {
+            this.isCurrentUserProjectAdmin = true;
+          } else {
+            this.isCurrentUserProjectAdmin = false;
+          }
         }
       });
   }

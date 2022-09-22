@@ -3,7 +3,7 @@
 
   <div class="buttons-container">
     <app-edit-project
-      *ngIf="isCurrentUserAdmin"
+      *ngIf="isCurrentUserAdmin || isCurrentUserProjectAdmin"
       [project]="project"
     ></app-edit-project>
     <tasque-button
