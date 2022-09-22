@@ -12,6 +12,11 @@ import { OpenDialogService } from 'src/core/services/open-dialog.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { InternalServices } from 'src/core/services/internalServices';
 import { Observable } from 'rxjs';
+import { NotificationsService } from 'src/core/services/notifications.service';
+import { Methods } from 'src/core/models/notifications/Constants';
+import { Notification } from 'src/core/models/notifications/notification';
+import { UserInvitedNotification } from 'src/core/models/notifications/user-invited-notification';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 
 @Component({
   selector: 'tasque-header',
@@ -19,6 +24,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./header.component.sass'],
 })
 export class HeaderComponent implements OnInit {
+  public notifications: Notification[] = [];
   public searchIcon = faMagnifyingGlass;
   public currentUser: UserModel;
   public currentOrganizationId: number;
@@ -28,18 +34,35 @@ export class HeaderComponent implements OnInit {
   public upArrowIcon = faCaretUp;
   public downArrowIcon = faCaretDown;
 
+  private notificationSound = new Audio('assets/notification_sound.wav');
+  private notificationDeleteSound = new Audio('assets/notification_delete.wav');
+
   constructor(
     private getCurrentUserService: GetCurrentUserService,
     private authService: AuthService,
     private router: Router,
     private openDialogService: OpenDialogService,
-    private internalServices: InternalServices
+    private internalServices: InternalServices,
+    private notificationsService: NotificationsService,
+    private toastrNotificationsService: ToastrNotificationService
   ) {}
 
   ngOnInit(): void {
     this.subscribeToCurrentUser();
     this.subscribeToCurrentOrganization();
     this.subscribeToCurrentUserAvatar();
+
+    const connection = this.notificationsService.buildConnection();
+    this.notificationsService.connectToNotificationsEndpoints(connection);
+
+    // TODO add functionality here
+    // connection.on(Methods.taskCommented, (notification: TaskCommentedNotification) => {});
+    // connection.on(Methods.taskMoved, (notification: TaskMovedNotification) => {});
+    connection.on(Methods.userInvited, (jsonNotification: string) => {
+      const notification = JSON.parse(jsonNotification) as UserInvitedNotification;
+      this.notifications.push(notification);
+      this.notificationSound.play();
+    });
   }
 
   changeOrganizationId(val: number): void {
@@ -63,6 +86,18 @@ export class HeaderComponent implements OnInit {
       }
 
       this.currentUser = user;
+
+      this.notificationsService.getNotificationsOfUser(this.currentUser.id)
+      .subscribe((result) => {
+        if (result.some((resp) => !resp.ok)) {
+          this.toastrNotificationsService.error('Notifications cannot be fetched');
+          return;
+        }
+        result.map((resp) => {
+          const notifications = resp.body as Notification[];
+          this.notifications.push(...notifications);
+        });
+      });
     });
   }
 
@@ -119,5 +154,18 @@ export class HeaderComponent implements OnInit {
 
   public checkUrl(): void {
     this.isChanged.emit();
+  }
+
+  public onDeleteNotification(notification: Notification): void {
+    this.notificationsService.deleteNotification(notification)
+    .subscribe((resp) => {
+      if (resp.ok) {
+        this.notifications.splice(this.notifications.indexOf(notification), 1);
+        this.notificationDeleteSound.play();
+      }
+      else {
+        this.toastrNotificationsService.error('Error while deleting notification');
+      }
+    });
   }
 }
