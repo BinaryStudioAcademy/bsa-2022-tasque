@@ -61,6 +61,13 @@ export class WikiTitleComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.currentWiki.wikiDel$.subscribe((data) => {
+      const index = this.childWikiPage.nestedPages?.findIndex((x) => x.id == data);
+      
+      if(index && index != -1) {
+        this.childWikiPage.nestedPages?.splice(index, 1);
+      }
+    });
   }
 
   ngOnDestroy(): void {

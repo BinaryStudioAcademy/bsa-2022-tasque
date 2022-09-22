@@ -22,12 +22,16 @@
       <span class="error" *ngIf="pageNameControl.errors?.['maxlength']">Must be no more than 30 characters. </span>
     </div>
     <div class="buttons">
-      <tasque-button type="submit" class="btn stroke violet-stroke" text="Edit" (click)="edit()"> </tasque-button>
-      <tasque-button type="submit" class="btn stroke violet-stroke" text="Cancel" (click)="cancel()"> </tasque-button>
-      <tasque-button type="submit" class="btn stroke violet-stroke" text="Save" (click)="save()"> </tasque-button>
+      <tasque-button type="submit" class="btn stroke violet-stroke" text="Edit" (click)="edit()"></tasque-button>
+      <tasque-button type="submit" class="btn stroke violet-stroke" text="Cancel" (click)="cancel()"></tasque-button>
+      <tasque-button type="submit" class="btn stroke violet-stroke" text="Remove" (click)="remove()"></tasque-button>
+      <tasque-button type="submit" class="btn stroke violet-stroke" text="Save" (click)="save()"></tasque-button>
     </div>
   </div>
   <div class="text">
+    <div class="empty-tasks row pale" *ngIf="pageText?.length == 0 && orEdit">
+      <label class="text-center">This can be the text of your page</label>
+    </div>
     <div class="text-page" [hidden]="!orEdit" [innerHTML]="pageText" aria-readonly="true"></div>
     <angular-editor
       [hidden]="orEdit"

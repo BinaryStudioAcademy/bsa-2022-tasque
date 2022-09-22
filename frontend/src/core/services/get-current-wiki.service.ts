@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { WikiPageInfo } from '../models/wiki/wiki-page-info';
 
 @Injectable({
@@ -16,4 +16,10 @@ export class GetCurrentWikiService {
     this.wikiSubj.next(wikiPage);
   }
 
+  private wikiDelSubj = new BehaviorSubject<number>(-1);
+  public wikiDel$ = this.wikiDelSubj.asObservable();
+
+  public setWikiDel(wikiId: number): void {
+    this.wikiDelSubj.next(wikiId);
+  }
 }

@@ -30,4 +30,8 @@ export class WikiService {
   getWikiPage(wikiPageId: number): Observable<HttpResponse<WikiPage>> {
     return this.httpService.getFullRequest<WikiPage>(this.routePrefix + `/page/${wikiPageId}`);
   }
+
+  deleteWikiPage(wikiPageId: number): Observable<HttpResponse<boolean>> {
+    return this.httpService.deleteRequest(this.routePrefix + `/delete/${wikiPageId}`);
+  }
 }

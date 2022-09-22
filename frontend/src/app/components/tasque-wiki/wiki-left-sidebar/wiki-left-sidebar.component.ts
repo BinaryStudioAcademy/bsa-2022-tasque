@@ -40,10 +40,18 @@ export class WikiLeftSidebarComponent implements OnInit, OnDestroy {
     this.wikiService.getProjectWiki(this.currentProjectId)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((data) => {
-      if(data.body) {
+      if(data.body && data.body.length !== 0) {
         this.pageList = data.body;
         this.currentWiki.setWiki(this.pageList[0]);
         this.router.navigate([`project/${this.currentProjectId}/wiki/${this.pageList[0].id}`]);
+      }
+    });
+
+    this.currentWiki.wikiDel$.subscribe((data) => {
+      const index = this.pageList.findIndex((x) => x.id == data);
+
+      if(index && index != -1) {
+        this.pageList.splice(index, 1);
       }
     });
   }

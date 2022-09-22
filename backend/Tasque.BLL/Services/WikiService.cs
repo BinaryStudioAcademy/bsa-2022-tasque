@@ -6,7 +6,6 @@ using Tasque.Core.Common.DTO.Wiki;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.DAL;
 using Tasque.Core.Identity.Helpers;
-using static Amazon.S3.Util.S3EventNotification;
 
 namespace Tasque.Core.BLL.Services
 {
@@ -24,6 +23,13 @@ namespace Tasque.Core.BLL.Services
 
             if (entityToCreate.ParentPageId != null)
             {
+                var parentPage = await _dbSet.FirstOrDefaultAsync(x => x.Id == entityToCreate.ParentPageId);
+
+                if (parentPage != null && parentPage.NestedPages != null)
+                {
+                    parentPage.NestedPages.Add(entityToCreate);
+                }
+
                 parentLevel = await NestingСheck(entityToCreate.ParentPageId, parentLevel);
 
                 if (parentLevel >= 4)
@@ -131,6 +137,39 @@ namespace Tasque.Core.BLL.Services
 
             return _mapper.Map<WikiPageDto>(entity);
 
+        }
+
+        public override async Task<bool> Delete(int key)
+        {
+            var entityToDelete = await _dbSet.FirstOrDefaultAsync(x => x.Id == key);
+
+            if (entityToDelete is null)
+            {
+                throw new NotFoundHttpException($"Wiki with this key not found");
+            }
+
+            var pagesToRemove = new List<WikiPage>();
+            pagesToRemove = await GetPagesToRemove(pagesToRemove, entityToDelete.Id);
+
+            _dbSet.RemoveRange(pagesToRemove);
+            _dbSet.Remove(entityToDelete);
+            await _db.SaveChangesAsync();
+
+            return true;
+        }
+
+        private async Task<List<WikiPage>> GetPagesToRemove(List<WikiPage> wikiPages, int? parentId)
+        {
+            var page = await _dbSet.Where(x => x.ParentPageId == parentId).ToListAsync();
+
+            wikiPages.AddRange(page);
+
+            foreach(var item in page)
+            {
+                await GetPagesToRemove(wikiPages, item.Id);
+            }
+
+            return wikiPages;
         }
     }
 }

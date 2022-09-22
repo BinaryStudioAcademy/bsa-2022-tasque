@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
@@ -8,6 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 import { WikiPage } from 'src/core/models/wiki/wiki-page';
 import { GetCurrentWikiService } from 'src/core/services/get-current-wiki.service';
+import { OpenDialogService } from 'src/core/services/open-dialog.service';
 import { WikiService } from 'src/core/services/wiki.service';
 import { WikiEditorConfig } from 'src/core/settings/angular-wiki-editor-setting';
 
@@ -28,6 +29,7 @@ export class WikiPageComponent implements OnInit, OnDestroy {
   public pageText?: string;
   public pageTitle: string;
   public orEdit: boolean = true;
+  private currentProjectId: number;
 
   private unsubscribe$ = new Subject<void>();
 
@@ -38,7 +40,9 @@ export class WikiPageComponent implements OnInit, OnDestroy {
   constructor(
     private currentWikiService: GetCurrentWikiService,
     private wikiService: WikiService,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private openDialogService: OpenDialogService,
+    private router: Router
   ) {
     this.pageNameControl = new FormControl(this.pageName, [
       Validators.required,
@@ -103,6 +107,26 @@ export class WikiPageComponent implements OnInit, OnDestroy {
         }
       })
     }
+  }
+
+  remove(): void {
+    this.openDialogService.openConfirmRemoveDialog({ 
+      message: 'When you delete a page that has nested pages, they will also be deleted', 
+      title: 'Are you sure?',
+      type: 'deletion'
+    })
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((data) => {
+      if(data === true) {
+        this.wikiService.deleteWikiPage(this.wikiPage.id)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(() => {
+          const id = this.activeRoute.parent?.snapshot.paramMap.get('id');
+          this.currentWikiService.setWikiDel(this.wikiPage.id);
+          this.router.navigate(['project/' + id + '/wiki']);
+        });
+      }
+    });
   }
 
 }
