@@ -10,7 +10,7 @@
 </div>
 <div class="container grid">
   <div class="user-wrp" *ngFor="let user of visible">
-    <tasque-avatar [user]="user" [diameter_px]="55"></tasque-avatar>
+    <tasque-avatar [user]="user" [diameter_px]="55" [isShowMatTooltip]="false"></tasque-avatar>
     <div class="text-wrp">
       <span class="text-16">{{ user.name }}</span>
       <!-- User role here -->
