@@ -18,7 +18,6 @@ export class NotificationsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.notifications);
     this.notifications = this.notifications.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 

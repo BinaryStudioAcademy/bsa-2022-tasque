@@ -461,8 +461,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         ) {
           this.isCurrentUserAdmin = true;
           return;
-        } else {
-          this.isCurrentUserAdmin = false;
         }
 
         const projectRole = this.user.roles?.find(
