@@ -39,6 +39,9 @@ using (var scope = app.Services.CreateScope())
     scope.ServiceProvider.ConfigureSubscriptions();
 }
 
+app.UsePathBase(new PathString("/notifications"));
+app.UseRouting();
+
 // Configure the HTTP request pipeline.
 app.UseCors(builder =>
     builder
@@ -54,7 +57,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapHub<NotificationsHub>("/notifications");
+app.MapHub<NotificationsHub>("");
 
 app.MapControllers();
 
