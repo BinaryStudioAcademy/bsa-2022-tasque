@@ -1,10 +1,10 @@
 <form [formGroup]="sprintForm" class="edit-sprint-dialog">
   <mat-dialog-content class="dialog-content">
     <h4>
-      {{ sprint.isStarting ? 'Start sprint' : 'Edit sprint: ' + sprint.name }}
+      <p class="sprint-name">{{ sprint.isStarting ? 'Start sprint' : 'Edit sprint: ' + sprint.name }}</p>
       <span *ngIf="sprint.isStarting" class="dialog-info"
-        ><strong>{{ sprint.tasks ? sprint.tasks.length : 0 }}</strong> issues
-        will be added in this sprint.</span
+        ><strong>{{ sprint.tasks ? sprint.tasks.length : 0 }}</strong> issues will be added in this
+        sprint.</span
       >
     </h4>
     <div class="tasque-input">
@@ -77,11 +77,7 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions class="dialog-options" align="end">
-    <tasque-button
-      [mat-dialog-close]="false"
-      [text]="this.cancelBtnName"
-      [class]="this.cancelBtnClass"
-    >
+    <tasque-button [mat-dialog-close]="false" [text]="this.cancelBtnName" [class]="this.cancelBtnClass">
     </tasque-button>
     <tasque-button
       [mat-dialog-close]="sprint"

@@ -12,7 +12,10 @@
         <span class="pale pl-5" *ngIf="tasks">({{ tasks.length }} issues)</span>
       </button>
     </div>
-    <div class="sprints" *ngIf="isCurrentUserAdmin">
+    <div
+      class="sprints"
+      *ngIf="isCurrentUserAdmin || isCurrentUserProjectAdmin"
+    >
       <tasque-button
         class="mini"
         text="Create Sprint"

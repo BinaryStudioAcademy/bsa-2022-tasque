@@ -41,6 +41,9 @@ export class IssueComponent implements OnInit {
   //get current sprint
   @Input() public currentSprint: SprintModel;
 
+  @Input() public isCurrentUserAdmin = false;
+  @Input() public isCurrentUserProjectAdmin = false;
+
   //notifying the parent components about the change in the value of estimate
   @Output() estimate = new EventEmitter<void>();
   @Output() isChanging = new EventEmitter<boolean>();

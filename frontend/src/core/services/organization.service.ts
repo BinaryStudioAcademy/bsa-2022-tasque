@@ -76,11 +76,11 @@ export class OrganizationService {
 
   deleteUser(
     organizationId: number,
-    user: ProfileChangesDTO,
+    userEmail: string,
   ): Observable<HttpResponse<ProfileChangesDTO>> {
     return this.httpService.postFullRequest(
       this.routePrefix + `/${organizationId}/users/del`,
-      user,
+      { email: userEmail },
     );
   }
 }

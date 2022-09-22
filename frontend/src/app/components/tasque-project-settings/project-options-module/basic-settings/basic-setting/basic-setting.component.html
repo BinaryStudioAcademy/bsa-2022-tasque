@@ -1,10 +1,17 @@
 <div class="setting-container">
   <div class="setting-data" *ngIf="!isEditing">
-    <div class="setting-color" [style.background-color]="projectSetting.color"></div>
+    <div
+      class="setting-color"
+      [style.background-color]="projectSetting.color"
+    ></div>
     <span>{{ projectSetting.name }}</span>
   </div>
   <div class="edit-setting" *ngIf="isEditing">
-    <tasque-input [formControl]="formColorControl" class="edit-input" type="color"></tasque-input>
+    <tasque-input
+      [formControl]="formColorControl"
+      class="edit-input"
+      type="color"
+    ></tasque-input>
     <tasque-input
       [formControl]="formNameControl"
       (keydown.enter)="saveSetting()"
@@ -15,18 +22,35 @@
   </div>
   <div class="setting-actions">
     <tasque-button
-      class="btn icon"
+      class="btn icon gray-icon"
       *ngIf="isEditing"
       [icon]="resetIcon"
       (btnClick)="resetSetting()"
     ></tasque-button>
+
+    <tasque-checkbox
+      *ngIf="isEditing && isTaskState"
+      class="is-task-complete"
+      text="done?"
+      [checked]="isTaskStateChecked"
+      (stateChanged)="taskStateStatusUpdate()"
+    ></tasque-checkbox>
+
     <tasque-button
-      class="btn icon"
+      class="btn icon gray-icon"
       *ngIf="isEditing"
       [icon]="applyIcon"
       (btnClick)="saveSetting()"
     ></tasque-button>
-    <tasque-button (btnClick)="isEditing = !isEditing" [icon]="editIcon" class="btn icon"></tasque-button>
-    <tasque-button (btnClick)="deleteSetting()" [icon]="removeIcon" class="btn icon"></tasque-button>
+    <tasque-button
+      (btnClick)="isEditing = !isEditing"
+      [icon]="editIcon"
+      class="btn icon gray-icon"
+    ></tasque-button>
+    <tasque-button
+      (btnClick)="deleteSetting()"
+      [icon]="removeIcon"
+      class="btn icon gray-icon"
+    ></tasque-button>
   </div>
 </div>

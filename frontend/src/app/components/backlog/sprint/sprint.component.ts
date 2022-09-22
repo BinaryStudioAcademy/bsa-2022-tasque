@@ -32,6 +32,13 @@ import { UserRole } from 'src/core/models/user/user-roles';
 import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { OpenDialogService } from 'src/core/services/open-dialog.service';
 import { TaskModel } from 'src/core/models/task/task-model';
+import * as moment from 'moment';
+import { EditSprintModel } from 'src/core/models/sprint/edit-sprint-model';
+import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
+import { OrganizationService } from 'src/core/services/organization.service';
+import { OrganizationModel } from 'src/core/models/organization/organization-model';
+import { BusinessRole } from 'src/shared/components/select-users/Models';
+import { UserProjectRole } from 'src/core/models/user/user-project-roles';
 
 @Component({
   selector: 'app-sprint',
@@ -70,6 +77,7 @@ export class SprintComponent implements OnInit, OnChanges {
   public tasksDto: TaskModel;
   public role: UserRole;
   public isCurrentUserAdmin = false;
+  public isCurrentUserProjectAdmin = false;
 
   public isDraggable = true;
 
@@ -81,6 +89,8 @@ export class SprintComponent implements OnInit, OnChanges {
   faAngleDown = faAngleDown;
   faChevronRight = faChevronRight;
 
+  dropdownState: 'opened' | 'closed' = 'closed';
+
   constructor(
     public sprintService: SprintService,
     public taskService: TaskService,
@@ -88,25 +98,15 @@ export class SprintComponent implements OnInit, OnChanges {
     public taskTypeService: TaskTypeService,
     public taskStateService: TaskStateService,
     public openDialogService: OpenDialogService,
+    private currentOrganizationService: GetCurrentOrganizationService,
+    private organizationService: OrganizationService,
   ) {}
 
   ngOnInit(): void {
     if (this.currentUser === undefined) {
       this.role = 0;
     } else {
-      this.role =
-        (this.currentUser?.organizationRoles?.find(
-          (m) =>
-            m.organizationId === this.currentProject.organizationId &&
-            m.userId === this.currentUser.id,
-        )?.role as UserRole) ?? 0;
-
-      if (
-        UserRole.projectAdmin <= this.role ||
-        this.currentProject.authorId === this.currentUser.id
-      ) {
-        this.isCurrentUserAdmin = true;
-      }
+      this.permissionToEdit();
     }
 
     this.getTasksState();
@@ -260,5 +260,89 @@ export class SprintComponent implements OnInit, OnChanges {
 
   public toogleIsDragable(val: boolean): void {
     this.isDraggable = !val;
+  }
+
+  public switchDropdown(): void {
+    if (this.dropdownState === 'opened') {
+      this.dropdownState = 'closed';
+    } else {
+      this.dropdownState = 'opened';
+    }
+  }
+
+  public editSprint(): void {
+    this.openDialogService
+      .openEditSprintDialog(this.getEditSprintModel(false))
+      .subscribe((result) => {
+        if (result) {
+          this.currentSprint.name = result.name;
+          this.currentSprint.description = result.description;
+        }
+      });
+  }
+
+  public startSprint(): void {
+    this.openDialogService
+      .openEditSprintDialog(this.getEditSprintModel(true))
+      .subscribe((result) => {
+        if (result) {
+          this.currentSprint.name = result.name;
+          this.currentSprint.description = result.description;
+          this.currentSprint.startAt = result.startAt;
+          this.currentSprint.endAt = result.endAt;
+        }
+      });
+  }
+
+  private getEditSprintModel(isStarting: boolean): EditSprintModel {
+    return {
+      ...this.currentSprint,
+      startAt: this.currentSprint.startAt
+        ? moment(this.currentSprint.startAt).format('YYYY-MM-DDTHH:mm')
+        : undefined,
+      endAt: this.currentSprint.endAt
+        ? moment(this.currentSprint.endAt).format('YYYY-MM-DDTHH:mm')
+        : undefined,
+      isStarting: isStarting,
+      tasks: this.tasks.map((task) => task.id),
+    };
+  }
+
+  public permissionToEdit(): void {
+    const organizationId =
+      this.currentOrganizationService.currentOrganizationId;
+    this.organizationService
+      .getOrganization(organizationId)
+      .subscribe((resp) => {
+        const currentOrganization = resp.body as OrganizationModel;
+        const role = this.currentUser.organizationRoles.find(
+          (r) =>
+            r.organizationId === organizationId &&
+            r.userId === this.currentUser.id,
+        )?.role as UserRole;
+        if (
+          role >= UserRole.projectAdmin ||
+          currentOrganization.authorId === this.currentUser.id
+        ) {
+          this.isCurrentUserAdmin = true;
+        } else {
+          this.isCurrentUserAdmin = false;
+        }
+
+        const projectRole = this.currentUser.roles?.find(
+          (r) =>
+            r.projectId === this.currentProject.id &&
+            r.userId === this.currentUser.id,
+        ) as UserProjectRole;
+
+        if (
+          projectRole.roleId == BusinessRole.Admin ||
+          this.isCurrentUserAdmin
+        ) {
+          this.isCurrentUserProjectAdmin = true;
+        } else {
+          this.isCurrentUserProjectAdmin = false;
+        }
+      });
   }
 }

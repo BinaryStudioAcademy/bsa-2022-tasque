@@ -77,6 +77,16 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
       });
   }
 
+  kickUserFromOrganization(email: string): void {
+    this.organizationService.deleteUser(this.organization.id, email)
+    .subscribe((resp) => {
+      if(resp.ok) {
+        const name = this.users.find((user) => user.email === email)?.name;
+        this.notificationService.success(`User ${name?? email} has been deleted successfully`);
+      }
+    });
+  }
+
   public submitForm(): void {
     this.organization.name = this.organizationName;
 
@@ -143,30 +153,6 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
       .subscribe((result) => {
         if (result.body) {
           this.users = result.body;
-        }
-      });
-  }
-
-  public addUser(): void {
-    this.organizationService
-      .addUser(this.organization.id, this.users[0])
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((result) => {
-        if (result.status == 200) {
-          this.notificationService.success('The user is added to the organization');
-        }
-      });
-  }
-
-  public delUser(): void {
-    this.organizationService
-      .deleteUser(this.organization.id, this.users[0])
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((result) => {
-        if (result.status == 200) {
-          this.notificationService.success(
-            'The user has been removed from the organization',
-          );
         }
       });
   }

@@ -4,7 +4,6 @@ using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.DTO.Organization;
 using Tasque.Core.Common.DTO.User;
-using Tasque.Core.Common.Models.InvitationModels;
 using Tasque.Core.Identity.Services;
 
 namespace Tasque.Core.WebAPI.Controllers
@@ -57,22 +56,22 @@ namespace Tasque.Core.WebAPI.Controllers
         [HttpPost]
         public async virtual Task<IActionResult> AddUserToOrganization(int organizationId, [FromBody] UserDto user)
         {
-            await _service.AddUser(1, user);
+            await _service.AddUser(organizationId, user);
 
             return Ok();
         }
 
         [Route("{organizationId}/users/del")]
         [HttpPost]
-        public async virtual Task<IActionResult> DeleteUserInOrganization(int organizationId, [FromBody] UserDto user)
+        public async virtual Task<IActionResult> DeleteUserInOrganization(int organizationId, [FromBody] EmailDto email)
         {
-            await _service.DeleteUser(organizationId, user);
+            await _service.DeleteUser(organizationId, email.Email);
 
             return Ok();
         }
 
         [HttpPost("invite/{organizationId}")]
-        public async Task<IActionResult> InviteUserToOrganization(int organizationId, [FromBody] InvitationModel userEmail)
+        public async Task<IActionResult> InviteUserToOrganization(int organizationId, [FromBody] EmailDto userEmail)
         {
             var isSucced = await _invitationService.InviteUserToOrganization(organizationId, userEmail.Email ?? string.Empty);
             if(!isSucced)
@@ -80,6 +79,7 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpPut("invite/confirm/{key}")]
         public async Task<IActionResult> ConfirmInvitation(Guid key)
         {

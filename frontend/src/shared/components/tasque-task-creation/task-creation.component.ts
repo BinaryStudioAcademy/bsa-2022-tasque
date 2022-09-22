@@ -72,10 +72,31 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   @Input() public btnClass = 'btn stroke';
   @Input() public sidebarName = 'taskCreation';
 
-  @Input() public currentProject: ProjectModel;
+  private _currentProject: ProjectModel;
+  @Input() public set currentProject(project: ProjectModel) {
+    if (!project) {
+      this.projectControl.reset();
+      return;
+    }
+
+    this.setSelectedProjectId(project.id);
+
+    const options: TasqueDropdownOption = {
+      title: project.name,
+      id: project.id,
+    };
+
+    this.projectControl.setValue(options);
+  }
+  public get currentProject(): ProjectModel {
+    return this._currentProject;
+  }
 
   @Input() public currentTasks: TaskModel[];
   @Input() public sprintId: number;
+
+  @Input() public isCurrentUserAdmin = false;
+  @Input() public isCurrentUserProjectAdmin = false;
 
   public isOpen = false;
 
@@ -100,13 +121,13 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     const ctrl = this.summaryControl;
 
     if (ctrl.errors?.['minlength'] && (ctrl.touched || ctrl.dirty)) {
-      return 'Summary must be at least 2 characters';
+      return 'Title must be at least 2 characters';
     }
     if (ctrl.errors?.['maxlength'] && (ctrl.touched || ctrl.dirty)) {
-      return 'Summary must be less than 80 characters';
+      return 'Title must be less than 80 characters';
     }
     if (ctrl.errors?.['required'] && (ctrl.touched || ctrl.dirty)) {
-      return 'Summary is required';
+      return 'Title is required';
     }
     return '';
   }
@@ -208,6 +229,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       .getAllProjectTaskTypes(this.selectedProjectId)
       .subscribe((resp) => {
         const types = resp.body as TaskType[];
+        this.issueTypes = [];
         types.forEach((t) =>
           this.issueTypes.push({
             title: t.name,
@@ -215,6 +237,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
             color: t.color ?? '',
           }),
         );
+        this.issueTypeControl.setValue(this.issueTypes[0]);
       });
 
     this.projectService
@@ -234,6 +257,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       .subscribe((resp) => {
         if (resp.ok) {
           const priorities = resp.body as TaskPriority[];
+          this.projectPriorities = [];
           priorities.forEach((p) =>
             this.projectPriorities.push({
               title: p.name,
@@ -241,6 +265,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
               color: p.color,
             }),
           );
+          this.priorityControl.setValue(this.projectPriorities[0]);
         } else {
           this.notificationService.error(
             'Something went wrong, try again later',
@@ -253,6 +278,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       .subscribe((resp) => {
         if (resp.ok) {
           this.taskStates = resp.body as TaskState[];
+          this.taskStateOptions = [];
           this.taskStates.forEach((ts) => {
             this.taskStateOptions.push({
               id: ts.id,
@@ -260,6 +286,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
               color: ts.color,
             });
           });
+          this.stateControl.setValue(this.taskStateOptions[0]);
         } else {
           this.notificationService.error(
             'Something went wrong, try again later',

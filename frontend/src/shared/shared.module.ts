@@ -33,6 +33,7 @@ import { CreateProjectDialogComponent } from './components/create-project-dialog
 import { TaskCreationCustomFieldsComponent } from './components/tasque-task-creation/task-creation-custom-fields/task-creation-custom-fields.component';
 import { TaskCreationComponent } from './components/tasque-task-creation/task-creation.component';
 import { ProjectDropdownComponent } from './components/tasque-header/project-dropdown/project-dropdown.component';
+import { TasqueCommentsComponent } from './components/tasque-comments/tasque-comments.component';
 import { NotificationsComponent } from './components/tasque-header/notifications/notifications.component';
 import { UserInvitedNotificationComponent } from './components/tasque-header/notifications/user-invited-notification/user-invited-notification.component';
 
@@ -75,6 +76,7 @@ import { UserInvitedNotificationComponent } from './components/tasque-header/not
     CreateProjectDialogComponent,
     TaskCreationCustomFieldsComponent,
     ProjectDropdownComponent,
+    TasqueCommentsComponent
     NotificationsComponent,
     UserInvitedNotificationComponent
   ],

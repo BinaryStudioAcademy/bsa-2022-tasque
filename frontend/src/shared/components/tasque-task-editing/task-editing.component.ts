@@ -12,6 +12,7 @@ import {
   faPen,
   faFlag,
   IconDefinition,
+  faPenToSquare,
 } from '@fortawesome/free-solid-svg-icons';
 import { BaseComponent } from 'src/core/base/base.component';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -50,6 +51,9 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   @Input() public btnClass = 'btn stroke';
   @Input() public btnIcon: IconDefinition | undefined;
 
+  @Input() public isCurrentUserAdmin = false;
+  @Input() public isCurrentUserProjectAdmin = false;
+
   @Output() public isChanging = new EventEmitter<boolean>();
 
   public organizationId: number;
@@ -67,10 +71,10 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public ellipsisIcon = faEllipsisVertical;
   public faceSmileIcon = faFaceSmile;
   public editIcon = faPen;
+  public editSquareIcon = faPenToSquare;
   public flagIcon = faFlag;
 
   public descriptionEditorShow = false;
-  public summaryInputShow = false;
 
   public statusOptions: TasqueDropdownOption[] = [];
   public priorityOptions: TasqueDropdownOption[] = [];
@@ -155,16 +159,13 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       id: 1,
       type: BoardType.Board,
       users: this.task.users?.map((user) => this.convertToUserCard(user)) ?? [],
-      hasRoles: false,
+      hasRoles: true,
     };
   }
 
-  summaryClick(): void {
-    this.summaryInputShow = true;
-  }
-
-  summaryInputOutsideClick(): void {
-    this.summaryInputShow = false;
+  public titleContent(event: Event): string {
+    const input = event.target as HTMLElement;
+    return input.innerText;
   }
 
   descriptionClick(): void {
@@ -344,12 +345,16 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   }
 
   public submitForm(): void {
-    if (this.editTaskForm.invalid || this.editTaskForm.pristine) {
-      this.editTaskForm.markAllAsTouched();
+    if (this.editTaskForm.invalid) {
       this.notificationService.error(
         'Some values are incorrect. Follow error messages to solve this problem',
         'Invalid values',
       );
+      return;
+    }
+
+    if (this.editTaskForm.pristine) {
+      this.notificationService.error('Data hasn`t been changed');
       return;
     }
 
@@ -415,18 +420,16 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   }
 
   deleteUser(email: string): void {
-    const boardIndex = this.board.users.findIndex((x) => x.email == email);
+    const boardIndex = this.board.users.findIndex((x) => x.email === email);
     this.board.users.splice(boardIndex, 1);
     const index = this.editTaskForm.controls.assignees.value.findIndex(
-      (x: UserModel) => {
-        x.email == email;
-      },
+      (x: UserModel) => x.email === email,
     );
     this.editTaskForm.controls.assignees.value.splice(index, 1);
     this.editTaskForm.markAsDirty();
   }
 
-  // TODO: Removed it when tasque-select-users is redesigned
+  // TODO: Remove it when tasque-select-users is redesigned
   private convertToUserCard(user: UserModel): IUserCard {
     return {
       id: user.id,

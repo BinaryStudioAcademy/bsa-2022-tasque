@@ -13,7 +13,11 @@
   </div>
 
   <div *ngIf="isAdding" class="add-setting">
-    <tasque-input [formControl]="formColorControl" class="edit-input" type="color"></tasque-input>
+    <tasque-input
+      [formControl]="formColorControl"
+      class="edit-input"
+      type="color"
+    ></tasque-input>
     <tasque-input
       [formControl]="formNameControl"
       (keydown.enter)="saveSetting()"
@@ -22,15 +26,27 @@
       type="text"
     ></tasque-input>
     <div class="add-setting-actions">
-      <tasque-button class="btn icon" [icon]="resetIcon" (btnClick)="clearSetting()"></tasque-button>
-      <tasque-button class="btn icon" [icon]="applyIcon" (btnClick)="saveSetting()"></tasque-button>
-      <tasque-button class="btn icon" [icon]="removeIcon" (btnClick)="removeSetting()"></tasque-button>
+      <tasque-button
+        class="btn icon gray-icon"
+        [icon]="resetIcon"
+        (btnClick)="clearSetting()"
+      ></tasque-button>
+      <tasque-button
+        class="btn icon gray-icon"
+        [icon]="applyIcon"
+        (btnClick)="saveSetting()"
+      ></tasque-button>
+      <tasque-button
+        class="btn icon gray-icon"
+        [icon]="removeIcon"
+        (btnClick)="removeSetting()"
+      ></tasque-button>
     </div>
   </div>
 
   <tasque-button
     *ngIf="!isAdding"
-    class="btn icon create-setting"
+    class="btn icon create-setting gray-icon"
     [icon]="addIcon"
     (btnClick)="addSetting()"
   ></tasque-button>
@@ -41,6 +57,10 @@
       text="Cancel"
       (btnClick)="cancelEdit()"
     ></tasque-button>
-    <tasque-button class="btn stroke fixed-height" text="Save" (btnClick)="saveEdit()"></tasque-button>
+    <tasque-button
+      class="btn stroke fixed-height"
+      text="Save"
+      (btnClick)="saveEdit()"
+    ></tasque-button>
   </div>
 </div>

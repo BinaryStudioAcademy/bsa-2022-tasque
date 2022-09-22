@@ -17,11 +17,11 @@ namespace Tasque.Core.Identity.Services
 {
     public class AuthService
     {
-        private DataContext _context;
-        private JwtFactory _jwtFactory;
-        private IMapper _mapper;
-        private IValidator<User> _validator;
-        private ConfirmationTokenService _tokenService;
+        private readonly DataContext _context;
+        private readonly JwtFactory _jwtFactory;
+        private readonly IMapper _mapper;
+        private readonly IValidator<User> _validator;
+        private readonly ConfirmationTokenService _tokenService;
         private readonly InvitationService _invitationExtension;
 
         public AuthService(
@@ -58,11 +58,9 @@ namespace Tasque.Core.Identity.Services
             if (!SecurityHelper.ValidatePassword(loginInfo.Password, userEntity.Password, userEntity.Salt))
                 throw new ValidationException("Invalid password");
 
-            InvitationToken? invitationToken = null;
-
             if (loginInfo.IsInvitedToOrganization && loginInfo.Key.HasValue)
             {
-                invitationToken = await _invitationExtension.ConfirmInvitationToken(loginInfo.Key!.Value);
+                var invitationToken = await _invitationExtension.ConfirmInvitationToken(loginInfo.Key!.Value);
 
                 if (invitationToken.InvitedUserEmail != loginInfo.Email)
                     throw new ValidationException("Invalid token");
@@ -125,23 +123,25 @@ namespace Tasque.Core.Identity.Services
             {
                 _context.Users.Update(userEntity);
                 _context.ConfirmationTokens.Remove(token);
-                res = GetAccessToken(userEntity.Id, userEntity.Name, userEntity.Email);
             }
             else if(invitationToken != null)
             {
                 _context.Users.Add(userEntity);
                 _context.InvitationTokens.Remove(invitationToken);
-                res = GetAccessToken(userEntity.Id, userEntity.Name, userEntity.Email);
             }
             else
             {
                 _context.Users.Add(userEntity);
             }
 
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
-            if (invitationToken != null)
-                await _invitationExtension.AddUserToOrganizationModel(userEntity, invitationToken);
+            if (invitationToken != null || token != null)
+            {
+                if(invitationToken != null)
+                    await _invitationExtension.AddUserToOrganizationModel(userEntity, invitationToken);
+                res = GetAccessToken(userEntity.Id, userEntity.Name, userEntity.Email);
+            }
 
             return res;
         }

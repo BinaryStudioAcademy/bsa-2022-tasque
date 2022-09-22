@@ -29,9 +29,8 @@ namespace Tasque.Core.Identity.Services.Extensions.Factory.Builders
         {
             var reciever = new EmailContact(token.InvitedUserEmail ?? string.Empty, token.InvitedUserEmail ?? string.Empty);
             var host = _emailOptions.Host;
-            var endpoint = token.IsUserExist ? _emailOptions.InviteExistUserEndpoint : _emailOptions.InviteNewUserEndpoint;
+            var endpoint = _emailOptions.InviteUserToOrganizationEndpoint;
             var link = $"{host}{endpoint}";
-            var key = token.Token;
             var logo = _configuration["Host:BigLogo"];
             var organization = await _context.Organizations.FirstOrDefaultAsync(o => o.Id == token.EntityId);
 
@@ -43,7 +42,7 @@ namespace Tasque.Core.Identity.Services.Extensions.Factory.Builders
                 { "appLink", host },
                 { "logoLink", logo },
                 { "email", token.InvitedUserEmail ?? string.Empty },
-                { "link", $"{link}?key={key}" },
+                { "link", $"{link}?exist={token.IsUserExist}&key={token.Token}" },
                 { "organizationName", organization.Name }
             };
 

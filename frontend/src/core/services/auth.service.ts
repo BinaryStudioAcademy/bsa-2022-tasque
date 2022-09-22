@@ -57,7 +57,7 @@ export class AuthService {
   }
 
   checkInvitationLink(ref: string): Observable<HttpResponse<{ email: string }>> {
-    return this.httpService.putFullRequest('/api/organization/' + ref);
+    return this.httpService.putFullRequest('/api/organization/invite/confirm/' + ref);
   }
 
   setAuthToken(token: AccessToken): void {

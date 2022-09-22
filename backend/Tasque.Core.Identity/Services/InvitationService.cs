@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.BLL.Exceptions;
 using Tasque.Core.Common.Entities;

@@ -21,6 +21,8 @@
       [btnText]="issue.summary"
       btnClass="btn full black"
       (isChanging)="test($event)"
+      [isCurrentUserAdmin]="isCurrentUserAdmin"
+      [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
     >
     </tasque-task-editing>
   </div>
