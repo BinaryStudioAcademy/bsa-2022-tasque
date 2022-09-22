@@ -460,6 +460,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           currentOrganization.authorId === this.user.id
         ) {
           this.isCurrentUserAdmin = true;
+          return;
         } else {
           this.isCurrentUserAdmin = false;
         }
@@ -469,7 +470,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         ) as UserProjectRole;
 
         if (
-          projectRole.roleId == BusinessRole.Admin ||
+          projectRole?.roleId == BusinessRole.Admin ||
           this.isCurrentUserAdmin
         ) {
           this.isCurrentUserProjectAdmin = true;
