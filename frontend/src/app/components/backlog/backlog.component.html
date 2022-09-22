@@ -52,6 +52,7 @@
         [sprintIndex]="index"
         [currentProject]="currentProject"
       ></app-sprint>
+      <div *ngIf="archiveSprints?.length === 0" class="empty-archive-warning">The archive is empty.</div>
     </div>
     <div *ngIf="currentProject && currentUser && !isShowArchive" [@fadeInOut]>
       <app-sprint
