@@ -247,6 +247,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         event.previousIndex,
         event.currentIndex,
       );
+      this.orderTasks(event);
       this.updateTasks(event);
     }
   }
@@ -256,9 +257,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     this.boardService.taskService
       .setOrder(tasks)
       .pipe(take(1))
-      .subscribe((resp) => {
-        event.container.data = resp.body as TaskInfoModel[];
-      });
+      .subscribe();
   }
 
   updateColumns(): void {
@@ -290,21 +289,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         }
 
         task.stateId = c.id;
-        task.state = this.project?.projectTaskStates.find(
-          (state) => state.id === c.id,
-        );
-
-        for (const col of this.columns) {
-          const index = col.tasks.findIndex((t) => task.id === t.id);
-
-          if (index === -1) {
-            continue;
-          }
-
-          col.tasks[index].state = task.state;
-          col.tasks[index].stateId = task.stateId;
-          break;
-        }
 
         this.boardService.taskService.updateTask(task).subscribe((resp) => {
           if (!resp.ok) {
