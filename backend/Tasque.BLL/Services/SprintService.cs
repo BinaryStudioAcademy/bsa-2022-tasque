@@ -305,6 +305,7 @@ namespace Tasque.Core.BLL.Services
                 .Where(s => s.ProjectId == projectId && !s.IsComplete && s.StartAt != null)
                     .Include(s => s.Tasks)
                 .FirstOrDefaultAsync();
+            
             if (sprint == null)
                 return null;
 

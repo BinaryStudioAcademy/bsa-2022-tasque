@@ -9,8 +9,8 @@ import { CompleteSprintDialogComponent } from './complete-sprint-dialog/complete
   styleUrls: ['./complete-sprint.component.sass'],
 })
 export class CompleteSprintComponent implements OnInit {
-  @Input() public completeBthClass = 'fill gray';
-  @Input() public completeBtnText = 'Start sprint';
+  @Input() public completeBthClass = 'btn stroke';
+  @Input() public completeBtnText = 'Complete sprint';
   @Input() public sprint: SprintModel;
 
   constructor(public matDialog: MatDialog) {}
