@@ -13,5 +13,11 @@ namespace Tasque.Notifications.Services
         }
 
         public abstract Task<List<TNotification>> GetNotifications(int recieverId);
+        public Task DeleteNotification(int notificationId)
+        {
+            var notifToDelete = _db.Set<TNotification>().Single(n => n.Id == notificationId);
+            _db.Remove(notifToDelete);
+            return _db.SaveChangesAsync();
+        }
     }
 }
