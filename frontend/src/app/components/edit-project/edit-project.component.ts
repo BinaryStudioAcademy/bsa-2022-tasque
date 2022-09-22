@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { GetCurrentProjectService } from 'src/core/services/get-current-project.service';

@@ -36,6 +36,7 @@ import { NotificationService } from 'src/core/services/notification.service';
 import { TaskUpdateModel } from 'src/core/models/task/task-update-model';
 import { BoardType, IBoard, IUserCard } from '../select-users/Models';
 import { UserService } from 'src/app/user/services/user.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'tasque-task-editing',
@@ -70,6 +71,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public editIcon = faPen;
   public editSquareIcon = faPenToSquare;
   public flagIcon = faFlag;
+  public isChanged = new Observable<void>();
 
   public descriptionEditorShow = false;
 
@@ -415,6 +417,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         this.editTaskForm.controls.assignees.value.push(user.body);
         this.board.users.push(this.convertToUserCard(user.body));
         this.editTaskForm.markAsDirty();
+        this.isChanged = new Observable<void>();
       });
   }
 
@@ -426,6 +429,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     );
     this.editTaskForm.controls.assignees.value.splice(index, 1);
     this.editTaskForm.markAsDirty();
+    this.isChanged = new Observable<void>();
   }
 
   // TODO: Remove it when tasque-select-users is redesigned

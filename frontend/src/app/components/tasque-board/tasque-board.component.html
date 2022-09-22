@@ -61,18 +61,18 @@
     </div>
     <div class="board-columns" cdkDropListGroup *ngIf="hasTasks">
       <div
-        cdkDropList
         *ngFor="let item of columns"
+        class="column-with-tasks"
+        cdkDropList
         (cdkDropListDropped)="dragDrop($event)"
         [cdkDropListData]="item.tasks"
-        class="column-with-tasks"
       >
         <div class="column-title">
           <div class="board-list">
             <span class="column-name">{{ item.name }}</span>
             <span class="column-element-count"> ({{ item.tasks.length }})</span>
           </div>
-          <hr style="width: 288px">
+          <hr class="column-border">
           <div class="card-container">
             <div *ngIf="item.name.toLowerCase() !== 'done'">
               <div 

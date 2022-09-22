@@ -101,6 +101,7 @@
           <span class="item-label">Assignees</span>
           <tasque-select-users
             (onAdd)="addUser($event)"
+            (isChanged)="isChanged"
             (onDelete)="deleteUser($event)"
             [board]="board"
           ></tasque-select-users>

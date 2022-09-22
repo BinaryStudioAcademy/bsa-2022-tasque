@@ -15,7 +15,6 @@ import { TaskState } from '../models/task/task-state';
 import { TaskModel } from '../models/task/task-model';
 import { ProjectCardModel } from '../models/your-work/project-card-model';
 import { TaskType } from '../models/task/task-type';
-import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
 
 @Injectable({
   providedIn: 'root'
