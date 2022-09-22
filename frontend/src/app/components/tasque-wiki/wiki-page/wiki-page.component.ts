@@ -83,7 +83,7 @@ export class WikiPageComponent implements OnInit, OnDestroy {
   }
 
   emptyText(): boolean {
-    return this.orEdit && (this.pageText?.length == 0 || !this.pageText)
+    return this.orEdit && (this.pageText?.length == 0 || !this.pageText);
   }
 
   cancel(): void {
