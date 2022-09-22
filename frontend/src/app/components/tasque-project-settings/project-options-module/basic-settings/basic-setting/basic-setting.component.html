@@ -22,7 +22,7 @@
   </div>
   <div class="setting-actions">
     <tasque-button
-      class="btn icon"
+      class="btn icon gray-icon"
       *ngIf="isEditing"
       [icon]="resetIcon"
       (btnClick)="resetSetting()"
@@ -37,7 +37,7 @@
     ></tasque-checkbox>
 
     <tasque-button
-      class="btn icon"
+      class="btn icon gray-icon"
       *ngIf="isEditing"
       [icon]="applyIcon"
       (btnClick)="saveSetting()"
@@ -45,12 +45,12 @@
     <tasque-button
       (btnClick)="isEditing = !isEditing"
       [icon]="editIcon"
-      class="btn icon"
+      class="btn icon gray-icon"
     ></tasque-button>
     <tasque-button
       (btnClick)="deleteSetting()"
       [icon]="removeIcon"
-      class="btn icon"
+      class="btn icon gray-icon"
     ></tasque-button>
   </div>
 </div>

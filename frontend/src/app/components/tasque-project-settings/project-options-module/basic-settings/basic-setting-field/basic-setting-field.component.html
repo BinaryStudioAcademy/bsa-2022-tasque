@@ -27,17 +27,17 @@
     ></tasque-input>
     <div class="add-setting-actions">
       <tasque-button
-        class="btn icon"
+        class="btn icon gray-icon"
         [icon]="resetIcon"
         (btnClick)="clearSetting()"
       ></tasque-button>
       <tasque-button
-        class="btn icon"
+        class="btn icon gray-icon"
         [icon]="applyIcon"
         (btnClick)="saveSetting()"
       ></tasque-button>
       <tasque-button
-        class="btn icon"
+        class="btn icon gray-icon"
         [icon]="removeIcon"
         (btnClick)="removeSetting()"
       ></tasque-button>
@@ -46,7 +46,7 @@
 
   <tasque-button
     *ngIf="!isAdding"
-    class="btn icon create-setting"
+    class="btn icon create-setting gray-icon"
     [icon]="addIcon"
     (btnClick)="addSetting()"
   ></tasque-button>
