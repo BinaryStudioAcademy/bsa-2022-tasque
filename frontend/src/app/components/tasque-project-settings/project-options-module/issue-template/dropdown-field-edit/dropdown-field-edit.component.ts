@@ -2,7 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { TaskCustomField } from 'src/core/models/task/task-template-models/task-custom-field';
 import { faCheck, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FormControl, Validators } from '@angular/forms';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 
 @Component({
   selector: 'app-dropdown-field-edit',
@@ -36,7 +36,7 @@ export class DropdownFieldEditComponent implements OnInit {
   }
 
   constructor(
-    private notify: NotificationService, 
+    private notify: ToastrNotificationService, 
   ) { 
     this.formControl = new FormControl(this.newField, [
       Validators.required,

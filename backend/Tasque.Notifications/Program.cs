@@ -42,10 +42,10 @@ using (var scope = app.Services.CreateScope())
 // Configure the HTTP request pipeline.
 app.UseCors(builder =>
     builder
+        .SetIsOriginAllowed(isOriginAllowed: _ => true)
         .AllowAnyMethod()
         .AllowAnyHeader()
-        .AllowCredentials()
-        .WithOrigins("http://localhost:4200"));
+        .AllowCredentials());
 
 app.UseSwagger();
 app.UseSwaggerUI();

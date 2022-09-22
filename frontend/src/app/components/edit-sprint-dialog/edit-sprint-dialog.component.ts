@@ -6,7 +6,7 @@ import { EditSprintModel } from 'src/core/models/sprint/edit-sprint-model';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import * as moment from 'moment';
 import { SprintService } from 'src/core/services/sprint.service';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 
 @Component({
   selector: 'app-edit-sprint-dialog',
@@ -43,7 +43,7 @@ export class EditSprintDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public sprint: EditSprintModel,
     private sprintService: SprintService,
-    private notificationService: NotificationService,
+    private notificationService: ToastrNotificationService,
   ) {
     if (sprint.isStarting) {
       this.sprint.startAt = moment(new Date()).format('YYYY-MM-DDTHH:mm');

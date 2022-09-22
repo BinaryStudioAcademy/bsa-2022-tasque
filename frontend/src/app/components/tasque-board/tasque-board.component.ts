@@ -16,7 +16,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { TaskInfoModel } from 'src/core/models/board/task-Info-model';
 import { UserModel } from 'src/core/models/user/user-model';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { InputComponent } from 'src/shared/components/tasque-input/input.component';
@@ -89,7 +89,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private boardService: ScopeBoardService,
-    private notificationService: NotificationService,
+    private notificationService: ToastrNotificationService,
     private getCurrentEntityService: ScopeGetCurrentEntityService,
     private taskStorageService: TaskStorageService,
     private router: Router,

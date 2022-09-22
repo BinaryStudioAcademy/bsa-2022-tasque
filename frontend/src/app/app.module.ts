@@ -66,7 +66,6 @@ import { ProjectCardComponent } from './components/your-work/project-card/projec
     SprintComponent,
     IssueComponent,
     BacklogContentComponent,
-    BacklogComponent,
     WikiComponent,
     YourWorkComponent,
     ProjectCardComponent,

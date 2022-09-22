@@ -11,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 import { TaskPriority } from 'src/core/models/task/task-priority';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskType } from 'src/core/models/task/task-type';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { TaskStateService } from 'src/core/services/task-state.service';
 
 @Component({
@@ -39,7 +39,7 @@ export class BasicSettingComponent implements OnInit {
   unsubscribe$ = new Subject<void>();
 
   constructor(
-    private notificationService: NotificationService,
+    private notificationService: ToastrNotificationService,
     private taskStateService: TaskStateService,
   ) {}
 

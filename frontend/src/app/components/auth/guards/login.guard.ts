@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, CanActivate, Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth.service';
-import { NotificationService } from '../../../../core/services/notification.service';
+import { ToastrNotificationService } from '../../../../core/services/toastr-notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,7 @@ export class LoginGuard implements CanActivate {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private authService: AuthService,
-    private notificationService: NotificationService,
+    private notificationService: ToastrNotificationService,
   ) {}
 
   private key: string;

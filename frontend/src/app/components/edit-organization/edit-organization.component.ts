@@ -10,7 +10,7 @@ import { BoardType, IBoard } from 'src/shared/components/select-users/Models';
 import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { UserRole } from 'src/core/models/user/user-roles';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 
 @Component({
   selector: 'app-edit-organization',
@@ -42,7 +42,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private notificationService: NotificationService,
+    private notificationService: ToastrNotificationService,
     private sideBarService: SideBarService,
     private organizationService: OrganizationService,
     private getCurrentOrganizationService: GetCurrentOrganizationService,

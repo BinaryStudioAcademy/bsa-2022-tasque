@@ -35,6 +35,8 @@ import { TaskCreationComponent } from './components/tasque-task-creation/task-cr
 import { ProjectDropdownComponent } from './components/tasque-header/project-dropdown/project-dropdown.component';
 import { TasqueCreateDropdownComponent } from './components/tasque-create-dropdown/tasque-create-dropdown.component';
 import { TasqueCommentsComponent } from './components/tasque-comments/tasque-comments.component';
+import { NotificationsComponent } from './components/tasque-header/notifications/notifications.component';
+import { UserInvitedNotificationComponent } from './components/tasque-header/notifications/user-invited-notification/user-invited-notification.component';
 
 @NgModule({
   imports: [
@@ -77,6 +79,9 @@ import { TasqueCommentsComponent } from './components/tasque-comments/tasque-com
     ProjectDropdownComponent,
     TasqueCreateDropdownComponent,
     TasqueCommentsComponent
+    TasqueCommentsComponent,
+    NotificationsComponent,
+    UserInvitedNotificationComponent
   ],
   exports: [
     CommonModule,
