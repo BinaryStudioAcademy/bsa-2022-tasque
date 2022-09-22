@@ -38,25 +38,12 @@
     <div
       class="backlog-issues"
       id="backlog-issues"
-      *ngIf="tasks && tasks.length != 0 && isDragable"
+      *ngIf="tasks && tasks.length != 0"
     >
       <app-issue
         (isChanging)="toogleIsDragable($event)"
         cdkDrag
-        *ngFor="let task of tasks"
-        [issue]="task"
-        [taskStates]="taskStates"
-        [taskTypes]="taskTypes"
-        [currentProject]="project"
-      ></app-issue>
-    </div>
-    <div
-      class="backlog-issues"
-      id="backlog-issues"
-      *ngIf="tasks && tasks.length != 0 && !isDragable"
-    >
-      <app-issue
-        (isChanging)="toogleIsDragable($event)"
+        [cdkDragDisabled]="!isDragable"
         *ngFor="let task of tasks"
         [issue]="task"
         [taskStates]="taskStates"

@@ -4,7 +4,7 @@
     {
         public const string Highest = "#ff0000";
         public const string High = "#ffa700";
-        public const string Medium = "#f9ff00";
+        public const string Medium = "#cecf00";
         public const string Low = "#4fff00";
         public const string Lowest = "#00ffd5";
 

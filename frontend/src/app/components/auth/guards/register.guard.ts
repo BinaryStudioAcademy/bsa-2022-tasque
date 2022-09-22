@@ -15,6 +15,7 @@ export class RegisterGuard implements CanDeactivate<RegisterPageComponent> {
     | boolean
     | UrlTree {
     if (!component.registerForm.touched && !component.passwordRepeatControl.touched) return true;
+    if(component.registerForm.valid && component.passwordRepeatControl.valid) return true;
     return window.confirm('Data would not be saved. Continue?');
   }
 }
