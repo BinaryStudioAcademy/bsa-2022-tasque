@@ -72,7 +72,25 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   @Input() public btnClass = 'btn stroke';
   @Input() public sidebarName = 'taskCreation';
 
-  @Input() public currentProject: ProjectModel;
+  private _currentProject: ProjectModel;
+  @Input() public set currentProject(project: ProjectModel) {
+    if (!project) {
+      this.projectControl.reset();
+      return;
+    }
+
+    this.setSelectedProjectId(project.id);
+
+    const options: TasqueDropdownOption = {
+      title: project.name,
+      id: project.id,
+    };
+
+    this.projectControl.setValue(options);
+  }
+  public get currentProject(): ProjectModel {
+    return this._currentProject;
+  }
 
   @Input() public currentTasks: TaskModel[];
   @Input() public sprintId: number;
@@ -156,17 +174,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (this.currentProject) {
-      this.setSelectedProjectId(this.currentProject.id);
-
-      const options: TasqueDropdownOption = {
-        title: this.currentProject.name,
-        id: this.currentProject.id,
-      };
-
-      this.projectControl.setValue(options);
-    }
-
     this.taskCreateForm = new FormGroup({
       projectControl: this.projectControl,
       issueTypeControl: this.issueTypeControl,
@@ -219,6 +226,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       .getAllProjectTaskTypes(this.selectedProjectId)
       .subscribe((resp) => {
         const types = resp.body as TaskType[];
+        this.issueTypes = [];
         types.forEach((t) =>
           this.issueTypes.push({
             title: t.name,
@@ -226,6 +234,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
             color: t.color ?? '',
           }),
         );
+        this.issueTypeControl.setValue(this.issueTypes[0]);
       });
 
     this.projectService
@@ -245,6 +254,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       .subscribe((resp) => {
         if (resp.ok) {
           const priorities = resp.body as TaskPriority[];
+          this.projectPriorities = [];
           priorities.forEach((p) =>
             this.projectPriorities.push({
               title: p.name,
@@ -252,6 +262,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
               color: p.color,
             }),
           );
+          this.priorityControl.setValue(this.projectPriorities[0]);
         } else {
           this.notificationService.error(
             'Something went wrong, try again later',
@@ -264,6 +275,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       .subscribe((resp) => {
         if (resp.ok) {
           this.taskStates = resp.body as TaskState[];
+          this.taskStateOptions = [];
           this.taskStates.forEach((ts) => {
             this.taskStateOptions.push({
               id: ts.id,
@@ -271,6 +283,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
               color: ts.color,
             });
           });
+          this.stateControl.setValue(this.taskStateOptions[0]);
         } else {
           this.notificationService.error(
             'Something went wrong, try again later',
