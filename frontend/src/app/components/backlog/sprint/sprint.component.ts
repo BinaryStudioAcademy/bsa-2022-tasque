@@ -327,4 +327,9 @@ export class SprintComponent implements OnInit, OnChanges {
         }
       });
   }
+
+  public deleteIssue(id: number): void {
+    var index = this.tasks.findIndex((x) => x.id == id);
+    this.tasks.splice(index, 1);
+  }
 }
