@@ -6,20 +6,19 @@
 >
   <div class="task-creation-conteiner" *ngIf="isOpen">
     <div class="task-creation-header">
-      <h4 class="task-creation-header-title" style="color: black">
-        Create issue
-      </h4>
+      <h4 class="task-creation-header-title" style="color: black">Create issue</h4>
     </div>
     <div class="task-creation-body">
       <div class="task-creation-body-wrapper">
         <div class="body-title">
-          <span>Basic info</span>
+          <h4>Basic info</h4>
         </div>
         <hr />
         <form [formGroup]="taskCreateForm">
-          <div class="input-wrapper">
+          <div class="input-wrapper" *ngIf="isCurrentUserAdmin">
             <label class="label">Project</label>
             <tasque-dropdown
+              class="input title"
               [options]="projects"
               [formControl]="projectControl"
               [errorMessage]="projectErrorMessage"
@@ -52,7 +51,7 @@
             <label class="label">State</label>
             <tasque-dropdown
               [options]="taskStateOptions"
-              [formControl]="priorityControl"
+              [formControl]="stateControl"
               (onSelect)="setSelectedTaskState($event)"
             >
             </tasque-dropdown>
@@ -60,6 +59,7 @@
           <div class="input-wrapper">
             <label class="label">Title</label>
             <tasque-input
+              class="input title"
               [formControl]="summaryControl"
               [errorMessage]="summaryErrorMessage"
               [invalid]="showError"
@@ -76,14 +76,11 @@
             >
             </angular-editor>
           </div>
-          <span class="error" *ngIf="!descriptionControl.valid">{{
-            editorErrorMessage
-          }}</span>
-          <div
-            class="body-title"
-            *ngIf="customFields !== undefined && customFields.length > 0"
-          >
-            <span>Additional fields</span>
+          <span class="error" *ngIf="!descriptionControl.valid">{{ editorErrorMessage }}</span>
+          <div class="body-title" *ngIf="customFields !== undefined && customFields.length > 0">
+            <div class="body-title">
+              <h4>Additional fields</h4>
+            </div>
             <hr />
           </div>
           <div *ngFor="let field of customFields" class="custom-field">
@@ -95,31 +92,16 @@
             </app-task-creation-custom-fields>
           </div>
           <div class="button-wrapper">
-            <tasque-button
-              class="btn stroke violet-stroke disabled"
-              text="+ Add issues"
-            >
-            </tasque-button>
+            <tasque-button class="btn stroke violet-stroke disabled" text="+ Add issues"> </tasque-button>
           </div>
         </form>
       </div>
     </div>
     <div class="task-creation-footer">
       <div class="task-creation-footer-button">
-        <tasque-button
-          type="submit"
-          class="btn stroke"
-          text="Clear form"
-          (click)="clearForm()"
-        >
+        <tasque-button type="submit" class="btn stroke" text="Clear form" (click)="clearForm()">
         </tasque-button>
-        <tasque-button
-          type="submit"
-          class="btn fill"
-          text="Create"
-          (click)="submitForm()"
-        >
-        </tasque-button>
+        <tasque-button type="submit" class="btn fill" text="Create" (click)="submitForm()"> </tasque-button>
       </div>
     </div>
   </div>

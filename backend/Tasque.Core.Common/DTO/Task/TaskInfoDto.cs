@@ -8,6 +8,7 @@ namespace Tasque.Core.Common.DTO.Task
         public string Summary { get; set; } = null!;
         public string Description { get; set; } = null!;
         public string? Key { get; set; }
+        public int Order { get; set; }
         public UserDto? Author { get; set; }
         public string? AttachmentUrl { get; set; }
         public int? StateId { get; set; }

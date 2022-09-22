@@ -11,6 +11,7 @@ namespace Tasque.Core.Common.DTO.Task
         public string? Description { get; set; }
         public string Summary { get; set; } = null!;
         public string? Key { get; set; }
+        public int Order { get; set; }
 
         public int? StateId { get; set; }
         public TaskStateDto? State { get; set; }

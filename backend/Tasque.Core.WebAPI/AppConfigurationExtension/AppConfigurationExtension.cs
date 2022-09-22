@@ -14,6 +14,8 @@ using Tasque.Core.Common.Entities;
 using Tasque.Core.Identity;
 using Tasque.Core.Identity.MappingProfiles;
 using Tasque.Core.Identity.Services;
+using Tasque.Core.Identity.Services.AuxiliaryServices;
+using Tasque.Core.Identity.Services.Extensions;
 
 namespace Tasque.Core.WebAPI.AppConfigurationExtension
 {
@@ -110,6 +112,8 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<ITaskService, TaskService>()
                 .AddScoped<BacklogService>()
                 .AddScoped<WikiService>()
+                .AddScoped<InvitationService>()
+                .AddScoped<ConfirmationTokenExtension>()
                 .RegisterIdentity(configuration);
         }
 

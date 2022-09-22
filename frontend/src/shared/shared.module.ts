@@ -34,6 +34,7 @@ import { TaskCreationCustomFieldsComponent } from './components/tasque-task-crea
 import { TaskCreationComponent } from './components/tasque-task-creation/task-creation.component';
 import { ProjectDropdownComponent } from './components/tasque-header/project-dropdown/project-dropdown.component';
 import { TasqueCreateDropdownComponent } from './components/tasque-create-dropdown/tasque-create-dropdown.component';
+import { TasqueCommentsComponent } from './components/tasque-comments/tasque-comments.component';
 
 @NgModule({
   imports: [
@@ -75,6 +76,7 @@ import { TasqueCreateDropdownComponent } from './components/tasque-create-dropdo
     TaskCreationCustomFieldsComponent,
     ProjectDropdownComponent,
     TasqueCreateDropdownComponent,
+    TasqueCommentsComponent
   ],
   exports: [
     CommonModule,

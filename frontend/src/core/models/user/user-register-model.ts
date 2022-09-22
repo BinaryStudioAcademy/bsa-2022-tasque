@@ -3,4 +3,5 @@ export interface UserRegisterModel {
   email?: string;
   password?: string;
   key?: string;
+  isInvitedToOrganization?: boolean;
 }

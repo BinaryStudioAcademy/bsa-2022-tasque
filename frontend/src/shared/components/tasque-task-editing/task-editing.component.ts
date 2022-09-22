@@ -12,6 +12,7 @@ import {
   faPen,
   faFlag,
   IconDefinition,
+  faPenToSquare,
 } from '@fortawesome/free-solid-svg-icons';
 import { BaseComponent } from 'src/core/base/base.component';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -44,10 +45,14 @@ import { UserService } from 'src/app/user/services/user.service';
 export class TaskEditingComponent extends BaseComponent implements OnInit {
   @Input() public task: TaskModel;
   @Input() public currentUser: UserModel;
+  @Input() public currentSprint: SprintModel;
 
   @Input() public btnText = 'Edit task';
   @Input() public btnClass = 'btn stroke';
   @Input() public btnIcon: IconDefinition | undefined;
+
+  @Input() public isCurrentUserAdmin = false;
+  @Input() public isCurrentUserProjectAdmin = false;
 
   @Output() public isChanging = new EventEmitter<boolean>();
 
@@ -66,10 +71,10 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public ellipsisIcon = faEllipsisVertical;
   public faceSmileIcon = faFaceSmile;
   public editIcon = faPen;
+  public editSquareIcon = faPenToSquare;
   public flagIcon = faFlag;
 
   public descriptionEditorShow = false;
-  public summaryInputShow = false;
 
   public statusOptions: TasqueDropdownOption[] = [];
   public priorityOptions: TasqueDropdownOption[] = [];
@@ -98,7 +103,8 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     private taskStorageService: TaskStorageService,
     private sprintService: SprintService,
     private notificationService: NotificationService,
-    private userService: UserService) {
+    private userService: UserService,
+  ) {
     super();
   }
 
@@ -132,7 +138,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         this.task.summary,
         [Validators.minLength(2), Validators.maxLength(80)],
       ],
-      sprint: [this.convertToOption(this.task.sprint)],
+      sprint: [this.convertToOption(this.currentSprint)],
       status: [this.convertToOption(this.task.state)],
       priority: [this.convertToOption(this.task.priority)],
       type: [this.convertToOption(this.task.type)],
@@ -153,16 +159,13 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       id: 1,
       type: BoardType.Board,
       users: this.task.users?.map((user) => this.convertToUserCard(user)) ?? [],
-      hasRoles: false
+      hasRoles: true,
     };
   }
 
-  summaryClick(): void {
-    this.summaryInputShow = true;
-  }
-
-  summaryInputOutsideClick(): void {
-    this.summaryInputShow = false;
+  public titleContent(event: Event): string {
+    const input = event.target as HTMLElement;
+    return input.innerText;
   }
 
   descriptionClick(): void {
@@ -342,12 +345,16 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   }
 
   public submitForm(): void {
-    if (this.editTaskForm.invalid || this.editTaskForm.pristine) {
-      this.editTaskForm.markAllAsTouched();
+    if (this.editTaskForm.invalid) {
       this.notificationService.error(
         'Some values are incorrect. Follow error messages to solve this problem',
         'Invalid values',
       );
+      return;
+    }
+
+    if (this.editTaskForm.pristine) {
+      this.notificationService.error('Data hasn`t been changed');
       return;
     }
 
@@ -360,7 +367,10 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       stateId: this.editTaskForm.controls.status.value.id,
       typeId: this.editTaskForm.controls.type.value.id,
       projectId: this.editTaskForm.controls.project.value.id,
-      sprintId: this.editTaskForm.controls.sprint.value.id !== 0 ? this.editTaskForm.controls.sprint.value.id : undefined,
+      sprintId:
+        this.editTaskForm.controls.sprint.value.id !== 0
+          ? this.editTaskForm.controls.sprint.value.id
+          : undefined,
     } as TaskUpdateModel;
 
     this.taskService
@@ -385,36 +395,41 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   }
 
   addUser(email: string): void {
-    const isUserAdded = this.board.users.find((user) => user.email == email) ? true : false;
+    const isUserAdded = this.board.users.find((user) => user.email == email)
+      ? true
+      : false;
 
     if (isUserAdded) {
-      this.notificationService.error('User with given email has already been added');
+      this.notificationService.error(
+        'User with given email has already been added',
+      );
       return;
     }
 
-    this.userService.getUserByEmail(email)
+    this.userService
+      .getUserByEmail(email)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (user) => {
-          if (!user.body) {
-            return;
-          }
-          this.editTaskForm.controls.assignees.value.push(user.body);
-          this.board.users.push(this.convertToUserCard(user.body));
-          this.editTaskForm.markAsDirty();
+      .subscribe((user) => {
+        if (!user.body) {
+          return;
         }
-      );
+        this.editTaskForm.controls.assignees.value.push(user.body);
+        this.board.users.push(this.convertToUserCard(user.body));
+        this.editTaskForm.markAsDirty();
+      });
   }
 
   deleteUser(email: string): void {
-    const boardIndex = this.board.users.findIndex((x) => x.email == email);
+    const boardIndex = this.board.users.findIndex((x) => x.email === email);
     this.board.users.splice(boardIndex, 1);
-    const index = this.editTaskForm.controls.assignees.value.findIndex((x: UserModel) => { x.email == email; });
+    const index = this.editTaskForm.controls.assignees.value.findIndex(
+      (x: UserModel) => x.email === email,
+    );
     this.editTaskForm.controls.assignees.value.splice(index, 1);
     this.editTaskForm.markAsDirty();
   }
 
-  // TODO: Removed it when tasque-select-users is redesigned
+  // TODO: Remove it when tasque-select-users is redesigned
   private convertToUserCard(user: UserModel): IUserCard {
     return {
       id: user.id,

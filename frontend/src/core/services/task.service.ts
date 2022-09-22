@@ -29,4 +29,8 @@ export class TaskService {
   deleteTask(id: number): Observable<HttpResponse<TaskModel>> {
     return this.httpService.deleteFullRequest(this.routePrefix + '/' + id);
   }
+
+  setOrder(ids: number[]): Observable<HttpResponse<TaskModel[]>> {
+    return this.httpService.postFullRequest(this.routePrefix + '/order', ids);
+  }
 }

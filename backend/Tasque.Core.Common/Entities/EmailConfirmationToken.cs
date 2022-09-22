@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Tasque.Core.Common.Entities.Abstract;
+using Tasque.Core.Common.Enums;
 
 namespace Tasque.Core.Common.Entities
 {
@@ -12,12 +13,5 @@ namespace Tasque.Core.Common.Entities
         public DateTime ExpiringAt { get; set; }
         public TokenKind Kind{ get; set; }
         public bool IsValid => DateTime.UtcNow < ExpiringAt;
-    }
-
-    public enum TokenKind
-    {
-        EmailConfirmation = 1,
-        PasswordReset = 2,
-        ReferralSignUp = 3
     }
 }

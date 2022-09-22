@@ -2,10 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.Common.DTO;
 using Tasque.Core.Common.Entities;
+using Tasque.Core.Common.Enums;
 using Tasque.Core.Common.Security;
 using Tasque.Core.DAL;
 using Tasque.Core.Identity.Exeptions;
 using Tasque.Core.Identity.JWT;
+using Tasque.Core.Identity.Services.AuxiliaryServices;
 
 // Ambiguity between model Task and System.Threading Task
 using MSTask = System.Threading.Tasks.Task;

@@ -3,13 +3,18 @@
     >Organization:</span
   >
   <tasque-menu-dropdown>
-    <span dropdown-button> {{ currentOrganization.name }}</span>
+    <div dropdown-button class="org-name">{{ currentOrganization.name }}</div>
+
     <div
       class="organizations"
       option
       *ngFor="let org of availableOrganizations; trackBy: trackByOrganization"
     >
-      <tasque-option (click)="selectOrganization(org)"> {{ org.name }}</tasque-option>
+      <tasque-option (click)="selectOrganization(org)">
+        <div class="org-option">
+          {{ org.name }}
+        </div>
+      </tasque-option>
     </div>
     <tasque-option
       footer

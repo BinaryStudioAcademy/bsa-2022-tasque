@@ -11,7 +11,9 @@ export class GetCurrentOrganizationService {
   constructor(
     private userService: UserService,
     private currentUserService: GetCurrentUserService,
-  ) {
+  ) { }
+
+  public getLastOrganization(): void {
     const sessionId = sessionStorage.getItem(LocalStorageKeys.selectedOrganization);
     if (sessionId) return;
 

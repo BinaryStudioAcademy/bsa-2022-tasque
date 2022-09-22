@@ -55,5 +55,12 @@ namespace Tasque.Core.WebAPI.Controllers
             await _taskService.DeleteTask(id);
             return NoContent();
         }
+
+        [HttpPost("order")]
+        public async Task<IActionResult> OrderTasks(IEnumerable<int> ids)
+        {
+            var res = await _taskService.SetOrder(ids);
+            return Ok(res);
+        }
     }
 }

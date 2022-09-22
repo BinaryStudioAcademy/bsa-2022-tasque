@@ -2,6 +2,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.BLL.Exceptions;
+using Tasque.Core.BLL.Extensions;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.PartialModels;
 using Tasque.Core.Common.DTO.Task;
@@ -274,16 +275,13 @@ namespace Tasque.Core.BLL.Services
             return project.ProjectTaskCounter;
         }    
         
-        public async Task CommentTask(CommentTaskDTO dto)
+        public async Task<CommentInfoDTO> AddComment(CreateCommentDTO dto)
         {
-            // TODO review method functionality after FrontEnd for task commenting is implemented
-            var task = _dbContext.Tasks.Single(t => t.Id == dto.TaskId);
-            var comment = new Comment
-            {
-                Message = dto.Message,
-                AuthorId = dto.AuthorId,
-                TaskId = dto.TaskId
-            };
+            var task = _dbContext.Tasks
+                .Include(t => t.Author)
+                .Single(t => t.Id == dto.TaskId);
+            var comment = _mapper.Map<Comment>(dto);
+
             _dbContext.Comments.Add(comment);
 
             _dbContext.Update(task);
@@ -298,6 +296,7 @@ namespace Tasque.Core.BLL.Services
             };
 
             _bus.Publish(@event);
+            return _mapper.Map<CommentInfoDTO>(comment);
         }
 
         private void SaveChanges<T>(T entity)
@@ -311,6 +310,26 @@ namespace Tasque.Core.BLL.Services
             {
                 _dbContext.Entry(entity);
             }
+        }
+
+        public async Task<List<CommentInfoDTO>> GetCommentsByTaskId(int taskId)
+        {
+            var comments = await _dbContext.Comments
+                .Include(c => c.Author)
+                .Where(c => c.TaskId == taskId)
+                .OrderByDescending(c => c.CreatedAt)
+                .ToListAsync();
+            return _mapper.Map<List<CommentInfoDTO>>(comments);
+        }
+
+        public async Task<IEnumerable<TaskDto>> SetOrder(IEnumerable<int> ids)
+        {
+            var tasks = _dbContext.Tasks.Where(x => ids.Contains(x.Id));
+            tasks.SetOrder(ids);
+            await _dbContext.SaveChangesAsync();
+
+            tasks = tasks.OrderBy(x => x.Order);
+            return _mapper.Map<IEnumerable<TaskDto>>(tasks);
         }
     }
 }

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { BoardService } from 'src/core/services/board.service';
 import {
   BoardType,
@@ -15,6 +15,9 @@ import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
 import { UserModel } from 'src/core/models/user/user-model';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { NotificationService } from 'src/core/services/notification.service';
+import { OrganizationModel } from 'src/core/models/organization/organization-model';
+import { OrganizationService } from 'src/core/services/organization.service';
+import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
 
 @Component({
   selector: 'tasque-select-users',
@@ -35,6 +38,7 @@ export class SelectUsersComponent implements OnInit {
   usersCount = 0;
   public defaultRowHeight_px = 80;
 
+  @Input() organization?: OrganizationModel;
   @Input()
   public board: IBoard = {
     id: 1,
@@ -58,6 +62,7 @@ export class SelectUsersComponent implements OnInit {
 
   constructor(
     private service: BoardService,
+    private organizationService: OrganizationService,
     private nontificationService: NotificationService) {
     this.roles = getRolesAsArray();
   }
@@ -69,8 +74,26 @@ export class SelectUsersComponent implements OnInit {
       Validators.pattern(this.validationConstants.emailRegex),
     ]);
     this.searchForm = new FormGroup({ emailControl: this.emailControl });
+
+    if(this.organization) {
+      this.getOrganizationUsers();
+    }
+
     this.refreshList();
   }
+
+  private getOrganizationUsers(): void {
+    const organizationId = this.organization?.id as number;
+    this.organizationService
+    .getOrganizationUsers(organizationId).subscribe((resp) => {
+      const users = resp.body as ProfileChangesDTO[];
+      const arr: IUserCard[] = [];
+      users.forEach((user) => arr.push(this.convertToUserCard(user)));
+      this.users$ = of(arr);
+      this.usersCount = arr.length;
+      this.rowspan = Math.max(1, Math.min(this.usersCount, 5));
+    });
+  } 
 
   public add(): void {
     if (!this.searchForm.valid) {
@@ -91,9 +114,7 @@ export class SelectUsersComponent implements OnInit {
     this.searchForm = new FormGroup({ emailControl: this.emailControl });
     this.userEmail = '';
 
-    setInterval(() => {
-      this.refreshList();
-    }, 150);
+    this.refreshList();
   }
 
   delete(email: string): void {
@@ -135,11 +156,26 @@ export class SelectUsersComponent implements OnInit {
   }
 
   private refreshList(): void {
-    this.users$ = this.service.getUsers(this.board);
-    this.service.getUsers(this.board).subscribe((data) => {
-      this.usersCount = data.length;
-      this.rowspan = Math.max(1, Math.min(this.usersCount, 5));
-      this.isLoading = false;
-    });
+    if(this.organization){
+      this.getOrganizationUsers();
+    } else {
+      this.users$ = this.service.getUsers(this.board);
+      this.service.getUsers(this.board).subscribe((data) => {
+        this.usersCount = data.length;
+        this.rowspan = Math.max(1, Math.min(this.usersCount, 5));
+      });
+    }
+    this.isLoading = false;
+  }
+
+  private convertToUserCard(user: ProfileChangesDTO): IUserCard {
+    return {
+      id: user.id,
+      email: user.email,
+      userName: user.name,
+      profileURL: '',
+      avatarURL: user.avatarURL,
+      role: null,
+    };
   }
 }
