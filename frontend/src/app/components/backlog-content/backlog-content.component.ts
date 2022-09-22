@@ -27,6 +27,7 @@ import { OrganizationModel } from 'src/core/models/organization/organization-mod
 import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
 import { UserProjectRole } from 'src/core/models/user/user-project-roles';
 import { BusinessRole } from 'src/shared/components/select-users/Models';
+import { TaskStorageService } from 'src/core/services/task-storage.service';
 
 @Component({
   selector: 'app-backlog-content',
@@ -74,6 +75,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
     private currentOrganizationService: GetCurrentOrganizationService,
     private organizationService: OrganizationService,
     public scopeBoardService: ScopeBoardService,
+    private taskStorageService: TaskStorageService
   ) {
     this.subscription = backlogService.changeBacklog$.subscribe(() => {
       this.getBacklogTasks();
@@ -93,6 +95,15 @@ export class BacklogContentComponent implements OnInit, OnChanges {
     this.getTasksState();
     this.getTasksType();
     this.getBacklogTasks();
+
+    this.taskStorageService.taskUpdated$.subscribe((task) => {
+      if (task.sprintId || this.tasks.some((t) => t.id === task.id)) {
+        return;
+      }
+
+      this.tasks.push(task);
+      this.tasks.sort((task1, task2) => task1.id - task2.id);
+    });
   }
 
   toggleDropdown(): void {

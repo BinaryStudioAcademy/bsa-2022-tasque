@@ -20,8 +20,8 @@ import { TaskModel } from 'src/core/models/task/task-model';
 import { TaskService } from 'src/core/services/task.service';
 import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { ProjectModel } from 'src/core/models/project/project-model';
-import { TaskStorageService } from 'src/core/services/task-storage.service';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
+import { TaskStorageService } from 'src/core/services/task-storage.service';
 
 @Component({
   selector: 'app-issue',
@@ -63,18 +63,12 @@ export class IssueComponent implements OnInit {
     public sprintService: SprintService,
     public notificationService: ToastrNotificationService,
     private cdRef: ChangeDetectorRef,
-    private taskStorageService: TaskStorageService,
-  ) {}
+    private taskStorageService: TaskStorageService
+  ) { }
 
   ngOnInit(): void {
     this.estimateUpdate();
     this.cdRef.detectChanges();
-
-    this.taskStorageService.taskUpdated$.subscribe((task) => {
-      if (task.id === this.issue.id) {
-        this.issue = task;
-      }
-    });
   }
 
   public deadline(): Date {
@@ -111,15 +105,14 @@ export class IssueComponent implements OnInit {
 
   updateTaskState(stateId: number): void {
     this.issue.stateId = stateId;
-    if (this.issue.state) {
-      this.issue.stateId = stateId;
-    }
+    this.issue.state = this.taskStates.find((state) => state.id === stateId);
 
     this.taskServise
       .updateTask(this.issue)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
+          this.taskStorageService.updateTask(result.body);
           this.notificationService.success('Task status updated');
         }
       });
