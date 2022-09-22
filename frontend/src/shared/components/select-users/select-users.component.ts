@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, Output, EventEmitter } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { BoardService } from 'src/core/services/board.service';
 import {
@@ -14,7 +14,7 @@ import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { TasqueDropdownOption } from '../tasque-dropdown/dropdown.component';
 import { UserModel } from 'src/core/models/user/user-model';
 import { UserRole } from 'src/core/models/user/user-roles';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
@@ -24,7 +24,7 @@ import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
   templateUrl: './select-users.component.html',
   styleUrls: ['./select-users.component.sass'],
 })
-export class SelectUsersComponent implements OnInit {
+export class SelectUsersComponent implements OnInit, OnChanges {
   users$!: Observable<IUserCard[]>;
   roles: TasqueDropdownOption[];
   isLoading = true;
@@ -39,6 +39,7 @@ export class SelectUsersComponent implements OnInit {
   public defaultRowHeight_px = 80;
 
   @Input() organization?: OrganizationModel;
+  @Input() isChanged: Observable<void>;
   @Input()
   public board: IBoard = {
     id: 1,
@@ -63,7 +64,7 @@ export class SelectUsersComponent implements OnInit {
   constructor(
     private service: BoardService,
     private organizationService: OrganizationService,
-    private nontificationService: NotificationService) {
+    private nontificationService: ToastrNotificationService) {
     this.roles = getRolesAsArray();
   }
 
@@ -79,6 +80,10 @@ export class SelectUsersComponent implements OnInit {
       this.getOrganizationUsers();
     }
 
+    this.refreshList();
+  }
+
+  ngOnChanges(): void {
     this.refreshList();
   }
 
@@ -121,8 +126,6 @@ export class SelectUsersComponent implements OnInit {
     this.isLoading = true;
 
     this.onDelete.emit(email);
-
-    this.refreshList();
   }
 
   update(user: IUserCard, role: BusinessRole): void {
@@ -130,8 +133,6 @@ export class SelectUsersComponent implements OnInit {
     user.role = role;
 
     this.onUpdate.emit(user);
-
-    this.refreshList();
   }
 
   roleToString(role: BusinessRole | null): string {
@@ -156,7 +157,7 @@ export class SelectUsersComponent implements OnInit {
   }
 
   private refreshList(): void {
-    if(this.organization){
+    if(this.organization) {
       this.getOrganizationUsers();
     } else {
       this.users$ = this.service.getUsers(this.board);

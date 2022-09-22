@@ -3,7 +3,7 @@ import { LabelField } from 'src/core/models/task/task-template-models/label-fiel
 import { TaskCustomField } from 'src/core/models/task/task-template-models/task-custom-field';
 import { faCheck, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FormControl, Validators } from '@angular/forms';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 
 @Component({
   selector: 'app-label-field-edit',
@@ -13,7 +13,7 @@ import { NotificationService } from 'src/core/services/notification.service';
 export class LabelFieldEditComponent implements OnInit {
 
   constructor(
-    private notify: NotificationService,
+    private notify: ToastrNotificationService,
   ) { }
 
   @Input() field: TaskCustomField;

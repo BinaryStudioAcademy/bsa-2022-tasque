@@ -5,7 +5,7 @@ using Tasque.Notifications.Services;
 
 namespace Tasque.Notifications.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/task-moved-notifications")]
     [ApiController]
     public class TaskMovedNotificationsController : NotificationsController<TaskMovedNotification>
     {

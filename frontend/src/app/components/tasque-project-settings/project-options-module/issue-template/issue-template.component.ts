@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AvailableFields } from 'src/core/models/const-resources/available-fields';
 import { TaskType } from 'src/core/models/task/task-type';
 import { TaskTemplateService } from 'src/core/services/task-template.service';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 
 @Component({
   selector: 'app-issue-template',
@@ -21,7 +21,7 @@ import { NotificationService } from 'src/core/services/notification.service';
 })
 export class IssueTemplateComponent implements OnInit {
   constructor(
-    private notificationService: NotificationService,
+    private notificationService: ToastrNotificationService,
     private router: Router,
     private taskTemplateService: TaskTemplateService,
     private route: ActivatedRoute

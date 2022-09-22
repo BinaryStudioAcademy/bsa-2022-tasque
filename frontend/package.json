@@ -29,6 +29,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@kolkov/angular-editor": "^3.0.0-beta.0",
+    "@microsoft/signalr": "^6.0.9",
     "@types/events": "^3.0.0",
     "@typescript-eslint/parser": "^5.32.0",
     "angular-jwt": "^0.1.11",

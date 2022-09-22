@@ -32,4 +32,5 @@ public class Project : BaseEntity
     public virtual ICollection<TaskType> ProjectTaskTypes { get; set; }
     public virtual ICollection<TaskPriority> ProjectTaskPriorities { get; set; }
     public virtual ICollection<TaskState> ProjectTaskStates { get; set; }
+    public virtual ICollection<WikiPage> WikiPages { get; set; }
 }

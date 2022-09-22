@@ -35,10 +35,13 @@ import { IssueComponent } from './components/backlog/sprint/issue/issue.componen
 import { BacklogContentComponent } from './components/backlog-content/backlog-content.component';
 import { BacklogComponent } from './components/backlog/backlog.component';
 import { AccessControlGuard } from './components/tasque-project-settings/project-options-module/guards/access-control.guard';
-import { WikiComponent } from './components/wiki/wiki.component';
+import { DeleteSprintDialogComponent } from './components/delete-sprint-dialog/delete-sprint-dialog.component';
+import { WikiComponent } from './components/tasque-wiki/wiki/wiki.component';
+import { WikiLeftSidebarComponent } from './components/tasque-wiki/wiki-left-sidebar/wiki-left-sidebar.component';
+import { WikiPageComponent } from './components/tasque-wiki/wiki-page/wiki-page.component';
+import { WikiTitleComponent } from './components/tasque-wiki/wiki-title/wiki-title.component';
 import { YourWorkComponent } from './components/your-work/your-work.component';
 import { ProjectCardComponent } from './components/your-work/project-card/project-card.component';
-import { DeleteSprintDialogComponent } from './components/delete-sprint-dialog/delete-sprint-dialog.component';
 
 @NgModule({
   declarations: [
@@ -63,11 +66,14 @@ import { DeleteSprintDialogComponent } from './components/delete-sprint-dialog/d
     SprintComponent,
     IssueComponent,
     BacklogContentComponent,
-    BacklogComponent,
     WikiComponent,
     YourWorkComponent,
     ProjectCardComponent,
     DeleteSprintDialogComponent,
+    WikiComponent,
+    WikiLeftSidebarComponent,
+    WikiPageComponent,
+    WikiTitleComponent,
   ],
   imports: [
     BrowserModule,

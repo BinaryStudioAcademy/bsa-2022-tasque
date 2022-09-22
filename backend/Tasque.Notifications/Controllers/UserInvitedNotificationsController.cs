@@ -4,7 +4,7 @@ using Tasque.Notifications.Services;
 
 namespace Tasque.Notifications.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/user-invited-notifications")]
     [ApiController]
     public class UserInvitedNotificationsController : NotificationsController<UserInvitedNotification>
     {

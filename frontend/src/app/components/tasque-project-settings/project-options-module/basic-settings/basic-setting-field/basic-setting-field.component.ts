@@ -12,7 +12,7 @@ import { ProjectModel } from 'src/core/models/project/project-model';
 import { TaskPriority } from 'src/core/models/task/task-priority';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskType } from 'src/core/models/task/task-type';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { ProjectService } from 'src/core/services/project.service';
 import { SettingType } from '../setting-type-model';
 
@@ -57,7 +57,7 @@ export class BasicSettingFieldComponent
   isUpdated = false;
 
   constructor(
-    private notificationService: NotificationService,
+    private notificationService: ToastrNotificationService,
     private projectService: ProjectService,
   ) {
     super();

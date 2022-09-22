@@ -50,7 +50,7 @@
       >
       </tasque-input>
     </div>
-    <img class="button-icon" src="\assets\bell_icon.svg" />
+    <tasque-notifications [notifications]="notifications" (deleteNotification)="onDeleteNotification($event)"></tasque-notifications>
     <tasque-menu-dropdown
       class="profile-dropdown"
       [upArrowIcon]="upArrowIcon"

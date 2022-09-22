@@ -10,6 +10,7 @@ import { ProjectInfoModel } from '../models/project/project-info-model';
 import { EditSprintModel } from '../models/sprint/edit-sprint-model';
 import { SprintModel } from '../models/sprint/sprint-model';
 import { UserModel } from '../models/user/user-model';
+import { ConfirmationData, ConfirmationModalComponent } from 'src/shared/components/tasque-confirmation-modal/confirmation-modal.component'; 
 
 @Injectable({ providedIn: 'root' })
 export class OpenDialogService {
@@ -30,6 +31,14 @@ export class OpenDialogService {
   ): Observable<ProjectInfoModel> {
     const dialog = this.matDialog.open(CreateProjectDialogComponent, {
       data: currentOrganizationId,
+    });
+
+    return dialog.afterClosed();
+  }
+
+  public openConfirmRemoveDialog(data: ConfirmationData): Observable<boolean> {
+    const dialog = this.matDialog.open(ConfirmationModalComponent, {
+      data: data
     });
 
     return dialog.afterClosed();

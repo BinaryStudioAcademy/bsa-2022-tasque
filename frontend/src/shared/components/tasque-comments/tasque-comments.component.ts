@@ -5,7 +5,7 @@ import { CreateComment } from 'src/core/models/comment/create-comment';
 import { UserModel } from 'src/core/models/user/user-model';
 import { CommentService } from 'src/core/services/comment.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { InputComponent } from '../tasque-input/input.component';
 
 @Component({
@@ -24,7 +24,7 @@ export class TasqueCommentsComponent implements OnInit {
   constructor(
     private currentUserService: GetCurrentUserService,
     private commentService: CommentService,
-    private notificationService: NotificationService,
+    private notificationService: ToastrNotificationService,
     ) { }
 
   ngOnInit(): void {

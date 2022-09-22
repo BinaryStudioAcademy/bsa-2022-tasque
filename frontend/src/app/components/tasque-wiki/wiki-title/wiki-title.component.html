@@ -1,0 +1,16 @@
+<div>
+  <div class="page" [ngClass]="{ 'selected': selected }">
+    <div>
+      <fa-icon (click)="collapse()" [icon]="collapseIcon" size="2xs" [ngClass]="{'pointer': collapseIcon != circleIcon}"></fa-icon>
+      <span (click)="moveToPage()" class="page-title">{{childWikiPage.name}}</span>
+    </div>
+    <div class="create" (mouseleave)="showCreate = false;">
+      <span class="hint">Create a child page</span>
+      <fa-icon class="pointer show-on-hover" *ngIf="restrictionCreation()" [icon]="plusIcon" size="lg" (click)="showCreate = true;"></fa-icon>
+      <tasque-create-dropdown *ngIf="showCreate" (nameItemEvent)="createPage($event)"></tasque-create-dropdown>
+    </div>
+  </div>
+  <div [hidden]="isHidden" class="nested-page" *ngFor="let item of childWikiPage.nestedPages">
+      <app-wiki-title [nestedLevel]="nestedLevel" [childWikiPage]="item"></app-wiki-title>
+  </div>
+</div>

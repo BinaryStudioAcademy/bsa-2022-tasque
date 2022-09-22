@@ -1,0 +1,52 @@
+@import 'src/colors.sass'
+    
+.nested-page
+    margin-left: 20px
+
+.page
+    margin-top: 10px 
+    display: flex
+    align-items: center
+    justify-content: space-between
+
+.create
+    position: relative
+
+.page fa-icon.show-on-hover
+    visibility: hidden
+
+.page:hover fa-icon.show-on-hover
+    visibility: visible
+
+.page-title
+    margin-left: 5px
+    cursor: pointer
+    font-size: 17px
+
+.pointer
+    cursor: pointer
+
+.selected
+    background-color: colorscheme(gray-200)
+    color: colorscheme(pink-200)
+
+.hint
+    position: absolute
+    color: colorscheme(white-200)
+    background-color: rgba(0, 0, 0, 0.5)
+    right: 0
+    top: 22px
+    width: 132px
+    padding: 1px 5px
+    border-radius: 5px
+    font-size: 14px
+
+.create span.hint
+    visibility: hidden
+
+.create:hover span.hint
+    visibility: visible
+
+.create:click span.hint
+    visibility: hidden
+

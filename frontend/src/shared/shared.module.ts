@@ -33,7 +33,10 @@ import { CreateProjectDialogComponent } from './components/create-project-dialog
 import { TaskCreationCustomFieldsComponent } from './components/tasque-task-creation/task-creation-custom-fields/task-creation-custom-fields.component';
 import { TaskCreationComponent } from './components/tasque-task-creation/task-creation.component';
 import { ProjectDropdownComponent } from './components/tasque-header/project-dropdown/project-dropdown.component';
+import { TasqueCreateDropdownComponent } from './components/tasque-create-dropdown/tasque-create-dropdown.component';
 import { TasqueCommentsComponent } from './components/tasque-comments/tasque-comments.component';
+import { NotificationsComponent } from './components/tasque-header/notifications/notifications.component';
+import { UserInvitedNotificationComponent } from './components/tasque-header/notifications/user-invited-notification/user-invited-notification.component';
 
 @NgModule({
   imports: [
@@ -74,7 +77,10 @@ import { TasqueCommentsComponent } from './components/tasque-comments/tasque-com
     CreateProjectDialogComponent,
     TaskCreationCustomFieldsComponent,
     ProjectDropdownComponent,
-    TasqueCommentsComponent
+    TasqueCreateDropdownComponent,
+    TasqueCommentsComponent,
+    NotificationsComponent,
+    UserInvitedNotificationComponent
   ],
   exports: [
     CommonModule,
@@ -110,6 +116,7 @@ import { TasqueCommentsComponent } from './components/tasque-comments/tasque-com
     CreateOrganizationDialogComponent,
     CreateProjectDialogComponent,
     TasqueOptionComponent,
+    TasqueCreateDropdownComponent,
   ],
   providers: [SideBarService],
 })

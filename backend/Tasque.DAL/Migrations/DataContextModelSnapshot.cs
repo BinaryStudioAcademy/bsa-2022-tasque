@@ -756,6 +756,42 @@ namespace Tasque.Core.DAL.Migrations
                     b.ToTable("UserProjectRoles");
                 });
 
+            modelBuilder.Entity("Tasque.Core.Common.Entities.WikiPage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("ParentPageId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentPageId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("WikiPages");
+                });
+
             modelBuilder.Entity("AttachmentTask", b =>
                 {
                     b.HasOne("Tasque.Core.Common.Entities.Attachment", null)
@@ -1112,6 +1148,23 @@ namespace Tasque.Core.DAL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Tasque.Core.Common.Entities.WikiPage", b =>
+                {
+                    b.HasOne("Tasque.Core.Common.Entities.WikiPage", "ParentPage")
+                        .WithMany("NestedPages")
+                        .HasForeignKey("ParentPageId");
+
+                    b.HasOne("Tasque.Core.Common.Entities.Project", "Project")
+                        .WithMany("WikiPages")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ParentPage");
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("Tasque.Core.Common.Entities.BoardColumn", b =>
                 {
                     b.Navigation("Tasks");
@@ -1130,6 +1183,8 @@ namespace Tasque.Core.DAL.Migrations
                     b.Navigation("Sprints");
 
                     b.Navigation("UserRoles");
+
+                    b.Navigation("WikiPages");
                 });
 
             modelBuilder.Entity("Tasque.Core.Common.Entities.Role", b =>
@@ -1173,6 +1228,11 @@ namespace Tasque.Core.DAL.Migrations
                     b.Navigation("Roles");
 
                     b.Navigation("SystemRoles");
+                });
+
+            modelBuilder.Entity("Tasque.Core.Common.Entities.WikiPage", b =>
+                {
+                    b.Navigation("NestedPages");
                 });
 #pragma warning restore 612, 618
         }

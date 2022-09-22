@@ -7,7 +7,7 @@ import { UserModel } from 'src/core/models/user/user-model';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { TaskService } from 'src/core/services/task.service';
 
@@ -45,7 +45,7 @@ export class TasqueCardComponent implements OnInit {
 
   constructor(
     private currentUserService: GetCurrentUserService,
-    private notificationService: NotificationService,
+    private notificationService: ToastrNotificationService,
     private taskService: TaskService,
     private currentOrganizationService: GetCurrentOrganizationService,
     private organizationService: OrganizationService,

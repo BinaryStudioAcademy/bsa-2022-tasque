@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { OrganizationService } from 'src/core/services/organization.service';
@@ -10,7 +10,7 @@ import { BoardType, IBoard } from 'src/shared/components/select-users/Models';
 import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { UserRole } from 'src/core/models/user/user-roles';
-import { NotificationService } from 'src/core/services/notification.service';
+import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 
 @Component({
   selector: 'app-edit-organization',
@@ -28,6 +28,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
   public sidebarName = 'editOrganization';
   public unsubscribe$ = new Subject<void>();
   public organizationName = '';
+  public isChanged = new Observable<void>();
 
   get organizationNameErrorMessage(): string {
     const ctrl = this.organizationNameControl;
@@ -42,7 +43,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private notificationService: NotificationService,
+    private notificationService: ToastrNotificationService,
     private sideBarService: SideBarService,
     private organizationService: OrganizationService,
     private getCurrentOrganizationService: GetCurrentOrganizationService,
@@ -73,6 +74,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
       .subscribe((resp) => {
         if(resp.ok) {
           this.notificationService.success(`User ${userEmail} has been invited to organization!`);
+          this.isChanged = new Observable<void>();
         }
       });
   }
@@ -83,6 +85,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
       if(resp.ok) {
         const name = this.users.find((user) => user.email === email)?.name;
         this.notificationService.success(`User ${name?? email} has been deleted successfully`);
+        this.isChanged = new Observable<void>();
       }
     });
   }

@@ -57,8 +57,7 @@ namespace Tasque.Core.WebAPI.Controllers
         [HttpGet("current")]
         public async Task<IActionResult> GetCurrentUserFromToken()
         {
-            return Ok(await _service.
-                    GetUserById(_userId));
+            return Ok(await _service.GetUserById(_userId));
         }
 
 
@@ -88,6 +87,13 @@ namespace Tasque.Core.WebAPI.Controllers
         {
             var orgId = await _service.GetLastOrganization(userId);
             return Ok(orgId);
+        }
+
+        [HttpPut("connection/{id}")]
+        public async Task<IActionResult> SetUserConnectionId(string id)
+        {
+            await _service.SetConnectionId(_userId, id);
+            return Ok();
         }
     }
 }

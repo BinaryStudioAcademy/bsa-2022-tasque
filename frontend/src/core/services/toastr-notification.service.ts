@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
 @Injectable({ providedIn: 'root' })
-export class NotificationService {
+export class ToastrNotificationService {
   public constructor(private toastr: ToastrService) {}
 
   position = 'toast-top-right';

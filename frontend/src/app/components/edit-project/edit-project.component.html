@@ -33,6 +33,7 @@
         (onAdd)="inviteUser($event)"
         (onDelete)="deleteUser($event)"
         (onUpdate)="changeUserRole($event)"
+        [isChanged]="isChanged"
         [board]="board"
       ></tasque-select-users>
     </div>

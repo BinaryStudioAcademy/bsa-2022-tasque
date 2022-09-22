@@ -111,6 +111,7 @@ namespace Tasque.Core.WebAPI.AppConfigurationExtension
                 .AddScoped<TaskTypeService>()
                 .AddScoped<ITaskService, TaskService>()
                 .AddScoped<BacklogService>()
+                .AddScoped<WikiService>()
                 .AddScoped<InvitationService>()
                 .AddScoped<ConfirmationTokenExtension>()
                 .RegisterIdentity(configuration);
