@@ -302,7 +302,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
           col.tasks[index].state = task.state;
           col.tasks[index].stateId = task.stateId;
-          return;
+          break;
         }
 
         this.boardService.taskService.updateTask(task).subscribe((resp) => {
