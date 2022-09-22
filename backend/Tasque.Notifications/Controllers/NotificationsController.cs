@@ -6,7 +6,6 @@ using Tasque.Notifications.Services;
 
 namespace Tasque.Notifications.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     public abstract class NotificationsController<TNotification> : ControllerBase where TNotification : Notification
     {

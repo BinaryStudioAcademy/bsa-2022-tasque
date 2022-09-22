@@ -4,7 +4,7 @@ using Tasque.Notifications.Services;
 
 namespace Tasque.Notifications.Controllers
 {
-    [Route("api/task-commented-notifications")]
+    [Route("task-commented")]
     [ApiController]
     public class TaskCommentedNotificationsController : NotificationsController<TaskCommentedNotification>
     {
