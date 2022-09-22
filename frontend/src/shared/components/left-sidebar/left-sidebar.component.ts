@@ -13,6 +13,8 @@ import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
+import { UserProjectRole } from 'src/core/models/user/user-project-roles';
+import { BusinessRole } from '../select-users/Models';
 
 @Component({
   selector: 'app-left-sidebar',
@@ -34,6 +36,7 @@ export class LeftSidebarComponent
   public showSettings = false;
 
   public isCurrentUserAdmin = false;
+  public isCurrentUserProjectAdmin = false;
 
   @Input() isChanged: Observable<void>;
 
@@ -215,7 +218,7 @@ export class LeftSidebarComponent
     this.isBasicSettings = false;
   }
 
-  public permissionToEdit(): void {
+  permissionToEdit(): void {
     const organizationId =
       this.currentOrganizationService.currentOrganizationId;
     this.organizationService
@@ -234,6 +237,22 @@ export class LeftSidebarComponent
           this.isCurrentUserAdmin = true;
         } else {
           this.isCurrentUserAdmin = false;
+        }
+
+        const projectRole = this.currentUser.roles?.find(
+          (r) =>
+            r.projectId === this.project.id && r.userId === this.currentUser.id,
+        ) as UserProjectRole;
+
+        if (projectRole) {
+          if (
+            projectRole.roleId == BusinessRole.Admin ||
+            this.isCurrentUserAdmin
+          ) {
+            this.isCurrentUserProjectAdmin = true;
+          } else {
+            this.isCurrentUserProjectAdmin = false;
+          }
         }
       });
   }

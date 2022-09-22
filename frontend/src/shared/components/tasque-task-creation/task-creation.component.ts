@@ -95,6 +95,9 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
   @Input() public currentTasks: TaskModel[];
   @Input() public sprintId: number;
 
+  @Input() public isCurrentUserAdmin = false;
+  @Input() public isCurrentUserProjectAdmin = false;
+
   public isOpen = false;
 
   get projectErrorMessage(): string {

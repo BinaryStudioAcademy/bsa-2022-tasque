@@ -18,6 +18,8 @@
         [organizationId]="currentOrganizationId"
         [currentProject]="currentProject"
         sidebarName="createTaskSidebar"
+        [isCurrentUserAdmin]="isCurrentUserAdmin"
+        [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
       ></tasque-task-creation>
       <tasque-option
         *ngIf="isCurrentUserAdmin"

@@ -37,6 +37,8 @@ import { EditSprintModel } from 'src/core/models/sprint/edit-sprint-model';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
+import { BusinessRole } from 'src/shared/components/select-users/Models';
+import { UserProjectRole } from 'src/core/models/user/user-project-roles';
 
 @Component({
   selector: 'app-sprint',
@@ -75,6 +77,7 @@ export class SprintComponent implements OnInit, OnChanges {
   public tasksDto: TaskModel;
   public role: UserRole;
   public isCurrentUserAdmin = false;
+  public isCurrentUserProjectAdmin = false;
 
   public isDraggable = true;
 
@@ -324,6 +327,21 @@ export class SprintComponent implements OnInit, OnChanges {
           this.isCurrentUserAdmin = true;
         } else {
           this.isCurrentUserAdmin = false;
+        }
+
+        const projectRole = this.currentUser.roles?.find(
+          (r) =>
+            r.projectId === this.currentProject.id &&
+            r.userId === this.currentUser.id,
+        ) as UserProjectRole;
+
+        if (
+          projectRole.roleId == BusinessRole.Admin ||
+          this.isCurrentUserAdmin
+        ) {
+          this.isCurrentUserProjectAdmin = true;
+        } else {
+          this.isCurrentUserProjectAdmin = false;
         }
       });
   }

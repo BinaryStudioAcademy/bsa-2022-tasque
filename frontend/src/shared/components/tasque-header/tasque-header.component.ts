@@ -9,7 +9,6 @@ import { OrganizationModel } from 'src/core/models/organization/organization-mod
 import { UserModel } from 'src/core/models/user/user-model';
 import { AuthService } from 'src/core/services/auth.service';
 import { OpenDialogService } from 'src/core/services/open-dialog.service';
-import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { InternalServices } from 'src/core/services/internalServices';
 import { Observable } from 'rxjs';
 import { ProjectModel } from 'src/core/models/project/project-model';
@@ -18,6 +17,9 @@ import { concatMap, map } from 'rxjs/operators';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { UserRole } from 'src/core/models/user/user-roles';
+import { UserProjectRole } from 'src/core/models/user/user-project-roles';
+import { BusinessRole } from '../select-users/Models';
+import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
 
 @Component({
   selector: 'tasque-header',
@@ -28,6 +30,7 @@ export class HeaderComponent implements OnInit {
   public searchIcon = faMagnifyingGlass;
   public currentUser: UserModel;
   public currentOrganizationId: number;
+  public currentProjectId: number;
   public currentProject: ProjectModel;
   @Input() hasLogo = false;
   @Output() isChanged = new EventEmitter<Observable<void>>();
@@ -35,9 +38,9 @@ export class HeaderComponent implements OnInit {
   public upArrowIcon = faCaretUp;
   public downArrowIcon = faCaretDown;
   public isCurrentUserAdmin = false;
+  public isCurrentUserProjectAdmin = false;
 
   constructor(
-    private getCurrentUserService: GetCurrentUserService,
     private authService: AuthService,
     private router: Router,
     private openDialogService: OpenDialogService,
@@ -45,7 +48,8 @@ export class HeaderComponent implements OnInit {
     private projectService: ProjectService,
     private currentOrganizationService: GetCurrentOrganizationService,
     private organizationService: OrganizationService,
-  ) { }
+    private scopeGetCurrentEntityService: ScopeGetCurrentEntityService,
+  ) {}
 
   ngOnInit(): void {
     this.subscribeToCurrentUser();
@@ -67,22 +71,31 @@ export class HeaderComponent implements OnInit {
   }
 
   public subscribeToCurrentUser(): void {
-    this.getCurrentUserService.getCurrentUser();
+    this.scopeGetCurrentEntityService.getCurrentUserService.getCurrentUser();
 
-    this.getCurrentUserService.currentUser$.subscribe((user) => {
-      if (!user) {
-        return;
-      }
+    this.scopeGetCurrentEntityService.getCurrentUserService.currentUser$.subscribe(
+      (user) => {
+        if (!user) {
+          return;
+        }
+        this.currentUser = user;
+        this.scopeGetCurrentEntityService.getCurrentProjectService.currentProjectId$.subscribe(
+          (project) => {
+            this.currentProjectId = project;
 
-      this.currentUser = user;
-      this.permissionToEdit();
-    });
+            this.permissionToEdit();
+          },
+        );
+      },
+    );
   }
 
   public subscribeToCurrentUserAvatar(): void {
-    this.getCurrentUserService.userAvatarUpdated$.subscribe((avatar) => {
-      this.currentUser.avatarURL = avatar;
-    });
+    this.scopeGetCurrentEntityService.getCurrentUserService.userAvatarUpdated$.subscribe(
+      (avatar) => {
+        this.currentUser.avatarURL = avatar;
+      },
+    );
   }
 
   public subscribeToCurrentProject(): void {
@@ -150,9 +163,10 @@ export class HeaderComponent implements OnInit {
     this.isChanged.emit();
   }
 
-  public permissionToEdit(): void {
+  permissionToEdit(): void {
     const organizationId =
-      this.currentOrganizationService.currentOrganizationId;
+      this.scopeGetCurrentEntityService.getCurrentOrganizationService
+        .currentOrganizationId;
     this.organizationService
       .getOrganization(organizationId)
       .subscribe((resp) => {
@@ -169,6 +183,21 @@ export class HeaderComponent implements OnInit {
           this.isCurrentUserAdmin = true;
         } else {
           this.isCurrentUserAdmin = false;
+        }
+
+        const projectRole = this.currentUser.roles?.find(
+          (r) =>
+            r.projectId === this.currentProjectId &&
+            r.userId === this.currentUser.id,
+        ) as UserProjectRole;
+
+        if (
+          projectRole.roleId == BusinessRole.Admin ||
+          this.isCurrentUserAdmin
+        ) {
+          this.isCurrentUserProjectAdmin = true;
+        } else {
+          this.isCurrentUserProjectAdmin = false;
         }
       });
   }

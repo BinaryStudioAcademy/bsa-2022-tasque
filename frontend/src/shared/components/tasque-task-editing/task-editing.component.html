@@ -51,7 +51,7 @@
 
     <div class="task-main-container">
       <div class="task-info-container">
-        <div class="item-wrapper">
+        <div class="item-wrapper" *ngIf="isCurrentUserAdmin">
           <span class="item-label">Project</span>
           <tasque-dropdown
             class="red"
@@ -88,7 +88,10 @@
           ></tasque-dropdown>
         </div>
 
-        <div class="item-wrapper">
+        <div
+          class="item-wrapper"
+          *ngIf="isCurrentUserAdmin || isCurrentUserProjectAdmin"
+        >
           <span class="item-label">Sprint</span>
           <tasque-dropdown
             width="300px"
@@ -97,7 +100,10 @@
           ></tasque-dropdown>
         </div>
 
-        <div class="item-wrapper">
+        <div
+          class="item-wrapper"
+          *ngIf="isCurrentUserAdmin || isCurrentUserProjectAdmin"
+        >
           <span class="item-label">Assignees</span>
           <tasque-select-users
             (onAdd)="addUser($event)"
@@ -182,5 +188,4 @@
     </div>
     <tasque-comments [taskId]="task.id"></tasque-comments>
   </form>
-  
 </tasque-sidebar>

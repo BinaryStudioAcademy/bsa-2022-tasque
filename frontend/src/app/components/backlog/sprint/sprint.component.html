@@ -52,7 +52,7 @@
               !currentSprint.startAt &&
               !currentSprint.isComplete &&
               currentSprint.tasks &&
-              isCurrentUserAdmin
+              (isCurrentUserAdmin || isCurrentUserProjectAdmin)
             "
             [class]="
               sprintIndex != 0 || currentSprint.tasks.length == 0
@@ -67,7 +67,7 @@
             *ngIf="
               currentSprint.startAt &&
               !currentSprint.isComplete &&
-              isCurrentUserAdmin
+              (isCurrentUserAdmin || isCurrentUserProjectAdmin)
             "
             [sprint]="currentSprint"
             class="btn complete-sprint"
@@ -76,7 +76,10 @@
           ></app-complete-sprint>
           <div
             class="dropdown-button"
-            *ngIf="isCurrentUserAdmin && !currentSprint.isComplete"
+            *ngIf="
+              (isCurrentUserAdmin || isCurrentUserProjectAdmin) &&
+              !currentSprint.isComplete
+            "
           >
             <div class="dropdown" style="float: right">
               <tasque-button
@@ -159,6 +162,7 @@
           (estimate)="estimateCount()"
           [currentProject]="currentProject"
           [isCurrentUserAdmin]="isCurrentUserAdmin"
+          [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
           (isDelete)="deleteIssue($event)"
         ></app-issue>
       </div>

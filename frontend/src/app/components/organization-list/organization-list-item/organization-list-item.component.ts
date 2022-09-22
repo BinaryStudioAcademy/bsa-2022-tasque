@@ -8,7 +8,7 @@ import { UserRole } from 'src/core/models/user/user-roles';
 @Component({
   selector: 'app-organization-list-item',
   templateUrl: './organization-list-item.component.html',
-  styleUrls: ['./organization-list-item.component.sass']
+  styleUrls: ['./organization-list-item.component.sass'],
 })
 export class OrganizationListItemComponent implements OnInit, OnChanges {
   @Input() public currentUser: UserModel;
@@ -19,25 +19,29 @@ export class OrganizationListItemComponent implements OnInit, OnChanges {
 
   constructor(
     private router: Router,
-    private getCurrentOrganizationService: GetCurrentOrganizationService
-  ) { }
+    private getCurrentOrganizationService: GetCurrentOrganizationService,
+  ) {}
 
-  ngOnInit(): void { 
-    if(this.currentUser === undefined){
+  ngOnInit(): void {
+    if (this.currentUser === undefined) {
       this.role = 0;
     } else {
-      this.role = this.currentUser?.organizationRoles?.find((m) => m.organizationId === this.organization.id)?.role as UserRole;
+      this.role = this.currentUser?.organizationRoles?.find(
+        (m) => m.organizationId === this.organization.id,
+      )?.role as UserRole;
     }
   }
 
   ngOnChanges(): void {
-    this.role = this.currentUser?.organizationRoles?.find((m) => m.organizationId === this.organization.id)?.role as UserRole;
+    this.role = this.currentUser?.organizationRoles?.find(
+      (m) => m.organizationId === this.organization.id,
+    )?.role as UserRole;
   }
 
   public openOrganization(): void {
-    this.getCurrentOrganizationService.currentOrganizationId = this.organization.id;
+    this.getCurrentOrganizationService.currentOrganizationId =
+      this.organization.id;
     this.router.navigate(['projects'], { replaceUrl: true });
     window.scroll(0, 0);
   }
-  
 }
