@@ -1,6 +1,6 @@
 <div [formGroup]="pageForm" class="container">
   <div>
-    <span>{{pageTitle}}</span>
+    <span class="title">{{pageTitle}}</span>
   </div>
   <div class="page-header">
     <div>
@@ -29,7 +29,7 @@
     </div>
   </div>
   <div class="text">
-    <div class="empty-tasks row pale" *ngIf="pageText?.length == 0 && orEdit">
+    <div class="empty-tasks row pale" *ngIf="emptyText()">
       <label class="text-center">This can be the text of your page</label>
     </div>
     <div class="text-page" [hidden]="!orEdit" [innerHTML]="pageText" aria-readonly="true"></div>

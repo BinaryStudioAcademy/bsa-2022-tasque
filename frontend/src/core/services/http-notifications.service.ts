@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class HttpNotificationsService extends HttpService {
 
-  public baseUrl:string = environment.notificationsUrl;
+  public baseUrl: string = environment.notificationsUrl;
 
   constructor(private client: HttpClient) {
     super(client);

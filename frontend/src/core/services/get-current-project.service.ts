@@ -39,4 +39,11 @@ export class GetCurrentProjectService {
     public setProjects(projects: ProjectInfoModel[]): void {
         this.projectsSubj.next(projects);
     }
+
+    private leftSidebarSubj = new Subject<boolean>();
+    public leftSidebar$ = this.leftSidebarSubj.asObservable();
+
+    public setLeftSidebar(value: boolean): void {
+        this.leftSidebarSubj.next(value);
+    }
 }

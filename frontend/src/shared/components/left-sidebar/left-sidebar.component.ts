@@ -3,7 +3,6 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { UserModel } from 'src/core/models/user/user-model';
 import { UserRole } from 'src/core/models/user/user-roles';
-import { GetCurrentUserService } from 'src/core/services/get-current-user.service';
 import { ProjectService } from 'src/core/services/project.service';
 import { takeUntil } from 'rxjs/operators';
 import { BaseComponent } from 'src/core/base/base.component';
@@ -11,10 +10,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { OrganizationService } from 'src/core/services/organization.service';
-import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { UserProjectRole } from 'src/core/models/user/user-project-roles';
 import { BusinessRole } from '../select-users/Models';
+import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
 
 @Component({
   selector: 'app-left-sidebar',
@@ -54,10 +53,9 @@ export class LeftSidebarComponent
     private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
     private router: Router,
-    private currentUserService: GetCurrentUserService,
     private projectService: ProjectService,
-    private currentOrganizationService: GetCurrentOrganizationService,
     private organizationService: OrganizationService,
+    private currentService: ScopeGetCurrentEntityService
   ) {
     super();
   }
@@ -76,7 +74,13 @@ export class LeftSidebarComponent
           this.containerWidth = 252;
           this.sideBarMinimized = false;
         }
-      });
+    });
+
+    this.currentService
+    .getCurrentProjectService.leftSidebar$.subscribe((data) => {
+      this.setAllStylesUndefined();
+      this.isBacklog = data;
+    });
   }
 
   minimize(): void {
@@ -104,7 +108,7 @@ export class LeftSidebarComponent
   }
 
   public subsribeToCurrentUser(): void {
-    this.currentUserService.currentUser$.subscribe((user) => {
+    this.currentService.getCurrentUserService.currentUser$.subscribe((user) => {
       this.currentUser = user;
       this.userRole =
         this.currentUser.organizationRoles.find(
@@ -220,7 +224,7 @@ export class LeftSidebarComponent
 
   permissionToEdit(): void {
     const organizationId =
-      this.currentOrganizationService.currentOrganizationId;
+      this.currentService.getCurrentOrganizationService.currentOrganizationId;
     this.organizationService
       .getOrganization(organizationId)
       .subscribe((resp) => {
