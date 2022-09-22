@@ -1,11 +1,12 @@
-﻿using Tasque.Core.Common.Entities.Abstract;
+﻿using Newtonsoft.Json;
+using Tasque.Core.Common.Entities.Abstract;
 
 namespace Tasque.Core.Common.Entities.Notifications
 {
     public abstract class Notification : BaseEntity
     {
         public abstract NotificationType Type { get; }
-        public abstract int RecieverId { get; }
+        [JsonIgnore]
         public string ConnectionId { get; set; } = "";
     }
 
