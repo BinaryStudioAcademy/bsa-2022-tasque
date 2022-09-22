@@ -64,6 +64,10 @@ export class AuthService {
     localStorage.setItem(LocalStorageKeys.token, token.accessToken);
   }
 
+  setConnectionId(connection: string): Observable<HttpResponse<void>> {
+    return this.httpService.putFullRequest(this.routePrefix + `/connection/${connection}`);
+  }
+
   logout(): void {
     localStorage.clear();
     this.getCurrentUserService.clearCurrentUser();
