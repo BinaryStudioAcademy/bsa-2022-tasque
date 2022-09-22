@@ -12,7 +12,8 @@
         <tasque-select-users [board]="board" 
           (onAdd)="addUserToOrganization($event)"
           (onDelete)="kickUserFromOrganization($event)"
-          [organization]="organization">
+          [organization]="organization"
+          (isChanged)="isChanged">
         </tasque-select-users>
       </div>
     </div>

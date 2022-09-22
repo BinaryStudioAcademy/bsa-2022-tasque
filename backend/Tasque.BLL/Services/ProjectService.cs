@@ -279,11 +279,12 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
         return _mapper.Map<List<ProjectInfoDto>>(projects);
     }
 
-    public async Task InviteUserToProject(UserInviteDto usersInviteDto)
+    public async Task<UserDto> InviteUserToProject(UserInviteDto usersInviteDto)
     {
         var user = await _db.Users
             .Where(u => u.Email == usersInviteDto.Email)
             .Include(u => u.ParticipatedProjects)
+            .Include(u => u.ParticipatedOrganization)
             .FirstOrDefaultAsync();
 
         var project = await _db.Projects
@@ -314,7 +315,9 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
         if(user.ParticipatedProjects.Any(p => p.Id == project.Id))
             throw new HttpException(System.Net.HttpStatusCode.BadRequest, "User already participate this project");
 
-        user.ParticipatedOrganization.Add(organization);
+        if(!user.ParticipatedOrganization.Any(o => o.Id == organization.Id))
+            user.ParticipatedOrganization.Add(organization);
+
         user.ParticipatedProjects.Add(project);
         await _db.UserProjectRoles.AddAsync(userProjectRole);
 
@@ -330,6 +333,7 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
         };
 
         _bus.Publish(@event);
+        return _mapper.Map<UserDto>(user);
     }
 
     public async Task MoveTask(MoveTaskDTO dto)

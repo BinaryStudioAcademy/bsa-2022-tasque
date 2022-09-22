@@ -15,6 +15,7 @@ import { TaskState } from '../models/task/task-state';
 import { TaskModel } from '../models/task/task-model';
 import { ProjectCardModel } from '../models/your-work/project-card-model';
 import { TaskType } from '../models/task/task-type';
+import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -39,8 +40,8 @@ export class ProjectService {
     return this.httpService.getFullRequest<ProjectInfoModel[]>(this.routePrefix + `/all/${organizationId}`);
   }
 
-  inviteUser(userInvite: InviteUserModel): Observable<void> {
-    return this.httpService.putRequest<void>(this.routePrefixParticipants + '/invite', userInvite);
+  inviteUser(userInvite: InviteUserModel): Observable<HttpResponse<UserModel>> {
+    return this.httpService.putFullRequest<UserModel>(this.routePrefixParticipants + '/invite', userInvite);
   }
 
   kickUser(userKick: InviteUserModel): Observable<void> {
