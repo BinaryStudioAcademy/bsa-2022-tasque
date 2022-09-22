@@ -25,6 +25,8 @@ import { GetCurrentOrganizationService } from 'src/core/services/get-current-org
 import { OrganizationService } from 'src/core/services/organization.service';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
+import { UserProjectRole } from 'src/core/models/user/user-project-roles';
+import { BusinessRole } from 'src/shared/components/select-users/Models';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
 
 @Component({
@@ -40,6 +42,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
 
   public role: UserRole;
   public isCurrentUserAdmin = false;
+  public isCurrentUserProjectAdmin = false;
 
   public unsubscribe$ = new Subject<void>();
   subscription: Subscription;
@@ -255,6 +258,20 @@ export class BacklogContentComponent implements OnInit, OnChanges {
           this.isCurrentUserAdmin = true;
         } else {
           this.isCurrentUserAdmin = false;
+        }
+
+        const projectRole = this.currentUser.roles?.find(
+          (r) =>
+            r.projectId === this.project.id && r.userId === this.currentUser.id,
+        ) as UserProjectRole;
+
+        if (
+          projectRole.roleId == BusinessRole.Admin ||
+          this.isCurrentUserAdmin
+        ) {
+          this.isCurrentUserProjectAdmin = true;
+        } else {
+          this.isCurrentUserProjectAdmin = false;
         }
       });
   }

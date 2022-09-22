@@ -38,9 +38,15 @@ namespace Tasque.Core.BLL.Services
                 throw new ValidationException("User with given id does not exist");
             }
             var userEntity = await _context.Users.FirstAsync(u => u.Id == id);
+
             var userRoles = _mapper.Map<List<UserOrganizationRoleDto>>(_context.UserOrganizationRoles);
+
+            var role = await _context.UserProjectRoles.Where(r => r.UserId == id).ToListAsync();
+            var userProjectRoles = _mapper.Map<List<UserProjectRoleDto>>(role);
+
             var userDto = _mapper.Map<UserDto>(userEntity);
             userDto.OrganizationRoles = userRoles;
+            userDto.Roles = userProjectRoles;
             return userDto;
         }
 
