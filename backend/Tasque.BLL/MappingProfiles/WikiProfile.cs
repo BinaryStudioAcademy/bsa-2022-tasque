@@ -11,6 +11,7 @@ namespace Tasque.Core.BLL.MappingProfiles
             CreateMap<WikiCreateDto, WikiPage>();
             CreateMap<WikiUpdateDto, WikiPage>();
             CreateMap<WikiPage, WikiInfoDto>();
+            CreateMap<WikiPage, WikiPageDto>();
         }
     }
 }

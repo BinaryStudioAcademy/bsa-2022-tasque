@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { WikiPageInfo } from '../models/wiki/wiki-page-info';
 
 @Injectable({
@@ -9,7 +9,7 @@ export class GetCurrentWikiService {
 
   constructor() { }
 
-  private wikiSubj = new Subject<WikiPageInfo>();
+  private wikiSubj = new ReplaySubject<WikiPageInfo>(1);
   public wiki$ = this.wikiSubj.asObservable();
 
   public setWiki(wikiPage: WikiPageInfo): void {

@@ -23,9 +23,6 @@
     display: flex
     align-items: center
     justify-content: space-between
-    & span
-        font-size: 18px
-        font-weight: 800
 
 fa-icon
     cursor: pointer
@@ -35,4 +32,33 @@ fa-icon
 
 .pages
     margin-top: 40px
+
+.project-color
+    width: 20px
+    height: 20px
+    border-radius: 5px
+    margin-right: 7px
+
+.project-info
+    display: flex
+    & > span
+        font-size: 18px
+        font-weight: 800
+
+.hint
+    position: absolute
+    color: colorscheme(white-200)
+    background-color: rgba(0, 0, 0, 0.5)
+    right: 0
+    top: 22px
+    width: 100px
+    padding: 1px 5px
+    border-radius: 5px
+    font-size: 14px
+
+.create-page span.hint
+    visibility: hidden
+
+.create-page:hover span.hint
+    visibility: visible
 

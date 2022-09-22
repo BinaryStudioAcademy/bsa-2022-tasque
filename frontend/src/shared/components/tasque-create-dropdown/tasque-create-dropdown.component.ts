@@ -41,7 +41,7 @@ export class TasqueCreateDropdownComponent implements OnInit {
         Validators.required,
         Validators.pattern(/^([a-zA-Z0-9]+\s)*[a-zA-Z0-9]+$/),
         Validators.minLength(this.validationConstants.minLengthName),
-        Validators.maxLength(this.validationConstants.maxLenghtTitle),
+        Validators.maxLength(this.validationConstants.maxLengthName),
     ]);
   }
 

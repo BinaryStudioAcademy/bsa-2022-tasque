@@ -1,41 +1,67 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-import { WikiPageInfo } from 'src/core/models/wiki/wiki-page-info';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
+import { WikiPage } from 'src/core/models/wiki/wiki-page';
 import { GetCurrentWikiService } from 'src/core/services/get-current-wiki.service';
+import { WikiService } from 'src/core/services/wiki.service';
+import { WikiEditorConfig } from 'src/core/settings/angular-wiki-editor-setting';
 
 @Component({
   selector: 'wiki-page',
   templateUrl: './wiki-page.component.html',
   styleUrls: ['./wiki-page.component.sass']
 })
-export class WikiPageComponent implements OnInit {
+export class WikiPageComponent implements OnInit, OnDestroy {
 
-  public editIcon: IconDefinition = faPenToSquare;
-  public wikiPage: WikiPageInfo;
+  public faPenToSquare: IconDefinition = faPenToSquare;
 
-  public pageName: string = 'Page Name';
-  public pageText?: string = '';
+  public wikiPage: WikiPage;
+  
+  private validationConstants = ValidationConstants;
+  public editorConfig = WikiEditorConfig;
+  public pageName = '';
+  public pageText?: string;
+  public pageTitle: string;
+  public orEdit: boolean = true;
+
+  private unsubscribe$ = new Subject<void>();
 
   public pageForm: FormGroup = new FormGroup({});
   public pageNameControl: FormControl;
   public pageTextControl: FormControl;
 
-  constructor(private currentWikiService: GetCurrentWikiService) {
+  constructor(
+    private currentWikiService: GetCurrentWikiService,
+    private wikiService: WikiService,
+    private activeRoute: ActivatedRoute
+  ) {
     this.pageNameControl = new FormControl(this.pageName, [
       Validators.required,
+      Validators.pattern(/^([a-zA-Z0-9]+\s)*[a-zA-Z0-9]+$/),
+      Validators.minLength(this.validationConstants.minLengthName),
+      Validators.maxLength(this.validationConstants.maxLengthName),
     ]);
-    this.pageTextControl = new FormControl(this.pageText, [
-
-    ]);
+    this.pageTextControl = new FormControl(this.pageText, []);
   }
 
   ngOnInit(): void {
-    this.currentWikiService.wiki$.subscribe((data) => {
-      this.wikiPage = data;
-      this.pageName = this.wikiPage.name;
-      this.pageText = this.wikiPage.text;
+    this.activeRoute.params.subscribe(routeParams => {
+      this.wikiService.getWikiPage(routeParams.pageId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((data) => {
+        if(data.body) {
+          this.wikiPage = data.body;
+
+          this.pageName = this.wikiPage.name;
+          this.pageText = this.wikiPage.text;
+          this.pageTitle = this.wikiPage.title;
+        }
+      });
     });
 
     this.pageForm = new FormGroup({
@@ -44,20 +70,39 @@ export class WikiPageComponent implements OnInit {
     });
   }
 
-  public titleContent(event: Event): string {
-    const input = event.target as HTMLElement;
-    return input.innerText;
-  }
-
-  cancel(): void {
-
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   edit(): void {
+    this.orEdit = false;
+  }
 
+  cancel(): void {
+    this.orEdit = true;
+    this.pageName = this.wikiPage.name;
+    this.pageText = this.wikiPage.text;
   }
 
   save(): void {
-    console.log(this.wikiPage);
+    if(this.pageForm.valid) {
+      this.wikiService.updateWikiPage({ 
+        name: this.pageForm.controls['pageNameControl'].value,
+        text: this.pageForm.controls['pageTextControl'].value,
+      }, this.wikiPage.id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((data) => {
+        if(data.body) {
+          this.wikiPage = data.body;
+          this.wikiPage.name = this.wikiPage.name;
+          this.pageText = this.wikiPage.text;
+          this.orEdit = true;
+
+          this.currentWikiService.setWiki(data.body);
+        }
+      })
+    }
   }
+
 }

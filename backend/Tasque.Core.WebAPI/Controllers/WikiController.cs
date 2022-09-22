@@ -22,5 +22,22 @@ namespace Tasque.Core.WebAPI.Controllers
 
             return Ok(entity);
         }
+
+        [HttpGet("page/{id}")]
+        public async Task<IActionResult> GetWikiPage(int id)
+        {
+            var title = await _service.GetWikiPage(id);
+
+            return Ok(title);
+        }
+
+        [Route("update/page/{id}")]
+        [HttpPut]
+        public virtual async Task<IActionResult> UpdatePage(int id,[FromBody] WikiUpdateDto updateDto)
+        {
+            var entity = await _service.UpdatePage(id, updateDto);
+
+            return Ok(entity);
+        }
     }
 }

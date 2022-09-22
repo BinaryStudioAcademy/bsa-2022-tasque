@@ -48,7 +48,7 @@ const routes: Routes = [
   {
     path: 'project/:id/wiki', component: WikiComponent, canActivate: [AuthGuard, AccessControlGuard],
     children: [
-      { path: ':page', component: WikiPageComponent }
+      { path: ':pageId', component: WikiPageComponent }
     ]
   },
   { path: '**', redirectTo: '/not-found', pathMatch: 'full' },

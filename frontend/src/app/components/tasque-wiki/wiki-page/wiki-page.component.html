@@ -1,11 +1,25 @@
 <div [formGroup]="pageForm" class="container">
   <div>
-    <span>Url text</span>
+    <span>{{pageTitle}}</span>
   </div>
   <div class="page-header">
-    <div class="pageName-wrapper">
-      <div class="pageName" [textContent]="pageName" (input)="pageName = titleContent($event)" contenteditable="true" [formControl]="pageNameControl" ngDefaultControl></div>
-      <tasque-button class="btn icon" [icon]="editIcon"></tasque-button>
+    <div>
+      <div class="pageName-wrapper">
+        <input class="pageName"
+        [value]="pageName"
+        [(ngModel)]="pageName"
+        [size]="pageName.length - 1 || 1"
+        [ngClass]="{
+          'input-size': pageName.length < 2
+        }"
+        contenteditable="true" 
+        formControlName="pageNameControl">
+        <tasque-button class="btn icon" [icon]="faPenToSquare"> </tasque-button>
+      </div>
+      <span class="error" *ngIf="pageNameControl.errors?.['required'] && (pageNameControl.dirty || pageNameControl.touched)">Name is required. </span>
+      <span class="error" *ngIf="pageNameControl.errors?.['pattern']">The name must consist of numbers or letters. </span>
+      <span class="error" *ngIf="pageNameControl.errors?.['minlength']">Must be at least 2 characters. </span>
+      <span class="error" *ngIf="pageNameControl.errors?.['maxlength']">Must be no more than 30 characters. </span>
     </div>
     <div class="buttons">
       <tasque-button type="submit" class="btn stroke violet-stroke" text="Edit" (click)="edit()"> </tasque-button>
@@ -14,6 +28,14 @@
     </div>
   </div>
   <div class="text">
-    <div [formControl]="pageTextControl" ngDefaultControl>{{pageText}}</div>
+    <div class="text-page" [hidden]="!orEdit" [innerHTML]="pageText" aria-readonly="true"></div>
+    <angular-editor
+      [hidden]="orEdit"
+      id="textEditor"
+      formControlName="pageTextControl"
+      [config]="editorConfig"
+      [(ngModel)]="pageText"
+      placeholder="Type some text..."
+    ></angular-editor>
   </div>
 </div>
