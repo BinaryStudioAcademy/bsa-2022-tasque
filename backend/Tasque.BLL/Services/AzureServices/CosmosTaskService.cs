@@ -25,7 +25,11 @@ namespace Tasque.Core.BLL.Services.AzureServices
 
         public async Task DeleteTask(string id)
         {
-            await _container.DeleteItemAsync<CosmosTaskModel>(id, new(id));
+            try
+            {
+                await _container.DeleteItemAsync<CosmosTaskModel>(id, new(id));
+            }
+            catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound) { }
         }
 
         public async Task<List<CosmosTaskModel>> GetAllTasks()

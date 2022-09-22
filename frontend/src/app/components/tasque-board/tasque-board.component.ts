@@ -450,7 +450,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       .getOrganization(organizationId)
       .subscribe((resp) => {
         const currentOrganization = resp.body as OrganizationModel;
-        const role = this.user.organizationRoles.find(
+        const role = this.user.organizationRoles?.find(
           (r) =>
             r.organizationId === organizationId && r.userId === this.user.id,
         )?.role as UserRole;
