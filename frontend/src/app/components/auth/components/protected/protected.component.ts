@@ -15,11 +15,11 @@ export class ProtectedComponent implements OnInit {
   ngOnInit(): void {
 
     this.route.queryParams.subscribe((params) => {
-      const exist = params['exist'];
+      const exist = params['exist'] as string;
       const key = params['key'] as string;
       localStorage.clear();
 
-      if(exist === 'true') {
+      if(exist.toLowerCase() === 'true') {
         this.router.navigate(['auth/login'], {
           queryParams: { key: key },
           queryParamsHandling: 'merge',

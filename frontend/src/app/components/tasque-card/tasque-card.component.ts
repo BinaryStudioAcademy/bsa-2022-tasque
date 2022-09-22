@@ -14,10 +14,9 @@ import { TaskService } from 'src/core/services/task.service';
 @Component({
   selector: 'tasque-card',
   templateUrl: './tasque-card.component.html',
-  styleUrls: ['./tasque-card.component.sass']
+  styleUrls: ['./tasque-card.component.sass'],
 })
 export class TasqueCardComponent implements OnInit {
-
   //Gets information about the task
   @Input() taskInfo: TaskInfoModel;
   @Input() isDone: boolean;
@@ -27,6 +26,9 @@ export class TasqueCardComponent implements OnInit {
   hasAccess: boolean;
   organizationId: number;
   isDeleted = false;
+
+  public role: UserRole;
+  public isCurrentUserAdmin = false;
 
   currentUser: UserModel;
   currentOrganization: OrganizationModel;
@@ -46,7 +48,7 @@ export class TasqueCardComponent implements OnInit {
     private taskService: TaskService,
     private currentOrganizationService: GetCurrentOrganizationService,
     private organizationService: OrganizationService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.currentUserService.currentUser$.subscribe((user) => {
@@ -57,9 +59,15 @@ export class TasqueCardComponent implements OnInit {
       .getOrganization(this.organizationId)
       .subscribe((resp) => {
         this.currentOrganization = resp.body as OrganizationModel;
-        const role = this.currentUser.organizationRoles.find((r) => r.organizationId === this.organizationId)?.role as UserRole;
-        if (role >= UserRole.projectAdmin ||
-          this.currentOrganization.authorId === this.currentUser.id) {
+        const role = this.currentUser.organizationRoles.find(
+          (r) =>
+            r.organizationId === this.organizationId &&
+            r.userId === this.currentUser.id,
+        )?.role as UserRole;
+        if (
+          role >= UserRole.projectAdmin ||
+          this.currentOrganization.authorId === this.currentUser.id
+        ) {
           this.hasAccess = true;
         } else {
           this.hasAccess = false;
@@ -69,11 +77,17 @@ export class TasqueCardComponent implements OnInit {
 
   deleteTask(): void {
     if (!this.hasAccess) {
-      this.notificationService.error('You has not permission to do that', 'Access denied');
+      this.notificationService.error(
+        'You has not permission to do that',
+        'Access denied',
+      );
       return;
     }
     this.taskService.deleteTask(this.taskInfo.id).subscribe(() => {
-      this.notificationService.success('Task has been deleted successfully', 'Success');
+      this.notificationService.success(
+        'Task has been deleted successfully',
+        'Success',
+      );
       this.isDeleted = true;
     });
   }
@@ -85,5 +99,4 @@ export class TasqueCardComponent implements OnInit {
   isTaskChanging(val: boolean): void {
     this.isChanging.emit(val);
   }
-
 }

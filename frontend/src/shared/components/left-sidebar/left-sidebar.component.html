@@ -1,4 +1,8 @@
-<div class="left-sidebar" [style.width.px]="containerWidth" *ngIf="currentUser !== undefined">
+<div
+  class="left-sidebar"
+  [style.width.px]="containerWidth"
+  *ngIf="currentUser !== undefined"
+>
   <div class="icon">
     <a (click)="minimize()">
       <img *ngIf="!sideBarMinimized" src="assets/burger_menu.svg" alt="" />
@@ -6,7 +10,11 @@
     </a>
   </div>
   <aside class="menu">
-    <div class="menu-item" [ngClass]="{ 'selected': isBoard }" (click)="hideSettings(); navigateToBoard()">
+    <div
+      class="menu-item"
+      [ngClass]="{ 'selected': isBoard }"
+      (click)="hideSettings(); navigateToBoard()"
+    >
       <img
         src="assets/board_icon.svg"
         alt=""
@@ -32,7 +40,11 @@
       <span *ngIf="!sideBarMinimized">Backlog</span>
     </div>
 
-    <div class="menu-item" [ngClass]="{ 'selected': isTeam }" (click)="hideSettings(); navigateToTeam()">
+    <div
+      class="menu-item"
+      [ngClass]="{ 'selected': isTeam }"
+      (click)="hideSettings(); navigateToTeam()"
+    >
       <img
         src="assets/team_icon.svg"
         alt=""
@@ -43,7 +55,11 @@
       <span *ngIf="!sideBarMinimized">Team</span>
     </div>
 
-    <div class="menu-item" [ngClass]="{ 'selected': isWiki }" (click)="hideSettings(); navigateToWiki()">
+    <div
+      class="menu-item"
+      [ngClass]="{ 'selected': isWiki }"
+      (click)="hideSettings(); navigateToWiki()"
+    >
       <img
         src="assets/wiki_icon.svg"
         alt=""
@@ -54,7 +70,7 @@
       <span *ngIf="!sideBarMinimized">Project wiki</span>
     </div>
 
-    <section class="settings">
+    <section class="settings" *ngIf="isCurrentUserAdmin">
       <div
         class="menu-item"
         *ngIf="!sideBarMinimized"
@@ -73,22 +89,32 @@
 
       <div class="menu-settings" *ngIf="!sideBarMinimized && showSettings">
         <div class="settings-actions" *ngIf="isProjectAdmin()">
-          <p (click)="navigateToBasicSettings()" [ngClass]="{ 'selected': isBasicSettings }">
+          <p
+            (click)="navigateToBasicSettings()"
+            [ngClass]="{ 'selected': isBasicSettings }"
+          >
             Basic settings
           </p>
-          <p (click)="navigateToIssueTemplate()" [ngClass]="{ 'selected': isIssueTemplate }">
+          <p
+            (click)="navigateToIssueTemplate()"
+            [ngClass]="{ 'selected': isIssueTemplate }"
+          >
             Issue template
           </p>
         </div>
         <div *ngIf="!isProjectAdmin()" class="settings-no-permission">
           <p>
-            You don't have enough permission. Ask your supervisor to give you access to change project
-            settings
+            You don't have enough permission. Ask your supervisor to give you
+            access to change project settings
           </p>
         </div>
       </div>
 
-      <div class="menu-item" [ngClass]="{ 'selected': isSettings }" *ngIf="sideBarMinimized">
+      <div
+        class="menu-item"
+        [ngClass]="{ 'selected': isSettings }"
+        *ngIf="sideBarMinimized"
+      >
         <tasque-menu-dropdown
           class="settings-dropdown"
           [upArrowIcon]="arrowRight"
@@ -105,13 +131,17 @@
             </div>
           </div>
           <div option *ngIf="isProjectAdmin()">
-            <tasque-option (click)="navigateToBasicSettings()"> Basic settings </tasque-option>
-            <tasque-option (click)="navigateToIssueTemplate()">Issue template</tasque-option>
+            <tasque-option (click)="navigateToBasicSettings()">
+              Basic settings
+            </tasque-option>
+            <tasque-option (click)="navigateToIssueTemplate()"
+              >Issue template</tasque-option
+            >
           </div>
           <div option *ngIf="!isProjectAdmin()">
             <tasque-option>
-              You don't have enough permission. Ask your supervisor to give you access to change project
-              settings
+              You don't have enough permission. Ask your supervisor to give you
+              access to change project settings
             </tasque-option>
           </div>
         </tasque-menu-dropdown>

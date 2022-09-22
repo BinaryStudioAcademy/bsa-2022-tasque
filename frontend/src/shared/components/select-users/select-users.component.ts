@@ -114,9 +114,7 @@ export class SelectUsersComponent implements OnInit {
     this.searchForm = new FormGroup({ emailControl: this.emailControl });
     this.userEmail = '';
 
-    setInterval(() => {
-      this.refreshList();
-    }, 150);
+    this.refreshList();
   }
 
   delete(email: string): void {
