@@ -34,6 +34,8 @@ import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get
 import { UserRole } from 'src/core/models/user/user-roles';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
+import { UserProjectRole } from 'src/core/models/user/user-project-roles';
+import { BusinessRole } from 'src/shared/components/select-users/Models';
 
 @Component({
   selector: 'tasque-board',
@@ -56,6 +58,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   public currentUser: UserModel;
   public role: UserRole;
   public isCurrentUserAdmin = false;
+  public isCurrentUserProjectAdmin = false;
 
   public unsubscribe$ = new Subject<void>();
 
@@ -279,16 +282,16 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     const model = event.container.data[event.currentIndex];
     this.columns.forEach((c) => {
       if (c.tasks === event.container.data) {
-        const task = this.projectTasks.find(
-          (t) => t.id === model.id,
-        );
+        const task = this.projectTasks.find((t) => t.id === model.id);
 
         if (!task) {
           return;
         }
 
         task.stateId = c.id;
-        task.state = this.project?.projectTaskStates.find((state) => state.id === c.id);
+        task.state = this.project?.projectTaskStates.find(
+          (state) => state.id === c.id,
+        );
 
         for (const col of this.columns) {
           const index = col.tasks.findIndex((t) => task.id === t.id);
@@ -420,7 +423,9 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         } as TaskInfoModel;
 
         if (task.state?.id !== col.id) {
-          const rightColumn = this.columns.find((column) => column.id === task.state?.id);
+          const rightColumn = this.columns.find(
+            (column) => column.id === task.state?.id,
+          );
           rightColumn?.tasks.push(currentTask);
           col.tasks.splice(index, 1);
           return;
@@ -437,35 +442,40 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   }
 
   public permissionToEdit(): void {
-    this.getCurrentEntityService.getCurrentUserService.currentUser$.subscribe(
-      (user) => {
-        this.currentUser = user;
-        if (this.currentUser === undefined) {
-          this.role = 0;
+    const organizationId =
+      this.getCurrentEntityService.getCurrentOrganizationService
+        .currentOrganizationId;
+
+    this.organizationService
+      .getOrganization(organizationId)
+      .subscribe((resp) => {
+        const currentOrganization = resp.body as OrganizationModel;
+        const role = this.user.organizationRoles.find(
+          (r) =>
+            r.organizationId === organizationId && r.userId === this.user.id,
+        )?.role as UserRole;
+
+        if (
+          role >= UserRole.projectAdmin ||
+          currentOrganization.authorId === this.user.id
+        ) {
+          this.isCurrentUserAdmin = true;
         } else {
-          const organizationId =
-            this.getCurrentEntityService.getCurrentOrganizationService
-              .currentOrganizationId;
-          this.organizationService
-            .getOrganization(organizationId)
-            .subscribe((resp) => {
-              const currentOrganization = resp.body as OrganizationModel;
-              const role = this.currentUser.organizationRoles.find(
-                (r) =>
-                  r.organizationId === organizationId &&
-                  r.userId === this.currentUser.id,
-              )?.role as UserRole;
-              if (
-                role >= UserRole.projectAdmin ||
-                currentOrganization.authorId === this.currentUser.id
-              ) {
-                this.isCurrentUserAdmin = true;
-              } else {
-                this.isCurrentUserAdmin = false;
-              }
-            });
+          this.isCurrentUserAdmin = false;
         }
-      },
-    );
+
+        const projectRole = this.user.roles?.find(
+          (r) => r.projectId === this.projectId && r.userId === this.user.id,
+        ) as UserProjectRole;
+
+        if (
+          projectRole.roleId == BusinessRole.Admin ||
+          this.isCurrentUserAdmin
+        ) {
+          this.isCurrentUserProjectAdmin = true;
+        } else {
+          this.isCurrentUserProjectAdmin = false;
+        }
+      });
   }
 }

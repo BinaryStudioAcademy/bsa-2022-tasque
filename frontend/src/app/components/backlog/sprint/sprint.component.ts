@@ -79,6 +79,7 @@ export class SprintComponent implements OnInit, OnChanges {
   public isCurrentUserAdmin = false;
   public isCurrentUserProjectAdmin = false;
 
+  public isShow = false;
   public isDraggable = true;
 
   public unsubscribe$ = new Subject<void>();
@@ -127,6 +128,7 @@ export class SprintComponent implements OnInit, OnChanges {
           this.currentSprint.tasks = this.tasks = this.tasksShow = result.body;
           this.estimateCount();
         }
+        this.isShow = true;
       });
   }
 
@@ -344,5 +346,10 @@ export class SprintComponent implements OnInit, OnChanges {
           this.isCurrentUserProjectAdmin = false;
         }
       });
+  }
+
+  public deleteIssue(id: number): void {
+    const index = this.tasks.findIndex((x) => x.id == id);
+    this.tasks.splice(index, 1);
   }
 }

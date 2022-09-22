@@ -39,8 +39,8 @@ export class ProjectService {
     return this.httpService.getFullRequest<ProjectInfoModel[]>(this.routePrefix + `/all/${organizationId}`);
   }
 
-  inviteUser(userInvite: InviteUserModel): Observable<void> {
-    return this.httpService.putRequest<void>(this.routePrefixParticipants + '/invite', userInvite);
+  inviteUser(userInvite: InviteUserModel): Observable<HttpResponse<UserModel>> {
+    return this.httpService.putFullRequest<UserModel>(this.routePrefixParticipants + '/invite', userInvite);
   }
 
   kickUser(userKick: InviteUserModel): Observable<void> {

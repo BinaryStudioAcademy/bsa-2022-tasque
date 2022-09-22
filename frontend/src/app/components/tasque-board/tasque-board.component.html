@@ -61,66 +61,54 @@
     </div>
     <div class="board-columns" cdkDropListGroup *ngIf="hasTasks">
       <div
-        cdkDropList
         *ngFor="let item of columns"
+        class="column-with-tasks"
+        cdkDropList
         (cdkDropListDropped)="dragDrop($event)"
         [cdkDropListData]="item.tasks"
-        class="column-with-tasks"
       >
         <div class="column-title">
           <div class="board-list">
             <span class="column-name">{{ item.name }}</span>
             <span class="column-element-count"> ({{ item.tasks.length }})</span>
           </div>
+          <hr class="column-border" />
           <div class="card-container">
-            <div *ngIf="isDraggable">
-              <div *ngIf="item.name.toLowerCase() !== 'done'">
-                <div class="column" *ngFor="let task of item.tasks" cdkDrag>
-                  <tasque-card
-                    *ngIf="!task.isHidden"
-                    [taskInfo]="task"
-                    [currentSprint]="currentSprint"
-                    (isChanging)="toogleIsDraggable($event)"
-                  >
-                  </tasque-card>
-                </div>
-              </div>
-              <div *ngIf="item.name.toLowerCase() === 'done'">
-                <div class="column" *ngFor="let task of item.tasks" cdkDrag>
-                  <tasque-card
-                    *ngIf="!task.isHidden"
-                    [taskInfo]="task"
-                    [currentSprint]="currentSprint"
-                    [isDone]="true"
-                    (isChanging)="toogleIsDraggable($event)"
-                  >
-                  </tasque-card>
-                </div>
+            <div *ngIf="item.name.toLowerCase() !== 'done'">
+              <div
+                class="column"
+                *ngFor="let task of item.tasks"
+                cdkDrag
+                [cdkDragDisabled]="!isDraggable"
+              >
+                <tasque-card
+                  *ngIf="!task.isHidden"
+                  [taskInfo]="task"
+                  [currentSprint]="currentSprint"
+                  (isChanging)="toogleIsDraggable($event)"
+                  [isCurrentUserAdmin]="isCurrentUserAdmin"
+                  [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
+                >
+                </tasque-card>
               </div>
             </div>
-            <div *ngIf="!isDraggable">
-              <div *ngIf="item.name.toLowerCase() !== 'done'">
-                <div class="column" *ngFor="let task of item.tasks">
-                  <tasque-card
-                    *ngIf="!task.isHidden"
-                    [taskInfo]="task"
-                    [currentSprint]="currentSprint"
-                    (isChanging)="toogleIsDraggable($event)"
-                  >
-                  </tasque-card>
-                </div>
-              </div>
-              <div *ngIf="item.name.toLowerCase() === 'done'">
-                <div class="column" *ngFor="let task of item.tasks">
-                  <tasque-card
-                    *ngIf="!task.isHidden"
-                    [taskInfo]="task"
-                    [currentSprint]="currentSprint"
-                    [isDone]="true"
-                    (isChanging)="toogleIsDraggable($event)"
-                  >
-                  </tasque-card>
-                </div>
+            <div *ngIf="item.name.toLowerCase() === 'done'">
+              <div
+                class="column"
+                *ngFor="let task of item.tasks"
+                cdkDrag
+                [cdkDragDisabled]="!isDraggable"
+              >
+                <tasque-card
+                  *ngIf="!task.isHidden"
+                  [taskInfo]="task"
+                  [currentSprint]="currentSprint"
+                  [isDone]="true"
+                  (isChanging)="toogleIsDraggable($event)"
+                  [isCurrentUserAdmin]="isCurrentUserAdmin"
+                  [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
+                >
+                </tasque-card>
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { OrganizationService } from 'src/core/services/organization.service';
@@ -28,6 +28,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
   public sidebarName = 'editOrganization';
   public unsubscribe$ = new Subject<void>();
   public organizationName = '';
+  public isChanged = new Observable<void>();
 
   get organizationNameErrorMessage(): string {
     const ctrl = this.organizationNameControl;
@@ -73,6 +74,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
       .subscribe((resp) => {
         if(resp.ok) {
           this.notificationService.success(`User ${userEmail} has been invited to organization!`);
+          this.isChanged = new Observable<void>();
         }
       });
   }
@@ -83,6 +85,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
       if(resp.ok) {
         const name = this.users.find((user) => user.email === email)?.name;
         this.notificationService.success(`User ${name?? email} has been deleted successfully`);
+        this.isChanged = new Observable<void>();
       }
     });
   }

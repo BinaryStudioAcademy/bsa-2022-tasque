@@ -1,9 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
+import { UserModel } from 'src/core/models/user/user-model';
 import { GetCurrentProjectService } from 'src/core/services/get-current-project.service';
 import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
 import { ProjectService } from 'src/core/services/project.service';
@@ -24,6 +25,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
   public sidebarName = 'editProject';
 
   public board: IBoard;
+  public isChanged = new Observable<void>();
 
   faPenToSquare = faPenToSquare;
   public unsubscribe$ = new Subject<void>();
@@ -128,15 +130,35 @@ export class EditProjectComponent implements OnInit, OnDestroy {
   inviteUser(email: string): void {
     this.projectService.inviteUser({ projectId: this.project.id, email: email })
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe();
+      .subscribe((resp) => {
+        const user = resp.body as UserModel;
+        this.notification.success(`User ${email} has been invited successfully`);
+        this.board.users.push({
+          id: user?.id,
+          userName: user.name,
+          profileURL: user.avatarURL?? '',
+          email: user.email, 
+          role: null
+        });
+        this.isChanged = new Observable<void>();
+      }, (err) => {
+        this.notification.error(err.error.error);
+      });
   }
 
   deleteUser(email: string): void {
     this.projectService.kickUser({ projectId: this.project.id, email: email })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
-        const index = this.board.users.findIndex((x) => { x.email == email; });
-        this.board.users = this.board.users.splice(index, 1);
+        //const index = this.board.users.findIndex((x) => { x.email == email; });
+        this.board.users.forEach((value, index) => {
+          if(value.email === email){
+            this.board.users.splice(index, 1);
+          }
+        });
+        this.isChanged = new Observable<void>();
+      }, (err) => {
+        this.notification.error(err.error.error);
       });
   }
 
@@ -144,7 +166,9 @@ export class EditProjectComponent implements OnInit, OnDestroy {
     if(user && user.role) {
       this.projectService.changeUserRole({ projectId: this.project.id, userId: user.id, roleId: user.role })
         .pipe(takeUntil(this.unsubscribe$))
-        .subscribe();
+        .subscribe(() => {
+          this.isChanged = new Observable<void>();
+        });
     }
   }
 }
