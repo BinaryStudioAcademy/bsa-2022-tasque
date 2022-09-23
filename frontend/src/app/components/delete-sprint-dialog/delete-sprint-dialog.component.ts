@@ -30,11 +30,15 @@ export class DeleteSprintDialogComponent implements OnInit {
           this.backlogService.changeBacklog();
           this.sprintService.changeDeleteSprint(this.sprint.id);
         } else {
-          this.notificationService.error('Something went wrong');
+          //TODO
+          console.warn('Something went wrong');
+          // this.notificationService.error('Something went wrong');
         }
       },
       (error) => {
-        this.notificationService.error(error);
+        //TODO
+        console.warn(error);
+        //this.notificationService.error(error);
       },
     );
   }

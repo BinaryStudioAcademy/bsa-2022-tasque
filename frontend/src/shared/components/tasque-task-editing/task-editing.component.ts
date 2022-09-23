@@ -379,8 +379,10 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       .updateTask(updatedTask)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((task) => {
-        if(!addUser){
-          this.notificationService.success('Task has been updated successfully');
+        if (!addUser) {
+          this.notificationService.success(
+            'Task has been updated successfully',
+          );
         }
         this.isChanged = new Observable<void>();
         if (task.body) {
@@ -392,7 +394,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       .add(() => {
         this.clearForm();
       });
-      this.isChanging.emit(false);
+    this.isChanging.emit(false);
   }
 
   toogleModal(event: boolean): void {
