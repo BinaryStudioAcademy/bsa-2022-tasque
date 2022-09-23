@@ -399,7 +399,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       .updateTask(updatedTask)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((task) => {
-        if(!addUser){
+        if (!addUser) {
           this.notificationService.success('Task has been updated successfully');
         }
         this.isChanged = new Observable<void>();
@@ -412,7 +412,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       .add(() => {
         this.clearForm();
       });
-      this.isChanging.emit(false);
+    this.isChanging.emit(false);
   }
 
   toogleModal(event: boolean): void {
@@ -481,6 +481,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         val.fieldValue = field.fieldValue;
       }
     });
+    this.editTaskForm.markAsDirty();
   }
 
   setSelectedTaskType(typeId: number): void {
