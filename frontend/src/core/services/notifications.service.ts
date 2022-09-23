@@ -13,40 +13,59 @@ import { HttpNotificationsService } from './http-notifications.service';
 import { ToastrNotificationService } from './toastr-notification.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificationsService {
   public hubUrl: string = environment.signalR_hub;
 
-  constructor(private authSerivce: AuthService, private httpService: HttpNotificationsService, private toastr: ToastrNotificationService) {
-    
-  }
+  constructor(
+    private authSerivce: AuthService,
+    private httpService: HttpNotificationsService,
+    private toastr: ToastrNotificationService,
+  ) {}
 
-  buildConnection() : HubConnection {
-    const connection = new HubConnectionBuilder().withUrl(this.hubUrl).withAutomaticReconnect().build();
+  buildConnection(): HubConnection {
+    const connection = new HubConnectionBuilder()
+      .withUrl(this.hubUrl)
+      .withAutomaticReconnect()
+      .build();
     return connection;
   }
 
   connectToNotificationsEndpoints(hubConnection: HubConnection): void {
-    hubConnection.start()
-    .then()
-    .catch(() => this.toastr.error('Error while establishing connection'));
+    hubConnection
+      .start()
+      .then()
+      .catch(() =>
+        //TODO
+        console.warn('error while establishing connection'),
+      );
+    //this.toastr.error('Error while establishing connection'));
 
     hubConnection.on('connected', (connectionId: string) => {
-      this.authSerivce.setConnectionId(connectionId)
-        .subscribe(() => {});
+      this.authSerivce.setConnectionId(connectionId).subscribe(() => {});
     });
   }
 
-  getNotificationsOfUser(userId: number): Observable<[HttpResponse<TaskCommentedNotification[]>, HttpResponse<TaskMovedNotification[]>, HttpResponse<UserInvitedNotification[]>]> {
+  getNotificationsOfUser(
+    userId: number,
+  ): Observable<
+    [
+      HttpResponse<TaskCommentedNotification[]>,
+      HttpResponse<TaskMovedNotification[]>,
+      HttpResponse<UserInvitedNotification[]>,
+    ]
+  > {
     return forkJoin([
       this.getTaskCommentedNotifications(userId),
       this.getTaskMovedNotifications(userId),
-      this.getUserInvitedNotifications(userId)
+      this.getUserInvitedNotifications(userId),
     ]);
   }
 
-  deleteNotification(notification: Notification): Observable<HttpResponse<void>> {
+  deleteNotification(
+    notification: Notification,
+  ): Observable<HttpResponse<void>> {
     let url = '';
     switch (notification.type) {
       case NotificationType.TaskCommented:
@@ -59,18 +78,32 @@ export class NotificationsService {
         url += 'user-invited';
     }
 
-    return this.httpService.deleteFullRequest<void>(url + `/delete/${notification.id}`);
+    return this.httpService.deleteFullRequest<void>(
+      url + `/delete/${notification.id}`,
+    );
   }
 
-  private getUserInvitedNotifications(userId: number): Observable<HttpResponse<UserInvitedNotification[]>> {
-    return this.httpService.getFullRequest<UserInvitedNotification[]>(`user-invited?recieverId=${userId}`);
+  private getUserInvitedNotifications(
+    userId: number,
+  ): Observable<HttpResponse<UserInvitedNotification[]>> {
+    return this.httpService.getFullRequest<UserInvitedNotification[]>(
+      `user-invited?recieverId=${userId}`,
+    );
   }
 
-  private getTaskMovedNotifications(userId: number): Observable<HttpResponse<TaskMovedNotification[]>> {
-    return this.httpService.getFullRequest<TaskMovedNotification[]>(`task-moved?recieverId=${userId}`);
+  private getTaskMovedNotifications(
+    userId: number,
+  ): Observable<HttpResponse<TaskMovedNotification[]>> {
+    return this.httpService.getFullRequest<TaskMovedNotification[]>(
+      `task-moved?recieverId=${userId}`,
+    );
   }
 
-  private getTaskCommentedNotifications(userId: number): Observable<HttpResponse<TaskCommentedNotification[]>> {
-    return this.httpService.getFullRequest<TaskCommentedNotification[]>(`task-commented?recieverId=${userId}`);
+  private getTaskCommentedNotifications(
+    userId: number,
+  ): Observable<HttpResponse<TaskCommentedNotification[]>> {
+    return this.httpService.getFullRequest<TaskCommentedNotification[]>(
+      `task-commented?recieverId=${userId}`,
+    );
   }
 }

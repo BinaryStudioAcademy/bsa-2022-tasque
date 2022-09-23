@@ -29,12 +29,11 @@
     </div>
     <div class="select">
       <label>User management</label>
-      <tasque-select-users
+      <tasque-select-users [board]="board"
         (onAdd)="inviteUser($event)"
         (onDelete)="deleteUser($event)"
         (onUpdate)="changeUserRole($event)"
         [isChanged]="isChanged"
-        [board]="board"
       ></tasque-select-users>
     </div>
     <div class="footer-button">

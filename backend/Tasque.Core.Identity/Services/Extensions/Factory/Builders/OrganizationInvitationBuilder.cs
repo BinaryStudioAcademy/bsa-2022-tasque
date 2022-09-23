@@ -5,6 +5,7 @@ using Tasque.Core.BLL.Options;
 using Tasque.Core.BLL.Services;
 using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Models.Email;
+using Tasque.Core.Common.StaticResources;
 using Tasque.Core.DAL;
 
 namespace Tasque.Core.Identity.Services.Extensions.Factory.Builders
@@ -31,7 +32,8 @@ namespace Tasque.Core.Identity.Services.Extensions.Factory.Builders
             var host = _emailOptions.Host;
             var endpoint = _emailOptions.InviteUserToOrganizationEndpoint;
             var link = $"{host}{endpoint}";
-            var logo = _configuration["Host:BigLogo"];
+            var logo = reciever.Email.ToLower().EndsWith("gmail.com") 
+                ? _configuration["Host:BigLogo"] : LogoHolder.LogoImage;
             var organization = await _context.Organizations.FirstOrDefaultAsync(o => o.Id == token.EntityId);
 
             if (organization == null)

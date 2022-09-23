@@ -150,7 +150,6 @@ export class EditProjectComponent implements OnInit, OnDestroy {
     this.projectService.kickUser({ projectId: this.project.id, email: email })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
-        //const index = this.board.users.findIndex((x) => { x.email == email; });
         this.board.users.forEach((value, index) => {
           if(value.email === email){
             this.board.users.splice(index, 1);

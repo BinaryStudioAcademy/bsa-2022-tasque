@@ -321,9 +321,12 @@ namespace Tasque.Core.BLL.Services
             var comment = _mapper.Map<Comment>(dto);
 
             _dbContext.Comments.Add(comment);
-
+            
             _dbContext.Update(task);
             await _dbContext.SaveChangesAsync();
+            var newComment = await _dbContext.Comments
+                .Include(c => c.Author)
+                .SingleAsync(c => c.Id == comment.Id);
 
             TaskCommentedEvent @event = new()
             {
@@ -334,7 +337,7 @@ namespace Tasque.Core.BLL.Services
             };
 
             _bus.Publish(@event);
-            return _mapper.Map<CommentInfoDTO>(comment);
+            return _mapper.Map<CommentInfoDTO>(newComment);
         }
 
         private void SaveChanges<T>(T entity)

@@ -400,7 +400,9 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((task) => {
         if (!addUser) {
-          this.notificationService.success('Task has been updated successfully');
+          this.notificationService.success(
+            'Task has been updated successfully',
+          );
         }
         this.isChanged = new Observable<void>();
         if (task.body) {

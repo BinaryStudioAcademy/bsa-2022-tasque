@@ -127,7 +127,7 @@ namespace Tasque.Core.BLL.Services
 
                 if (activeSprints.Count > 0)
                     throw new ValidationException(
-                        "Before starting a new sprint, finish the previous one!");
+                        "You can edit dates when sprint will be active");
 
                 entity.StartAt = DateTime.SpecifyKind((DateTime)dto.StartAt, DateTimeKind.Utc);
             }
