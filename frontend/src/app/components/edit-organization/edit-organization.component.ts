@@ -156,7 +156,6 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          console.log(this.users);
           this.users = result.body;
         }
       });
