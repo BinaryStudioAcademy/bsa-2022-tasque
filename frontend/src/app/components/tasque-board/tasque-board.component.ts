@@ -285,6 +285,20 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
         task.stateId = c.id;
 
+        for (const col of this.columns) {
+          const index = col.tasks.findIndex((t) => task.id === t.id);
+
+          if (index === -1) {
+            continue;
+          }
+
+          col.tasks[index].state = task.state = this.project?.projectTaskStates.find(
+            (state) => state.id === c.id,
+          );
+          col.tasks[index].stateId = task.stateId;
+          break;
+        }
+
         this.boardService.taskService.updateTask(task).subscribe((resp) => {
           if (!resp.ok) {
             this.notificationService.error(
@@ -456,6 +470,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           this.isCurrentUserProjectAdmin = false;
         }
       }
-    );
+      );
   }
 }
