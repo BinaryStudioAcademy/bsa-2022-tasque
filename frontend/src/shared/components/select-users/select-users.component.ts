@@ -126,6 +126,7 @@ export class SelectUsersComponent implements OnInit, OnChanges {
     this.isLoading = true;
 
     this.onDelete.emit(email);
+    this.refreshList();
   }
 
   update(user: IUserCard, role: BusinessRole): void {

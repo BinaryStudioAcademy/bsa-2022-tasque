@@ -63,11 +63,13 @@
         [cdkDropListData]="item.tasks"
       >
         <div class="column-title">
-          <div class="board-list">
-            <span class="column-name">{{ item.name }}</span>
-            <span class="column-element-count"> ({{ item.tasks.length }})</span>
+          <div class="board-header">
+            <div class="board-list">
+              <span class="column-name">{{ item.name }}</span>
+              <span class="column-element-count"> ({{ item.tasks.length }})</span>
+            </div>
+            <hr class="column-border" />
           </div>
-          <hr class="column-border" />
           <div class="card-container">
             <div *ngIf="item.name.toLowerCase() !== 'done'">
               <div class="column" *ngFor="let task of item.tasks" cdkDrag [cdkDragDisabled]="!isDraggable">

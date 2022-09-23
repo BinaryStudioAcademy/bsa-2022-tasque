@@ -37,7 +37,7 @@ namespace Tasque.Core.WebAPI.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateTask([FromBody] TaskDto model)
-            {
+        {
             var task = await _taskService.CreateTask(model);
             return Created(task.ToString() ?? "", task);
         }

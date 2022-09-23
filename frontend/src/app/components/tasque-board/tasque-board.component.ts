@@ -168,7 +168,8 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     this.columns.forEach((c) => {
       const tasks = this.projectTasks
         .filter((t) => t.stateId === c.id)
-        .sort((x) => x.order);
+        .sort((prev, next) => prev.order > next.order ? 1 : -1);
+
       const taskInfo: TaskInfoModel[] = [];
 
       tasks.forEach((t) => {
@@ -241,6 +242,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         event.previousIndex,
         event.currentIndex,
       );
+      this.orderTasks(event);
       this.updateTasks(event);
     }
   }
@@ -250,9 +252,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     this.boardService.taskService
       .setOrder(tasks)
       .pipe(take(1))
-      .subscribe((resp) => {
-        event.container.data = resp.body as TaskInfoModel[];
-      });
+      .subscribe();
   }
 
   updateColumns(): void {
@@ -284,21 +284,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         }
 
         task.stateId = c.id;
-        task.state = this.project?.projectTaskStates.find(
-          (state) => state.id === c.id,
-        );
-
-        for (const col of this.columns) {
-          const index = col.tasks.findIndex((t) => task.id === t.id);
-
-          if (index === -1) {
-            continue;
-          }
-
-          col.tasks[index].state = task.state;
-          col.tasks[index].stateId = task.stateId;
-          break;
-        }
 
         this.boardService.taskService.updateTask(task).subscribe((resp) => {
           if (!resp.ok) {
@@ -445,7 +430,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       .getOrganization(organizationId)
       .subscribe((resp) => {
         const currentOrganization = resp.body as OrganizationModel;
-        const role = this.user.organizationRoles.find(
+        const role = this.user.organizationRoles?.find(
           (r) =>
             r.organizationId === organizationId && r.userId === this.user.id,
         )?.role as UserRole;

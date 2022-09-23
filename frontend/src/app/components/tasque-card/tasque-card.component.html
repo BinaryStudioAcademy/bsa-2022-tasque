@@ -9,8 +9,9 @@
         taskInfo.priority?.name
       }}</span>
     </div>
-    <div>
+    <div class="card-tools">
       <tasque-task-editing
+        style="margin: 0 15px 0 0"
         btnText=""
         btnClass="btn icon gray-transparent"
         [btnIcon]="editIcon"
@@ -20,20 +21,20 @@
         [isCurrentUserAdmin]="isCurrentUserAdmin"
         [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
       ></tasque-task-editing>
+      <tasque-menu-dropdown class="card-settings" [left]="-90" style="margin: 2px 0 0 0">
+        <img src="assets/board/column_menu.svg" dropdown-button />
+        <tasque-option option (click)="notImplementetNotification()"
+          >Copy issue link</tasque-option
+        >
+        <tasque-option option (click)="notImplementetNotification()"
+          >Move up</tasque-option
+        >
+        <tasque-option option (click)="notImplementetNotification()"
+          >Move down</tasque-option
+        >
+        <tasque-option option (click)="deleteTask()">Delete issue</tasque-option>
+      </tasque-menu-dropdown>
     </div>
-    <tasque-menu-dropdown class="card-settings" [left]="-80">
-      <img src="assets/board/column_menu.svg" dropdown-button />
-      <tasque-option option (click)="notImplementetNotification()"
-        >Copy issue link</tasque-option
-      >
-      <tasque-option option (click)="notImplementetNotification()"
-        >Move up</tasque-option
-      >
-      <tasque-option option (click)="notImplementetNotification()"
-        >Move down</tasque-option
-      >
-      <tasque-option option (click)="deleteTask()">Delete issue</tasque-option>
-    </tasque-menu-dropdown>
   </div>
   <div *ngIf="taskInfo.attachments.length > 0"></div>
   <div>
