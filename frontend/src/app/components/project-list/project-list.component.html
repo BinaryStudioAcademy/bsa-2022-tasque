@@ -1,0 +1,41 @@
+<mat-spinner style="margin: 250px auto" *ngIf="!isShow"></mat-spinner>
+<div class="project-list" *ngIf="isShow && currentUser">
+  <div class="project-top">
+    <div class="projects-header">
+      <h4>List of Projects</h4>
+      <tasque-button
+        *ngIf="isCurrentUserAdmin"
+        class="btn stroke"
+        text="Create Project"
+        (btnClick)="openCreateProjectDialog()"
+      ></tasque-button>
+    </div>
+    <div class="project-search">
+      <tasque-input
+        [icon]="searchIcon"
+        class="search-input"
+        iconPosition="search"
+        type="search"
+        placeholder="Search..."
+        [(ngModel)]="inputSearch"
+        (ngModelChange)="filterItems()"
+      >
+      </tasque-input>
+    </div>
+  </div>
+  <div class="project-list-cards">
+    <div class="empty-projects-warning" *ngIf="projects.length < 1">
+      <p>You are not a participant of any project.</p>
+      <p>
+        You can create a new one in your organization or ask an organization or
+        project admin to invite you to an existing one
+      </p>
+    </div>
+
+    <app-project-list-item
+      *ngFor="let item of itemsShow"
+      [project]="item"
+      [currentUser]="currentUser"
+    ></app-project-list-item>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<div class="wrapper" [id]="name">
+  <div class="shadow" (click)="close()"></div>
+  <div appAutocompleteCustom class="content">
+    <a class="close-sidebar-btn" (click)="close()">
+      <mat-icon class="icon">close</mat-icon>
+    </a>
+    <ng-content></ng-content>
+  </div>
+</div>

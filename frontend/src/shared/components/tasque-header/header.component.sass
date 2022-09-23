@@ -1,0 +1,72 @@
+@import 'src/colors.sass'
+
+$layout-breakpoint-small: 1180px
+
+header
+  font-family: 'Nunito'
+  font-style: normal
+  font-weight: 400
+  font-size: 18px
+  display: flex
+  align-items: center
+  justify-content: space-between
+  top: 0px
+  right: 0px
+  width: 100%
+  height: 70px
+  background-color: colorscheme(violet-400)
+  color: colorscheme(white-100)
+  padding: 10px 0px
+  z-index: 2
+
+.navigation-panel
+  display: flex
+  align-items: center
+  padding-left: 45px
+  gap: 25px
+
+.user-panel 
+  display: flex
+  align-items: center
+  gap: 25px
+  padding-right: 35px
+
+.button
+  cursor: pointer
+  &:hover
+    color: colorscheme(gray-400)
+  user-select: none
+  -moz-user-select: none
+  -webkit-user-select: none
+  -ms-user-select: none
+
+.button-icon
+  cursor: pointer
+  width: 24px
+  height: 24px
+  
+.search-input
+  width: 250px
+
+
+.profile-dropdown
+  --button-gap: 10px
+  --icon-size: 18px
+  --options-translate: -50%
+
+.logo
+  width: 138px
+  height: 26px
+  display: flex
+  align-items: center
+  justify-content: center
+
+@media (max-width: $layout-breakpoint-small)
+  .navigation-panel
+    gap: 15px
+    --label-font-size: 12px
+  .button-icon
+    width: 20px
+    height: 20px
+  .search-input
+    width: 150px

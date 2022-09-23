@@ -1,0 +1,13 @@
+<div class="organization-card">
+  <p class="organization-name" (click)="openOrganization()">{{ organization.name }}</p>
+
+  <div class="buttons-container">
+    <app-edit-organization
+      *ngIf="organization.authorId === currentUser?.id || role === organizationAdmin"
+      class="btn stroke"
+      [organization]="organization"
+    ></app-edit-organization>
+    <tasque-button (btnClick)="openOrganization()" class="btn stroke" text="Open"> </tasque-button>
+  </div>
+</div>
+<hr/>

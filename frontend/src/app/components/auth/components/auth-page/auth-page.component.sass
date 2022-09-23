@@ -1,0 +1,71 @@
+@import 'src/colors.sass'
+
+:host
+  width: 50%
+  font-family: 'Nunito'
+
+.auth-container
+  height: 100vh
+  width: 100vw
+  display: grid
+  grid-template-columns: 3fr 2fr
+  align-items: center
+  
+
+.logo-container
+  height: 100%
+  background-position: center
+  background-repeat: no-repeat
+  background-size: cover
+  background-image: url('/assets/background.png')
+
+.logo-blur
+  height: 100%
+  width: 100%
+  display: flex
+  justify-content: center
+  align-items: center
+  background-color: rgba(colorscheme(violet-400), 0.85)
+  backdrop-filter: blur(8px)
+
+.logo-blur > div
+  text-align: center
+
+.logo
+  width: 60%
+  display: flex
+  align-items: center
+  justify-content: center
+
+.outlet
+  display: inline-flex
+  justify-content: center
+
+.label-12
+  font-size: 12px
+
+.label-14
+  font-size: 14px
+
+a
+  text-decoration: none
+  color: colorscheme(violet-200)
+
+.form-container
+  display: flex
+  flex-flow: column
+  > *:not(:last-child)
+    margin-bottom: 15px
+
+.login-title
+  color: colorscheme(violet-400)
+  font-style: normal
+  font-weight: 700
+  font-size: 24px
+  line-height: 114.88%
+  text-align: left
+  margin: 0
+  padding: 0
+
+.text-container > *
+  margin-bottom: 0

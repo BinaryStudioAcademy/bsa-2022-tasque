@@ -1,0 +1,16 @@
+<tasque-menu-dropdown>
+  <tasque-option header class="not-button" [class.solo]="latestProjects.length === 0">
+    Recent Projects
+  </tasque-option>
+  <div class="project-name" dropdown-button>{{ currentProject.name }}</div>
+  <div option *ngFor="let proj of latestProjects; trackBy: trackByProject">
+    <tasque-option (click)="selectProject(proj)">
+      <div class="project-option">
+        {{ proj.name }}
+      </div>
+    </tasque-option>
+  </div>
+  <tasque-option footer [class.solo]="latestProjects.length === 0" (click)="openProjectsPage()">
+    Manage my projects
+  </tasque-option>
+</tasque-menu-dropdown>

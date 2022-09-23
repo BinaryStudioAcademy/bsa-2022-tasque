@@ -20,8 +20,6 @@ rules:
     - max: 1
   no-var:
     - error
-  no-console:
-    - error
   arrow-parens:
     - error
     - always
@@ -33,7 +31,7 @@ rules:
     - prefer-double
   max-params:
     - error
-    - 2
+    - 8
   '@typescript-eslint/explicit-function-return-type':
     - error
     - allowTypedFunctionExpressions: true

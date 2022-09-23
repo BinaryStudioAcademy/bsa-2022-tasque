@@ -1,0 +1,65 @@
+<section class="backlog-wrapper">
+  <div class="backlog-menu row">
+    <div class="toggle">
+      <button (click)="toggleDropdown()" class="btn-backlog-custom">
+        <fa-icon
+          [icon]="iconDown"
+          class="rotatable"
+          id="dropdown-arrow-icon"
+        ></fa-icon
+        >&nbsp;
+        <span class="bold">Backlog</span>
+        <span class="pale pl-5" *ngIf="tasks">({{ tasks.length }} issues)</span>
+      </button>
+    </div>
+    <div
+      class="sprints"
+      *ngIf="isCurrentUserAdmin || isCurrentUserProjectAdmin"
+    >
+      <tasque-button
+        class="mini"
+        text="Create Sprint"
+        [class]="btnClass"
+        (click)="createSprint()"
+      ></tasque-button>
+    </div>
+  </div>
+  <div
+    class="backlog-content"
+    cdkDropList
+    #todoList="cdkDropList"
+    [cdkDropListData]="tasks"
+    id="list-one"
+    (cdkDropListDropped)="drop($event)"
+  >
+    <div class="empty-tasks row pale" *ngIf="tasks && tasks.length == 0">
+      <label class="text-center">Your backlog is empty.</label>
+    </div>
+    <div
+      class="backlog-issues"
+      id="backlog-issues"
+      *ngIf="tasks && tasks.length != 0"
+    >
+      <app-issue
+        (isChanging)="toogleIsDragable($event)"
+        [cdkDragDisabled]="!isDragable"
+        cdkDrag
+        *ngFor="let task of tasks"
+        [issue]="task"
+        [taskStates]="taskStates"
+        [taskTypes]="taskTypes"
+        [currentProject]="project"
+        (isDelete)="deleteIssue($event)"
+      ></app-issue>
+    </div>
+    <div class="add-issue-wrapper row">
+      <tasque-task-creation
+        btnText="+ Create issues"
+        btnClass="btn mini voilet"
+        [currentProject]="project"
+        [organizationId]="project.organizationId"
+        [currentTasks]="tasks"
+      ></tasque-task-creation>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,55 @@
+<div class="issue">
+  <div class="basic-issue-info">
+    <p
+      class="issue-type"
+      [ngStyle]="{
+        'background': issue.type?.color ?? 'colorscheme(yellow-100)'
+      }"
+    >
+      {{ this.issue.type?.name }}
+    </p>
+    <p class="issue-key">
+      {{ issue.key }}
+    </p>
+    <tasque-task-editing
+      [task]="issue"
+      [currentSprint]="currentSprint"
+      [btnText]="issue.summary"
+      btnClass="btn full black"
+      (isChanging)="test($event)"
+      [isCurrentUserAdmin]="isCurrentUserAdmin"
+      [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
+    >
+    </tasque-task-editing>
+  </div>
+  <div class="issue-estimate">
+    <tasque-input
+      class="input estimate-input"
+      type="number"
+      [(ngModel)]="issue.estimate"
+      (inputValue)="(issue.estimate)"
+      (change)="estimateChange()"
+    >
+    </tasque-input>
+  </div>
+  <tasque-dropdown
+    [options]="taskStateToDropdownArray(taskStates)"
+    (onSelect)="updateTaskState($event)"
+    [placeholder]="issue.state && issue.state.name ? issue.state.name : ''"
+    width="150px"
+  ></tasque-dropdown>
+
+  <div class="issue-users">
+    <tasque-team-select
+      *ngIf="issue.users && issue.users.length > 0"
+      class="users"
+      [miniView]="true"
+      [avatars]="issue.users"
+      [canPopUp]="true"
+    ></tasque-team-select>
+  </div>
+  <tasque-menu-dropdown class="card-settings" [left]="-80">
+    <img src="assets/board/column_menu.svg" dropdown-button />
+    <tasque-option option (click)="deleteTask()">Delete issue</tasque-option>
+  </tasque-menu-dropdown>
+</div>

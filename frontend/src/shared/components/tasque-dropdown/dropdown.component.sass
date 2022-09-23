@@ -1,0 +1,88 @@
+@import 'src/colors.sass'
+
+.dropdown-wrapper
+    font-family: Nunito
+    font-style: normal
+    color: colorscheme(black-100)
+    display: flex
+    flex-direction: column
+    font-size: 14px
+    position: relative
+
+.options-container
+    margin-top: 2px
+    margin-bottom: 2px
+    background-color: colorscheme(white-100)
+    border: 2px solid colorscheme(gray-300)
+    border-radius: 10px
+    max-height: 140px
+    overflow: auto
+    width: 100%
+    position: absolute
+    left: 0
+    z-index: 1
+    box-sizing: border-box
+
+.dropdown-label
+    font-size: 12px
+
+.color-square
+    border-radius: 3px
+    width: 13px
+    height: 13px
+    margin-right: 5px
+
+rect
+    width: 13px
+    height: 13px
+
+.dropdown-button
+    padding: 0px
+    border-radius: 10px
+    border: none
+    cursor: pointer
+    height: 35px
+
+.selected-option
+    display: flex
+    flex-direction: row
+    justify-content: flex-start
+    align-items: center
+    padding: 5px
+    padding-left: 15px
+    font-family: Nunito
+    font-size: 14px
+    font-weight: 400
+
+.option
+    height: 35px
+    display: flex
+    flex-direction: row
+    justify-content: flex-start
+    align-items: center
+    cursor: pointer
+    font-size: 14px
+    font-weight: 400
+    line-height: 19px
+    padding-left: 15px
+    padding-right: 15px
+    &:hover
+        background-color: colorscheme(gray-100)
+    &.active
+        background-color: colorscheme(gray-200)
+
+.dropdown-icon
+    font-size: 25px
+    margin-right: 15px
+
+.selected-wrapper
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    align-items: center
+
+.error
+    font-family: Nunito
+    font-style: normal
+    font-size: 14px !important
+    color: colorscheme(pink-300)

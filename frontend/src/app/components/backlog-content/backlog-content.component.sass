@@ -1,0 +1,126 @@
+@import 'src/colors.sass'
+    
+$standard-side-border: 40px
+flex
+    display: inline-flex
+    align-items: center
+
+@for $i from 1 through 5
+    .pl-#{$i * 5}
+        padding-left: #{$i * 5}px
+    
+    .pr-#{$i * 5}
+        padding-right: #{$i * 5}px
+	
+    .ml-#{$i * 5}
+        margin-left: #{$i * 5}px
+
+    .mr-#{$i * 5}
+        margin-right: #{$i * 5}px
+
+
+span
+    font-size: 18px
+
+.bold
+    color: colorscheme('black-100')
+    font-weight: 1000
+
+.pale
+    color: colorscheme('dark-grey-100')
+
+.backlog-wrapper
+    padding: 0px $standard-side-border
+    list-style: none
+    display: inline-block
+    position: relative
+    text-decoration: none
+    width: 100%
+
+.rotatable 
+    -moz-transition: all .3s linear
+    -webkit-transition: all .3s linear
+    transition: all .3s linear
+
+.rotatable.down 
+        -moz-transform: rotate(-90deg)
+        -webkit-transform: rotate(-90deg)
+        transform: rotate(-90deg)
+
+
+.btn-backlog-custom
+    @extend flex
+    font-size: 16px
+    border: none
+    background: none
+    padding: 0
+
+    &:hover
+        cursor: pointer
+
+.row
+    display: inline-flex
+    align-items: center
+    height: 50px
+    width: 100%
+
+.text-center
+    text-align: center
+    margin: auto
+
+.backlog-menu
+    @extend flex
+    justify-content: space-between
+    width: 100%
+    margin: 4px 0px
+
+.empty-tasks
+    border: dashed
+    border-color: colorscheme('gray-400')
+
+.backlog-issue
+    justify-content: space-between
+    border: solid
+    border-color: colorscheme('gray-100')
+    border-width: 1px
+    border-bottom: 2px solid  colorscheme('gray-300')
+    &:hover
+        background-color: colorscheme('gray-300')
+
+    .issue-data
+        width: 65%
+        min-width: 150px
+        display: flex
+        fa-icon
+             color: colorscheme('yellow-100')
+
+    .issue-actions
+        @extend flex
+
+.show
+    display: none
+
+.sprints
+    width: 170px
+    margin-right: 40px
+
+
+.issue-type
+    background: colorscheme(yellow-100)
+    border-radius: 20px
+    padding: 4px 12px
+    font-weight: 600
+    font-size: 14px
+    line-height: 130%
+    color: colorscheme(gray-100)
+    margin: 0px 5px
+
+
+.cdk-drag-preview
+    background: colorscheme(white-100)
+    border-radius: 10px
+    border: 2px solid colorscheme(gray-300)
+    transition: transform 300ms cubic-bezier(0, 0, 0.2, 1)
+    ::ng-deep 
+        .issue
+             border: none

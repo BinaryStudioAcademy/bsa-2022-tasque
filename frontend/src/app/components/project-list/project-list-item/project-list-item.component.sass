@@ -1,0 +1,31 @@
+@import 'src/colors.sass'
+
+.project-card
+  min-height: 50px
+  display: flex
+  justify-content: space-between
+  align-items: center
+  padding: 5px
+  &:hover
+    background-color: colorscheme(gray-300)
+
+.project-name
+  text-decoration: none
+  color: colorscheme(black-100)
+  font-family: "Nunito"
+  font-style: normal
+  padding-left: 30px
+  font-size: 20px
+  &:hover
+    cursor: pointer
+
+.buttons-container
+  display: flex
+  align-items: center
+  padding-right: 25px
+
+tasque-button
+  margin: 10px 10px 10px 20px
+
+hr
+  border: 1px solid colorscheme(gray-300)

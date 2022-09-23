@@ -1,0 +1,33 @@
+<div class="fieldName-wrapper">
+    <div *ngIf="!isChanging" class="fieldName-wrapper">
+        <div 
+            class="fieldName" 
+            [textContent]="field.name" 
+            (input)="field.name = fieldRename($event)" 
+            contenteditable="true"
+            >
+        </div>
+        <tasque-button class="btn icon" [icon]="faPenToSquare" (btnClick)="toogleChanging()"></tasque-button>
+    </div>
+    <div *ngIf="isChanging" class="fieldName-wrapper">
+        <form>
+            <input 
+                type="text" 
+                [(ngModel)]="field.name" 
+                [placeholder]="field.name" 
+                [formControl]="fieldControl"
+                (keydown.enter)="toogleChanging()">
+        </form>
+        <tasque-button class="btn icon" [icon]="faCheck" (btnClick)="toogleChanging()"></tasque-button>
+    </div>
+    <div *ngIf="field.type === 3" class="label-field">
+        <tasque-button class="btn icon" [icon]="faEdit" (btnClick)="toogleLabelChanging()"></tasque-button>
+    </div>
+    <div *ngIf="field.type === 5" class="label-field">
+        <tasque-button class="btn icon" [icon]="faEdit" (btnClick)="toogleDropdownChanging()"></tasque-button>
+    </div>
+    <div *ngIf="field.type === 6" class="label-field">
+        <tasque-button class="btn icon" [icon]="faEdit" (btnClick)="toogleCheckboxChanging()"></tasque-button>
+    </div>
+</div>
+

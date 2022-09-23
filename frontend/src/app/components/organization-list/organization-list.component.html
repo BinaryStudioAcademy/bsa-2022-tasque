@@ -1,0 +1,35 @@
+<div class="organization-list">
+  <div class="organization-top">
+    <div class="organizations-header">
+      <h4>List of Organizations</h4>
+      <tasque-button
+        class="btn stroke"
+        text="Create Organization"
+        (btnClick)="openCreateOrganizationDialog()"
+      ></tasque-button>
+    </div>
+    <div class="organizations-search">
+      <tasque-input
+        [icon]="faMagnifyingGlass"
+        class="search-input"
+        iconPosition="search"
+        type="search"
+        placeholder="Search..."
+        [(ngModel)]="inputSearch"
+        (ngModelChange)="filterItems()"
+      >
+      </tasque-input>
+    </div>
+  </div>
+  <div class="organization-list-cards">
+    <div class="empty-organizations-warning" *ngIf="items.length < 1">
+      <p>You are not a participant of any organization.</p>
+      <p>Create a new one or ask the organization admin to invite you</p>
+    </div>
+    <app-organization-list-item
+      *ngFor="let item of itemsShow"
+      [organization]="item"
+      [currentUser]="currentUser"
+    ></app-organization-list-item>
+  </div>
+</div>

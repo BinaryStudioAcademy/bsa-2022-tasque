@@ -1,0 +1,81 @@
+<div class="backlog-conteiner" cdkDropListGroup>
+  <div class="header">
+    <div class="wrapper title">
+      <div>
+        <p>Scrum in space</p>
+        <h3>Backlog</h3>
+      </div>
+    </div>
+    <div class="wrapper search">
+      <div class="backlog-search">
+        <tasque-input
+          [icon]="faMagnifyingGlass"
+          class="search-input"
+          iconPosition="search"
+          type="search"
+          placeholder="Search..."
+          [(ngModel)]="inputSearch"
+        >
+        </tasque-input>
+      </div>
+      <ul class="navigation">
+        <li (click)="taskSort(1)" [ngClass]="{ 'active': filterIssue == 1 }">All</li>
+        <li (click)="taskSort(2)" [ngClass]="{ 'active': filterIssue == 2 }">Only my issues</li>
+        <li (click)="taskSort(3)" [ngClass]="{ 'active': filterIssue == 3 }">Recently updated</li>
+        <li (click)="getArchiveSprints(currentProject.id)">
+          <tasque-button
+            class="btn icon-right"
+            text="History"
+            [icon]="faLock"
+            [icon]="isShowArchive ? faUnlockKeyhole : faLock"
+          ></tasque-button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="body" cdkDropListGroup cdkScrollable>
+    <div *ngIf="!isShow">
+      <mat-spinner style="margin: 250px auto"> </mat-spinner>
+    </div>
+    <div class="sprint-archive" *ngIf="isShowArchive" [@fadeInOut]>
+      <h4 class="title">Sprints archive</h4>
+      <app-sprint
+        *ngFor="let sprint of archiveSprints; let index = index"
+        [currentSprint]="sprint"
+        [sprints]="sprints"
+        [currentUser]="currentUser"
+        [inputSearch]="inputSearch"
+        (sprintUp)="updateSprintPosition($event, true)"
+        (sprintDown)="updateSprintPosition($event, false)"
+        [filterIssue]="filterIssue"
+        [sprintIndex]="index"
+        [currentProject]="currentProject"
+      ></app-sprint>
+      <div *ngIf="archiveSprints?.length === 0" class="empty-archive-warning">The archive is empty.</div>
+    </div>
+    <div *ngIf="currentProject && currentUser && !isShowArchive" [@fadeInOut]>
+      <app-sprint
+        *ngFor="let sprint of sprints; let index = index"
+        [currentSprint]="sprint"
+        [sprints]="sprints"
+        [currentUser]="currentUser"
+        [inputSearch]="inputSearch"
+        (sprintUp)="updateSprintPosition($event, true)"
+        (sprintDown)="updateSprintPosition($event, false)"
+        [filterIssue]="filterIssue"
+        [sprintIndex]="index"
+        [currentProject]="currentProject"
+      ></app-sprint>
+    </div>
+    <app-backlog-content
+      *ngIf="currentProject && currentUser && !isShowArchive"
+      [project]="currentProject"
+      [currentUser]="currentUser"
+      [filterIssue]="filterIssue"
+      [inputSearch]="inputSearch"
+      [sprints]="sprints"
+      [@fadeInOut]
+    ></app-backlog-content>
+  </div>
+</div>

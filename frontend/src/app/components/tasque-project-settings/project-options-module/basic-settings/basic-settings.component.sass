@@ -1,0 +1,53 @@
+@import 'src/colors.sass'
+
+.settings-template-form
+  margin: 25px 10px 10px 40px 
+
+.settings-label
+  padding: 25px 10px 10px 40px
+  background-color: colorscheme(white-100)
+  h1
+    font-size: 24px
+    font-weight: 700
+
+.settings-subtitle
+  color: colorscheme(gray-500)
+  font-size: 14px
+  font-weight: 400
+
+.select-setting-container
+  display: grid
+  grid-template-columns: 1fr auto 1fr
+  justify-items: center
+  padding: 10px
+
+.select-setting-text
+  line-height: 38px
+  font-size: 16px
+
+.selected-setting
+  display: flex
+  align-items: center
+  margin-right: 55px
+
+.settings-dropdown
+  --label-text-color: colorscheme(black-100)
+  --label-text-hover-color: grey
+
+.setting-name, .settings-dropdown
+  font-size: 24px
+
+.settings-container
+  display: flex
+  flex-direction: column
+  margin-top: 40px
+
+.empty-selected-setting-warning
+  text-align: center
+  padding: 20px
+  margin-top: 40px
+  border: dashed
+  border-color: colorscheme('gray-400')
+  color: colorscheme('dark-grey-100')
+  p
+    font-size: 16px 

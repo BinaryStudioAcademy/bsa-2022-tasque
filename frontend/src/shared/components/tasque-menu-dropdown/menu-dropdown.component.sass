@@ -1,0 +1,83 @@
+@import 'src/colors.sass'
+
+$label-font-size: 18px
+$icon-size: 14px
+$option-font-size: 14px
+$option-height: 35px
+$option-text-color: colorscheme(black-100)
+$label-text-color: colorscheme(white-100)
+$label-text-hover-color: colorscheme(gray-400)
+$options-max-height: 110px
+$options-width: max-content
+$options-translate: none
+$options-transform: none
+$button-gap: 5px
+$options-border: 2px solid colorscheme(gray-300)
+$options-border-radius: 10px
+$dropdown-wrapper-position: relative
+
+.dropdown-wrapper
+  font-family: Nunito
+  font-style: normal
+  color: var(--label-text-color, $label-text-color)
+  display: flex
+  position: var(--dropdown-wrapper-position, $dropdown-wrapper-position)
+  cursor: pointer
+  user-select: none
+  -moz-user-select: none
+  -webkit-user-select: none
+  -ms-user-select: none
+
+.dropdown-button
+  display: flex
+  align-items: center
+  gap: var(--button-gap, $button-gap)
+  &:hover
+    color: var(--label-text-hover-color, $label-text-hover-color)
+
+.dropdown-label
+  font-size: var(--label-font-size, $label-font-size)
+
+.dropdown-icon
+  font-size: var(--icon-size, $icon-size)
+
+.options-container
+  margin-top: 2px
+  min-width: 60px
+  min-height: 30px
+  background-color: colorscheme(white-100)
+  border: var(--options-border, $options-border)
+  border-radius: var(--options-border-radius, $options-border-radius)
+  width: max-content
+  position: absolute
+  top: 100%
+  z-index: 1
+  translate: var(--options-translate, $options-translate)
+  transform: var(--options-transform, $options-transform)
+
+.options
+  max-height: var(--options-max-height, $options-max-height)
+  overflow: auto
+
+:host.button-like
+  background: colorscheme(pink-200)
+  border-radius: 20px
+  padding: 7px 10px 7px 10px
+  --options-translate: -8px 5px
+  &:hover
+    background: colorscheme(pink-300)
+  .dropdown-button
+    &:hover
+      color: inherit
+
+::-webkit-scrollbar
+  width: 3px
+  height: 5px
+
+::-webkit-scrollbar-track
+  background-color: colorscheme(gray-100)
+  border-radius: var(--options-border-radius, $options-border-radius)
+
+::-webkit-scrollbar-thumb
+  background-color: colorscheme(gray-400)
+  border-radius: var(--options-border-radius, $options-border-radius)

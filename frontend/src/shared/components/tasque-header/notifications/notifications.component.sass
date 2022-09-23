@@ -1,0 +1,61 @@
+@import 'src/colors.sass'
+    
+.hide
+    display: none
+
+#notifications
+    position: relative
+
+.notifications-header
+    text-align: center
+
+ul
+    list-style-type: none
+    overflow-y: scroll
+    height: auto
+
+    &::-webkit-scrollbar
+        width: .5rem
+
+    &::-webkit-scrollbar-track
+        border-bottom-right-radius: 5px
+        background: colorscheme('gray-300')
+        border-bottom: solid
+        border-color: colorscheme('gray-300')
+        border-width: .5px
+
+    &::-webkit-scrollbar-thumb
+        background: colorscheme('gray-400')
+        border-bottom-right-radius: 5px
+
+#notifications-wrapper
+    position: absolute
+    top: 40px
+    right: -31px
+
+#notifications-list
+    background-color: colorscheme('gray-200')
+    border-radius: 5px
+    box-shadow: 3px 5px 5px 3px colorscheme('gray-400')
+    color: colorscheme('black-100')
+
+.triangle
+    width: 0
+    height: 0
+    border-style: solid
+    border-width: 0 15px 15px 15px
+    margin-left: 450px
+    border-color: transparent transparent colorscheme('gray-200') transparent
+
+.notification
+    display: block
+    width: 500px
+    height: 60px
+    user-select: none
+
+    &:hover
+        background-color: colorscheme('white-100')
+
+::ng-deep a
+    text-decoration: none
+    color: colorscheme('black-100')

@@ -1,0 +1,189 @@
+<div
+  class="sprint-conteiner"
+  id="{{ currentSprint.id }}"
+  cdkDropList
+  #doneList="cdkDropList"
+  [cdkDropListData]="currentSprint.tasks"
+  (cdkDropListDropped)="drop($event)"
+>
+  <div *ngIf="!isShow">
+    <mat-spinner style="margin: auto"> </mat-spinner>
+  </div>
+  <details
+    [open]="currentSprint.startAt && !currentSprint.isComplete ? true : false"
+    *ngIf="isShow"
+  >
+    <summary>
+      <div class="wrapper">
+        <div class="marker">
+          <p class="open">
+            <fa-icon
+              [icon]="faChevronRight"
+              class="rotatable"
+              id="dropdown-arrow-icon"
+            ></fa-icon>
+          </p>
+          <p class="close">
+            <fa-icon
+              [icon]="faAngleDown"
+              class="rotatable"
+              id="dropdown-arrow-icon"
+            ></fa-icon>
+          </p>
+        </div>
+        <h5 class="sprint-name">{{ currentSprint.name }}</h5>
+        <div class="sprint-date">
+          <p class="startAt">
+            {{ currentSprint.startAt | date: 'mediumDate' }}
+          </p>
+          <p *ngIf="currentSprint.startAt">-</p>
+          <p *ngIf="!currentSprint.startAt && currentSprint.endAt">deadline:</p>
+          <p class="endAt">{{ currentSprint.endAt | date: 'mediumDate' }}</p>
+        </div>
+        <div class="issues">
+          <p>issues</p>
+          <p class="issues-count">
+            {{ tasks && tasks.length ? tasks.length : 0 }}
+          </p>
+        </div>
+        <div class="estimate">
+          <p>estimate</p>
+          <p class="estimate-count">{{ estimate ? estimate : 0 }}</p>
+        </div>
+        <div class="wrapper button">
+          <tasque-button
+            *ngIf="
+              !currentSprint.startAt &&
+              !currentSprint.isComplete &&
+              currentSprint.tasks &&
+              (isCurrentUserAdmin || isCurrentUserProjectAdmin)
+            "
+            [class]="
+              sprintIndex != 0 || currentSprint.tasks.length == 0
+                ? 'btn mini voilet full disabled'
+                : 'btn mini voilet full'
+            "
+            text="Start sprint"
+            class="btn mini voilet full start-sprint"
+            (btnClick)="startSprint()"
+          ></tasque-button>
+          <app-complete-sprint
+            *ngIf="
+              currentSprint.startAt &&
+              !currentSprint.isComplete &&
+              (isCurrentUserAdmin || isCurrentUserProjectAdmin)
+            "
+            [sprint]="currentSprint"
+            class="btn complete-sprint"
+            completeBthClass="btn mini violet-fill full"
+            completeBtnText="Complete sprint"
+          ></app-complete-sprint>
+          <div
+            class="dropdown-button"
+            *ngIf="
+              (isCurrentUserAdmin || isCurrentUserProjectAdmin) &&
+              !currentSprint.isComplete
+            "
+          >
+            <div class="dropdown" style="float: right">
+              <tasque-button
+                class="btn dropbtn"
+                (btnClick)="switchDropdown()"
+                [icon]="faEllipsisV"
+              ></tasque-button>
+              <div
+                class="dropdown-content"
+                [ngClass]="dropdownState"
+                (clickOutside)="dropdownState = 'closed'"
+                exclude=".dropbtn"
+              >
+                <a
+                  *ngIf="
+                    sprintIndex != 0 &&
+                    (sprintIndex != 1 || !sprints[0].startAt)
+                  "
+                  (click)="$sprintUp(currentSprint)"
+                >
+                  <tasque-button
+                    text="Move sprint up"
+                    class="btn black"
+                  ></tasque-button>
+                </a>
+                <a
+                  *ngIf="sprintIndex != 0 || !currentSprint.startAt"
+                  (click)="$sprintDown(currentSprint)"
+                >
+                  <tasque-button
+                    text="Move sprint down"
+                    class="btn black"
+                  ></tasque-button>
+                </a>
+                <a (click)="editSprint()">
+                  <tasque-button
+                    text="Edit Sprint"
+                    class="btn black"
+                  ></tasque-button>
+                </a>
+                <a (click)="deleteSprint(currentSprint)">
+                  <tasque-button
+                    text="Delete sprint"
+                    class="btn black"
+                  ></tasque-button>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="completed" *ngIf="currentSprint.isComplete">
+            Completed
+          </div>
+        </div>
+      </div>
+    </summary>
+    <div class="sprint-header">
+      <div class="select-user">
+        <tasque-team-select
+          [avatars]="sprintUsers"
+          (selectedUser)="filterUserTasks($event)"
+          *ngIf="sprintUsersCircle && sprintUsers.length > 0"
+        ></tasque-team-select>
+      </div>
+    </div>
+    <div class="sprint-body">
+      <div class="empty-tasks row pale" *ngIf="tasks && tasks.length === 0">
+        <label class="text-center">Plan a sprint by dragging issue here</label>
+      </div>
+      <div>
+        <app-issue
+          cdkDrag
+          [cdkDragDisabled]="!isDraggable"
+          (isChanging)="toogleIsDragable($event)"
+          *ngFor="let task of tasks"
+          [issue]="task"
+          [taskStates]="taskState"
+          [taskTypes]="taskType"
+          [currentUser]="currentUser"
+          [currentSprint]="currentSprint"
+          (estimate)="estimateCount()"
+          [currentProject]="currentProject"
+          (isCurrentUserAdmin)="(isCurrentUserAdmin)"
+          [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
+          (isDelete)="deleteIssue($event)"
+        ></app-issue>
+      </div>
+    </div>
+    <div class="sprint-footer">
+      <div class="create-issue">
+        <tasque-task-creation
+          *ngIf="!currentSprint.isComplete"
+          btnText="+ Create issues"
+          btnClass="btn mini voilet"
+          [sidebarName]="createIssueSidebarName"
+          [organizationId]="currentProject.organizationId"
+          [currentProject]="currentProject"
+          [sprintId]="currentSprint.id"
+          [currentTasks]="tasks"
+        ></tasque-task-creation>
+      </div>
+    </div>
+  </details>
+</div>

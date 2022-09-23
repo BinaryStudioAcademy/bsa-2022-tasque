@@ -1,0 +1,108 @@
+<tasque-sidebar
+  [name]="sidebarName"
+  [btnText]="btnText"
+  [btnClass]="btnClass"
+  (sidebarToggle)="toogleModal($event)"
+>
+  <div class="task-creation-conteiner" *ngIf="isOpen">
+    <div class="task-creation-header">
+      <h4 class="task-creation-header-title" style="color: black">Create issue</h4>
+    </div>
+    <div class="task-creation-body">
+      <div class="task-creation-body-wrapper">
+        <div class="body-title">
+          <h4>Basic info</h4>
+        </div>
+        <hr />
+        <form [formGroup]="taskCreateForm">
+          <div class="input-wrapper" *ngIf="isCurrentUserAdmin">
+            <label class="label">Project</label>
+            <tasque-dropdown
+              class="input title"
+              [options]="projects"
+              [formControl]="projectControl"
+              [errorMessage]="projectErrorMessage"
+              [invalid]="showError"
+              (onSelect)="setSelectedProjectId($event, true)"
+            >
+            </tasque-dropdown>
+          </div>
+          <div class="input-wrapper">
+            <label class="label">Issue type</label>
+            <tasque-dropdown
+              [options]="issueTypes"
+              [formControl]="issueTypeControl"
+              [errorMessage]="issueTypeErrorMessage"
+              [invalid]="showError"
+              (onSelect)="setSelectedTaskType($event)"
+            >
+            </tasque-dropdown>
+          </div>
+          <div class="input-wrapper">
+            <label class="label">Priority</label>
+            <tasque-dropdown
+              [options]="projectPriorities"
+              [formControl]="priorityControl"
+              (onSelect)="setPriority($event)"
+            >
+            </tasque-dropdown>
+          </div>
+          <div class="input-wrapper">
+            <label class="label">State</label>
+            <tasque-dropdown
+              [options]="taskStateOptions"
+              [formControl]="stateControl"
+              (onSelect)="setSelectedTaskState($event)"
+            >
+            </tasque-dropdown>
+          </div>
+          <div class="input-wrapper">
+            <label class="label">Title</label>
+            <tasque-input
+              class="input title"
+              [formControl]="summaryControl"
+              [errorMessage]="summaryErrorMessage"
+              [invalid]="showError"
+            >
+            </tasque-input>
+          </div>
+          <div class="editor-wrapper">
+            <label class="label">Description</label>
+            <angular-editor
+              class="editor-conteiner"
+              [(ngModel)]="editorContent"
+              [config]="editorConfig"
+              [formControl]="descriptionControl"
+            >
+            </angular-editor>
+          </div>
+          <span class="error" *ngIf="!descriptionControl.valid">{{ editorErrorMessage }}</span>
+          <div class="body-title" *ngIf="customFields !== undefined && customFields.length > 0">
+            <div class="body-title">
+              <h4>Additional fields</h4>
+            </div>
+            <hr />
+          </div>
+          <div *ngFor="let field of customFields" class="custom-field">
+            <app-task-creation-custom-fields
+              [customField]="field"
+              [projectUsers]="projectUsers"
+              (taskCustomField)="getCustomField($event)"
+            >
+            </app-task-creation-custom-fields>
+          </div>
+          <div class="button-wrapper">
+            <tasque-button class="btn stroke violet-stroke disabled" text="+ Add issues"> </tasque-button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="task-creation-footer">
+      <div class="task-creation-footer-button">
+        <tasque-button type="submit" class="btn stroke" text="Clear form" (click)="clearForm()">
+        </tasque-button>
+        <tasque-button type="submit" class="btn fill" text="Create" (click)="submitForm()"> </tasque-button>
+      </div>
+    </div>
+  </div>
+</tasque-sidebar>

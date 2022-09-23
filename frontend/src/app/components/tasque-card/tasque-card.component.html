@@ -1,0 +1,73 @@
+<div class="card" *ngIf="!isDeleted">
+  <div class="card-header">
+    <div class="task-status">
+      <img *ngIf="isDone" class="is-done" src="assets/success_icon.svg" />
+      <span [style.background-color]="taskInfo.type?.color">{{
+        taskInfo.type?.name
+      }}</span>
+      <span [style.background-color]="taskInfo.priority?.color">{{
+        taskInfo.priority?.name
+      }}</span>
+    </div>
+    <div class="card-tools">
+      <tasque-task-editing
+        style="margin: 0 15px 0 0"
+        btnText=""
+        btnClass="btn icon gray-transparent"
+        [btnIcon]="editIcon"
+        [task]="taskInfo"
+        [currentSprint]="currentSprint"
+        (isChanging)="isTaskChanging($event)"
+        [isCurrentUserAdmin]="isCurrentUserAdmin"
+        [isCurrentUserProjectAdmin]="isCurrentUserProjectAdmin"
+      ></tasque-task-editing>
+      <tasque-menu-dropdown class="card-settings" [left]="-90" style="margin: 2px 0 0 0">
+        <img src="assets/board/column_menu.svg" dropdown-button />
+        <tasque-option option (click)="notImplementetNotification()"
+          >Copy issue link</tasque-option
+        >
+        <tasque-option option (click)="notImplementetNotification()"
+          >Move up</tasque-option
+        >
+        <tasque-option option (click)="notImplementetNotification()"
+          >Move down</tasque-option
+        >
+        <tasque-option option (click)="deleteTask()">Delete issue</tasque-option>
+      </tasque-menu-dropdown>
+    </div>
+  </div>
+  <div *ngIf="taskInfo.attachments.length > 0"></div>
+  <div>
+    <div class="task-content">
+      <span>
+        {{ taskInfo.summary }}
+      </span>
+    </div>
+    <div class="task-status-container">
+      <div class="task-status" *ngFor="let item of taskInfo.customLabels">
+        <span [style.background-color]="item?.color">{{ item.name }}</span>
+      </div>
+    </div>
+    <div class="task-info" [style.justify-content]="taskInfoStyle">
+      <div class="left-info" *ngIf="taskInfo.estimate">
+        <span>{{ taskInfo.estimate }}</span>
+      </div>
+      <div class="right-info">
+        <span>{{ taskInfo.key }}</span>
+        <tasque-avatar
+          *ngIf="taskInfo.assignees && taskInfo.assignees.length > 0"
+          [user]="taskInfo.assignees[0]"
+          alt="user's avatar"
+          [diameter_px]="30"
+        ></tasque-avatar>
+        <span
+          *ngIf="
+            taskInfo.assignees !== undefined && taskInfo.assignees.length > 1
+          "
+          class="user-overflow"
+          >+{{ taskInfo.assignees.length - 1 }}</span
+        >
+      </div>
+    </div>
+  </div>
+</div>

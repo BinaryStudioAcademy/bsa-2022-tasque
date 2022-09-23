@@ -1,0 +1,22 @@
+<div class="input-container">
+  <label *ngIf="inputLabel">{{ inputLabel }}</label>
+  <div class="input-wrp">
+    <div *ngIf="inputIcon && iconPos" [ngClass]="'icon ' + iconClass" (click)="emitClick($event)">
+      <fa-icon [icon]="inputIcon" size="lg"></fa-icon>
+    </div>
+    <input
+      [(ngModel)]="inputValue"
+      (ngModelChange)="onChange($event)"
+      (ngModelChange)="emitValueChange()"
+      (blur)="onTouched($event)"
+      [type]="inputType"
+      [placeholder]="inputPlaceholder"
+      [class]="inputClass"
+      [ngClass]="{
+        'error': inputValueIsError && inputErrorMessage
+      }"
+      [readonly]="readonly"
+    />
+  </div>
+  <span class="error" *ngIf="inputValueIsError">{{ inputErrorMessage }}</span>
+</div>

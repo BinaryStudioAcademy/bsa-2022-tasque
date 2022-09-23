@@ -1,0 +1,136 @@
+@import 'src/colors.sass'
+
+.container
+  display: flex
+  width: 265px
+  height: 50px
+  box-sizing: border-box
+  font-family: 'Nunito', sans-serif
+  font-style: normal
+  &.mini-view
+    width: 100%
+    margin-right: 50px
+    .user-avatar
+      height: 40px
+      width: 40px
+      img
+        height: 40px
+        width: 40px
+    .user-avatar-img
+      height: 40px
+      width: 40px
+    .avatar-wrapper
+      height: 40px
+      width: 40px
+
+.add-users
+  height: 100%
+  margin-left: 15px
+
+.user-avatar
+  aspect-ratio: 1 / 1
+  position: relative
+  cursor: pointer
+
+.users
+  display: flex
+  max-width: 207px
+
+.user-avatar-img
+  font-weight: 700
+  height: 100%
+  border-radius: 100%
+  aspect-ratio: 1 / 1
+  object-fit: cover
+  position: relative
+  display: flex
+  align-items: center
+  text-align: center
+  justify-content: center
+  color: colorscheme(white-100)
+  opacity: 1
+  &:hover
+    opacity: 0.9
+
+.user-overflow
+  height: 46px
+  border-radius: 100%
+  aspect-ratio: 1 / 1
+  object-fit: cover
+  position: absolute
+  top: 2px
+  left: 0
+  background: rgba(29,29,29,0.8)
+  color: colorscheme(white-100)
+  display: flex
+  align-items: center
+  text-align: center
+  justify-content: center
+  font-weight: 700
+  z-index: 1
+  &:hover
+    opacity: 0.8
+
+.pop-up
+  box-sizing: border-box
+  font-family: 'Nunito', sans-serif
+  font-style: normal
+  position: absolute
+  margin-top: 5px
+  z-index: 3
+  margin-left: 163px
+  box-shadow: 0 8px 16px -4px #091e4240, 0 0 0 1px #091e4214
+
+.user-list-container
+  width: 260px
+  background-color: colorscheme(white-100)
+
+.container-title
+  font-weight: 400
+  font-size: 14px
+  color: colorscheme(gray-400)
+  align-items: center
+  text-align: center
+  span
+    display: inline-block
+    vertical-align: middle
+
+.pop-up-close
+  float: right
+  cursor: pointer
+
+.divider
+  margin-left: 10px
+  margin-right: 10px
+
+.search-container
+  margin: 5px
+
+.members-container
+  margin: 0
+  padding: 0 5px 5px
+
+.avatars-container
+  display: flex
+  gap: 7px
+  flex-wrap: wrap
+  justify-content: flex-start
+  .user-avatar
+    height: 50px
+
+.mini-view
+  .user-overflow
+    margin-left: 50px
+    height: 35px
+    z-index: 0
+  &.pop-up
+    margin-left: -150px
+
+.selected
+  border-radius: 50%
+  border: 3px solid colorscheme(pink-300)
+  z-index: 2
+
+.transparent-border
+  border-radius: 50%
+  border: 2px solid #ffffff00

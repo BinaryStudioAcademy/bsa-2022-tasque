@@ -1,0 +1,184 @@
+@import 'src/colors.sass'
+
+.task-creation-conteiner
+    height: 100vh
+    min-height: 100%
+    width: 100%
+    min-width: 100%
+    display: flex
+    flex-direction: column
+    background: colorscheme(gray-100)
+    font-family: 'Nunito'
+    overflow: hidden auto
+
+.task-creation-header
+    height: 145px
+    background: colorscheme(white-100)
+    display: flex
+    align-items: center
+    justify-content: center
+
+.task-creation-footer
+    min-height: 100px
+    background: colorscheme(white-100)
+    display: flex
+    align-items: center
+    justify-content: center
+
+.task-creation-header
+    padding-bottom: 15px
+    justify-content: space-between
+    align-items: center
+
+.header-wrapper
+    p,h5
+        margin: 0px
+
+.task-creation-header-title
+    margin: 0 0 0 15px
+
+.task-creation-header-button
+    margin: 0 15px 0 0
+    display: flex
+    align-items: center
+    justify-content: space-between
+    >.btn
+        margin: 0 10px 0 10px
+
+.task-creation-footer-button
+    padding: 0 51px
+    margin-left: auto
+    display: flex
+    >.btn
+        margin-left: 15px
+
+.task-creation-body
+    max-height: 100%
+    flex-grow: 3
+    overflow: hidden auto
+
+::-webkit-scrollbar
+    background-color: colorscheme(gray-100)
+
+::-webkit-scrollbar-thumb
+    background-color: colorscheme(blue-100)
+
+.task-creation-body-wrapper
+    padding: 0px 50px
+
+.input-wrapper
+    width: 100%
+    margin: 15px 0 15px 0
+    display: flex
+    align-items: center
+    label
+        margin-right: 16px !important
+        width: 100px !important
+        min-width: 100px
+        font-weight: 400
+        font-size: 14px !important
+        line-height: 19px !important
+        color: colorscheme(black-100)
+    .title
+        width: 300px
+
+tasque-input
+    ::ng-deep
+        .input-container
+            display: grid
+            grid-template-columns: min-content
+        .input-wrp
+            width: 100%
+            grid-column: 2
+        .input
+            width: 100% !important
+            height: 50px
+            background: colorscheme(gray-300)
+            border-radius: 15px !important
+        label
+            grid-column: 1
+            margin-right: 16px !important
+            width: 100px !important
+            font-weight: 400
+            font-size: 14px !important
+            line-height: 19px !important
+            margin: auto
+            color: colorscheme(black-100)
+        .error
+            grid-column: 2
+            margin: auto
+
+tasque-dropdown
+    ::ng-deep
+        .dropdown-warapper
+            display: grid
+            grid-template-columns: min-content
+            .dropdown-button
+                width: 172px
+                background: colorscheme(gray-300)
+                grid-column: 2
+            .error
+                grid-column: 2
+                margin: auto
+            .dropdown-label
+                padding-right: 16px
+                width: 100px
+                font-weight: 400
+                font-size: 14px
+                line-height: 19px
+                grid-column: 1
+                margin: auto
+
+.editor-wrapper
+    display: flex
+    flex-direction: row
+    align-items: center
+    padding: 15px 0 0px 0px
+    label
+        margin-right: 16px !important
+        width: 100px !important
+        min-width: 100px
+        font-weight: 400
+        font-size: 14px !important
+        line-height: 19px !important
+        color: colorscheme(black-100)
+    .editor-conteiner
+        flex: 1 0 33.333%
+        min-width: 200px
+        color: colorscheme(black-100)
+
+angular-editor
+        width: 100% !important
+
+angular-editor
+    ::ng-deep
+        .angular-editor-textarea
+            margin-top: 0px !important
+            border-top: none !important
+
+.button-wrapper
+    padding: 20px 0px
+
+.description
+    width: 100%
+    ::ng-deep .fr-second-toolbar
+        ::ng-deep a
+            display: none
+
+.error
+    color: colorscheme(pink-300)
+    display: block
+    text-align: center
+
+.custom-field
+    color: colorscheme(black-100)
+    margin: 15px 0 15px 0
+
+.body-title
+    margin: 15px 10px 0px 0
+    color: colorscheme(black-100)
+
+app-task-creation-custom-fields
+    display: flex
+    flex-direction: row
+    align-items: center

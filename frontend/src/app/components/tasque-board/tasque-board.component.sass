@@ -1,0 +1,191 @@
+@import 'src/colors.sass'
+
+.board
+    font-family: 'Nunito'
+    font-style: normal
+    height: 100%
+
+.board-info
+    background-color: colorscheme(white-100)
+    padding: 25px 10px 10px 40px
+    display: flex
+    justify-content: space-between
+
+.board-panel
+    background-color: colorscheme(gray-100)
+    padding: 44px 10px 0px 37px
+    height: calc( 100% - 97px )
+
+.board-title
+    display: flex
+    flex-direction: column
+
+.project-name,.project-route
+    color: colorscheme(gray-500)
+    font-size: 14px
+    font-weight: 400
+
+.project-route
+    text-decoration: none
+    &:hover
+        cursor: pointer
+        color: colorscheme(blue-200)
+
+.board-name
+    font-size: 24px
+    padding-top: 10px
+    font-weight: 700
+
+.board-tools
+    display: flex
+    align-items: center
+    padding-bottom: 10px
+
+.board-tools > *
+    margin-right: 15px
+    cursor: pointer
+
+.task-menu
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding-bottom: 20px
+
+.project-team
+    display: flex
+    align-items: center
+
+.board-columns
+    padding-top: 10px
+    height: calc(100% - 100px)
+    display: grid
+    grid-auto-flow: column
+    grid-auto-columns: 288px
+    grid-gap: 30px
+    overflow: scroll hidden
+
+.card-container
+    display: flex
+    width: 100%
+    flex-direction: column
+
+.column-title
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    align-items: center
+
+.column
+    display: flex
+    flex-direction: column
+    margin-top: 11px
+
+.column-border
+    width: 288px
+    color: colorscheme(gray-300)
+
+.filter
+    cursor: pointer
+
+.column-name
+    color: colorscheme(black-100)
+    font-size: 14px
+    font-weight: 600
+
+.column-element-count
+    color: colorscheme(gray-500)
+    font-size: 12px
+    margin: 2px 0 0 2px
+
+.column-tools > span
+    padding-right: 10px
+    color: colorscheme(violet-200)
+    cursor: pointer
+
+.search-input-container
+    width: 250px
+
+.search-input
+    background-color: colorscheme(gray-300)
+
+.create-column
+    border-bottom: 1px solid colorscheme(gray-300)
+    & > span
+        color: colorscheme(gray-500)
+        cursor: pointer
+    form
+        display: flex
+        align-items: center
+        .is-task-complete
+            padding-left: 10px
+
+::-webkit-scrollbar
+    width: 5px
+    height: 5px
+
+::-webkit-scrollbar-track
+    background-color: rgba(224, 196, 196, 0.1)
+    border-radius: 10px
+
+::-webkit-scrollbar-thumb
+    background-color: #8b9499
+    border-radius: 10px
+
+.board-list
+    display: flex
+    justify-content: center
+    background: colorscheme(gray-100)
+
+.board-header
+    display: flex
+    flex-direction: column
+
+.cdk-drag-placeholder
+    opacity: 0
+
+.cdk-drag-animating
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1)
+
+.example-box:last-child
+    border: none
+
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder)
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1)
+
+.column
+    cursor: move
+    background: colorscheme(white-100)
+
+.no-tasks
+    border: dashed
+    display: flex
+    flex-direction: column
+    border-color: colorscheme('gray-400')
+    margin: 10px 0 10px 0
+    justify-content: space-around
+    &.pale
+        color: colorscheme('dark-grey-100')
+    &.row
+        display: inline-flex
+        align-items: center
+        height: 75px
+        width: 100%
+
+.no-tasks-actions
+    display: flex
+    a
+        color: colorscheme(blue-200)
+        margin: 0 5px 0 5px
+        &:hover
+            cursor: pointer
+
+.team-container
+    margin-left: 25px
+
+.column-with-tasks
+    overflow: hidden auto
+    padding-right: 10px
+
+.disable-click
+    pointer-events: none
+    cursor: default

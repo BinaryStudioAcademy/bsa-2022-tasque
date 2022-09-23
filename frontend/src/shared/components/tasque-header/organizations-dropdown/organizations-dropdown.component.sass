@@ -1,0 +1,32 @@
+@import 'src/colors.sass'
+    
+.dropdown-container
+  display: flex
+  align-items: center
+  cursor: default
+    
+.organization-label
+  font-size: 18px
+  color: colorscheme(gray-400)
+  padding-right: 10px
+
+tasque-menu-dropdown
+  cursor: pointer
+
+.org-name
+  max-width: 200px
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+
+.org-option
+  max-width: 200px
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+
+$layout-breakpoint-small: 1180px
+
+@media (max-width: $layout-breakpoint-small)
+  tasque-menu-dropdown
+    --label-font-size: 14px

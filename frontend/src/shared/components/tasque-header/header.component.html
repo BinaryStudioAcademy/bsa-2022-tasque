@@ -1,0 +1,78 @@
+<header>
+  <div class="navigation-panel">
+    <a routerLink="/organizations" *ngIf="hasLogo"
+      ><tasque-logo class="logo" [isLight]="true"></tasque-logo
+    ></a>
+    <span routerLink="/your-work" class="button">Your work</span>
+    <tasque-project-dropdown
+      class="button"
+      (isChanged)="checkUrl()"
+      [organizationId]="currentOrganizationId"
+    ></tasque-project-dropdown>
+    <span class="button">Calendar</span>
+    <tasque-menu-dropdown
+      class="button-like"
+      [toggleDropdownOnButtonClick]="false"
+      separator="|"
+    >
+      <tasque-task-creation
+        dropdown-button
+        btnText="Create task"
+        btnClass="btn white"
+        [organizationId]="currentOrganizationId"
+        [currentProject]="currentProject"
+        sidebarName="createTaskSidebar"
+      ></tasque-task-creation>
+      <tasque-option
+        *ngIf="isCurrentUserAdmin"
+        option
+        (click)="openCreateProjectDialog()"
+      >
+        <p>Create Project</p>
+      </tasque-option>
+      <tasque-option option (click)="openCreateOrganizationDialog()">
+        <p>Create Organization</p>
+      </tasque-option>
+    </tasque-menu-dropdown>
+  </div>
+  <div class="center-panel">
+    <tasque-organizations-dropdown
+      class="button"
+      (organizationChanged)="changeOrganizationId($event)"
+    ></tasque-organizations-dropdown>
+  </div>
+  <div class="user-panel">
+    <div class="search-input">
+      <tasque-input
+        class="search-input header-extension"
+        type="search"
+        placeholder="Search..."
+        [icon]="searchIcon"
+        iconPosition="search"
+      >
+      </tasque-input>
+    </div>
+    <tasque-notifications
+      [notifications]="notifications"
+      (deleteNotification)="onDeleteNotification($event)"
+    ></tasque-notifications>
+    <tasque-menu-dropdown
+      class="profile-dropdown"
+      [upArrowIcon]="upArrowIcon"
+      [downArrowIcon]="downArrowIcon"
+    >
+      <tasque-avatar
+        dropdown-button
+        *ngIf="currentUser"
+        [alt]="currentUser.name"
+        [user]="currentUser"
+        [diameter_px]="45"
+        [isShowMatTooltip]="false"
+      ></tasque-avatar>
+      <tasque-option option (click)="profileSettingsClick()">
+        Profile settings
+      </tasque-option>
+      <tasque-option option (click)="logoutClick()"> Log out </tasque-option>
+    </tasque-menu-dropdown>
+  </div>
+</header>

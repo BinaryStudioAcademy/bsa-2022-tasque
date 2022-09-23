@@ -1,0 +1,24 @@
+<div class="left-sidebar">
+  <div class="content">
+    <div class="back">
+      <fa-icon [icon]="backIcon" size="lg" (click)="backToProject()"></fa-icon>
+      <span (click)="backToProject()">Back to project</span>
+    </div>
+    <div class="wiki-title">
+      <div class="project-info">
+        <div class="project-color" [ngStyle]="{ 'background-color': rColor}"></div>
+        <span>Project Wiki</span>
+      </div>
+      <div class="create-page" (clickOutside)="showCreate = false">
+        <span class="hint">Create a page</span>
+        <fa-icon [icon]="plusIcon" size="lg" (click)="showCreate = true;"></fa-icon>
+        <tasque-create-dropdown *ngIf="showCreate" (nameItemEvent)="createBasePage($event)"></tasque-create-dropdown>
+      </div>
+    </div>
+    <div class="pages" >
+      <div *ngFor="let page of pageList">
+        <app-wiki-title [nestedLevel]="0" [childWikiPage]="page"></app-wiki-title>
+      </div>
+    </div>
+  </div>
+</div>

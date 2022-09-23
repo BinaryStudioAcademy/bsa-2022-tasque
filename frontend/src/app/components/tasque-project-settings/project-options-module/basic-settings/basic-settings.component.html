@@ -1,0 +1,49 @@
+<div class="settings-label">
+  <span class="settings-subtitle">Settings</span>
+  <h1>Basic settings</h1>
+</div>
+<div class="settings-template-form">
+
+  <div class="select-setting-container">
+    <span class="select-setting-text">Select from the list the section you want to configure: </span>
+    <tasque-menu-dropdown class="settings-dropdown">
+      <span dropdown-button> {{ selectedSetting ?? 'Select setting' }} </span>
+      <tasque-option option (click)="selectSetting('Priority')"> Task Priority </tasque-option>
+      <tasque-option option (click)="selectSetting('Type')"> Task Type </tasque-option>
+      <tasque-option option (click)="selectSetting('State')"> Task State </tasque-option>
+    </tasque-menu-dropdown>
+  </div>
+
+  <hr />
+
+  <div class="settings-container" *ngIf="selectedSetting" [ngSwitch]="selectedSetting">
+    <ng-container *ngSwitchCase="'Priority'">
+      <app-basic-setting-field
+        [project]="project"
+        type="Priority"
+        [projectSettings]="priorities"
+      ></app-basic-setting-field>
+    </ng-container>
+    <ng-container *ngSwitchCase="'Type'">
+      <app-basic-setting-field
+        [project]="project"
+        [projectSettings]="types"
+        type="Type"
+      ></app-basic-setting-field>
+    </ng-container>
+    <ng-container *ngSwitchCase="'State'">
+      <app-basic-setting-field
+        [project]="project"
+        [projectSettings]="states"
+        type="State"
+      ></app-basic-setting-field>
+    </ng-container>
+    <ng-container *ngSwitchCase="'Project'">
+      <app-basic-setting-field></app-basic-setting-field>
+    </ng-container>
+  </div>
+
+  <div class="empty-selected-setting-warning" *ngIf="!selectedSetting">
+    <p>You have not chosen any setting yet.</p>
+  </div>
+</div>

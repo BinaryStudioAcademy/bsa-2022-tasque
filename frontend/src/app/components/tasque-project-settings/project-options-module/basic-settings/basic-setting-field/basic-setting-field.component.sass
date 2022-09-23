@@ -1,0 +1,47 @@
+@import 'src/colors.sass'
+  
+.container
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  gap: 5px
+
+.add-setting
+  width: 400px
+  display: flex
+  flex-direction: row
+  margin-bottom: 10px
+  .add-setting-actions
+    display: flex
+    margin-left: auto
+    gap: 10px
+
+.edit-input ::ng-deep
+  .text-input
+    width: 250px
+
+.settings-container
+  display: flex
+  flex-direction: column
+  width: 400px
+  gap: 10px
+  margin-bottom: 5px
+
+.create-setting
+  display: flex
+  flex-direction: row
+
+.actions
+  display: flex
+  flex-direction: row
+  gap: 15px
+
+.empty-settings-warning
+  text-align: center
+  padding: 20px
+  border: dashed
+  border-color: colorscheme('gray-400')
+  color: colorscheme('dark-grey-100')
+  p
+    font-size: 16px 

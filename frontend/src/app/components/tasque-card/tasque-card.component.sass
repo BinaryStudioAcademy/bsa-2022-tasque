@@ -1,0 +1,100 @@
+@import 'src/colors.sass'
+
+.card
+    height: auto
+    width: 100%
+    padding: 17px
+    font-family: 'Nunito'
+    font-style: normal
+    font-weight: 400
+    font-size: 14px
+    line-height: 19px
+    color: colorscheme(black-100)
+    background: colorscheme(white-100)
+    border-radius: 7px
+
+.card-tools
+    display: flex
+    flex-direction: row
+    justify-content: center
+    align-content: center
+
+.task-content
+    display: flex
+    justify-content: space-between
+    margin: 10px 0 10px 0
+
+.card-header
+    display: flex
+    justify-content: space-between
+    align-items: center
+    > img
+        margin: 0 0 0 10px
+        &:hover
+            cursor: pointer
+
+.task-status
+    font-weight: 600
+    font-size: 14px
+    line-height: 130%
+    display: flex
+    flex-direction: row
+    align-items: center
+    & span
+        color: colorscheme(gray-100)
+        cursor: pointer
+        margin-right: 5px
+        width: auto
+        height: 24px
+        padding: 3px 12px
+        border-radius: 20px
+
+.task-info
+    margin-top: 19px
+    font-size: 12px
+    line-height: 16px
+    display: flex
+    & span
+        opacity: 0.7
+        margin-right: 5px
+    & > *
+        cursor: pointer
+
+.left-info
+    background-color: colorscheme(pink-200)
+    display: flex
+    width: 30px
+    height: 30px
+    border-radius: 100%
+    justify-content: center
+    align-items: center
+    & span
+        font-size: 14px
+        font-weight: normal
+        color: #ffffff
+        margin-left: 5px
+
+.right-info
+    display: flex
+    align-items: center
+    justify-content: space-around
+        
+.attach
+    max-width: 100%
+    height: auto
+    margin: 10px 0 0 0
+
+.task-status-container
+    display: flex
+    flex-direction: row
+
+.user-overflow
+    margin: 0 0 0 10px
+
+.is-done
+    width: 25px
+    margin: 0 10px 0 0
+
+.card-settings
+    left: -80px
+

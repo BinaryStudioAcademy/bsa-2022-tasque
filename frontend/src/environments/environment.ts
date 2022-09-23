@@ -4,6 +4,9 @@
 
 export const environment = {
   production: false,
+  apiUrl: 'http://localhost:5000',
+  notificationsUrl: 'http://localhost:5500/notifications/',
+  signalR_hub: 'https://localhost:6001/notifications'
 };
 
 /*

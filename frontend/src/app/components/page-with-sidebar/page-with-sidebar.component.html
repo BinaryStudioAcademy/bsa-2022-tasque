@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="header">
+    <tasque-header [hasLogo]="true" (isChanged)="changedUrl($event)"></tasque-header>
+  </div>
+  <div class="main">
+    <div class="menu">
+      <app-left-sidebar [isChanged]="checkRoutes"></app-left-sidebar>
+    </div>
+    <div class="content">
+      <router-outlet (activate)="changedUrl($event)"></router-outlet>
+    </div>
+  </div>
+</div>

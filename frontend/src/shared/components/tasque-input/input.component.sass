@@ -1,0 +1,168 @@
+@import 'src/colors.sass'
+
+.input-container
+  font-family: 'Nunito'
+  font-style: normal
+  font-weight: 400
+  font-size: 14px
+  color: colorscheme(black-100)
+
+.input
+  border-radius: 10px
+  width: 100%
+  height: 45px
+  border: none
+  line-height: 19px
+  display: flex
+  align-items: center
+  padding: 0 15px
+  background: colorscheme(gray-200)
+  &:focus
+    outline: none
+    box-shadow: 0 0 0 2px colorscheme(violet-200)
+    caret-color: colorscheme(violet-200)
+
+.input[readonly]
+  color: colorscheme(gray-500)
+  cursor: not-allowed
+  &:focus
+    outline: none
+    border: none
+
+.search-input
+  border-radius: 50px
+  width: 100%
+  height: 46px
+  border: none
+  line-height: 16px
+  display: flex
+  align-items: center
+  padding: 0 7px
+  background: colorscheme(gray-200)
+  &:focus
+    outline: none
+    box-shadow: 0 0 0 2px colorscheme(violet-200)
+    caret-color: colorscheme(violet-200)
+
+.mini-search-input
+  border-radius: 50px
+  width: 117px
+  height: 35px
+  line-height: 19px
+  padding: 0 5px
+  border: none
+  display: flex
+  align-items: center
+  background: colorscheme(gray-100)
+  color: colorscheme(gray-500)
+
+.input-container label
+  position: relative
+  height: 17px
+  left: 0px
+  top: 0px
+  font-size: 12px
+  line-height: 16px
+  display: flex
+  align-items: center
+
+.error
+  color: colorscheme(pink-300)
+
+::placeholder
+  color: colorscheme(gray-400)
+
+*
+  box-sizing: border-box
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration
+  display: none
+
+.input-wrp
+  position: relative
+  border-radius: 50px
+
+.icon
+  position: absolute
+  color: colorscheme(gray-500)
+  top: 50%
+  &.right
+    right: 5px
+    transform: translate(-50%, -50%)
+    & + .input
+      padding-right: 45px
+  &.left
+    left: 10px
+    transform: translate(0, -50%)
+    & + .input
+      padding-left: 40px
+  &.search
+    left: 23px
+    color: colorscheme(gray-400)
+    transform: translate(0, -50%)
+    & + .search-input
+      padding-left: 45px
+  &.mini-search
+    left: 15px
+    color: colorscheme(gray-500)
+    transform: translate(0, -50%)
+    & + .mini-search-input
+      padding-left: 38px
+  &.btn:hover
+    color: colorscheme(gray-400)
+    cursor: pointer
+
+.header-extension
+  color: colorscheme(gray-400)
+  background: colorscheme(transparency)
+  &::placeholder
+    color: colorscheme(gray-400)
+
+::placeholder
+  color: colorscheme(gray-500)
+  font-family: 'Nunito'
+
+*
+  box-sizing: border-box
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration
+  display: none
+
+.edit-input
+  outline: none
+  border: none
+  height: 25px
+  border-radius: 4px
+  background-color: colorscheme(gray-100)
+  &:focus
+    border: none
+
+.estimate-input
+  background: colorscheme(pink-200)
+  color: colorscheme(white-100)
+  border: none
+  text-align: center
+  width: 35px
+  height: 35px
+  border-radius: 100%
+  padding: 0px
+  font-size: 16px
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button
+    -webkit-appearance: none
+    margin: 0
+  &:hover
+    border-radius: 10%
+    background: colorscheme(gray-300)
+    width: 70px
+    color: colorscheme(black-100)
+    border: none
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button
+      -webkit-appearance: searchfield

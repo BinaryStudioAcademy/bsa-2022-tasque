@@ -1,0 +1,21 @@
+<div class="dropdown-wrapper">
+  <div class="dropdown-button">
+    <div class="dropdown-sub-button" (click)="buttonClick()">
+      <ng-content select="[dropdown-button]"></ng-content>
+    </div>
+    <span class="dropdown-separator" *ngIf="separator">{{ separator }}</span>
+    <fa-icon class="dropdown-icon" (click)="arrowIconClick()" [icon]="currentArrowIcon"></fa-icon>
+  </div>
+
+  <div class="options-container" [style.left.px]="left" *ngIf="expanded" (click)="toggleDropdown()">
+    <div class="options-header">
+      <ng-content select="[header]"></ng-content>
+    </div>
+    <div class="options">
+      <ng-content select="[option]"></ng-content>
+    </div>
+    <div class="options-footer">
+      <ng-content select="[footer]"></ng-content>
+    </div>
+  </div>
+</div>

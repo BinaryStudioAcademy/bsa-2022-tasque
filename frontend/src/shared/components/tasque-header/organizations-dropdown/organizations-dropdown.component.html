@@ -1,0 +1,27 @@
+<div class="dropdown-container">
+  <span class="organization-label" *ngIf="currentOrganization.name !== 'My Organizations'"
+    >Organization:</span
+  >
+  <tasque-menu-dropdown>
+    <div dropdown-button class="org-name">{{ currentOrganization.name }}</div>
+
+    <div
+      class="organizations"
+      option
+      *ngFor="let org of availableOrganizations; trackBy: trackByOrganization"
+    >
+      <tasque-option (click)="selectOrganization(org)">
+        <div class="org-option">
+          {{ org.name }}
+        </div>
+      </tasque-option>
+    </div>
+    <tasque-option
+      footer
+      [class.solo]="availableOrganizations.length === 0"
+      (click)="openOrganizationsPage()"
+    >
+      Manage my organizations
+    </tasque-option>
+  </tasque-menu-dropdown>
+</div>

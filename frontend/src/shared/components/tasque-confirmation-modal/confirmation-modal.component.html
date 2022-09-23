@@ -1,0 +1,21 @@
+<div class="conteiner">
+  <mat-dialog-content>
+    <div class="content">
+      <p class="title">{{ title }}</p>
+      <div class="sprint-info">
+        <span>{{ message }}</span>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <div [ngSwitch]="type">
+    <mat-dialog-actions class="dialog-options" align="end" *ngSwitchCase="'deletion'">
+      <tasque-button text="Cancel" class="fill gray" (click)="onDismiss()"></tasque-button>
+      <tasque-button type="submit" text="Delete" class="fill" (btnClick)="onConfirm()"></tasque-button>
+    </mat-dialog-actions>
+
+    <mat-dialog-actions class="dialog-options" align="end" *ngSwitchCase="'default'">
+      <tasque-button text="Cancel" class="fill gray" (click)="onDismiss()"></tasque-button>
+      <tasque-button type="submit" text="Ok" class="fill" (btnClick)="onConfirm()"></tasque-button>
+    </mat-dialog-actions>
+  </div>
+</div>

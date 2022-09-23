@@ -1,0 +1,76 @@
+<div class="settings-label">
+    <span class="settings-subtitle">Settings</span>
+    <h1>Issue template</h1>
+</div>
+<div class="issue-template-form">
+
+    <div class="select-issue-type">
+        <tasque-dropdown class="dropdown" label="Select issue type" placeholder="Issue type" [options]="dropdownOptions" (onSelect)="setSelected($event)"></tasque-dropdown>
+        <div class="selected-issue" *ngIf="selectedIssue !== undefined">
+            <div class="issue-color" [style.background-color]="issueColor"></div>
+            <div class="issue-name">
+                <h2>{{selectedIssue.title}}</h2>
+            </div>
+        </div>
+        
+    </div>
+    <hr>
+    <div *ngIf="selectedIssue !== undefined" class="issue-template-container">
+        <div class="issue-template">
+            <div class="issue-fields" cdkDropListGroup>
+                <h2>Const fields</h2>
+                <div class="issue-fields">
+                    <div class="issue-field" style="cursor:default">
+                        <span style="margin-left: 5px">Priority</span>
+                    </div>
+                    <div class="issue-field" style="cursor:default">
+                        <span style="margin-left: 5px">Status</span>
+                    </div>
+                    <div class="issue-field" style="cursor:default">
+                        <span style="margin-left: 5px">Title</span>
+                    </div>
+                    <div class="issue-field" style="cursor:default">
+                        <span style="margin-left: 5px">Description</span>
+                    </div>
+                </div>
+                <h2>Manage your fields</h2>
+                <div cdkDropList class="issue-fields" #descriptionList="cdkDropList" [cdkDropListData]="customFields" (cdkDropListDropped)="dropCustomFields($event)">
+                    <div class="issue-field" *ngFor="let item of customFields" cdkDrag>
+                        <tasque-issue-field [field]="item" (isLabel)="setIsLabel($event)" (isCheckbox)="setIsCheckbox($event)" (isDropDown)="setIsDropdown($event)"></tasque-issue-field>
+                        <tasque-button style="margin-right: 10px" class="btn icon" [icon]="faTrash" (btnClick)="deleteItem(item)"></tasque-button>
+                    </div>
+                    <div *ngIf="customFields.length === 0">
+                        <div class="empty-container">
+                            <span>Drag here your first field!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="isLabel !== undefined" class="label-edit-form">
+                <app-label-field-edit [field]="isLabel" (closeEdit)="closeEdit()"></app-label-field-edit>
+            </div>
+            <div *ngIf="isDropdown !== undefined" class="dropdown-edit-form">
+                <app-dropdown-field-edit [field]="isDropdown" (closeEdit)="closeEdit()"></app-dropdown-field-edit>
+            </div>
+            <div *ngIf="isCheckbox !== undefined" class="checkbox-edit-form">
+                <app-checkbox-field [field]="isCheckbox" (closeEdit)="closeEdit()"></app-checkbox-field>
+            </div>
+            <div class="custom-fields">
+                <h2>Available fields</h2>
+                <div [cdkDropListData]="availableFields" cdkDropListSortingDisabled [cdkDropListConnectedTo]="[descriptionList]" cdkDropList class="custom-fields-container" (cdkDropListDropped)="dropCustomFields($event)">
+                    <div class="custom-field" *ngFor="let item of availableFields" cdkDrag>
+                        <span style="margin: 0 5px 0 5px">{{item.name}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="button-container">
+            <tasque-button class="btn mini" style="margin: 0 0 0 55px" text="Cancel" (btnClick)="discardChanges()"></tasque-button>
+            <tasque-button class="btn mini" style="margin: 0 0 0 55px" text="Save Changes" (btnClick)="saveChanges()"></tasque-button>
+        </div>
+    </div>
+    <div class="empty-selected-setting-warning" *ngIf="!selectedIssue">
+        <p>Select an issue type first in the menu above.</p>
+    </div>
+</div>
+

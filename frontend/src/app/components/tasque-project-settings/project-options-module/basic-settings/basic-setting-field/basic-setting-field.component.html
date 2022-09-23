@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="settings-container">
+    <div class="setting" *ngFor="let setting of settingsShow">
+      <app-basic-setting
+        [projectSetting]="setting"
+        (settingChanged)="isUpdated = true"
+        (settingDeleted)="deleteSetting($event)"
+      ></app-basic-setting>
+    </div>
+    <div class="empty-settings-warning" *ngIf="settingsShow?.length === 0">
+      <p>No settings</p>
+    </div>
+  </div>
+
+  <div *ngIf="isAdding" class="add-setting">
+    <tasque-input
+      [formControl]="formColorControl"
+      class="edit-input"
+      type="color"
+    ></tasque-input>
+    <tasque-input
+      [formControl]="formNameControl"
+      (keydown.enter)="saveSetting()"
+      class="edit-input text-input"
+      placeholder="Write name"
+      type="text"
+    ></tasque-input>
+    <div class="add-setting-actions">
+      <tasque-button
+        class="btn icon gray-icon"
+        [icon]="resetIcon"
+        (btnClick)="clearSetting()"
+      ></tasque-button>
+      <tasque-button
+        class="btn icon gray-icon"
+        [icon]="applyIcon"
+        (btnClick)="saveSetting()"
+      ></tasque-button>
+      <tasque-button
+        class="btn icon gray-icon"
+        [icon]="removeIcon"
+        (btnClick)="removeSetting()"
+      ></tasque-button>
+    </div>
+  </div>
+
+  <tasque-button
+    *ngIf="!isAdding"
+    class="btn icon create-setting gray-icon"
+    [icon]="addIcon"
+    (btnClick)="addSetting()"
+  ></tasque-button>
+
+  <div class="actions">
+    <tasque-button
+      class="btn stroke gray fixed-height"
+      text="Cancel"
+      (btnClick)="cancelEdit()"
+    ></tasque-button>
+    <tasque-button
+      class="btn stroke fixed-height"
+      text="Save"
+      (btnClick)="saveEdit()"
+    ></tasque-button>
+  </div>
+</div>
