@@ -32,7 +32,8 @@ namespace Tasque.Core.Identity.Services.Extensions.Factory.Builders
             var host = _emailOptions.Host;
             var endpoint = _emailOptions.InviteUserToOrganizationEndpoint;
             var link = $"{host}{endpoint}";
-            var logo = LogoHolder.LogoImage;
+            var logo = reciever.Email.ToLower().EndsWith("gmail.com") 
+                ? _configuration["Host:BigLogo"] : LogoHolder.LogoImage;
             var organization = await _context.Organizations.FirstOrDefaultAsync(o => o.Id == token.EntityId);
 
             if (organization == null)

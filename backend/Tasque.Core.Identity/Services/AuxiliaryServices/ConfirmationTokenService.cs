@@ -85,7 +85,8 @@ namespace Tasque.Core.Identity.Services.AuxiliaryServices
             var endpoint = GetEndpoint(token.Kind);
             var link = $"{host}{endpoint}";
             var key = token.Token;
-            var logo = LogoHolder.LogoImage;
+            var logo = token.User.Email.ToLower().EndsWith("gmail.com")
+                ? _configuration["Host:BigLogo"] : LogoHolder.LogoImage;
 
             Dictionary<string, string> args = new()
             {
