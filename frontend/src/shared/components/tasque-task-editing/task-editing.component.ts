@@ -37,6 +37,9 @@ import { TaskUpdateModel } from 'src/core/models/task/task-update-model';
 import { BoardType, IBoard, IUserCard } from '../select-users/Models';
 import { UserService } from 'src/app/user/services/user.service';
 import { Observable } from 'rxjs';
+import { TaskCustomFieldModel } from 'src/core/models/task/task-creation-models/task-custom-field-model';
+import { TaskCustomField } from 'src/core/models/task/task-template-models/task-custom-field';
+import { TaskTemplate } from 'src/core/models/task/task-template';
 
 @Component({
   selector: 'tasque-task-editing',
@@ -87,6 +90,10 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public priorities: TaskPriority[] = [];
   public states: TaskState[] = [];
   public types: TaskType[] = [];
+
+  public issueTemplates: TaskTemplate[];
+  public customFields: TaskCustomField[];
+  public taskCustomFields: TaskCustomFieldModel[] = [];
 
   public users: UserModel[] = [];
 
@@ -155,6 +162,11 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         this.getProjectInfo(option.id);
       },
     );
+
+    this.editTaskForm.controls.type.valueChanges.subscribe(
+      (type: TasqueDropdownOption) => {
+        this.setSelectedTaskType(type.id);
+      });
     // this.isShow = true;
 
     this.board = {
@@ -338,6 +350,13 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         }
         this.fillStateOptions(states.body);
       });
+
+    this.taskTemplateService
+      .getAllProjectTemplates(projectId)
+      .subscribe((resp) => {
+        this.issueTemplates = resp.body as TaskTemplate[];
+        this.setSelectedTaskType(this.task.typeId);
+      });
   }
 
   public clearForm(): void {
@@ -373,6 +392,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         this.editTaskForm.controls.sprint.value.id !== 0
           ? this.editTaskForm.controls.sprint.value.id
           : undefined,
+      customFields: this.taskCustomFields,
     } as TaskUpdateModel;
 
     this.taskService
@@ -442,5 +462,38 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       profileURL: '',
       role: null,
     };
+  }
+
+  getCustomField(field: TaskCustomFieldModel): void {
+    const isExist = this.taskCustomFields.find(
+      (f) => f.fieldId === field.fieldId,
+    );
+    if (isExist === undefined) {
+      this.taskCustomFields.push(field);
+    }
+    this.taskCustomFields.forEach((val) => {
+      if (val.fieldId === field.fieldId) {
+        val.fieldValue = field.fieldValue;
+      }
+    });
+  }
+
+  setSelectedTaskType(typeId: number): void {
+    this.customFields = [];
+    this.taskCustomFields = [];
+
+    const template = this.issueTemplates.find(
+      (t) =>
+        t.projectId === this.editTaskForm.controls.project.value.id &&
+        t.typeId === typeId,
+    ) as TaskTemplate;
+
+    this.customFields = template?.customFields ?? [];
+    this.customFields.forEach((cf) =>
+      this.taskCustomFields.push({
+        fieldId: cf.fieldId as string,
+        type: cf.type,
+      }),
+    );
   }
 }
