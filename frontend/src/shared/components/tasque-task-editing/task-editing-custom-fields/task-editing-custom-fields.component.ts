@@ -86,6 +86,7 @@ export class TaskEditingCustomFieldsComponent implements OnInit {
       });
     });
   }
+  
 
   initLabels(): void {
     let index = 0;
