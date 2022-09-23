@@ -13,7 +13,8 @@ namespace Tasque.Core.BLL.MappingProfiles
                 .ForMember(dest => dest.Id, act => act.MapFrom(src => src.User.Id))
                 .ForMember(dest => dest.UserName, act => act.MapFrom(src => src.User.Name))
                 .ForMember(dest => dest.Email, act => act.MapFrom(src => src.User.Email))
-                .ForMember(dest => dest.Role, act => act.MapFrom(src => src.Role.Name));
+                .ForMember(dest => dest.Role, act => act.MapFrom(src => src.Role.Name))
+                .ForMember(dest => dest.AvatarURL, act => act.MapFrom(src => src.User.AvatarURL));
 
             CreateMap<UserProjectRole, UserProjectRoleDto>().ReverseMap();
         }
