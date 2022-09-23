@@ -25,6 +25,7 @@ import { OrganizationModel } from 'src/core/models/organization/organization-mod
 import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { OrganizationService } from 'src/core/services/organization.service';
+import { concatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'tasque-task-creation',
@@ -229,25 +230,31 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     this.taskCustomFields = [];
 
     this.taskTemplateService
-      .getAllProjectTemplates(this.selectedProjectId)
+      .getAllProjectTaskTypes(this.selectedProjectId)
+      .pipe(
+        concatMap((resp) => {
+          const types = resp.body as TaskType[];
+          this.issueTypes = [];
+          types.forEach((t) =>
+            this.issueTypes.push({
+              title: t.name,
+              id: t.id,
+              color: t.color ?? '',
+            }),
+          );
+
+          if (!clean) {
+            this.issueTypeControl.setValue(this.issueTypes[0]);
+          }
+          return this.taskTemplateService.getAllProjectTemplates(this.selectedProjectId);
+        }),
+      )
       .subscribe((resp) => {
         this.issueTemplates = resp.body as TaskTemplate[];
-      });
-
-    this.taskTemplateService
-      .getAllProjectTaskTypes(this.selectedProjectId)
-      .subscribe((resp) => {
-        const types = resp.body as TaskType[];
-        this.issueTypes = [];
-        types.forEach((t) =>
-          this.issueTypes.push({
-            title: t.name,
-            id: t.id,
-            color: t.color ?? '',
-          }),
-        );
         if (!clean) {
-          this.issueTypeControl.setValue(this.issueTypes[0]);
+          if (this.issueTypes[0]) {
+            this.setSelectedTaskType(this.issueTypes[0].id);
+          }
         }
       });
 
