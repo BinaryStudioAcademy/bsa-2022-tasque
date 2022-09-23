@@ -141,7 +141,12 @@ export class HeaderComponent implements OnInit {
   public subscribeToCurrentProject(): void {
     this.internalServices.getCurrentProjectService.currentProjectId$
       .pipe(
-        concatMap((id) => this.projectService.getProjectById(id)),
+        concatMap((id) => {
+          if (id > 0) {
+            return this.projectService.getProjectById(id);
+          }
+          return [];
+        }),
         map((resp) => resp.body),
       )
       .subscribe((project) => {
