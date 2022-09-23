@@ -158,12 +158,11 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          this.isShow = true;
           this.sprints = result.body.sort(
             (a, b) => (a.order ?? 0) - (b.order ?? 0),
           );
         }
-      });
+      }).add(() => this.isShow = true);
   }
 
   public getArchiveSprints(projectId: number): void {
@@ -176,7 +175,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
         if (result.body) {
           this.archiveSprints = result.body;
         }
-      });
+      }).add(() => this.isShowArchive = true);
   }
 
   dropSprint(event: CdkDragDrop<string[]>): void {

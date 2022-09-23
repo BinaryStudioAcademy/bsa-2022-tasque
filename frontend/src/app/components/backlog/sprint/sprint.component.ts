@@ -128,8 +128,7 @@ export class SprintComponent implements OnInit, OnChanges {
           this.currentSprint.tasks = this.tasks = this.tasksShow = result.body;
           this.estimateCount();
         }
-        this.isShow = true;
-      });
+      }).add(() => this.isShow = true);
   }
 
   //Get all sprint members
