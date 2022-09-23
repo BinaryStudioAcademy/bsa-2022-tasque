@@ -37,6 +37,7 @@ import { TasqueCreateDropdownComponent } from './components/tasque-create-dropdo
 import { TasqueCommentsComponent } from './components/tasque-comments/tasque-comments.component';
 import { NotificationsComponent } from './components/tasque-header/notifications/notifications.component';
 import { UserInvitedNotificationComponent } from './components/tasque-header/notifications/user-invited-notification/user-invited-notification.component';
+import { TaskEditingCustomFieldsComponent } from './components/tasque-task-editing/task-editing-custom-fields/task-editing-custom-fields.component';
 
 @NgModule({
   imports: [
@@ -80,7 +81,8 @@ import { UserInvitedNotificationComponent } from './components/tasque-header/not
     TasqueCreateDropdownComponent,
     TasqueCommentsComponent,
     NotificationsComponent,
-    UserInvitedNotificationComponent
+    UserInvitedNotificationComponent,
+    TaskEditingCustomFieldsComponent
   ],
   exports: [
     CommonModule,
@@ -117,7 +119,8 @@ import { UserInvitedNotificationComponent } from './components/tasque-header/not
     CreateProjectDialogComponent,
     TasqueOptionComponent,
     TasqueCreateDropdownComponent,
+    TaskEditingCustomFieldsComponent
   ],
   providers: [SideBarService],
 })
-export class SharedModule {}
+export class SharedModule { }
