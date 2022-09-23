@@ -431,7 +431,6 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       );
       return;
     }
-
     this.userService
       .getUserByEmail(email)
       .pipe(takeUntil(this.unsubscribe$))
@@ -469,7 +468,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     };
   }
 
-  getCustomField(field: TaskCustomFieldModel): void {
+  public getCustomField(field: TaskCustomFieldModel): void {
     const isExist = this.taskCustomFields.find(
       (f) => f.fieldId === field.fieldId,
     );
@@ -484,7 +483,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     this.editTaskForm.markAsDirty();
   }
 
-  setSelectedTaskType(typeId: number): void {
+  public setSelectedTaskType(typeId: number): void {
     this.customFields = [];
     this.taskCustomFields = [];
 
@@ -501,5 +500,12 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         type: cf.type,
       }),
     );
+  }
+
+  public getCurrentTaskCustomField(customFieldId: string | undefined): TaskCustomFieldModel | undefined {
+    if (!customFieldId) {
+      return undefined;
+    }
+    return this.task.custmFields?.find((field) => field.fieldId === customFieldId);
   }
 }

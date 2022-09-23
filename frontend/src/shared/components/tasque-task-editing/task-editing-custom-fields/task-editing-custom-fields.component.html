@@ -1,36 +1,40 @@
 <div class="field-label">
   <label class="label">{{ customField.name }}</label>
 </div>
-<div *ngIf="fieldType === 0" class="text-field">
-  <tasque-input type="text" class="input" (outputValue)="setTextValue($event)">
+<div *ngIf="customField.type === 0" class="text-field">
+  <tasque-input
+    type="text"
+    class="input"
+    [formControl]="taskCustomFieldControl"
+  >
   </tasque-input>
 </div>
-<div *ngIf="fieldType === 1" class="paragraph-field">
+<div *ngIf="customField.type === 1" class="paragraph-field">
   <angular-editor
     class="editor-wrapper"
-    [(ngModel)]="editorContent"
     [config]="editorConfig"
+    [formControl]="taskCustomFieldControl"
   >
   </angular-editor>
 </div>
-<div *ngIf="fieldType === 2" class="number-field">
+<div *ngIf="customField.type === 2" class="number-field">
   <tasque-input
     type="number"
     class="input"
-    (outputValue)="setTextValue($event)"
+    [formControl]="taskCustomFieldControl"
   >
   </tasque-input>
 </div>
-<div *ngIf="fieldType === 3" class="label-field">
+<div *ngIf="customField.type === 3" class="label-field">
   <tasque-dropdown
     class="dropdown"
     placeholder="Select label"
     [options]="labelOptions"
-    (onSelect)="setSelectedLabel($event)"
+    [formControl]="taskCustomFieldControl"
   >
   </tasque-dropdown>
 </div>
-<div *ngIf="fieldType === 4" class="user-field">
+<div *ngIf="customField.type === 4" class="user-field">
   <tasque-team-select
     *ngIf="projectUsers.length > 0"
     (selectedUser)="setSelectedUser($event)"
@@ -41,7 +45,7 @@
     <span style="color: black">Participants not found</span>
   </div>
 </div>
-<div *ngIf="fieldType === 5" class="dropdown-field">
+<div *ngIf="customField.type === 5" class="dropdown-field">
   <tasque-menu-dropdown
     class="button-like dropdown-values"
     separator="Select a value |"
@@ -55,9 +59,9 @@
     </tasque-sidebar>
     <tasque-option
       option
-      *ngFor="let val of dropdownField?.fields"
-      (click)="setDropdownValue(val)"
-      >{{ val }}
+      *ngFor="let value of dropdownField?.fields"
+      (click)="setDropdownValue(value)"
+      >{{ value }}
     </tasque-option>
   </tasque-menu-dropdown>
   <div class="dropdown-choosen">
@@ -65,7 +69,7 @@
     <span>{{ dropdownValue }}</span>
   </div>
 </div>
-<div *ngIf="fieldType === 6" class="checkbox-field">
+<div *ngIf="customField.type === 6" class="checkbox-field">
   <div class="checkbox-item" *ngFor="let chk of checkboxFields">
     <tasque-checkbox
       [text]="chk.checkboxName"
@@ -74,7 +78,11 @@
     </tasque-checkbox>
   </div>
 </div>
-<div *ngIf="fieldType === 7" class="date-field">
-  <tasque-input type="date" class="input" (outputValue)="setTextValue($event)">
+<div *ngIf="customField.type === 7" class="date-field">
+  <tasque-input
+    type="date"
+    class="input"
+    [formControl]="taskCustomFieldControl"
+  >
   </tasque-input>
 </div>

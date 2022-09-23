@@ -13,23 +13,40 @@
           <div
             class="summary-text"
             [textContent]="editTaskForm.controls.summary.value"
-            (input)="editTaskForm.controls.summary.setValue(titleContent($event))"
+            (input)="
+              editTaskForm.controls.summary.setValue(titleContent($event))
+            "
             contenteditable="true"
             formControlName="summary"
             ngDefaultControl
           ></div>
-          <tasque-button class="btn icon" [icon]="editSquareIcon"> </tasque-button>
+          <tasque-button class="btn icon" [icon]="editSquareIcon">
+          </tasque-button>
         </div>
 
         <div class="task-summary-buttons">
-          <tasque-button class="btn icon pink" [icon]="linkIcon"></tasque-button>
-          <tasque-button class="btn icon pink" [icon]="paperClipIcon"></tasque-button>
-          <tasque-button class="btn icon pink" [icon]="checkIcon"></tasque-button>
-          <tasque-button class="btn icon pink" [icon]="shareIcon"></tasque-button>
+          <tasque-button
+            class="btn icon pink"
+            [icon]="linkIcon"
+          ></tasque-button>
+          <tasque-button
+            class="btn icon pink"
+            [icon]="paperClipIcon"
+          ></tasque-button>
+          <tasque-button
+            class="btn icon pink"
+            [icon]="checkIcon"
+          ></tasque-button>
+          <tasque-button
+            class="btn icon pink"
+            [icon]="shareIcon"
+          ></tasque-button>
           <tasque-button class="btn icon" [icon]="ellipsisIcon"></tasque-button>
         </div>
       </h5>
-      <span class="error" *ngIf="this.editTaskForm.controls.summary.invalid">{{ summaryErrorMessage }}</span>
+      <span class="error" *ngIf="this.editTaskForm.controls.summary.invalid">{{
+        summaryErrorMessage
+      }}</span>
     </div>
 
     <div class="task-main-container">
@@ -46,7 +63,11 @@
 
         <div class="item-wrapper">
           <span class="item-label">Status</span>
-          <tasque-dropdown width="300px" [options]="statusOptions" formControlName="status"></tasque-dropdown>
+          <tasque-dropdown
+            width="300px"
+            [options]="statusOptions"
+            formControlName="status"
+          ></tasque-dropdown>
         </div>
 
         <div class="item-wrapper">
@@ -60,15 +81,29 @@
 
         <div class="item-wrapper">
           <span class="item-label">Type</span>
-          <tasque-dropdown width="300px" [options]="typeOptions" formControlName="type"></tasque-dropdown>
+          <tasque-dropdown
+            width="300px"
+            [options]="typeOptions"
+            formControlName="type"
+          ></tasque-dropdown>
         </div>
 
-        <div class="item-wrapper" *ngIf="isCurrentUserAdmin || isCurrentUserProjectAdmin">
+        <div
+          class="item-wrapper"
+          *ngIf="isCurrentUserAdmin || isCurrentUserProjectAdmin"
+        >
           <span class="item-label">Sprint</span>
-          <tasque-dropdown width="300px" [options]="sprintOptions" formControlName="sprint"></tasque-dropdown>
+          <tasque-dropdown
+            width="300px"
+            [options]="sprintOptions"
+            formControlName="sprint"
+          ></tasque-dropdown>
         </div>
 
-        <div class="item-wrapper" *ngIf="isCurrentUserAdmin || isCurrentUserProjectAdmin">
+        <div
+          class="item-wrapper"
+          *ngIf="isCurrentUserAdmin || isCurrentUserProjectAdmin"
+        >
           <span class="item-label">Assignees</span>
           <tasque-select-users
             (onAdd)="addUser($event)"
@@ -80,7 +115,11 @@
         <div class="item-wrapper">
           <span class="item-label">Reporter</span>
           <div class="user-info" *ngIf="task.author">
-            <tasque-avatar [user]="task.author" [diameter_px]="30" alt="avatar"></tasque-avatar>
+            <tasque-avatar
+              [user]="task.author"
+              [diameter_px]="30"
+              alt="avatar"
+            ></tasque-avatar>
             <span> {{ task.author.name }}</span>
           </div>
         </div>
@@ -89,8 +128,15 @@
           <span class="item-label">Description</span>
 
           <div class="fill-description-width">
-            <div class="description-text-wrapper" *ngIf="!this.descriptionEditorShow">
-              <span class="description-text" [innerHTML]="editTaskForm.controls.description.value"> </span>
+            <div
+              class="description-text-wrapper"
+              *ngIf="!this.descriptionEditorShow"
+            >
+              <span
+                class="description-text"
+                [innerHTML]="editTaskForm.controls.description.value"
+              >
+              </span>
               <tasque-button
                 class="btn icon edit"
                 [icon]="editIcon"
@@ -110,9 +156,11 @@
             >
             </angular-editor>
 
-            <span class="error" *ngIf="editTaskForm.controls.description.invalid">{{
-              descriptionErrorMessage
-            }}</span>
+            <span
+              class="error"
+              *ngIf="editTaskForm.controls.description.invalid"
+              >{{ descriptionErrorMessage }}</span
+            >
           </div>
         </div>
       </div>
@@ -131,18 +179,30 @@
       <div *ngIf="customFields && customFields.length > 0">
         <div *ngFor="let field of customFields" class="custom-field">
           <app-task-editing-custom-fields
+            [currentTaskCustomField]="getCurrentTaskCustomField(field.fieldId)"
             [customField]="field"
             [projectUsers]="users"
-            (taskCustomField)="getCustomField($event)"
+            (taskCustomFieldChange)="getCustomField($event)"
           >
           </app-task-editing-custom-fields>
         </div>
       </div>
 
       <div class="submit-buttons">
-        <tasque-button type="submit" class="btn stroke" text="Clear form" (click)="clearForm()">
+        <tasque-button
+          type="submit"
+          class="btn stroke"
+          text="Clear form"
+          (click)="clearForm()"
+        >
         </tasque-button>
-        <tasque-button type="submit" class="btn fill" text="Update" (click)="submitForm()"> </tasque-button>
+        <tasque-button
+          type="submit"
+          class="btn fill"
+          text="Update"
+          (click)="submitForm()"
+        >
+        </tasque-button>
       </div>
     </div>
     <tasque-comments [taskId]="task.id"></tasque-comments>
