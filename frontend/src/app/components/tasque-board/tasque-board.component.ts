@@ -142,7 +142,9 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
           this.permissionToEdit();
         } else {
-          this.notificationService.error('Something went wrong');
+          //TODO
+          console.warn('Something went wrong');
+          //this.notificationService.error('Something went wrong');
         }
       });
 
@@ -168,7 +170,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     this.columns.forEach((c) => {
       const tasks = this.projectTasks
         .filter((t) => t.stateId === c.id)
-        .sort((prev, next) => prev.order > next.order ? 1 : -1);
+        .sort((prev, next) => (prev.order > next.order ? 1 : -1));
 
       const taskInfo: TaskInfoModel[] = [];
 
@@ -249,10 +251,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
   orderTasks(event: CdkDragDrop<TaskInfoModel[]>): void {
     const tasks = event.container.data.map((x) => x.id);
-    this.boardService.taskService
-      .setOrder(tasks)
-      .pipe(take(1))
-      .subscribe();
+    this.boardService.taskService.setOrder(tasks).pipe(take(1)).subscribe();
   }
 
   updateColumns(): void {
@@ -266,9 +265,9 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
           this.filterTasks();
         },
         () => {
-          this.notificationService.error(
-            'Something went wrong, try again later',
-          );
+          //TODO
+          console.warn('Something went wrong');
+          //this.notificationService.error('Something went wrong, try again later');
         },
       );
   }
@@ -287,9 +286,9 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
         this.boardService.taskService.updateTask(task).subscribe((resp) => {
           if (!resp.ok) {
-            this.notificationService.error(
-              'Something went wrong, try again later',
-            );
+            //TODO
+            console.warn('Something went wrong');
+            // this.notificationService.error('Something went wrong, try again later',);
           }
         });
       }
@@ -455,7 +454,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
         } else {
           this.isCurrentUserProjectAdmin = false;
         }
-      }
-    );
+      });
   }
 }

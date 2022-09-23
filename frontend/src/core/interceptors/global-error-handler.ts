@@ -22,28 +22,46 @@ export class GlobalErrorHandler extends ErrorHandler {
     super.handleError(error);
 
     if (!(error instanceof HttpErrorResponse)) {
-      this.notificationService.error('An unexpected client-side error has occurred.', 'Error');
+      //TODO
+      console.warn('An unexpected client-side error has occurred.');
+      // this.notificationService.error(
+      //   'An unexpected client-side error has occurred.',
+      //   'Error',
+      // );
       return;
     }
 
     if (error.status === 0) {
-      this.notificationService.error('No connection.', 'Error');
+      //TODO
+      console.warn('No connection.');
+      // this.notificationService.error('No connection.', 'Error');
       return;
     }
 
     if (error.status >= 500) {
-      this.notificationService.error('An unexpected server-side error has occurred.', 'Error');
+      //TODO
+      console.warn('An unexpected client-side error has occurred.');
+
+      // this.notificationService.error(
+      //   'An unexpected server-side error has occurred.',
+      //    'Error',
+      //   );
       return;
     }
 
     if (error.status === 401) {
-      this.notificationService.error('Authorization has expired. Please sign in again', 'Error');
+      this.notificationService.error(
+        'Authorization has expired. Please sign in again',
+        'Error',
+      );
       this.authService.logout();
       return;
     }
 
     if (error.status >= 400) {
-      this.notificationService.error(error.error, '');
+      //TODO
+      console.warn(error.error);
+      // this.notificationService.error(error.error, '');
       return;
     }
   }

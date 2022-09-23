@@ -17,7 +17,6 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
   styleUrls: ['./user-profile.component.sass'],
 })
 export class UserProfileComponent implements OnInit {
-
   public emptyProfileDTO = {} as ProfileChangesModel;
 
   public imageFile: File;
@@ -48,8 +47,8 @@ export class UserProfileComponent implements OnInit {
   constructor(
     private notificationService: ToastrNotificationService,
     private userService: UserService,
-    private currentUserService: GetCurrentUserService
-  ) { }
+    private currentUserService: GetCurrentUserService,
+  ) {}
 
   ngOnInit(): void {
     this.getUser();
@@ -68,16 +67,22 @@ export class UserProfileComponent implements OnInit {
       Validators.minLength(this.validationConstants.minLengthName),
       Validators.maxLength(this.validationConstants.maxLengthName),
     ]);
-    this.prevPasswordControl = new FormControl(this.passwordChanges.previousPassword, [
+    this.prevPasswordControl = new FormControl(
+      this.passwordChanges.previousPassword,
+      [
         Validators.required,
         Validators.minLength(this.validationConstants.minLengthPassword),
         Validators.maxLength(this.validationConstants.maxLengthPassword),
-    ]);
-    this.newPasswordControl = new FormControl(this.passwordChanges.newPassword, [
+      ],
+    );
+    this.newPasswordControl = new FormControl(
+      this.passwordChanges.newPassword,
+      [
         Validators.required,
         Validators.minLength(this.validationConstants.minLengthPassword),
         Validators.maxLength(this.validationConstants.maxLengthPassword),
-    ]);
+      ],
+    );
 
     this.profileForm = new FormGroup({
       userNameControl: this.userNameControl,
@@ -154,11 +159,15 @@ export class UserProfileComponent implements OnInit {
           this.originalUser = Object.assign({}, resp.body);
           this.passwordChanges.id = this.originalUser.id;
         } else {
-          this.notificationService.error('Something went wrong');
+          //TODO
+          console.warn('Something went wrong');
+          // this.notificationService.error('Something went wrong');
         }
       },
       (error) => {
-        this.notificationService.error(error);
+        //TODO
+        console.warn(error);
+        //this.notificationService.error(error);
       },
     );
   }
