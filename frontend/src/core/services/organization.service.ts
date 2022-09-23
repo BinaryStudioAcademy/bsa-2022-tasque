@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { OrganizationModel } from '../models/organization/organization-model';
 import { NewOrganizationModel } from '../models/organization/new-organization-model';
 import { HttpService } from './http.service';
-import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
+import { ProfileChangesModel } from 'src/app/user/dto/profile-changes-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -45,8 +45,8 @@ export class OrganizationService {
 
   getOrganizationUsers(
     organizationId: number,
-  ): Observable<HttpResponse<ProfileChangesDTO[]>> {
-    return this.httpService.getFullRequest<ProfileChangesDTO[]>(
+  ): Observable<HttpResponse<ProfileChangesModel[]>> {
+    return this.httpService.getFullRequest<ProfileChangesModel[]>(
       this.routePrefix + `/getOrganizationUsers/${organizationId}`,
     );
   }
@@ -62,8 +62,8 @@ export class OrganizationService {
 
   addUser(
     organizationId: number,
-    user: ProfileChangesDTO,
-  ): Observable<HttpResponse<ProfileChangesDTO>> {
+    user: ProfileChangesModel,
+  ): Observable<HttpResponse<ProfileChangesModel>> {
     return this.httpService.postFullRequest(
       this.routePrefix + `/${organizationId}/users/add`,
       user,
@@ -77,7 +77,7 @@ export class OrganizationService {
   deleteUser(
     organizationId: number,
     userEmail: string,
-  ): Observable<HttpResponse<ProfileChangesDTO>> {
+  ): Observable<HttpResponse<ProfileChangesModel>> {
     return this.httpService.postFullRequest(
       this.routePrefix + `/${organizationId}/users/del`,
       { email: userEmail },

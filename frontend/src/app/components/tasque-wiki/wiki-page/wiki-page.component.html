@@ -17,7 +17,7 @@
         <tasque-button class="btn icon" [icon]="faPenToSquare"> </tasque-button>
       </div>
       <span class="error" *ngIf="pageNameControl.errors?.['required'] && (pageNameControl.dirty || pageNameControl.touched)">Name is required. </span>
-      <span class="error" *ngIf="pageNameControl.errors?.['pattern']">The name must consist of numbers or letters. </span>
+      <span class="error" *ngIf="pageNameControl.errors?.['pattern']">The name must consist of numbers or latin letters. </span>
       <span class="error" *ngIf="pageNameControl.errors?.['minlength']">Must be at least 2 characters. </span>
       <span class="error" *ngIf="pageNameControl.errors?.['maxlength']">Must be no more than 30 characters. </span>
     </div>

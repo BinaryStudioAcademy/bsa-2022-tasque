@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { UserModel } from 'src/core/models/user/user-model';
 import { HttpService } from 'src/core/services/http.service';
 import { PasswordChangesDTO } from '../dto/password-changes-dto';
-import { ProfileChangesDTO } from '../dto/profile-changes-dto';
+import { ProfileChangesModel } from '../dto/profile-changes-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -18,8 +18,8 @@ export class UserService {
   }
 
   editUserProfile(
-    user: ProfileChangesDTO,
-  ): Observable<HttpResponse<ProfileChangesDTO>> {
+    user: ProfileChangesModel,
+  ): Observable<HttpResponse<ProfileChangesModel>> {
     return this.httpService.putFullRequest(this.routePrefix + '/edit', user);
   }
 
@@ -32,7 +32,7 @@ export class UserService {
     );
   }
 
-  editAvatar(imageData: string): Observable<HttpResponse<ProfileChangesDTO>> {
+  editAvatar(imageData: string): Observable<HttpResponse<ProfileChangesModel>> {
     return this.httpService.putFullRequest(this.routePrefix + '/edit/avatar', {
       imageData,
     });

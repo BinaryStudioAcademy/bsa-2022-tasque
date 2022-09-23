@@ -246,7 +246,9 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
           if (!clean) {
             this.issueTypeControl.setValue(this.issueTypes[0]);
           }
-          return this.taskTemplateService.getAllProjectTemplates(this.selectedProjectId);
+          return this.taskTemplateService.getAllProjectTemplates(
+            this.selectedProjectId,
+          );
         }),
       )
       .subscribe((resp) => {
@@ -264,9 +266,11 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
         if (resp.ok) {
           this.projectUsers = resp.body as UserModel[];
         } else {
-          this.notificationService.error(
-            'Something went wrong, try again later',
-          );
+          //TODO
+          console.warn('Something went wrong, try again later');
+          //  this.notificationService.error(
+          //   'Something went wrong, try again later',
+          //  );
         }
       });
 
@@ -287,9 +291,11 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
             this.priorityControl.setValue(this.projectPriorities[0]);
           }
         } else {
-          this.notificationService.error(
-            'Something went wrong, try again later',
-          );
+          //TODO
+          console.warn('Something went wrong, try again later');
+          //   this.notificationService.error(
+          //     'Something went wrong, try again later',
+          //   );
         }
       });
 
@@ -310,9 +316,12 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
             this.stateControl.setValue(this.taskStateOptions[0]);
           }
         } else {
-          this.notificationService.error(
-            'Something went wrong, try again later',
-          );
+          //TODO
+          console.warn('Something went wrong, try again later');
+
+          // this.notificationService.error(
+          //  'Something went wrong, try again later',
+          // );
         }
       });
   }
@@ -389,7 +398,9 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
         }
       },
       () => {
-        this.notificationService.error('Something go wrong. Try again later');
+        //TODO
+        console.warn('Something went wrong, try again later');
+        // this.notificationService.error('Something go wrong. Try again later');
         this.clearForm();
       },
     );
@@ -461,7 +472,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
         ) as UserProjectRole;
 
         if (
-          projectRole.roleId == BusinessRole.Admin ||
+          projectRole?.roleId == BusinessRole.Admin ||
           this.isCurrentUserAdmin
         ) {
           this.isCurrentUserProjectAdmin = true;

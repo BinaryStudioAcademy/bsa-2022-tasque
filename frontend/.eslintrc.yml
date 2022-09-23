@@ -20,8 +20,6 @@ rules:
     - max: 1
   no-var:
     - error
-  no-console:
-    - error
   arrow-parens:
     - error
     - always

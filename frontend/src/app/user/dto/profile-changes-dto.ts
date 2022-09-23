@@ -1,6 +1,6 @@
 import { UserRoleModel } from 'src/core/models/user/user-role-model';
 
-export interface ProfileChangesDTO {
+export interface ProfileChangesModel {
   id: number;
   name: string;
   email: string;

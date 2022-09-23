@@ -11,7 +11,7 @@ import { ToastrNotificationService } from 'src/core/services/toastr-notification
 @Component({
   selector: 'user-invited-notification',
   templateUrl: './user-invited-notification.component.html',
-  styleUrls: ['./user-invited-notification.component.sass']
+  styleUrls: ['./user-invited-notification.component.sass'],
 })
 export class UserInvitedNotificationComponent implements OnInit {
   @Input() notification: UserInvitedNotification;
@@ -23,30 +23,34 @@ export class UserInvitedNotificationComponent implements OnInit {
   userLoaded = false;
   crossIcon = faCross;
 
-  constructor(private projectService: ProjectService, private userService: UserService, private toastr: ToastrNotificationService) { }
+  constructor(
+    private projectService: ProjectService,
+    private userService: UserService,
+    private toastr: ToastrNotificationService,
+  ) {}
 
   ngOnInit(): void {
-    this.projectService.getProjectById(this.notification.projectId)
-    .subscribe((response) => {
-      if (response.ok && response.body) {
-        this.project = response.body;
-        this.projectLoaded = true;
-      }
-      else {
-        this.toastr.error('Error while fetching data of a notification');
-      }
-    });
+    this.projectService
+      .getProjectById(this.notification.projectId)
+      .subscribe((response) => {
+        if (response.ok && response.body) {
+          this.project = response.body;
+          this.projectLoaded = true;
+        } else {
+          this.toastr.error('Error while fetching data of a notification');
+        }
+      });
 
-    this.userService.getUserById(this.notification.invitorId)
-    .subscribe((response) => {
-      if (response.ok && response.body) {
-        this.invitedBy = response.body;
-        this.userLoaded = true;
-      }
-      else {
-        this.toastr.error('Error while fetching data of a notification');
-      }
-    });
+    this.userService
+      .getUserById(this.notification.invitorId)
+      .subscribe((response) => {
+        if (response.ok && response.body) {
+          this.invitedBy = response.body;
+          this.userLoaded = true;
+        } else {
+          this.toastr.error('Error while fetching data of a notification');
+        }
+      });
   }
 
   onDelete(): void {
