@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { TaskCustomField } from 'src/core/models/task/task-template-models/task-custom-field';
 import { UserModel } from 'src/core/models/user/user-model';
 import { EditorConfig } from 'src/core/settings/angular-editor-setting';
@@ -14,16 +14,29 @@ import { DropdownField } from 'src/core/models/task/task-template-models/dropdow
   templateUrl: './task-editing-custom-fields.component.html',
   styleUrls: ['./task-editing-custom-fields.component.sass']
 })
-export class TaskEditingCustomFieldsComponent implements OnInit, OnChanges {
+export class TaskEditingCustomFieldsComponent implements OnInit {
 
   constructor() { }
 
-  public taskCustomFieldControl: FormControl;
+  public taskCustomFieldControl: FormControl = new FormControl();
 
   @Input() public customField: TaskCustomField;
   @Input() public projectUsers: UserModel[];
 
-  @Input() public currentTaskCustomField?: TaskCustomFieldModel;
+  private _currentTaskCustomField?: TaskCustomFieldModel;
+  @Input() public set currentTaskCustomField(value: TaskCustomFieldModel | undefined) {
+    if (!value) {
+      return;
+    }
+
+    this._currentTaskCustomField = value;
+    this.taskCustomFieldControl.setValue(value.fieldValue, {
+      emitEvent: false
+    });
+  }
+  public get currentTaskCustomField(): TaskCustomFieldModel | undefined {
+    return this._currentTaskCustomField;
+  }
 
   @Output() taskCustomFieldChange = new EventEmitter<TaskCustomFieldModel>();
 
@@ -37,14 +50,7 @@ export class TaskEditingCustomFieldsComponent implements OnInit, OnChanges {
 
   public dropdownValue: string;
 
-  ngOnChanges(): void {
-    this.taskCustomFieldControl.setValue(this.currentTaskCustomField?.fieldValue, {
-      emitEvent: false
-    });
-  }
-
   ngOnInit(): void {
-    this.taskCustomFieldControl = new FormControl(this.currentTaskCustomField);
     this.newTaskCustomField = {
       fieldId: this.customField.fieldId as string,
     };
@@ -62,6 +68,17 @@ export class TaskEditingCustomFieldsComponent implements OnInit, OnChanges {
     }
 
     this.taskCustomFieldControl.valueChanges.subscribe((value) => {
+      const isDropdownOption = (<TasqueDropdownOption>value).id;
+
+      if (isDropdownOption !== undefined) {
+        this.taskCustomFieldChange.emit({
+          fieldId: this.customField.fieldId as string,
+          type: this.customField.type,
+          fieldValue: isDropdownOption.toString()
+        });
+        return;
+      }
+
       this.taskCustomFieldChange.emit({
         fieldId: this.customField.fieldId as string,
         type: this.customField.type,
