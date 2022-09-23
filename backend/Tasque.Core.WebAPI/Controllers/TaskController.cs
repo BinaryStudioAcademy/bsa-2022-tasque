@@ -29,6 +29,15 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok(tasks);
         }
 
+        [HttpGet("getAllSprintTasks/{sprintId}")]
+        public async Task<IActionResult> GetAllSprintTasks(int sprintId)
+        {
+            var tasks = await _taskService.GetAllSprintTasks(sprintId);
+            if (tasks == null)
+                return NotFound("Sprint or it's tasks not found");
+            return Ok(tasks);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTaskById(int id)
         {
@@ -37,7 +46,7 @@ namespace Tasque.Core.WebAPI.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateTask([FromBody] TaskDto model)
-            {
+        {
             var task = await _taskService.CreateTask(model);
             return Created(task.ToString() ?? "", task);
         }

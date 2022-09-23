@@ -13,7 +13,6 @@ using Tasque.Core.Common.Entities.Abstract;
 using Tasque.Core.Common.Enums;
 using Tasque.Core.Common.Models.Events;
 using Tasque.Core.DAL;
-using static Amazon.S3.Util.S3EventNotification;
 using Tasque.Messaging.Abstractions;
 using Task = System.Threading.Tasks.Task;
 
@@ -113,6 +112,44 @@ namespace Tasque.Core.BLL.Services
                 return tasks;
 
             return tasks.Join(customFields, t => t.Id, ca => int.Parse(ca.Id), (t, ca) =>
+                JoinTaskAttributesWithDto(t,
+                    RenameFieldsWithActualValue(
+                        GetTaskTemplate(t.ProjectId, t.TypeId).Result ?? new(),
+                            MapCosmosTaskFieldsToTaskCustomFields(t, ca.CustomFields ?? new()).Result) ?? new())).ToList();
+        }
+
+        public async Task<List<TaskDto>> GetAllSprintTasks(int sprintId)
+        {
+            var tasks = await _dbContext.Tasks
+                .Include(t => t.Users)
+                .Include(t => t.Author)
+                .Include(t => t.LastUpdatedBy)
+                .Include(t => t.Priority)
+                .Include(t => t.State)
+                .Include(t => t.Project)
+                .Include(t => t.Type)
+                .Where(t => t.SprintId == sprintId)
+                .ToListAsync();
+
+            List<CosmosTaskModel>? customFields;
+            try
+            {
+                customFields = await _cosmosTaskService.GetAllProjectTasks(tasks[0].ProjectId);
+            }
+            catch
+            {
+                customFields = new();
+            }
+
+            var tasksDto = _mapper.Map<List<TaskDto>>(tasks);
+
+            if (!customFields.Any())
+            {
+                return tasksDto;
+            }
+
+
+            return tasksDto.Join(customFields, t => t.Id, ca => int.Parse(ca.Id), (t, ca) =>
                 JoinTaskAttributesWithDto(t,
                     RenameFieldsWithActualValue(
                         GetTaskTemplate(t.ProjectId, t.TypeId).Result ?? new(),
@@ -273,8 +310,8 @@ namespace Tasque.Core.BLL.Services
             project.ProjectTaskCounter += 1;
             _dbContext.SaveChanges();
             return project.ProjectTaskCounter;
-        }    
-        
+        }
+
         public async Task<CommentInfoDTO> AddComment(CreateCommentDTO dto)
         {
             var task = _dbContext.Tasks
