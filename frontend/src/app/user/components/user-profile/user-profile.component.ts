@@ -5,7 +5,7 @@ import { ToastrNotificationService } from 'src/core/services/toastr-notification
 import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 import { LocalStorageKeys } from 'src/core/models/local-storage-keys';
 import { PasswordChangesDTO } from '../../dto/password-changes-dto';
-import { ProfileChangesDTO } from '../../dto/profile-changes-dto';
+import { ProfileChangesModel } from '../../dto/profile-changes-dto';
 import { UserService } from '../../services/user.service';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { filter, mergeMap, takeUntil } from 'rxjs/operators';
@@ -18,13 +18,13 @@ import { GetCurrentUserService } from 'src/core/services/get-current-user.servic
 })
 export class UserProfileComponent implements OnInit {
 
-  public emptyProfileDTO = {} as ProfileChangesDTO;
+  public emptyProfileDTO = {} as ProfileChangesModel;
 
   public imageFile: File;
   public defaultUserAvatarUrl = '../../assets/default_avatar.svg';
   public allowedFileTypes = ['image/png', 'image/jpeg', 'image/gif'];
-  public originalUser: ProfileChangesDTO = this.emptyProfileDTO;
-  public profileChanges: ProfileChangesDTO = this.emptyProfileDTO;
+  public originalUser: ProfileChangesModel = this.emptyProfileDTO;
+  public profileChanges: ProfileChangesModel = this.emptyProfileDTO;
   public passwordChanges: PasswordChangesDTO;
 
   public profileForm: FormGroup = new FormGroup({});
@@ -172,7 +172,7 @@ export class UserProfileComponent implements OnInit {
         filter((resp) => resp.body != null),
       )
       .subscribe((resp) => {
-        this.originalUser = resp.body as ProfileChangesDTO;
+        this.originalUser = resp.body as ProfileChangesModel;
         this.profileChanges = Object.assign({}, this.originalUser);
         this.notificationService.success('Profile was successfully updated');
         this.isProfileChanged = false;
