@@ -365,7 +365,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     });
   }
 
-  public submitForm(): void {
+  public submitForm(addUser?: boolean): void {
     if (this.editTaskForm.invalid) {
       this.notificationService.error(
         'Some values are incorrect. Follow error messages to solve this problem',
@@ -399,7 +399,10 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       .updateTask(updatedTask)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((task) => {
-        this.notificationService.success('Task has been updated successfully');
+        if(!addUser){
+          this.notificationService.success('Task has been updated successfully');
+        }
+        this.isChanged = new Observable<void>();
         if (task.body) {
           this.taskStorageService.updateTask(task.body);
           this.editTaskFormDefaultValues = this.editTaskForm.value;
@@ -409,6 +412,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       .add(() => {
         this.clearForm();
       });
+      this.isChanging.emit(false);
   }
 
   toogleModal(event: boolean): void {
@@ -438,6 +442,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         this.editTaskForm.controls.assignees.value.push(user.body);
         this.board.users.push(this.convertToUserCard(user.body));
         this.editTaskForm.markAsDirty();
+        this.submitForm(true);
         this.isChanged = new Observable<void>();
       });
   }
