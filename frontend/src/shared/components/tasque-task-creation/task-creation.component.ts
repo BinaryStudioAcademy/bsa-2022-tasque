@@ -461,7 +461,7 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
         ) as UserProjectRole;
 
         if (
-          projectRole.roleId == BusinessRole.Admin ||
+          projectRole?.roleId == BusinessRole.Admin ||
           this.isCurrentUserAdmin
         ) {
           this.isCurrentUserProjectAdmin = true;
