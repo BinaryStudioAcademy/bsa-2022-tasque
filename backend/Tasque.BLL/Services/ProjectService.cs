@@ -268,8 +268,16 @@ public class ProjectService : EntityCrudService<NewProjectDto, ProjectInfoDto, E
 
     public async Task<List<ProjectInfoDto>> GetAllProjectsOfOrganization(int organizationId)
     {
+        var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == _currentUserId);
+
+        if (user == null)
+        {
+            throw new HttpException(System.Net.HttpStatusCode.NotFound, "The user with this id does not exist");
+        }
+
         var projects = await _db.Projects
-            .Where(proj => proj.OrganizationId == organizationId)
+            .Where(proj => proj.OrganizationId == organizationId
+                && proj.Users.Contains(user))
             .Include(p => p.UserRoles)
                 .ThenInclude(u => u.User)
             .Include(p => p.UserRoles)
