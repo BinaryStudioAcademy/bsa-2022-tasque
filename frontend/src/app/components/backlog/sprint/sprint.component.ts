@@ -101,7 +101,7 @@ export class SprintComponent implements OnInit, OnChanges {
     public openDialogService: OpenDialogService,
     private currentOrganizationService: GetCurrentOrganizationService,
     private organizationService: OrganizationService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.currentUser === undefined) {
@@ -120,8 +120,8 @@ export class SprintComponent implements OnInit, OnChanges {
 
   //Get all tasks for the sprint
   public getSprintTasks(): void {
-    this.sprintService
-      .getSprintTasks(this.currentSprint.id)
+    this.taskService
+      .getAllSprintTasks(this.currentSprint.id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {

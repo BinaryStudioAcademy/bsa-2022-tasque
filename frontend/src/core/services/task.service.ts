@@ -12,7 +12,7 @@ import { TaskUpdateModel } from '../models/task/task-update-model';
 export class TaskService {
   private routePrefix = '/api/task';
 
-  constructor(private httpService: HttpService) {}
+  constructor(private httpService: HttpService) { }
 
   createTask(model: TaskCreateViewModel): Observable<HttpResponse<TaskModel>> {
     return this.httpService.postFullRequest(this.routePrefix, model);
@@ -20,6 +20,10 @@ export class TaskService {
 
   getTaskById(id: number): Observable<HttpResponse<TaskModel>> {
     return this.httpService.getFullRequest(this.routePrefix + '/' + id);
+  }
+
+  getAllSprintTasks(sprintId: number): Observable<HttpResponse<TaskModel[]>> {
+    return this.httpService.getFullRequest(this.routePrefix + '/getAllSprintTasks/' + sprintId);
   }
 
   updateTask(model: TaskUpdateModel): Observable<HttpResponse<TaskModel>> {
