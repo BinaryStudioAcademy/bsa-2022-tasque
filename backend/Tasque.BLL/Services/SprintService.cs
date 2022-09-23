@@ -303,27 +303,14 @@ namespace Tasque.Core.BLL.Services
         {
             var sprint = await _db.Sprints
                 .Where(s => s.ProjectId == projectId && !s.IsComplete && s.StartAt != null)
-                    .Include(s => s.Tasks)
                 .FirstOrDefaultAsync();
-            
-            if (sprint == null)
+
+            if (sprint is null)
+            {
                 return null;
+            }
 
-            var tasks = _mapper.Map<List<TaskDto>>(_db.Tasks
-                .Where(t => t.SprintId == sprint.Id)
-                .Include(t => t.Users)
-                .Include(t => t.Author)
-                .Include(t => t.Sprint)
-                .Include(t => t.LastUpdatedBy)
-                .Include(t => t.Priority)
-                .Include(t => t.State)
-                .Include(t => t.Project)
-                .Include(t => t.Type));
-
-            var dto = _mapper.Map<SprintDto>(sprint);
-            dto.Tasks = _mapper.Map<List<TaskDto>>(tasks);
-
-            return dto;
+            return _mapper.Map<SprintDto>(sprint);
         }
 
     }
