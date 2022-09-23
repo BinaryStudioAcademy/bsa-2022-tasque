@@ -175,7 +175,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
         if (result.body) {
           this.archiveSprints = result.body;
         }
-      }).add(() => this.isShowArchive = true);
+      });
   }
 
   dropSprint(event: CdkDragDrop<string[]>): void {
