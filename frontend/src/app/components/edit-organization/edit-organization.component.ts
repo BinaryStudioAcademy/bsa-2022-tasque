@@ -7,7 +7,7 @@ import { OrganizationService } from 'src/core/services/organization.service';
 import { SideBarService } from 'src/core/services/sidebar.service';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { BoardType, IBoard } from 'src/shared/components/select-users/Models';
-import { ProfileChangesDTO } from 'src/app/user/dto/profile-changes-dto';
+import { ProfileChangesModel } from 'src/app/user/dto/profile-changes-dto';
 import { GetCurrentOrganizationService } from 'src/core/services/get-current-organization.service';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { ToastrNotificationService } from 'src/core/services/toastr-notification.service';
@@ -61,6 +61,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
     this.editOrganizationForm = new FormGroup({
       organizationNameControl: this.organizationNameControl,
     });
+
   }
 
   ngOnDestroy(): void {
@@ -137,7 +138,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
     hasRoles: true,
   };
 
-  public users: ProfileChangesDTO[] = [
+  public users: ProfileChangesModel[] = [
     {
       id: 1,
       name: 'Test user',
@@ -155,6 +156,7 @@ export class EditOrganizationComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
+          console.log(this.users);
           this.users = result.body;
         }
       });
