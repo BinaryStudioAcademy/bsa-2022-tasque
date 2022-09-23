@@ -4,12 +4,12 @@
     width: 252px
     height: 100%
     z-index: 1
-    overflow-y: hidden
-    overflow-x: hidden
+    overflow-y: scroll
     left: 0
     top: 0
     background: colorscheme(white-100)
     box-shadow: 3px 4px 9px rgba(223, 223, 223, 0.25)
+    padding-bottom: 70px
 
 .content
     margin: 20px 15px
@@ -29,9 +29,6 @@ fa-icon
 
 .create-page
     position: relative
-
-.pages
-    margin-top: 40px
 
 .project-color
     width: 20px
@@ -62,3 +59,17 @@ fa-icon
 .create-page:hover span.hint
     visibility: visible
 
+.pages
+    margin-top: 40px
+    
+
+::-webkit-scrollbar
+  width: 5px
+  height: 5px
+
+::-webkit-scrollbar-track
+  border-radius: 10px
+
+::-webkit-scrollbar-thumb
+  background-color: #8b9499
+  border-radius: 10px
