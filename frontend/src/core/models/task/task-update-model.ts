@@ -18,5 +18,5 @@ export interface TaskUpdateModel {
   estimate?: number;
 
   users?: UserModel[];
-  custmFields?: TaskCustomFieldModel[];
+  customFields?: TaskCustomFieldModel[];
 }

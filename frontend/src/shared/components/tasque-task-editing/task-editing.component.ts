@@ -508,6 +508,6 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     if (!customFieldId) {
       return undefined;
     }
-    return this.task.custmFields?.find((field) => field.fieldId === customFieldId);
+    return this.task.customFields?.find((field) => field.fieldId === customFieldId);
   }
 }
