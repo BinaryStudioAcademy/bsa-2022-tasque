@@ -9,6 +9,7 @@ using Tasque.Core.Common.Entities;
 using Tasque.Core.Common.Enums;
 using Tasque.Core.Common.Models.Email;
 using Tasque.Core.DAL;
+using Tasque.Core.Common.StaticResources;
 
 namespace Tasque.Core.Identity.Services.AuxiliaryServices
 {
@@ -84,7 +85,7 @@ namespace Tasque.Core.Identity.Services.AuxiliaryServices
             var endpoint = GetEndpoint(token.Kind);
             var link = $"{host}{endpoint}";
             var key = token.Token;
-            var logo = _configuration["Host:BigLogo"];
+            var logo = LogoHolder.LogoImage;
 
             Dictionary<string, string> args = new()
             {
