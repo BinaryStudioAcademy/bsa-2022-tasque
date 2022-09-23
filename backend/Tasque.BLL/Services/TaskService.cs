@@ -131,7 +131,7 @@ namespace Tasque.Core.BLL.Services
                 .Where(t => t.SprintId == sprintId)
                 .ToListAsync();
 
-            List<CosmosTaskModel>? customFields;
+            List<CosmosTaskModel> customFields;
             try
             {
                 customFields = await _cosmosTaskService.GetAllProjectTasks(tasks[0].ProjectId);
@@ -239,6 +239,7 @@ namespace Tasque.Core.BLL.Services
                 var cosmosModel = new CosmosTaskModel()
                 {
                     Id = task.Id.ToString(),
+                    ProjectId = task.ProjectId.ToString(),
                     CustomFields = _mapper.Map<List<CosmosTaskFields>>(actualAttributes),
                 };
 
