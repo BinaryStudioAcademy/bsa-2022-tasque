@@ -18,7 +18,6 @@ import { ToastrNotificationService } from 'src/core/services/toastr-notification
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { OrganizationService } from 'src/core/services/organization.service';
 import { ProfileChangesModel } from 'src/app/user/dto/profile-changes-dto';
-import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
 
 @Component({
   selector: 'tasque-select-users',
@@ -40,7 +39,6 @@ export class SelectUsersComponent implements OnInit, OnChanges {
   public defaultRowHeight_px = 80;
 
   @Input() organization?: OrganizationModel;
-  @Input() project?: ProjectInfoModel;
   @Input() isChanged: Observable<void>;
   @Input()
   public board: IBoard = {
@@ -82,10 +80,6 @@ export class SelectUsersComponent implements OnInit, OnChanges {
       this.getOrganizationUsers();
     }
 
-    if(this.project) {
-      this.getProjectUser();
-    }
-
     this.refreshList();
   }
 
@@ -104,14 +98,6 @@ export class SelectUsersComponent implements OnInit, OnChanges {
       this.usersCount = arr.length;
       this.rowspan = Math.max(1, Math.min(this.usersCount, 5));
     });
-  }
-
-  getProjectUser(): void {
-    if(this.project && this.project.users) {
-      this.users$ = of(this.project?.users);
-      this.usersCount = this.project.users.length;
-      this.rowspan = Math.max(1, Math.min(this.usersCount, 5));
-    }
   }
 
   public add(): void {
