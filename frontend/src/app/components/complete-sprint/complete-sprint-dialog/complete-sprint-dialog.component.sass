@@ -2,11 +2,12 @@
 
 .container
     width: 400px
-    height: 220px
+    height: 240px
     position: relative
     display: flex
     flex-direction: column
     justify-content: space-between
+    overflow: hidden
 
 .sprint-name
     max-width: 265px
@@ -16,9 +17,12 @@
     position: absolute
     height: 115px
     right: 0px
-    top: 5px
+    top: 14px
 
-.content > p
+.content
+    padding: 15px 0 0 0
+
+.sprint-name
     font-size: 20px
     font-weight: 700
 
@@ -41,4 +45,3 @@
 .note
     font-size: 12px
     font-style: italic
-
