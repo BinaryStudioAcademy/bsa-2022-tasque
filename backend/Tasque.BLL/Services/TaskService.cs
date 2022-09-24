@@ -135,6 +135,18 @@ namespace Tasque.Core.BLL.Services
             try
             {
                 customFields = await _cosmosTaskService.GetAllProjectTasks(tasks[0].ProjectId);
+                var tasksWithoutFields = tasks
+                    .Where(task => !customFields.Any((field) => field.Id == task.Id.ToString()))
+                    .ToList();
+
+                foreach (var task in tasksWithoutFields)
+                {
+                    customFields.Add(new()
+                    {
+                        Id = task.Id.ToString(),
+                        ProjectId = task.ProjectId.ToString(),
+                    });
+            }
             }
             catch
             {
