@@ -8,7 +8,7 @@ import { HttpService } from './http.service';
   providedIn: 'root',
 })
 export class BacklogService {
-  public routePrefix = '/api/backlog';
+  public routePrefix = '/api/task';
 
   private changeBacklogSource = new Subject<string>();
   changeBacklog$ = this.changeBacklogSource.asObservable();

@@ -38,6 +38,15 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok(tasks);
         }
 
+        [HttpGet("backlogTasks/{projectId}")]
+        public async Task<IActionResult> GetAllBacklogTasks(int projectId)
+        {
+            var tasks = await _taskService.GetAllBacklogTasks(projectId);
+            if (tasks == null)
+                return NotFound("Tasks not found");
+            return Ok(tasks);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTaskById(int id)
         {
