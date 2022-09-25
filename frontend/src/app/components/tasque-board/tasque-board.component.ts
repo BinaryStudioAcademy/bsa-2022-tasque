@@ -36,7 +36,7 @@ import { OrganizationService } from 'src/core/services/organization.service';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { UserProjectRole } from 'src/core/models/user/user-project-roles';
 import { BusinessRole } from 'src/shared/components/select-users/Models';
-import { TaskService } from 'src/core/services/task.service';
+import { SprintService } from 'src/core/services/sprint.service';
 
 @Component({
   selector: 'tasque-board',
@@ -99,7 +99,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     private taskStorageService: TaskStorageService,
     private router: Router,
     private organizationService: OrganizationService,
-    private taskService: TaskService
+    private sprintService: SprintService
   ) {
     this.getCurrentEntityService.getCurrentUserService.currentUser$.subscribe(
       (res) => {
@@ -160,7 +160,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       .pipe(
         concatMap((resp) => {
           this.currentSprint = resp.body as SprintModel;
-          return this.taskService.getAllSprintTasks(this.currentSprint.id);
+          return this.sprintService.getSprintTasks(this.currentSprint.id);
         }),
       ).subscribe(
         (resp) => {

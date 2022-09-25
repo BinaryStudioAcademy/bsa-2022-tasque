@@ -120,8 +120,8 @@ export class SprintComponent implements OnInit, OnChanges {
 
   //Get all tasks for the sprint
   public getSprintTasks(): void {
-    this.taskService
-      .getAllSprintTasks(this.currentSprint.id)
+    this.sprintService
+      .getSprintTasks(this.currentSprint.id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {

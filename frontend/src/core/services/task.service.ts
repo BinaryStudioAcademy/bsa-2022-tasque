@@ -24,11 +24,7 @@ export class TaskService {
   }
 
   getTaskCustomFieldsById(id: number): Observable<HttpResponse<TaskCustomFieldModel[]>> {
-    return this.httpService.getFullRequest(this.routePrefix + 'customFields/' + id);
-  }
-
-  getAllSprintTasks(sprintId: number): Observable<HttpResponse<TaskModel[]>> {
-    return this.httpService.getFullRequest(this.routePrefix + '/getAllSprintTasks/' + sprintId);
+    return this.httpService.getFullRequest(this.routePrefix + '/customFields/' + id);
   }
 
   updateTask(model: TaskUpdateModel): Observable<HttpResponse<TaskModel>> {

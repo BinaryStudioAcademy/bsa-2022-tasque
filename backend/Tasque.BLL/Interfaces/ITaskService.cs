@@ -8,9 +8,6 @@ namespace Tasque.Core.BLL.Interfaces
         Task<TaskDto> CreateTask(TaskDto model);
 
         Task<List<TaskDto>> GetAllProjectTasks(int projectId);
-        Task<List<TaskDto>> GetAllSprintTasks(int sprintId);
-
-        Task<List<TaskDto>> GetAllBacklogTasks(int projectId);
 
         Task<TaskDto> GetTaskById(int id);
 

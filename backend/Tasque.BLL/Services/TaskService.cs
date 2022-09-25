@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.BLL.Exceptions;
@@ -48,7 +48,6 @@ namespace Tasque.Core.BLL.Services
         {
             var entity = _mapper.Map<Common.Entities.Task>(model);
             var project = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId) ?? throw new CustomNotFoundException("project");
-
             entity.Key = project.Key + '-' + UpdateProjectCounter(project.Id);
 
             _dbContext.Add(entity);
@@ -112,104 +111,6 @@ namespace Tasque.Core.BLL.Services
                 return tasks;
 
             return tasks.Join(customFields, t => t.Id, ca => int.Parse(ca.Id), (t, ca) =>
-                JoinTaskAttributesWithDto(t,
-                    RenameFieldsWithActualValue(
-                        GetTaskTemplate(t.ProjectId, t.TypeId).Result ?? new(),
-                            MapCosmosTaskFieldsToTaskCustomFields(t, ca.CustomFields ?? new()).Result) ?? new())).ToList();
-        }
-
-        public async Task<List<TaskDto>> GetAllSprintTasks(int sprintId)
-        {
-            var tasks = await _dbContext.Tasks
-                .Include(t => t.Users)
-                .Include(t => t.Author)
-                .Include(t => t.LastUpdatedBy)
-                .Include(t => t.Priority)
-                .Include(t => t.State)
-                .Include(t => t.Project)
-                .Include(t => t.Type)
-                .Where(t => t.SprintId == sprintId)
-                .ToListAsync();
-
-            List<CosmosTaskModel> customFields;
-            try
-            {
-                customFields = await _cosmosTaskService.GetAllProjectTasks(tasks[0].ProjectId);
-                var tasksWithoutFields = tasks
-                    .Where(task => !customFields.Any((field) => field.Id == task.Id.ToString()))
-                    .ToList();
-
-                foreach (var task in tasksWithoutFields)
-                {
-                    customFields.Add(new()
-                    {
-                        Id = task.Id.ToString(),
-                        ProjectId = task.ProjectId.ToString(),
-                    });
-                }
-            }
-            catch
-            {
-                customFields = new();
-            }
-
-            var tasksDto = _mapper.Map<List<TaskDto>>(tasks);
-
-            if (!customFields.Any())
-            {
-                return tasksDto;
-            }
-
-            return tasksDto.Join(customFields, t => t.Id, ca => int.Parse(ca.Id), (t, ca) =>
-                JoinTaskAttributesWithDto(t,
-                    RenameFieldsWithActualValue(
-                        GetTaskTemplate(t.ProjectId, t.TypeId).Result ?? new(),
-                            MapCosmosTaskFieldsToTaskCustomFields(t, ca.CustomFields ?? new()).Result) ?? new())).ToList();
-        }
-
-        public async Task<List<TaskDto>> GetAllBacklogTasks(int projectId)
-        {
-            var tasks = await _dbContext.Tasks
-                .Include(t => t.Users)
-                .Include(t => t.Author)
-                .Include(t => t.LastUpdatedBy)
-                .Include(t => t.Priority)
-                .Include(t => t.State)
-                .Include(t => t.Project)
-                .Include(t => t.Type)
-                .Where(t => t.ProjectId == projectId && t.SprintId == null)
-                .ToListAsync();
-
-            List<CosmosTaskModel> customFields;
-            try
-            {
-                customFields = await _cosmosTaskService.GetAllProjectTasks(tasks[0].ProjectId);
-                var tasksWithoutFields = tasks
-                    .Where(task => !customFields.Any((field) => field.Id == task.Id.ToString()))
-                    .ToList();
-
-                foreach (var task in tasksWithoutFields)
-                {
-                    customFields.Add(new()
-                    {
-                        Id = task.Id.ToString(),
-                        ProjectId = task.ProjectId.ToString(),
-                    });
-                }
-            }
-            catch
-            {
-                customFields = new();
-            }
-
-            var tasksDto = _mapper.Map<List<TaskDto>>(tasks);
-
-            if (!customFields.Any())
-            {
-                return tasksDto;
-            }
-
-            return tasksDto.Join(customFields, t => t.Id, ca => int.Parse(ca.Id), (t, ca) =>
                 JoinTaskAttributesWithDto(t,
                     RenameFieldsWithActualValue(
                         GetTaskTemplate(t.ProjectId, t.TypeId).Result ?? new(),

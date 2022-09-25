@@ -29,24 +29,6 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok(tasks);
         }
 
-        [HttpGet("getAllSprintTasks/{sprintId}")]
-        public async Task<IActionResult> GetAllSprintTasks(int sprintId)
-        {
-            var tasks = await _taskService.GetAllSprintTasks(sprintId);
-            if (tasks == null)
-                return NotFound("Sprint or it's tasks not found");
-            return Ok(tasks);
-        }
-
-        [HttpGet("backlogTasks/{projectId}")]
-        public async Task<IActionResult> GetAllBacklogTasks(int projectId)
-        {
-            var tasks = await _taskService.GetAllBacklogTasks(projectId);
-            if (tasks == null)
-                return NotFound("Tasks not found");
-            return Ok(tasks);
-        }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTaskById(int id)
         {
