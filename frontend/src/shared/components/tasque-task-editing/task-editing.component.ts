@@ -99,6 +99,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public editorConfig: AngularEditorConfig = EditorConfig;
 
   public isOpen = false;
+  public isCustomFieldsUpdated = false;
 
   // eslint-disable-next-line max-params
   constructor(
@@ -406,7 +407,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   toogleModal(event: boolean): void {
     this.isOpen = event;
     this.isChanging.emit(event);
-    if (this.isOpen && this.task && !this.task.customFields) {
+    if (this.isOpen && this.task && !this.isCustomFieldsUpdated) {
       this.taskService.getTaskCustomFieldsById(this.task.id)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((resp) => {
@@ -414,6 +415,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
             return;
           }
           this.task.customFields = resp.body;
+          this.isCustomFieldsUpdated = true;
         });
     }
   }
