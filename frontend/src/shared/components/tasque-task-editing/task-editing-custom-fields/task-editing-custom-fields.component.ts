@@ -129,7 +129,12 @@ export class TaskEditingCustomFieldsComponent implements OnInit {
   }
 
   setSelectedUser(value: UserModel): void {
-    this.taskCustomFieldControl.setValue(JSON.stringify(value));
+    if (value.id === -1) {
+      this.taskCustomFieldControl.setValue('');
+    }
+    else {
+      this.taskCustomFieldControl.setValue(JSON.stringify(value));
+    }
   }
 
   setDropdownValue(value: string): void {
