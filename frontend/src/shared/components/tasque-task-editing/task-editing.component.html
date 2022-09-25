@@ -179,8 +179,8 @@
       <div *ngIf="customFields && customFields.length > 0">
         <div *ngFor="let field of customFields" class="custom-field">
           <app-task-editing-custom-fields
-            [currentTaskCustomField]="getCurrentTaskCustomField(field.fieldId)"
             [customField]="field"
+            [currentTaskCustomField]="getCurrentTaskCustomField(field.fieldId)"
             [projectUsers]="projectUsers"
             (taskCustomFieldChange)="getCustomField($event)"
           >
