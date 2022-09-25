@@ -1,22 +1,45 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { LocalStorageKeys } from '../models/local-storage-keys';
 import { ProjectInfoModel } from '../models/project/project-info-model';
+import { ProjectModel } from '../models/project/project-model';
+import { ProjectService } from './project.service';
 
 @Injectable({ providedIn: 'root' })
 export class GetCurrentProjectService {
-    constructor() { }
+    constructor(
+        private projectService: ProjectService,
+    ) { }
 
     private currentProjectIdSubj = new BehaviorSubject<number>(this.currentProjectId);
+    private currentProjectSubj = new ReplaySubject<ProjectModel>(1);
+
+    public currentProject$ = this.currentProjectSubj.asObservable();
     public currentProjectId$ = this.currentProjectIdSubj.asObservable();
 
     public set currentProjectId(value: number) {
         this.currentProjectIdSubj.next(value);
         localStorage.setItem(LocalStorageKeys.selectedProject, value.toString());
+        this.getCurrentProject();
     }
 
     public get currentProjectId(): number {
         return +(localStorage.getItem(LocalStorageKeys.selectedProject) ?? '-1');
+    }
+
+    public getCurrentProject(): void {
+        this.projectService.getProjectById(this.currentProjectId)
+        .pipe(take(1))
+        .subscribe((resp) => {
+            if(resp.body) {
+                this.setCurrentProject(resp.body as ProjectModel);
+            }
+        });
+    }
+
+    public setCurrentProject(value: ProjectModel): void {
+        this.currentProjectSubj.next(value);
     }
 
     public clearCurrentProjectId(): void {
