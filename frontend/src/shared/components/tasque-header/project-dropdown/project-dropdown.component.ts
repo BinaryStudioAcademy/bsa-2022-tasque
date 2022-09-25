@@ -86,6 +86,8 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit, O
 
     this.getCurrentEntityService
     .getCurrentProjectService.currentProjectId = project.id;
+    this.getCurrentEntityService
+    .getCurrentProjectService.getCurrentProject();
 
     this.navigateToBoard(project);
     window.scroll(0, 0);

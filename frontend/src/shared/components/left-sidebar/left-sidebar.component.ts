@@ -85,7 +85,8 @@ export class LeftSidebarComponent
 
   ngOnChanges(): void {
     this.checkActivatedRoute();
-    this.getProject();
+    const id = this.route.snapshot.paramMap.get('id');
+    this.projectId = parseInt(id as string);
   }
 
   minimize(): void {
