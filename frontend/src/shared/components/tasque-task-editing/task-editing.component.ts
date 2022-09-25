@@ -93,7 +93,6 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
   public issueTemplates: TaskTemplate[];
   public customFields: TaskCustomField[];
-  public taskCustomFields: TaskCustomFieldModel[] = [];
 
   public projectUsers: UserModel[] = [];
 
@@ -379,7 +378,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         this.editTaskForm.controls.sprint.value.id !== 0
           ? this.editTaskForm.controls.sprint.value.id
           : undefined,
-      customFields: this.taskCustomFields,
+      customFields: this.task.customFields,
     } as TaskUpdateModel;
 
     this.taskService
@@ -415,7 +414,6 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
             return;
           }
           this.task.customFields = resp.body;
-          this.taskCustomFields = resp.body;
         });
     }
   }
@@ -469,13 +467,16 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   }
 
   public getCustomField(field: TaskCustomFieldModel): void {
-    const isExist = this.taskCustomFields.find(
+    if (!this.task.customFields) {
+      this.task.customFields = [];
+    }
+    const isExist = this.task.customFields?.find(
       (f) => f.fieldId === field.fieldId,
     );
     if (isExist === undefined) {
-      this.taskCustomFields.push(field);
+      this.task.customFields.push(field);
     }
-    this.taskCustomFields.forEach((val) => {
+    this.task.customFields.forEach((val) => {
       if (val.fieldId === field.fieldId) {
         val.fieldValue = field.fieldValue;
       }
@@ -485,7 +486,6 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
   public setSelectedTaskType(typeId: number): void {
     this.customFields = [];
-    this.taskCustomFields = [];
 
     const template = this.issueTemplates.find(
       (t) =>
@@ -494,8 +494,11 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     ) as TaskTemplate;
 
     this.customFields = template?.customFields ?? [];
+    if (!this.task.customFields) {
+      this.task.customFields = [];
+    }
     this.customFields.forEach((cf) =>
-      this.taskCustomFields.push({
+      this.task.customFields?.push({
         fieldId: cf.fieldId as string,
         type: cf.type,
       }),
