@@ -102,11 +102,9 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit(): void {
-    console.log('init');
     const id = this.route.parent?.snapshot.paramMap.get('id');
 
     if (id) {
-      console.log(id);
       this.currentProjectId = parseInt(id);
       this.getCurrentProject();
     }
@@ -147,9 +145,6 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
   }
 
   private getCurrentProject(): void {
-    //It's going to here, so if u will write here console.log('smth'); 
-    //it will display in console, but it's not going further to subscription
-
     this.getCurrentEntityService
       .getCurrentProjectService.currentProject$
       .subscribe((proj) => {
@@ -178,12 +173,11 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          this.isShow = true;
           this.sprints = result.body.sort(
             (a, b) => (a.order ?? 0) - (b.order ?? 0),
           );
         }
-      });
+      }).add(() => this.isShow = true);
   }
 
   public getArchiveSprints(projectId: number): void {
