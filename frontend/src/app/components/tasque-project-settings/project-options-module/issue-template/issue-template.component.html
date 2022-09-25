@@ -3,7 +3,6 @@
     <h1>Issue template</h1>
 </div>
 <div class="issue-template-form">
-
     <div class="select-issue-type">
         <tasque-dropdown class="dropdown" label="Select issue type" placeholder="Issue type" [options]="dropdownOptions" (onSelect)="setSelected($event)"></tasque-dropdown>
         <div class="selected-issue" *ngIf="selectedIssue !== undefined">
@@ -12,7 +11,6 @@
                 <h2>{{selectedIssue.title}}</h2>
             </div>
         </div>
-        
     </div>
     <hr>
     <div *ngIf="selectedIssue !== undefined" class="issue-template-container">
