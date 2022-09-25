@@ -24,7 +24,6 @@ import { OrganizationModel } from 'src/core/models/organization/organization-mod
 import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { OrganizationService } from 'src/core/services/organization.service';
-import { concatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'tasque-task-creation',
