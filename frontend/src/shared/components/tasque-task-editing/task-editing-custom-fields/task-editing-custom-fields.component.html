@@ -48,15 +48,10 @@
 <div *ngIf="customField.type === 5" class="dropdown-field">
   <tasque-menu-dropdown
     class="button-like dropdown-values"
-    separator="Select a value |"
+    separator="|"
     style="color: black"
   >
-    <tasque-sidebar
-      btnText="Select a value"
-      name="dropdown-choose"
-      btnClass="btn stroke"
-    >
-    </tasque-sidebar>
+    <div dropdown-button>Select a value</div>
     <tasque-option
       option
       *ngFor="let value of dropdownField?.fields"
