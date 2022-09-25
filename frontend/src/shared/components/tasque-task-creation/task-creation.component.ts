@@ -244,7 +244,6 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
       this.setPriorityOptions();
       if (!clean) {
         this.priorityControl.setValue(this.projectPriorities[0]);
-        this.setSelectedTaskState(this.projectPriorities[0].id);
       }
       this.setStateOptions();
       if (!clean) {

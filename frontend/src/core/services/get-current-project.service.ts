@@ -21,7 +21,6 @@ export class GetCurrentProjectService {
     public set currentProjectId(value: number) {
         this.currentProjectIdSubj.next(value);
         localStorage.setItem(LocalStorageKeys.selectedProject, value.toString());
-        this.getCurrentProject();
     }
 
     public get currentProjectId(): number {
