@@ -170,7 +170,7 @@
         <tasque-button class="btn mini" text="+ Add issues"></tasque-button>
       </div>
 
-      <div class="body-title">
+      <div class="body-title" *ngIf="customFields && customFields.length > 0">
         <div class="body-title">
           <h4>Additional fields</h4>
         </div>
