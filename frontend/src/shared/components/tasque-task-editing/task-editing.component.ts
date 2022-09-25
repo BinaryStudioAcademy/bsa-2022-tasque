@@ -420,6 +420,17 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   toogleModal(event: boolean): void {
     this.isOpen = event;
     this.isChanging.emit(event);
+    if (this.isOpen && this.task && !this.task.customFields) {
+      this.taskService.getTaskCustomFieldsById(this.task.id)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((resp) => {
+          if (!resp.body) {
+            return;
+          }
+          this.task.customFields = resp.body;
+          this.taskCustomFields = resp.body;
+        });
+    }
   }
 
   addUser(email: string): void {

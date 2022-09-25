@@ -5,6 +5,7 @@ import { HttpService } from './http.service';
 import { Observable } from 'rxjs';
 import { TaskModel } from '../models/task/task-model';
 import { TaskUpdateModel } from '../models/task/task-update-model';
+import { TaskCustomFieldModel } from '../models/task/task-creation-models/task-custom-field-model';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,10 @@ export class TaskService {
 
   getTaskById(id: number): Observable<HttpResponse<TaskModel>> {
     return this.httpService.getFullRequest(this.routePrefix + '/' + id);
+  }
+
+  getTaskCustomFieldsById(id: number): Observable<HttpResponse<TaskCustomFieldModel[]>> {
+    return this.httpService.getFullRequest(this.routePrefix + 'customFields/' + id);
   }
 
   getAllSprintTasks(sprintId: number): Observable<HttpResponse<TaskModel[]>> {
