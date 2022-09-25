@@ -99,7 +99,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public editorConfig: AngularEditorConfig = EditorConfig;
 
   public isOpen = false;
-  public isCustomFieldsLoaded = false;
+  public isDataLoaded = false;
 
   // eslint-disable-next-line max-params
   constructor(
@@ -127,6 +127,10 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     this.currentOrganizationService.currentOrganizationId$.subscribe(
       (orgId) => {
         this.organizationId = orgId;
+
+        if (!this.isDataLoaded) {
+          return;
+        }
 
         this.projectService
           .getProjectsByOrganizationId(this.organizationId)
@@ -407,7 +411,17 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   toogleModal(event: boolean): void {
     this.isOpen = event;
     this.isChanging.emit(event);
-    if (this.isOpen && this.task && !this.isCustomFieldsLoaded) {
+    if (this.isOpen && this.task && !this.isDataLoaded) {
+      this.projectService
+        .getProjectsByOrganizationId(this.organizationId)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((resp) => {
+          if (!resp.body) {
+            return;
+          }
+          this.fillProjectOptions(resp.body);
+          this.getProjectInfo(this.task.projectId);
+        });
       this.taskService.getTaskCustomFieldsById(this.task.id)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((resp) => {
@@ -415,8 +429,9 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
             return;
           }
           this.task.customFields = resp.body;
-          this.isCustomFieldsLoaded = true;
         });
+
+      this.isDataLoaded = true;
     }
   }
 

@@ -47,7 +47,14 @@ export class TaskEditingCustomFieldsComponent implements OnInit {
 
     if (this.customField.type === 6) {
       const checkboxes = JSON.parse(value.fieldValue) as CheckboxField[];
-      for (let i = 0; i < this.checkboxFields.length; i++) {
+      if (!this.checkboxFields) {
+        this.checkboxFields = checkboxes;
+        this.taskCustomFieldControl.setValue(value.fieldValue, {
+          emitEvent: false
+        });
+        return;
+      }
+      for (let i = 0; i < this.checkboxFields?.length; i++) {
         this.checkboxFields[i].isChecked = checkboxes[i].isChecked;
       }
       this.taskCustomFieldControl.setValue(value.fieldValue, {
@@ -96,7 +103,9 @@ export class TaskEditingCustomFieldsComponent implements OnInit {
         this.initLabels();
         break;
       case TaskFieldType.CheckBox:
-        this.checkboxFields = this.customField.checkboxes as CheckboxField[];
+        if (!this.checkboxFields) {
+          this.checkboxFields = this.customField.checkboxes as CheckboxField[];
+        }
         break;
     }
 
