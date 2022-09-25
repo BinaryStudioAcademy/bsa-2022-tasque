@@ -70,8 +70,9 @@
   </div>
 </div>
 <div *ngIf="customField.type === 6" class="checkbox-field">
-  <div class="checkbox-item" *ngFor="let chk of checkboxFields">
+  <div class="checkbox-item" *ngFor="let chk of checkboxFields; let i = index">
     <tasque-checkbox
+      [checked]="chk.isChecked"
       [text]="chk.checkboxName"
       (stateChanged)="setCheckboxChanged($event, chk)"
     >

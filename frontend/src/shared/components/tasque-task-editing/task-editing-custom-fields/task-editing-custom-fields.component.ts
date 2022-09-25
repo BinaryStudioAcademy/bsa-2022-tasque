@@ -30,6 +30,28 @@ export class TaskEditingCustomFieldsComponent implements OnInit {
     }
 
     this._currentTaskCustomField = value;
+
+    if (!value.fieldValue) {
+      return;
+    }
+
+    this.dropdownValue = value.fieldValue;
+
+    if (this.customField.type === 3) {
+      const dropdownValue = JSON.parse(value.fieldValue) as TasqueDropdownOption;
+      this.taskCustomFieldControl.setValue(dropdownValue, {
+        emitEvent: false
+      });
+      return;
+    }
+
+    if (this.customField.type === 6) {
+      const checkboxes = JSON.parse(value.fieldValue) as CheckboxField[];
+      for (let i = 0; i < this.checkboxFields.length; i++) {
+        this.checkboxFields[i].isChecked = checkboxes[i].isChecked;
+      }
+    }
+
     this.taskCustomFieldControl.setValue(value.fieldValue, {
       emitEvent: false
     });
@@ -74,7 +96,7 @@ export class TaskEditingCustomFieldsComponent implements OnInit {
         this.taskCustomFieldChange.emit({
           fieldId: this.customField.fieldId as string,
           type: this.customField.type,
-          fieldValue: isDropdownOption.toString()
+          fieldValue: JSON.stringify(value)
         });
         return;
       }
