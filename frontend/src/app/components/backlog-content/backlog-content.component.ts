@@ -184,14 +184,7 @@ export class BacklogContentComponent implements OnInit, OnChanges {
   }
 
   public getTasksType(): void {
-    this.scopeBoardService.taskTypeService
-      .getAll()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((result) => {
-        if (result.body) {
-          this.taskTypes = result.body;
-        }
-      });
+    this.taskTypes = this.project.projectTaskTypes;
   }
 
   //Sort tasks in a sprint (by keyword or IssueSort)

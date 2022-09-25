@@ -14,7 +14,6 @@ import { ProjectModel } from 'src/core/models/project/project-model';
 import { TaskCustomField } from 'src/core/models/task/task-template-models/task-custom-field';
 import { UserModel } from 'src/core/models/user/user-model';
 import { TaskCustomFieldModel } from 'src/core/models/task/task-creation-models/task-custom-field-model';
-import { TaskPriority } from 'src/core/models/task/task-priority';
 import { TaskService } from 'src/core/services/task.service';
 import { TaskState } from 'src/core/models/task/task-state';
 import { BacklogService } from 'src/core/services/backlog.service';
@@ -25,7 +24,6 @@ import { OrganizationModel } from 'src/core/models/organization/organization-mod
 import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
 import { UserRole } from 'src/core/models/user/user-roles';
 import { OrganizationService } from 'src/core/services/organization.service';
-import { concatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'tasque-task-creation',
@@ -229,101 +227,62 @@ export class TaskCreationComponent implements OnInit, OnDestroy {
     this.customFields = [];
     this.taskCustomFields = [];
 
-    this.taskTemplateService
-      .getAllProjectTaskTypes(this.selectedProjectId)
-      .pipe(
-        concatMap((resp) => {
-          const types = resp.body as TaskType[];
-          this.issueTypes = [];
-          types.forEach((t) =>
-            this.issueTypes.push({
-              title: t.name,
-              id: t.id,
-              color: t.color ?? '',
-            }),
-          );
+    this.taskTemplateService.getAllProjectTemplates(
+      this.selectedProjectId,
+    ).subscribe((resp) => {
+      this.issueTemplates = resp.body as TaskTemplate[];
+    });
 
-          if (!clean) {
-            this.issueTypeControl.setValue(this.issueTypes[0]);
-          }
-          return this.taskTemplateService.getAllProjectTemplates(
-            this.selectedProjectId,
-          );
-        }),
-      )
-      .subscribe((resp) => {
-        this.issueTemplates = resp.body as TaskTemplate[];
-        if (!clean) {
-          if (this.issueTypes[0]) {
-            this.setSelectedTaskType(this.issueTypes[0].id);
-          }
-        }
-      });
+    this.projectService.getProjectById(id).subscribe((resp) => {
+      this._currentProject = resp.body as ProjectModel;
+      this.taskStates = this._currentProject.projectTaskStates;
+      this.setTypesOptions();
+      if (!clean) {
+        this.issueTypeControl.setValue(this.issueTypes[0]);
+        this.setSelectedTaskType(this.issueTypes[0].id);
+      }
+      this.setPriorityOptions();
+      if (!clean) {
+        this.priorityControl.setValue(this.projectPriorities[0]);
+        this.setSelectedTaskState(this.projectPriorities[0].id);
+      }
+      this.setStateOptions();
+      if (!clean) {
+        this.stateControl.setValue(this.taskStateOptions[0]);
+        this.setSelectedTaskState(this.taskStateOptions[0].id);
+      }
+    });
+  }
 
-    this.projectService
-      .getProjectParticipants(this.selectedProjectId)
-      .subscribe((resp) => {
-        if (resp.ok) {
-          this.projectUsers = resp.body as UserModel[];
-        } else {
-          //TODO
-          console.warn('Something went wrong, try again later');
-          //  this.notificationService.error(
-          //   'Something went wrong, try again later',
-          //  );
-        }
-      });
+  setStateOptions(): void {
+    this.taskStates.forEach((ts) => {
+      this.taskStateOptions.push({
+        id: ts.id,
+        title: ts.name,
+        color: ts.color,
+       });
+    });
+  }
 
-    this.projectService
-      .getProjectPriorities(this.selectedProjectId)
-      .subscribe((resp) => {
-        if (resp.ok) {
-          const priorities = resp.body as TaskPriority[];
-          this.projectPriorities = [];
-          priorities.forEach((p) =>
-            this.projectPriorities.push({
-              title: p.name,
-              id: p.id,
-              color: p.color,
-            }),
-          );
-          if (!clean) {
-            this.priorityControl.setValue(this.projectPriorities[0]);
-          }
-        } else {
-          //TODO
-          console.warn('Something went wrong, try again later');
-          //   this.notificationService.error(
-          //     'Something went wrong, try again later',
-          //   );
-        }
-      });
+  setPriorityOptions(): void {
+    this.projectPriorities = [];
+    this._currentProject.projectTaskPriorities?.forEach((p) =>
+      this.projectPriorities.push({
+        title: p.name,
+        id: p.id,
+        color: p.color,
+      }),
+    );
+  }
 
-    this.projectService
-      .getProjectStates(this.selectedProjectId)
-      .subscribe((resp) => {
-        if (resp.ok) {
-          this.taskStates = resp.body as TaskState[];
-          this.taskStateOptions = [];
-          this.taskStates.forEach((ts) => {
-            this.taskStateOptions.push({
-              id: ts.id,
-              title: ts.name,
-              color: ts.color,
-            });
-          });
-          if (!clean) {
-            this.stateControl.setValue(this.taskStateOptions[0]);
-          }
-        } else {
-          //TODO
-          console.warn('Something went wrong, try again later');
-
-          // this.notificationService.error(
-          //  'Something went wrong, try again later',
-          // );
-        }
-      });
+  setTypesOptions(): void {
+    this._currentProject.projectTaskTypes.forEach((t) =>
+      this.issueTypes.push({
+        title: t.name,
+        id: t.id,
+        color: t.color ?? '',
+      }),
+    );
   }
 
   setSelectedTaskType(id: number): void {
