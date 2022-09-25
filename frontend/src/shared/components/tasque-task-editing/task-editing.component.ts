@@ -95,7 +95,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public customFields: TaskCustomField[];
   public taskCustomFields: TaskCustomFieldModel[] = [];
 
-  public users: UserModel[] = [];
+  public projectUsers: UserModel[] = [];
 
   public editorConfig: AngularEditorConfig = EditorConfig;
 
@@ -311,6 +311,22 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       return;
     }
 
+    this.projectService.getProjectById(projectId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((resp) => {
+        if (!resp.body) {
+          return;
+        }
+        const project = resp.body;
+
+        this.projectUsers = project.users;
+        this.fillTypeOptions(project.projectTaskTypes);
+        if (project.projectTaskPriorities) {
+          this.fillPriorityOptions(project.projectTaskPriorities);
+        }
+        this.fillStateOptions(project.projectTaskStates);
+      });
+
     this.sprintService
       .getProjectSprints(projectId)
       .pipe(takeUntil(this.unsubscribe$))
@@ -319,36 +335,6 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
           return;
         }
         this.fillSprintOptions(sprints.body);
-      });
-
-    this.taskTemplateService
-      .getAllProjectTaskTypes(projectId)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((types) => {
-        if (!types.body) {
-          return;
-        }
-        this.fillTypeOptions(types.body);
-      });
-
-    this.projectService
-      .getProjectPriorities(projectId)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((priorities) => {
-        if (!priorities.body) {
-          return;
-        }
-        this.fillPriorityOptions(priorities.body);
-      });
-
-    this.taskTemplateService
-      .getAllProjectTaskStates(projectId)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((states) => {
-        if (!states.body) {
-          return;
-        }
-        this.fillStateOptions(states.body);
       });
 
     this.taskTemplateService
