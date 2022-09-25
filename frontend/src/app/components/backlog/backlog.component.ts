@@ -147,9 +147,6 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
   }
 
   private getCurrentProject(): void {
-    //It's going to here, so if u will write here console.log('smth'); 
-    //it will display in console, but it's not going further to subscription
-
     this.getCurrentEntityService
       .getCurrentProjectService.currentProject$
       .subscribe((proj) => {
