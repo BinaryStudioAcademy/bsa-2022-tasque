@@ -13,7 +13,7 @@ export class GetCurrentProjectService {
     ) { }
 
     private currentProjectIdSubj = new BehaviorSubject<number>(this.currentProjectId);
-    private currentProjectSubj = new ReplaySubject<ProjectModel>(1);
+    private currentProjectSubj = new BehaviorSubject<ProjectModel | undefined>(undefined);
 
     public currentProject$ = this.currentProjectSubj.asObservable();
     public currentProjectId$ = this.currentProjectIdSubj.asObservable();
@@ -29,12 +29,12 @@ export class GetCurrentProjectService {
 
     public getCurrentProject(): void {
         this.projectService.getProjectById(this.currentProjectId)
-        .pipe(take(1))
-        .subscribe((resp) => {
-            if(resp.body) {
-                this.setCurrentProject(resp.body as ProjectModel);
-            }
-        });
+            .pipe(take(1))
+            .subscribe((resp) => {
+                if (resp.body) {
+                    this.setCurrentProject(resp.body as ProjectModel);
+                }
+            });
     }
 
     public setCurrentProject(value: ProjectModel): void {

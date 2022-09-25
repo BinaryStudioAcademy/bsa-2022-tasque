@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { takeUntil, switchMap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { UserModel } from 'src/core/models/user/user-model';
 import { TasqueDropdownOption } from 'src/shared/components/tasque-dropdown/dropdown.component';
 import {
@@ -110,7 +110,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
       this.currentProjectId = parseInt(id);
       this.getCurrentProject();
     }
-    
+
     this.getCurrentEntityService.getCurrentUserService.currentUser$.subscribe(
       (user) => {
         this.currentUser = user as UserModel;
@@ -146,26 +146,27 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  private getCurrentProject(): void { 
+  private getCurrentProject(): void {
     //It's going to here, so if u will write here console.log('smth'); 
     //it will display in console, but it's not going further to subscription
-    
+
     this.getCurrentEntityService
       .getCurrentProjectService.currentProject$
       .subscribe((proj) => {
-        this.currentProject = proj;
-
-        if(!this.currentProject) {
-          this.scopeBoardService.projectService
-          .getProjectById(this.currentProjectId)
-          .subscribe((resp) => {
-            this.currentProject = resp.body as ProjectModel;
-            this.getCurrentEntityService
-            .getCurrentProjectService.setCurrentProject(this.currentProject);
-            this.updateHeader();
-          });
+        if (proj) {
+          this.currentProject = proj;
+          this.updateHeader();
         }
-        this.updateHeader();
+        else {
+          this.scopeBoardService.projectService
+            .getProjectById(this.currentProjectId)
+            .subscribe((resp) => {
+              this.currentProject = resp.body as ProjectModel;
+              this.getCurrentEntityService
+                .getCurrentProjectService.setCurrentProject(this.currentProject);
+              this.updateHeader();
+            });
+        }
       });
   }
 
