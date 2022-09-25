@@ -139,8 +139,10 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       .subscribe((resp) => {
         if (resp.ok) {
           this.project = resp.body as ProjectModel;
+
           this.getCurrentEntityService
-          .getCurrentProjectService.setCurrentProject(this.project);
+          .getCurrentProjectService.currentProject = this.project;
+          
           this.projectUsers = this.project.users;
           this.updateHeader();
           this.setColumns();

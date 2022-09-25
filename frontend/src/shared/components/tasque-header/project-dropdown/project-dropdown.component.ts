@@ -45,8 +45,7 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit, O
   constructor(
     private getCurrentEntityService: ScopeGetCurrentEntityService,
     private projectService: ProjectService,
-    private router: Router,
-    private activeRoute: ActivatedRoute) {
+    private router: Router) {
     super();
   }
 
@@ -87,6 +86,8 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit, O
 
     this.getCurrentEntityService
     .getCurrentProjectService.currentProjectId = project.id;
+    this.getCurrentEntityService
+    .getCurrentProjectService.getCurrentProject();
     this.navigateToBoard(project);
     window.scroll(0, 0);
     this.isChanged.emit();

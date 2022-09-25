@@ -27,6 +27,10 @@ export class GetCurrentProjectService {
         return +(localStorage.getItem(LocalStorageKeys.selectedProject) ?? '-1');
     }
 
+    public set currentProject(value: ProjectModel) {
+        this.currentProjectSubj.next(value);
+    }
+
     public getCurrentProject(): void {
         this.projectService.getProjectById(this.currentProjectId)
             .pipe(take(1))
@@ -36,7 +40,7 @@ export class GetCurrentProjectService {
                 }
             });
     }
-
+    
     public setCurrentProject(value: ProjectModel): void {
         this.currentProjectSubj.next(value);
     }
