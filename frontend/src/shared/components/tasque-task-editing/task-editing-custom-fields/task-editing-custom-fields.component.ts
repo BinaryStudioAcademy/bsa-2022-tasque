@@ -85,6 +85,7 @@ export class TaskEditingCustomFieldsComponent implements OnInit {
   ngOnInit(): void {
     this.newTaskCustomField = {
       fieldId: this.customField.fieldId as string,
+      type: this.customField.type,
     };
 
     switch (this.customField.type) {
