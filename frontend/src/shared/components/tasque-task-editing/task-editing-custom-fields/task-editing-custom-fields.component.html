@@ -38,6 +38,7 @@
   <tasque-team-select
     *ngIf="projectUsers.length > 0"
     (selectedUser)="setSelectedUser($event)"
+    [selectedUserId]="selectedUserId"
     [avatars]="projectUsers"
   >
   </tasque-team-select>

@@ -339,6 +339,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
 
     this.taskTemplateService
       .getAllProjectTemplates(projectId)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((resp) => {
         this.issueTemplates = resp.body as TaskTemplate[];
         this.setSelectedTaskType(this.task.typeId);

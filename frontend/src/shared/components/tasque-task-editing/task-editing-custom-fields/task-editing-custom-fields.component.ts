@@ -50,6 +50,14 @@ export class TaskEditingCustomFieldsComponent implements OnInit {
       for (let i = 0; i < this.checkboxFields.length; i++) {
         this.checkboxFields[i].isChecked = checkboxes[i].isChecked;
       }
+      this.taskCustomFieldControl.setValue(value.fieldValue, {
+        emitEvent: false
+      });
+      return;
+    }
+
+    if (this.customField.type === 4) {
+      this.selectedUserId = (JSON.parse(value.fieldValue) as UserModel).id;
     }
 
     this.taskCustomFieldControl.setValue(value.fieldValue, {
@@ -71,6 +79,8 @@ export class TaskEditingCustomFieldsComponent implements OnInit {
   public labelOptions: TasqueDropdownOption[] = [];
 
   public dropdownValue: string;
+
+  public selectedUserId: number;
 
   ngOnInit(): void {
     this.newTaskCustomField = {
