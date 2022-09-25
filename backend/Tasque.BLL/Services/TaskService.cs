@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Tasque.Core.BLL.Exceptions;
@@ -146,7 +146,7 @@ namespace Tasque.Core.BLL.Services
                         Id = task.Id.ToString(),
                         ProjectId = task.ProjectId.ToString(),
                     });
-            }
+                }
             }
             catch
             {
@@ -242,6 +242,20 @@ namespace Tasque.Core.BLL.Services
             return JoinTaskAttributesWithDto(task,
                 RenameFieldsWithActualValue(template,
                         await MapCosmosTaskFieldsToTaskCustomFields(task, attributes.CustomFields)) ?? new());
+        }
+
+        public async Task<List<TaskCustomFields>> GetTaskCustomFieldsById(int id)
+        {
+            var task = _dbContext.Tasks.FirstOrDefault((task) => task.Id == id)
+                ?? throw new CustomNotFoundException(nameof(Common.Entities.Task));
+
+            var attributes = await _cosmosTaskService.GetTaskById(id.ToString())
+                ?? throw new CustomNotFoundException("Custom Fields");
+
+            var template = await GetTaskTemplate(task.ProjectId, task.TypeId)
+                ?? throw new CustomNotFoundException("Custom Fields");
+
+            return await MapCosmosTaskFieldsToTaskCustomFields(template, attributes.CustomFields);
         }
 
         public async Task<TaskDto> UpdateTask(TaskDto model)
@@ -365,6 +379,29 @@ namespace Tasque.Core.BLL.Services
             return result;
         }
 
+        public async Task<List<TaskCustomFields>> MapCosmosTaskFieldsToTaskCustomFields(TaskTemplate template, List<CosmosTaskFields> fields)
+        {
+            var result = new List<TaskCustomFields>();
+
+            if (fields == null || fields.Count() == 0 || template?.CustomFields == null)
+                return result;
+
+            fields.ForEach(f =>
+            {
+                var type = template.CustomFields.Find(t => t.FieldId == f?.FieldId)?.Type;
+
+                result.Add(new()
+                {
+                    FieldId = f.FieldId,
+                    FieldName = template?.CustomFields?.Find(t => t.FieldId == f?.FieldId)?.Name,
+                    FieldType = type ?? TaskFieldType.Text,
+                    FieldValue = f.FieldValue,
+                });
+            });
+
+            return result;
+        }
+
         private int UpdateProjectCounter(int projectId)
         {
             var project = _dbContext.Projects.FirstOrDefault(p => p.Id == projectId) ?? throw new CustomNotFoundException("project");
@@ -381,7 +418,7 @@ namespace Tasque.Core.BLL.Services
             var comment = _mapper.Map<Comment>(dto);
 
             _dbContext.Comments.Add(comment);
-            
+
             _dbContext.Update(task);
             await _dbContext.SaveChangesAsync();
             var newComment = await _dbContext.Comments

@@ -1,4 +1,5 @@
 ﻿using Tasque.Core.Common.DTO.Task;
+using Tasque.Core.Common.DTO.Task.PartialModels;
 
 namespace Tasque.Core.BLL.Interfaces
 {
@@ -12,6 +13,8 @@ namespace Tasque.Core.BLL.Interfaces
         Task<List<TaskDto>> GetAllBacklogTasks(int projectId);
 
         Task<TaskDto> GetTaskById(int id);
+
+        Task<List<TaskCustomFields>> GetTaskCustomFieldsById(int id);
 
         Task<TaskDto> UpdateTask(TaskDto model);
 
