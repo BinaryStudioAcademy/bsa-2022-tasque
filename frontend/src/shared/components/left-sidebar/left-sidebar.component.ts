@@ -85,6 +85,7 @@ export class LeftSidebarComponent
 
   ngOnChanges(): void {
     this.checkActivatedRoute();
+    this.getProject();
   }
 
   minimize(): void {

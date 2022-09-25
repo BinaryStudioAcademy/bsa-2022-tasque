@@ -103,9 +103,12 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
 
   ngOnInit(): void {
     const id = this.route.parent?.snapshot.paramMap.get('id');
-
     if (id) {
       this.currentProjectId = parseInt(id);
+      this.getCurrentEntityService
+      .getCurrentProjectService.currentProjectId = this.currentProjectId;
+      this.getCurrentEntityService
+      .getCurrentProjectService.getCurrentProject();
       this.getCurrentProject();
     }
 
@@ -147,9 +150,7 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
   private getCurrentProject(): void {
     this.getCurrentEntityService
       .getCurrentProjectService.currentProject$
-      //.pipe(takeUntil(this.unsubscribe$))
       .subscribe((proj) => {
-<<<<<<< Updated upstream
         if (proj) {
           this.currentProject = proj;
           this.updateHeader();
@@ -164,11 +165,6 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
               this.updateHeader();
             });
         }
-=======
-        this.currentProject = proj;
-
-        this.updateHeader();
->>>>>>> Stashed changes
       });
   }
 

@@ -40,7 +40,7 @@ export class GetCurrentProjectService {
                 }
             });
     }
-    
+
     public setCurrentProject(value: ProjectModel): void {
         this.currentProjectSubj.next(value);
     }
