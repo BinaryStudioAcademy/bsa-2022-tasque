@@ -351,7 +351,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   }
 
   userSelected(event: UserModel): void {
-    if (this.selectedUserId && event.id === this.selectedUserId) {
+    if (this.selectedUserId && event.id === this.selectedUserId || event.id == -1) {
       this.selectedUserId = undefined;
       this.router.navigate([], { queryParams: {} });
     } else {
