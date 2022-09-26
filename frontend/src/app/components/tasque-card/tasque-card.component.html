@@ -3,10 +3,10 @@
     <div class="task-status">
       <img *ngIf="isDone" class="is-done" src="assets/success_icon.svg" />
       <span [style.background-color]="taskInfo.type?.color">{{
-        taskInfo.type?.name
+        taskInfo.type?.name | cardLabel
       }}</span>
       <span [style.background-color]="taskInfo.priority?.color">{{
-        taskInfo.priority?.name
+        taskInfo.priority?.name | cardLabel
       }}</span>
     </div>
     <div class="card-tools">

@@ -1,1 +1,9 @@
-<p>task-comment-notification works!</p>
+<div class="task-comment" *ngIf="true">
+    <tasque-avatar [diameter_px]="45" [user]="commentBy"></tasque-avatar>
+    <span class="notification-content">
+        {{ commentBy.name }} has comment your task
+        <a [href]="getTaskRef()">{{ task.key }}</a>:
+        <a [href]="commentBy.name">{{ comment }}</a>.
+    </span>
+    <input style="margin-left: 105px" (click)="onDelete()" type="image" src="assets/cross.svg">
+</div>
