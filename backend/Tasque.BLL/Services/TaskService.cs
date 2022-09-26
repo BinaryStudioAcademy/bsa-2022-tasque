@@ -162,6 +162,7 @@ namespace Tasque.Core.BLL.Services
         public async Task<TaskDto> UpdateTask(TaskDto model)
         {
             var currentProjectId = _dbContext.Tasks.FirstOrDefault(t => t.Id == model.Id)?.ProjectId;
+            var currentStateId = _dbContext.Tasks.FirstOrDefault(t => t.Id == model.Id)?.StateId;
 
             if (model.ProjectId != currentProjectId)
             {
@@ -171,8 +172,28 @@ namespace Tasque.Core.BLL.Services
 
             var entityTask = await _dbContext.Tasks
                 .Include(task => task.Users)
+                .Include(t => t.Author)
                 .FirstOrDefaultAsync(t => t.Id == model.Id)
                 ?? throw new CustomNotFoundException("task");
+
+
+            if (currentStateId != null &&
+                model.StateId != null &&
+                model.LastUpdatedById != null &&
+                model.StateId != currentStateId)
+            {
+                TaskMovedEvent @event = new()
+                {
+                    PreviousColumnId = (int)currentStateId,
+                    NewColumnId = (int)model.StateId,
+                    MovedById = (int)model.LastUpdatedById,
+                    TaskId = model.Id,
+                    TaskAuthorId = model.AuthorId,
+                    ConnectionId = entityTask.Author.ConnectionId,
+                };
+
+                _bus.Publish(@event);
+            }
 
             var task = _mapper.Map<Common.Entities.Task>(model);
             entityTask.Users.Clear();
