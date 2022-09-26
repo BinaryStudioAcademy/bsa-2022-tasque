@@ -28,7 +28,7 @@ import { ScopeBoardService } from 'src/core/services/scope/scope-board-service';
 import { TaskState } from 'src/core/models/task/task-state';
 import { TaskStorageService } from 'src/core/services/task-storage.service';
 import { SprintModel } from 'src/core/models/sprint/sprint-model';
-import { take } from 'rxjs/operators';
+import { concatMap, take } from 'rxjs/operators';
 import { ValidationConstants } from 'src/core/models/const-resources/validation-constraints';
 import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get-current-entity.service';
 import { UserRole } from 'src/core/models/user/user-roles';
@@ -36,6 +36,7 @@ import { OrganizationService } from 'src/core/services/organization.service';
 import { OrganizationModel } from 'src/core/models/organization/organization-model';
 import { UserProjectRole } from 'src/core/models/user/user-project-roles';
 import { BusinessRole } from 'src/shared/components/select-users/Models';
+import { SprintService } from 'src/core/services/sprint.service';
 
 @Component({
   selector: 'tasque-board',
@@ -88,6 +89,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
   public statusColumn = false;
 
+  // eslint-disable-next-line max-params
   constructor(
     formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -97,6 +99,7 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
     private taskStorageService: TaskStorageService,
     private router: Router,
     private organizationService: OrganizationService,
+    private sprintService: SprintService
   ) {
     this.getCurrentEntityService.getCurrentUserService.currentUser$.subscribe(
       (res) => {
@@ -136,15 +139,16 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       .subscribe((resp) => {
         if (resp.ok) {
           this.project = resp.body as ProjectModel;
+
+          this.getCurrentEntityService
+          .getCurrentProjectService.currentProject = this.project;
+          
           this.projectUsers = this.project.users;
           this.updateHeader();
           this.setColumns();
-
           this.permissionToEdit();
         } else {
-          //TODO
-          console.warn('Something went wrong');
-          //this.notificationService.error('Something went wrong');
+          this.notificationService.error('Something went wrong');
         }
       });
 
@@ -154,16 +158,25 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
   getCurrentSprintAndTasks(): void {
     this.boardService.sprintService
       .getCurrentSprintByProjectId(this.projectId)
-      .subscribe((resp) => {
-        if (resp.body) {
+      .pipe(
+        concatMap((resp) => {
           this.currentSprint = resp.body as SprintModel;
+          return this.sprintService.getSprintTasks(this.currentSprint.id);
+        }),
+      ).subscribe(
+        (resp) => {
+          if (!resp.body) {
+            return;
+          }
+          this.currentSprint.tasks = resp.body;
           this.projectTasks = this.currentSprint.tasks;
           this.hasTasks = this.checkIfHasTasks();
           this.sortTasksByColumns();
-        }
-
-        this.isShow = true;
-      });
+          this.isShow = true;
+        },
+        () => {
+          this.isShow = true;
+        });
   }
 
   sortTasksByColumns(): void {
@@ -177,7 +190,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
       tasks.forEach((t) => {
         taskInfo.push({
           ...t,
-          customLabels: [],
           assignees: t.users,
           key: t.key as string,
           isHidden: false,
@@ -409,7 +421,6 @@ export class TasqueBoardComponent implements OnInit, OnDestroy {
 
         const currentTask = {
           ...task,
-          customLabels: [],
           stateId: task.state?.id,
           key: task.key as string,
           isHidden: false,

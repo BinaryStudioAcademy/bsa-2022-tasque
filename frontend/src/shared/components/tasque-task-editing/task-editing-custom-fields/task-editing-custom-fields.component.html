@@ -1,0 +1,85 @@
+<div class="field-label">
+  <label class="label">{{ customField.name }}</label>
+</div>
+<div *ngIf="customField.type === 0" class="text-field">
+  <tasque-input
+    type="text"
+    class="input"
+    [formControl]="taskCustomFieldControl"
+  >
+  </tasque-input>
+</div>
+<div *ngIf="customField.type === 1" class="paragraph-field">
+  <angular-editor
+    class="editor-wrapper"
+    [config]="editorConfig"
+    [formControl]="taskCustomFieldControl"
+  >
+  </angular-editor>
+</div>
+<div *ngIf="customField.type === 2" class="number-field">
+  <tasque-input
+    type="number"
+    class="input"
+    [formControl]="taskCustomFieldControl"
+  >
+  </tasque-input>
+</div>
+<div *ngIf="customField.type === 3" class="label-field">
+  <tasque-dropdown
+    class="dropdown"
+    placeholder="Select label"
+    [options]="labelOptions"
+    [formControl]="taskCustomFieldControl"
+  >
+  </tasque-dropdown>
+</div>
+<div *ngIf="customField.type === 4" class="user-field">
+  <tasque-team-select
+    *ngIf="projectUsers.length > 0"
+    (selectedUser)="setSelectedUser($event)"
+    [selectedUserId]="selectedUserId"
+    [avatars]="projectUsers"
+  >
+  </tasque-team-select>
+  <div *ngIf="projectUsers.length === 0">
+    <span style="color: black">Participants not found</span>
+  </div>
+</div>
+<div *ngIf="customField.type === 5" class="dropdown-field">
+  <tasque-menu-dropdown
+    class="button-like dropdown-values"
+    separator="|"
+    style="color: black"
+  >
+    <div dropdown-button>Select a value</div>
+    <tasque-option
+      option
+      *ngFor="let value of dropdownField?.fields"
+      (click)="setDropdownValue(value)"
+      >{{ value }}
+    </tasque-option>
+  </tasque-menu-dropdown>
+  <div class="dropdown-choosen">
+    <span style="margin: 0 15px 0 15px">Selected value:</span>
+    <span>{{ dropdownValue }}</span>
+  </div>
+</div>
+<div *ngIf="customField.type === 6" class="checkbox-field">
+  <div class="checkbox-item" *ngFor="let chk of checkboxFields; let i = index">
+    <tasque-checkbox
+      [checked]="chk.isChecked"
+      [text]="chk.checkboxName"
+      (stateChanged)="setCheckboxChanged($event, chk)"
+    >
+    </tasque-checkbox>
+  </div>
+</div>
+<div *ngIf="customField.type === 7" class="date-field">
+  <tasque-input
+    type="date"
+    class="input"
+    [formControl]="taskCustomFieldControl"
+  >
+  </tasque-input>
+</div>

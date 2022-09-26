@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.Azure.Cosmos;
+﻿using Microsoft.Azure.Cosmos;
 using Tasque.Core.BLL.Interfaces;
 using Tasque.Core.Common.DTO.PartialModels;
 using Tasque.Core.Common.StaticResources;
@@ -49,7 +48,7 @@ namespace Tasque.Core.BLL.Services.AzureServices
         public async Task<List<CosmosTaskModel>> GetAllProjectTasks(int projectId)
         {
             var query = _container.GetItemQueryIterator<CosmosTaskModel>(
-                new QueryDefinition(CosmosDbQueries.GetAll + $" WHERE c.{CosmosDbKeys.ProjectIdKey} = {projectId}"));
+                new QueryDefinition(CosmosDbQueries.GetAll + $" WHERE c.{CosmosDbKeys.ProjectIdKey} = \"{projectId}\""));
 
             var results = new List<CosmosTaskModel>();
 

@@ -37,5 +37,5 @@ export interface TaskModel {
   estimate?: number;
 
   users?: UserModel[];
-  custmFields?: TaskCustomFieldModel[];
+  customFields?: TaskCustomFieldModel[];
 }

@@ -101,7 +101,7 @@ export class SprintComponent implements OnInit, OnChanges {
     public openDialogService: OpenDialogService,
     private currentOrganizationService: GetCurrentOrganizationService,
     private organizationService: OrganizationService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.currentUser === undefined) {
@@ -128,8 +128,7 @@ export class SprintComponent implements OnInit, OnChanges {
           this.currentSprint.tasks = this.tasks = this.tasksShow = result.body;
           this.estimateCount();
         }
-        this.isShow = true;
-      });
+      }).add(() => this.isShow = true);
   }
 
   //Get all sprint members

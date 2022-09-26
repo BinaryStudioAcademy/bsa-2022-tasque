@@ -23,7 +23,7 @@ export class TasqueTeamSelectComponent implements OnInit {
 
   public avatarsShow: UserModel[] = this.avatars;
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     this.avatarsShow = this.avatars;
@@ -41,16 +41,20 @@ export class TasqueTeamSelectComponent implements OnInit {
   }
 
   selectUser(user: UserModel): void {
-    this.selectedUser.emit(user);
     if (this.selectedUserId != user.id) {
       this.selectedUserId = user.id;
+      this.selectedUser.emit(user);
     } else {
       this.selectedUserId = 0;
+      this.selectedUser.emit({
+        ...user,
+        id: -1
+      });
     }
   }
 
-  switchPopUp(): void {    
-    if(this.canPopUp && !this.showPopUp) {
+  switchPopUp(): void {
+    if (this.canPopUp && !this.showPopUp) {
       this.openPopUp();
     }
     else {
@@ -64,7 +68,7 @@ export class TasqueTeamSelectComponent implements OnInit {
   }
 
   closePopUp(): void {
-    if(this.showPopUp) {
+    if (this.showPopUp) {
       this.showPopUp = false;
       this.inputSearch = '';
     }

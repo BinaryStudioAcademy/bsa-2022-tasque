@@ -37,6 +37,9 @@ import { TaskUpdateModel } from 'src/core/models/task/task-update-model';
 import { BoardType, IBoard, IUserCard } from '../select-users/Models';
 import { UserService } from 'src/app/user/services/user.service';
 import { Observable } from 'rxjs';
+import { TaskCustomFieldModel } from 'src/core/models/task/task-creation-models/task-custom-field-model';
+import { TaskCustomField } from 'src/core/models/task/task-template-models/task-custom-field';
+import { TaskTemplate } from 'src/core/models/task/task-template';
 
 @Component({
   selector: 'tasque-task-editing',
@@ -88,11 +91,15 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   public states: TaskState[] = [];
   public types: TaskType[] = [];
 
-  public users: UserModel[] = [];
+  public issueTemplates: TaskTemplate[];
+  public customFields: TaskCustomField[];
+
+  public projectUsers: UserModel[] = [];
 
   public editorConfig: AngularEditorConfig = EditorConfig;
 
   public isOpen = false;
+  public isDataLoaded = false;
 
   // eslint-disable-next-line max-params
   constructor(
@@ -120,6 +127,10 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
     this.currentOrganizationService.currentOrganizationId$.subscribe(
       (orgId) => {
         this.organizationId = orgId;
+
+        if (!this.isDataLoaded) {
+          return;
+        }
 
         this.projectService
           .getProjectsByOrganizationId(this.organizationId)
@@ -155,6 +166,11 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         this.getProjectInfo(option.id);
       },
     );
+
+    this.editTaskForm.controls.type.valueChanges.subscribe(
+      (type: TasqueDropdownOption) => {
+        this.setSelectedTaskType(type.id);
+      });
     // this.isShow = true;
 
     this.board = {
@@ -299,6 +315,22 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       return;
     }
 
+    this.projectService.getProjectById(projectId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((resp) => {
+        if (!resp.body) {
+          return;
+        }
+        const project = resp.body;
+
+        this.projectUsers = project.users;
+        this.fillTypeOptions(project.projectTaskTypes);
+        if (project.projectTaskPriorities) {
+          this.fillPriorityOptions(project.projectTaskPriorities);
+        }
+        this.fillStateOptions(project.projectTaskStates);
+      });
+
     this.sprintService
       .getProjectSprints(projectId)
       .pipe(takeUntil(this.unsubscribe$))
@@ -310,33 +342,11 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       });
 
     this.taskTemplateService
-      .getAllProjectTaskTypes(projectId)
+      .getAllProjectTemplates(projectId)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((types) => {
-        if (!types.body) {
-          return;
-        }
-        this.fillTypeOptions(types.body);
-      });
-
-    this.projectService
-      .getProjectPriorities(projectId)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((priorities) => {
-        if (!priorities.body) {
-          return;
-        }
-        this.fillPriorityOptions(priorities.body);
-      });
-
-    this.taskTemplateService
-      .getAllProjectTaskStates(projectId)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((states) => {
-        if (!states.body) {
-          return;
-        }
-        this.fillStateOptions(states.body);
+      .subscribe((resp) => {
+        this.issueTemplates = resp.body as TaskTemplate[];
+        this.setSelectedTaskType(this.task.typeId);
       });
   }
 
@@ -373,6 +383,7 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
         this.editTaskForm.controls.sprint.value.id !== 0
           ? this.editTaskForm.controls.sprint.value.id
           : undefined,
+      customFields: this.task.customFields,
     } as TaskUpdateModel;
 
     this.taskService
@@ -400,6 +411,28 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
   toogleModal(event: boolean): void {
     this.isOpen = event;
     this.isChanging.emit(event);
+    if (this.isOpen && this.task && !this.isDataLoaded) {
+      this.projectService
+        .getProjectsByOrganizationId(this.organizationId)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((resp) => {
+          if (!resp.body) {
+            return;
+          }
+          this.fillProjectOptions(resp.body);
+          this.getProjectInfo(this.task.projectId);
+        });
+      this.taskService.getTaskCustomFieldsById(this.task.id)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((resp) => {
+          if (!resp.body) {
+            return;
+          }
+          this.task.customFields = resp.body;
+        });
+
+      this.isDataLoaded = true;
+    }
   }
 
   addUser(email: string): void {
@@ -413,7 +446,6 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       );
       return;
     }
-
     this.userService
       .getUserByEmail(email)
       .pipe(takeUntil(this.unsubscribe$))
@@ -449,5 +481,51 @@ export class TaskEditingComponent extends BaseComponent implements OnInit {
       profileURL: '',
       role: null,
     };
+  }
+
+  public getCustomField(field: TaskCustomFieldModel): void {
+    if (!this.task.customFields) {
+      this.task.customFields = [];
+    }
+    const isExist = this.task.customFields?.find(
+      (f) => f.fieldId === field.fieldId,
+    );
+    if (isExist === undefined) {
+      this.task.customFields.push(field);
+    }
+    this.task.customFields.forEach((val) => {
+      if (val.fieldId === field.fieldId) {
+        val.fieldValue = field.fieldValue;
+      }
+    });
+    this.editTaskForm.markAsDirty();
+  }
+
+  public setSelectedTaskType(typeId: number): void {
+    this.customFields = [];
+
+    const template = this.issueTemplates.find(
+      (t) =>
+        t.projectId === this.editTaskForm.controls.project.value.id &&
+        t.typeId === typeId,
+    ) as TaskTemplate;
+
+    this.customFields = template?.customFields ?? [];
+    if (!this.task.customFields) {
+      this.task.customFields = [];
+    }
+    this.customFields.forEach((cf) =>
+      this.task.customFields?.push({
+        fieldId: cf.fieldId as string,
+        type: cf.type,
+      }),
+    );
+  }
+
+  public getCurrentTaskCustomField(customFieldId: string | undefined): TaskCustomFieldModel | undefined {
+    if (!customFieldId) {
+      return undefined;
+    }
+    return this.task.customFields?.find((field) => field.fieldId === customFieldId);
   }
 }

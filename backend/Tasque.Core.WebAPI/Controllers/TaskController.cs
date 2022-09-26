@@ -62,5 +62,11 @@ namespace Tasque.Core.WebAPI.Controllers
             var res = await _taskService.SetOrder(ids);
             return Ok(res);
         }
+
+        [HttpGet("customFields/{id}")]
+        public async Task<IActionResult> GetTaskCustomFieldsById(int id)
+        {
+            return Ok(await _taskService.GetTaskCustomFieldsById(id));
+        }
     }
 }

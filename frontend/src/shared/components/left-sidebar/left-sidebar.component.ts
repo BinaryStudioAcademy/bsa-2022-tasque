@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { ProjectModel } from 'src/core/models/project/project-model';
 import { UserModel } from 'src/core/models/user/user-model';
@@ -22,7 +22,7 @@ import { ScopeGetCurrentEntityService } from 'src/core/services/scope/scopre-get
 })
 export class LeftSidebarComponent
   extends BaseComponent
-  implements OnInit {
+  implements OnInit, OnChanges {
   public projectId: number;
   public project: ProjectModel;
 
@@ -81,6 +81,12 @@ export class LeftSidebarComponent
       this.setAllStylesUndefined();
       this.isBacklog = data;
     });
+  }
+
+  ngOnChanges(): void {
+    this.checkActivatedRoute();
+    const id = this.route.snapshot.paramMap.get('id');
+    this.projectId = parseInt(id as string);
   }
 
   minimize(): void {

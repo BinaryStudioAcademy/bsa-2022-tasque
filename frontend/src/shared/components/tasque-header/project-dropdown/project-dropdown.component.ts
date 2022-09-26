@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { ProjectInfoModel } from 'src/core/models/project/project-info-model';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { ProjectService } from 'src/core/services/project.service';
 import { UserModel } from 'src/core/models/user/user-model';
@@ -45,8 +45,7 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit, O
   constructor(
     private getCurrentEntityService: ScopeGetCurrentEntityService,
     private projectService: ProjectService,
-    private router: Router,
-    private activeRoute: ActivatedRoute) {
+    private router: Router) {
     super();
   }
 
@@ -87,6 +86,9 @@ export class ProjectDropdownComponent extends BaseComponent implements OnInit, O
 
     this.getCurrentEntityService
     .getCurrentProjectService.currentProjectId = project.id;
+    this.getCurrentEntityService
+    .getCurrentProjectService.getCurrentProject();
+
     this.navigateToBoard(project);
     window.scroll(0, 0);
     this.isChanged.emit();

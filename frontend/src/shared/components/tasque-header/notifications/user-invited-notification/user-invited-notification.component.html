@@ -1,6 +1,6 @@
 <div class="user-invited" *ngIf="projectLoaded && userLoaded">
     <tasque-avatar [diameter_px]="45" [user]="invitedBy"></tasque-avatar>
-    <span>
+    <span class="notification-content">
         You have been invited to project
         <a [href]="getProjectRef()">{{ project.name }}</a>
         by user

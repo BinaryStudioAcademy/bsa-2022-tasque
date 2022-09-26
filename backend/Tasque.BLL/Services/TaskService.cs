@@ -13,7 +13,6 @@ using Tasque.Core.Common.Entities.Abstract;
 using Tasque.Core.Common.Enums;
 using Tasque.Core.Common.Models.Events;
 using Tasque.Core.DAL;
-using static Amazon.S3.Util.S3EventNotification;
 using Tasque.Messaging.Abstractions;
 using Task = System.Threading.Tasks.Task;
 
@@ -49,7 +48,6 @@ namespace Tasque.Core.BLL.Services
         {
             var entity = _mapper.Map<Common.Entities.Task>(model);
             var project = _dbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId) ?? throw new CustomNotFoundException("project");
-
             entity.Key = project.Key + '-' + UpdateProjectCounter(project.Id);
 
             _dbContext.Add(entity);
@@ -147,6 +145,20 @@ namespace Tasque.Core.BLL.Services
                         await MapCosmosTaskFieldsToTaskCustomFields(task, attributes.CustomFields)) ?? new());
         }
 
+        public async Task<List<TaskCustomFields>> GetTaskCustomFieldsById(int id)
+        {
+            var task = _dbContext.Tasks.FirstOrDefault((task) => task.Id == id)
+                ?? throw new CustomNotFoundException(nameof(Common.Entities.Task));
+
+            var attributes = await _cosmosTaskService.GetTaskById(id.ToString())
+                ?? throw new CustomNotFoundException("Custom Fields");
+
+            var template = await GetTaskTemplate(task.ProjectId, task.TypeId)
+                ?? throw new CustomNotFoundException("Custom Fields");
+
+            return await MapCosmosTaskFieldsToTaskCustomFields(template, attributes.CustomFields);
+        }
+
         public async Task<TaskDto> UpdateTask(TaskDto model)
         {
             var currentProjectId = _dbContext.Tasks.FirstOrDefault(t => t.Id == model.Id)?.ProjectId;
@@ -202,6 +214,7 @@ namespace Tasque.Core.BLL.Services
                 var cosmosModel = new CosmosTaskModel()
                 {
                     Id = task.Id.ToString(),
+                    ProjectId = task.ProjectId.ToString(),
                     CustomFields = _mapper.Map<List<CosmosTaskFields>>(actualAttributes),
                 };
 
@@ -267,14 +280,37 @@ namespace Tasque.Core.BLL.Services
             return result;
         }
 
+        public async Task<List<TaskCustomFields>> MapCosmosTaskFieldsToTaskCustomFields(TaskTemplate template, List<CosmosTaskFields> fields)
+        {
+            var result = new List<TaskCustomFields>();
+
+            if (fields == null || fields.Count() == 0 || template?.CustomFields == null)
+                return result;
+
+            fields.ForEach(f =>
+            {
+                var type = template.CustomFields.Find(t => t.FieldId == f?.FieldId)?.Type;
+
+                result.Add(new()
+                {
+                    FieldId = f.FieldId,
+                    FieldName = template?.CustomFields?.Find(t => t.FieldId == f?.FieldId)?.Name,
+                    FieldType = type ?? TaskFieldType.Text,
+                    FieldValue = f.FieldValue,
+                });
+            });
+
+            return result;
+        }
+
         private int UpdateProjectCounter(int projectId)
         {
             var project = _dbContext.Projects.FirstOrDefault(p => p.Id == projectId) ?? throw new CustomNotFoundException("project");
             project.ProjectTaskCounter += 1;
             _dbContext.SaveChanges();
             return project.ProjectTaskCounter;
-        }    
-        
+        }
+
         public async Task<CommentInfoDTO> AddComment(CreateCommentDTO dto)
         {
             var task = _dbContext.Tasks
@@ -283,7 +319,7 @@ namespace Tasque.Core.BLL.Services
             var comment = _mapper.Map<Comment>(dto);
 
             _dbContext.Comments.Add(comment);
-            
+
             _dbContext.Update(task);
             await _dbContext.SaveChangesAsync();
             var newComment = await _dbContext.Comments

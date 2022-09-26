@@ -96,31 +96,28 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
       this.deleteSprint(sprintId);
     });
   }
+
   ngAfterContentChecked(): void {
     this.cdref.detectChanges();
   }
 
   ngOnInit(): void {
     const id = this.route.parent?.snapshot.paramMap.get('id');
-
     if (id) {
       this.currentProjectId = parseInt(id);
-      this.scopeBoardService.projectService
-        .getProjectById(this.currentProjectId)
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((resp) => {
-          this.currentProject = resp.body as ProjectModel;
-          this.updateHeader();
-        });
+      this.getCurrentEntityService
+      .getCurrentProjectService.currentProjectId = this.currentProjectId;
+      this.getCurrentEntityService
+      .getCurrentProjectService.getCurrentProject();
+      this.getCurrentProject();
     }
+
     this.getCurrentEntityService.getCurrentUserService.currentUser$.subscribe(
       (user) => {
         this.currentUser = user as UserModel;
-
         if (this.currentUser === undefined) {
           return;
         }
-
         this.getSprints(this.currentProjectId);
       },
     );
@@ -150,6 +147,27 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
     });
   }
 
+  private getCurrentProject(): void {
+    this.getCurrentEntityService
+      .getCurrentProjectService.currentProject$
+      .subscribe((proj) => {
+        if (proj) {
+          this.currentProject = proj;
+          this.updateHeader();
+        }
+        else {
+          this.scopeBoardService.projectService
+            .getProjectById(this.currentProjectId)
+            .subscribe((resp) => {
+              this.currentProject = resp.body as ProjectModel;
+              this.getCurrentEntityService
+                .getCurrentProjectService.setCurrentProject(this.currentProject);
+              this.updateHeader();
+            });
+        }
+      });
+  }
+
   //get sprints for the current project
   //and sort them by priority (order)
   public getSprints(projectId: number): void {
@@ -158,12 +176,11 @@ export class BacklogComponent implements OnInit, AfterContentChecked {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         if (result.body) {
-          this.isShow = true;
           this.sprints = result.body.sort(
             (a, b) => (a.order ?? 0) - (b.order ?? 0),
           );
         }
-      });
+      }).add(() => this.isShow = true);
   }
 
   public getArchiveSprints(projectId: number): void {
