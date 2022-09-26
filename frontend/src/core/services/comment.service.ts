@@ -20,6 +20,10 @@ export class CommentService {
     return this.httpService.getFullRequest<CommentInfo[]>(this.routePrefix + '/getCommentsByTaskId/' + id);
   }
 
+  getCommentById(id: number): Observable<HttpResponse<CommentInfo>> {
+    return this.httpService.getFullRequest<CommentInfo>(this.routePrefix + '/comment/' + id);
+  }
+
   addComment(comment: CreateComment): Observable<HttpResponse<CommentInfo>> {
     return this.httpService.postFullRequest<CommentInfo>(this.routePrefix, comment);
   }

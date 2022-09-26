@@ -1,8 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { CommentInfo } from 'src/core/models/comment/comment-info';
 import { Notification } from 'src/core/models/notifications/notification';
 import { TaskCommentedNotification } from 'src/core/models/notifications/task-commented-notification';
 import { TaskModel } from 'src/core/models/task/task-model';
 import { UserModel } from 'src/core/models/user/user-model';
+import { CommentService } from 'src/core/services/comment.service';
+import { TaskService } from 'src/core/services/task.service';
 
 @Component({
   selector: 'task-comment-notification',
@@ -13,28 +16,28 @@ export class TaskCommentNotificationComponent implements OnInit {
 
   @Input() notification: TaskCommentedNotification;
   @Output() deleteNotification = new EventEmitter<Notification>();
-  commentBy: UserModel = {
-    id: -1,
-    name: 'Daniil',
-    email: 'test@mail.com',
-    organizationRoles: [],
-    avatarURL: 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80'
-  };
-  task: TaskModel = {
-    id: -1,
-    summary: 'Test',
-    order: 1,
-    attachments: [],
-    typeId: 1,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    deadline: new Date(),
-  };
-  comment: string = 'Test';
+  commentBy: UserModel;
+  task: TaskModel;
+  comment: CommentInfo;
+  ref = '';
+  display = false;
 
-  constructor() { }
+  constructor(
+    private commentService: CommentService,
+    private taskService: TaskService,
+  ) { }
 
   ngOnInit(): void {
+    this.commentService.getCommentById(this.notification.commentId).subscribe((resp) => {
+      this.comment = resp.body as CommentInfo;
+      this.commentBy = this.comment.author;
+
+      this.taskService.getTaskById(this.comment.taskId).subscribe((resp) => {
+        this.task = resp.body as TaskModel;
+        this.getTaskRef();
+        this.display = true;
+      });
+    });
   }
 
   onDelete(): void {
@@ -42,7 +45,7 @@ export class TaskCommentNotificationComponent implements OnInit {
   }
 
   getTaskRef(): void {
-    console.log(this.task); //TODO: Implement ability to open task-card by link and redirect to it
+    this.ref = `project/${this.task.projectId}/task/${this.task.id}`; //TODO: Implement ability to open task-card by link and redirect to it
   }
 
 }

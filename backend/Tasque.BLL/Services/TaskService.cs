@@ -370,6 +370,11 @@ namespace Tasque.Core.BLL.Services
             tasks = tasks.OrderBy(x => x.Order);
             return _mapper.Map<IEnumerable<TaskDto>>(tasks);
         }
+
+        public async Task<CommentInfoDTO> GetCommentById(int id)
+        {
+            return _mapper.Map<CommentInfoDTO>(await _dbContext.Comments.Where(c => c.Id == id).Include(c => c.Author).FirstOrDefaultAsync());
+        }
     }
 }
 

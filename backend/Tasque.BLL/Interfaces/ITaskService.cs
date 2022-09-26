@@ -21,6 +21,8 @@ namespace Tasque.Core.BLL.Interfaces
 
         Task<List<CommentInfoDTO>> GetCommentsByTaskId(int taskId);
 
+        Task<CommentInfoDTO> GetCommentById(int id);
+
         Task<IEnumerable<TaskDto>> SetOrder(IEnumerable<int> ids);
     }
 }

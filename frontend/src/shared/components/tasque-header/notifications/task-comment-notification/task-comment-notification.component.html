@@ -1,9 +1,9 @@
-<div class="task-comment" *ngIf="true">
+<div class="task-comment" *ngIf="display">
     <tasque-avatar [diameter_px]="45" [user]="commentBy"></tasque-avatar>
     <span class="notification-content">
         {{ commentBy.name }} has comment your task
-        <a [href]="getTaskRef()">{{ task.key }}</a>:
-        <a [href]="commentBy.name">{{ comment }}</a>.
+        <a [href]="ref">{{ task.key }}</a>:
+        <a [href]="commentBy.name">{{ comment.message }}</a>
     </span>
-    <input style="margin-left: 105px" (click)="onDelete()" type="image" src="assets/cross.svg">
+    <input (click)="onDelete()" type="image" src="assets/cross.svg">
 </div>
