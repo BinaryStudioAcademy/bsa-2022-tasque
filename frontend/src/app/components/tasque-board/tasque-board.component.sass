@@ -1,5 +1,7 @@
 @import 'src/colors.sass'
 
+$layout-breakpoint: 1180px
+
 .board
     font-family: 'Nunito'
     font-style: normal
@@ -191,3 +193,7 @@
 .disable-click
     pointer-events: none
     cursor: default
+
+@media (max-width: $layout-breakpoint)
+    .board-panel
+        height: calc( 100% - 107px )
