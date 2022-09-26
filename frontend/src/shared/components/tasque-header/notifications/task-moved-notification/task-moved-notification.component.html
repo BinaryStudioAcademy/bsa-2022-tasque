@@ -1,1 +1,10 @@
-<p>task-moved-notification works!</p>
+<div class="task-moved" *ngIf="display">
+    <tasque-avatar [diameter_px]="45" [user]="movedBy"></tasque-avatar>
+    <span class="notification-content">
+        {{ movedBy.name }} has moved task
+        <a [href]="ref">{{ task.key }}</a>
+        to column
+        <a [href]="ref">{{ task.state?.name }}</a>
+    </span>
+    <input (click)="onDelete()" type="image" src="assets/cross.svg">
+</div>

@@ -11,11 +11,10 @@ export class CardLabelPipe implements PipeTransform {
     }
     if(value.length <= 6){
       return value;
-    } else {
-      let result = value.slice(0, 5);
-      result += '..';
-      return result;
-    }
+    } 
+    let result = value.slice(0, 5);
+    result += '..';
+    return result;
   }
 
 }

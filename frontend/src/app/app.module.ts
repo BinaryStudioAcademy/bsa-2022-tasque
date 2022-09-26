@@ -42,7 +42,6 @@ import { WikiPageComponent } from './components/tasque-wiki/wiki-page/wiki-page.
 import { WikiTitleComponent } from './components/tasque-wiki/wiki-title/wiki-title.component';
 import { YourWorkComponent } from './components/your-work/your-work.component';
 import { ProjectCardComponent } from './components/your-work/project-card/project-card.component';
-import { CardLabelPipe } from 'src/core/pipes/card-label.pipe';
 
 @NgModule({
   declarations: [
