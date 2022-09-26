@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Notification } from 'src/core/models/notifications/notification';
 import { NotificationType } from 'src/core/models/notifications/notification-type';
+import { TaskCommentedNotification } from 'src/core/models/notifications/task-commented-notification';
+import { TaskMovedNotification } from 'src/core/models/notifications/task-moved-notification';
 import { UserInvitedNotification } from 'src/core/models/notifications/user-invited-notification';
 
 @Component({
@@ -31,8 +33,24 @@ export class NotificationsComponent implements OnInit {
     return notification.type == NotificationType.UserInvited;
   }
 
+  isTaskCommentedNotification(notification: Notification): boolean {
+    return notification.type == NotificationType.TaskCommented;
+  }
+
+  isTaskMovedNotification(notification: Notification): boolean {
+    return notification.type == NotificationType.TaskMoved;
+  }
+
   setToUserInvited(notification: Notification): UserInvitedNotification {
     return notification as UserInvitedNotification;
+  }
+
+  setTaskCommented(notification: Notification): TaskCommentedNotification {
+    return notification as TaskCommentedNotification;
+  }
+
+  setTaskMoved(notification: Notification): TaskMovedNotification {
+    return notification as TaskMovedNotification;
   }
 
   sortNotifications(notifications: Notification[]): Notification[] {
