@@ -15,7 +15,7 @@ export class TaskMovedNotificationComponent implements OnInit {
 
   @Input() notification: TaskMovedNotification;
   @Output() deleteNotification = new EventEmitter<Notification>();
-  display = true;
+  display = false;
   movedBy: UserModel;
   task: TaskModel;
   ref = '';
