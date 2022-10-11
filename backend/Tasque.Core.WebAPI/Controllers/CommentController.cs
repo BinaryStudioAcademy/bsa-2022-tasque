@@ -29,6 +29,15 @@ namespace Tasque.Core.WebAPI.Controllers
             return Ok(comments);
         }
 
+        [HttpGet("comment/{id}")]
+        public async Task<IActionResult> GetCommentById(int id)
+        {
+            var comment = await _taskService.GetCommentById(id);
+            if (comment == null)
+                return NotFound("Comment not found");
+            return Ok(comment);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddComment([FromBody] CreateCommentDTO dto)
         {

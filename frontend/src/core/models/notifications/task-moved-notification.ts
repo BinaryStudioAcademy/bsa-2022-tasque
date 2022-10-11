@@ -1,3 +1,4 @@
+import { Notification } from './notification';
 import { NotificationType } from './notification-type';
 
 export interface TaskMovedNotification extends Notification {

@@ -3,12 +3,14 @@
     <input (click)="toggleDropdown()" class="toggle" *ngIf="notifications.length != 0" type="image" src="\assets\notifications_active.svg">
     <div id="notifications-wrapper" class="hide" *ngIf="notifications.length != 0">
         <div class="triangle"></div>
-        <div id="notifications-list">
+        <div id="notifications-list" *ngIf="notifications">
             <h6 class="notifications-header">Notifications</h6>
             <ul [ngStyle]="{ 'height.px': getDropdownLength() * notificationCardHeight }">
                 <li class="notification" *ngFor="let notification of sortNotifications(notifications)">
                     <hr />
                     <user-invited-notification id="user-invited-notification{{notification.id}}" *ngIf="isUserInvitedNotification(notification)" [notification]="setToUserInvited(notification)" (deleteNotification)="onDelete($event)"></user-invited-notification>
+                    <task-moved-notification id="task-moved-notification{{notification.id}}" *ngIf="isTaskMovedNotification(notification)" [notification]="setTaskMoved(notification)" (deleteNotification)="onDelete($event)"></task-moved-notification>
+                    <task-comment-notification id="task-moved-notification{{notification.id}}" *ngIf="isTaskCommentedNotification(notification)" [notification]="setTaskCommented(notification)" (deleteNotification)="onDelete($event)"></task-comment-notification>
                 </li>
             </ul>
         </div>

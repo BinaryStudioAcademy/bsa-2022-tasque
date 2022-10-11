@@ -1,0 +1,9 @@
+<div class="task-comment" *ngIf="display">
+    <tasque-avatar [diameter_px]="45" [user]="commentBy"></tasque-avatar>
+    <span class="notification-content">
+        {{ commentBy.name }} has comment your task
+        <a [href]="ref">{{ task.key }}</a>:
+        <a [href]="ref">{{ comment.message }}</a>
+    </span>
+    <input (click)="onDelete()" type="image" src="assets/cross.svg">
+</div>

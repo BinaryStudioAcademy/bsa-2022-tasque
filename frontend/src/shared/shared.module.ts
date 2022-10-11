@@ -38,6 +38,8 @@ import { TasqueCommentsComponent } from './components/tasque-comments/tasque-com
 import { NotificationsComponent } from './components/tasque-header/notifications/notifications.component';
 import { UserInvitedNotificationComponent } from './components/tasque-header/notifications/user-invited-notification/user-invited-notification.component';
 import { TaskEditingCustomFieldsComponent } from './components/tasque-task-editing/task-editing-custom-fields/task-editing-custom-fields.component';
+import { TaskCommentNotificationComponent } from './components/tasque-header/notifications/task-comment-notification/task-comment-notification.component';
+import { TaskMovedNotificationComponent } from './components/tasque-header/notifications/task-moved-notification/task-moved-notification.component';
 
 @NgModule({
   imports: [
@@ -82,7 +84,9 @@ import { TaskEditingCustomFieldsComponent } from './components/tasque-task-editi
     TasqueCommentsComponent,
     NotificationsComponent,
     UserInvitedNotificationComponent,
-    TaskEditingCustomFieldsComponent
+    TaskEditingCustomFieldsComponent,
+    TaskCommentNotificationComponent,
+    TaskMovedNotificationComponent
   ],
   exports: [
     CommonModule,
